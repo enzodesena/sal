@@ -1,0 +1,256 @@
+/*
+ vectorop.h
+ Matlab Cpp Library (MCL)
+ 
+ This contains vector operations. This only include simple operations on vectors
+ such as: creating a vector, zero padding, getting a subset, flipping etc.
+ 
+ Authors: Enzo De Sena, enzodesena@me.com
+ 
+ Last committed:     $Revision: 95 $
+ Last changed date:  $Date: 2012-06-07 20:07:36 +0100 (Thu, 07 Jun 2012) $
+ */
+
+#ifndef MCL_VECTOROP_H
+#define MCL_VECTOROP_H
+
+
+#include <cassert>
+#include "mcltypes.h"
+#include "elementaryop.h"
+#include "basicop.h"
+#include <vector>
+
+
+
+namespace mcl {
+
+// Equivalent to Matlab's length(input).
+template<class T>
+UInt Length(const std::vector<T>& input) {
+  return (UInt) input.size();
+}
+
+
+// Returns a vector of zeros
+template <class T> 
+std::vector<T> Zeros(UInt length) {
+  //TODO: check if this returns zeros for all types
+  return std::vector<T>(length);
+}
+
+  
+  
+// Adds zero until the output vector has a length of total_length.
+// If the length of input is smaller than total_length, than it returns the
+// vector with the first total_length elements.
+template<class T> 
+std::vector<T> ZeroPad(const std::vector<T>& input, UInt total_length) {
+  std::vector<T> output = Zeros<T>(total_length);
+  UInt M = std::min(input.size(), total_length);
+  for (UInt i=0; i<M; ++i) { output[i] = input[i]; }
+  return output;
+}
+
+
+
+// Returns the point by point multiplication of the vector with the gain. 
+// Equivalent to Matlab's vector_a.*gain.
+template<class T> 
+std::vector<T> Multiply(const std::vector<T>& vector,
+                        const T& gain) {
+  std::vector<T> output(vector.size());
+  for (UInt i=0; i<vector.size(); ++i) {
+    output[i] = vector[i]*gain;
+  }
+  return output;
+}
+
+// Returns the subset of elements with indexes from_index and to_index. 
+// Equivalent to Matlab's vector(from_index:to_index). (Careful about the
+// different indexes convention between here and Matlab.
+template<class T> 
+std::vector<T> Subset(const std::vector<T>& vector, 
+                      UInt from_index, UInt to_index) {
+  assert(from_index>=0 & from_index<vector.size() & 
+         to_index>=0 & to_index<vector.size() & from_index<=to_index);
+  // Allocate output vector with appropriate length.
+  std::vector<T> output(to_index-from_index+1);
+  UInt k = 0; // running index into new vector;
+  for (UInt i=from_index; i<=to_index; ++i) {
+    output[k++] = vector[i];
+  }
+  return output;
+}
+
+
+// Returns the concatenation of vector_a and vector_b. Equivalent to Matlab's
+// [vector_a; vector_b].
+template<class T>
+std::vector<T> Concatenate(std::vector<T> vector_a,
+                           const std::vector<T>& vector_b) {
+  std::vector<T> output = Zeros<T>(vector_a.size()+vector_b.size());
+  vector_a.insert(vector_a.end(), vector_b.begin(), vector_b.end());
+  return vector_a;
+}
+
+
+// Returns a vector with only one element.
+template<class T> 
+std::vector<T> UnaryVector(const T& element) {
+  std::vector<T> output;
+  output.push_back(element);
+  return output;
+}
+  
+// Returns a vector with two elements.
+template<class T>
+std::vector<T> BinaryVector(const T& element_a, const T& element_b) {
+  std::vector<T> output;
+  output.push_back(element_a);
+  output.push_back(element_b);
+  return output;
+}
+
+// Flips the vector. Equivalent to matlab's flipud or fliplr (which for vectors
+// are equivalent).
+template<class T>
+std::vector<T> Flip(std::vector<T> vector) {
+  UInt N(Length(vector));
+  for (UInt i=0; i<=(floor(N/2)-1); ++i) {
+    T temp_value = vector[i];
+    vector[i] = vector[N-i-1];
+    vector[N-i-1] = temp_value;
+  }
+  return vector;
+}
+
+// Equivalent to Matlab's circshift(vector, num_positions). A positive 
+// num_positions corresponds to a forward shift.
+template<class T>
+std::vector<T> CircShift(const std::vector<T>& vector, Int num_positions) {
+  UInt N = Length(vector);
+  std::vector<T> output(N);
+  for (UInt i=0; i<N; ++i) {
+    UInt index = Mod(((Int) i) - num_positions, (Int) N);
+    output[i] = vector[index];
+  }
+  
+  return output;
+}
+  
+// Equivalent to Matlab's conv(vector_a, vector_b).
+template<class T>
+std::vector<T> Conv(const std::vector<T>& vector_a, 
+                    const std::vector<T>& vector_b) {
+  UInt N_a(Length(vector_a));
+  UInt N_b(Length(vector_b));
+  UInt out_length(N_a+N_b-1);
+  
+  std::vector<T> moving_vector_temp = Concatenate(Zeros<T>(N_b-1), 
+                                                  Flip(vector_a));
+  std::vector<T> moving_vector_a = Concatenate(moving_vector_temp, 
+                                               Zeros<T>(N_b-1));
+  
+  std::vector<T> output = Zeros<T>(out_length);
+  for (UInt n=0; n<out_length; ++n) {
+    for (UInt m=0; m<N_b; ++m) {
+      output[out_length-n-1] += moving_vector_a[n+m]*vector_b[m];
+    }
+  }
+  return output;
+}
+  
+  
+// Adds all the vectors and zero-pads short vectors if they have different
+// lengths
+template<class T>
+std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
+  // Get maximum length
+  std::vector<UInt> vector_lengths(vectors.size());
+  for (UInt i=0; i<vectors.size(); ++i) {
+    vector_lengths[i] = vectors[i].size();
+  }
+  UInt max_length(Max(vector_lengths));
+  
+  std::vector<T> output = Zeros<T>(max_length);
+  for (UInt i=0; i<vectors.size(); ++i) {
+    output = Add(output, ZeroPad(vectors[i], max_length));
+  }
+  
+  return output;
+}
+
+// This is equivalent to Matlab's from:to. E.g. 3:5 outputs a vector [3,4,5].
+// TODO: implement non-int `from` and `to`.
+template<class T>
+std::vector<T> ColonOperator(const Int from, const Int to) {
+  const UInt vector_length(to-from+1);
+  std::vector<T> output(to-from+1);
+  for (UInt i=0; i<vector_length; ++i) {
+    output[i] = ((T) i) + ((T) from);
+  }
+  return output;
+}
+
+
+// Returns elements of vector `vector` from from_id to to_id
+// (including extremes).
+template<class T>
+std::vector<T> Elements(const std::vector<T>& vector,
+                        const UInt from_id,
+                        const UInt to_id) {
+  return std::vector<T>(vector.begin() + from_id, vector.begin() + to_id+1);
+}
+
+  
+template<class T>
+std::vector<T> GetFrame(const std::vector<T> vector,
+                        const UInt frame_id,
+                        const UInt frame_length) {
+  UInt size(vector.size());
+  
+  UInt from_sample(frame_id * frame_length);
+  UInt to_sample = Min(from_sample + frame_length - 1,
+                       size - 1);
+  if (to_sample > (size - 1)) { to_sample = size - 1; }
+  // TODO: modify here
+  return Elements(vector, from_sample, to_sample);
+}
+
+
+// Returns a real vector of `length` ones.
+std::vector<Real> Ones(UInt length);
+
+
+// Equivalent to Matlab's linspace(min, max, num_elements);
+std::vector<Real> LinSpace(Real min, Real max, UInt num_elements);
+  
+  
+Real Sum(const std::vector<Real>& input);
+
+Real Mean(const std::vector<Real>& input);
+  
+  
+// Equivalent to Matlab's xcorr(vect_a, vect_b)
+std::vector<Real> XCorr(const std::vector<Real>& vector_a,
+                        const std::vector<Real>& vector_b);
+
+
+// Writes the vector into a text file at `file_path` with an endline after
+// each sample.
+void Save(const std::vector<Real>& vector, const char* file_path);  
+  
+// Splits a string using a delimiter.
+std::vector<std::string> Split(const std::string& string, char delim);
+  
+// Converts roots to polynomial. Equivalent to Matlab's poly(roots)
+std::vector<Complex> Poly(const std::vector<Complex> roots);
+std::vector<Complex> Poly(const std::vector<Real> roots);
+  
+// Test function for the functions in this file
+bool VectorOpTest();
+  
+} // namespace mcl
+
+#endif
