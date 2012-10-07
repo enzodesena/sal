@@ -26,6 +26,7 @@ bool IsEqual(Real num_a, Real num_b);
 
 bool IsEqual(Complex num_a, Complex num_b);
 
+  
 template<class T>
 bool IsEqual(const std::vector<T>& vector_a,
              const std::vector<T>& vector_b) {
