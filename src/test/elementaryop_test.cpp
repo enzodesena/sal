@@ -89,6 +89,11 @@ bool ElementaryOpTest() {
   assert(Max(3, 3) == 3);
 
   
+  assert(IsEqual(RealPart(Complex(-0.3,0.1)), -0.3));
+  assert(IsEqual(RealPart(Complex(0.3,0.1)), 0.3));
+  assert(IsEqual(RealPart(Complex(-0.3,0.5)), -0.3));
+  assert(IsEqual(RealPart(Complex(15.6,0.1)), 15.6));
+  
   return true;
 }
   

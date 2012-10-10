@@ -49,6 +49,7 @@ Int Sign(const Real scalar);
 // Returns the conjugate of the element. Equivalent to Matlab's conj(scalar).
 Complex Conj(Complex scalar);
 
+Real RealPart(Complex scalar);
   
 // Equivalent to Matlab's nextpow2(input)
 UInt NextPow2(Real input);

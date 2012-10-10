@@ -63,6 +63,10 @@ Complex Conj(Complex scalar) {
   return Complex(scalar.real(), -scalar.imag());
 }
 
+Real RealPart(Complex scalar) {
+  return scalar.real();
+}
+  
 UInt NextPow2(Real input) { return ceil(log2(fabs(input))); }
 
   
