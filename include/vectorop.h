@@ -214,8 +214,18 @@ std::vector<T> GetFrame(const std::vector<T> vector,
   UInt to_sample = Min(from_sample + frame_length - 1,
                        size - 1);
   if (to_sample > (size - 1)) { to_sample = size - 1; }
-  // TODO: modify here
+  // TODO: modify here (?)
   return Elements(vector, from_sample, to_sample);
+}
+
+// Multiplies all the elements in the vector. Equivalent to Matlab's
+// prod(vector).
+template<class T>
+T Prod(const std::vector<T> vector) {
+  const UInt num_elements = vector.size();
+  T output = (T) 1.0;
+  for (UInt i=0; i<num_elements; ++i) { output *= vector[i]; }
+  return output;
 }
 
 
@@ -247,6 +257,8 @@ std::vector<std::string> Split(const std::string& string, char delim);
 // Converts roots to polynomial. Equivalent to Matlab's poly(roots)
 std::vector<Complex> Poly(const std::vector<Complex> roots);
 std::vector<Complex> Poly(const std::vector<Real> roots);
+  
+
   
 // Test function for the functions in this file
 bool VectorOpTest();

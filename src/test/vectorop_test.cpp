@@ -379,8 +379,10 @@ bool VectorOpTest() {
   assert(IsEqual(GetFrame(vector_g, 0, 2), vector_g_frame_0));
   assert(IsEqual(GetFrame(vector_g, 1, 2), UnaryVector((Real) -2.4)));
   
-  
-  
+  // Testing prod()
+  assert(IsEqual(Prod(vector_g_frame_0), 0.0));
+  assert(IsEqual(Prod(vector_i), -0.2));
+  assert(IsEqual(Prod(vector_a), Complex(-0.5, 1.0)));
   
   return true;
 }
