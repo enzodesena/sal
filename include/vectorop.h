@@ -205,7 +205,7 @@ std::vector<T> Elements(const std::vector<T>& vector,
 
   
 template<class T>
-std::vector<T> GetFrame(const std::vector<T> vector,
+std::vector<T> GetFrame(const std::vector<T>& vector,
                         const UInt frame_id,
                         const UInt frame_length) {
   UInt size(vector.size());
@@ -221,10 +221,22 @@ std::vector<T> GetFrame(const std::vector<T> vector,
 // Multiplies all the elements in the vector. Equivalent to Matlab's
 // prod(vector).
 template<class T>
-T Prod(const std::vector<T> vector) {
+T Prod(const std::vector<T>& vector) {
   const UInt num_elements = vector.size();
   T output = (T) 1.0;
   for (UInt i=0; i<num_elements; ++i) { output *= vector[i]; }
+  return output;
+}
+  
+// Dot product between two vectors. Equivalent to Matlab's dot(a,b)
+template<class T>
+T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b) {
+  const UInt num_elements = vector_a.size();
+  assert(num_elements == vector_b.size());
+  T output = (T) 0.0;
+  for (UInt i=0; i<num_elements; ++i) {
+    output += vector_a[i]*vector_b[i];
+  }
   return output;
 }
 

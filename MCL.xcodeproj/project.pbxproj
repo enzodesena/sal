@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5771E82B162DA77B00EEA89D /* matrixop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5771E829162DA77B00EEA89D /* matrixop_test.cpp */; };
 		5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
@@ -14,10 +15,10 @@
 		5778D81415B616710015AAC9 /* digitalfilter_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D81315B616710015AAC9 /* digitalfilter_test.cpp */; };
 		57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
 		57A1571C1593475D00AA6445 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
+		57B71D14162DD231003411BA /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
+		57B71D15162DD231003411BA /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
 		57BA700015B42297002F077F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
 		57BA700115B42297002F077F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
-		57BA700615B42A8A002F077F /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700515B42A8A002F077F /* random.cpp */; };
-		57BA700715B42A8A002F077F /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700515B42A8A002F077F /* random.cpp */; };
 		57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700B15B42BBD002F077F /* vectorop.cpp */; };
 		57BA700D15B42BBD002F077F /* vectorop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700B15B42BBD002F077F /* vectorop.cpp */; };
 		57BA701015B43B64002F077F /* elementaryop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700F15B43B64002F077F /* elementaryop.cpp */; };
@@ -50,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5771E829162DA77B00EEA89D /* matrixop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop_test.cpp; path = ../../mcl/trunk/src/test/matrixop_test.cpp; sourceTree = "<group>"; };
 		5778D80915B616260015AAC9 /* digitalfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = digitalfilter.h; path = include/digitalfilter.h; sourceTree = "<group>"; };
 		5778D80A15B616260015AAC9 /* firfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = firfilter.h; path = include/firfilter.h; sourceTree = "<group>"; };
 		5778D80B15B616260015AAC9 /* iirfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iirfilter.h; path = include/iirfilter.h; sourceTree = "<group>"; };
@@ -63,13 +65,13 @@
 		57A1565C15933BD400AA6445 /* kissfft.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kissfft.hh; path = include/lib/kissfft.hh; sourceTree = "<group>"; };
 		57A158AA1593501200AA6445 /* MCL_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MCL_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A158AC1593501200AA6445 /* libMCL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCL.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57B71D12162DD224003411BA /* randomop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = randomop.h; path = include/randomop.h; sourceTree = "<group>"; };
+		57B71D13162DD231003411BA /* randomop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = randomop.cpp; path = src/randomop.cpp; sourceTree = "<group>"; };
 		57BA6FFC15B41B55002F077F /* pointwiseop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pointwiseop.h; path = include/pointwiseop.h; sourceTree = "<group>"; };
 		57BA6FFE15B421F5002F077F /* matrixop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = matrixop.h; path = include/matrixop.h; sourceTree = "<group>"; };
 		57BA6FFF15B42297002F077F /* pointwiseop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pointwiseop.cpp; path = src/pointwiseop.cpp; sourceTree = "<group>"; };
 		57BA700215B4263D002F077F /* mcltypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mcltypes.h; path = include/mcltypes.h; sourceTree = "<group>"; };
 		57BA700315B4274D002F077F /* vectorop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = vectorop.h; path = include/vectorop.h; sourceTree = "<group>"; };
-		57BA700415B42A3C002F077F /* random.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = random.h; path = include/random.h; sourceTree = "<group>"; };
-		57BA700515B42A8A002F077F /* random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = random.cpp; path = src/random.cpp; sourceTree = "<group>"; };
 		57BA700B15B42BBD002F077F /* vectorop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vectorop.cpp; path = src/vectorop.cpp; sourceTree = "<group>"; };
 		57BA700E15B43B07002F077F /* elementaryop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = elementaryop.h; path = include/elementaryop.h; sourceTree = "<group>"; };
 		57BA700F15B43B64002F077F /* elementaryop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = elementaryop.cpp; path = src/elementaryop.cpp; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		57A1565115933B8A00AA6445 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				57B71D12162DD224003411BA /* randomop.h */,
 				5778D80915B616260015AAC9 /* digitalfilter.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
 				5778D80B15B616260015AAC9 /* iirfilter.h */,
@@ -119,7 +122,6 @@
 				57BA700215B4263D002F077F /* mcltypes.h */,
 				57BA6FFE15B421F5002F077F /* matrixop.h */,
 				57BA6FFC15B41B55002F077F /* pointwiseop.h */,
-				57BA700415B42A3C002F077F /* random.h */,
 				57BA700315B4274D002F077F /* vectorop.h */,
 				57BA701615B490C4002F077F /* transformop.h */,
 				57A1565815933BC100AA6445 /* lib */,
@@ -137,6 +139,7 @@
 				57CA3C4A15EE8C0D00363B9A /* random_test.cpp */,
 				57CA3C4415EE8B4700363B9A /* transformop_test.cpp */,
 				57CA3C3715EE745900363B9A /* vectorop_test.cpp */,
+				5771E829162DA77B00EEA89D /* matrixop_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -188,13 +191,13 @@
 		57B8B237159339E70030B619 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				57B71D13162DD231003411BA /* randomop.cpp */,
 				5778D80D15B616320015AAC9 /* firfilter.cpp */,
 				5778D80E15B616320015AAC9 /* iirfilter.cpp */,
 				57BA701B15B492D4002F077F /* basicop.cpp */,
 				57BA700F15B43B64002F077F /* elementaryop.cpp */,
 				57BA701315B43C60002F077F /* equalityop.cpp */,
 				57BA6FFF15B42297002F077F /* pointwiseop.cpp */,
-				57BA700515B42A8A002F077F /* random.cpp */,
 				57BA700B15B42BBD002F077F /* vectorop.cpp */,
 				57BA701715B4915E002F077F /* transformop.cpp */,
 				57A1565415933B9B00AA6445 /* lib */,
@@ -284,7 +287,6 @@
 			files = (
 				57A1571C1593475D00AA6445 /* kiss_fft.c in Sources */,
 				57BA700115B42297002F077F /* pointwiseop.cpp in Sources */,
-				57BA700715B42A8A002F077F /* random.cpp in Sources */,
 				57BA700D15B42BBD002F077F /* vectorop.cpp in Sources */,
 				57BA701115B43B64002F077F /* elementaryop.cpp in Sources */,
 				57BA701515B43C61002F077F /* equalityop.cpp in Sources */,
@@ -292,6 +294,7 @@
 				57BA701D15B492D5002F077F /* basicop.cpp in Sources */,
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
+				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,7 +304,6 @@
 			files = (
 				57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
-				57BA700615B42A8A002F077F /* random.cpp in Sources */,
 				57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */,
 				57BA701015B43B64002F077F /* elementaryop.cpp in Sources */,
 				57BA701415B43C61002F077F /* equalityop.cpp in Sources */,
@@ -317,6 +319,8 @@
 				57CA3C4615EE8B4700363B9A /* transformop_test.cpp in Sources */,
 				57CA3C4915EE8B5F00363B9A /* pointwiseop_test.cpp in Sources */,
 				57CA3C4C15EE8C0D00363B9A /* random_test.cpp in Sources */,
+				5771E82B162DA77B00EEA89D /* matrixop_test.cpp in Sources */,
+				57B71D14162DD231003411BA /* randomop.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,8 +331,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SSE41_EXTENSIONS = YES;
 				GCC_ENABLE_SSE42_EXTENSIONS = YES;
@@ -354,8 +361,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SSE41_EXTENSIONS = YES;
 				GCC_ENABLE_SSE42_EXTENSIONS = YES;
@@ -425,7 +435,9 @@
 		57B8B2311593398E0030B619 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "";
@@ -437,7 +449,9 @@
 		57B8B2321593398E0030B619 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "";

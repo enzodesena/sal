@@ -26,11 +26,11 @@ int main (int argc, char * const argv[]) {
   PointWiseOpTest();
   TransformOpTest();
   ElementaryOpTest();
+  MatrixOpTest();
   
   IirFilter::Test();
   FirFilter::Test();
   RandomGenerator::Test();
-  Matrix<Real>::Test();
     
     
   

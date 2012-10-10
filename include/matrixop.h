@@ -39,15 +39,43 @@ public:
     data_[index_row][index_column] = element;
   }
   
-  T element(UInt index_row, UInt index_column) {
+  void set_column(UInt index_column, std::vector<T> column) {
+    assert(column.size() == num_rows_);
+    assert(index_column>=0 & index_column<num_columns_);
+    for (UInt i=0; i<num_rows_; ++i) {
+      set_element(i, index_column, column[i]);
+    }
+  }
+  
+  void set_row(UInt index_row, std::vector<T> row) {
+    assert(row.size() == num_columns_);
+    assert(index_row>=0 & index_row<num_rows_);
+    data_[index_row] = row;
+  }
+  
+  T element(UInt index_row, UInt index_column) const {
     assert(index_row>=0 & index_row<num_rows_);
     assert(index_column>=0 & index_column<num_columns_);
     return data_[index_row][index_column];
   }
   
-  UInt num_rows() { return num_rows_; }
+  std::vector<T> row(UInt index_row) const {
+    assert(index_row>=0 & index_row<num_rows_);
+    return data_[index_row];
+  }
   
-  UInt num_columns() { return num_columns_; }
+  std::vector<T> column(UInt index_column) const {
+    assert(index_column>=0 & index_column<num_columns_);
+    std::vector<T> output(num_rows_);
+    for (UInt i=0; i<num_rows_; ++i) { output[i] = data_[i][index_column]; }
+    return output;
+  }
+  
+  
+  
+  UInt num_rows() const { return num_rows_; }
+  
+  UInt num_columns() const { return num_columns_; }
   
   void Save(const char* file_name) {
     std::ofstream output_file;
@@ -97,30 +125,90 @@ public:
     return matrix;
   }
   
+
   
-  static bool Test() {
-    
-    Matrix<Real> matrix_a(3,2);
-    matrix_a.set_element(0, 1, 1.0);
-    matrix_a.set_element(2, 1, 1.5);
-    assert(IsEqual(matrix_a.element(0,1), 1.0));
-    assert(IsEqual(matrix_a.element(0,0), 0.0));
-    assert(IsEqual(matrix_a.element(2,1), 1.5));
-    
-    matrix_a.set_element(2, 1, 0.5);
-    assert(IsEqual(matrix_a.element(2,1), 0.5));
-    
-    return true;
-  }
+
 
   
 private:
-  
+  // Outer is rows, inner is columns. Hence, data_[0] is the first column.
   std::vector<std::vector<T> > data_;
   UInt num_columns_;
   UInt num_rows_;
 };
 
+// Transposes the matrix. Equivalent to Matlab's matrix'
+template<class T>
+Matrix<T> Transpose(const Matrix<T>& matrix) {
+  Matrix<T> output(matrix.num_columns(), matrix.num_rows());
+  
+  for (UInt i=0; i<output.num_rows(); ++i) {
+    for (UInt j=0; j<output.num_columns(); ++j) {
+      output.set_element(i, j, matrix.element(j, i));
+    }
+  }
+  return output;
+}
+  
+// Multiplies all the elements of `matrix` by `value`. Equivalent
+// to Matlabs' matrix.*value
+template<class T>
+Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
+  Matrix<T> output(matrix.num_rows(), matrix.num_columns());
+  for (UInt i=0; i<output.num_rows(); ++i) {
+    for (UInt j=0; j<output.num_columns(); ++j) {
+      output.set_element(i, j, matrix.element(i, j)*value);
+    }
+  }
+  return output;
+}
+ 
+  
+// Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b
+template<class T>
+Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
+  assert(matrix_a.num_columns() == matrix_b.num_rows());
+  
+  Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
+  for (UInt i=0; i<output.num_rows(); ++i) {
+    for (UInt j=0; j<output.num_columns(); ++j) {
+      output.set_element(i, j, Dot(matrix_a.row(i), matrix_b.column(j)));
+    }
+  }
+  return output;
+}
+  
+template<class T>
+std::vector<T>
+Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
+  assert(matrix_a.num_columns() == vector.size());
+  Matrix<T> temp_input(vector.size(), 1);
+  temp_input.set_column(0, vector);
+  Matrix<T> temp_output = Multiply(matrix_a, temp_input);
+  assert(temp_output.num_columns() == 1);
+  assert(temp_output.num_rows() == vector.size());
+  
+  return temp_output.column(0);
+}
+
+template<class T>
+bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
+  if (matrix_a.num_rows() != matrix_b.num_rows() |
+      matrix_a.num_columns() != matrix_b.num_columns()) { return false; }
+  
+  for (UInt i=0; i<matrix_a.num_rows(); ++i) {
+    for (UInt j=0; j<matrix_a.num_columns(); ++j) {
+      if (!IsEqual(matrix_a.element(i, j), matrix_b.element(i, j))) {
+        return  false;
+      }
+    }
+  }
+  return true;
+}
+
+bool MatrixOpTest();
+  
+  
 } // namespace mcl
 
 #endif

@@ -15,7 +15,7 @@
 #include "vectorop.h"
 #include "pointwiseop.h"
 #include "matrixop.h"
-#include "random.h"
+#include "randomop.h"
 #include "equalityop.h"
 #include "transformop.h"
 #include "basicop.h"

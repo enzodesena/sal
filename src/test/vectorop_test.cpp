@@ -329,6 +329,9 @@ bool VectorOpTest() {
   poly_b_cmp[4] = Complex(-1.470000000000000, -1.036000000000000);
   assert(IsEqual(poly_b, poly_b_cmp));
   
+  assert(IsEqual(Poly(mcl::Zeros<Real>(0)), UnaryVector(Complex(1.0,0.0))));
+  assert(IsEqual(Poly(mcl::Zeros<Complex>(0)), UnaryVector(Complex(1.0,0.0))));
+  
   
   // Testing CopyFrom
   
@@ -383,6 +386,9 @@ bool VectorOpTest() {
   assert(IsEqual(Prod(vector_g_frame_0), 0.0));
   assert(IsEqual(Prod(vector_i), -0.2));
   assert(IsEqual(Prod(vector_a), Complex(-0.5, 1.0)));
+  
+  // Testing dot product
+  assert(IsEqual(Dot(vector_g, vector_v), -9.350));
   
   return true;
 }
