@@ -109,6 +109,28 @@ bool FirFilter::Test() {
   assert(IsEqual(filter_c.Filter(2.3), -8.8500));
   
   
+  std::vector<Real> B_d(3);
+  B_d[0] = 1.0;
+  B_d[1] = -2.0;
+  B_d[2] = 1.0;
+  std::vector<Real> A_d(3);
+  A_d[0] = 1.005844676087000;
+  A_d[1] = -1.999977314492666;
+  A_d[2] = 0.994178009420333;
+  IirFilter filter_e(B_d, A_d);
+  assert(IsEqual(B_d, filter_e.B()));
+  assert(IsEqual(A_d, filter_e.A()));
+  
+  std::vector<Real> signal_d = mcl::Zeros<Real>(4);
+  signal_d[0] = 0.989949493661167;
+  std::vector<Real> signal_d_out_cmp(4);
+  signal_d_out_cmp[0] = 0.984197179938686;
+  signal_d_out_cmp[1] = -0.011459974617699;
+  signal_d_out_cmp[2] = -0.011370929428126;
+  signal_d_out_cmp[3] = -0.011282404149780;
+  std::vector<Real> output_d = filter_e.Filter(signal_d);
+  assert(IsEqual(output_d, signal_d_out_cmp));
+  
   return true;
 }
 

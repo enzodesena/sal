@@ -85,6 +85,11 @@ public:
 private:
   std::vector<Real> B_;
   std::vector<Real> A_;
+  
+  // By storing A[0] before normalisation we can output B() and A() before
+  // normalisation while keeping the internal representation normalised
+  Real A0_;
+  
   Real* state_;
 };
   

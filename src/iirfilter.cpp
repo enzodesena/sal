@@ -13,20 +13,33 @@
 #include "iirfilter.h"
 #include <cassert>
 #include "equalityop.h"
+#include "vectorop.h"
 
 namespace mcl {
   
-std::vector<Real> IirFilter::B() { return B_; }
+std::vector<Real> IirFilter::B() {
+  // Return the non-normalised version
+  return Multiply(B_, A0_);
+}
 
-std::vector<Real> IirFilter::A() { return A_; }
+std::vector<Real> IirFilter::A() {
+  // Return the non-normalised version
+  return Multiply(A_, A0_);
+}
 
 // Constructor
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
           B_(B), A_(A) {
   // TODO: implement also for B.size != A.size
   assert(B.size() == A.size());
-  // TODO: normalize for case A[0]!=1.0
-  assert(IsEqual(A[0], 1.0));
+  assert(B.size() >= 1);
+  A0_ = A[0];
+  if (! IsEqual(A[0], 1.0)) {
+    B_ = Multiply(B, 1.0 / A[0]);
+    A_ = Multiply(A, 1.0 / A[0]);
+  }
+  assert(IsEqual(A_[0], 1.0));
+            
             
   UInt size = B.size();
   state_ = new Real[size];
@@ -34,7 +47,8 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) :
 }
 
 // Copy constructor
-IirFilter::IirFilter(const IirFilter& copy) : B_(copy.B_), A_(copy.A_) {
+IirFilter::IirFilter(const IirFilter& copy) :
+          B_(copy.B_), A_(copy.A_), A0_(copy.A0_) {
   UInt size = B_.size();
   state_ = new Real[size];
   for (int i=0; i<size; ++i) {
@@ -51,6 +65,7 @@ IirFilter& IirFilter::operator= (const IirFilter& other) {
     for (int i=0; i<size; ++i) { state_[i] = other.state_[i]; }
     B_ = other.B_;
     A_ = other.A_;
+    A0_ = other.A0_;
   }
   return *this;
 }

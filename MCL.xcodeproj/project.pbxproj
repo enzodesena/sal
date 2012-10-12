@@ -111,7 +111,6 @@
 		57A1565115933B8A00AA6445 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				57B71D12162DD224003411BA /* randomop.h */,
 				5778D80915B616260015AAC9 /* digitalfilter.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
 				5778D80B15B616260015AAC9 /* iirfilter.h */,
@@ -122,8 +121,9 @@
 				57BA700215B4263D002F077F /* mcltypes.h */,
 				57BA6FFE15B421F5002F077F /* matrixop.h */,
 				57BA6FFC15B41B55002F077F /* pointwiseop.h */,
-				57BA700315B4274D002F077F /* vectorop.h */,
+				57B71D12162DD224003411BA /* randomop.h */,
 				57BA701615B490C4002F077F /* transformop.h */,
+				57BA700315B4274D002F077F /* vectorop.h */,
 				57A1565815933BC100AA6445 /* lib */,
 			);
 			name = include;

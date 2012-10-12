@@ -347,21 +347,21 @@ bool VectorOpTest() {
   vector_i_restr_1_cmp[1] = 4.0;
   assert(IsEqual(vector_i_restr_1, vector_i_restr_1_cmp));
   
-  std::vector<float> vector_v(3);
+  std::vector<Real> vector_v(3);
   vector_v[0] = 0.1;
   vector_v[1] = -0.5;
   vector_v[2] = 4.0;
   
-  std::vector<float> vector_v_restr_1 = Elements(vector_v, 1, 2);
+  std::vector<Real> vector_v_restr_1 = Elements(vector_v, 1, 2);
   assert(vector_v_restr_1.size() == 2);
-  std::vector<float> vector_v_restr_1_cmp(2);
+  std::vector<Real> vector_v_restr_1_cmp(2);
   vector_v_restr_1_cmp[0] = -0.5;
   vector_v_restr_1_cmp[1] = 4.0;
   assert(IsEqual(vector_v_restr_1, vector_v_restr_1_cmp));
   
-  std::vector<float> vector_v_restr_2 = Elements(vector_v, 0, 0);
+  std::vector<Real> vector_v_restr_2 = Elements(vector_v, 0, 0);
   assert(vector_v_restr_2.size() == 1);
-  std::vector<float> vector_v_restr_2_cmp(1);
+  std::vector<Real> vector_v_restr_2_cmp(1);
   vector_v_restr_2_cmp[0] = 0.1;
   assert(IsEqual(vector_v_restr_2, vector_v_restr_2_cmp));
   
