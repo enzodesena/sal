@@ -77,9 +77,9 @@ public:
   
   UInt num_columns() const { return num_columns_; }
   
-  void Save(const char* file_name) {
+  void Save(std::string file_name) {
     std::ofstream output_file;
-    output_file.open(file_name);
+    output_file.open(file_name.c_str());
     for (UInt i=0; i<num_rows_; ++i) {
       for (UInt j=0; j<num_columns_; ++j) { output_file<<data_[i][j]<<" "; }
       output_file<<std::endl;
@@ -90,9 +90,9 @@ public:
   
   // Reads a matrix. Elements have to be separated by tabs (\t) and there 
   // must be no ending empty line (e.g. 5 lines == 5 rows).
-  static Matrix Load(const char* file_name) {
+  static Matrix Load(std::string file_name) {
     std::string line;
-    std::ifstream in_file (file_name);
+    std::ifstream in_file (file_name.c_str());
     assert(in_file.is_open());
       
     // First: lets count the number of rows
@@ -112,12 +112,12 @@ public:
     
     // Create new matrix
     // TODO: recognize complex matrix
-    Matrix<Real> matrix(number_of_rows, number_of_columns);
+    Matrix<T> matrix(number_of_rows, number_of_columns);
     for(UInt row=0; row<number_of_rows; ++row) {
       std::getline(in_file, line);
       std::vector<std::string> elements = Split(line, '\t');
       for (UInt column=0; column<elements.size(); ++column) {
-        matrix.set_element(row, column, StringToDouble(elements[column]));
+        matrix.set_element(row, column, (T) StringToDouble(elements[column]));
       }
     }
     

@@ -15,7 +15,7 @@
 #include <vector>
 
 namespace mcl {
-typedef double Real;
+typedef float Real;
 typedef std::complex<Real> Complex;
 typedef unsigned long UInt;
 typedef long Int;
