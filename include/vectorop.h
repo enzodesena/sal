@@ -20,7 +20,7 @@
 #include "elementaryop.h"
 #include "basicop.h"
 #include <vector>
-
+#include <iostream>
 
 
 namespace mcl {
@@ -240,6 +240,15 @@ T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b) {
   return output;
 }
 
+template<class T>
+void Print(const std::vector<T>& vector) {
+  const UInt num_elements = vector.size();
+  std::cout<<"\n------------\n";
+  for (UInt i=0; i<num_elements; ++i) {
+    std::cout<<vector[i]<<std::endl;
+  }
+  std::cout<<"------------\n";
+}
 
 // Returns a real vector of `length` ones.
 std::vector<Real> Ones(UInt length);

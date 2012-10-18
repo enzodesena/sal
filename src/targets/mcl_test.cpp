@@ -31,13 +31,6 @@ int main (int argc, char * const argv[]) {
   IirFilter::Test();
   FirFilter::Test();
   RandomGenerator::Test();
-    
-    
-  
-  
-    
-  
-    
   
   std::cout<<"All tests succeded!\n";
   
