@@ -1,5 +1,5 @@
 /*
- iirfilter_test.cpp
+ digitalfilter_test.cpp
  Matlab Cpp Library (MCL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
@@ -60,6 +60,23 @@ bool IirFilter::Test() {
   IirFilter filter_g = IirFilter::WallFilter(ceiling_tile, 44100);
   assert(IsEqual(filter_g.Filter(1.0), 0.168413736374283));
   assert(IsEqual(filter_g.Filter(0.5), 0.151668254946940));
+  
+  
+  std::vector<Real> input_a(4);
+  input_a[0] = 0.6;
+  input_a[1] = -3.5;
+  input_a[2] = 5.6;
+  input_a[3] = 2.3;
+  
+  // Testing pinkifier filter
+  IirFilter pinkifier = IirFilter::PinkifierFilter();
+  std::vector<Real> output_e = pinkifier.Filter(input_a);
+  std::vector<Real> output_e_cmp(input_a.size());
+  output_e_cmp[0] = 0.600000000000000;
+  output_e_cmp[1] = -3.152233220000000;
+  output_e_cmp[2] = 3.815449359516707;
+  output_e_cmp[3] = 4.322130531286722;
+  assert(IsEqual(output_e, output_e_cmp));
   
   return true;
 }

@@ -70,6 +70,8 @@ public:
   // Get wall filters of type wall_type and for FS given by sampling_frequency
   static IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
   
+  static IirFilter PinkifierFilter();
+  
   std::vector<Real> B();
   
   std::vector<Real> A();

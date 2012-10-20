@@ -189,6 +189,26 @@ IirFilter IirFilter::WallFilter(WallType wall_type, Real sampling_frequency) {
   return IirFilter(B,A);
 }
 
+IirFilter IirFilter::PinkifierFilter() {
+  std::vector<Real> poles(5);
+  poles[0] = 0.9986823;
+  poles[1] = 0.9914651;
+  poles[2] = 0.9580812;
+  poles[3] = 0.8090598;
+  poles[4] = 0.2896591;
+  std::vector<Real> zeros(5);
+  zeros[0] = 0.9963594;
+  zeros[1] = 0.9808756;
+  zeros[2] = 0.9097290;
+  zeros[3] = 0.6128445;
+  zeros[4] = -0.0324723;
+  
+  std::vector<Complex> num = Poly(zeros);
+  std::vector<Complex> den = Poly(poles);
+  
+  return IirFilter(RealPart(num),RealPart(den));
+}
+  
 
 } // namespace sat
 
