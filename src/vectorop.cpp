@@ -49,6 +49,14 @@ Real Mean(const std::vector<Real>& input) {
 }
 
   
+
+Real Std(const std::vector<Real>& input) {
+  Real mean = Mean(input);
+  Real output(0.0);
+  for (UInt i=0; i<input.size(); ++i) { output += pow(input[i] - mean,2.0); }
+  return sqrt(output/((Real) (input.size()-1)));
+}
+  
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b) {
   // TODO: implement for different sizes

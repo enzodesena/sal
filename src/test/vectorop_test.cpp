@@ -390,6 +390,11 @@ bool VectorOpTest() {
   // Testing dot product
   assert(IsEqual(Dot(vector_g, vector_v), -9.350));
   
+  
+  // Testing Std
+  assert(IsEqual(Std(vector_v), 2.443358344574123));
+  assert(IsEqual(Std(colonop_b_cmp), 1.290994448735806));
+  
   return true;
 }
   

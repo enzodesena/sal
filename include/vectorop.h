@@ -262,7 +262,10 @@ Real Sum(const std::vector<Real>& input);
 
 Real Mean(const std::vector<Real>& input);
   
-  
+// Returns the standard deviation of the `input` vector. Equivalent to Matlab's
+// std(input). This includes the correction for having an unbiased estimator.
+Real Std(const std::vector<Real>& input);
+
 // Equivalent to Matlab's xcorr(vect_a, vect_b)
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b);
