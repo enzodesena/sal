@@ -24,7 +24,7 @@ namespace mcl {
 template<class T>
 UInt MaxIndex(const std::vector<T>& input) {
   Real max_value = -std::numeric_limits<T>::infinity();
-  UInt max_index;
+  UInt max_index = 0;
   for (UInt i=0; i<input.size(); ++i) {
     if (input[i] > max_value) {
       max_value = input[i];

@@ -395,6 +395,38 @@ bool VectorOpTest() {
   assert(IsEqual(Std(vector_v), 2.443358344574123));
   assert(IsEqual(Std(colonop_b_cmp), 1.290994448735806));
   
+  
+  // Testing colon operator
+  std::vector<Real> vector_z = ColonOperator(0.0, 2.0, 4.0);
+  std::vector<Real> vector_z_cmp(3);
+  vector_z_cmp[0] = 0.0;
+  vector_z_cmp[1] = 2.0;
+  vector_z_cmp[2] = 4.0;
+  assert(IsEqual(vector_z, vector_z_cmp));
+  
+  std::vector<Real> vector_za = ColonOperator(0.0, 3.0, 4.0);
+  std::vector<Real> vector_za_cmp(2);
+  vector_za_cmp[0] = 0.0;
+  vector_za_cmp[1] = 3.0;
+  assert(IsEqual(vector_za, vector_za_cmp));
+  
+  // Testing summation
+  std::vector<Real> vector_zb = Add(vector_z, (Real) 1.5);
+  assert(vector_zb.size() == 3);
+  std::vector<Real> vector_zb_cmp(3);
+  vector_zb_cmp[0] = 1.5;
+  vector_zb_cmp[1] = 3.5;
+  vector_zb_cmp[2] = 5.5;
+  assert(IsEqual(vector_zb, vector_zb_cmp));
+  
+  std::vector<Real> vector_zc = Add(vector_z, (Real) -1.0);
+  assert(vector_zc.size() == 3);
+  std::vector<Real> vector_zc_cmp(3);
+  vector_zc_cmp[0] = -1.0;
+  vector_zc_cmp[1] = 1.0;
+  vector_zc_cmp[2] = 3.0;
+  assert(IsEqual(vector_zc, vector_zc_cmp));
+
   return true;
 }
   

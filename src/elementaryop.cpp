@@ -45,7 +45,6 @@ Real Mod(const Real& x, const Real& y) {
   else { return (rem + y); }
 }
 
-  
 
 
 Int Mod(const Int& x, const Int& y) {

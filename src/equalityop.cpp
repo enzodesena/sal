@@ -22,6 +22,10 @@ bool IsEqual(Real num_a, Real num_b) {
   return fabs(num_a - num_b) < VERY_SMALL;
 }
 
+bool IsSmallerOrEqual(const Real num_a, const Real num_b) {
+  return num_a <= (num_b + VERY_SMALL);
+}
+  
 bool IsEqual(Complex num_a, Complex num_b) {
   return (fabs(num_a.real() - num_b.real()) < VERY_SMALL) &
   (fabs(num_a.imag() - num_b.imag()) < VERY_SMALL);

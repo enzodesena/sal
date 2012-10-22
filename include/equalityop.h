@@ -26,6 +26,7 @@ bool IsEqual(Real num_a, Real num_b);
 
 bool IsEqual(Complex num_a, Complex num_b);
 
+bool IsSmallerOrEqual(const Real num_a, const Real num_b);
   
 template<class T>
 bool IsEqual(const std::vector<T>& vector_a,
@@ -45,5 +46,7 @@ bool IsEqual(const std::vector<Int>& vector_a,
              const std::vector<Int>& vector_b);
   
 } // namespace mcl
+
+
 
 #endif

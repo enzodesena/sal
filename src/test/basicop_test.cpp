@@ -43,6 +43,16 @@ bool BasicOpTest() {
   assert(IsEqual(Min(vector_e), -0.3));
   assert(MinIndex(vector_e) == 0);
 
+  std::vector<Real> vector_f(1);
+  vector_f[0] = 1.0;
+  assert(MinIndex(vector_f) == 0);
+  assert(MaxIndex(vector_f) == 0);
+  
+  std::vector<Real> vector_g(1);
+  vector_g[0] = -1.0;
+  assert(MinIndex(vector_g) == 0);
+  assert(MaxIndex(vector_g) == 0);
+  
   return true;
 }
 

@@ -100,7 +100,7 @@ public:
     UInt number_of_columns = 0;
     while (std::getline(in_file, line)) {
       std::vector<std::string> elements = Split(line, '\t');
-      if (number_of_columns == 0) { number_of_columns = (int) elements.size(); }
+      if (number_of_columns == 0) { number_of_columns = elements.size(); }
       else { assert(number_of_columns == elements.size()); }
       
       ++number_of_rows; 

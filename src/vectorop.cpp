@@ -14,6 +14,7 @@
 #include "mcltypes.h"
 #include "pointwiseop.h"
 #include "transformop.h"
+#include "equalityop.h"
 #include <vector>
 
 
@@ -123,6 +124,18 @@ std::vector<Complex> Poly(const std::vector<Complex> roots) {
   
 std::vector<Complex> Poly(const std::vector<Real> roots) {
   return Poly(ComplexVector(roots));
+}
+  
+std::vector<Real>
+ColonOperator(const Real from, const Real step, const Real to) {
+  assert(step>0);
+  std::vector<Real> output;
+  output.push_back(from);
+  UInt i = 0;
+  while (IsSmallerOrEqual(output[i] + step, to)) {
+    output.push_back(output[i++] + step);
+  }
+  return output;
 }
 
   

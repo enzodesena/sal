@@ -66,6 +66,19 @@ std::vector<T> Multiply(const std::vector<T>& vector,
   return output;
 }
 
+// Returns the point by point addition of the two vectors.
+// Equivalent to Matlab's vector_a+vector_b.
+template<class T>
+std::vector<T> Add(const std::vector<T>& vector_a,
+                   T scalar) {
+  std::vector<T> output(vector_a.size());
+  for (UInt i=0; i<vector_a.size(); ++i) {
+    output[i] = vector_a[i]+scalar;
+  }
+  return output;
+}
+
+  
 // Returns the subset of elements with indexes from_index and to_index. 
 // Equivalent to Matlab's vector(from_index:to_index). (Careful about the
 // different indexes convention between here and Matlab.
@@ -182,17 +195,22 @@ std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
 }
 
 // This is equivalent to Matlab's from:to. E.g. 3:5 outputs a vector [3,4,5].
-// TODO: implement non-int `from` and `to`.
+  // TODO: Implement fractional input.
 template<class T>
 std::vector<T> ColonOperator(const Int from, const Int to) {
-  const UInt vector_length(to-from+1);
+  const UInt vector_length = (UInt) (to-from+1);
   std::vector<T> output(to-from+1);
   for (UInt i=0; i<vector_length; ++i) {
     output[i] = ((T) i) + ((T) from);
   }
   return output;
 }
-
+  
+// This is equivalent to Matlab's from:step:to. E.g. 3:2:6 outputs a vector
+// [3,4,6]. // TODO: implement negative step and fractional input
+std::vector<Real>
+ColonOperator(const Real from, const Real step, const Real to);
+  
 
 // Returns elements of vector `vector` from from_id to to_id
 // (including extremes).
