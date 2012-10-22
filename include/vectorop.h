@@ -145,7 +145,7 @@ std::vector<T> CircShift(const std::vector<T>& vector, Int num_positions) {
   UInt N = Length(vector);
   std::vector<T> output(N);
   for (UInt i=0; i<N; ++i) {
-    UInt index = Mod(((Int) i) - num_positions, (Int) N);
+    UInt index = (UInt) Mod(((Int) i) - num_positions, (Int) N);
     output[i] = vector[index];
   }
   
