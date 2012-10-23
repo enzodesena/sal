@@ -427,6 +427,22 @@ bool VectorOpTest() {
   vector_zc_cmp[2] = 3.0;
   assert(IsEqual(vector_zc, vector_zc_cmp));
 
+  // Testing UnaryVector
+  std::vector<Real> vector_zd = UnaryVector<Real>(-1.0);
+  assert(vector_zd.size() == 1);
+  assert(IsEqual(vector_zd[0], -1.0));
+  
+  std::vector<Int> vector_ze = UnaryVector<Int>(-2);
+  assert(vector_ze.size() == 1);
+  assert(vector_ze[0] == -2);
+  
+  // Testing BinaryVector
+  std::vector<Real> vector_zf = BinaryVector<Real>(-1.0, 2.0);
+  assert(vector_zf.size() == 2);
+  assert(IsEqual(vector_zf[0], -1.0));
+  assert(IsEqual(vector_zf[1], 2.0));
+  
+  
   return true;
 }
   

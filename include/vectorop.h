@@ -39,7 +39,10 @@ std::vector<T> Zeros(UInt length) {
   return std::vector<T>(length);
 }
 
-  
+template <class T> 
+std::vector<T> EmptyVector() {
+  return std::vector<T>();
+}
   
 // Adds zero until the output vector has a length of total_length.
 // If the length of input is smaller than total_length, than it returns the
@@ -70,7 +73,7 @@ std::vector<T> Multiply(const std::vector<T>& vector,
 // Equivalent to Matlab's vector_a+vector_b.
 template<class T>
 std::vector<T> Add(const std::vector<T>& vector_a,
-                   T scalar) {
+                   const T scalar) {
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]+scalar;
@@ -84,7 +87,7 @@ std::vector<T> Add(const std::vector<T>& vector_a,
 // different indexes convention between here and Matlab.
 template<class T> 
 std::vector<T> Subset(const std::vector<T>& vector, 
-                      UInt from_index, UInt to_index) {
+                      const UInt from_index, const UInt to_index) {
   assert(from_index>=0 & from_index<vector.size() & 
          to_index>=0 & to_index<vector.size() & from_index<=to_index);
   // Allocate output vector with appropriate length.
@@ -111,17 +114,16 @@ std::vector<T> Concatenate(std::vector<T> vector_a,
 // Returns a vector with only one element.
 template<class T> 
 std::vector<T> UnaryVector(const T& element) {
-  std::vector<T> output;
-  output.push_back(element);
+  std::vector<T> output(1, element);
   return output;
 }
   
 // Returns a vector with two elements.
 template<class T>
 std::vector<T> BinaryVector(const T& element_a, const T& element_b) {
-  std::vector<T> output;
-  output.push_back(element_a);
-  output.push_back(element_b);
+  std::vector<T> output(2);
+  output[0] = element_a;
+  output[1] = element_b;
   return output;
 }
 
@@ -130,7 +132,7 @@ std::vector<T> BinaryVector(const T& element_a, const T& element_b) {
 template<class T>
 std::vector<T> Flip(std::vector<T> vector) {
   UInt N(Length(vector));
-  for (UInt i=0; i<=(floor(N/2)-1); ++i) {
+  for (UInt i=0; i<=((UInt) (floor(N/2)-1)); ++i) {
     T temp_value = vector[i];
     vector[i] = vector[N-i-1];
     vector[N-i-1] = temp_value;
@@ -142,7 +144,7 @@ std::vector<T> Flip(std::vector<T> vector) {
 // num_positions corresponds to a forward shift.
 template<class T>
 std::vector<T> CircShift(const std::vector<T>& vector, Int num_positions) {
-  UInt N = Length(vector);
+  UInt N = vector.size();
   std::vector<T> output(N);
   for (UInt i=0; i<N; ++i) {
     UInt index = (UInt) Mod(((Int) i) - num_positions, (Int) N);
@@ -156,9 +158,9 @@ std::vector<T> CircShift(const std::vector<T>& vector, Int num_positions) {
 template<class T>
 std::vector<T> Conv(const std::vector<T>& vector_a, 
                     const std::vector<T>& vector_b) {
-  UInt N_a(Length(vector_a));
-  UInt N_b(Length(vector_b));
-  UInt out_length(N_a+N_b-1);
+  UInt N_a = vector_a.size();
+  UInt N_b = vector_b.size();
+  UInt out_length = N_a+N_b-1;
   
   std::vector<T> moving_vector_temp = Concatenate(Zeros<T>(N_b-1), 
                                                   Flip(vector_a));
@@ -198,8 +200,9 @@ std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
   // TODO: Implement fractional input.
 template<class T>
 std::vector<T> ColonOperator(const Int from, const Int to) {
+  if ((to-from) < 0) { return EmptyVector<T>(); }
   const UInt vector_length = (UInt) (to-from+1);
-  std::vector<T> output(to-from+1);
+  std::vector<T> output(vector_length);
   for (UInt i=0; i<vector_length; ++i) {
     output[i] = ((T) i) + ((T) from);
   }

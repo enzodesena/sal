@@ -14,6 +14,7 @@
 #include "basicop.h"
 #include "equalityop.h"
 #include "mcltypes.h"
+#include "vectorop.h"
 #include <vector>
 
 namespace mcl {
@@ -52,6 +53,40 @@ bool BasicOpTest() {
   vector_g[0] = -1.0;
   assert(MinIndex(vector_g) == 0);
   assert(MaxIndex(vector_g) == 0);
+  
+  std::vector<Real> vector_h = Zeros<Real>(5);
+  vector_h[3] = -1.0;
+  vector_h[4] = 1.0;
+  assert(MinIndex(vector_h) == 3);
+  assert(MaxIndex(vector_h) == 4);
+  
+  std::vector<Int> vector_i = Zeros<Int>(2);
+  vector_i[0] = 38;
+  vector_i[1] = 6;
+  assert(MinIndex(vector_i) == 1);
+  
+  
+  // Testing find peaks
+  std::vector<Real> vector_l(5);
+  vector_l[0] = -0.3;
+  vector_l[1] = 30.3;
+  vector_l[2] = 2.4;
+  vector_l[3] = 12.4;
+  vector_l[4] = 12;
+  std::vector<UInt> vector_l_peaks = FindPeaksIndexes(vector_l);
+  std::vector<UInt> vector_l_peaks_cmp(2);
+  vector_l_peaks_cmp[0] = 1;
+  vector_l_peaks_cmp[1] = 3;
+  assert(IsEqual(vector_l_peaks, vector_l_peaks_cmp));
+  
+  std::vector<UInt> vector_l_peaks_2 = FindPeaksIndexes(vector_l, 20.0);
+  std::vector<UInt> vector_l_peaks_2_cmp(1);
+  vector_l_peaks_2_cmp[0] = 1;
+  assert(IsEqual(vector_l_peaks_2, vector_l_peaks_2_cmp));
+  
+  // Checks that it behaves like matlab
+  assert(FindPeaksIndexes(Ones(3)).size() == 0);
+  assert(FindPeaksIndexes(Zeros<Real>(3)).size() == 0);
   
   return true;
 }
