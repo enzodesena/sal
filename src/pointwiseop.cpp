@@ -100,7 +100,13 @@ std::vector<Real> Cos(const std::vector<Real>& vector) {
   for (UInt i=0; i<n; ++i) { output[i] = cos(vector[i]); }
   return output;
 }
-  
-  
+
+std::vector<Int> ConvertToInt(const std::vector<UInt>& vector) {
+  const UInt length = vector.size();
+  std::vector<Int> output(length);
+  for (UInt i=0; i<length; ++i) { output[i] = (Int) vector[i]; }
+  return output;
+}
   
 } // namespace mcl
+

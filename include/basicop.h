@@ -44,15 +44,11 @@ T Max(const std::vector<T>& input) {
 // Returns the index associated to the maximum value in the vector. The index
 // counts starting from 0. If there are two maxima, the index of the first one is returned.
 template<class T>
-UInt MinIndex(const std::vector<T>& input) {
+unsigned long MinIndex(const std::vector<T>& input) {
   return MaxIndex(Opposite(input));
 }
   
-template<> 
-UInt MinIndex<UInt>(const std::vector<UInt>& input) {
-  // TODO: implement here
-  return MaxIndex(Opposite(input));
-}
+
 
   
 // Returns the minimum value of the vector.

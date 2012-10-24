@@ -93,11 +93,19 @@ bool BasicOpTest() {
   vector_m[0] = 3;
   vector_m[1] = 2;
   vector_m[2] = 1;
-  vector_m[3] = 2;
-  
-  UInt hello = MinIndex(vector_m);
+  vector_m[3] = 4;
   
   assert(MinIndex(vector_m) == 2);
+  assert(MaxIndex(vector_m) == 3);
+  
+  assert(MinIndex(Zeros<UInt>(3)) == 0);
+  assert(MaxIndex(Zeros<UInt>(3)) == 0);
+  
+  assert(MinIndex(Zeros<Int>(3)) == 0);
+  assert(MaxIndex(Zeros<Int>(3)) == 0);
+  
+  assert(MinIndex(Zeros<Real>(3)) == 0);
+  assert(MaxIndex(Zeros<Real>(3)) == 0);
   
   return true;
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57325DC11642D09A001A3E17 /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C3B15EE8B0100363B9A /* basicop_test.cpp */; };
 		5771E82B162DA77B00EEA89D /* matrixop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5771E829162DA77B00EEA89D /* matrixop_test.cpp */; };
 		5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
@@ -31,7 +32,6 @@
 		57BA701D15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701F15B49459002F077F /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701E15B49459002F077F /* mcl_test.cpp */; };
 		57CA3C3915EE745900363B9A /* vectorop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C3715EE745900363B9A /* vectorop_test.cpp */; };
-		57CA3C3D15EE8B0100363B9A /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C3B15EE8B0100363B9A /* basicop_test.cpp */; };
 		57CA3C4315EE8B2C00363B9A /* elementaryop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4115EE8B2C00363B9A /* elementaryop_test.cpp */; };
 		57CA3C4615EE8B4700363B9A /* transformop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4415EE8B4700363B9A /* transformop_test.cpp */; };
 		57CA3C4915EE8B5F00363B9A /* pointwiseop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4715EE8B5F00363B9A /* pointwiseop_test.cpp */; };
@@ -302,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57325DC11642D09A001A3E17 /* basicop_test.cpp in Sources */,
 				57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
 				57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */,
@@ -314,7 +315,6 @@
 				5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */,
 				5778D81415B616710015AAC9 /* digitalfilter_test.cpp in Sources */,
 				57CA3C3915EE745900363B9A /* vectorop_test.cpp in Sources */,
-				57CA3C3D15EE8B0100363B9A /* basicop_test.cpp in Sources */,
 				57CA3C4315EE8B2C00363B9A /* elementaryop_test.cpp in Sources */,
 				57CA3C4615EE8B4700363B9A /* transformop_test.cpp in Sources */,
 				57CA3C4915EE8B5F00363B9A /* pointwiseop_test.cpp in Sources */,

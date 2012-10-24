@@ -39,7 +39,8 @@ std::vector<T> Add(const std::vector<T>& vector_a,
 template<class T> 
 std::vector<T> Opposite(const std::vector<T>& vector) {
   // Checking we are not dealing with unsigned types.
-  assert(std::numeric_limits<T>::is_signed);
+  // The assert below responds false to complex. TODO: fix this
+  //assert(std::numeric_limits<T>::is_signed);
   
   std::vector<T> output(vector.size());
   for (UInt i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
@@ -115,6 +116,7 @@ std::vector<Real> Cos(const std::vector<Real>& vector);
 // Equivalent to Matlab's log(vector).
 std::vector<Real> Log(const std::vector<Real>& vector);
 
+std::vector<Int> ConvertToInt(const std::vector<UInt>& vector);
   
 bool PointWiseOpTest();
   
