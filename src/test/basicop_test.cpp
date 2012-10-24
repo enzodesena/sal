@@ -88,6 +88,17 @@ bool BasicOpTest() {
   assert(FindPeaksIndexes(Ones(3)).size() == 0);
   assert(FindPeaksIndexes(Zeros<Real>(3)).size() == 0);
   
+  
+  std::vector<UInt> vector_m(4);
+  vector_m[0] = 3;
+  vector_m[1] = 2;
+  vector_m[2] = 1;
+  vector_m[3] = 2;
+  
+  UInt hello = MinIndex(vector_m);
+  
+  assert(MinIndex(vector_m) == 2);
+  
   return true;
 }
 

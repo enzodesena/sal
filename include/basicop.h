@@ -23,7 +23,7 @@ namespace mcl {
 // counts starting from 0. If there are two maxima, the index of the first one is returned.
 template<class T>
 UInt MaxIndex(const std::vector<T>& input) {
-  Real max_value = -std::numeric_limits<T>::infinity();
+  T max_value = std::numeric_limits<T>::min();
   UInt max_index = 0;
   for (UInt i=0; i<input.size(); ++i) {
     if (input[i] > max_value) {
@@ -47,6 +47,12 @@ template<class T>
 UInt MinIndex(const std::vector<T>& input) {
   return MaxIndex(Opposite(input));
 }
+  
+template<> 
+UInt MinIndex<UInt>(const std::vector<UInt>& input) {
+  // TODO: implement here
+  return MaxIndex(Opposite(input));
+}
 
   
 // Returns the minimum value of the vector.
@@ -60,10 +66,14 @@ T Min(const std::vector<T>& input) {
 
 // Returns the indexes of the local peaks in the vector. 
 // Equivalent to Matlab's findpeaks.
-std::vector<UInt> FindPeaksIndexes(const std::vector<Real>& vector);
+std::vector<UInt>
+FindPeaksIndexes(const std::vector<Real>& vector,
+                 const Real min_peak_height = std::numeric_limits<Real>::min());
 
 // Returns the values local peaks in the vector. Equivalent to Matlab's findpeaks
-std::vector<Real> FindPeaks(const std::vector<Real>& vector);
+std::vector<Real>
+FindPeaks(const std::vector<Real>& vector,
+          const Real min_peak_height = std::numeric_limits<Real>::min());
 
   
 bool BasicOpTest();

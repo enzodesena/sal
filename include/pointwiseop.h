@@ -38,6 +38,9 @@ std::vector<T> Add(const std::vector<T>& vector_a,
 // Returns the opposite vector.Equivalent to Matlab's -vector.
 template<class T> 
 std::vector<T> Opposite(const std::vector<T>& vector) {
+  // Checking we are not dealing with unsigned types.
+  assert(std::numeric_limits<T>::is_signed);
+  
   std::vector<T> output(vector.size());
   for (UInt i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
   return output;
@@ -83,8 +86,6 @@ std::vector<Complex> Conj(const std::vector<Complex>& vector);
 
 // Transform real vector into complex vector with null imaginary part
 std::vector<Complex> ComplexVector(const std::vector<Real>& input);
-
-
 
 // Equivalent to Matlab's real(input).
 std::vector<Real> RealPart(const std::vector<Complex>& input);

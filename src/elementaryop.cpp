@@ -16,7 +16,7 @@ namespace mcl {
 
 
 Int Sign(const Real scalar) {
-  if (IsEqual(scalar, 0.0)) { return 0; }
+  if (IsEqual(scalar, 0.0, std::numeric_limits<Real>::epsilon())) { return 0; }
   else if (scalar > 0.0) { return 1; }
   else { return -1; }
 }
@@ -30,15 +30,15 @@ Int Fix(const Real scalar) {
 
 
 Real Rem(const Real& x, const Real& y) {
-  if (IsEqual(y, 0)) { return NAN; }
-  if (IsEqual(x, y)) { return 0.0; }
+  if (IsEqual(y, 0, std::numeric_limits<Real>::epsilon())) { return NAN; }
+  if (IsEqual(x, y, std::numeric_limits<Real>::epsilon())) { return 0.0; }
   Int n = Fix(x/y);
   return x - ((Real) n)*y; 
 }
 
 Real Mod(const Real& x, const Real& y) {
-  if (IsEqual(y, 0)) { return x; }
-  if (IsEqual(x, y)) { return 0.0; }
+  if (IsEqual(y, 0, std::numeric_limits<Real>::epsilon())) { return x; }
+  if (IsEqual(x, y, std::numeric_limits<Real>::epsilon())) { return 0.0; }
   Real rem(Rem(x, y));
   Int signum(Sign(x/y));
   if (signum == 1 || signum == 0) { return rem; }

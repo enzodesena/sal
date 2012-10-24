@@ -13,7 +13,7 @@
 #define MCL_EQUALITYOP_H
 
 #ifndef VERY_SMALL
-  #define VERY_SMALL (1.0E-15)
+  #define VERY_SMALL (1.0E-6)
 #endif
 
 #include "mcltypes.h"
@@ -22,8 +22,9 @@
 
 namespace mcl {
 
-bool IsEqual(Real num_a, Real num_b);
 
+bool IsEqual(Real num_a, Real num_b, Real precision = VERY_SMALL);
+  
 bool IsEqual(Complex num_a, Complex num_b);
 
 bool IsSmallerOrEqual(const Real num_a, const Real num_b);

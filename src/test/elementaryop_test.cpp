@@ -94,6 +94,8 @@ bool ElementaryOpTest() {
   assert(IsEqual(RealPart(Complex(-0.3,0.5)), -0.3));
   assert(IsEqual(RealPart(Complex(15.6,0.1)), 15.6));
   
+  assert(Mod((Int) -2, (Int) 4) == 2);
+  
   return true;
 }
   

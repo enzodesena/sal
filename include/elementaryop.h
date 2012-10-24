@@ -58,6 +58,10 @@ UInt NextPow2(Real input);
 double StringToDouble(const std::string& s);
   
   
+// Returns true if the imaginary part is approximately zero. The precision used
+// is VERY_SMALL in equality operations, hence use only for testing.
+bool IsReal(const std::vector<Complex>& input);
+  
 bool ElementaryOpTest();
   
 } // namespace mcl

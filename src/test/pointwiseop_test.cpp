@@ -26,6 +26,9 @@ bool PointWiseOpTest() {
   vector_a[1] = Complex(0.0, 1.0);
   vector_a[2] = Complex(1.0, 0.5);
   
+  
+  assert(! IsReal(vector_a));
+  
   std::vector<Real> abs_vector_a = Abs(vector_a);
   std::vector<Real> abs_vector_a_cmp(3);
   abs_vector_a_cmp[0] = 1.0;
@@ -80,6 +83,8 @@ bool PointWiseOpTest() {
   vector_cc_cmp[0] = Complex(-0.3, 0.0);
   vector_cc_cmp[1] = Complex(0.3, 0.0);
   vector_cc_cmp[2] = Complex(2.4, 0.0);
+  
+  assert(IsReal(vector_cc));
   
   assert(IsEqual(vector_cc, vector_cc_cmp));
 
