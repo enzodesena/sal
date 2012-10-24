@@ -17,20 +17,20 @@
 
 
 
-
 int main (int argc, char * const argv[]) {
   using namespace mcl;
   
+  ElementaryOpTest();
   BasicOpTest();
   VectorOpTest();
   PointWiseOpTest();
   TransformOpTest();
-  ElementaryOpTest();
   MatrixOpTest();
   
   IirFilter::Test();
   FirFilter::Test();
   RandomGenerator::Test();
+  
   
   std::cout<<"All tests succeded!\n";
   

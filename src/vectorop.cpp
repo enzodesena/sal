@@ -14,6 +14,7 @@
 #include "mcltypes.h"
 #include "pointwiseop.h"
 #include "transformop.h"
+#include <cmath>
 #include "equalityop.h"
 #include <vector>
 
@@ -23,7 +24,9 @@ namespace mcl {
   
   
 std::vector<Real> LinSpace(Real min, Real max, UInt num_elements) {
-  assert(num_elements > 0);
+  // This is to mimic Matlab's behaviour.
+  if (num_elements <= 1) { return UnaryVector(max); }
+  
   Real interval = max-min;
   Real slot = interval / ((Real) (num_elements-1));
   
@@ -138,5 +141,36 @@ ColonOperator(const Real from, const Real step, const Real to) {
   return output;
 }
 
+std::vector<Real> TukeyWin(const UInt length, const Real ratio) {
+  if (length == 1) { return UnaryVector(1.0); }
+  if (ratio <= 0) { return Ones(length); }
+  else if (ratio >= 1.0) { return Hann(length); }
+  else {
+    std::vector<Real> t = LinSpace(0.0, 1.0, length);
+    // Defines period of the taper as 1/2 period of a sine wave.
+    Real per = ratio/2.0;
+    Int tl = floor(per*(((Real) length)-1.0))+1;
+    Int th = length-tl+1;
+    // Window is defined in three sections: taper, constant, taper
+    // w1 = ((1+cos(PI/per*(t(1:tl) - per)))/2);
+    std::vector<Real> w = Ones(length);
+    for (UInt i=0; i<tl; ++i) {
+      w[i] = (1.0+cos(PI/per*(t[i] - per)))/2.0;
+    }
+    for (UInt i=th-1; i<length; ++i) {
+      w[i] = (1.0+cos(PI/per*(t[i] - 1.0 + per)))/2.0;
+    }
+    return w;
+  }
+}
+  
+std::vector<Real> Hann(const UInt length) {
+  std::vector<Real> w = Ones(length);
+  for (UInt i=0; i<length; ++i) {
+    w[i] = (1.0-cos(2.0*PI*((Real)i)/((Real)(length-1))))/2.0;
+  }
+  return w;
+}
+  
   
 } // namespace mcl

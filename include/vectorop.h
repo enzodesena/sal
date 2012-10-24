@@ -273,6 +273,11 @@ void Print(const std::vector<T>& vector) {
 
 // Returns a real vector of `length` ones.
 std::vector<Real> Ones(UInt length);
+  
+  
+std::vector<Real> Hann(const UInt length);
+  
+std::vector<Real> TukeyWin(const UInt length, const Real ratio);
 
 
 // Equivalent to Matlab's linspace(min, max, num_elements);

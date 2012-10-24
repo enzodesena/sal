@@ -443,6 +443,50 @@ bool VectorOpTest() {
   assert(IsEqual(vector_zf[1], 2.0));
   
   
+  // Testing Hanning window
+  std::vector<Real> vector_hann_3 = Hann(3);
+  std::vector<Real> vector_hann_3_cmp(3);
+  vector_hann_3_cmp[0] = 0.0;
+  vector_hann_3_cmp[1] = 1.0;
+  vector_hann_3_cmp[2] = 0.0;
+  assert(IsEqual(vector_hann_3, vector_hann_3_cmp));
+  
+  std::vector<Real> vector_hann_4 = Hann(4);
+  std::vector<Real> vector_hann_4_cmp(4);
+  vector_hann_4_cmp[0] = 0.0;
+  vector_hann_4_cmp[1] = 0.75;
+  vector_hann_4_cmp[2] = 0.75;
+  vector_hann_4_cmp[3] = 0.0;
+  assert(IsEqual(vector_hann_4, vector_hann_4_cmp));
+  
+  std::vector<Real> vector_hann_5 = Hann(5);
+  std::vector<Real> vector_hann_5_cmp(5);
+  vector_hann_5_cmp[0] = 0.0;
+  vector_hann_5_cmp[1] = 0.5;
+  vector_hann_5_cmp[2] = 1.0;
+  vector_hann_5_cmp[3] = 0.5;
+  vector_hann_5_cmp[4] = 0.0;
+  assert(IsEqual(vector_hann_5, vector_hann_5_cmp));
+  
+  // Testing Tukey Window
+  assert(IsEqual(TukeyWin(4, 1.0), vector_hann_4_cmp));
+  std::vector<Real> vector_tukey_1 = TukeyWin(5,0.6);
+  std::vector<Real> vector_tukey_1_cmp(5);
+  vector_tukey_1_cmp[0] = 0.0;
+  vector_tukey_1_cmp[1] = 0.933012701892219;
+  vector_tukey_1_cmp[2] = 1.0;
+  vector_tukey_1_cmp[3] = 0.933012701892219;
+  vector_tukey_1_cmp[4] = 0.0;
+  assert(IsEqual(vector_tukey_1, vector_tukey_1_cmp));
+  
+  std::vector<Real>  aa = TukeyWin(1, 0.6);
+  assert(TukeyWin(1, 0.6).size() == 1);
+  assert(TukeyWin(0, 0.6).size() == 0);
+  assert(IsEqual(TukeyWin(1, 0.6), UnaryVector<Real>(1.0)));
+  
+  assert(IsEqual(TukeyWin(6, 0.0), Ones(6)));
+  assert(IsEqual(TukeyWin(6, -2.0), Ones(6)));
+  
   return true;
 }
   
