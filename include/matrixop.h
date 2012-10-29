@@ -136,6 +136,16 @@ private:
   UInt num_columns_;
   UInt num_rows_;
 };
+  
+template<class T>
+void Print(const Matrix<T>& matrix) {
+  for (UInt i=0; i<matrix.num_rows(); ++i) {
+    for (UInt j=0; j<matrix.num_columns(); ++j) {
+      std::cout<<matrix.element(i,j)<<"\t";
+    }
+    std::cout<<std::endl;
+  }
+}
 
 // Transposes the matrix. Equivalent to Matlab's matrix'
 template<class T>
