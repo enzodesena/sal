@@ -11,6 +11,7 @@
  */
 
 #include "firfilter.h"
+#include "vectorop.h"
 #include "mcltypes.h"
 #include <vector>
 
@@ -70,7 +71,9 @@ FirFilter FirFilter::GainFilter(Real gain) {
   return FirFilter(B);
 }
   
-  
+void FirFilter::Reset() {
+  delay_line_ = Zeros<Real>(delay_line_.size());
+}
   
 } // namespace mcl
 

@@ -148,6 +148,20 @@ bool FirFilter::Test() {
   std::vector<Real> output_d = filter_e.Filter(signal_d);
   assert(IsEqual(output_d, signal_d_out_cmp));
   
+  // Testing Reset()
+  filter_e.Reset();
+  assert(IsEqual(filter_e.Filter(0.0), 0.0));
+  
+  std::vector<Real> impulse_resp_2(3);
+  impulse_resp_2[0] = 0.2;
+  impulse_resp_2[1] = -0.1;
+  impulse_resp_2[2] = 2.5;
+  
+  FirFilter filter_f(impulse_resp_2);
+  assert(! IsEqual(filter_f.Filter(1.0), 0.0));
+  filter_f.Reset();
+  assert(IsEqual(filter_f.Filter(0.0), 0.0));
+  
   return true;
 }
 

@@ -107,6 +107,10 @@ Real IirFilter::Filter(Real input) {
   return output;
 }
   
+void IirFilter::Reset() {
+  const UInt size = B_.size();
+  for (int i=0; i<size; ++i) { state_[i] = 0.0; }
+}
 
 
 std::vector<Real> IirFilter::Filter(const std::vector<Real>& input) {

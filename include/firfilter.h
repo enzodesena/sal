@@ -40,6 +40,8 @@ public:
   // filter is resetted to zero state.
   void UpdateFilter(std::vector<Real> impulse_response);
   
+  void Reset();
+  
   std::vector<Real> impulse_response();
   
   // Constructs a filter for which output==gain*input always.

@@ -76,6 +76,8 @@ public:
   
   std::vector<Real> A();
   
+  void Reset();
+  
   static bool Test();
   
   IirFilter & operator= (const IirFilter &);
