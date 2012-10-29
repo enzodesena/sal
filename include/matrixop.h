@@ -29,7 +29,7 @@ public:
   Matrix(UInt num_rows, UInt num_columns) : num_rows_(num_rows), 
           num_columns_(num_columns) {
     for (UInt i=0; i<num_rows; ++i) {
-      data_.push_back(Zeros<T>(num_columns));
+      data_.push_back(std::vector<T>(num_columns));
     }
   }
   
