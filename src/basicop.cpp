@@ -41,10 +41,10 @@ std::vector<UInt> FindPeaksIndexes(const std::vector<Real>& vector,
   return indexes;
 }
   
-  template<>
-  unsigned long MinIndex<unsigned long>(const std::vector<unsigned long>& input) {
-    return MaxIndex(Opposite(ConvertToInt(input)));
-  }
+template<>
+unsigned long MaxIndex<unsigned long>(const std::vector<unsigned long>& input) {
+  return MinIndex(Opposite(ConvertToInt(input)));
+}
 
   
 } // namespace mcl

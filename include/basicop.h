@@ -22,30 +22,30 @@ namespace mcl {
 // Returns the index associated to the maximum value in the vector. The index
 // counts starting from 0. If there are two maxima, the index of the first one is returned.
 template<class T>
-UInt MaxIndex(const std::vector<T>& input) {
-  T max_value = std::numeric_limits<T>::min();
-  UInt max_index = 0;
+UInt MinIndex(const std::vector<T>& input) {
+  T min_value = std::numeric_limits<T>::max();
+  UInt min_index = 0;
   for (UInt i=0; i<input.size(); ++i) {
-    if (input[i] > max_value) {
-      max_value = input[i];
-      max_index = i;
+    if (input[i] < min_value) {
+      min_value = input[i];
+      min_index = i;
     }
   }
-  return max_index;
+  return min_index;
 }
   
 // Returns the maximum value of the vector.
 template<class T>  
-T Max(const std::vector<T>& input) {
-  return input[MaxIndex(input)];
+T Min(const std::vector<T>& input) {
+  return input[MinIndex(input)];
 }
 
 
 // Returns the index associated to the maximum value in the vector. The index
 // counts starting from 0. If there are two maxima, the index of the first one is returned.
 template<class T>
-unsigned long MinIndex(const std::vector<T>& input) {
-  return MaxIndex(Opposite(input));
+unsigned long MaxIndex(const std::vector<T>& input) {
+  return MinIndex(Opposite(input));
 }
   
 
@@ -53,8 +53,8 @@ unsigned long MinIndex(const std::vector<T>& input) {
   
 // Returns the minimum value of the vector.
 template<class T>
-T Min(const std::vector<T>& input) {
-  return input[MinIndex(input)];
+T Max(const std::vector<T>& input) {
+  return input[MaxIndex(input)];
 }
 
 

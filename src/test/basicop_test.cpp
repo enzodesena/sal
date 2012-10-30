@@ -107,6 +107,15 @@ bool BasicOpTest() {
   assert(MinIndex(Zeros<Real>(3)) == 0);
   assert(MaxIndex(Zeros<Real>(3)) == 0);
   
+  
+  std::vector<Real> vector_n(4);
+  vector_n[0] = 2.3;
+  vector_n[1] = 2.1;
+  vector_n[2] = 1.1;
+  vector_n[3] = 4.0;
+  
+  assert(MinIndex(vector_n) == 2);
+  
   return true;
 }
 
