@@ -28,6 +28,9 @@ public:
   // Returns the output of the filter for an input signal equal to `input`.
   virtual std::vector<Real> Filter(const std::vector<Real>& input) = 0;
   
+  // Resets the state of the filter
+  virtual void Reset() = 0;
+  
   virtual ~DigitalFilter() {};
 };
   
