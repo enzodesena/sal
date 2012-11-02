@@ -97,7 +97,7 @@ bool PointWiseOpTest() {
   vector_e[3] = 12.4;
   
   
-  
+  // Testing Pow
   std::vector<Real> pow_vector_e = Pow(vector_e, 3.0);
   
   std::vector<Real> pow_vector_e_cmp(4);
@@ -108,6 +108,8 @@ bool PointWiseOpTest() {
   
   assert(IsEqual(pow_vector_e, pow_vector_e_cmp));
   
+  
+  
   std::vector<Real> abs_vector_e = Abs(vector_e);
   std::vector<Real> abs_vector_e_cmp(4);
   abs_vector_e_cmp[0] = 0.3;
@@ -116,6 +118,16 @@ bool PointWiseOpTest() {
   abs_vector_e_cmp[3] = 12.4;
   
   assert(IsEqual(abs_vector_e, abs_vector_e_cmp));
+  
+  std::vector<Real> abs_pow_vector_e = Pow(abs_vector_e, -1.0/3.0);
+  
+  std::vector<Real> abs_pow_vector_e_cmp(4);
+  abs_pow_vector_e_cmp[0] = pow(abs_vector_e[0], -1.0/3.0);
+  abs_pow_vector_e_cmp[1] = pow(abs_vector_e[1], -1.0/3.0);
+  abs_pow_vector_e_cmp[2] = pow(abs_vector_e[2], -1.0/3.0);
+  abs_pow_vector_e_cmp[3] = pow(abs_vector_e[3], -1.0/3.0);
+  
+  assert(IsEqual(abs_pow_vector_e, abs_pow_vector_e_cmp));
   
   std::vector<Real> hw_vector_e = HalfWave(vector_e);
   std::vector<Real> hw_vector_e_cmp(4);
