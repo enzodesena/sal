@@ -410,6 +410,13 @@ bool VectorOpTest() {
   vector_za_cmp[1] = 3.0;
   assert(IsEqual(vector_za, vector_za_cmp));
   
+  std::vector<Real> vector_aa = ColonOperator(-3.5, 3.0, 3.0);
+  std::vector<Real> vector_aa_cmp(3);
+  vector_aa_cmp[0] = -3.5;
+  vector_aa_cmp[1] = -0.5;
+  vector_aa_cmp[2] = 2.5;
+  assert(IsEqual(vector_aa, vector_aa_cmp));
+  
   // Testing summation
   std::vector<Real> vector_zb = Add(vector_z, (Real) 1.5);
   assert(vector_zb.size() == 3);
