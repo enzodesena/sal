@@ -494,6 +494,17 @@ bool VectorOpTest() {
   assert(IsEqual(TukeyWin(6, 0.0), Ones(6)));
   assert(IsEqual(TukeyWin(6, -2.0), Ones(6)));
   
+  // Testing norm
+  std::vector<Real> vector_ba(4);
+  vector_ba[0] = -1.2;
+  vector_ba[1] = 2.3;
+  vector_ba[2] = 3.4;
+  vector_ba[3] = -5.0;
+  assert(IsEqual(Norm(vector_ba, 2.0), 6.579513659838392));
+  assert(IsEqual(Norm(vector_ba, 1.0), 11.899999999999999));
+  assert(IsEqual(Norm(vector_ba, 2.4), 6.056130782634900));
+  
+  
   return true;
 }
   

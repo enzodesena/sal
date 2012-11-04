@@ -172,5 +172,14 @@ std::vector<Real> Hann(const UInt length) {
   return w;
 }
   
+Real Norm(const std::vector<Real>& vector, Real l_norm) {
+  const UInt num_elements = vector.size();
+  Real output = 0.0;
+  for (UInt i=0; i<num_elements; ++i) {
+    output += pow(fabs(vector[i]), l_norm);
+  }
+  return pow(output, 1.0/l_norm);
+}
+  
   
 } // namespace mcl

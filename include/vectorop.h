@@ -261,6 +261,8 @@ T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b) {
   return output;
 }
 
+Real Norm(const std::vector<Real>& vector, Real l_norm = 2.0);
+  
 template<class T>
 void Print(const std::vector<T>& vector) {
   const UInt num_elements = vector.size();
