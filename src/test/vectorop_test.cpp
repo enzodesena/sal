@@ -505,6 +505,17 @@ bool VectorOpTest() {
   assert(IsEqual(Norm(vector_ba, 2.4), 6.056130782634900));
   
   
+  std::vector<Real> weights_uniform_a = Multiply(Ones(4), 1.0/4.0);
+  assert(IsEqual(Mean(vector_ba), Mean(vector_ba, weights_uniform_a)));
+  std::vector<Real> weights_uniform_b = Multiply(Ones(4), 1.0);
+  assert(IsEqual(Mean(vector_ba), Mean(vector_ba, weights_uniform_b)));
+  std::vector<Real> weights_uniform_c = Zeros<Real>(4);
+  weights_uniform_c[0] = 0.5;
+  weights_uniform_c[2] = 0.5;
+  assert(IsEqual(Mean(vector_ba, weights_uniform_c), 1.1));
+  
+  
+  
   return true;
 }
   

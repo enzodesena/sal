@@ -51,6 +51,15 @@ Real Sum(const std::vector<Real>& input) {
 Real Mean(const std::vector<Real>& input) {
   return Sum(input) / ((Real) input.size());
 }
+  
+Real Mean(const std::vector<Real>& input,
+          const std::vector<Real>& weights) {
+  assert(input.size() == weights.size());
+  // Normalise the weigths
+  std::vector<Real> normalised_weights = Multiply(weights, 1.0/Sum(weights));
+  assert(IsEqual(Sum(normalised_weights), 1.0));
+  return Sum(Multiply(input, normalised_weights));
+}
 
   
 
