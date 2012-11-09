@@ -301,6 +301,9 @@ Real Mean(const std::vector<Real>& input,
 // std(input). This includes the correction for having an unbiased estimator.
 Real Std(const std::vector<Real>& input);
 
+// Weighted var (biased estimator)
+Real Var(const std::vector<Real>& input, const std::vector<Real>& weights);
+  
 // Equivalent to Matlab's xcorr(vect_a, vect_b)
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b);
@@ -317,7 +320,8 @@ std::vector<std::string> Split(const std::string& string, char delim);
 std::vector<Complex> Poly(const std::vector<Complex> roots);
 std::vector<Complex> Poly(const std::vector<Real> roots);
   
-
+// Returns true if all elements are non negative
+bool IsNonNegative(const std::vector<Real>& input);
   
 // Test function for the functions in this file
 bool VectorOpTest();

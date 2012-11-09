@@ -55,6 +55,7 @@ Real Mean(const std::vector<Real>& input) {
 Real Mean(const std::vector<Real>& input,
           const std::vector<Real>& weights) {
   assert(input.size() == weights.size());
+  assert(IsNonNegative(weights));
   // Normalise the weigths
   std::vector<Real> normalised_weights = Multiply(weights, 1.0/Sum(weights));
   assert(IsEqual(Sum(normalised_weights), 1.0));
@@ -68,6 +69,15 @@ Real Std(const std::vector<Real>& input) {
   Real output(0.0);
   for (UInt i=0; i<input.size(); ++i) { output += pow(input[i] - mean,2.0); }
   return sqrt(output/((Real) (input.size()-1)));
+}
+  
+Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
+  assert(IsNonNegative(weights));
+  Real weighted_mean = Mean(input, weights);
+  std::vector<Real> temp = Pow(Add(input, -weighted_mean), 2.0);
+  std::vector<Real> norm_weights = Multiply(weights, 1.0/Sum(weights));
+  
+  return (Sum(Multiply(norm_weights, temp)));
 }
   
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
@@ -188,6 +198,14 @@ Real Norm(const std::vector<Real>& vector, Real l_norm) {
     output += pow(fabs(vector[i]), l_norm);
   }
   return pow(output, 1.0/l_norm);
+}
+  
+bool IsNonNegative(const std::vector<Real>& input) {
+  const UInt num_elem = input.size();
+  for (UInt i=0; i<num_elem; ++i) {
+    if (input[i] < 0.0) { return false; }
+  }
+  return true;
 }
   
   

@@ -475,6 +475,8 @@ bool VectorOpTest() {
   vector_hann_5_cmp[4] = 0.0;
   assert(IsEqual(vector_hann_5, vector_hann_5_cmp));
   
+  assert(IsNonNegative(vector_hann_5_cmp));
+  
   // Testing Tukey Window
   assert(IsEqual(TukeyWin(4, 1.0), vector_hann_4_cmp));
   std::vector<Real> vector_tukey_1 = TukeyWin(5,0.6);
@@ -514,7 +516,14 @@ bool VectorOpTest() {
   weights_uniform_c[2] = 0.5;
   assert(IsEqual(Mean(vector_ba, weights_uniform_c), 1.1));
   
-  
+         
+  assert(! IsNonNegative(vector_ba));
+  std::vector<Real> weights_ba_var = Zeros<Real>(4);
+  weights_ba_var[0] = 0.2;
+  weights_ba_var[1] = 0.3;
+  weights_ba_var[2] = 0.6;
+  weights_ba_var[3] = 0.5;
+  assert(IsEqual(Var(vector_ba, weights_ba_var), 13.319335937500000));
   
   return true;
 }
