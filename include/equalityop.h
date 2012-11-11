@@ -31,12 +31,13 @@ bool IsSmallerOrEqual(const Real num_a, const Real num_b);
   
 template<class T>
 bool IsEqual(const std::vector<T>& vector_a,
-             const std::vector<T>& vector_b) {
+             const std::vector<T>& vector_b,
+             Real precision = VERY_SMALL) {
   if (vector_a.size() != vector_b.size())
     return false;
   
   for (UInt i=0; i<vector_a.size(); ++i) {
-    if (! IsEqual(vector_a[i], vector_b[i]))
+    if (! IsEqual(vector_a[i], vector_b[i], precision))
       return false;
   }
   return true;
