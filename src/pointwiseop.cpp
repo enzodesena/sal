@@ -37,7 +37,11 @@ std::vector<Real> Imag(const std::vector<Complex>& input) {
 }
 
 
-
+std::vector<Real> Inverse(const std::vector<Real>& vector) {
+  std::vector<Real> output(vector.size());
+  for (UInt i=0; i<vector.size(); ++i) { output[i] = 1.0/vector[i]; }
+  return output;
+}
 
 
 std::vector<Complex> Conj(const std::vector<Complex>& vector) {

@@ -46,6 +46,10 @@ std::vector<T> Opposite(const std::vector<T>& vector) {
   for (UInt i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
   return output;
 }
+  
+  
+// Returns the inverse vector.Equivalent to Matlab's 1./vector.
+std::vector<Real> Inverse(const std::vector<Real>& vector);
 
 // Returns the point by point subtraction of the two vectors. 
 // Equivalent to Matlab's vector_a-vector_b.

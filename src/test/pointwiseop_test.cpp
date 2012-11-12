@@ -75,7 +75,12 @@ bool PointWiseOpTest() {
   vector_c[1] = 0.3;
   vector_c[2] = 2.4;
   
-  
+  std::vector<Real> vector_c_inv = Inverse(vector_c);
+  std::vector<Real> vector_c_inv_cmp(3);
+  vector_c_inv_cmp[0] = 1.0/(-0.3);
+  vector_c_inv_cmp[1] = 1.0/(0.3);
+  vector_c_inv_cmp[2] = 1.0/(2.4);
+  assert(IsEqual(vector_c_inv, vector_c_inv_cmp));
   
   
   std::vector<Complex> vector_cc = ComplexVector(vector_c);
