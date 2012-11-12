@@ -395,6 +395,8 @@ bool VectorOpTest() {
   assert(IsEqual(Std(vector_v), 2.443358344574123));
   assert(IsEqual(Std(colonop_b_cmp), 1.290994448735806));
   
+  // Testing var
+  assert(IsEqual(Var(vector_v), 5.96999999999999));
   
   // Testing colon operator
   std::vector<Real> vector_z = ColonOperator(0.0, 2.0, 4.0);
@@ -524,6 +526,31 @@ bool VectorOpTest() {
   weights_ba_var[2] = 0.6;
   weights_ba_var[3] = 0.5;
   assert(IsEqual(Var(vector_ba, weights_ba_var), 13.319335937500000));
+  
+  // Testing covariance matrix
+  
+//  std::vector<Real> vector_e(4);
+//  vector_e[0] = -0.3;
+//  vector_e[1] = 30.3;
+//  vector_e[2] = 2.4;
+//  vector_e[3] = 12.4;
+//  
+//  std::vector<Real> vector_f(4);
+//  vector_f[0] = 2.5;
+//  vector_f[1] = 1.3;
+//  vector_f[2] = -2.4;
+//  vector_f[3] = -1.0;
+  assert(! IsEqual(Cov(vector_e, vector_f), Cov(vector_f, vector_e)));
+  Matrix<Real> cov_e_f = Cov(vector_e, vector_f);
+  assert(IsEqual(cov_e_f.element(0,0), Var(vector_e)));
+  assert(IsEqual(cov_e_f.element(0,0), 191.9800000000000));
+  assert(IsEqual(cov_e_f.element(1,1), 4.886666666666667));
+  assert(IsEqual(cov_e_f.element(1,1), Var(vector_f)));
+  assert(IsEqual(cov_e_f.element(0,0), Var(vector_e)));
+  assert(IsEqual(cov_e_f.element(0,1), cov_e_f.element(1,0)));
+  assert(IsEqual(cov_e_f.element(0,1), 5.333333333333333));
+  
+  
   
   return true;
 }

@@ -19,12 +19,15 @@
 #include "mcltypes.h"
 #include "elementaryop.h"
 #include "basicop.h"
+#include "matrixop.h"
 #include <vector>
 #include <iostream>
 
 
 namespace mcl {
 
+  
+  
 // Equivalent to Matlab's length(input).
 template<class T>
 UInt Length(const std::vector<T>& input) {
@@ -301,6 +304,9 @@ Real Mean(const std::vector<Real>& input,
 // std(input). This includes the correction for having an unbiased estimator.
 Real Std(const std::vector<Real>& input);
 
+// Var (unbiased estimator)
+Real Var(const std::vector<Real>& input);
+  
 // Weighted var (biased estimator)
 Real Var(const std::vector<Real>& input, const std::vector<Real>& weights);
   
@@ -325,6 +331,12 @@ bool IsNonNegative(const std::vector<Real>& input);
   
 // Test function for the functions in this file
 bool VectorOpTest();
+  
+Matrix<Real> Cov(const std::vector<Real>& x, const std::vector<Real>& y);
+  
+Matrix<Real> Cov(const std::vector<std::vector<Real> >& input);
+  
+Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y);
   
 } // namespace mcl
 

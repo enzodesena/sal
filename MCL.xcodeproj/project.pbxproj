@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		57325DC11642D09A001A3E17 /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C3B15EE8B0100363B9A /* basicop_test.cpp */; };
+		573F9FA21662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
+		573F9FA31662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		5771E82B162DA77B00EEA89D /* matrixop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5771E829162DA77B00EEA89D /* matrixop_test.cpp */; };
 		5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
@@ -51,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		573F9FA01662799800929EE2 /* matrixop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop.cpp; path = src/matrixop.cpp; sourceTree = "<group>"; };
 		5771E829162DA77B00EEA89D /* matrixop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop_test.cpp; path = ../../mcl/trunk/src/test/matrixop_test.cpp; sourceTree = "<group>"; };
 		5778D80915B616260015AAC9 /* digitalfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = digitalfilter.h; path = include/digitalfilter.h; sourceTree = "<group>"; };
 		5778D80A15B616260015AAC9 /* firfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = firfilter.h; path = include/firfilter.h; sourceTree = "<group>"; };
@@ -196,6 +199,7 @@
 				5778D80E15B616320015AAC9 /* iirfilter.cpp */,
 				57BA701B15B492D4002F077F /* basicop.cpp */,
 				57BA700F15B43B64002F077F /* elementaryop.cpp */,
+				573F9FA01662799800929EE2 /* matrixop.cpp */,
 				57BA701315B43C60002F077F /* equalityop.cpp */,
 				57BA6FFF15B42297002F077F /* pointwiseop.cpp */,
 				57BA700B15B42BBD002F077F /* vectorop.cpp */,
@@ -295,6 +299,7 @@
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
 				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
+				573F9FA31662799800929EE2 /* matrixop.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +326,7 @@
 				57CA3C4C15EE8C0D00363B9A /* random_test.cpp in Sources */,
 				5771E82B162DA77B00EEA89D /* matrixop_test.cpp in Sources */,
 				57B71D14162DD231003411BA /* randomop.cpp in Sources */,
+				573F9FA21662799800929EE2 /* matrixop.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,7 +359,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
 			};
 			name = Debug;
 		};
@@ -383,7 +389,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
 			};
 			name = Release;
 		};
@@ -435,6 +441,7 @@
 		57B8B2311593398E0030B619 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -443,12 +450,14 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
 			};
 			name = Debug;
 		};
 		57B8B2321593398E0030B619 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -457,6 +466,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
 			};
 			name = Release;
 		};

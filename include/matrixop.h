@@ -18,11 +18,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mcltypes.h"
-#include "vectorop.h"
 #include "equalityop.h"
+#include "elementaryop.h"
+#include <Eigen/Dense>
 
 namespace mcl {
 
+// Forward declaration
+std::vector<std::string> Split(const std::string& string, char delim);
+template<class T>
+T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b);
+  
+  
 template<class T>
 class Matrix {
 public:
@@ -124,10 +131,6 @@ public:
     in_file.close();
     return matrix;
   }
-  
-
-  
-
 
   
 private:
@@ -200,7 +203,19 @@ Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
   
   return temp_output.column(0);
 }
+  
 
+struct EigOutput {
+  std::vector<Complex> eigen_values;
+  std::vector<std::vector<Complex> > eigen_vectors;
+};
+  
+EigOutput Eig(const Matrix<Real>& matrix);
+
+Matrix<Real> RealPart(const Matrix<Complex>& input);
+  
+Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
+  
 template<class T>
 bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
   if (matrix_a.num_rows() != matrix_b.num_rows() |

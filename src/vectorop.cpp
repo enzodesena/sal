@@ -65,10 +65,14 @@ Real Mean(const std::vector<Real>& input,
   
 
 Real Std(const std::vector<Real>& input) {
+  return sqrt(Var(input));
+}
+  
+Real Var(const std::vector<Real>& input) {
   Real mean = Mean(input);
   Real output(0.0);
   for (UInt i=0; i<input.size(); ++i) { output += pow(input[i] - mean,2.0); }
-  return sqrt(output/((Real) (input.size()-1)));
+  return output/((Real) (input.size()-1));
 }
   
 Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
@@ -207,6 +211,34 @@ bool IsNonNegative(const std::vector<Real>& input) {
   }
   return true;
 }
+  
+Matrix<Real> Cov(const std::vector<Real>& x, const std::vector<Real>& y) {
+  std::vector<std::vector<Real> > input(2);
+  input[0] = x;
+  input[1] = y;
+  return Cov(input);
+}
+  
+Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) {
+  const UInt N = input.size();
+  Matrix<Real> output(N, N);
+  for (UInt i=0; i<N; ++i) {
+    for (UInt j=0; j<N; ++j) {
+      output.set_element(i, j, CovElement(input[i], input[j]));
+    }
+  }
+  return output;
+}
+  
+Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y) {
+  const UInt N = x.size();
+  assert(N == y.size());
+  Real output = Sum(Multiply(Add(x, -Mean(x)), Add(y, -Mean(y))));
+  // In case N>1 use the unbiased estimator of covariance.
+  output = (N > 1) ? output/((Real) (N-1)) : output/((Real) (N));
+  return output;
+}
+  
   
   
 } // namespace mcl
