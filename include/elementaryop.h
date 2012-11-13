@@ -42,6 +42,9 @@ Int Fix(const Real scalar);
 // Equivalent to Matlab's abs(scalar)
 Real Abs(Real input);
   
+// Equivalent to Matlab's abs(scalar)
+Real Abs(Complex input);
+  
 // Equivalent to Matlab's sign. Returns 1 if the element
 // is greater than zero, 0 if it equals zero and -1 if it is less than zero.
 Int Sign(const Real scalar);

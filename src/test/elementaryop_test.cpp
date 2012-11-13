@@ -96,6 +96,9 @@ bool ElementaryOpTest() {
   
   assert(Mod((Int) -2, (Int) 4) == 2);
   
+  assert(IsEqual(Abs(Complex(0.5, 2.1)), 2.158703314492290));
+  assert(IsEqual(Abs(Complex(-0.5, 1.5)), 1.581138830084190));
+  
   return true;
 }
   

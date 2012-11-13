@@ -81,4 +81,8 @@ Real Abs(Real input) {
   return fabs(input);
 }
   
+Real Abs(Complex input) {
+  return abs(input);
+}
+  
 } // namespace mcl
