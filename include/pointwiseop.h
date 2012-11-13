@@ -72,6 +72,19 @@ std::vector<T> Multiply(const std::vector<T>& vector_a,
   }
   return output;
 }
+  
+// Returns the point by point multiplication of the two vectors.
+// Equivalent to Matlab's vector_a.*vector_b.
+template<class T>
+std::vector<T> Divide(const std::vector<T>& vector_a,
+                      const std::vector<T>& vector_b) {
+  assert(vector_a.size() == vector_b.size());
+  std::vector<T> output(vector_a.size());
+  for (UInt i=0; i<vector_a.size(); ++i) {
+    output[i] = vector_a[i]/vector_b[i];
+  }
+  return output;
+}
 
 
 // Equivalent to Matlab's exp(vector).

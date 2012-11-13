@@ -450,7 +450,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+				USER_HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/trunk/lib/;
 			};
 			name = Debug;
 		};
@@ -466,7 +466,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+				USER_HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/trunk/lib/;
 			};
 			name = Release;
 		};
