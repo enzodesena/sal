@@ -98,7 +98,9 @@ Real IirFilter::Filter(Real input) {
     output += state_[i-1]*B_[i];
   }
   
-  for (UInt i=(size-1); i>=1; --i) { state_[i-1] = state_[i-2]; }
+  for (Int i=(size-1); i>=1; --i) {
+    state_[i] = state_[i-1];
+  }
   
   state_[0] = v;
   
