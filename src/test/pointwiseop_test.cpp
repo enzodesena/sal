@@ -179,7 +179,21 @@ bool PointWiseOpTest() {
   cosvector_cmp[2] = cos(4.0);
   assert(IsEqual(cosvector_cmp, cosvector));
 
-  
+  // Testing Divide
+//  std::vector<Real> vector_o = Zeros<Real>(3);
+//  vector_o[0] = 1.0;
+//  vector_o[1] = 2.5;
+//  vector_o[2] = 4.2;
+  std::vector<Real> vector_p(3);
+  vector_p[0] = -1.4;
+  vector_p[1] = 2.3;
+  vector_p[2] = 4.2;
+  std::vector<Real> division_o_p = Divide(vector_o, vector_p);
+  std::vector<Real> division_o_p_cmp(3);
+  division_o_p_cmp[0] = 1.0/(-1.4);
+  division_o_p_cmp[1] = 2.5/2.3;
+  division_o_p_cmp[2] = 4.2/4.2;
+  assert(IsEqual(division_o_p_cmp, division_o_p));
   
   return true;
 }
