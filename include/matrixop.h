@@ -88,7 +88,7 @@ public:
     std::ofstream output_file;
     output_file.open(file_name.c_str());
     for (UInt i=0; i<num_rows_; ++i) {
-      for (UInt j=0; j<num_columns_; ++j) { output_file<<data_[i][j]<<" "; }
+      for (UInt j=0; j<num_columns_; ++j) { output_file<<data_.at(i).at(j)<<" "; }
       output_file<<std::endl;
     }
     output_file.close();
