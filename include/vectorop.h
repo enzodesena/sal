@@ -134,6 +134,7 @@ std::vector<T> BinaryVector(const T& element_a, const T& element_b) {
 // are equivalent).
 template<class T>
 std::vector<T> Flip(std::vector<T> vector) {
+  if (vector.size() <= 1) { return vector; }
   UInt N(Length(vector));
   for (UInt i=0; i<=((UInt) (floor(N/2)-1)); ++i) {
     T temp_value = vector[i];

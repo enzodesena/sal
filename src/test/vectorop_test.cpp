@@ -34,6 +34,15 @@ bool VectorOpTest() {
   flip_vector_a_cmp[2] = Complex(1.0, 0.0);
   assert(IsEqual(flip_vector_a_cmp, flip_vector_a));
   
+  std::vector<Real> vector_bb(2);
+  vector_bb[0] = 1.0;
+  vector_bb[1] = -1.0;
+  std::vector<Real> flip_vector_bb = Flip(vector_bb);
+  std::vector<Real> flip_vector_bb_cmp(2);
+  flip_vector_bb_cmp[0] = -1.0;
+  flip_vector_bb_cmp[1] = 1.0;
+  assert(IsEqual(flip_vector_bb, flip_vector_bb_cmp));
+  assert(IsEqual(UnaryVector<Real>(2.2), Flip(UnaryVector<Real>(2.2))));
   
   
   std::vector<Real> vector_l = LinSpace(0.0, 2.0, 3);
