@@ -2,6 +2,8 @@
  vectorop.cpp
  Matlab Cpp Library (MCL)
  
+ This contains vector operations.
+ 
  Authors: Enzo De Sena, enzodesena@me.com
  
  Last committed:     $Revision: 95 $

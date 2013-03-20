@@ -2,6 +2,8 @@
  matrixop.h
  Matlab Cpp Library (MCL)
  
+ This contains matrix operations.
+ 
  Authors: Enzo De Sena, enzodesena@me.com
  
  Last committed:     $Revision: 95 $
