@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 95 $
- Last changed date:  $Date: 2012-06-07 20:07:36 +0100 (Thu, 07 Jun 2012) $
  */
 
 #ifndef MCL_TRANSFORMOP_H

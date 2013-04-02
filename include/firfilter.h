@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 109 $
- Last changed date:  $Date: 2012-07-16 19:33:28 +0100 (Mon, 16 Jul 2012) $
  */
 
 #ifndef MCL_FIRFILTER_H
