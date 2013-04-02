@@ -22,10 +22,8 @@ Int Sign(const Real scalar) {
 }
 
 Int Fix(const Real scalar) {
-  if (scalar >= 0.0) 
-    return floor(scalar);
-  else 
-    return ceil(scalar);
+  if (scalar >= 0.0) { return floor(scalar); }
+  else { return ceil(scalar); }
 }
 
 
