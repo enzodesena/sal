@@ -9,7 +9,6 @@ Furthermore, vectors start from 0 instead of 1.
 The library has been written following Google's C++ style guide:
 http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
 
-
 A sample of how to use the library is:
 
 std::vector<Real> my_vector_a;
