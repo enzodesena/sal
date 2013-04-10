@@ -15,10 +15,14 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "mcltypes.h"
 #include "equalityop.h"
 #include "elementaryop.h"
+
+#if LOAD_EIGEN
 #include <Eigen/Dense>
+#endif
 
 namespace mcl {
 
@@ -212,7 +216,9 @@ EigOutput Eig(const Matrix<Real>& matrix);
 
 Matrix<Real> RealPart(const Matrix<Complex>& input);
   
+#if LOAD_EIGEN
 Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
+#endif
   
 template<class T>
 bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {

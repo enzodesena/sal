@@ -115,6 +115,7 @@ bool MatrixOpTest() {
   assert(IsEqual(matrix_e, matrix_e));
   assert(IsEqual(matrix_b, matrix_b));
   
+#if LOAD_EIGEN
   // Testing eigenvalues and eigenvectors
   EigOutput eig_e = Eig(matrix_e);
   assert(eig_e.eigen_values.size() == 2);
@@ -131,7 +132,7 @@ bool MatrixOpTest() {
   eig_e_vector_1[0] = Complex(-0.219275263435463, 0.0);
   eig_e_vector_1[1] = Complex(-0.975663035502170, 0.0);
   assert(IsEqual(eig_e.eigen_vectors[1], eig_e_vector_1));
-  
+#endif  
   
   return true;
 }
