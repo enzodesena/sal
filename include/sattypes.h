@@ -24,9 +24,7 @@ typedef double Length;
 typedef double Angle;
 typedef unsigned long UInt;
 typedef long Int;
-  
-typedef Sample Ild;
-typedef Time Itd;
+
   
 typedef std::vector<Sample> Signal;
   
