@@ -35,6 +35,11 @@ struct StereoSignal {
   Signal right;
 };
   
+  
+enum Ear {
+  left_ear,
+  right_ear
+};
 
   
   
