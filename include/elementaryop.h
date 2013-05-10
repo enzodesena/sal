@@ -55,6 +55,9 @@ Real RealPart(Complex scalar);
 // Equivalent to Matlab's nextpow2(input)
 UInt NextPow2(Real input);
   
+// This returns the next power of 2. For instance 5=>8, 12=>16, 16=>16.
+UInt Next2(UInt input);
+  
 // Converts a string to a double
 double StringToDouble(const std::string& s);
   

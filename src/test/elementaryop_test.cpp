@@ -97,6 +97,14 @@ bool ElementaryOpTest() {
   assert(IsEqual(Abs(Complex(0.5, 2.1)), 2.158703314492290));
   assert(IsEqual(Abs(Complex(-0.5, 1.5)), 1.581138830084190));
   
+  
+  assert(Next2(3) == 4);
+  assert(Next2(3.0) == 4);
+  assert(Next2(5) == 8);
+  assert(Next2(8) == 8);
+  assert(Next2(8.0) == 8);
+  assert(Next2(6001) == 8192);
+  
   return true;
 }
   

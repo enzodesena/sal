@@ -81,4 +81,8 @@ Real Abs(Complex input) {
   return abs(input);
 }
   
+UInt Next2(UInt input) {
+  return (UInt) pow(2, NextPow2(input));
+}
+  
 } // namespace mcl
