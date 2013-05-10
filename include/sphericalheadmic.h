@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 106 $
- Last changed date:  $Date: 2012-06-22 03:31:02 +0100 (Fri, 22 Jun 2012) $
  */
 
 #ifndef SAT_DIRECTIVITYSPHERICAL_H

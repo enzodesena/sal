@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 155 $
- Last changed date:  $Date: 2012-10-07 13:43:12 +0100 (Sun, 07 Oct 2012) $
  */
 
 #include "tools.h"

@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 93 $
- Last changed date:  $Date: 2012-06-07 09:58:54 +0100 (Thu, 07 Jun 2012) $
  */
 
 #include "mcl.h"

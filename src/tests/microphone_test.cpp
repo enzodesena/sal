@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 151 $
- Last changed date:  $Date: 2012-10-05 11:11:50 +0100 (Fri, 05 Oct 2012) $
  */
 
 #include "microphone.h"

@@ -8,8 +8,6 @@
  
  This file contains several types, macros and supporting classes definitions.
  
- Last committed:     $Revision: 111 $
- Last changed date:  $Date: 2012-07-18 01:36:32 +0100 (Wed, 18 Jul 2012) $
  */
 
 #ifndef SAT_ARRAY_H

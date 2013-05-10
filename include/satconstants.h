@@ -8,8 +8,6 @@
  
  This file contains constants, e.g. PI, sound speed etc..
  
- Last committed:     $Revision: 111 $
- Last changed date:  $Date: 2012-07-18 01:36:32 +0100 (Wed, 18 Jul 2012) $
  */
 
 #ifndef SAT_CONSTANTS_H

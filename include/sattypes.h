@@ -1,5 +1,5 @@
 /*
- global.h
+ sattypes.h
  Spatial Audio Toolbox (SAT)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
@@ -8,8 +8,6 @@
  
  This file contains several types, macros and supporting classes definitions.
  
- Last committed:     $Revision: 106 $
- Last changed date:  $Date: 2012-06-22 03:31:02 +0100 (Fri, 22 Jun 2012) $
  */
 
 #ifndef SAT_TYPES_H
@@ -37,15 +35,7 @@ struct StereoSignal {
   Signal right;
 };
   
-struct EarSignalBank {
-  std::vector<Signal> left_ear;
-  std::vector<Signal> right_ear;
-};
-  
-enum Ear {
-  left_ear,
-  right_ear
-};
+
   
   
 } // namespace sat

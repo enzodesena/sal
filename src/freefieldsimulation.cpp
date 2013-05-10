@@ -9,8 +9,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 118 $
- Last changed date:  $Date: 2012-08-02 00:48:50 +0100 (Thu, 02 Aug 2012) $
  */
 
 

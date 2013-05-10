@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 150 $
- Last changed date:  $Date: 2012-10-05 06:11:12 +0100 (Fri, 05 Oct 2012) $
  */
 
 // This contains various mathematical tools. 

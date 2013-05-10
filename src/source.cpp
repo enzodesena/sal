@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 145 $
- Last changed date:  $Date: 2012-10-01 03:26:09 +0100 (Mon, 01 Oct 2012) $
  */
 
 #include "source.h"

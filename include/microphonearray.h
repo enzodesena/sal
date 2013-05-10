@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 152 $
- Last changed date:  $Date: 2012-10-06 01:03:12 +0100 (Sat, 06 Oct 2012) $
  */
 
 #ifndef SAT_MICROPHONEARRAY_H

@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 84 $
- Last changed date:  $Date: 2012-03-02 19:33:26 +0000 (Fri, 02 Mar 2012) $
  */
 
 

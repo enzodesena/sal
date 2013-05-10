@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 153 $
- Last changed date:  $Date: 2012-10-06 21:39:09 +0100 (Sat, 06 Oct 2012) $
  */
 
 #ifndef SAT_SOURCE_H

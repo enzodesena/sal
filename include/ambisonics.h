@@ -9,8 +9,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 116 $
- Last changed date:  $Date: 2012-08-01 19:28:40 +0100 (Wed, 01 Aug 2012) $
  */
 
 #ifndef SAT_HOA_H

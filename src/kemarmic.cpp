@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 199 $
- Last changed date:  $Date: 2012-01-02 18:17:05 +0000 (lun, 02 gen 2012) $
  */
 
 #include "kemarmic.h"

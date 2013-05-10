@@ -6,8 +6,6 @@
  
  Authors: Enzo De Sena, enzodesena@me.com
  
- Last committed:     $Revision: 132 $
- Last changed date:  $Date: 2012-09-24 11:00:27 +0100 (Mon, 24 Sep 2012) $
  */
 
 #ifndef SAT_DIRECTIVITYFUNCTION_H
