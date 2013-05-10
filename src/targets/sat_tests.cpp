@@ -19,7 +19,6 @@
 #include "propagationline.h"
 #include "freefieldsimulation.h"
 #include "wavhandler.h"
-#include "tools.h"
 
 int main(int argc, char * const argv[]) {
   sat::KemarMic::Test();
@@ -34,7 +33,6 @@ int main(int argc, char * const argv[]) {
   sat::DelayFilter::Test();
   sat::PropagationLine::Test();
   sat::FreeFieldSim::Test();
-  sat::Tools::Test();
   
   std::cout<<"All tests succeded!\n";
     

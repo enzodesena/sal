@@ -47,7 +47,6 @@
 		57E74B5E16274A3800C8BDDB /* sat_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E61593462F00AA6445 /* sat_tests.cpp */; };
 		57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57EB0A07162C2C8E001CB5E3 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C315D3DF3200D4E64A /* ambisonics_test.cpp */; };
-		57F9428E16554C6E009A1FD3 /* tools_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F9428C16554C6E009A1FD3 /* tools_test.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,8 +142,6 @@
 		57F7B3BF15D3DE7000D4E64A /* ambisonics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ambisonics.h; path = include/ambisonics.h; sourceTree = "<group>"; };
 		57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics.cpp; path = src/ambisonics.cpp; sourceTree = "<group>"; };
 		57F7B3C315D3DF3200D4E64A /* ambisonics_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics_test.cpp; path = src/tests/ambisonics_test.cpp; sourceTree = "<group>"; };
-		57F9428A16554BBD009A1FD3 /* tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tools.h; path = include/tools.h; sourceTree = "<group>"; };
-		57F9428C16554C6E009A1FD3 /* tools_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tools_test.cpp; path = src/tests/tools_test.cpp; sourceTree = "<group>"; };
 		57FEB1E315C99095009A5644 /* kemarmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kemarmic_test.cpp; path = src/tests/kemarmic_test.cpp; sourceTree = "<group>"; };
 		57FEB1E715C99AD6009A5644 /* psrmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = psrmic_test.cpp; path = src/tests/psrmic_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,7 +240,6 @@
 				578E967015D1279D0094FBBE /* freefieldsimulation.h */,
 				57A156F51593464300AA6445 /* source.h */,
 				57A156F61593464300AA6445 /* wavhandler.h */,
-				57F9428A16554BBD009A1FD3 /* tools.h */,
 				57A156D9159345ED00AA6445 /* lib */,
 			);
 			name = include;
@@ -288,7 +284,6 @@
 				57A156EA1593463700AA6445 /* point_test.cpp */,
 				579D2A7515D2B88F00F2ED84 /* freefieldsimulation_test.cpp */,
 				57A0EC6C1620AC1800CE61AC /* stream_test.cpp */,
-				57F9428C16554C6E009A1FD3 /* tools_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -431,7 +426,6 @@
 				57895F78163053BA002C962B /* delayfilter_test.cpp in Sources */,
 				57895F79163053BA002C962B /* propagationline_test.cpp in Sources */,
 				5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */,
-				57F9428E16554C6E009A1FD3 /* tools_test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
