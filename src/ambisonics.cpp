@@ -1,0 +1,356 @@
+/*
+ ambisonics.cpp
+ Spatial Audio Toolbox (SAT)
+ Copyright (c) 2012, Enzo De Sena
+ All rights reserved.
+ 
+ This include contains definition of classes and functions
+ related to higer-order ambisonics.
+ 
+ Authors: Enzo De Sena, enzodesena@me.com
+ 
+ Last committed:     $Revision: 116 $
+ Last changed date:  $Date: 2012-08-01 19:28:40 +0100 (Wed, 01 Aug 2012) $
+ */
+
+#include "ambisonics.h"
+#include "mcl.h"
+#include "matrixop.h"
+
+namespace sat {
+
+void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,
+                                            const Point& point,
+                                            const UInt& wave_id) {
+  // Precompute for performance gain
+  const Sample sqrt2 = sqrt(2.0);
+  const Angle point_phi = point.phi();
+  
+  // Zero-th component
+  stream_.Add(0, 0, 1.0*sample);
+  
+  for (UInt i=1; i<=order_; ++i) {
+    // TODO: add 3D components
+    stream_.Add(i, 1, sqrt2*cos(((Angle) i)*point_phi)*sample);
+    stream_.Add(i, -1, sqrt2*sin(((Angle) i)*point_phi)*sample);
+  }
+  
+}
+
+std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(UInt order,
+                                                         Angle theta) {
+  std::vector<mcl::Real> output;
+  output.reserve(2*order+1);
+  output.push_back(1.0);
+  for (UInt i=1; i<=order; ++i) {
+    output.push_back(sqrt(2.0)*cos(((Angle) i)*theta));
+    output.push_back(sqrt(2.0)*sin(((Angle) i)*theta));
+  }
+  return output;
+}
+  
+AmbisonicsHorizDec::AmbisonicsHorizDec(const UInt order,
+                                       const bool energy_decoding,
+                                       const Time cut_off_frequency,
+                                       const std::vector<Angle>& loudspeaker_angles,
+                                       const bool near_field_correction,
+                                       const Length loudspeakers_distance,
+                                       const Time sampling_frequency,
+                                       const Speed sound_speed,
+                                       BFormatStream* input_stream) :
+          Decoder(loudspeaker_angles.size()),
+          energy_decoding_(energy_decoding),
+          loudspeaker_angles_(loudspeaker_angles),
+          num_loudspeakers_(loudspeaker_angles.size()),
+          near_field_correction_(near_field_correction),
+          loudspeakers_distance_(loudspeakers_distance),
+          sampling_frequency_(sampling_frequency),
+          order_(order),
+          mode_matching_matrix_(mcl::Matrix<Sample>(2*order+1,
+                                                    loudspeaker_angles.size())),
+          max_energy_matrix_(mcl::Matrix<Sample>(2*order+1,
+                                                 loudspeaker_angles.size())),
+          input_stream_(input_stream) {
+  
+  using mcl::IirFilter;
+            
+  if (near_field_correction_) {
+    // One filter per order per loudspeaker (inner is per loudspeaker, so that
+    // they are all equal).
+    nfc_filters_.reserve(2*order+1);
+    nfc_filters_.push_back(NFCFilter(0, loudspeakers_distance_,
+                                     sampling_frequency_,
+                                     sound_speed));
+    for (UInt i=1; i<=order; ++i) {
+      // Instanciating two filters because order higher than two have
+      // both degrees +1 and -1
+      nfc_filters_.push_back(NFCFilter(i, loudspeakers_distance_,
+                                       sampling_frequency_,
+                                       sound_speed));
+      nfc_filters_.push_back(NFCFilter(i, loudspeakers_distance_,
+                                       sampling_frequency_,
+                                       sound_speed));
+    }
+    assert(nfc_filters_.size() == 2*order+1);
+  }
+  
+  if (energy_decoding_) {
+    IirFilter cx_high = CrossoverFilterHigh(cut_off_frequency,
+                                            sampling_frequency);
+    IirFilter cx_low = CrossoverFilterLow(cut_off_frequency,
+                                          sampling_frequency);
+    // One filter per loudspeaker
+    crossover_filters_high_ = std::vector<IirFilter>(num_loudspeakers_,
+                                                     cx_high);
+    crossover_filters_low_ = std::vector<IirFilter>(num_loudspeakers_,
+                                                    cx_low);
+  }
+  
+  mode_matching_matrix_ = ModeMatchingDec(order_, loudspeaker_angles_);
+  max_energy_matrix_ = MaxEnergyDec(order_, loudspeaker_angles_);
+}
+  
+  
+mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(UInt order,
+                const std::vector<Angle>& loudspeaker_angles) {
+  using mcl::Matrix;
+  using mcl::Multiply;
+  const UInt num_loudspeakers = loudspeaker_angles.size();
+  
+  Matrix<Sample> temp(2*order+1, num_loudspeakers);
+  
+  for (UInt i=0; i<num_loudspeakers; ++i) {
+    temp.set_column(i, AmbisonicsMic::HorizontalEncoding(order,
+                                                         loudspeaker_angles[i]));
+  }
+  // TODO: implement for non-regular loudspeaker arrays.
+  // M_d = temp'*(temp*temp')^(-1);
+  // Since temp is unitary (except for a value of 2*order+1),we can compute the
+  // inverse by simple transposition.
+  //return Multiply(Transpose(temp), 1.0/((Sample) 2*order+1));
+  return Multiply(Transpose(temp), (Sample) 1.0/((Sample) 2*order+1));
+}
+  
+mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(UInt order,
+                 const std::vector<Angle>& loudspeaker_angles) {
+  // TODO: Implement for non-regular loudspeaker arrays.
+  mcl::Matrix<Sample> decoding_matrix(2*order+1, 2*order+1);
+  decoding_matrix.set_element(0, 0, MaxEnergyDecWeight(0, order));
+  UInt k=1;
+  for (UInt i=1; i<=order; ++i) {
+    decoding_matrix.set_element(k, k, MaxEnergyDecWeight(i, order));
+    k++;
+    decoding_matrix.set_element(k, k, MaxEnergyDecWeight(i, order));
+    k++;
+  }
+  return decoding_matrix;
+}
+  
+std::vector<Sample>
+AmbisonicsHorizDec::PullFrame(UInt order, BFormatStream* stream) {
+  std::vector<Sample> output;
+  output.reserve(2*order+1);
+  output.push_back(stream->Pull(0,0));
+  for (UInt i=1; i<=order; ++i) {
+    output.push_back(stream->Pull(i,+1));
+    output.push_back(stream->Pull(i,-1));
+  }
+  return output;
+}
+  
+  
+/* AMB_NFC Near-Field Corrected Higher Order Ambisonics.
+ OUT_NFC = AMB_NFC(X, FS, THETA, N, LOUDSP_ANGLES, LOUDSP_DIST) produces
+ the loudspeaker feeds for near field corrected HOA as described in
+ "Spatial Sound Encoding Including Near Field Effect: Introducing
+ Length Coding Filters and a Viable, New Ambisonic Format" by
+ J. Daniel, AES 23rd, Int. Conf., 2003.
+ x is the input vecotr signal, Fs is the sampling frequency (in Hz),
+ theta is the angle of the input plane wave, N is the HOA order,
+ loudspeaker_angles is the vector of the loudspeaker angles, while
+ loudspeakers_distance is the distance of the loudspeakers from the
+ centre.
+ */
+void AmbisonicsHorizDec::Decode() {
+  
+  // Cache for speed
+  
+  while (! input_stream_->IsEmpty()) {
+    std::vector<Sample> bformat_frame = PullFrame(order_, input_stream_);
+    
+    // Near-field correcting
+    if (near_field_correction_) {
+      for (UInt i=0; i<(2*order_+1); ++i) {
+        bformat_frame[i] = nfc_filters_[i].Filter(bformat_frame[i]);
+      }
+    }
+    
+    // Mode matching decoding
+    //  // Ambisonics decoding (mode-matching)
+    //  M_d = amb_decoding(N, loudspeaker_angles);
+    //  G_format_low = M_d*amb_nfc_filter(B_format, loudspeakers_distance, Fs, c);
+    std::vector<Sample> output = mcl::Multiply(mode_matching_matrix_,
+                                               bformat_frame);
+    if (energy_decoding_) {
+      // Maximum energy decoding at high frequency
+      //  // Ambisonics decoding (max r_e)
+      //  g = amb_re_weights_reg(N)*sqrt(5/3);
+      //  display('energy');
+      //  G = amb_re_weights_matrix(g);
+      //  G_format_high = M_d*G*B_format;
+      std::vector<Sample> output_high =
+                mcl::Multiply(mode_matching_matrix_,
+                              mcl::Multiply(max_energy_matrix_, bformat_frame));
+      
+      // Cross-fading high and low
+      //  // Generate output
+      //  [B_LF, A_LF, B_HF, A_HF] = amb_crossover_filter(cut_off_frequency, Fs);
+      //  out_low = filter(B_LF, A_LF, G_format_low, [], 2);
+      //  out_high = filter(B_HF, A_HF, G_format_high, [], 2);
+      //  out_nfc = out_low + out_high;
+      for (UInt i=0; i<num_loudspeakers_; ++i) {
+        output[i] = crossover_filters_low_[i].Filter(output[i]) +
+                    crossover_filters_high_[i].Filter(output_high[i]);
+      }
+    }
+    
+    // Push into each loudspeaker stream
+    for (UInt i=0; i<num_loudspeakers_; ++i) {
+      output_streams_[i].Push(output[i]);
+    }
+  }
+}
+  
+    
+                                    
+mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
+        const Time cut_off_frequency, const Time sampling_frequency) {
+  Sample k = tan(PI*cut_off_frequency/sampling_frequency);
+  
+  std::vector<Sample> b_lf(3);
+  // b0_lf = k^2/(k^2+2*k+1);
+  b_lf[0] = pow(k,2.0)/(pow(k,2.0)+2.0*k+1.0);
+  // b1_lf = 2*b0_lf;
+  b_lf[1] = 2.0 * b_lf[0];
+  // b2_lf = b0_lf;
+  b_lf[2] = b_lf[0];
+  
+  std::vector<Sample> a(3);
+  a[0] = 1.0;
+  // a1 = 2*(k^2-1)/(k^2+2*k+1);
+  a[1] = 2.*(pow(k,2.0)-1.0)/(pow(k,2.0)+2.0*k+1.0);
+  // a2 = (k^2-2*k+1)/(k^2+2*k+1);
+  a[2] = (pow(k,2.0)-2.0*k+1.0)/(pow(k,2.0)+2.0*k+1.0);
+  
+  return mcl::IirFilter(b_lf, a);
+}
+
+mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
+        const Time cut_off_frequency, const Time sampling_frequency) {
+  Sample k = tan(PI*cut_off_frequency/sampling_frequency);
+  
+  std::vector<Sample> b_hf(3);
+  // b0_hf = 1/(k^2+2*k+1);
+  b_hf[0] = 1.0/(pow(k,2.0)+2.0*k+1.0);
+  // b1_hf = -2*b0_hf;
+  b_hf[1] = -2.0*b_hf[0];
+  b_hf[2] = b_hf[0];
+  
+  // I add a minus here so that the output of the two filter will need to be
+  // added, rather than subtracted as described in the paper.
+  b_hf = mcl::Multiply(b_hf, (Sample) -1.0);
+  
+  // The denominator of the high frequency filter is the same as the low one.
+  mcl::IirFilter filter_low(CrossoverFilterLow(cut_off_frequency,
+                                               sampling_frequency));
+  
+  
+  return mcl::IirFilter(b_hf, filter_low.A());
+}
+  
+
+// Near-field correction filters as described in
+// "Spatial Sound Encoding Including Near Field Effect: Introducing
+// Length Coding Filters and a Viable, New Ambisonic Format" by
+// J. Daniel, AES 23rd, Int. Conf., 2003.
+mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const UInt order,
+                                             const Length loudspeaker_distance,
+                                             const Time sampling_frequency,
+                                             const Length sound_speed) {
+  // TODO: implement for orders higher than 6
+  assert(order>=0 & order<=6);
+  using mcl::Real;
+  using mcl::Poly;
+  using mcl::Ones;
+  using mcl::Complex;
+  using mcl::Conj;
+  using mcl::Prod;
+  using mcl::Multiply;
+  using mcl::RealPart;
+  
+  std::vector<Complex> X_Mq;
+  switch(order) {
+    case 0:
+      X_Mq = std::vector<Complex>(0);
+      break;
+    case 1:
+      X_Mq = std::vector<Complex>(1);
+      X_Mq[0] = Complex(-2.0, 0.0);
+      break;
+    case 2:
+      X_Mq = std::vector<Complex>(2);
+      X_Mq[0] = Complex(-3.0000, 1.7321);
+      X_Mq[1] = Conj(X_Mq[0]);
+      break;
+    case 3:
+      X_Mq = std::vector<Complex>(3);
+      X_Mq[0] = Complex(-3.6778, 3.5088);
+      X_Mq[1] = Conj(X_Mq[0]);
+      X_Mq[2] = Complex(-4.6444, 0.0);
+      break;
+    case 4:
+      X_Mq = std::vector<Complex>(4);
+      X_Mq[0] = Complex(-4.2076, 5.3148);
+      X_Mq[1] = Conj(X_Mq[0]);
+      X_Mq[2] = Complex(-5.7924, 1.7345);
+      X_Mq[3] = Conj(X_Mq[2]);
+      break;
+    case 5:
+      X_Mq = std::vector<Complex>(5);
+      X_Mq[0] = Complex(-4.6493, 7.1420);
+      X_Mq[1] = Conj(X_Mq[0]);
+      X_Mq[2] = Complex(-6.7039, 3.4853);
+      X_Mq[3] = Conj(X_Mq[2]);
+      X_Mq[4] = Complex(-7.2935, 0.0);
+      break;
+    case 6:
+      X_Mq = std::vector<Complex>(6);
+      X_Mq[0] = Complex(-5.0319, 8.9853);
+      X_Mq[1] = Conj(X_Mq[0]);
+      X_Mq[2] = Complex(-7.4714, 5.2525);
+      X_Mq[3] = Conj(X_Mq[2]);
+      X_Mq[4] = Complex(-8.4967, 1.7350);
+      X_Mq[5] = Conj(X_Mq[4]);
+      break;
+  }
+  
+  Real a = 4.0*sampling_frequency*loudspeaker_distance/sound_speed;
+  
+  // I need to implement A(poly((1+X_mq/a)./(1-X_mq/a))*prod(1-X_mq./a);
+  const UInt num_samples = X_Mq.size();
+  std::vector<Complex> temp_1(num_samples); // (1+X_mq/a)./(1-X_mq/a))
+  std::vector<Complex> temp_2(num_samples); // 1-X_mq./a
+  for (UInt i=0; i<num_samples; ++i) {
+    temp_1[i] = (Complex(1.0, 0.0)+X_Mq[i]/Complex(a, 0.0))/
+                (Complex(1.0,0.0)-X_Mq[i]/Complex(a, 0.0));
+    temp_2[i] = (Complex(1.0,0.0)-X_Mq[i]/Complex(a, 0.0));
+  }
+  
+  std::vector<Real> B = mcl::RealPart(mcl::Poly(mcl::Ones(order)));
+  std::vector<Real> A = RealPart(Multiply(Poly(temp_1), Prod(temp_2)));
+  
+  
+  return mcl::IirFilter(B, A);
+}
+
+} // namespace sat
