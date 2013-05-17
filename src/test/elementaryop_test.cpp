@@ -105,6 +105,23 @@ bool ElementaryOpTest() {
   assert(Next2(8.0) == 8);
   assert(Next2(6001) == 8192);
   
+  
+  // Testing entropy
+  std::vector<Real> pdf_1(4);
+  pdf_1[0] = 0.2;
+  pdf_1[1] = 0.35;
+  pdf_1[2] = 0.15;
+  pdf_1[3] = 0.3;
+  assert(IsEqual(Entropy(pdf_1, exp(1)), 1.335085165092020));
+  assert(IsEqual(Entropy(pdf_1, 2.0), 1.926120746842681));
+  
+  std::vector<Real> pdf_2(2);
+  pdf_2[0] = 0.5;
+  pdf_2[1] = 0.5;
+  assert(IsEqual(Entropy(pdf_2, exp(1)), 0.693147180559945));
+  assert(IsEqual(Entropy(pdf_2, 2.0), 1.0));
+  
+  
   return true;
 }
   

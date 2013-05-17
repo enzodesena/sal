@@ -8,6 +8,7 @@
 
 #include "elementaryop.h"
 #include "equalityop.h"
+#include "vectorop.h"
 
 namespace mcl {
 
@@ -84,5 +85,11 @@ Real Abs(Complex input) {
 UInt Next2(UInt input) {
   return (UInt) pow(2, NextPow2(input));
 }
+  
+Real Entropy(std::vector<Real> pdf, Real base) {
+  pdf = Multiply(pdf, 1.0/Sum(pdf));
+  return -Sum(Multiply(pdf, Log(pdf)))/log(base);
+}
+  
   
 } // namespace mcl

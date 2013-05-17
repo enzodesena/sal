@@ -66,6 +66,11 @@ double StringToDouble(const std::string& s);
 // is VERY_SMALL in equality operations, hence use only for testing.
 bool IsReal(const std::vector<Complex>& input);
   
+// Calculates the entropy of a discreate random variable with given `pdf'.
+// It normalises the pdf if its sum is not 1.
+// Note: this function is identical to Matlab's only for uint8 values.
+Real Entropy(std::vector<Real> pdf, Real base);
+  
 bool ElementaryOpTest();
   
 } // namespace mcl
