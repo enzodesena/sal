@@ -29,12 +29,12 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   
   assert(input_file_info.frames > 0);
   
-  UInt file_length = (UInt) input_file_info.frames;
-  UInt num_channels = (UInt) input_file_info.channels;
+  int file_length = (int) input_file_info.frames;
+  int num_channels = input_file_info.channels;
   
   double* data = new double[num_channels*file_length];
   
-  assert(((int) sf_readf_double(input_file, data, (int) file_length)) == file_length);
+  sf_readf_double(input_file, data, file_length);
   
   sf_close(input_file);
   
@@ -43,9 +43,9 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   
   // input_file_info.samplerate
   
-  UInt k(0);
-  for (UInt i=0; i<(num_channels*file_length); i += num_channels) {
-    for (UInt j=0; j<num_channels; ++j) {
+  int k(0);
+  for (int i=0; i<(num_channels*file_length); i += num_channels) {
+    for (int j=0; j<num_channels; ++j) {
       signals[j][k] = (Sample) data[i+j];
     }
     k++;
