@@ -120,6 +120,9 @@ CircularTrig::CircularTrig(const Point& position,
           CircularArray(position, radius, num_microphones,
                         first_element_heading, span_angle) {
   microphone_pointers_ = std::vector<MonoMic*>(num_microphones);
+            
+  // The following reservation makes the position in memory of the vector
+  // static (TODO: double-check this)
   microphones_.reserve(num_microphones);
             
   for (UInt i=0; i<num_microphones; ++i) {

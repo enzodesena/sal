@@ -43,8 +43,8 @@ public:
   
   virtual ~GainMic() {}
 private:
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
-                                       const UInt& wave_id) {
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point&,
+                                       const UInt&) {
     stream_.Add(sample*gain_);
   }
   
@@ -86,7 +86,7 @@ public:
   }
   
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
-                                       const UInt& wave_id) {
+                                       const UInt&) {
     stream_.Add(sample*GetDirectivity(point));
   }
   
