@@ -223,7 +223,8 @@ template<class T>
 std::vector<T> Elements(const std::vector<T>& vector,
                         const UInt from_id,
                         const UInt to_id) {
-  return std::vector<T>(vector.begin() + from_id, vector.begin() + to_id+1);
+  return std::vector<T>(vector.begin() + ((Int)from_id),
+                        vector.begin() + ((Int)to_id)+1);
 }
 
   
