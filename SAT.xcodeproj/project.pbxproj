@@ -136,7 +136,6 @@
 		57A156F31593464300AA6445 /* point.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = point.h; path = include/point.h; sourceTree = "<group>"; };
 		57A156F51593464300AA6445 /* source.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = source.h; path = include/source.h; sourceTree = "<group>"; };
 		57A156F61593464300AA6445 /* wavhandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = wavhandler.h; path = include/wavhandler.h; sourceTree = "<group>"; };
-		57A156F71593464B00AA6445 /* portaudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = portaudio.h; path = include/lib/portaudio.h; sourceTree = "<group>"; };
 		57A156F81593464B00AA6445 /* sndfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sndfile.h; path = include/lib/sndfile.h; sourceTree = "<group>"; };
 		57A156F91593464B00AA6445 /* sndfile.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = sndfile.hh; path = include/lib/sndfile.hh; sourceTree = "<group>"; };
 		57A1574515934AEC00AA6445 /* libSAT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSAT.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,7 +249,6 @@
 		57A156D9159345ED00AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				57A156F71593464B00AA6445 /* portaudio.h */,
 				57A156F81593464B00AA6445 /* sndfile.h */,
 				57A156F91593464B00AA6445 /* sndfile.hh */,
 			);
