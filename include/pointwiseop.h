@@ -19,8 +19,10 @@
 
 namespace mcl {
 
-// Returns the point by point addition of the two vectors. 
-// Equivalent to Matlab's vector_a+vector_b.
+/**
+ Returns the point by point addition of the two vectors.
+ Equivalent to Matlab's vector_a+vector_b.
+ */
 template<class T> 
 std::vector<T> Add(const std::vector<T>& vector_a,
                    const std::vector<T>& vector_b) {
@@ -33,7 +35,7 @@ std::vector<T> Add(const std::vector<T>& vector_a,
 }
 
 
-// Returns the opposite vector.Equivalent to Matlab's -vector.
+/** Returns the opposite vector.Equivalent to Matlab's -vector. */
 template<class T> 
 std::vector<T> Opposite(const std::vector<T>& vector) {
   // Checking we are not dealing with unsigned types.
@@ -46,11 +48,13 @@ std::vector<T> Opposite(const std::vector<T>& vector) {
 }
   
   
-// Returns the inverse vector.Equivalent to Matlab's 1./vector.
+/** Returns the inverse vector.Equivalent to Matlab's 1./vector. */
 std::vector<Real> Inverse(const std::vector<Real>& vector);
 
-// Returns the point by point subtraction of the two vectors. 
-// Equivalent to Matlab's vector_a-vector_b.
+/** 
+ Returns the point by point subtraction of the two vectors.
+ Equivalent to Matlab's vector_a-vector_b.
+ */
 template<class T> 
 std::vector<T> Subtract(const std::vector<T>& vector_a,
                         const std::vector<T>& vector_b) {
@@ -58,8 +62,10 @@ std::vector<T> Subtract(const std::vector<T>& vector_a,
 }
 
 
-// Returns the point by point multiplication of the two vectors. 
-// Equivalent to Matlab's vector_a.*vector_b.
+/** 
+ Returns the point by point multiplication of the two vectors.
+ Equivalent to Matlab's vector_a.*vector_b.
+ */
 template<class T> 
 std::vector<T> Multiply(const std::vector<T>& vector_a,
                         const std::vector<T>& vector_b) {
@@ -71,8 +77,10 @@ std::vector<T> Multiply(const std::vector<T>& vector_a,
   return output;
 }
   
-// Returns the point by point multiplication of the two vectors.
-// Equivalent to Matlab's vector_a.*vector_b.
+/** 
+ Returns the point by point multiplication of the two vectors.
+ Equivalent to Matlab's vector_a.*vector_b.
+ */
 template<class T>
 std::vector<T> Divide(const std::vector<T>& vector_a,
                       const std::vector<T>& vector_b) {
@@ -85,7 +93,7 @@ std::vector<T> Divide(const std::vector<T>& vector_a,
 }
 
 
-// Equivalent to Matlab's exp(vector).
+/** Equivalent to Matlab's exp(vector). */
 template<class T>
 std::vector<T> Exp(const std::vector<T>& vector) {
   UInt n(vector.size());
@@ -96,45 +104,51 @@ std::vector<T> Exp(const std::vector<T>& vector) {
   
   
   
-// Returns the vector with conjugate entries.
-// Equivalent to Matlab's conj(vector).
+/** 
+ Returns the vector with conjugate entries.
+ Equivalent to Matlab's conj(vector).
+ */
 std::vector<Complex> Conj(const std::vector<Complex>& vector);
 
-// Transform real vector into complex vector with null imaginary part
+/** Transform real vector into complex vector with null imaginary part */
 std::vector<Complex> ComplexVector(const std::vector<Real>& input);
 
-// Equivalent to Matlab's real(input).
+/** Equivalent to Matlab's real(input). */
 std::vector<Real> RealPart(const std::vector<Complex>& input);
 
-// Equivalent to Matlab's imag(input).
+/** Equivalent to Matlab's imag(input). */
 std::vector<Real> Imag(const std::vector<Complex>& input);
 
 
-// Returns the point-wise poser to exponent. 
-// Equivalent to Matlab's vector.^exponent
+/** 
+ Returns the point-wise poser to exponent.
+ Equivalent to Matlab's vector.^exponent
+ */
 std::vector<Real> Pow(const std::vector<Real>& vector, Real exponent);
 
 
-// Equivalent to Matlab's abs(vector)
+/** Equivalent to Matlab's abs(vector) */
 std::vector<Real> Abs(const std::vector<Real>& input);
 
-// Equivalent to Matlab's abs(vector)
+/** Equivalent to Matlab's abs(vector) */
 std::vector<Real> Abs(const std::vector<Complex>& input);
 
-// Equivalent to Matlab's vector.*(vector>0)
+/** Equivalent to Matlab's vector.*(vector>0) */
 std::vector<Real> HalfWave(const std::vector<Real>& vector);
 
-// Equivalent to Matlab's cos(vector)
+/** Equivalent to Matlab's cos(vector) */
 std::vector<Real> Cos(const std::vector<Real>& vector);
 
-// Returns the natural logarithm of the elements of vector.
-// Equivalent to Matlab's log(vector).
+/** 
+ Returns the natural logarithm of the elements of vector.
+ Equivalent to Matlab's log(vector).
+ */
 std::vector<Real> Log(const std::vector<Real>& vector);
 
 std::vector<Int> ConvertToInt(const std::vector<UInt>& vector);
   
 bool PointWiseOpTest();
   
-} // namespace mcl
+} /**< namespace mcl */
 
 #endif

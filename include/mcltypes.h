@@ -17,11 +17,10 @@
 #include <vector>
 
 namespace mcl {
-typedef double Real;
-typedef std::complex<Real> Complex;
-typedef unsigned long UInt;
-typedef long Int;
-  
+typedef double Real; /**< Real type */
+typedef std::complex<Real> Complex; /**< Complex type */
+typedef unsigned long UInt; /**< Unisgned int type */
+typedef long Int; /**< Int type */  
   
 
 

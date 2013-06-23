@@ -17,8 +17,11 @@ using std::vector;
 
 namespace mcl {
   
-// Returns the index associated to the maximum value in the vector. The index
-// counts starting from 0. If there are two maxima, the index of the first one is returned.
+/**
+ Returns the index associated to the maximum value in the vector. The index
+ counts starting from 0. If there are two maxima,
+ the index of the first one is returned.
+ */
 template<class T>
 UInt MinIndex(const std::vector<T>& input) {
   T min_value = std::numeric_limits<T>::max();
@@ -32,15 +35,18 @@ UInt MinIndex(const std::vector<T>& input) {
   return min_index;
 }
   
-// Returns the maximum value of the vector.
+/** Returns the maximum value of the vector. */
 template<class T>  
 T Min(const std::vector<T>& input) {
   return input[MinIndex(input)];
 }
 
 
-// Returns the index associated to the maximum value in the vector. The index
-// counts starting from 0. If there are two maxima, the index of the first one is returned.
+/** 
+ Returns the index associated to the maximum value in the vector. The index
+ counts starting from 0. If there are two maxima, 
+ the index of the first one is returned.
+ */
 template<class T>
 unsigned long MaxIndex(const std::vector<T>& input) {
   return MinIndex(Opposite(input));
@@ -49,7 +55,7 @@ unsigned long MaxIndex(const std::vector<T>& input) {
 
 
   
-// Returns the minimum value of the vector.
+/** Returns the minimum value of the vector. */
 template<class T>
 T Max(const std::vector<T>& input) {
   return input[MaxIndex(input)];
@@ -58,13 +64,18 @@ T Max(const std::vector<T>& input) {
 
 
 
-// Returns the indexes of the local peaks in the vector. 
-// Equivalent to Matlab's findpeaks.
+/** 
+ Returns the indexes of the local peaks in the vector.
+ Equivalent to Matlab's findpeaks.
+ */
 std::vector<UInt>
 FindPeaksIndexes(const std::vector<Real>& vector,
                  const Real min_peak_height = std::numeric_limits<Real>::min());
 
-// Returns the values local peaks in the vector. Equivalent to Matlab's findpeaks
+/** 
+ Returns the values local peaks in the vector.
+ Equivalent to Matlab's findpeaks.
+ */
 std::vector<Real>
 FindPeaks(const std::vector<Real>& vector,
           const Real min_peak_height = std::numeric_limits<Real>::min());
@@ -72,6 +83,6 @@ FindPeaks(const std::vector<Real>& vector,
   
 bool BasicOpTest();
   
-} // namespace mcl
+} /**< namespace mcl */
 
 #endif

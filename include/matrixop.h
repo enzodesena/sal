@@ -31,10 +31,13 @@ std::vector<std::string> Split(const std::string& string, char delim);
 template<class T>
 T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b);
   
-  
+/** Matrix class */
 template<class T>
 class Matrix {
 public:
+  /** 
+   Constructs a matrix with default entries
+   */
   Matrix(UInt num_rows, UInt num_columns) : num_rows_(num_rows), 
           num_columns_(num_columns) {
     for (UInt i=0; i<num_rows; ++i) {
@@ -42,12 +45,14 @@ public:
     }
   }
   
+  /** Sets element in given row and column */
   void set_element(UInt index_row, UInt index_column, T element) {
     assert(index_row>=0 & index_row<num_rows_);
     assert(index_column>=0 & index_column<num_columns_);
     data_[index_row][index_column] = element;
   }
   
+  /** Sets an entire column */
   void set_column(UInt index_column, std::vector<T> column) {
     assert(column.size() == num_rows_);
     assert(index_column>=0 & index_column<num_columns_);
@@ -56,23 +61,27 @@ public:
     }
   }
   
+  /** Sets an entire row */
   void set_row(UInt index_row, std::vector<T> row) {
     assert(row.size() == num_columns_);
     assert(index_row>=0 & index_row<num_rows_);
     data_[index_row] = row;
   }
   
+  /** Accesses an element in given row and column */
   T element(UInt index_row, UInt index_column) const {
     assert(index_row>=0 & index_row<num_rows_);
     assert(index_column>=0 & index_column<num_columns_);
     return data_[index_row][index_column];
   }
   
+  /** Accesses an entire row */
   std::vector<T> row(UInt index_row) const {
     assert(index_row>=0 & index_row<num_rows_);
     return data_[index_row];
   }
   
+  /** Accesses an entire column */
   std::vector<T> column(UInt index_column) const {
     assert(index_column>=0 & index_column<num_columns_);
     std::vector<T> output(num_rows_);
@@ -80,12 +89,13 @@ public:
     return output;
   }
   
-  
-  
+  /** Returns the number of rows */
   UInt num_rows() const { return num_rows_; }
   
+  /** returns the number of columns */
   UInt num_columns() const { return num_columns_; }
   
+  /** Writes the matrix to a file */
   void Save(std::string file_name) {
     std::ofstream output_file;
     output_file.open(file_name.c_str());
@@ -97,8 +107,10 @@ public:
   }
   
   
-  // Reads a matrix. Elements have to be separated by tabs (\t) and there 
-  // must be no ending empty line (e.g. 5 lines == 5 rows).
+  /**
+   Reads a matrix. Elements have to be separated by tabs and there
+   must be no ending empty line (e.g. 5 lines == 5 rows).
+   */
   static Matrix Load(std::string file_name) {
     std::string line;
     std::ifstream in_file (file_name.c_str());
@@ -152,7 +164,7 @@ void Print(const Matrix<T>& matrix) {
   }
 }
 
-// Transposes the matrix. Equivalent to Matlab's matrix'
+/** Transposes the matrix. Equivalent to Matlab's matrix' */
 template<class T>
 Matrix<T> Transpose(const Matrix<T>& matrix) {
   Matrix<T> output(matrix.num_columns(), matrix.num_rows());
@@ -165,8 +177,10 @@ Matrix<T> Transpose(const Matrix<T>& matrix) {
   return output;
 }
   
-// Multiplies all the elements of `matrix` by `value`. Equivalent
-// to Matlabs' matrix.*value
+/** 
+ Multiplies all the elements of `matrix` by `value`. Equivalent
+ to Matlabs' matrix.*value
+ */
 template<class T>
 Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
   Matrix<T> output(matrix.num_rows(), matrix.num_columns());
@@ -179,7 +193,7 @@ Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
 }
  
   
-// Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b
+/** Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b */
 template<class T>
 Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
   assert(matrix_a.num_columns() == matrix_b.num_rows());
@@ -206,10 +220,10 @@ Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
   return temp_output.column(0);
 }
   
-
+/** Contains eigenvalues and eigenvectors */
 struct EigOutput {
-  std::vector<Complex> eigen_values;
-  std::vector<std::vector<Complex> > eigen_vectors;
+  std::vector<Complex> eigen_values; /**< Eigenvalues */
+  std::vector<std::vector<Complex> > eigen_vectors; /**< Eigenvectors */
 };
   
 EigOutput Eig(const Matrix<Real>& matrix);

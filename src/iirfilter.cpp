@@ -15,12 +15,12 @@
 
 namespace mcl {
   
-std::vector<Real> IirFilter::B() {
+std::vector<Real> IirFilter::B() const {
   // Return the non-normalised version
   return Multiply(B_, A0_);
 }
 
-std::vector<Real> IirFilter::A() {
+std::vector<Real> IirFilter::A() const {
   // Return the non-normalised version
   return Multiply(A_, A0_);
 }

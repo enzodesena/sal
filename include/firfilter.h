@@ -17,34 +17,41 @@
 #include "digitalfilter.h"
 
 namespace mcl {
-  
+/** FIR Filter */
 class FirFilter : public DigitalFilter {
 public:
-  // Constructs an FIR filter with impulse response B.
+  /** Constructs an FIR filter with impulse response B. */
   FirFilter(std::vector<Real> B);
   
-  // Returns the output of the filter for an input equal to `input`. 
-  // For example, if B=1, A=1, output will be equal to input. 
-  // As a second example, if B=[0,1], A=[1], you will have 
-  // (1) Filter(0.5)==0 and then
-  // (2) Filter(0.0)==0.5
+  /** 
+   Returns the output of the filter for an input equal to `input`.
+   For example, if B=1, A=1, output will be equal to input. 
+   As a second example, if B=[0,1], A=[1], you will have 
+   (1) Filter(0.5)==0 and then
+   (2) Filter(0.0)==0.5
+   */
   virtual Real Filter(const Real input);
   
-  // Returns the output of the filter for an input signal equal to `input`.
+  /** Returns the output of the filter for an input signal equal to `input`. */
   virtual std::vector<Real> Filter(const std::vector<Real>& input);
   
-  // Updates the filter coefficients. May cause articafts if the coefficients are
-  // updated too rapidly. If the `impulse_response` changes length than the
-  // filter is resetted to zero state.
+  /** 
+   Updates the filter coefficients. May cause articafts if the coefficients are
+   updated too rapidly. If the `impulse_response` changes length than the
+   filter is resetted to zero state.
+   */
   void UpdateFilter(std::vector<Real> impulse_response);
   
+  /** Resets the state of the filter */
   void Reset();
   
+  /** Returns the impulse response of the filter */
   std::vector<Real> impulse_response();
   
-  // Constructs a filter for which output==gain*input always.
+  /** Constructs a filter for which output==gain*input always. */
   static FirFilter GainFilter(const Real gain);
   
+  /** Tests */
   static bool Test();
   
   virtual ~FirFilter() {}

@@ -26,14 +26,14 @@ namespace mcl {
 
   
   
-// Equivalent to Matlab's length(input).
+/** Equivalent to Matlab's length(input). */
 template<class T>
 UInt Length(const std::vector<T>& input) {
   return (UInt) input.size();
 }
 
 
-// Returns a vector of zeros
+/** Returns a vector of zeros */
 template <class T> 
 std::vector<T> Zeros(UInt length) {
   //TODO: check if this returns zeros for all types
@@ -45,9 +45,11 @@ std::vector<T> EmptyVector() {
   return std::vector<T>();
 }
   
-// Adds zero until the output vector has a length of total_length.
-// If the length of input is smaller than total_length, than it returns the
-// vector with the first total_length elements.
+/**
+ Adds zero until the output vector has a length of total_length.
+ If the length of input is smaller than total_length, than it returns the
+ vector with the first total_length elements.
+ */
 template<class T> 
 std::vector<T> ZeroPad(const std::vector<T>& input, UInt total_length) {
   std::vector<T> output = Zeros<T>(total_length);
@@ -58,8 +60,10 @@ std::vector<T> ZeroPad(const std::vector<T>& input, UInt total_length) {
 
 
 
-// Returns the point by point multiplication of the vector with the gain. 
-// Equivalent to Matlab's vector_a.*gain.
+/** 
+ Returns the point by point multiplication of the vector with the gain.
+ Equivalent to Matlab's vector_a.*gain.
+ */
 template<class T> 
 std::vector<T> Multiply(const std::vector<T>& vector,
                         const T& gain) {
@@ -70,8 +74,10 @@ std::vector<T> Multiply(const std::vector<T>& vector,
   return output;
 }
 
-// Returns the point by point addition of the two vectors.
-// Equivalent to Matlab's vector_a+vector_b.
+/** 
+ Returns the point by point addition of the two vectors.
+ Equivalent to Matlab's vector_a+vector_b.
+ */
 template<class T>
 std::vector<T> Add(const std::vector<T>& vector_a,
                    const T scalar) {
@@ -83,9 +89,11 @@ std::vector<T> Add(const std::vector<T>& vector_a,
 }
 
   
-// Returns the subset of elements with indexes from_index and to_index. 
-// Equivalent to Matlab's vector(from_index:to_index). (Careful about the
-// different indexes convention between here and Matlab.
+/** 
+ Returns the subset of elements with indexes from_index and to_index.
+ Equivalent to Matlab's vector(from_index:to_index). (Careful about the
+ different indexes convention between here and Matlab.
+ */
 template<class T> 
 std::vector<T> Subset(const std::vector<T>& vector, 
                       const UInt from_index, const UInt to_index) {
@@ -101,8 +109,10 @@ std::vector<T> Subset(const std::vector<T>& vector,
 }
 
 
-// Returns the concatenation of vector_a and vector_b. Equivalent to Matlab's
-// [vector_a; vector_b].
+/** 
+ Returns the concatenation of vector_a and vector_b. Equivalent to Matlab's
+ [vector_a; vector_b].
+ */
 template<class T>
 std::vector<T> Concatenate(std::vector<T> vector_a,
                            const std::vector<T>& vector_b) {
@@ -112,14 +122,14 @@ std::vector<T> Concatenate(std::vector<T> vector_a,
 }
 
 
-// Returns a vector with only one element.
+/** Returns a vector with only one element. */
 template<class T> 
 std::vector<T> UnaryVector(const T& element) {
   std::vector<T> output(1, element);
   return output;
 }
   
-// Returns a vector with two elements.
+/** Returns a vector with two elements. */
 template<class T>
 std::vector<T> BinaryVector(const T& element_a, const T& element_b) {
   std::vector<T> output(2);
@@ -128,8 +138,10 @@ std::vector<T> BinaryVector(const T& element_a, const T& element_b) {
   return output;
 }
 
-// Flips the vector. Equivalent to matlab's flipud or fliplr (which for vectors
-// are equivalent).
+/**
+ Flips the vector. Equivalent to matlab's flipud or fliplr (which for vectors
+ are equivalent).
+ */
 template<class T>
 std::vector<T> Flip(std::vector<T> vector) {
   if (vector.size() <= 1) { return vector; }
@@ -142,8 +154,10 @@ std::vector<T> Flip(std::vector<T> vector) {
   return vector;
 }
 
-// Equivalent to Matlab's circshift(vector, num_positions). A positive 
-// num_positions corresponds to a forward shift.
+/** 
+ Equivalent to Matlab's circshift(vector, num_positions). A positive
+ num_positions corresponds to a forward shift.
+ */
 template<class T>
 std::vector<T> CircShift(const std::vector<T>& vector, Int num_positions) {
   UInt N = vector.size();
@@ -156,7 +170,7 @@ std::vector<T> CircShift(const std::vector<T>& vector, Int num_positions) {
   return output;
 }
   
-// Equivalent to Matlab's conv(vector_a, vector_b).
+/** Equivalent to Matlab's conv(vector_a, vector_b). */
 template<class T>
 std::vector<T> Conv(const std::vector<T>& vector_a, 
                     const std::vector<T>& vector_b) {
@@ -179,8 +193,10 @@ std::vector<T> Conv(const std::vector<T>& vector_a,
 }
   
   
-// Adds all the vectors and zero-pads short vectors if they have different
-// lengths
+/** 
+ Adds all the vectors and zero-pads short vectors if they have different
+ lengths.
+ */
 template<class T>
 std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
   // Get maximum length
@@ -198,8 +214,10 @@ std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
   return output;
 }
 
-// This is equivalent to Matlab's from:to. E.g. 3:5 outputs a vector [3,4,5].
-  // TODO: Implement fractional input.
+/**
+ This is equivalent to Matlab's from:to. E.g. 3:5 outputs a vector [3,4,5].
+ TODO: Implement fractional input.
+ */
 template<class T>
 std::vector<T> ColonOperator(const Int from, const Int to) {
   if ((to-from) < 0) { return EmptyVector<T>(); }
@@ -211,14 +229,19 @@ std::vector<T> ColonOperator(const Int from, const Int to) {
   return output;
 }
   
-// This is equivalent to Matlab's from:step:to. E.g. 3:2:6 outputs a vector
-// [3,4,6]. // TODO: implement negative step and fractional input
+/** 
+ This is equivalent to Matlab's from:step:to. E.g. 3:2:6 outputs a vector
+ [3,4,6].
+ */
+// TODO: implement negative step and fractional input.
 std::vector<Real>
 ColonOperator(const Real from, const Real step, const Real to);
   
 
-// Returns elements of vector `vector` from from_id to to_id
-// (including extremes).
+/** 
+ Returns elements of vector `vector` from from_id to to_id
+ (including extremes).
+ */
 template<class T>
 std::vector<T> Elements(const std::vector<T>& vector,
                         const UInt from_id,
@@ -238,12 +261,14 @@ std::vector<T> GetFrame(const std::vector<T>& vector,
   UInt to_sample = Min(from_sample + frame_length - 1,
                        size - 1);
   if (to_sample > (size - 1)) { to_sample = size - 1; }
-  // TODO: modify here (?)
+  // TODO: modify here (23/6/13: I am not sure what I meant here)
   return Elements(vector, from_sample, to_sample);
 }
 
-// Multiplies all the elements in the vector. Equivalent to Matlab's
-// prod(vector).
+/** 
+ Multiplies all the elements in the vector. Equivalent to Matlab's
+ prod(vector).
+ */
 template<class T>
 T Prod(const std::vector<T>& vector) {
   const UInt num_elements = vector.size();
@@ -252,7 +277,7 @@ T Prod(const std::vector<T>& vector) {
   return output;
 }
   
-// Dot product between two vectors. Equivalent to Matlab's dot(a,b)
+/** Dot product between two vectors. Equivalent to Matlab's dot(a,b) */
 template<class T>
 T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b) {
   const UInt num_elements = vector_a.size();
@@ -276,7 +301,7 @@ void Print(const std::vector<T>& vector) {
   std::cout<<"------------\n";
 }
 
-// Returns a real vector of `length` ones.
+/** Returns a real vector of `length` ones. */
 std::vector<Real> Ones(UInt length);
   
   
@@ -285,51 +310,57 @@ std::vector<Real> Hann(const UInt length);
 std::vector<Real> TukeyWin(const UInt length, const Real ratio);
 
 
-// Equivalent to Matlab's linspace(min, max, num_elements);
+/** Equivalent to Matlab's linspace(min, max, num_elements); */
 std::vector<Real> LinSpace(Real min, Real max, UInt num_elements);
   
   
 Real Sum(const std::vector<Real>& input);
 
-// Equivalent to Matlab's mean(input)
+/** Equivalent to Matlab's mean(input) */
 Real Mean(const std::vector<Real>& input);
   
-// Weighted mean. Not implemented in Matlab (but should be). The weights are
-// normalised inside the function. Hence Mean(input, ones(N)) gives the same
-// result as Mean(input, ones(N)/N).
+/**
+ Weighted mean. Not implemented in Matlab (but should be). The weights are
+ normalised inside the function. Hence Mean(input, ones(N)) gives the same
+ result as Mean(input, ones(N)/N).
+ */
 Real Mean(const std::vector<Real>& input,
           const std::vector<Real>& weigths);
   
-// Returns the standard deviation of the `input` vector. Equivalent to Matlab's
-// std(input). This includes the correction for having an unbiased estimator.
+/** 
+ Returns the standard deviation of the `input` vector. Equivalent to Matlab's
+ std(input). This includes the correction for having an unbiased estimator.
+ */
 Real Std(const std::vector<Real>& input);
 
-// Var (unbiased estimator)
+/** Var (unbiased estimator) */
 Real Var(const std::vector<Real>& input);
   
-// Weighted var (biased estimator)
+/** Weighted var (biased estimator) */
 Real Var(const std::vector<Real>& input, const std::vector<Real>& weights);
   
-// Equivalent to Matlab's xcorr(vect_a, vect_b)
+/** Equivalent to Matlab's xcorr(vect_a, vect_b) */
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b);
 
 
-// Writes the vector into a text file at `file_path` with an endline after
-// each sample.
+/** 
+ Writes the vector into a text file at `file_path` with an endline after
+ each sample.
+ */
 void Save(const std::vector<Real>& vector, const char* file_path);  
   
-// Splits a string using a delimiter.
+/** Splits a string using a delimiter. */
 std::vector<std::string> Split(const std::string& string, char delim);
   
-// Converts roots to polynomial. Equivalent to Matlab's poly(roots)
+/** Converts roots to polynomial. Equivalent to Matlab's poly(roots) */
 std::vector<Complex> Poly(const std::vector<Complex> roots);
 std::vector<Complex> Poly(const std::vector<Real> roots);
   
-// Returns true if all elements are non negative
+/** Returns true if all elements are non negative */
 bool IsNonNegative(const std::vector<Real>& input);
   
-// Test function for the functions in this file
+/** Test function for the functions in this file */
 bool VectorOpTest();
   
 Matrix<Real> Cov(const std::vector<Real>& x, const std::vector<Real>& y);
@@ -338,6 +369,6 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input);
   
 Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y);
   
-} // namespace mcl
+} /**< namespace mcl */
 
 #endif

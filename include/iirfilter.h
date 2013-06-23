@@ -39,47 +39,64 @@ enum WallType {
   ceiling_tile
 };
 
+  
+/** IIR Filter */
 class IirFilter : public DigitalFilter {
 public:
-  // Constructs an IIR filter (II-type direct implementation). B and A are numerator
-  // and denominator of the filter, respectively. hello
+  /** 
+   Constructs an IIR filter (II-type direct implementation). B and A are numerator
+   and denominator of the filter, respectively.
+   */
   IirFilter(std::vector<Real> B,std::vector<Real> A);
   
-  // Returns the output of the filter for an input equal to `input`. 
-  // For example, if B=1, A=1, output will be equal to input. 
-  // As a second example, if B=[0,1], A=[1], you will have 
-  // (1) Filter(0.5)==0 and then
-  // (2) Filter(0.0)==0.5
+  
+  /** 
+   Returns the output of the filter for an input equal to `input`.
+   For example, if B=1, A=1, output will be equal to input. 
+   As a second example, if B=[0,1], A=[1], you will have 
+   (1) Filter(0.5)==0 and then
+   (2) Filter(0.0)==0.5
+   */
   virtual Real Filter(const Real input);
   
-  // Returns the output of the filter for an input signal equal to `input`.
+  /** Returns the output of the filter for an input signal equal to `input`. */
   virtual std::vector<Real> Filter(const std::vector<Real>& input);
   
-  // Updates the filter coefficients. May cause articafts if the coefficients are
-  // updated too rapidly.
+  /** 
+   Updates the filter coefficients. May cause articafts if the coefficients are
+   updated too rapidly.
+   */
   void UpdateFilter(std::vector<Real> B,std::vector<Real> A);
   
-  // Constructs a filter for which output==input always.
+  /** Constructs a filter for which output==input always. */
   static IirFilter IdenticalFilter();
   
-  // Constructs a filter for which output==gain*input always.
+  /** Constructs a filter for which output==gain*input always. */
   static IirFilter GainFilter(const Real gain);
   
-  // Get wall filters of type wall_type and for FS given by sampling_frequency
+  /** 
+   Get wall filters of type wall_type and for FS given by sampling_frequency
+   */
   static IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
   
+  /** Returns a pinkifier filter */
   static IirFilter PinkifierFilter();
   
-  std::vector<Real> B();
+  /** Returns the forward coefficients */
+  std::vector<Real> B() const;
   
-  std::vector<Real> A();
+  /** Returns the backward coefficients */
+  std::vector<Real> A() const;
   
   void Reset();
   
+  /** Tests */
   static bool Test();
   
+  /** Assignment operator */
   IirFilter & operator= (const IirFilter &);
   
+  /** Copy operator */
   IirFilter (const IirFilter&);
   
   virtual ~IirFilter();

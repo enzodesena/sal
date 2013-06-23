@@ -17,16 +17,17 @@
 
 namespace mcl {
   
+/** Digital filter abstract class */
 class DigitalFilter {
 public:
   
-  // Returns the output of the filter for an input equal to `input`.
+  /** Returns the output of the filter for an input equal to `input`. */
   virtual Real Filter(const Real input) = 0;
   
-  // Returns the output of the filter for an input signal equal to `input`.
+  /** Returns the output of the filter for an input signal equal to `input`. */
   virtual std::vector<Real> Filter(const std::vector<Real>& input) = 0;
   
-  // Resets the state of the filter
+  /** Resets the state of the filter */
   virtual void Reset() = 0;
   
   virtual ~DigitalFilter() {};

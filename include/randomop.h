@@ -46,15 +46,22 @@
 
 
 namespace mcl {
-
+/**
+ RandomGenerator class
+ */
 class RandomGenerator {
 public:
   RandomGenerator();
   
-  // Returns a vector containing pseudorandom values drawn from the standard 
-  // normal distribution. Equivalent to Matlab's randn(size,1);
+  /** 
+   Returns a vector containing pseudorandom values drawn from the standard
+   normal distribution. Equivalent to Matlab's randn(size,1);
+   */
   std::vector<Real> Randn(const UInt size);
   
+  /** 
+   Testing
+   */
   static bool Test();
 private:
   std::tr1::variate_generator<std::tr1::mt19937, 
