@@ -1,7 +1,6 @@
 Matlab-C++ Library (MCL)
 
 
-
 MCL is a C++ library that implements many of Matlab's functions. The library 
 is written so as to minimise the time needed to port Matlab code to C++. 
 The  main point of departure between the two is that c++ requires the definition 
