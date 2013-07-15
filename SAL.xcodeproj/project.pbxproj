@@ -46,7 +46,7 @@
 		57E74B5B16274A3200C8BDDB /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E91593463700AA6445 /* microphonearray_test.cpp */; };
 		57E74B5C16274A3200C8BDDB /* point_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156EA1593463700AA6445 /* point_test.cpp */; };
 		57E74B5D16274A3200C8BDDB /* stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0EC6C1620AC1800CE61AC /* stream_test.cpp */; };
-		57E74B5E16274A3800C8BDDB /* sat_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E61593462F00AA6445 /* sat_tests.cpp */; };
+		57E74B5E16274A3800C8BDDB /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E61593462F00AA6445 /* sal_tests.cpp */; };
 		57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57EB0A07162C2C8E001CB5E3 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C315D3DF3200D4E64A /* ambisonics_test.cpp */; };
 /* End PBXBuildFile section */
@@ -96,9 +96,9 @@
 
 /* Begin PBXFileReference section */
 		57061AD815B6D6CE000CD42D /* array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = array.h; path = include/array.h; sourceTree = "<group>"; };
-		5713F76E15F38C4800AF1DE2 /* satconstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = satconstants.h; path = include/satconstants.h; sourceTree = "<group>"; };
+		5713F76E15F38C4800AF1DE2 /* salconstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = salconstants.h; path = include/salconstants.h; sourceTree = "<group>"; };
 		57172E9515B07E790066A5D5 /* sphericalheadmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalheadmic_test.cpp; path = src/tests/sphericalheadmic_test.cpp; sourceTree = "<group>"; };
-		5719A9AD15B57CCC000AD692 /* sattypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sattypes.h; path = include/sattypes.h; sourceTree = "<group>"; };
+		5719A9AD15B57CCC000AD692 /* saltypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = saltypes.h; path = include/saltypes.h; sourceTree = "<group>"; };
 		5720520E162488CF00E32B53 /* psrmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = psrmic.h; path = include/psrmic.h; sourceTree = "<group>"; };
 		5720520F1624896A00E32B53 /* psrmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = psrmic.cpp; path = src/psrmic.cpp; sourceTree = "<group>"; };
 		574D27FB161B3ECF00F4A0B1 /* decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = decoder.h; path = include/decoder.h; sourceTree = "<group>"; };
@@ -120,13 +120,13 @@
 		578E967215D128820094FBBE /* freefieldsimulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = freefieldsimulation.cpp; path = src/freefieldsimulation.cpp; sourceTree = "<group>"; };
 		579D2A7515D2B88F00F2ED84 /* freefieldsimulation_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = freefieldsimulation_test.cpp; path = src/tests/freefieldsimulation_test.cpp; sourceTree = "<group>"; };
 		57A0EC6C1620AC1800CE61AC /* stream_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stream_test.cpp; path = src/tests/stream_test.cpp; sourceTree = "<group>"; };
-		57A156C51593457600AA6445 /* SAT_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SAT_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		57A156C51593457600AA6445 /* SAL_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SAL_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A156DC1593460A00AA6445 /* kemarmic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = kemarmic.cpp; path = src/kemarmic.cpp; sourceTree = "<group>"; };
 		57A156DF1593460A00AA6445 /* microphone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = microphone.cpp; path = src/microphone.cpp; sourceTree = "<group>"; };
 		57A156E01593460A00AA6445 /* microphonearray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = microphonearray.cpp; path = src/microphonearray.cpp; sourceTree = "<group>"; };
 		57A156E11593460A00AA6445 /* point.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = point.cpp; path = src/point.cpp; sourceTree = "<group>"; };
 		57A156E31593460A00AA6445 /* source.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = source.cpp; path = src/source.cpp; sourceTree = "<group>"; };
-		57A156E61593462F00AA6445 /* sat_tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sat_tests.cpp; path = src/targets/sat_tests.cpp; sourceTree = "<group>"; };
+		57A156E61593462F00AA6445 /* sal_tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sal_tests.cpp; path = src/targets/sal_tests.cpp; sourceTree = "<group>"; };
 		57A156E81593463700AA6445 /* microphone_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = microphone_test.cpp; path = src/tests/microphone_test.cpp; sourceTree = "<group>"; };
 		57A156E91593463700AA6445 /* microphonearray_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = microphonearray_test.cpp; path = src/tests/microphonearray_test.cpp; sourceTree = "<group>"; };
 		57A156EA1593463700AA6445 /* point_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = point_test.cpp; path = src/tests/point_test.cpp; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		57A156F61593464300AA6445 /* wavhandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = wavhandler.h; path = include/wavhandler.h; sourceTree = "<group>"; };
 		57A156F81593464B00AA6445 /* sndfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sndfile.h; path = include/lib/sndfile.h; sourceTree = "<group>"; };
 		57A156F91593464B00AA6445 /* sndfile.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = sndfile.hh; path = include/lib/sndfile.hh; sourceTree = "<group>"; };
-		57A1574515934AEC00AA6445 /* libSAT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSAT.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57A1574515934AEC00AA6445 /* libSAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57CFD4EC1636E94100EB98A6 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = lib/libsndfile.a; sourceTree = "<group>"; };
 		57F7B3BF15D3DE7000D4E64A /* ambisonics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ambisonics.h; path = include/ambisonics.h; sourceTree = "<group>"; };
 		57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics.cpp; path = src/ambisonics.cpp; sourceTree = "<group>"; };
@@ -190,8 +190,8 @@
 		57A156C61593457600AA6445 /* targets */ = {
 			isa = PBXGroup;
 			children = (
-				57A156C51593457600AA6445 /* SAT_test */,
-				57A1574515934AEC00AA6445 /* libSAT.a */,
+				57A156C51593457600AA6445 /* SAL_test */,
+				57A1574515934AEC00AA6445 /* libSAL.a */,
 			);
 			name = targets;
 			sourceTree = "<group>";
@@ -228,7 +228,7 @@
 				57F7B3BF15D3DE7000D4E64A /* ambisonics.h */,
 				574D27FB161B3ECF00F4A0B1 /* decoder.h */,
 				57061AD815B6D6CE000CD42D /* array.h */,
-				5713F76E15F38C4800AF1DE2 /* satconstants.h */,
+				5713F76E15F38C4800AF1DE2 /* salconstants.h */,
 				578ABDFF15AC9E3100966F2E /* kemarmic.h */,
 				578ABE0115ACA8BB00966F2E /* sphericalheadmic.h */,
 				57A156F01593464300AA6445 /* microphone.h */,
@@ -236,7 +236,7 @@
 				57A156ED1593464300AA6445 /* monomics.h */,
 				57A156F11593464300AA6445 /* microphonearray.h */,
 				57A156F31593464300AA6445 /* point.h */,
-				5719A9AD15B57CCC000AD692 /* sattypes.h */,
+				5719A9AD15B57CCC000AD692 /* saltypes.h */,
 				574D27FC161B3F5900F4A0B1 /* stream.h */,
 				578E967015D1279D0094FBBE /* freefieldsimulation.h */,
 				57A156F51593464300AA6445 /* source.h */,
@@ -265,7 +265,7 @@
 		57A156E41593460E00AA6445 /* targets */ = {
 			isa = PBXGroup;
 			children = (
-				57A156E61593462F00AA6445 /* sat_tests.cpp */,
+				57A156E61593462F00AA6445 /* sal_tests.cpp */,
 			);
 			name = targets;
 			sourceTree = "<group>";
@@ -311,9 +311,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		57A156C41593457600AA6445 /* SAT_test */ = {
+		57A156C41593457600AA6445 /* SAL_test */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAT_test" */;
+			buildConfigurationList = 57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL_test" */;
 			buildPhases = (
 				57A156C11593457600AA6445 /* Sources */,
 				57A156C21593457600AA6445 /* Frameworks */,
@@ -324,14 +324,14 @@
 			dependencies = (
 				578E225617160A3300BEA03C /* PBXTargetDependency */,
 			);
-			name = SAT_test;
+			name = SAL_test;
 			productName = SAT;
-			productReference = 57A156C51593457600AA6445 /* SAT_test */;
+			productReference = 57A156C51593457600AA6445 /* SAL_test */;
 			productType = "com.apple.product-type.tool";
 		};
-		57A1574415934AEC00AA6445 /* SAT */ = {
+		57A1574415934AEC00AA6445 /* SAL */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57A1574615934AEC00AA6445 /* Build configuration list for PBXNativeTarget "SAT" */;
+			buildConfigurationList = 57A1574615934AEC00AA6445 /* Build configuration list for PBXNativeTarget "SAL" */;
 			buildPhases = (
 				57A1574115934AEC00AA6445 /* Sources */,
 				57A1574215934AEC00AA6445 /* Frameworks */,
@@ -342,9 +342,9 @@
 			dependencies = (
 				57A3C9CA17160DEB0007BDAD /* PBXTargetDependency */,
 			);
-			name = SAT;
+			name = SAL;
 			productName = SAT;
-			productReference = 57A1574515934AEC00AA6445 /* libSAT.a */;
+			productReference = 57A1574515934AEC00AA6445 /* libSAL.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -355,7 +355,7 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 			};
-			buildConfigurationList = 57A156BF1593457600AA6445 /* Build configuration list for PBXProject "SAT" */;
+			buildConfigurationList = 57A156BF1593457600AA6445 /* Build configuration list for PBXProject "SAL" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -373,8 +373,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				57A156C41593457600AA6445 /* SAT_test */,
-				57A1574415934AEC00AA6445 /* SAT */,
+				57A156C41593457600AA6445 /* SAL_test */,
+				57A1574415934AEC00AA6445 /* SAL */,
 			);
 		};
 /* End PBXProject section */
@@ -408,7 +408,7 @@
 				57895F7C16305460002C962B /* propagationline.cpp in Sources */,
 				57EB0A07162C2C8E001CB5E3 /* ambisonics_test.cpp in Sources */,
 				57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */,
-				57E74B5E16274A3800C8BDDB /* sat_tests.cpp in Sources */,
+				57E74B5E16274A3800C8BDDB /* sal_tests.cpp in Sources */,
 				57E74B5616274A3200C8BDDB /* sphericalheadmic_test.cpp in Sources */,
 				57E74B5716274A3200C8BDDB /* kemarmic_test.cpp in Sources */,
 				57E74B5816274A3200C8BDDB /* psrmic_test.cpp in Sources */,
@@ -544,7 +544,7 @@
 				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SAL_test;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\"";
 			};
 			name = Debug;
@@ -568,7 +568,7 @@
 				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SAL_test;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\"";
 			};
 			name = Release;
@@ -589,7 +589,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "-DNDEBUG";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SAL;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/**";
@@ -612,7 +612,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "-DNDEBUG";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SAL;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/**";
@@ -622,7 +622,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		57A156BF1593457600AA6445 /* Build configuration list for PBXProject "SAT" */ = {
+		57A156BF1593457600AA6445 /* Build configuration list for PBXProject "SAL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57A156CD1593457600AA6445 /* Debug */,
@@ -631,7 +631,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAT_test" */ = {
+		57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL_test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57A156D01593457600AA6445 /* Debug */,
@@ -640,7 +640,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		57A1574615934AEC00AA6445 /* Build configuration list for PBXNativeTarget "SAT" */ = {
+		57A1574615934AEC00AA6445 /* Build configuration list for PBXNativeTarget "SAL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57A1574715934AEC00AA6445 /* Debug */,

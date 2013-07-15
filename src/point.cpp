@@ -1,6 +1,6 @@
 /*
  point.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -9,12 +9,12 @@
  */
 
 #include "point.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include <cmath>
 #include "equalityop.h"
-#include "satconstants.h"
+#include "salconstants.h"
 
-namespace sat {
+namespace sal {
 
 Point::Point() {}
 
@@ -173,4 +173,4 @@ Point Point::Normalized(Point point) {
   return point;
 }
   
-} // namespace sat
+} // namespace sal

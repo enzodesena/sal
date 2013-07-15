@@ -1,6 +1,6 @@
 /*
  decoder
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -8,12 +8,12 @@
  
  */
 
-#ifndef SAT_decoder_h
-#define SAT_decoder_h
+#ifndef SAL_decoder_h
+#define SAL_decoder_h
 
 #include "stream.h"
 
-namespace sat {
+namespace sal {
 
 class Decoder {
 public:
@@ -60,6 +60,6 @@ private:
   std::vector<MonoStream*> input_streams_;
 };
 
-} // namespace sat
+} // namespace sal
 
 #endif

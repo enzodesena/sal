@@ -1,6 +1,6 @@
 /*
  source.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,17 +8,17 @@
  
  */
 
-#ifndef SAT_SOURCE_H
-#define SAT_SOURCE_H
+#ifndef SAL_SOURCE_H
+#define SAL_SOURCE_H
 
 
-#include "sattypes.h"
+#include "saltypes.h"
 #include "point.h"
 #include "stream.h"
 #include "wavhandler.h"
 #include <vector>
 
-namespace sat {
+namespace sal {
 
 class Source {
 public:
@@ -44,6 +44,6 @@ private:
   Point position_;
 };
 
-} // namespace sat
+} // namespace sal
 
 #endif

@@ -1,6 +1,6 @@
 /*
  propagationline.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,15 +8,15 @@
  
  */
 
-#ifndef SAT_PROPAGATIONLINE_H
-#define SAT_PROPAGATIONLINE_H
+#ifndef SAL_PROPAGATIONLINE_H
+#define SAL_PROPAGATIONLINE_H
 
 #include "delayfilter.h"
 #include "delayfilter.h"
 #include "iirfilter.h"
 #include "point.h"
 
-namespace sat {
+namespace sal {
 // This describes a simple propagation line. It has one input and one output
 // and models the delay between them. It also models attenuation between these
 // two points, following 1/r rule. This object can also handle changes in the 
@@ -26,20 +26,20 @@ public:
   // This constructs a `PropagationLine` object. You need to feed the `distance`
   // between the two points, the `sampling_frequency` and the maximum distance
   // you expect that this propagaiton line may have.
-  PropagationLine(const sat::Length distance, 
-                  const sat::Time sampling_frequency, 
-                  const sat::Length max_distance = 100);
+  PropagationLine(const sal::Length distance, 
+                  const sal::Time sampling_frequency, 
+                  const sal::Length max_distance = 100);
   
-  sat::Sample gain() const;
+  sal::Sample gain() const;
   
   // This overwrites the 1/r rule attenuation.
-  void set_gain(const sat::Sample);
+  void set_gain(const sal::Sample);
   
-  inline void Write(const sat::Sample &sample) {
+  inline void Write(const sal::Sample &sample) {
     delay_filter_.Write(sample);
   }
   
-  inline sat::Sample Read() const { return delay_filter_.Read() * gain_; }
+  inline sal::Sample Read() const { return delay_filter_.Read() * gain_; }
   
   inline void Tick() { delay_filter_.Tick(); }
   
@@ -47,22 +47,22 @@ public:
   // according to 1/r law. You need to be careful with this method, 
   // since if the distance is changed too fast, sound distortion will be 
   // observed.
-  void set_distance(const sat::Length distance);
+  void set_distance(const sal::Length distance);
   
-  sat::Time latency() const;
+  sal::Time latency() const;
   
   static bool Test();
 private:
   DelayFilter delay_filter_;
-  static sat::Time ComputeLatency(const sat::Length,
-                                      const sat::Time);
+  static sal::Time ComputeLatency(const sal::Length,
+                                      const sal::Time);
   
-  static sat::Sample ComputeGain(const sat::Length,
-                                     const sat::Time);
-  sat::Sample gain_;
-  sat::Time sampling_frequency_;
+  static sal::Sample ComputeGain(const sal::Length,
+                                     const sal::Time);
+  sal::Sample gain_;
+  sal::Time sampling_frequency_;
 };
 
-} // namespace sat
+} // namespace sal
   
 #endif

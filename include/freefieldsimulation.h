@@ -1,6 +1,6 @@
 /*
  simulation.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
 
@@ -11,17 +11,17 @@
  
  */
 
-#ifndef SAT_SIMULATION_H
-#define SAT_SIMULATION_H
+#ifndef SAL_SIMULATION_H
+#define SAL_SIMULATION_H
 
 #include "source.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include "point.h"
 #include "microphone.h"
 #include "propagationline.h"
 #include <vector>
 
-namespace sat {
+namespace sal {
   
 class FreeFieldSim {
 public:
@@ -86,6 +86,6 @@ private:
   Speed sound_speed_;
 };
   
-} // namespace sat
+} // namespace sal
 
 #endif

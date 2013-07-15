@@ -1,6 +1,6 @@
 /*
  microphone_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -15,7 +15,7 @@
 #include "sphericalheadmic.h"
 #include "mcl.h"
 
-namespace sat {
+namespace sal {
 
 bool Microphone::Test() {
   using mcl::IsEqual;
@@ -82,5 +82,5 @@ bool Microphone::Test() {
   return true;
 }
 
-} // namespace sat
+} // namespace sal
 

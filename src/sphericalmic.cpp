@@ -1,6 +1,6 @@
 /*
  directivityspherical.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -9,10 +9,10 @@
  */
 
 #include "sphericalheadmic.h"
-#include "satconstants.h"
+#include "salconstants.h"
 #include <cmath>
 
-namespace sat {
+namespace sal {
 SphericalHeadMic::SphericalHeadMic(const Point position,
                                    const Angle theta,
                                    const Angle phi,
@@ -234,7 +234,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
     
     // Calculate delay due to propagation around the head
     Angle theta_0 = acos(sphere_radius/source_distance);
-    sat::Length distance;
+    sal::Length distance;
     if (theta < theta_0 || theta > (2.0*PI-theta_0)) {
       distance = sqrt(pow(source_distance,2.0) + pow(sphere_radius,2.0)
                       - 2.0*source_distance*sphere_radius*cos(theta));
@@ -265,4 +265,4 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
 //                                 sampling_frequency_);
 //}
   
-} // namespace sat
+} // namespace sal

@@ -1,6 +1,6 @@
 /*
- sattypes.h
- Spatial Audio Toolbox (SAT)
+ saltypes.h
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,12 +10,12 @@
  
  */
 
-#ifndef SAT_TYPES_H
-#define SAT_TYPES_H
+#ifndef SAL_TYPES_H
+#define SAL_TYPES_H
 
 #include <vector>
 
-namespace sat {
+namespace sal {
 
 typedef double Sample;
 typedef double Time;
@@ -41,7 +41,7 @@ enum Ear {
 
   
   
-} // namespace sat
+} // namespace sal
 
 
 

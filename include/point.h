@@ -1,6 +1,6 @@
 /*
  point.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,14 +8,14 @@
  
  */
 
-#ifndef SAT_POINT_H
-#define SAT_POINT_H
+#ifndef SAL_POINT_H
+#define SAL_POINT_H
 
-#include "sattypes.h"
+#include "saltypes.h"
 #include <cmath>
 #include "equalityop.h"
 
-namespace sat {
+namespace sal {
 
 class Point {
 public:
@@ -99,6 +99,6 @@ private:
   Length z_;
 };
 
-} // namespace sat
+} // namespace sal
 
 #endif

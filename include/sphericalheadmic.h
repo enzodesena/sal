@@ -1,6 +1,6 @@
 /*
  directivityhrtf.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,17 +8,17 @@
  
  */
 
-#ifndef SAT_DIRECTIVITYSPHERICAL_H
-#define SAT_DIRECTIVITYSPHERICAL_H
+#ifndef SAL_DIRECTIVITYSPHERICAL_H
+#define SAL_DIRECTIVITYSPHERICAL_H
 
 #include "microphone.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include "kemarmic.h"
 #include "mcl.h"
 #include "stream.h"
 #include <map>
 
-namespace sat {
+namespace sal {
 
 class SHMicInstance;
   
@@ -129,6 +129,6 @@ private:
 };
 
   
-} // namespace sat
+} // namespace sal
 
 #endif

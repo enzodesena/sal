@@ -1,6 +1,6 @@
 /*
  directivityhrtf.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,8 +8,8 @@
  
  */
 
-#ifndef SAT_DIRECTIVITYHRTF_H
-#define SAT_DIRECTIVITYHRTF_H
+#ifndef SAL_DIRECTIVITYHRTF_H
+#define SAL_DIRECTIVITYHRTF_H
 
 #define NUM_ELEVATIONS 14
 #define MAX_NUM_AZIMUTHS 72
@@ -19,12 +19,12 @@
 #include <vector>
 #include "microphone.h"
 #include "mcl.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include "stream.h"
 #include "array.h"
 
 
-namespace sat {
+namespace sal {
 
 class KemarMicInstance;
   
@@ -106,6 +106,6 @@ private:
 };
 
   
-} // namespace sat
+} // namespace sal
 
 #endif

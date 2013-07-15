@@ -1,6 +1,6 @@
 /*
  directivityfunction.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -11,9 +11,9 @@
 #include "kemarmic.h"
 #include "mcl.h"
 #include "point.h"
-#include "satconstants.h"
+#include "salconstants.h"
 
-namespace sat {
+namespace sal {
 
 void KemarMic::RecordPlaneWaveRelative(const Sample& sample,
                                        const Point& point,
@@ -208,4 +208,4 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth,
 }
   
   
-} // namespace sat
+} // namespace sal

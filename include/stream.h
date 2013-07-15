@@ -1,6 +1,6 @@
 /*
  stream.
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -8,16 +8,16 @@
  
  */
 
-#ifndef SAT_stream_h
-#define SAT_stream_h
+#ifndef SAL_stream_h
+#define SAL_stream_h
 
-#include "sattypes.h"
+#include "saltypes.h"
 #include <queue>
 #include <vector>
 #include <map>
 #include <assert.h>
 
-namespace sat {
+namespace sal {
   
 // 
 class Stream {
@@ -276,6 +276,6 @@ private:
   bool initialised_;
 };
   
-} // namespace sat
+} // namespace sal
 
 #endif

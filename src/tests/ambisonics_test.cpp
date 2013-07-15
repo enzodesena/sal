@@ -1,6 +1,6 @@
 /*
  ambisonics_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -13,7 +13,7 @@
 #include "stream.h"
 #include "mcl.h"
 
-namespace sat {
+namespace sal {
   
 bool AmbisonicsMic::Test() {
   using mcl::IsEqual;
@@ -277,4 +277,4 @@ bool AmbisonicsHorizDec::Test() {
 }
   
   
-} // namespace sat
+} // namespace sal

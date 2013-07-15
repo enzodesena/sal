@@ -1,6 +1,6 @@
 /*
  propagationline.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -9,14 +9,14 @@
  */
 
 #include "propagationline.h"
-#include "satconstants.h"
+#include "salconstants.h"
 #include "delayfilter.h"
 
-using sat::Length;
-using sat::Time;
-using sat::Sample;
+using sal::Length;
+using sal::Time;
+using sal::Sample;
 
-namespace sat {
+namespace sal {
 
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
@@ -50,7 +50,7 @@ Sample PropagationLine::ComputeGain(const Length distance,
   return (Sample) 1.0 /ComputeLatency(distance, sampling_frequency);
 }
 
-} // namespace sat
+} // namespace sal
 
 
 

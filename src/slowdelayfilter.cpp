@@ -1,6 +1,6 @@
 /*
  slowdelayfilter.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -9,14 +9,14 @@
  */
 
 #include "slowdelayfilter.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include <cassert>
 #include <iostream>
 
-using sat::Sample;
-using sat::UInt;
+using sal::Sample;
+using sal::UInt;
 
-namespace sat {
+namespace sal {
 
 SlowDelayFilter::SlowDelayFilter(UInt latency, UInt max_latency) :
         latency_(latency),
@@ -63,7 +63,7 @@ SlowDelayFilter& SlowDelayFilter::operator= (const SlowDelayFilter& other) {
 
 
 void SlowDelayFilter::set_latency(const UInt latency) {
-  using sat::Int;
+  using sal::Int;
   if (abs(((int) latency)-((int)latency_)) <= MAX_LATENCY_JUMP) {
     UpdateLatency(latency);
     target_latency_ = latency;
@@ -87,8 +87,8 @@ void SlowDelayFilter::UpdateLatency(const UInt latency) {
 }
 
 void SlowDelayFilter::Tick() {
-  using sat::Int;
-  using sat::UInt;
+  using sal::Int;
+  using sal::UInt;
   
   if (target_latency_ != latency_) {
     if (++chasing_latency_index_ >= UPDATE_STEP) {
@@ -109,4 +109,4 @@ void SlowDelayFilter::Tick() {
 
 
 
-} // namespace sat
+} // namespace sal

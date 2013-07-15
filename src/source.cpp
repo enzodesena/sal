@@ -1,6 +1,6 @@
 /*
  source.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,10 +10,10 @@
 
 #include "source.h"
 #include <vector>
-#include "sattypes.h"
+#include "saltypes.h"
 #include "stream.h"
 
-namespace sat {
+namespace sal {
 // This class represents an acoustic source. It plays back a signal and is 
 // located in a given position.
 // TODO: Add source directivity.
@@ -28,4 +28,4 @@ Point Source::position() const { return position_; }
 
 void Source::set_position(const Point position) { position_ = position; }
   
-} // namespace sat
+} // namespace sal

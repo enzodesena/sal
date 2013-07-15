@@ -1,6 +1,6 @@
 /*
  wavhandler.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,7 +10,7 @@
 
 #include "wavhandler.h"
 
-namespace sat {
+namespace sal {
 
 std::vector<Signal> WavHandler::Read(const std::string file_name) {
   SNDFILE* input_file;
@@ -122,4 +122,4 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   delete [] samples;
 }
   
-} // namespace sat
+} // namespace sal

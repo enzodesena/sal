@@ -1,6 +1,6 @@
 /*
  omnimicrophones.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,16 +8,16 @@
  
  */
 
-#ifndef SAT_DIRECTIVITYFUNCTION_H
-#define SAT_DIRECTIVITYFUNCTION_H
+#ifndef SAL_DIRECTIVITYFUNCTION_H
+#define SAL_DIRECTIVITYFUNCTION_H
 
 #include "mcl.h"
 #include "point.h"
-#include "satconstants.h"
+#include "salconstants.h"
 #include "stream.h"
 #include "microphone.h"
 
-namespace sat {
+namespace sal {
   
 class MonoMic : public Microphone {
 public:
@@ -98,7 +98,7 @@ public:
 
 
 
-} // namespace sat
+} // namespace sal
   
 #endif
 

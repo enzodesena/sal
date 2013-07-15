@@ -1,6 +1,6 @@
 /*
  delayfilter.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -11,10 +11,10 @@
 #include "delayfilter.h"
 #include <cassert>
 
-using sat::Sample;
-using sat::UInt;
+using sal::Sample;
+using sal::UInt;
 
-namespace sat {
+namespace sal {
 
 DelayFilter::DelayFilter(UInt latency, UInt max_latency) :
         latency_(latency) {
@@ -71,4 +71,4 @@ UInt DelayFilter::max_latency() const { return max_latency_; }
 
 
 
-} // namespace sat
+} // namespace sal

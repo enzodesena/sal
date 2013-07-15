@@ -1,6 +1,6 @@
 /*
  sdnc_tests.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -21,18 +21,18 @@
 #include "wavhandler.h"
 
 int main(int argc, char * const argv[]) {
-  sat::KemarMic::Test();
-  sat::Point::Test();
-  sat::Stream::Test();
-  sat::Microphone::Test();
-  sat::PSRMic::Test();
-  sat::SphericalHeadMic::Test();
-  sat::MicrophoneArray::Test();
-  sat::AmbisonicsMic::Test();
-  sat::AmbisonicsHorizDec::Test();
-  sat::DelayFilter::Test();
-  sat::PropagationLine::Test();
-  sat::FreeFieldSim::Test();
+  sal::KemarMic::Test();
+  sal::Point::Test();
+  sal::Stream::Test();
+  sal::Microphone::Test();
+  sal::PSRMic::Test();
+  sal::SphericalHeadMic::Test();
+  sal::MicrophoneArray::Test();
+  sal::AmbisonicsMic::Test();
+  sal::AmbisonicsHorizDec::Test();
+  sal::DelayFilter::Test();
+  sal::PropagationLine::Test();
+  sal::FreeFieldSim::Test();
   
   std::cout<<"All tests succeded!\n";
     

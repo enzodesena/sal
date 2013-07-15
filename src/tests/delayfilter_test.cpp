@@ -1,6 +1,6 @@
 /*
  delayfilter_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -12,7 +12,7 @@
 #include "mcl.h"
 
 
-namespace sat {
+namespace sal {
 
 bool DelayFilter::Test() {
   using mcl::IsEqual;
@@ -178,4 +178,4 @@ bool DelayFilter::Test() {
   return true;
 }
 
-} // namespace sat
+} // namespace sal

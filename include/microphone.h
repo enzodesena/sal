@@ -1,6 +1,6 @@
 /*
  microphone.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -9,8 +9,8 @@
  */
 
 
-#ifndef SAT_MICROPHONE_H
-#define SAT_MICROPHONE_H
+#ifndef SAL_MICROPHONE_H
+#define SAL_MICROPHONE_H
 
 #include "mcl.h"
 #include "point.h"
@@ -19,7 +19,7 @@
 #include <assert.h>
 #include <map>
 
-namespace sat {
+namespace sal {
 
 class Microphone {
 public:
@@ -152,6 +152,6 @@ protected:
   StereoStream stream_;
 };
   
-} // namespace sat
+} // namespace sal
 
 #endif

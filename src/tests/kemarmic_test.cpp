@@ -1,6 +1,6 @@
 /*
  directivitykemar_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -11,9 +11,9 @@
 #include "kemarmic.h"
 #include "mcl.h"
 #include "microphone.h"
-#include "satconstants.h"
+#include "salconstants.h"
 
-namespace sat {
+namespace sal {
   
 bool KemarMic::Test() {
   using mcl::IsEqual;
@@ -208,5 +208,5 @@ bool KemarMic::Test() {
   return true;
 }
   
-} // namespace sat
+} // namespace sal
 

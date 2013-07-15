@@ -1,6 +1,6 @@
 /*
  point_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,11 +10,11 @@
 
 #include "point.h"
 #include "mcl.h"
-#include "sattypes.h"
-#include "satconstants.h"
+#include "saltypes.h"
+#include "salconstants.h"
 #include <cmath>
 
-namespace sat {
+namespace sal {
 
 bool Point::Test() {
   const Angle pi = 4*atan(1);
@@ -148,4 +148,4 @@ bool Point::Test() {
   return true;
 }
 
-} // namespace sat
+} // namespace sal

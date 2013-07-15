@@ -1,6 +1,6 @@
 /*
  microphonearray.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,21 +8,21 @@
  
  */
 
-#ifndef SAT_MICROPHONEARRAY_H
-#define SAT_MICROPHONEARRAY_H
+#ifndef SAL_MICROPHONEARRAY_H
+#define SAL_MICROPHONEARRAY_H
 
 
 #include "microphone.h"
 #include "point.h"
 #include "source.h"
 #include "microphone.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include "stream.h"
-#include "satconstants.h"
+#include "salconstants.h"
 #include "monomics.h"
 #include "psrmic.h"
 
-namespace sat {
+namespace sal {
 
   
 // An array of microphone each with monophonic outputs
@@ -157,6 +157,6 @@ private:
   std::vector<PSRMic> microphones_;
 };
 
-} // namespace sat
+} // namespace sal
   
 #endif

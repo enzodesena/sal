@@ -1,6 +1,6 @@
 /*
  wavhandler.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -8,17 +8,17 @@
  
  */
 
-#ifndef SAT_WAVHANDLER_H
-#define SAT_WAVHANDLER_H
+#ifndef SAL_WAVHANDLER_H
+#define SAL_WAVHANDLER_H
 
 
-#include "sattypes.h"
+#include "saltypes.h"
 #include <vector>
 #include <iostream>
 #include "sndfile.hh"
 #include "mcl.h"
 
-namespace sat {
+namespace sal {
 
 class WavHandler {
 public:
@@ -36,6 +36,6 @@ static void Write(const StereoSignal& stereo_signals,
                   std::string file_name);
 };
   
-} // namespace sat
+} // namespace sal
 
 #endif

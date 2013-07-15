@@ -1,6 +1,6 @@
 /*
  ambisonics.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -15,7 +15,7 @@
 #include "mcl.h"
 #include "matrixop.h"
 
-namespace sat {
+namespace sal {
 
 void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,
                                             const Point& point,
@@ -351,4 +351,4 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const UInt order,
   return mcl::IirFilter(B, A);
 }
 
-} // namespace sat
+} // namespace sal

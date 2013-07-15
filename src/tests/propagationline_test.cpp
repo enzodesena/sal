@@ -1,6 +1,6 @@
 /*
  propagationline_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,18 +10,18 @@
 
 
 #include "propagationline.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include "mcl.h"
-#include "satconstants.h"
+#include "salconstants.h"
 
 using mcl::IsEqual;
-using sat::Length;
-using sat::Time;
-using sat::Point;
-using sat::Sample;
+using sal::Length;
+using sal::Time;
+using sal::Point;
+using sal::Sample;
 
 
-namespace sat {
+namespace sal {
 
 bool PropagationLine::Test() {
 
@@ -74,4 +74,4 @@ bool PropagationLine::Test() {
   return true;
 }
 
-} // namespace sat
+} // namespace sal

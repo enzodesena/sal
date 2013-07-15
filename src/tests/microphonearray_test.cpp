@@ -1,6 +1,6 @@
 /*
  microphonearray_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,9 +10,9 @@
 
 #include "microphone.h"
 #include "microphonearray.h"
-#include "satconstants.h"
+#include "salconstants.h"
 
-namespace sat {
+namespace sal {
 
   
 bool MicrophoneArray::Test() {
@@ -73,4 +73,4 @@ bool MicrophoneArray::Test() {
   return true;
 }
 
-} // namespace sat
+} // namespace sal

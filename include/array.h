@@ -1,6 +1,6 @@
 /*
  array.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,10 +10,10 @@
  
  */
 
-#ifndef SAT_ARRAY_H
-#define SAT_ARRAY_H
+#ifndef SAL_ARRAY_H
+#define SAL_ARRAY_H
 
-namespace sat {
+namespace sal {
 
 template<typename T, std::size_t N> 
 class Array {
@@ -26,6 +26,6 @@ public:
   }
 };
 
-} // namespace sat
+} // namespace sal
   
 #endif

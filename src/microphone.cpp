@@ -1,6 +1,6 @@
 /*
  microphone.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -10,7 +10,7 @@
 
 #include "microphone.h"
 
-namespace sat {
+namespace sal {
 
 Point Microphone::position() const { return position_; }
 
@@ -76,4 +76,4 @@ Point Microphone::GetRelativePoint(const Point& point) const {
 }
   
   
-} // namespace sat
+} // namespace sal

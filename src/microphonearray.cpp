@@ -1,6 +1,6 @@
 /*
  microphonearray.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -12,7 +12,7 @@
 #include "microphonearray.h"
 #include <vector>
 
-namespace sat {
+namespace sal {
 
   
 void MicrophoneArray::RecordPlaneWaveRelative(const Sample& sample,
@@ -198,4 +198,4 @@ StereoPSR::StereoPSR(const Point& position,
   
   
   
-} // namespace sat
+} // namespace sal

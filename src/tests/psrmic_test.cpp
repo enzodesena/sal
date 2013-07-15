@@ -1,6 +1,6 @@
 /*
  directivitypsr_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -14,7 +14,7 @@
 #include "psrmic.h"
 #include "stream.h"
 
-namespace sat {
+namespace sal {
   
 bool PSRMic::Test() {
   using mcl::IsEqual;
@@ -124,5 +124,5 @@ bool PSRMic::Test() {
   return true;
 }
   
-} // namespace sat
+} // namespace sal
 

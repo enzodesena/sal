@@ -1,6 +1,6 @@
 /*
  directivityspherical_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -11,9 +11,9 @@
 #include "sphericalheadmic.h"
 #include "mcl.h"
 #include "microphone.h"
-#include "satconstants.h"
+#include "salconstants.h"
 
-namespace sat {
+namespace sal {
   
   bool SphericalHeadMic::Test() {
     using mcl::Complex;
@@ -154,4 +154,4 @@ namespace sat {
     return true;
   }
   
-} // namespace sat
+} // namespace sal

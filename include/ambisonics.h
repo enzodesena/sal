@@ -1,6 +1,6 @@
 /*
  ambisonics.h
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -11,8 +11,8 @@
  
  */
 
-#ifndef SAT_HOA_H
-#define SAT_HOA_H
+#ifndef SAL_HOA_H
+#define SAL_HOA_H
 
 
 #include "microphone.h"
@@ -21,7 +21,7 @@
 #include "decoder.h"
 #include "microphonearray.h"
 
-namespace sat {
+namespace sal {
 
 
 class AmbisonicsMic : public Microphone {
@@ -156,7 +156,7 @@ private:
 };
   
   
-} // namespace sat
+} // namespace sal
 
 #endif
 

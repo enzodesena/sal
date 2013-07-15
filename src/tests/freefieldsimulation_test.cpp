@@ -1,6 +1,6 @@
 /*
  freefieldsimulation_test.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
@@ -12,7 +12,7 @@
 #include "microphone.h"
 #include "monomics.h"
 
-namespace sat {
+namespace sal {
   
 bool FreeFieldSim::Test() {
   Time sampling_frequency = 44100;
@@ -62,4 +62,4 @@ bool FreeFieldSim::Test() {
   return true;
 }
   
-} // namespace sat
+} // namespace sal

@@ -1,6 +1,6 @@
 /*
  simulation.cpp
- Spatial Audio Toolbox (SAT)
+ Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
@@ -14,7 +14,7 @@
 
 
 #include "freefieldsimulation.h"
-#include "sattypes.h"
+#include "saltypes.h"
 #include "propagationline.h"
 #include "point.h"
 #include "source.h"
@@ -22,7 +22,7 @@
 #include "mcl.h"
 #include <vector>
 
-namespace sat {
+namespace sal {
   
 FreeFieldSim::FreeFieldSim(std::vector<Microphone*> microphones,
                            std::vector<Source*> sources,
@@ -193,4 +193,4 @@ Length FreeFieldSim::MaximumDistance(const std::vector<Microphone*>& microphones
 }
   
 
-} // namespace sat
+} // namespace sal
