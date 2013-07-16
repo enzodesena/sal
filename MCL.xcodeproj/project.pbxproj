@@ -10,20 +10,25 @@
 		571F9A5817955B160059A90D /* statisticsop.h in Headers */ = {isa = PBXBuildFile; fileRef = 571F9A5717955B160059A90D /* statisticsop.h */; };
 		571F9A5B17955BD60059A90D /* statisticsop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5917955BD60059A90D /* statisticsop.cpp */; };
 		571F9A5C17955BD60059A90D /* statisticsop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5917955BD60059A90D /* statisticsop.cpp */; };
-		571F9A6017955C560059A90D /* statisticsop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5E17955C560059A90D /* statisticsop_test.cpp */; };
-		57325DC11642D09A001A3E17 /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C3B15EE8B0100363B9A /* basicop_test.cpp */; };
+		571F9A6A1795AA8B0059A90D /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A611795AA8B0059A90D /* basicop_test.cpp */; };
+		571F9A6B1795AA8B0059A90D /* digitalfilter_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A621795AA8B0059A90D /* digitalfilter_test.cpp */; };
+		571F9A6C1795AA8B0059A90D /* elementaryop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A631795AA8B0059A90D /* elementaryop_test.cpp */; };
+		571F9A6D1795AA8B0059A90D /* matrixop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A641795AA8B0059A90D /* matrixop_test.cpp */; };
+		571F9A6E1795AA8B0059A90D /* pointwiseop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A651795AA8B0059A90D /* pointwiseop_test.cpp */; };
+		571F9A6F1795AA8B0059A90D /* random_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A661795AA8B0059A90D /* random_test.cpp */; };
+		571F9A701795AA8B0059A90D /* statisticsop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A671795AA8B0059A90D /* statisticsop_test.cpp */; };
+		571F9A711795AA8B0059A90D /* transformop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A681795AA8B0059A90D /* transformop_test.cpp */; };
+		571F9A721795AA8B0059A90D /* vectorop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A691795AA8B0059A90D /* vectorop_test.cpp */; };
 		573F9FA21662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		573F9FA31662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
 		5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
-		5778D81415B616710015AAC9 /* digitalfilter_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D81315B616710015AAC9 /* digitalfilter_test.cpp */; };
 		57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
 		57A1571C1593475D00AA6445 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
 		57B71D14162DD231003411BA /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
 		57B71D15162DD231003411BA /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
-		57B726E716F921FE00139116 /* matrixop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B726E616F921FE00139116 /* matrixop_test.cpp */; };
 		57BA700015B42297002F077F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
 		57BA700115B42297002F077F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
 		57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700B15B42BBD002F077F /* vectorop.cpp */; };
@@ -37,11 +42,6 @@
 		57BA701C15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701D15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701F15B49459002F077F /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701E15B49459002F077F /* mcl_test.cpp */; };
-		57CA3C3915EE745900363B9A /* vectorop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C3715EE745900363B9A /* vectorop_test.cpp */; };
-		57CA3C4315EE8B2C00363B9A /* elementaryop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4115EE8B2C00363B9A /* elementaryop_test.cpp */; };
-		57CA3C4615EE8B4700363B9A /* transformop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4415EE8B4700363B9A /* transformop_test.cpp */; };
-		57CA3C4915EE8B5F00363B9A /* pointwiseop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4715EE8B5F00363B9A /* pointwiseop_test.cpp */; };
-		57CA3C4C15EE8C0D00363B9A /* random_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CA3C4A15EE8C0D00363B9A /* random_test.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,14 +59,21 @@
 /* Begin PBXFileReference section */
 		571F9A5717955B160059A90D /* statisticsop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = statisticsop.h; path = include/statisticsop.h; sourceTree = "<group>"; };
 		571F9A5917955BD60059A90D /* statisticsop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop.cpp; path = src/statisticsop.cpp; sourceTree = "<group>"; };
-		571F9A5E17955C560059A90D /* statisticsop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop_test.cpp; path = src/test/statisticsop_test.cpp; sourceTree = "<group>"; };
+		571F9A611795AA8B0059A90D /* basicop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop_test.cpp; path = test/basicop_test.cpp; sourceTree = "<group>"; };
+		571F9A621795AA8B0059A90D /* digitalfilter_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = digitalfilter_test.cpp; path = test/digitalfilter_test.cpp; sourceTree = "<group>"; };
+		571F9A631795AA8B0059A90D /* elementaryop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = elementaryop_test.cpp; path = test/elementaryop_test.cpp; sourceTree = "<group>"; };
+		571F9A641795AA8B0059A90D /* matrixop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop_test.cpp; path = test/matrixop_test.cpp; sourceTree = "<group>"; };
+		571F9A651795AA8B0059A90D /* pointwiseop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pointwiseop_test.cpp; path = test/pointwiseop_test.cpp; sourceTree = "<group>"; };
+		571F9A661795AA8B0059A90D /* random_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = random_test.cpp; path = test/random_test.cpp; sourceTree = "<group>"; };
+		571F9A671795AA8B0059A90D /* statisticsop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop_test.cpp; path = test/statisticsop_test.cpp; sourceTree = "<group>"; };
+		571F9A681795AA8B0059A90D /* transformop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = transformop_test.cpp; path = test/transformop_test.cpp; sourceTree = "<group>"; };
+		571F9A691795AA8B0059A90D /* vectorop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vectorop_test.cpp; path = test/vectorop_test.cpp; sourceTree = "<group>"; };
 		573F9FA01662799800929EE2 /* matrixop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop.cpp; path = src/matrixop.cpp; sourceTree = "<group>"; };
 		5778D80915B616260015AAC9 /* digitalfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = digitalfilter.h; path = include/digitalfilter.h; sourceTree = "<group>"; };
 		5778D80A15B616260015AAC9 /* firfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = firfilter.h; path = include/firfilter.h; sourceTree = "<group>"; };
 		5778D80B15B616260015AAC9 /* iirfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iirfilter.h; path = include/iirfilter.h; sourceTree = "<group>"; };
 		5778D80D15B616320015AAC9 /* firfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = firfilter.cpp; path = src/firfilter.cpp; sourceTree = "<group>"; };
 		5778D80E15B616320015AAC9 /* iirfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iirfilter.cpp; path = src/iirfilter.cpp; sourceTree = "<group>"; };
-		5778D81315B616710015AAC9 /* digitalfilter_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = digitalfilter_test.cpp; path = src/test/digitalfilter_test.cpp; sourceTree = "<group>"; };
 		57A1565615933BB600AA6445 /* kiss_fft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = src/lib/kiss_fft.c; sourceTree = "<group>"; };
 		57A1565915933BCC00AA6445 /* mcl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mcl.h; path = include/mcl.h; sourceTree = "<group>"; };
 		57A1565A15933BD400AA6445 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = include/lib/_kiss_fft_guts.h; sourceTree = "<group>"; };
@@ -76,7 +83,6 @@
 		57A158AC1593501200AA6445 /* libMCL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B71D12162DD224003411BA /* randomop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = randomop.h; path = include/randomop.h; sourceTree = "<group>"; };
 		57B71D13162DD231003411BA /* randomop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = randomop.cpp; path = src/randomop.cpp; sourceTree = "<group>"; };
-		57B726E616F921FE00139116 /* matrixop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop_test.cpp; path = src/test/matrixop_test.cpp; sourceTree = "<group>"; };
 		57BA6FFC15B41B55002F077F /* pointwiseop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pointwiseop.h; path = include/pointwiseop.h; sourceTree = "<group>"; };
 		57BA6FFE15B421F5002F077F /* matrixop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = matrixop.h; path = include/matrixop.h; sourceTree = "<group>"; };
 		57BA6FFF15B42297002F077F /* pointwiseop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pointwiseop.cpp; path = src/pointwiseop.cpp; sourceTree = "<group>"; };
@@ -92,12 +98,6 @@
 		57BA701A15B49263002F077F /* basicop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = basicop.h; path = include/basicop.h; sourceTree = "<group>"; };
 		57BA701B15B492D4002F077F /* basicop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop.cpp; path = src/basicop.cpp; sourceTree = "<group>"; };
 		57BA701E15B49459002F077F /* mcl_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mcl_test.cpp; path = src/targets/mcl_test.cpp; sourceTree = "<group>"; };
-		57CA3C3715EE745900363B9A /* vectorop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vectorop_test.cpp; path = src/test/vectorop_test.cpp; sourceTree = "<group>"; };
-		57CA3C3B15EE8B0100363B9A /* basicop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop_test.cpp; path = src/test/basicop_test.cpp; sourceTree = "<group>"; };
-		57CA3C4115EE8B2C00363B9A /* elementaryop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = elementaryop_test.cpp; path = src/test/elementaryop_test.cpp; sourceTree = "<group>"; };
-		57CA3C4415EE8B4700363B9A /* transformop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = transformop_test.cpp; path = src/test/transformop_test.cpp; sourceTree = "<group>"; };
-		57CA3C4715EE8B5F00363B9A /* pointwiseop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pointwiseop_test.cpp; path = src/test/pointwiseop_test.cpp; sourceTree = "<group>"; };
-		57CA3C4A15EE8C0D00363B9A /* random_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = random_test.cpp; path = src/test/random_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,15 +143,15 @@
 		57A1565315933B9500AA6445 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				57B726E616F921FE00139116 /* matrixop_test.cpp */,
-				57CA3C3B15EE8B0100363B9A /* basicop_test.cpp */,
-				5778D81315B616710015AAC9 /* digitalfilter_test.cpp */,
-				57CA3C4115EE8B2C00363B9A /* elementaryop_test.cpp */,
-				57CA3C4715EE8B5F00363B9A /* pointwiseop_test.cpp */,
-				57CA3C4A15EE8C0D00363B9A /* random_test.cpp */,
-				57CA3C4415EE8B4700363B9A /* transformop_test.cpp */,
-				57CA3C3715EE745900363B9A /* vectorop_test.cpp */,
-				571F9A5E17955C560059A90D /* statisticsop_test.cpp */,
+				571F9A611795AA8B0059A90D /* basicop_test.cpp */,
+				571F9A621795AA8B0059A90D /* digitalfilter_test.cpp */,
+				571F9A631795AA8B0059A90D /* elementaryop_test.cpp */,
+				571F9A641795AA8B0059A90D /* matrixop_test.cpp */,
+				571F9A651795AA8B0059A90D /* pointwiseop_test.cpp */,
+				571F9A661795AA8B0059A90D /* random_test.cpp */,
+				571F9A671795AA8B0059A90D /* statisticsop_test.cpp */,
+				571F9A681795AA8B0059A90D /* transformop_test.cpp */,
+				571F9A691795AA8B0059A90D /* vectorop_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -188,6 +188,7 @@
 				57A1565115933B8A00AA6445 /* include */,
 				57B8B237159339E70030B619 /* src */,
 				57B8B2271593398E0030B619 /* bin */,
+				57A1565315933B9500AA6445 /* test */,
 			);
 			sourceTree = "<group>";
 		};
@@ -215,7 +216,6 @@
 				57BA700B15B42BBD002F077F /* vectorop.cpp */,
 				57BA701715B4915E002F077F /* transformop.cpp */,
 				57A1565415933B9B00AA6445 /* lib */,
-				57A1565315933B9500AA6445 /* test */,
 				57A1566015933C5200AA6445 /* targets */,
 			);
 			name = src;
@@ -319,7 +319,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57325DC11642D09A001A3E17 /* basicop_test.cpp in Sources */,
 				57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
 				57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */,
@@ -330,17 +329,18 @@
 				57BA701F15B49459002F077F /* mcl_test.cpp in Sources */,
 				5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */,
-				5778D81415B616710015AAC9 /* digitalfilter_test.cpp in Sources */,
-				57CA3C3915EE745900363B9A /* vectorop_test.cpp in Sources */,
-				57CA3C4315EE8B2C00363B9A /* elementaryop_test.cpp in Sources */,
-				57CA3C4615EE8B4700363B9A /* transformop_test.cpp in Sources */,
-				57CA3C4915EE8B5F00363B9A /* pointwiseop_test.cpp in Sources */,
-				57CA3C4C15EE8C0D00363B9A /* random_test.cpp in Sources */,
 				57B71D14162DD231003411BA /* randomop.cpp in Sources */,
 				573F9FA21662799800929EE2 /* matrixop.cpp in Sources */,
-				57B726E716F921FE00139116 /* matrixop_test.cpp in Sources */,
 				571F9A5B17955BD60059A90D /* statisticsop.cpp in Sources */,
-				571F9A6017955C560059A90D /* statisticsop_test.cpp in Sources */,
+				571F9A6A1795AA8B0059A90D /* basicop_test.cpp in Sources */,
+				571F9A6B1795AA8B0059A90D /* digitalfilter_test.cpp in Sources */,
+				571F9A6C1795AA8B0059A90D /* elementaryop_test.cpp in Sources */,
+				571F9A6D1795AA8B0059A90D /* matrixop_test.cpp in Sources */,
+				571F9A6E1795AA8B0059A90D /* pointwiseop_test.cpp in Sources */,
+				571F9A6F1795AA8B0059A90D /* random_test.cpp in Sources */,
+				571F9A701795AA8B0059A90D /* statisticsop_test.cpp in Sources */,
+				571F9A711795AA8B0059A90D /* transformop_test.cpp in Sources */,
+				571F9A721795AA8B0059A90D /* vectorop_test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

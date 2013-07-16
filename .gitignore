@@ -1,4 +1,3 @@
-doc
 include/lib/_kiss_fft_guts.h
 include/lib/kiss_fft.h
 include/lib/kissfft.hh
