@@ -24,11 +24,11 @@ int main (int argc, char * const argv[]) {
   PointWiseOpTest();
   TransformOpTest();
   MatrixOpTest();
+  StatisticsOpTest();
   
   IirFilter::Test();
   FirFilter::Test();
   RandomGenerator::Test();
-  
   
   std::cout<<"All tests succeded!\n";
   
