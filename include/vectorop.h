@@ -1,6 +1,6 @@
 /*
  vectorop.h
- Matlab Cpp Library (MCL)
+ MCL
  
  This contains vector operations. This only include simple operations on vectors
  such as: creating a vector, zero padding, getting a subset, flipping etc.

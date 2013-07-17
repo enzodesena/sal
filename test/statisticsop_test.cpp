@@ -1,6 +1,6 @@
 /*
  statisticsop_test.cpp
- Matlab Cpp Library (MCL)
+ MCL
  Copyright (c) 2013, Enzo De Sena
  All rights reserved.
  

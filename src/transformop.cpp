@@ -1,6 +1,6 @@
 /*
  transformop.cpp
- Matlab Cpp Library (MCL)
+ MCL
  
  This contains transforming operations (fft, ifft, hilbert...)
  

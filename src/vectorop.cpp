@@ -1,6 +1,6 @@
 /*
  vectorop.cpp
- Matlab Cpp Library (MCL)
+ MCL
  
  This contains vector operations.
  

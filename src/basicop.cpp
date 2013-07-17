@@ -1,6 +1,6 @@
 /*
  basicinformationop.cpp
- Matlab Cpp Library (MCL)
+ MCL
  
  Authors: Enzo De Sena, enzodesena@me.com
  

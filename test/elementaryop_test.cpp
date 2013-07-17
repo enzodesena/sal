@@ -1,6 +1,6 @@
 /*
  elementaryop_test.cpp
- Matlab Cpp Library (MCL)
+ MCL
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  

@@ -1,6 +1,6 @@
 /*
  matrixop.h
- Matlab Cpp Library (MCL)
+ MCL
  
  Authors: Enzo De Sena, enzodesena@me.com
  
@@ -92,7 +92,7 @@ public:
   /** Returns the number of rows */
   UInt num_rows() const { return num_rows_; }
   
-  /** returns the number of columns */
+  /** Returns the number of columns */
   UInt num_columns() const { return num_columns_; }
   
   /** Writes the matrix to a file */

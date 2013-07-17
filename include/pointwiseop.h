@@ -1,6 +1,6 @@
 /*
  pointwise.h
- Matlab Cpp Library (MCL)
+ MCL
  
  This contains vector point-wise operations
  

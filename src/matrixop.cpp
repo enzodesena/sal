@@ -1,6 +1,6 @@
 /*
  matrixop.h
- Matlab Cpp Library (MCL)
+ MCL
  
  This contains matrix operations.
  
