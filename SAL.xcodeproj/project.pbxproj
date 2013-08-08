@@ -21,12 +21,10 @@
 		57895F7A16305460002C962B /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5C16304F18002C962B /* delayfilter.cpp */; };
 		57895F7B16305460002C962B /* slowdelayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F6616304F9E002C962B /* slowdelayfilter.cpp */; };
 		57895F7C16305460002C962B /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
-		578E225717160A3700BEA03C /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 578E225417160A1800BEA03C /* libMCL.a */; };
 		57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
 		57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57A1574F15934AFF00AA6445 /* point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E11593460A00AA6445 /* point.cpp */; };
 		57A1575115934AFF00AA6445 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
-		57A3C9CC17160DF10007BDAD /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 578E225417160A1800BEA03C /* libMCL.a */; };
 		57A79245163E9C360063863D /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		57A79246163E9C540063863D /* freefieldsimulation_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579D2A7515D2B88F00F2ED84 /* freefieldsimulation_test.cpp */; };
 		57CFD4EE1636E95E00EB98A6 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CFD4EC1636E94100EB98A6 /* libsndfile.a */; };
@@ -49,33 +47,35 @@
 		57E74B5E16274A3800C8BDDB /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E61593462F00AA6445 /* sal_tests.cpp */; };
 		57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57EB0A07162C2C8E001CB5E3 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C315D3DF3200D4E64A /* ambisonics_test.cpp */; };
+		57FE7B4617B41B7E000F7343 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE7B4317B41B6B000F7343 /* libMCL.a */; };
+		57FE7B4917B41B85000F7343 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE7B4317B41B6B000F7343 /* libMCL.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		578E225117160A1800BEA03C /* PBXContainerItemProxy */ = {
+		57FE7B4017B41B6B000F7343 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 578E224C17160A1800BEA03C /* MCL.xcodeproj */;
+			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AA1593501200AA6445;
 			remoteInfo = MCL_test;
 		};
-		578E225317160A1800BEA03C /* PBXContainerItemProxy */ = {
+		57FE7B4217B41B6B000F7343 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 578E224C17160A1800BEA03C /* MCL.xcodeproj */;
+			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AC1593501200AA6445;
 			remoteInfo = MCL;
 		};
-		578E225517160A3300BEA03C /* PBXContainerItemProxy */ = {
+		57FE7B4417B41B79000F7343 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 578E224C17160A1800BEA03C /* MCL.xcodeproj */;
+			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 57A157151593475000AA6445;
 			remoteInfo = MCL;
 		};
-		57A3C9C917160DEB0007BDAD /* PBXContainerItemProxy */ = {
+		57FE7B4717B41B82000F7343 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 578E224C17160A1800BEA03C /* MCL.xcodeproj */;
+			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 57A157151593475000AA6445;
 			remoteInfo = MCL;
@@ -115,7 +115,6 @@
 		57895F77163053BA002C962B /* propagationline_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = propagationline_test.cpp; path = src/tests/propagationline_test.cpp; sourceTree = "<group>"; };
 		578ABDFF15AC9E3100966F2E /* kemarmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kemarmic.h; path = include/kemarmic.h; sourceTree = "<group>"; };
 		578ABE0115ACA8BB00966F2E /* sphericalheadmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sphericalheadmic.h; path = include/sphericalheadmic.h; sourceTree = "<group>"; };
-		578E224C17160A1800BEA03C /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = ../mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 		578E967015D1279D0094FBBE /* freefieldsimulation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = freefieldsimulation.h; path = include/freefieldsimulation.h; sourceTree = "<group>"; };
 		578E967215D128820094FBBE /* freefieldsimulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = freefieldsimulation.cpp; path = src/freefieldsimulation.cpp; sourceTree = "<group>"; };
 		579D2A7515D2B88F00F2ED84 /* freefieldsimulation_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = freefieldsimulation_test.cpp; path = src/tests/freefieldsimulation_test.cpp; sourceTree = "<group>"; };
@@ -143,6 +142,7 @@
 		57F7B3BF15D3DE7000D4E64A /* ambisonics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ambisonics.h; path = include/ambisonics.h; sourceTree = "<group>"; };
 		57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics.cpp; path = src/ambisonics.cpp; sourceTree = "<group>"; };
 		57F7B3C315D3DF3200D4E64A /* ambisonics_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics_test.cpp; path = src/tests/ambisonics_test.cpp; sourceTree = "<group>"; };
+		57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = ../mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 		57FEB1E315C99095009A5644 /* kemarmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kemarmic_test.cpp; path = src/tests/kemarmic_test.cpp; sourceTree = "<group>"; };
 		57FEB1E715C99AD6009A5644 /* psrmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = psrmic_test.cpp; path = src/tests/psrmic_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -152,7 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				578E225717160A3700BEA03C /* libMCL.a in Frameworks */,
+				57FE7B4617B41B7E000F7343 /* libMCL.a in Frameworks */,
 				57CFD4EE1636E95E00EB98A6 /* libsndfile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -161,22 +161,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57A3C9CC17160DF10007BDAD /* libMCL.a in Frameworks */,
+				57FE7B4917B41B85000F7343 /* libMCL.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		578E224D17160A1800BEA03C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				578E225217160A1800BEA03C /* MCL_test */,
-				578E225417160A1800BEA03C /* libMCL.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		57A156BA1593457600AA6445 = {
 			isa = PBXGroup;
 			children = (
@@ -291,10 +282,19 @@
 		57A156FA1593465600AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */,
 				57CFD4EC1636E94100EB98A6 /* libsndfile.a */,
-				578E224C17160A1800BEA03C /* MCL.xcodeproj */,
 			);
 			name = lib;
+			sourceTree = "<group>";
+		};
+		57FE7B3C17B41B6B000F7343 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				57FE7B4117B41B6B000F7343 /* MCL_test */,
+				57FE7B4317B41B6B000F7343 /* libMCL.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,7 +322,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				578E225617160A3300BEA03C /* PBXTargetDependency */,
+				57FE7B4517B41B79000F7343 /* PBXTargetDependency */,
 			);
 			name = SAL_test;
 			productName = SAT;
@@ -340,7 +340,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				57A3C9CA17160DEB0007BDAD /* PBXTargetDependency */,
+				57FE7B4817B41B82000F7343 /* PBXTargetDependency */,
 			);
 			name = SAL;
 			productName = SAT;
@@ -367,8 +367,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 578E224D17160A1800BEA03C /* Products */;
-					ProjectRef = 578E224C17160A1800BEA03C /* MCL.xcodeproj */;
+					ProductGroup = 57FE7B3C17B41B6B000F7343 /* Products */;
+					ProjectRef = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -380,18 +380,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		578E225217160A1800BEA03C /* MCL_test */ = {
+		57FE7B4117B41B6B000F7343 /* MCL_test */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = MCL_test;
-			remoteRef = 578E225117160A1800BEA03C /* PBXContainerItemProxy */;
+			remoteRef = 57FE7B4017B41B6B000F7343 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		578E225417160A1800BEA03C /* libMCL.a */ = {
+		57FE7B4317B41B6B000F7343 /* libMCL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libMCL.a;
-			remoteRef = 578E225317160A1800BEA03C /* PBXContainerItemProxy */;
+			remoteRef = 57FE7B4217B41B6B000F7343 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -452,15 +452,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		578E225617160A3300BEA03C /* PBXTargetDependency */ = {
+		57FE7B4517B41B79000F7343 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
-			targetProxy = 578E225517160A3300BEA03C /* PBXContainerItemProxy */;
+			targetProxy = 57FE7B4417B41B79000F7343 /* PBXContainerItemProxy */;
 		};
-		57A3C9CA17160DEB0007BDAD /* PBXTargetDependency */ = {
+		57FE7B4817B41B82000F7343 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
-			targetProxy = 57A3C9C917160DEB0007BDAD /* PBXContainerItemProxy */;
+			targetProxy = 57FE7B4717B41B82000F7343 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
