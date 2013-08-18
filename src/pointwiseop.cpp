@@ -102,6 +102,13 @@ std::vector<Real> Cos(const std::vector<Real>& vector) {
   for (UInt i=0; i<n; ++i) { output[i] = cos(vector[i]); }
   return output;
 }
+  
+std::vector<Real> Sin(const std::vector<Real>& vector) {
+  UInt n(vector.size());
+  std::vector<Real> output(vector.size());
+  for (UInt i=0; i<n; ++i) { output[i] = sin(vector[i]); }
+  return output;
+}
 
 std::vector<Int> ConvertToInt(const std::vector<UInt>& vector) {
   const UInt length = vector.size();

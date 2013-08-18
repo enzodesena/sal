@@ -139,6 +139,9 @@ std::vector<Real> HalfWave(const std::vector<Real>& vector);
 /** Equivalent to Matlab's cos(vector) */
 std::vector<Real> Cos(const std::vector<Real>& vector);
 
+/** Equivalent to Matlab's sin(vector) */
+std::vector<Real> Sin(const std::vector<Real>& vector);
+  
 /** 
  Returns the natural logarithm of the elements of vector.
  Equivalent to Matlab's log(vector).

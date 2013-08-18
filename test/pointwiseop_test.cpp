@@ -177,6 +177,13 @@ bool PointWiseOpTest() {
   cosvector_cmp[2] = cos(4.0);
   assert(IsEqual(cosvector_cmp, cosvector));
 
+  std::vector<Real> sinvector = Sin(colonop_a_cmp);
+  std::vector<Real> sinvector_cmp(3);
+  sinvector_cmp[0] = sin(2.0);
+  sinvector_cmp[1] = sin(3.0);
+  sinvector_cmp[2] = sin(4.0);
+  assert(IsEqual(sinvector_cmp, sinvector));
+  
   // Testing Divide
 //  std::vector<Real> vector_o = Zeros<Real>(3);
 //  vector_o[0] = 1.0;
