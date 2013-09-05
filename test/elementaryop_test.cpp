@@ -121,6 +121,12 @@ bool ElementaryOpTest() {
   assert(IsEqual(Entropy(pdf_2, exp(1)), 0.693147180559945));
   assert(IsEqual(Entropy(pdf_2, 2.0), 1.0));
   
+  assert(Factorial(0) == 1);
+  assert(Factorial(1) == 1);
+  assert(Factorial(2) == 2);
+  assert(Factorial(3) == 6);
+  assert(Factorial(6) == 720);
+  assert(Factorial(9) == 362880);
   
   return true;
 }

@@ -63,6 +63,9 @@ UInt Next2(UInt input);
 /** Converts a string to a double */
 double StringToDouble(const std::string& s);
   
+/** Equivalent to Matlab's factorial(input) */
+UInt Factorial(const UInt input);
+  
   
 /** 
  Returns true if the imaginary part is approximately zero. The precision used
