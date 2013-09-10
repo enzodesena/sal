@@ -10,9 +10,17 @@
 #include "equalityop.h"
 #include "vectorop.h"
 
+#include <boost/math/special_functions/spherical_harmonic.hpp>
+
 namespace mcl {
 
-
+Real Pow(Real input, Real exponent) {
+  return pow(input, exponent);
+}
+  
+Real Sqrt(Real input) {
+  return sqrt(input);
+}
 
 Int Sign(const Real scalar) {
   if (IsEqual(scalar, 0.0, std::numeric_limits<Real>::epsilon())) { return 0; }
@@ -63,6 +71,10 @@ Real RealPart(Complex scalar) {
   return scalar.real();
 }
   
+Real ImagPart(Complex scalar) {
+  return scalar.imag();
+}
+  
 UInt NextPow2(Real input) { return ceil(log2(fabs(input))); }
 
   
@@ -101,5 +113,21 @@ UInt Factorial(const UInt input) {
   temp = input * Factorial(input - 1);
   return temp;
 }
+
+#if MCL_LOAD_BOOST
+Real AssociatedLegendreP(Int n, Int m, Real x) {
+  if (n < 0) throw; // As in Matlab we don't accept n<0
+  if (m < 0) throw; // As in Matlab we don't accept m<0
+  if (n < m) throw; // As in Matlab we don't accept n<m
+  return boost::math::legendre_p<Real>((int) n, (int) m, x);
+}
+  
+Complex SphericalHarmonic(Int n, Int m, Real theta, Real phi) {
+  return boost::math::spherical_harmonic<Real, Real>((int) n, (int) m,
+                                                     theta, phi);
+}
+#endif
+  
+  
   
 } // namespace mcl

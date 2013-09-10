@@ -471,10 +471,12 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/lib/boost_1_54_0/;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/trunk/lib/;
+				USER_HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/lib/boost_1_54_0/;
 			};
 			name = Debug;
 		};
@@ -487,10 +489,12 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/lib/boost_1_54_0/;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/trunk/lib/;
+				USER_HEADER_SEARCH_PATHS = /Users/enzodesena/repos/mcl/lib/boost_1_54_0/;
 			};
 			name = Release;
 		};

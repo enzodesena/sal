@@ -55,7 +55,7 @@ std::vector<Complex> Conj(const std::vector<Complex>& vector) {
 std::vector<Real> Pow(const std::vector<Real>& vector, Real exponent) {
   std::vector<Real> output(vector.size());
   for (UInt i=0; i<vector.size(); ++i) { 
-    output[i] = pow(vector[i], exponent);
+    output[i] = Pow(vector[i], exponent);
   }
   return output;
 }

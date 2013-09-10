@@ -92,6 +92,11 @@ bool ElementaryOpTest() {
   assert(IsEqual(RealPart(Complex(-0.3,0.5)), -0.3));
   assert(IsEqual(RealPart(Complex(15.6,0.1)), 15.6));
   
+  assert(IsEqual(ImagPart(Complex(-0.3,0.1)), 0.1));
+  assert(IsEqual(ImagPart(Complex(0.3,0.1)), 0.1));
+  assert(IsEqual(ImagPart(Complex(-0.3,0.5)), 0.5));
+  assert(IsEqual(ImagPart(Complex(15.6,0.1)), 0.1));
+  
   assert(Mod((Int) -2, (Int) 4) == 2);
   
   assert(IsEqual(Abs(Complex(0.5, 2.1)), 2.158703314492290));
@@ -127,6 +132,21 @@ bool ElementaryOpTest() {
   assert(Factorial(3) == 6);
   assert(Factorial(6) == 720);
   assert(Factorial(9) == 362880);
+  
+  
+  assert(IsEqual(AssociatedLegendreP(3, 0, 0.8), 0.08));
+  assert(IsEqual(AssociatedLegendreP(3, 1, 0.8), -1.980000000000001));
+  assert(IsEqual(AssociatedLegendreP(3, 2, 0.8), 4.320000000000000));
+  assert(IsEqual(AssociatedLegendreP(3, 3, 0.8), -3.239999999999998));
+  assert(IsEqual(AssociatedLegendreP(1, 0, 0.7), 0.7));
+  assert(IsEqual(AssociatedLegendreP(1, 1, 0.7), -0.714142842854285));
+  assert(IsEqual(AssociatedLegendreP(1, 0, -0.7), -0.7));
+  assert(IsEqual(AssociatedLegendreP(1, 1, -0.7), -0.714142842854285));
+  
+  assert(IsEqual(SphericalHarmonic(4, 4, 1.0, 2.0), Complex(-0.0322823, 0.219511)));
+  assert(IsEqual(SphericalHarmonic(4, 2, 1.5, 2.2), Complex(0.0987125, 0.305646)));
+  assert(IsEqual(SphericalHarmonic(4, -2, 1.5, 2.2), Complex(0.0987125, -0.305646)));
+  
   
   return true;
 }

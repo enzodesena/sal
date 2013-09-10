@@ -11,6 +11,8 @@
 
 #include "mcltypes.h"
 
+#define MCL_LOAD_BOOST 1
+
 namespace mcl {
   
 template<class T>
@@ -43,6 +45,12 @@ Real Abs(Real input);
 /** Equivalent to Matlab's abs(scalar) */
 Real Abs(Complex input);
   
+/** Power function. Equivalent to Matlab's input^exponent. */
+Real Pow(Real input, Real exponent);
+  
+/** Square root function. Equivalent to Matlab's sqrt(input) */
+Real Sqrt(Real input);
+  
 /** 
  Equivalent to Matlab's sign. Returns 1 if the element
  is greater than zero, 0 if it equals zero and -1 if it is less than zero.
@@ -52,7 +60,13 @@ Int Sign(const Real scalar);
 /** Returns the conjugate of the element. Equivalent to Matlab's conj(scalar). */
 Complex Conj(Complex scalar);
 
+/** Returns the real part of a complex scalar. Equivalent to Matlab's 
+ real(scalar). I am calling it `RealPart' since `Real' denotes the number type */
 Real RealPart(Complex scalar);
+  
+/** Returns the imaginary part of a complex scalar. Equivalent to Matlab's
+ imag(scalar). I am calling it `ImagPart' for consistency with `RealPart' */
+Real ImagPart(Complex scalar);
   
 /** Equivalent to Matlab's nextpow2(input) */
 UInt NextPow2(Real input);
@@ -81,6 +95,28 @@ bool IsReal(const std::vector<Complex>& input);
 Real Entropy(std::vector<Real> pdf, Real base);
   
 bool ElementaryOpTest();
+  
+#if MCL_LOAD_BOOST
+/** 
+ Returns the value of the associated Legendre polynomial of degree `n' and
+ order `m' of the values x. Equivalent to the m-th value of the vector
+ returned by Matlab's legendre(n, x) 
+ */
+Real AssociatedLegendreP(Int n, Int m, Real x);
+  
+/** 
+ Returns the value of the spherical harmonic of degree n and order m,
+ and where theta is elevation, measured as the angle formed with the z-axis,
+ and phi is the aximuth, measured as the angle formed with the x-axis.
+ The harmonics are defined as:
+ Y_\ell^m( \theta , \varphi ) =
+ \sqrt{{(2\ell+1)\over 4\pi}{(\ell-m)!\over (\ell+m)!}}  \,
+ P_\ell^m ( \cos{\theta} ) \, e^{i m \varphi }
+ which are orthonormal
+ */
+Complex SphericalHarmonic(Int n, Int m, Real theta, Real phi);
+#endif
+  
   
 } /**< namespace mcl  */
 
