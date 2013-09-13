@@ -16,6 +16,7 @@
 #include <vector>
 #include <map>
 #include <assert.h>
+#include <iostream.h>
 
 namespace sal {
   
@@ -201,21 +202,22 @@ private:
 class BFormatStream : public Stream {
 public:
   
-  inline void Push(UInt order, Int degree, const Sample& sample) {
-    InitOrderDegree(order, degree);
-    streams_[order][degree].Push(sample);
+  inline void Push(UInt degree, Int order, const Sample& sample) {
+    InitOrderDegree(degree, order);
+    streams_[degree][order].Push(sample);
   }
   
-  void Push(UInt order, Int degree, const Signal& signal) {
+  void Push(UInt degree, Int order, const Signal& signal) {
+    InitOrderDegree(degree, order);
     const UInt num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
-      Push(order, degree, signal[i]);
+      Push(degree, order, signal[i]);
     }
   }
   
-  void Add(UInt order, Int degree, Sample sample) {
-    InitOrderDegree(order, degree);
-    streams_[order][degree].Add(sample);
+  void Add(UInt degree, Int order, Sample sample) {
+    InitOrderDegree(degree, order);
+    streams_[degree][order].Add(sample);
   }
   
   void Tick() {
@@ -232,16 +234,16 @@ public:
   
 
   
-  Sample Pull(UInt order, Int degree) {
-    assert(IsDefined(order, degree));
-    return streams_[order][degree].Pull();
+  Sample Pull(UInt degree, Int order) {
+    assert(IsDefined(degree, order));
+    return streams_[degree][order].Pull();
   }
   
   // Returns true if the stream associated to `order` and `degree` is empty.
   // Asserts if that stream is not defined.
-  inline bool IsEmpty(UInt order, Int degree) const {
-    assert(IsDefined(order, degree));
-    return streams_.at(order).at(degree).IsEmpty();
+  inline bool IsEmpty(UInt degree, Int order) const {
+    assert(IsDefined(degree, order));
+    return streams_.at(degree).at(order).IsEmpty();
   }
   
   virtual bool IsEmpty() const {
@@ -254,20 +256,21 @@ public:
   bool initialised() { return initialised_; }
   
 private:
-  inline bool IsDefined(UInt order, Int degree) const {
-    if (streams_.count(order) == 0) { return false; }
-    if (streams_.at(order).count(degree) == 0) { return false; }
+  inline bool IsDefined(UInt degree, Int order) const {
+    if (streams_.count(degree) == 0) { return false; }
+    if (streams_.at(degree).count(order) == 0) { return false; }
     return true;
   }
   
   // Returns true if the new stream was initialised correctly. False if
   // it already existed.
-  bool InitOrderDegree(UInt order, Int degree) {
+  bool InitOrderDegree(UInt degree, Int order) {
+    assert(order<=((Int)degree) & order>=-((Int)degree));
     // Check whether the stream already exists
-    if (IsDefined(order, degree)) { return false; }
+    if (IsDefined(degree, order)) { return false; }
     
     // Create new stream
-    streams_[order][degree] = MonoStream();
+    streams_[degree][order] = MonoStream();
     return true;
   }
   

@@ -22,6 +22,7 @@ bool AmbisonicsMic::Test() {
   
   // Testing Ambisonics encoding
   const UInt N = 2; // Ambisonics order
+  
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0,
                       N);
   BFormatStream* stream_a = mic_a.stream();
@@ -42,8 +43,58 @@ bool AmbisonicsMic::Test() {
   assert(IsEqual(stream_a->Pull(2, 1), sample*(-1.414213562373095)));
   assert(IsEqual(stream_a->Pull(2, -1), sample*0.0));
   
+  // Testing Ambisonics encoding
+  const UInt N_b = 3; // Ambisonics order
+  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, N_b, N3D);
+  BFormatStream* stream_b = mic_b.stream();
   
-
+  
+  sample = 0.5;
+  mic_b.RecordPlaneWave(sample, Point(1.0, 0.0, 0.0));
+  
+  // theta and phi are the spherical coordinates in the reference system of:
+  // http://ambisonics.ch/standards/channels/
+  // theta is the azimuth angle (angle formed with x-axis)
+  // phi is the elevation angle (angle formed with the xy-plane)
+  Angle theta = 0;
+  Angle phi = 0;
+  
+  assert(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
+  assert(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
+  assert(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
+  assert(IsEqual(stream_b->Pull(1, -1), sample*cos(phi)*sin(theta)));
+         
+  assert(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
+  assert(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
+  assert(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
+  assert(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
+  assert(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
+  
+  assert(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
+  assert(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*(5*pow(sin(phi),2.0)-1.0)*cos(phi)));
+  assert(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  
+  sample = 0.2;
+  mic_b.RecordPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)));
+  
+  theta = PI/4.0;
+  phi = PI/4.0;
+  
+  assert(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
+  assert(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
+  assert(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
+  assert(IsEqual(stream_b->Pull(1, -1), sample*sqrt(3.0)*cos(phi)*sin(theta)));
+  
+  assert(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
+  assert(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
+  assert(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
+  assert(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
+  assert(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
+  
+  assert(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
+  assert(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*cos(phi)*(5.0*pow(sin(phi),2.0)-1.0)*cos(theta)));
+  assert(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  
   return true;
 }
 

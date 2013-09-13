@@ -53,25 +53,25 @@ bool Stream::Test() {
   
   stream_c.Add(1,0,-1.0);
   stream_c.Add(1,0,0.2);
-  stream_c.Add(0,-1,0.1);
-  stream_c.Add(0,-1,-0.2);
+  stream_c.Add(1,-1,0.1);
+  stream_c.Add(1,-1,-0.2);
   stream_c.Add(0,0,1.0);
   stream_c.Add(0,0,-0.2);
   stream_c.Tick();
   stream_c.Add(1,0,1.0);
   stream_c.Add(1,0,0.2);
-  stream_c.Add(0,-1,0.1);
-  stream_c.Add(0,-1,0.2);
+  stream_c.Add(1,-1,0.1);
+  stream_c.Add(1,-1,0.2);
   stream_c.Add(0,0,-1.0);
   stream_c.Add(0,0,-0.2);
   stream_c.Tick();
   
   assert(IsEqual(stream_c.Pull(1, 0), -0.8));
-  assert(IsEqual(stream_c.Pull(0, -1), -0.1));
+  assert(IsEqual(stream_c.Pull(1, -1), -0.1));
   assert(IsEqual(stream_c.Pull(0, 0), 0.8));
   assert(IsEqual(stream_c.Pull(1, 0), 1.2));
   assert(IsEqual(stream_c.Pull(0, 0), -1.2));
-  assert(IsEqual(stream_c.Pull(0, -1), 0.3));
+  assert(IsEqual(stream_c.Pull(1, -1), 0.3));
   
   MonoStream stream_d;
   stream_d.Push(1.0);

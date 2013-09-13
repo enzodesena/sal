@@ -23,6 +23,10 @@
 
 namespace sal {
 
+enum AmbisonicsConvention {
+  sqrt2,
+  N3D
+};
 
 class AmbisonicsMic : public Microphone {
 public:
@@ -32,8 +36,9 @@ public:
   // if theta = 0.0. I am thinking of soundfield microphone, which is pointing
   // upwards.
   AmbisonicsMic(const Point& position, Angle theta, Angle phi, Angle psi,
-                UInt order) :
-          Microphone(position, theta, phi, psi), order_(order) {}
+                UInt order, AmbisonicsConvention convention = sqrt2) :
+          Microphone(position, theta, phi, psi),
+          order_(order), convention_(convention) {}
   
   virtual void Tick() {
     stream_.Tick();
@@ -52,6 +57,7 @@ private:
   
   const UInt order_;
   BFormatStream stream_;
+  AmbisonicsConvention convention_;
 };
 
   

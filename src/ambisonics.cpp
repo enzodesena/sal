@@ -21,18 +21,52 @@ void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,
                                             const Point& point,
                                             const UInt& wave_id) {
   // Precompute for performance gain
-  const Sample sqrt2 = sqrt(2.0);
-  const Angle point_phi = point.phi();
+  const Angle phi = point.phi();
+  const Angle theta = point.theta();
+  const Sample sqrt_2 = mcl::Sqrt(2.0);
+  const Sample sqrt_4pi = mcl::Sqrt(4.0*PI);
   
-  // Zero-th component
-  stream_.Add(0, 0, 1.0*sample);
-  
-  for (UInt i=1; i<=order_; ++i) {
-    // TODO: add 3D components
-    stream_.Add(i, 1, sqrt2*cos(((Angle) i)*point_phi)*sample);
-    stream_.Add(i, -1, sqrt2*sin(((Angle) i)*point_phi)*sample);
+  switch (convention_) {
+    case sqrt2: {
+      
+      // Zero-th component
+      stream_.Add(0, 0, 1.0*sample);
+      
+      for (UInt i=1; i<=order_; ++i) {
+        // TODO: add 3D components
+        stream_.Add(i, 1, sqrt_2*cos(((Angle) i)*phi)*sample);
+        stream_.Add(i, -1, sqrt_2*sin(((Angle) i)*phi)*sample);
+      }
+      
+      break;
+    }
+    case N3D: {
+      // Zero-th component
+      stream_.Add(0, 0, 1.0*sample);
+      
+      for (UInt degree_n=1; degree_n<=order_; ++degree_n) {
+        for (UInt order_m=0; order_m<=degree_n; ++order_m) {
+          mcl::Complex spherical_harmonic =
+              mcl::Pow(-1.0, (mcl::Real) order_m) *
+              (order_m==0 ? 1.0 : sqrt_2) *
+              sqrt_4pi *
+              mcl::SphericalHarmonic(degree_n, mcl::Abs(order_m), theta, phi);
+          
+          stream_.Add(degree_n, -order_m, mcl::ImagPart(spherical_harmonic)*sample);
+          stream_.Add(degree_n, order_m, mcl::RealPart(spherical_harmonic)*sample);
+          // The order of the two above is not coincidental, since the case
+          // order_m equals zero should give back the non-zero cosine term,
+          // i.e. the one corresponding to the real part.
+        }
+      }
+      
+      break;
+    }
+    default: {
+      assert(false);
+      break;
+    }
   }
-  
 }
 
 std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(UInt order,
