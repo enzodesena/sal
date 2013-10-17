@@ -39,10 +39,9 @@
 
 // Using TR1 and old c++ library
 
-#include <tr1/random>
-#include <sys/time.h>
 #include "mcltypes.h"
 #include <vector>
+#include <random>
 
 
 namespace mcl {
@@ -64,10 +63,9 @@ public:
    */
   static bool Test();
 private:
-  std::tr1::variate_generator<std::tr1::mt19937, 
-  std::tr1::normal_distribution<double> > randn_;
-  std::tr1::variate_generator<std::tr1::mt19937, 
-  std::tr1::normal_distribution<double> > CreateGenerator();
+  std::default_random_engine generator_;
+  std::normal_distribution<double> distribution_;
+  
   
 };
 

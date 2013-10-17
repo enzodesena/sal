@@ -115,7 +115,7 @@ public:
     std::string line;
     std::ifstream in_file (file_name.c_str());
     assert(in_file.is_open());
-      
+    
     // First: lets count the number of rows
     UInt number_of_rows = 0;
     UInt number_of_columns = 0;

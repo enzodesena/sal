@@ -26,26 +26,21 @@
 //} // namespace mcl
 
 #include "randomop.h"
+#include <sys/time.h>
 #include "mcltypes.h"
 #include <vector>
 
 
 namespace mcl {
   
-RandomGenerator::RandomGenerator() : randn_(CreateGenerator()) {}
-
-std::tr1::variate_generator<std::tr1::mt19937, 
-std::tr1::normal_distribution<double> > RandomGenerator::CreateGenerator() {
-  std::tr1::mt19937 prng(time(NULL));
-  std::tr1::normal_distribution<double> normal;
-  std::tr1::variate_generator<std::tr1::mt19937, 
-        std::tr1::normal_distribution<double> > randn(prng,normal);
-  return randn;
+RandomGenerator::RandomGenerator() : distribution_(std::normal_distribution<double>(0.0,1.0)) {
+  generator_.seed((unsigned int) time(NULL));
 }
 
+  
 std::vector<Real> RandomGenerator::Randn(const UInt size) {
   std::vector<Real> output(size);
-  for (UInt i = 0; i < size; i++) { output[i] = randn_(); }
+  for (UInt i = 0; i < size; i++) { output[i] = distribution_(generator_); }
   return output;
 }
 
