@@ -47,7 +47,7 @@ Sample PropagationLine::ComputeGain(const Length distance,
   // Please observe that this gain is actually 1/r rule. In fact, 1/r rule has to be
   // normalized to some value. In this software we choose 
   // (SPEED_OF_SOUND/Fs_) / (distance) i.e. the minimum distance.
-  return (Sample) 1.0 /ComputeLatency(distance, sampling_frequency);
+  return (Sample) 1.0 / ComputeLatency(distance, sampling_frequency);
 }
 
 } // namespace sal

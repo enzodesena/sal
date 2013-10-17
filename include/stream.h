@@ -16,7 +16,7 @@
 #include <vector>
 #include <map>
 #include <assert.h>
-#include <iostream.h>
+#include <iostream>
 
 namespace sal {
   
