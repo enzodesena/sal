@@ -31,6 +31,20 @@ bool RandomGenerator::Test() {
   assert(Abs(Mean(randn_gen.Randn(100000))) < 0.1);
   assert(Abs(Std(randn_gen.Randn(100000))-1.0) < 0.1);
   
+  // Testing uniform distribution
+  assert(! IsEqual(randn_gen.Rand(1), randn_gen.Rand(1)));
+  assert(! IsEqual(randn_gen.Rand(1), randn_gen.Rand(1)));
+  
+  // Test that output is between 0 and 1
+  assert(Abs(randn_gen.Rand(1)[0]-0.5) < 0.5);
+  assert(Abs(randn_gen.Rand(1)[0]-0.5) < 0.5);
+  assert(Abs(randn_gen.Rand(1)[0]-0.5) < 0.5);
+  assert(Abs(randn_gen.Rand(1)[0]-0.5) < 0.5);
+  assert(Abs(randn_gen.Rand(1)[0]-0.5) < 0.5);
+  
+  assert(randn_gen.Rand(5).size() == 5);
+  assert(Abs(Mean(randn_gen.Rand(100000))-0.5)<0.05);
+  
   return true;
 }
 

@@ -58,13 +58,20 @@ public:
    */
   std::vector<Real> Randn(const UInt size);
   
+  /**
+   Returns a vector containing pseudorandom values drawn from the uniform
+    distribution. Equivalent to Matlab's rand(size,1);
+   */
+  std::vector<Real> Rand(const UInt size);
+  
   /** 
    Testing
    */
   static bool Test();
 private:
   std::default_random_engine generator_;
-  std::normal_distribution<double> distribution_;
+  std::normal_distribution<double> distribution_norm_;
+  std::uniform_real_distribution<double> distribution_uniform_;
   
   
 };

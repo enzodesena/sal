@@ -76,7 +76,7 @@
 		5778D80E15B616320015AAC9 /* iirfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iirfilter.cpp; path = src/iirfilter.cpp; sourceTree = "<group>"; };
 		57A1565615933BB600AA6445 /* kiss_fft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = src/lib/kiss_fft.c; sourceTree = "<group>"; };
 		57A1565915933BCC00AA6445 /* mcl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mcl.h; path = include/mcl.h; sourceTree = "<group>"; };
-		57A1565A15933BD400AA6445 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = include/lib/_kiss_fft_guts.h; sourceTree = "<group>"; };
+		57A1565A15933BD400AA6445 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = _kiss_fft_guts.h; path = include/lib/_kiss_fft_guts.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		57A1565B15933BD400AA6445 /* kiss_fft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = include/lib/kiss_fft.h; sourceTree = "<group>"; };
 		57A1565C15933BD400AA6445 /* kissfft.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kissfft.hh; path = include/lib/kissfft.hh; sourceTree = "<group>"; };
 		57A158AA1593501200AA6445 /* MCL_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MCL_test; sourceTree = BUILT_PRODUCTS_DIR; };
