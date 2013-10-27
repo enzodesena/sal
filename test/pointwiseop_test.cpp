@@ -10,7 +10,7 @@
 
 
 #include "pointwiseop.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "vectorop.h"
 #include "mcltypes.h"
 #include <vector>

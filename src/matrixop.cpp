@@ -9,7 +9,7 @@
  */
 
 #include "matrixop.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 
 namespace mcl {
   

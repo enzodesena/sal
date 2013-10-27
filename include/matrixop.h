@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "mcltypes.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "elementaryop.h"
 
 #if LOAD_EIGEN

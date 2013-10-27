@@ -15,7 +15,7 @@
 #include "pointwiseop.h"
 #include "transformop.h"
 #include <cmath>
-#include "equalityop.h"
+#include "comparisonop.h"
 #include <vector>
 
 

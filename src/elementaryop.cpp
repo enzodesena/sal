@@ -7,7 +7,7 @@
  */
 
 #include "elementaryop.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "vectorop.h"
 
 #include <boost/math/special_functions/spherical_harmonic.hpp>

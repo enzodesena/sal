@@ -8,7 +8,7 @@
  
  */
 
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "mcltypes.h"
 #include "vectorop.h"
 #include "statisticsop.h"

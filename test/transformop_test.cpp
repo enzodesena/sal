@@ -10,7 +10,7 @@
 
 
 #include "transformop.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include <vector>
 #include <cassert>
 

@@ -14,7 +14,7 @@
 #include "pointwiseop.h"
 #include "matrixop.h"
 #include "randomop.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "transformop.h"
 #include "basicop.h"
 #include "statisticsop.h"

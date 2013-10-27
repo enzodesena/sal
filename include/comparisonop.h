@@ -1,5 +1,5 @@
 /*
- equalityop.h
+ comparisonop.h
  MCL
  
  Authors: Enzo De Sena, enzodesena@me.com
@@ -27,6 +27,9 @@ bool IsEqual(Complex num_a, Complex num_b, Real precision = VERY_SMALL);
 
 bool IsSmallerOrEqual(const Real num_a, const Real num_b);
   
+bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
+                          const std::vector<Real>& vector_b);
+  
 template<class T>
 bool IsEqual(const std::vector<T>& vector_a,
              const std::vector<T>& vector_b,
@@ -44,6 +47,10 @@ bool IsEqual(const std::vector<T>& vector_a,
 
 bool IsEqual(const std::vector<Int>& vector_a,
              const std::vector<Int>& vector_b);
+  
+  
+  
+bool ComparisonOpTest();
   
 } // namespace mcl
 

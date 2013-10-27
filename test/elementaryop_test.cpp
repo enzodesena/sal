@@ -10,7 +10,7 @@
 
 
 #include "elementaryop.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "mcltypes.h"
 #include <vector>
 #include <cassert>

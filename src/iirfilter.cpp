@@ -10,7 +10,7 @@
 
 #include "iirfilter.h"
 #include <cassert>
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "vectorop.h"
 
 namespace mcl {

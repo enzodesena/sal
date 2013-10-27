@@ -6,7 +6,7 @@
 
  */
 
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "mcltypes.h"
 #include "vectorop.h"
 #include "pointwiseop.h"
@@ -26,6 +26,18 @@ bool IsSmallerOrEqual(const Real num_a, const Real num_b) {
   return num_a <= (num_b + VERY_SMALL);
 }
   
+bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
+                          const std::vector<Real>& vector_b) {
+  if (vector_a.size() != vector_b.size())
+    return false;
+  
+  for (UInt i=0; i<vector_a.size(); ++i) {
+    if (! IsSmallerOrEqual(vector_a[i], vector_b[i])) { return false; }
+  }
+  
+  return true;
+}
+  
 bool IsEqual(Complex num_a, Complex num_b, Real precision) {
   return (fabs(num_a.real() - num_b.real()) < precision) &
   (fabs(num_a.imag() - num_b.imag()) < precision);
@@ -39,8 +51,7 @@ bool IsEqual(const std::vector<Int>& vector_a,
     return false;
   
   for (UInt i=0; i<vector_a.size(); ++i) {
-    if (vector_a[i] != vector_b[i])
-      return false;
+    if (vector_a[i] != vector_b[i]) { return false; }
   }
   return true;
 }
