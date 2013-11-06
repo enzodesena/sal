@@ -95,6 +95,13 @@ std::vector<Real> Log(const std::vector<Real>& vector) {
   for (UInt i=0; i<n; ++i) { output[i] = log(vector[i]); }
   return output;
 }
+  
+std::vector<Real> Log10(const std::vector<Real>& vector) {
+  UInt n(vector.size());
+  std::vector<Real> output(vector.size());
+  for (UInt i=0; i<n; ++i) { output[i] = log10(vector[i]); }
+  return output;
+}
 
 std::vector<Real> Cos(const std::vector<Real>& vector) {
   UInt n(vector.size());

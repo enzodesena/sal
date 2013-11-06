@@ -156,6 +156,12 @@ bool PointWiseOpTest() {
   log_vector_o_cmp[2] = 1.435084525289323;
   assert(IsEqual(log_vector_o_cmp, log_vector_o));
   
+  std::vector<Real> log10_vector_o = Log10(vector_o);
+  std::vector<Real> log10_vector_o_cmp(3);
+  log10_vector_o_cmp[0] = 0.0;
+  log10_vector_o_cmp[1] = 0.397940008672038;
+  log10_vector_o_cmp[2] = 0.623249290397900;
+  assert(IsEqual(log10_vector_o_cmp, log10_vector_o));
   
   std::vector<Complex> exp_vector_a = Exp(vector_a);
   std::vector<Complex> exp_vector_a_cmp(3);

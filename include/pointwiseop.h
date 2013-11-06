@@ -147,7 +147,13 @@ std::vector<Real> Sin(const std::vector<Real>& vector);
  Equivalent to Matlab's log(vector).
  */
 std::vector<Real> Log(const std::vector<Real>& vector);
-
+  
+/**
+ Returns the 10-base logarithm of the elements of vector.
+ Equivalent to Matlab's log10(vector).
+ */
+std::vector<Real> Log10(const std::vector<Real>& vector);
+  
 std::vector<Int> ConvertToInt(const std::vector<UInt>& vector);
   
 bool PointWiseOpTest();
