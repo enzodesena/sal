@@ -557,6 +557,21 @@ bool VectorOpTest() {
   assert(IsEqual(cov_e_f.element(0,1), cov_e_f.element(1,0)));
   assert(IsEqual(cov_e_f.element(0,1), 5.333333333333333));
   
+  // Cumsum
+  //  std::vector<Real> vector_e(4);
+  //  vector_e[0] = -0.3;
+  //  vector_e[1] = 30.3;
+  //  vector_e[2] = 2.4;
+  //  vector_e[3] = 12.4;
+  
+  std::vector<Real> vector_cumsum_e = CumSum(vector_e);
+  std::vector<Real> vector_cumsum_e_cmp(4);
+  vector_cumsum_e_cmp[0] = -0.300000000000000;
+  vector_cumsum_e_cmp[1] = 30.000000000000000;
+  vector_cumsum_e_cmp[2] = 32.399999999999999;
+  vector_cumsum_e_cmp[3] = 44.79999999999999;
+  assert(IsEqual(vector_cumsum_e, vector_cumsum_e_cmp));
+  
   
   
   return true;

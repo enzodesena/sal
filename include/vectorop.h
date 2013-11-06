@@ -369,6 +369,13 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input);
   
 Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y);
   
+/**
+ Returns a vector containing the cumulative sum of
+ the elements of X. Equivalent to Matlab's cumsum(input) 
+ */
+std::vector<Real> CumSum(const std::vector<Real>& input);
+  
+  
 } /**< namespace mcl */
 
 #endif

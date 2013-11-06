@@ -239,6 +239,16 @@ Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y) {
   return output;
 }
   
+std::vector<Real> CumSum(const std::vector<Real>& input) {
+  const UInt N = input.size();
+  std::vector<Real> output(input.size());
+  
+  output[N-1] = Sum(input);
+  for (Int i=N-2; i>=0; --i) { output[i] = output[i+1]-input[i+1]; }
+  
+  return output;
+}
+  
   
   
 } // namespace mcl
