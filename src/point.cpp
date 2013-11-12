@@ -11,7 +11,7 @@
 #include "point.h"
 #include "saltypes.h"
 #include <cmath>
-#include "equalityop.h"
+#include "comparisonop.h"
 #include "salconstants.h"
 
 namespace sal {

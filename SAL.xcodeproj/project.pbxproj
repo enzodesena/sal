@@ -35,6 +35,7 @@
 		57A1574F15934AFF00AA6445 /* point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E11593460A00AA6445 /* point.cpp */; };
 		57A1575115934AFF00AA6445 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
 		57A79245163E9C360063863D /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
+		57BA8AE318225E8000FCA25A /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CFD4EC1636E94100EB98A6 /* libsndfile.a */; };
 		57CFD4EE1636E95E00EB98A6 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CFD4EC1636E94100EB98A6 /* libsndfile.a */; };
 		57D7EB601625CE5A00771188 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		57D7EB611625CE5A00771188 /* microphonearray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E01593460A00AA6445 /* microphonearray.cpp */; };
@@ -162,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57FE7B4917B41B85000F7343 /* libMCL.a in Frameworks */,
+				57BA8AE318225E8000FCA25A /* libsndfile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,7 +595,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "-DNDEBUG";
@@ -618,7 +620,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "-DNDEBUG";

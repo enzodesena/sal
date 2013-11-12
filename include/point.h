@@ -13,7 +13,7 @@
 
 #include "saltypes.h"
 #include <cmath>
-#include "equalityop.h"
+#include "comparisonop.h"
 
 namespace sal {
 

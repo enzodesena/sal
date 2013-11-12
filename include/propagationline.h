@@ -24,8 +24,8 @@ namespace sal {
 class PropagationLine {
 public:
   // This constructs a `PropagationLine` object. You need to feed the `distance`
-  // between the two points, the `sampling_frequency` and the maximum distance
-  // you expect that this propagaiton line may have.
+  // between the two points (in [m]), the `sampling_frequency` and the maximum
+  // distance you expect that this propagaiton line may have.
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100);

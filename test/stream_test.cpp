@@ -9,7 +9,7 @@
  */
 
 #include "stream.h"
-#include "equalityop.h"
+#include "comparisonop.h"
 #include <assert.h>
 
 namespace sal {
