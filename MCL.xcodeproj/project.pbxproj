@@ -42,6 +42,8 @@
 		57BA701C15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701D15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701F15B49459002F077F /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701E15B49459002F077F /* mcl_test.cpp */; };
+		57DB7E7618327D6600B47CEE /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
+		57DB7E7718327D6600B47CEE /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
 		57F0B65B181D8D840095A28F /* comparisonop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F0B659181D8D840095A28F /* comparisonop_test.cpp */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +101,8 @@
 		57BA701A15B49263002F077F /* basicop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = basicop.h; path = include/basicop.h; sourceTree = "<group>"; };
 		57BA701B15B492D4002F077F /* basicop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop.cpp; path = src/basicop.cpp; sourceTree = "<group>"; };
 		57BA701E15B49459002F077F /* mcl_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mcl_test.cpp; path = src/targets/mcl_test.cpp; sourceTree = "<group>"; };
+		57DB7E7418327D5700B47CEE /* butter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = butter.h; path = include/lib/butter.h; sourceTree = "<group>"; };
+		57DB7E7518327D6600B47CEE /* butter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = butter.cpp; path = src/lib/butter.cpp; sourceTree = "<group>"; };
 		57F0B659181D8D840095A28F /* comparisonop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = comparisonop_test.cpp; path = test/comparisonop_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,6 +166,7 @@
 		57A1565415933B9B00AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57DB7E7518327D6600B47CEE /* butter.cpp */,
 				57A1565615933BB600AA6445 /* kiss_fft.c */,
 			);
 			name = lib;
@@ -170,6 +175,7 @@
 		57A1565815933BC100AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57DB7E7418327D5700B47CEE /* butter.h */,
 				57A1565A15933BD400AA6445 /* _kiss_fft_guts.h */,
 				57A1565B15933BD400AA6445 /* kiss_fft.h */,
 				57A1565C15933BD400AA6445 /* kissfft.hh */,
@@ -312,6 +318,7 @@
 				57BA701D15B492D5002F077F /* basicop.cpp in Sources */,
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
+				57DB7E7718327D6600B47CEE /* butter.cpp in Sources */,
 				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
 				573F9FA31662799800929EE2 /* matrixop.cpp in Sources */,
 				571F9A5C17955BD60059A90D /* statisticsop.cpp in Sources */,
@@ -339,6 +346,7 @@
 				571F9A6B1795AA8B0059A90D /* digitalfilter_test.cpp in Sources */,
 				571F9A6C1795AA8B0059A90D /* elementaryop_test.cpp in Sources */,
 				571F9A6D1795AA8B0059A90D /* matrixop_test.cpp in Sources */,
+				57DB7E7618327D6600B47CEE /* butter.cpp in Sources */,
 				571F9A6E1795AA8B0059A90D /* pointwiseop_test.cpp in Sources */,
 				571F9A6F1795AA8B0059A90D /* random_test.cpp in Sources */,
 				571F9A701795AA8B0059A90D /* statisticsop_test.cpp in Sources */,

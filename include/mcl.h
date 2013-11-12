@@ -22,6 +22,7 @@
 #include "digitalfilter.h"
 #include "iirfilter.h"
 #include "firfilter.h"
+#include "butter.h"
   
   
 #endif

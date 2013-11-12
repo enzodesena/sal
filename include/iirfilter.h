@@ -75,6 +75,20 @@ public:
   static IirFilter GainFilter(const Real gain);
   
   /** 
+   Construncts a bandpass butterworth filter. Equivalent to Matlab's
+   butter(order, [w_low, w_high])
+   */
+  static IirFilter Butter(const UInt order,
+                          const Real w_low, const Real w_high);
+  
+  /** Constructs a digital octave filter with given center frequency 
+   and sampling frequency.
+   */
+  static IirFilter OctaveFilter(const UInt order,
+                                const Real center_frequency,
+                                const Real sampling_frequency);
+  
+  /** 
    Get wall filters of type wall_type and for FS given by sampling_frequency
    */
   static IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
@@ -111,6 +125,7 @@ private:
   
   Real* state_;
 };
+    
   
 } // namespace mcl
 

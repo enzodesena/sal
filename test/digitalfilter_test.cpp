@@ -160,6 +160,66 @@ bool FirFilter::Test() {
   filter_f.Reset();
   assert(IsEqual(filter_f.Filter(0.0), 0.0));
   
+  
+  // Testing butterworth filter
+  IirFilter butter_a = IirFilter::Butter(3, 0.2, 0.45);
+  std::vector<Real> butter_a_num_cmp = mcl::Zeros<Real>(7);
+  butter_a_num_cmp[0] = 0.031689343849711;
+  butter_a_num_cmp[2] = -0.095068031549133;
+  butter_a_num_cmp[4] = 0.095068031549133;
+  butter_a_num_cmp[6] = -0.031689343849711;
+  
+  std::vector<Real> butter_a_den_cmp(7);
+  butter_a_den_cmp[0] = 1.000000000000000;
+  butter_a_den_cmp[1] = -2.521796622886441;
+  butter_a_den_cmp[2] = 3.643067063269880;
+  butter_a_den_cmp[3] = -3.325285581665978;
+  butter_a_den_cmp[4] = 2.149206132889376;
+  butter_a_den_cmp[5] = -0.850496842492471;
+  butter_a_den_cmp[6] = 0.197825187264320;
+  
+  assert(IsEqual(butter_a.B(), butter_a_num_cmp));
+  assert(IsEqual(butter_a.A(), butter_a_den_cmp));
+  
+  
+  IirFilter butter_b = IirFilter::Butter(2, 0.12, 0.79);
+  std::vector<Real> butter_b_num_cmp = mcl::Zeros<Real>(5);
+  butter_b_num_cmp[0] = 0.469043625796947;
+  butter_b_num_cmp[2] = -0.938087251593893;
+  butter_b_num_cmp[4] = 0.469043625796947;
+  
+  
+  std::vector<Real> butter_b_den_cmp(5);
+  butter_b_den_cmp[0] = 1.000000000000000;
+  butter_b_den_cmp[1] = -0.388787442245741;
+  butter_b_den_cmp[2] = -0.583519141064213;
+  butter_b_den_cmp[3] = 0.041607774454425;
+  butter_b_den_cmp[4] = 0.243288940651677;
+  
+  assert(IsEqual(butter_b.B(), butter_b_num_cmp));
+  assert(IsEqual(butter_b.A(), butter_b_den_cmp));
+  
+  
+  // Testing octave filter
+  IirFilter octave_a = IirFilter::OctaveFilter(3, 4000.0, 44100.0);
+  std::vector<Real> octave_a_num_cmp = mcl::Zeros<Real>(7);
+  octave_a_num_cmp[0] = 0.005020133201471;
+  octave_a_num_cmp[2] = -0.015060399604412;
+  octave_a_num_cmp[4] = 0.015060399604412;
+  octave_a_num_cmp[6] = -0.005020133201471;
+  
+  std::vector<Real> octave_a_den_cmp(7);
+  octave_a_den_cmp[0] = 1.000000000000000;
+  octave_a_den_cmp[1] = -4.397041740651781;
+  octave_a_den_cmp[2] = 8.729527405676500;
+  octave_a_den_cmp[3] = -9.889119467962011;
+  octave_a_den_cmp[4] = 6.737413381809715;
+  octave_a_den_cmp[5] = -2.619423015108258;
+  octave_a_den_cmp[6] = 0.460896610043675;
+  
+  assert(IsEqual(octave_a.B(), octave_a_num_cmp));
+  assert(IsEqual(octave_a.A(), octave_a_den_cmp));
+  
   return true;
 }
 
