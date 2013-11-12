@@ -92,8 +92,6 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
                                      double Lcutoff,
                                      double Ucutoff,
                                      std::vector<double> DenC) {
-  
-  double Numbers[11]={0,1,2,3,4,5,6,7,8,9,10};
   int i;
   
   std::vector<double> NumCoeffs(2*FilterOrder+1);
