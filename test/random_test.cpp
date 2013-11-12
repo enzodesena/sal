@@ -45,6 +45,11 @@ bool RandomGenerator::Test() {
   assert(randn_gen.Rand(5).size() == 5);
   assert(Abs(Mean(randn_gen.Rand(100000))-0.5)<0.05);
   
+  
+  randn_gen.set_seed(194);
+  assert(IsEqual(randn_gen.Rand(1)[0], 0.496295));
+  assert(IsEqual(randn_gen.Randn(1)[0], -0.755698));
+  
   return true;
 }
 

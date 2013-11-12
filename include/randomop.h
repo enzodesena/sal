@@ -64,6 +64,9 @@ public:
    */
   std::vector<Real> Rand(const UInt size);
   
+  /** Set seed of the for random generator */
+  void set_seed(unsigned int seed) { generator_.seed(seed); }
+  
   /** 
    Testing
    */

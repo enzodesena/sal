@@ -127,12 +127,12 @@
 		57A1565115933B8A00AA6445 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				57BA701A15B49263002F077F /* basicop.h */,
+				57BA701215B43BC9002F077F /* comparisonop.h */,
 				5778D80915B616260015AAC9 /* digitalfilter.h */,
+				57BA700E15B43B07002F077F /* elementaryop.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
 				5778D80B15B616260015AAC9 /* iirfilter.h */,
-				57BA701A15B49263002F077F /* basicop.h */,
-				57BA700E15B43B07002F077F /* elementaryop.h */,
-				57BA701215B43BC9002F077F /* comparisonop.h */,
 				57A1565915933BCC00AA6445 /* mcl.h */,
 				57BA700215B4263D002F077F /* mcltypes.h */,
 				57BA6FFE15B421F5002F077F /* matrixop.h */,
@@ -150,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				571F9A611795AA8B0059A90D /* basicop_test.cpp */,
+				57F0B659181D8D840095A28F /* comparisonop_test.cpp */,
 				571F9A621795AA8B0059A90D /* digitalfilter_test.cpp */,
 				571F9A631795AA8B0059A90D /* elementaryop_test.cpp */,
 				571F9A641795AA8B0059A90D /* matrixop_test.cpp */,
@@ -158,7 +159,6 @@
 				571F9A671795AA8B0059A90D /* statisticsop_test.cpp */,
 				571F9A681795AA8B0059A90D /* transformop_test.cpp */,
 				571F9A691795AA8B0059A90D /* vectorop_test.cpp */,
-				57F0B659181D8D840095A28F /* comparisonop_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -213,17 +213,17 @@
 		57B8B237159339E70030B619 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				57B71D13162DD231003411BA /* randomop.cpp */,
+				57BA701B15B492D4002F077F /* basicop.cpp */,
+				57BA701315B43C60002F077F /* comparisonop.cpp */,
+				57BA700F15B43B64002F077F /* elementaryop.cpp */,
 				5778D80D15B616320015AAC9 /* firfilter.cpp */,
 				5778D80E15B616320015AAC9 /* iirfilter.cpp */,
-				57BA701B15B492D4002F077F /* basicop.cpp */,
-				57BA700F15B43B64002F077F /* elementaryop.cpp */,
 				573F9FA01662799800929EE2 /* matrixop.cpp */,
-				57BA701315B43C60002F077F /* comparisonop.cpp */,
-				571F9A5917955BD60059A90D /* statisticsop.cpp */,
 				57BA6FFF15B42297002F077F /* pointwiseop.cpp */,
-				57BA700B15B42BBD002F077F /* vectorop.cpp */,
+				57B71D13162DD231003411BA /* randomop.cpp */,
+				571F9A5917955BD60059A90D /* statisticsop.cpp */,
 				57BA701715B4915E002F077F /* transformop.cpp */,
+				57BA700B15B42BBD002F077F /* vectorop.cpp */,
 				57A1565415933B9B00AA6445 /* lib */,
 				57A1566015933C5200AA6445 /* targets */,
 			);
