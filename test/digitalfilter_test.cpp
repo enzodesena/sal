@@ -237,6 +237,13 @@ bool FirFilter::Test() {
   assert(IsEqual(octave_bank_b.Filter(5.0)[1], octave_a.Filter(5.0)));
   assert(octave_bank_b.Filter(1.25).size() == 2);
   
+  octave_a.Reset();
+  octave_bank_b.Reset();
+  assert(IsEqual(octave_bank_b.Filter(1.25)[1], octave_a.Filter(1.25)));
+  assert(IsEqual(octave_bank_b.Filter(0.25)[1], octave_a.Filter(0.25)));
+  assert(IsEqual(octave_bank_b.Filter(5.0)[1], octave_a.Filter(5.0)));
+  assert(octave_bank_b.Filter(1.25).size() == 2);
+  
   return true;
 }
 
