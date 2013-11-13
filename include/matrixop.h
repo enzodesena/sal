@@ -45,6 +45,24 @@ public:
     }
   }
   
+  /**
+   Constructs a matrix from a vector of vectors (outer vector represents rows)
+   */
+  Matrix(const std::vector<std::vector<T> > vectors) {
+    num_rows_ = vectors.size();
+    if (num_rows_ > 0) {
+      num_columns_ = vectors[0].size();
+      for (UInt i=1; i<num_rows_; ++i) {
+        // Check that all rows have the same number of columns
+        assert(vectors[i].size() == num_columns_);
+      }
+      data_ = vectors;
+    }
+    else {
+      num_columns_ = 0;
+    }
+  }
+  
   /** Sets element in given row and column */
   void set_element(UInt index_row, UInt index_column, T element) {
     assert(index_row>=0 & index_row<num_rows_);
