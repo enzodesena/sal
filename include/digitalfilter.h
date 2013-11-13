@@ -46,6 +46,8 @@ public:
   /** Resets the state of the filter */
   virtual void Reset() = 0;
   
+  virtual UInt num_filters() = 0;
+  
   virtual ~FilterBank() {};
 };
   

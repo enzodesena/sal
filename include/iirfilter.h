@@ -134,6 +134,8 @@ private:
 public:
   IirFilterBank(const std::vector<IirFilter>& filters) : filters_(filters) {}
   
+  virtual UInt num_filters() { return filters_.size(); }
+  
   /** Returns the output of the filter bank for an input equal to `input`. */
   virtual std::vector<Real> Filter(const Real input);
   
