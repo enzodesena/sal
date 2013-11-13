@@ -220,6 +220,23 @@ bool FirFilter::Test() {
   assert(IsEqual(octave_a.B(), octave_a_num_cmp));
   assert(IsEqual(octave_a.A(), octave_a_den_cmp));
   
+  
+  // Testing iir filter bank
+  IirFilterBank
+  octave_bank_a = IirFilterBank::OctaveFilterBank(3, 1, 4000.0, 44100.0);
+  assert(IsEqual(octave_bank_a.Filter(1.25)[0], octave_a.Filter(1.25)));
+  assert(IsEqual(octave_bank_a.Filter(0.25)[0], octave_a.Filter(0.25)));
+  assert(IsEqual(octave_bank_a.Filter(5.0)[0], octave_a.Filter(5.0)));
+  assert(octave_bank_a.Filter(1.25).size() == 1);
+  
+  IirFilterBank
+  octave_bank_b = IirFilterBank::OctaveFilterBank(3, 2, 2000.0, 44100.0);
+  octave_a.Reset();
+  assert(IsEqual(octave_bank_b.Filter(1.25)[1], octave_a.Filter(1.25)));
+  assert(IsEqual(octave_bank_b.Filter(0.25)[1], octave_a.Filter(0.25)));
+  assert(IsEqual(octave_bank_b.Filter(5.0)[1], octave_a.Filter(5.0)));
+  assert(octave_bank_b.Filter(1.25).size() == 2);
+  
   return true;
 }
 

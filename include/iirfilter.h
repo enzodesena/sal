@@ -125,6 +125,30 @@ private:
   
   Real* state_;
 };
+  
+/** Filter bank abstract class */
+class IirFilterBank : public FilterBank {
+private:
+  std::vector<IirFilter> filters_;
+  
+public:
+  IirFilterBank(const std::vector<IirFilter>& filters) : filters_(filters) {}
+  
+  /** Returns the output of the filter bank for an input equal to `input`. */
+  virtual std::vector<Real> Filter(const Real input);
+  
+  /** Returns the output of the filter bank for a given input. */
+  virtual std::vector<std::vector<Real> >
+  Filter(const std::vector<Real>& input);
+  
+  /** Resets the state of the filter */
+  virtual void Reset();
+  
+  static IirFilterBank OctaveFilterBank(const UInt order,
+                                        const UInt num_bands,
+                                        const Real starting_frequency,
+                                        const Real sampling_frequency);
+};
     
   
 } // namespace mcl

@@ -92,6 +92,9 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
                                      double Lcutoff,
                                      double Ucutoff,
                                      std::vector<double> DenC) {
+  assert(Lcutoff >= 0.0);
+  assert(Ucutoff <= 1.0);
+  
   int i;
   
   std::vector<double> NumCoeffs(2*FilterOrder+1);
@@ -139,8 +142,12 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
   return NumCoeffs;
 }
 
-std::vector<double> ComputeDenCoeffs( int FilterOrder, double Lcutoff, double Ucutoff )
-{
+std::vector<double> ComputeDenCoeffs(int FilterOrder,
+                                     double Lcutoff,
+                                     double Ucutoff ) {
+  assert(Lcutoff >= 0.0);
+  assert(Ucutoff <= 1.0);
+  
   int k;            // loop variables
   double theta;     // PI * (Ucutoff - Lcutoff) / 2.0
   double cp;        // cosine of phi

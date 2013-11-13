@@ -242,6 +242,53 @@ IirFilter IirFilter::OctaveFilter(const UInt order,
   return IirFilter::Butter(order, W1, W2);
 }
 
+  
+std::vector<Real> IirFilterBank::Filter(const Real input) {
+  const UInt N = filters_.size();
+  std::vector<Real> outputs(N);
+  for (UInt i=0; i<N; ++i) {
+    outputs[i] = filters_[i].Filter(input);
+  }
+  return outputs;
+}
+
+  
+std::vector<std::vector<Real> >
+IirFilterBank::Filter(const std::vector<Real>& input) {
+  const UInt N = filters_.size();
+  std::vector<std::vector<Real> > outputs(N);
+  for (UInt i=0; i<N; ++i) {
+    outputs[i] = filters_[i].Filter(input);
+  }
+  return outputs;
+}
+
+  
+void IirFilterBank::Reset() {
+  const UInt N = filters_.size();
+  for (UInt i=0; i<N; ++i) {
+    filters_[i].Reset();
+  }
+}
+
+IirFilterBank IirFilterBank::OctaveFilterBank(const UInt order,
+                                              const UInt num_bands,
+                                              const Real starting_frequency,
+                                              const Real sampling_frequency) {
+  Real current_frequency = starting_frequency;
+  std::vector<IirFilter> filters;
+  for (UInt i=0; i<num_bands; ++i) {
+    
+    mcl::IirFilter
+    octave_filter = mcl::IirFilter::OctaveFilter(order,
+                                                 current_frequency,
+                                                 sampling_frequency);
+    filters.push_back(octave_filter);
+    current_frequency = current_frequency * 2.0;
+  }
+  return IirFilterBank(filters);
+}
+  
 } // namespace mcl
 
 
