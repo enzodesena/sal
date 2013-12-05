@@ -134,6 +134,18 @@ bool MatrixOpTest() {
   assert(IsEqual(eig_e.eigen_vectors[1], eig_e_vector_1));
 #endif  
   
+  
+  // Testing matrix of ones
+  Matrix<Real> matrix_f = Matrix<Real>::Ones(2, 3);
+  Matrix<Real> matrix_f_cmp(2,3);
+  matrix_f_cmp.set_element(0, 0, 1.0);
+  matrix_f_cmp.set_element(1, 0, 1.0);
+  matrix_f_cmp.set_element(0, 1, 1.0);
+  matrix_f_cmp.set_element(1, 1, 1.0);
+  matrix_f_cmp.set_element(0, 2, 1.0);
+  matrix_f_cmp.set_element(1, 2, 1.0);
+  assert(IsEqual(matrix_f, matrix_f_cmp));
+  
   return true;
 }
 

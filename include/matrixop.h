@@ -163,7 +163,26 @@ public:
     in_file.close();
     return matrix;
   }
+  
+  /**
+   Constructs a matrix of all ones. Equivalent to Matlab's ones(N,M).
+   */
+  static Matrix Ones(UInt number_of_rows, UInt number_of_columns) {
+    Matrix<T> matrix(number_of_rows, number_of_columns);
+    for(UInt row=0; row<number_of_rows; ++row) {
+      for (UInt column=0; column<number_of_columns; ++column) {
+        matrix.set_element(row, column, (T) 1.0);
+      }
+    }
+    return matrix;
+  }
 
+  /**
+   Constructs a matrix of all ones. Equivalent to Matlab's ones(N).
+   */
+  static Matrix Ones(UInt matrix_dimension) {
+    return Matrix<T>::Ones(matrix_dimension, matrix_dimension);
+  }
   
 private:
   // Outer is rows, inner is columns. Hence, data_[0] is the first column.
