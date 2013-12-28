@@ -146,6 +146,18 @@ bool MatrixOpTest() {
   matrix_f_cmp.set_element(1, 2, 1.0);
   assert(IsEqual(matrix_f, matrix_f_cmp));
   
+  
+  // Testing serialisation
+  Matrix<Real> matrix_g(3,2);
+  matrix_g.set_element(0, 1, 1.0);
+  matrix_g.set_element(2, 1, 1.5);
+  std::vector<Real> serial_g = matrix_g.Serial();
+  assert(serial_g.size() == 6);
+  std::vector<Real> serial_g_cmp(6, 0.0);
+  serial_g_cmp[3] = 1.0;
+  serial_g_cmp[5] = 1.5;
+  assert(IsEqual(serial_g, serial_g_cmp));
+  
   return true;
 }
 

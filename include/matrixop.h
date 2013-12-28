@@ -107,6 +107,19 @@ public:
     return output;
   }
   
+  /** Returns the serialised matrix. Equivalent to Matlab's matrix(:) */
+  std::vector<T> Serial() const {
+    std::vector<T> serial(num_columns()*num_rows());
+    
+    UInt k=0;
+    for (UInt j=0; j<num_columns(); ++j) {
+      for (UInt i=0; i<num_rows(); ++i) {
+        serial[k++] = element(i, j);
+      }
+    }
+    return serial;
+  }
+  
   /** Returns the number of rows */
   UInt num_rows() const { return num_rows_; }
   
