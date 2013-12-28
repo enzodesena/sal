@@ -63,6 +63,12 @@ bool BasicOpTest() {
   vector_i[1] = 6;
   assert(MinIndex(vector_i) == 1);
   
+  std::vector<UInt> vector_z(4);
+  vector_z[0] = 64286;
+  vector_z[1] = 64286;
+  vector_z[2] = 0;
+  vector_z[3] = 3;
+  assert(Max(vector_z) == 64286);
   
   // Testing find peaks
   std::vector<Real> vector_l(5);

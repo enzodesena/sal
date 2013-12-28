@@ -52,7 +52,8 @@ unsigned long MaxIndex(const std::vector<T>& input) {
   return MinIndex(Opposite(input));
 }
   
-
+template<>
+unsigned long MaxIndex<unsigned long>(const std::vector<unsigned long>& input);
 
   
 /** Returns the maximum value of the vector. */
