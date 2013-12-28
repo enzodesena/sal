@@ -158,6 +158,13 @@ bool MatrixOpTest() {
   serial_g_cmp[5] = 1.5;
   assert(IsEqual(serial_g, serial_g_cmp));
   
+  // Testing matrix Max
+  assert(IsEqual(Max(matrix_g), 1.5));
+  Matrix<Int> matrix_h(3,2);
+  matrix_h.set_element(0, 1, 2);
+  matrix_h.set_element(2, 1, -5);
+  assert(Max(matrix_h) == 2);
+  
   return true;
 }
 

@@ -55,7 +55,7 @@ unsigned long MaxIndex(const std::vector<T>& input) {
 
 
   
-/** Returns the minimum value of the vector. */
+/** Returns the maximum value of the vector. */
 template<class T>
 T Max(const std::vector<T>& input) {
   return input[MaxIndex(input)];

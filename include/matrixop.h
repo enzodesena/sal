@@ -18,6 +18,7 @@
 #include <assert.h>
 #include "mcltypes.h"
 #include "comparisonop.h"
+#include "basicop.h"
 #include "elementaryop.h"
 
 #if LOAD_EIGEN
@@ -269,6 +270,17 @@ Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
   
   return temp_output.column(0);
 }
+  
+  
+/** 
+ Extract the maximum value of the matrix. Equivalent to Matlab's
+ max(max(matrix)) 
+ */
+template<class T>
+T Max(const Matrix<T>& matrix) {
+  return Max<T>(matrix.Serial());
+}
+  
   
 /** Contains eigenvalues and eigenvectors */
 struct EigOutput {
