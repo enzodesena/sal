@@ -65,7 +65,8 @@ public:
   }
   
   /** Sets element in given row and column */
-  void set_element(UInt index_row, UInt index_column, T element) {
+  void set_element(const UInt& index_row, const UInt& index_column,
+                   const T& element) {
     assert(index_row>=0 & index_row<num_rows_);
     assert(index_column>=0 & index_column<num_columns_);
     data_[index_row][index_column] = element;
@@ -88,7 +89,7 @@ public:
   }
   
   /** Accesses an element in given row and column */
-  T element(UInt index_row, UInt index_column) const {
+  T element(const UInt& index_row, const UInt& index_column) const {
     assert(index_row>=0 & index_row<num_rows_);
     assert(index_column>=0 & index_column<num_columns_);
     return data_[index_row][index_column];

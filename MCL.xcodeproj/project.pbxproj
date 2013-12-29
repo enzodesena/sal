@@ -381,7 +381,10 @@
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_CFLAGS = (
+					"-DNDEBUG",
+					"-NDEBUG",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -411,7 +414,10 @@
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_CFLAGS = (
+					"-DNDEBUG",
+					"-NDEBUG",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
