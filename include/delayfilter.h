@@ -8,8 +8,8 @@
  
  */
 
-#ifndef SAL_DELAYLINE_H
-#define SAL_DELAYLINE_H
+#ifndef SAL_DELAYFILTER_H
+#define SAL_DELAYFILTER_H
 
 #define DEFAULT_MAX_LATENCY 3276800
 
@@ -56,7 +56,7 @@ public:
 
   
   static bool Test();
-private:
+protected:
   sal::Sample* start_;
   sal::Sample* end_;
   sal::Sample* write_index_;

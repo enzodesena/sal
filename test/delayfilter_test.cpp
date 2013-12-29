@@ -9,6 +9,7 @@
  */
 
 #include "delayfilter.h"
+#include "delayline.h"
 #include "mcl.h"
 
 
@@ -174,6 +175,25 @@ bool DelayFilter::Test() {
   delay_filter_d.Tick();
   delay_filter_d.Write(1.0);
   assert(IsEqual(delay_filter_d.Read(),1.0));
+  
+  // Testing DelayLine
+  DelayLine delay_line_a(5);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  delay_line_a.Write(1.5);
+  assert(IsEqual(delay_line_a.Read(0), 1.5));
+  assert(IsEqual(delay_line_a.Read(1), 0.0));
+  assert(IsEqual(delay_line_a.Read(2), 0.0));
+  assert(IsEqual(delay_line_a.Read(3), 0.0));
+  assert(IsEqual(delay_line_a.Read(4), 0.0));
+  
+  delay_line_a.Tick();
+  delay_line_a.Write(-1.2);
+  assert(IsEqual(delay_line_a.Read(1), 1.5));
+  assert(IsEqual(delay_line_a.Read(2), 0.0));
+  assert(IsEqual(delay_line_a.Read(3), 0.0));
+  assert(IsEqual(delay_line_a.Read(4), 0.0));
+  assert(IsEqual(delay_line_a.Read(0), -1.2));
+  
   
   return true;
 }
