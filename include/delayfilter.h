@@ -36,6 +36,8 @@ public:
   // give always the same output.
   inline sal::Sample Read() const { return *read_index_; }
   
+  sal::Sample Read(const UInt& delay_tap) const;
+  
   // This causes time to tick by one sample.
   inline void Tick() {
     write_index_ = (write_index_ != end_) ? (write_index_+1) : start_;

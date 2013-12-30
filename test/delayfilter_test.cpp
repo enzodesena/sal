@@ -9,7 +9,6 @@
  */
 
 #include "delayfilter.h"
-#include "delayline.h"
 #include "mcl.h"
 
 
@@ -177,24 +176,78 @@ bool DelayFilter::Test() {
   assert(IsEqual(delay_filter_d.Read(),1.0));
   
   // Testing DelayLine
-  DelayLine delay_line_a(5);
-  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  DelayFilter delay_line_a(5,5);
+  
   delay_line_a.Write(1.5);
   assert(IsEqual(delay_line_a.Read(0), 1.5));
   assert(IsEqual(delay_line_a.Read(1), 0.0));
   assert(IsEqual(delay_line_a.Read(2), 0.0));
   assert(IsEqual(delay_line_a.Read(3), 0.0));
   assert(IsEqual(delay_line_a.Read(4), 0.0));
-  
   delay_line_a.Tick();
+  
   delay_line_a.Write(-1.2);
+  assert(IsEqual(delay_line_a.Read(0), -1.2));
   assert(IsEqual(delay_line_a.Read(1), 1.5));
   assert(IsEqual(delay_line_a.Read(2), 0.0));
   assert(IsEqual(delay_line_a.Read(3), 0.0));
   assert(IsEqual(delay_line_a.Read(4), 0.0));
-  assert(IsEqual(delay_line_a.Read(0), -1.2));
+  delay_line_a.Tick();
   
+  delay_line_a.Write(0.0);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  assert(IsEqual(delay_line_a.Read(1), -1.2));
+  assert(IsEqual(delay_line_a.Read(2), 1.5));
+  assert(IsEqual(delay_line_a.Read(3), 0.0));
+  assert(IsEqual(delay_line_a.Read(4), 0.0));
+  delay_line_a.Tick();
   
+  delay_line_a.Write(-1.0);
+  assert(IsEqual(delay_line_a.Read(0), -1.0));
+  assert(IsEqual(delay_line_a.Read(1), 0.0));
+  assert(IsEqual(delay_line_a.Read(2), -1.2));
+  assert(IsEqual(delay_line_a.Read(3), 1.5));
+  assert(IsEqual(delay_line_a.Read(4), 0.0));
+  delay_line_a.Tick();
+  
+  delay_line_a.Write(0.0);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  assert(IsEqual(delay_line_a.Read(1), -1.0));
+  assert(IsEqual(delay_line_a.Read(2), 0.0));
+  assert(IsEqual(delay_line_a.Read(3), -1.2));
+  assert(IsEqual(delay_line_a.Read(4), 1.5));
+  delay_line_a.Tick();
+  
+  delay_line_a.Write(0.0);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  assert(IsEqual(delay_line_a.Read(1), 0.0));
+  assert(IsEqual(delay_line_a.Read(2), -1.0));
+  assert(IsEqual(delay_line_a.Read(3), 0.0));
+  assert(IsEqual(delay_line_a.Read(4), -1.2));
+  delay_line_a.Tick();
+  
+  delay_line_a.Write(0.0);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  assert(IsEqual(delay_line_a.Read(1), 0.0));
+  assert(IsEqual(delay_line_a.Read(2), 0.0));
+  assert(IsEqual(delay_line_a.Read(3), -1.0));
+  assert(IsEqual(delay_line_a.Read(4), 0.0));
+  delay_line_a.Tick();
+  
+  delay_line_a.Write(0.0);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  assert(IsEqual(delay_line_a.Read(1), 0.0));
+  assert(IsEqual(delay_line_a.Read(2), 0.0));
+  assert(IsEqual(delay_line_a.Read(3), 0.0));
+  assert(IsEqual(delay_line_a.Read(4), -1.0));
+  delay_line_a.Tick();
+  
+  delay_line_a.Write(0.0);
+  assert(IsEqual(delay_line_a.Read(0), 0.0));
+  assert(IsEqual(delay_line_a.Read(1), 0.0));
+  assert(IsEqual(delay_line_a.Read(2), 0.0));
+  assert(IsEqual(delay_line_a.Read(3), 0.0));
+  assert(IsEqual(delay_line_a.Read(4), 0.0));
   return true;
 }
 

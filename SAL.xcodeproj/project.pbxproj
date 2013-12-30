@@ -48,7 +48,6 @@
 		57E74B5516274A2900C8BDDB /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
 		57E74B5E16274A3800C8BDDB /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E61593462F00AA6445 /* sal_tests.cpp */; };
 		57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
-		57FC70E31870699000D87604 /* delayline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC70E11870699000D87604 /* delayline.cpp */; };
 		57FE7B4617B41B7E000F7343 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE7B4317B41B6B000F7343 /* libMCL.a */; };
 		57FE7B4917B41B85000F7343 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE7B4317B41B6B000F7343 /* libMCL.a */; };
 /* End PBXBuildFile section */
@@ -146,8 +145,6 @@
 		57CFD4EC1636E94100EB98A6 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = lib/libsndfile.a; sourceTree = "<group>"; };
 		57F7B3BF15D3DE7000D4E64A /* ambisonics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ambisonics.h; path = include/ambisonics.h; sourceTree = "<group>"; };
 		57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics.cpp; path = src/ambisonics.cpp; sourceTree = "<group>"; };
-		57FC70E11870699000D87604 /* delayline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = delayline.cpp; path = src/delayline.cpp; sourceTree = "<group>"; };
-		57FC70E5187069AB00D87604 /* delayline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = delayline.h; path = include/delayline.h; sourceTree = "<group>"; };
 		57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = ../mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,7 +196,6 @@
 				57A156E41593460E00AA6445 /* targets */,
 				57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */,
 				57895F5C16304F18002C962B /* delayfilter.cpp */,
-				57FC70E11870699000D87604 /* delayline.cpp */,
 				57895F6616304F9E002C962B /* slowdelayfilter.cpp */,
 				57895F5D16304F18002C962B /* propagationline.cpp */,
 				5720520F1624896A00E32B53 /* psrmic.cpp */,
@@ -221,7 +217,6 @@
 			children = (
 				57895F6416304F82002C962B /* slowdelayfilter.h */,
 				57895F5A16304F00002C962B /* delayfilter.h */,
-				57FC70E5187069AB00D87604 /* delayline.h */,
 				57895F5B16304F00002C962B /* propagationline.h */,
 				57F7B3BF15D3DE7000D4E64A /* ambisonics.h */,
 				574D27FB161B3ECF00F4A0B1 /* decoder.h */,
@@ -421,7 +416,6 @@
 				57E74B5316274A2900C8BDDB /* microphonearray.cpp in Sources */,
 				57E74B5416274A2900C8BDDB /* point.cpp in Sources */,
 				57E74B5516274A2900C8BDDB /* source.cpp in Sources */,
-				57FC70E31870699000D87604 /* delayline.cpp in Sources */,
 				5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */,
 				572868FA17E2E5CE00E1D390 /* ambisonics_test.cpp in Sources */,
 				572868FB17E2E5CE00E1D390 /* delayfilter_test.cpp in Sources */,
