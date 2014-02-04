@@ -30,11 +30,14 @@ enum AmbisonicsConvention {
 
 class AmbisonicsMic : public Microphone {
 public:
-  // `position` is the position of the microphone in the recording space.
-  // `order` is the HOA order
-  // The microphone is placed horizontaly (equivalent directivity patterns)
-  // if theta = 0.0. I am thinking of soundfield microphone, which is pointing
-  // upwards.
+  /**
+   Constructs an Ambisonics microphone.
+   `position` is the position of the microphone in the recording space.
+   `order` is the HOA order
+   The microphone is placed horizontaly (equivalent directivity patterns)
+   if theta = 0.0. I am thinking of soundfield microphone, which is pointing
+   upwards.
+   */
   AmbisonicsMic(const Point& position, Angle theta, Angle phi, Angle psi,
                 UInt order, AmbisonicsConvention convention = sqrt2) :
           Microphone(position, theta, phi, psi),
@@ -46,6 +49,7 @@ public:
   
   virtual bool IsCoincident() { return true; }
   
+  /** Returns the BFormat stream of the microphone */
   BFormatStream* stream() { return &stream_; }
   
   static std::vector<mcl::Real> HorizontalEncoding(UInt order, Angle theta);
@@ -61,24 +65,28 @@ private:
 };
 
   
-// Implements horizontal higher order ambisonics with regular loudspeakers
-// configuration (e.g. pentagon for II-order etc..).
+/** 
+ Implements horizontal higher order ambisonics with regular loudspeakers
+ configuration (e.g. pentagon for II-order etc..).
+ */
 class AmbisonicsHorizDec : public Decoder {
 public:
-  // `position` is the position of the microphone in the recording space.
-  // `order` is the HOA order `num_loudspeakers` is the number of loudspeakers
-  // forming the regular polygon in the reproduction space.
-  // Exact reconstruction of the 2*`order`+1 circular harmonics is
-  // achieved if num_loudspeakers = 2*`order`+1 (e.g. penthagon loudspeaker
-  // for a second-order ambisonics).
-  // All loudspeakers are at polar angle is PI/2.0, i.e. are on an horizontal
-  // plane relative to the reference system. In other words all loudspeakers
-  // lie on a plane that is parallel with the x-y plane. The first loudspeaker
-  // is on the x-axis (azimuthal angle is 0).
-  // If `energy_decoding` is true a maximum energy decoding will be used for
-  // frequencies higher than `cut_off_frequency`.
-  // If `near_field_correction` is true, the signals will be processed using
-  // J. Daniel's near-field correction.
+  /**
+   `position` is the position of the microphone in the recording space.
+   `order` is the HOA order `num_loudspeakers` is the number of loudspeakers
+   forming the regular polygon in the reproduction space.
+   Exact reconstruction of the 2*`order`+1 circular harmonics is
+   achieved if num_loudspeakers = 2*`order`+1 (e.g. penthagon loudspeaker
+   for a second-order ambisonics).
+   All loudspeakers are at polar angle is PI/2.0, i.e. are on an horizontal
+   plane relative to the reference system. In other words all loudspeakers
+   lie on a plane that is parallel with the x-y plane. The first loudspeaker
+   is on the x-axis (azimuthal angle is 0).
+   If `energy_decoding` is true a maximum energy decoding will be used for
+   frequencies higher than `cut_off_frequency`.
+   If `near_field_correction` is true, the signals will be processed using
+   J. Daniel's near-field correction.
+   */
   AmbisonicsHorizDec(const UInt order,
                      const bool energy_decoding,
                      const Time cut_off_frequency,
@@ -101,37 +109,45 @@ private:
   static mcl::Matrix<Sample>
   ModeMatchingDec(UInt order, const std::vector<Angle>& loudspeaker_angles);
   
-  // amb_re_weights_matrix produces the diagonal matrix of weights for energy
-  // vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
+  /**
+   amb_re_weights_matrix produces the diagonal matrix of weights for energy
+   vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
+   */
   static mcl::Matrix<Sample>
   MaxEnergyDec(UInt order, const std::vector<Angle>& loudspeaker_angles);
   
-  // Produces the weights for maximum energy vector for a regular polygon.
-  // N is ambisonics order. The function outputs g(0) = 1 which means that
-  // normalisation is such that pressure is preserved.
+  /**
+   Produces the weights for maximum energy vector for a regular polygon.
+   N is ambisonics order. The function outputs g(0) = 1 which means that
+   normalisation is such that pressure is preserved.
+   */
   static Sample MaxEnergyDecWeight(UInt index, UInt order) {
     return (Sample) cos(((Angle) index)*PI/(2.0*((Angle) order)+2.0));
   }
   
   static std::vector<Sample> PullFrame(UInt order, BFormatStream* stream);
   
-  // Produces the near field correction
-  // filters as described in "Spatial Sound Encoding Including Near Field
-  // Effect: Introducing Length Coding Filters and a Viable, New Ambisonic
-  // Format" by J. Daniel, AES 23rd, Int. Conf., 2003.
-  // `order` is the spherical component order. `loudspeaker_distance`
-  // is the loudspeaker distance from the centre.
-  // `sampling_frequency` is the sampling frequency (in Hz) and `sound_speed`
-  // the speed of sound (in m/s).
+  /**
+   Produces the near field correction
+   filters as described in "Spatial Sound Encoding Including Near Field
+   Effect: Introducing Length Coding Filters and a Viable, New Ambisonic
+   Format" by J. Daniel, AES 23rd, Int. Conf., 2003.
+   `order` is the spherical component order. `loudspeaker_distance`
+   is the loudspeaker distance from the centre.
+   `sampling_frequency` is the sampling frequency (in Hz) and `sound_speed`
+   the speed of sound (in m/s).
+   */
   static mcl::IirFilter NFCFilter(const UInt order,
                                   const Length loudspeaker_distance,
                                   const Time sampling_frequency,
                                   const Length sound_speed);
 
   
-  // Produces the high-pass and low-pass crossover filter with cutoff
-  // frequency Fc and sampling frequency Fs as descibed by A. Heller et al.,
-  // "Is My Decoder Ambisonic?", in AES 125th Convention.
+  /**
+   Produces the high-pass and low-pass crossover filter with cutoff
+   frequency Fc and sampling frequency Fs as descibed by A. Heller et al.,
+   "Is My Decoder Ambisonic?", in AES 125th Convention.
+   */
   static mcl::IirFilter CrossoverFilterLow(const Time cut_off_frequency,
                                            const Time sampling_frequency);
   static mcl::IirFilter CrossoverFilterHigh(const Time cut_off_frequency,

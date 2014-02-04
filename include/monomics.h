@@ -48,10 +48,6 @@ private:
     stream_.Add(sample*gain_);
   }
   
-  //  virtual std::vector<Sample> ImpulseResponse(Point point) const {
-  //    return mcl::UnaryVector<Sample>(gain_);
-  //  }
-  
   Sample gain_;
 };
   
@@ -63,9 +59,11 @@ public:
 };
   
 
-// This class describes directivity pattern whose expression is of the type:
-// a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
-// Note that such an expression is axisimmetric.
+/**
+ This class describes directivity pattern whose expression is of the type:
+ a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
+ Note that such an expression is axisimmetric.
+ */
 class TrigMic : public MonoMic {
 public:
   TrigMic(Point position, Angle theta, Angle phi, Angle psi,

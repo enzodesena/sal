@@ -20,8 +20,10 @@ public:
   Decoder(UInt num_loudspeakers) :
           output_streams_(std::vector<MonoStream>(num_loudspeakers)) {}
   
-  // Decodes and puts in the output streams. It stops when the inputs stream
-  // is depleted.
+  /**
+   Decodes and puts in the output streams. It stops when the inputs stream
+   is depleted.
+   */
   virtual void Decode() = 0;
   
   MonoStream* stream(UInt channel_id) {

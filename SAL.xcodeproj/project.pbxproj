@@ -592,11 +592,12 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
 				LLVM_LTO = YES;
+				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = (
 					"-DNDEBUG",
@@ -620,11 +621,12 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
 				LLVM_LTO = YES;
+				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = (
 					"-DNDEBUG",

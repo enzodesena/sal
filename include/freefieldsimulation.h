@@ -50,7 +50,6 @@ public:
             const Time sampling_frequency,
             const Length sound_speed);
   
-  // Returns a vector of signals containing the response of each microphone
   void Run();
   
   ~FreeFieldSim();
@@ -61,11 +60,11 @@ private:
   
   void Tick();
   
-  // Returns the minimum distance between any source and any microphone.
+  /** Returns the minimum distance between any source and any microphone. */
   static Length MinimumDistance(const std::vector<Microphone*>& microphones,
                                 const std::vector<Source*>& sources);
   
-  // Returns the minimum distance between any source and any microphone.
+  /** Returns the maximum distance between any source and any microphone. */
   static Length MaximumDistance(const std::vector<Microphone*>& microphones,
                                 const std::vector<Source*>& sources);
   
@@ -73,7 +72,7 @@ private:
   AllDistances(const std::vector<Microphone*>& microphones,
                const std::vector<Source*>& sources);
   
-  // Returns true if all sources' streams are depleted.
+  /** Returns true if all sources' streams are depleted. */
   static bool AllSourcesEmpty(const std::vector<Source*>& sources);
   
   

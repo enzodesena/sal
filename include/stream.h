@@ -20,7 +20,6 @@
 
 namespace sal {
   
-// 
 class Stream {
 public:
   virtual bool IsEmpty() const = 0;
@@ -30,16 +29,17 @@ public:
 };
 
 
-// MonoStream has two modality for inserting samples:
-// - Push(sample) which pushes a sample in the stream
-// - Add(sample) which adds the sample to the back of the queue (initialises
-//   to zero if the stream is empty) which is followed by Tick() which moves
-//   to the next sample in time.
-//
-// The second methodology was introduced because given the recording method
-// in the `Microphone`, I had to keep track of temporary outputs at some point
-// of the chain. It makes sense that this happens in the stream because
-// it is the only way to avoid duplication and increases speed. 
+/*
+ MonoStream has two modality for inserting samples:
+ - Push(sample) which pushes a sample in the stream
+ - Add(sample) which adds the sample to the back of the queue (initialises
+   to zero if the stream is empty) which is followed by Tick() which moves
+   to the next sample in time.
+ The second methodology was introduced because given the recording method
+ in the `Microphone`, I had to keep track of temporary outputs at some point
+ of the chain. It makes sense that this happens in the stream because
+ it is the only way to avoid duplication and increases speed. 
+ */
 class MonoStream : public Stream {
 public:
   MonoStream() : push_new_sample_(true) {}
@@ -85,7 +85,7 @@ public:
     return output;
   }
   
-  // Pull all samples until the stream is depleted.
+  /** Pull all samples until the stream is depleted. */
   Signal PullAll() {
     Signal output;
     while (! IsEmpty()) {
@@ -111,8 +111,10 @@ public:
 private:
   std::queue<Sample> queue_;
   
-  // This bool reminds the method Add() when to create a new sample. This
-  // happens either because the stream is new or because Tick() has been called.
+  /** 
+   This bool reminds the method Add() when to create a new sample. This
+   happens either because the stream is new or because Tick() has been called.
+   */
   bool push_new_sample_;
 };
   
@@ -139,7 +141,7 @@ public:
     return (stream_left_.IsEmpty() & stream_left_.IsEmpty());
   }
   
-  // Returns a vector with two signals. First signal is the left one.
+  /** Returns a vector with two signals. First signal is the left one. */
   std::vector<Signal> Pull(const UInt num_samples) {
     std::vector<Signal> output(2);
     output[0] = stream_left_.Pull(num_samples);
@@ -239,8 +241,10 @@ public:
     return streams_[degree][order].Pull();
   }
   
-  // Returns true if the stream associated to `order` and `degree` is empty.
-  // Asserts if that stream is not defined.
+  /**
+   Returns true if the stream associated to `order` and `degree` is empty.
+   Asserts if that stream is not defined.
+   */
   inline bool IsEmpty(UInt degree, Int order) const {
     assert(IsDefined(degree, order));
     return streams_.at(degree).at(order).IsEmpty();
@@ -262,8 +266,10 @@ private:
     return true;
   }
   
-  // Returns true if the new stream was initialised correctly. False if
-  // it already existed.
+  /** 
+   Returns true if the new stream was initialised correctly. False if
+   it already existed.
+   */
   bool InitOrderDegree(UInt degree, Int order) {
     assert(order<=((Int)degree) & order>=-((Int)degree));
     // Check whether the stream already exists

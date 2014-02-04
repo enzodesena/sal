@@ -25,12 +25,10 @@
 namespace sal {
 
   
-// An array of microphone each with monophonic outputs
+/** An array of microphone each with monophonic outputs */
 class MicrophoneArray : public Microphone {
 public:
   
-  //std::vector<Microphone*> microphones,
-  //, stream_(stream) MultichannelStream* stream
   MicrophoneArray() :
           Microphone(Point(0.0, 0.0, 0.0), (Angle) 0.0,
                      (Angle) 0.0, (Angle) 0.0) {}
@@ -43,8 +41,10 @@ public:
   //  Point position() const;
   //  virtual void set_position(const Point&);
   
-  // Returns true if the array is coincident. If there are 0 or 1 microphones
-  // the array is considered coincident.
+  /** 
+   Returns true if the array is coincident. If there are 0 or 1 microphones
+   the array is considered coincident.
+   */
   bool IsCoincident();
   
   void InitStream();
@@ -55,12 +55,13 @@ public:
   
   static bool Test();
 private:
-  
-  // Simulates the output of the microphone array to a source in the direction
-  // of source.position() and with input signal `source.signal()`.
-  // This does not include attenuation nor delay due to propagation. These
-  // are in fact included in the `FreeFieldSimulation` in SAT or are
-  // are implemented as delay lines in SDN.
+  /**
+   Simulates the output of the microphone array to a source in the direction
+   of source.position() and with input signal `source.signal()`.
+   This does not include attenuation nor delay due to propagation. These
+   are in fact included in the `FreeFieldSimulation` in SAT or are
+   are implemented as delay lines in SDN.
+   */
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
                                        const UInt& wave_id);
   
@@ -69,15 +70,15 @@ protected:
   std::vector<MonoMic*> microphone_pointers_;
 };
 
-  
-// This generates a microphone array centered in position, with radius
-// `radius`, `num_microphones` is the number of microphones,
-// first_element_heading is the heading of first microphone - e.g.
-// first_element_heading=0, means that the first microphone is
-// at (position.x() + radius, position.y(), position.z()). Finally,
-// directivity_pattern is the directivity pattern of each microphone.
-//
-// A span_angle == 0 will position the microphones uniformly around 2PI
+/**
+ This generates a microphone array centered in position, with radius
+ `radius`, `num_microphones` is the number of microphones,
+ first_element_heading is the heading of first microphone - e.g.
+ first_element_heading=0, means that the first microphone is
+ at (position.x() + radius, position.y(), position.z()). Finally,
+ directivity_pattern is the directivity pattern of each microphone.
+ A span_angle == 0 will position the microphones uniformly around 2PI
+ */
 class CircularArray : public MicrophoneArray {
 public:
   CircularArray(const Point& position,
@@ -128,13 +129,15 @@ private:
 };
 
   
-// This generates a stereophonic microphone array centered in position,
-// with radius `radius`,
-// midline_heading is the heading of the midline microphone
-// - e.g. first_element_heading=0, means that the first microphone is
-// at (position.x() + radius, position.y(), position.z()).
-// Finally, directivity_pattern
-// is the directivity apttern of each microphone.
+/**
+ This generates a stereophonic microphone array centered in position,
+ with radius `radius`,
+ midline_heading is the heading of the midline microphone
+ - e.g. first_element_heading=0, means that the first microphone is
+ at (position.x() + radius, position.y(), position.z()).
+ Finally, directivity_pattern
+ is the directivity apttern of each microphone.
+ */
 class StereoMic : public CircularArray {
 public:
   StereoMic(const Point& position,

@@ -30,7 +30,9 @@ class KemarMicInstance;
   
 class KemarMic : public StereoMicrophone {
 public:
-  // directory must contain the hrtf database.
+  /** 
+   directory must contain the hrtf database.
+   */
   KemarMic(Point position, Angle theta, Angle phi, Angle psi,
            const std::string directory);
   
@@ -51,20 +53,18 @@ private:
   static Array<Array<Signal, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
           Load(const Ear ear, const std::string directory);
   
-  // Returns the elevation index for kemar database for elevation in azimuth.
-  // The index departs from 0.
+  /**
+   Returns the elevation index for kemar database for elevation in azimuth.
+   The index departs from 0.
+   */
   static UInt FindElevationIndex(Angle elevation);
   
   
-  // Returns the azimuthal index for kemar database for azimuth in grad. 
-  // The index departs from 0.
+  /** 
+   Returns the azimuthal index for kemar database for azimuth in grad.
+   The index departs from 0.
+   */
   static UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index);
-  
-  
-//  virtual std::vector<Sample> ImpulseResponse(Point point) const {
-//    // TODO: IMPLEMENT
-//    return mcl::UnaryVector<Sample>(1.0);
-//  }
   
   
   std::map<UInt, KemarMicInstance> instances_left_;
@@ -89,11 +89,13 @@ private:
   
   Sample RecordPlaneWaveRelative(const Sample& sample, const Point& point);
   
-
-  // The microphone object is called for every sample, while the position
-  // of SDN's elements is changed once in a while. Hence, these angles are
-  // stored so that we don't need to update the filter coefficients at every
-  // sample, but only when something changes.
+  
+  /**
+   The microphone object is called for every sample, while the position
+   of SDN's elements is changed once in a while. Hence, these angles are
+   stored so that we don't need to update the filter coefficients at every
+   sample, but only when something changes.
+   */
   Point previous_point_;
   
   mcl::FirFilter filter_;
