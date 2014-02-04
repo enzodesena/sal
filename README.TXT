@@ -9,7 +9,6 @@ http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
 
 A sample of how to use the library is:
 
-
 const UInt N = 2; // Ambisonics order
   
 // Position an ambisonics microphone in 0,0,0
