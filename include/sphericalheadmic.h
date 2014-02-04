@@ -47,7 +47,7 @@ private:
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
                                        const UInt& wave_id);
   
-  /** For the various definitions see Duda's paper. *//
+  /** For the various definitions see Duda's paper. */
   static mcl::Complex Sphere(Length a, Length r, Angle theta,
                              Time f, Time c, mcl::Real threshold);
   
