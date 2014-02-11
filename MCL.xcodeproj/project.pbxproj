@@ -44,6 +44,8 @@
 		57BA701F15B49459002F077F /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701E15B49459002F077F /* mcl_test.cpp */; };
 		57DB7E7618327D6600B47CEE /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
 		57DB7E7718327D6600B47CEE /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
+		57EAE5C018AA80FC001DC4D4 /* dataop.h in Headers */ = {isa = PBXBuildFile; fileRef = 57EAE5BF18AA80FC001DC4D4 /* dataop.h */; };
+		57EAE5C318AA8148001DC4D4 /* dataop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EAE5C118AA8148001DC4D4 /* dataop.cpp */; };
 		57F0B65B181D8D840095A28F /* comparisonop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F0B659181D8D840095A28F /* comparisonop_test.cpp */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +105,8 @@
 		57BA701E15B49459002F077F /* mcl_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mcl_test.cpp; path = src/targets/mcl_test.cpp; sourceTree = "<group>"; };
 		57DB7E7418327D5700B47CEE /* butter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = butter.h; path = include/lib/butter.h; sourceTree = "<group>"; };
 		57DB7E7518327D6600B47CEE /* butter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = butter.cpp; path = src/lib/butter.cpp; sourceTree = "<group>"; };
+		57EAE5BF18AA80FC001DC4D4 /* dataop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dataop.h; path = include/dataop.h; sourceTree = "<group>"; };
+		57EAE5C118AA8148001DC4D4 /* dataop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dataop.cpp; path = src/dataop.cpp; sourceTree = "<group>"; };
 		57F0B659181D8D840095A28F /* comparisonop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = comparisonop_test.cpp; path = test/comparisonop_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,6 +133,7 @@
 			children = (
 				57BA701A15B49263002F077F /* basicop.h */,
 				57BA701215B43BC9002F077F /* comparisonop.h */,
+				57EAE5BF18AA80FC001DC4D4 /* dataop.h */,
 				5778D80915B616260015AAC9 /* digitalfilter.h */,
 				57BA700E15B43B07002F077F /* elementaryop.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
@@ -215,6 +220,7 @@
 			children = (
 				57BA701B15B492D4002F077F /* basicop.cpp */,
 				57BA701315B43C60002F077F /* comparisonop.cpp */,
+				57EAE5C118AA8148001DC4D4 /* dataop.cpp */,
 				57BA700F15B43B64002F077F /* elementaryop.cpp */,
 				5778D80D15B616320015AAC9 /* firfilter.cpp */,
 				5778D80E15B616320015AAC9 /* iirfilter.cpp */,
@@ -238,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				571F9A5817955B160059A90D /* statisticsop.h in Headers */,
+				57EAE5C018AA80FC001DC4D4 /* dataop.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +326,7 @@
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
 				57DB7E7718327D6600B47CEE /* butter.cpp in Sources */,
+				57EAE5C318AA8148001DC4D4 /* dataop.cpp in Sources */,
 				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
 				573F9FA31662799800929EE2 /* matrixop.cpp in Sources */,
 				571F9A5C17955BD60059A90D /* statisticsop.cpp in Sources */,
