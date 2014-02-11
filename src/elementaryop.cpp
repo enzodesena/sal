@@ -10,7 +10,9 @@
 #include "comparisonop.h"
 #include "vectorop.h"
 
+#if MCL_LOAD_BOOST
 #include <boost/math/special_functions/spherical_harmonic.hpp>
+#endif
 
 namespace mcl {
 

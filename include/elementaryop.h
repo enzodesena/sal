@@ -11,7 +11,7 @@
 
 #include "mcltypes.h"
 
-#define MCL_LOAD_BOOST 1
+#define MCL_LOAD_BOOST 0
 
 namespace mcl {
   

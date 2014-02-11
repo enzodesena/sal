@@ -133,7 +133,7 @@ bool ElementaryOpTest() {
   assert(Factorial(6) == 720);
   assert(Factorial(9) == 362880);
   
-  
+#if MCL_LOAD_BOOST  
   assert(IsEqual(AssociatedLegendreP(3, 0, 0.8), 0.08));
   assert(IsEqual(AssociatedLegendreP(3, 1, 0.8), -1.980000000000001));
   assert(IsEqual(AssociatedLegendreP(3, 2, 0.8), 4.320000000000000));
@@ -146,7 +146,7 @@ bool ElementaryOpTest() {
   assert(IsEqual(SphericalHarmonic(4, 4, 1.0, 2.0), Complex(-0.0322823, 0.219511)));
   assert(IsEqual(SphericalHarmonic(4, 2, 1.5, 2.2), Complex(0.0987125, 0.305646)));
   assert(IsEqual(SphericalHarmonic(4, -2, 1.5, 2.2), Complex(0.0987125, -0.305646)));
-  
+#endif  
   
   return true;
 }
