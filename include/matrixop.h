@@ -128,10 +128,13 @@ public:
   /** Returns the number of columns */
   UInt num_columns() const { return num_columns_; }
   
-  /** Writes the matrix to a file */
-  void Save(std::string file_name) {
+  /** Writes the matrix to a file. The optional parameter `precision` sets
+   the number of decimal positions in the output file*/
+  void Save(std::string file_name, mcl::UInt precision = 5) {
     std::ofstream output_file;
     output_file.open(file_name.c_str());
+    output_file.precision(precision);
+    output_file.setf(std::ios::fixed, std::ios::floatfield);
     for (UInt i=0; i<num_rows_; ++i) {
       for (UInt j=0; j<num_columns_; ++j) { output_file<<data_.at(i).at(j)<<" "; }
       output_file<<std::endl;

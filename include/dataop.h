@@ -15,7 +15,9 @@
 
 namespace mcl {
   
-void Save(std::vector<Real> vector, std::string file_name);
+void Save(const std::vector<Real>& vector,
+          const std::string& file_name,
+          const mcl::UInt precision = 5);
 
 } // namespace mcl
 

@@ -18,6 +18,7 @@
 #include "transformop.h"
 #include "basicop.h"
 #include "statisticsop.h"
+#include "dataop.h"
 
 #include "digitalfilter.h"
 #include "iirfilter.h"
