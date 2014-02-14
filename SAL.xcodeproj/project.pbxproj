@@ -599,10 +599,7 @@
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-					"-NDEBUG",
-				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = SAL;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
