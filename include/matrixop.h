@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <iomanip>
 #include "mcltypes.h"
 #include "comparisonop.h"
 #include "basicop.h"
@@ -133,10 +134,12 @@ public:
   void Save(std::string file_name, mcl::UInt precision = 5) {
     std::ofstream output_file;
     output_file.open(file_name.c_str());
-    output_file.precision(precision);
-    output_file.setf(std::ios::fixed, std::ios::floatfield);
+    output_file<<std::fixed;
+    output_file<<std::setprecision((int)precision);
     for (UInt i=0; i<num_rows_; ++i) {
-      for (UInt j=0; j<num_columns_; ++j) { output_file<<data_.at(i).at(j)<<" "; }
+      for (UInt j=0; j<num_columns_; ++j) {
+        output_file<<data_.at(i).at(j)<<" ";
+      }
       output_file<<std::endl;
     }
     output_file.close();
