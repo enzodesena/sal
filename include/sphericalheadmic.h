@@ -87,7 +87,7 @@ private:
   /**
    This is the length of the impulse response. To avoid time aliasing, it
    should be longer that the maximum expected length of the impulse response 
-   (in the same way that we should sample in frequency at a higher freq
+   (in the same way that we should sample in time at a higher freq
    than double the highest frequency). A conservative value for sampling
    frequency 44100 is 512. Since there are ffts involved here, it is a 
    good idea to use a power of 2.

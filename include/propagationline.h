@@ -64,10 +64,10 @@ public:
 private:
   DelayFilter delay_filter_;
   static sal::Time ComputeLatency(const sal::Length,
-                                      const sal::Time);
+                                  const sal::Time);
   
   static sal::Sample ComputeGain(const sal::Length,
-                                     const sal::Time);
+                                 const sal::Time);
   sal::Sample gain_;
   sal::Time sampling_frequency_;
 };
