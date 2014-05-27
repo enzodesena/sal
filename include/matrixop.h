@@ -22,7 +22,7 @@
 #include "basicop.h"
 #include "elementaryop.h"
 
-#if LOAD_EIGEN
+#if MCL_LOAD_EIGEN
 #include <Eigen/Dense>
 #endif
 
@@ -299,7 +299,7 @@ EigOutput Eig(const Matrix<Real>& matrix);
 
 Matrix<Real> RealPart(const Matrix<Complex>& input);
   
-#if LOAD_EIGEN
+#if MCL_LOAD_EIGEN
 Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
 #endif
   

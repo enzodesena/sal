@@ -23,7 +23,7 @@ Matrix<Real> RealPart(const Matrix<Complex>& input) {
   return output;
 }
   
-#if LOAD_EIGEN
+#if MCL_LOAD_EIGEN
 Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input) {
   Eigen::MatrixXd output(input.num_rows(), input.num_columns());
   for (UInt i=0; i<input.num_rows(); ++i) {

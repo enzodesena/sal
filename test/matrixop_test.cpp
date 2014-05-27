@@ -115,7 +115,7 @@ bool MatrixOpTest() {
   assert(IsEqual(matrix_e, matrix_e));
   assert(IsEqual(matrix_b, matrix_b));
   
-#if LOAD_EIGEN
+#if MCL_LOAD_EIGEN
   // Testing eigenvalues and eigenvectors
   EigOutput eig_e = Eig(matrix_e);
   assert(eig_e.eigen_values.size() == 2);
