@@ -30,8 +30,6 @@ namespace mcl {
 
 // Forward declaration
 std::vector<std::string> Split(const std::string& string, char delim);
-template<class T>
-T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b);
   
 /** Matrix class */
 template<class T>
@@ -259,7 +257,11 @@ Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
   Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
   for (UInt i=0; i<output.num_rows(); ++i) {
     for (UInt j=0; j<output.num_columns(); ++j) {
-      output.set_element(i, j, Dot(matrix_a.row(i), matrix_b.column(j)));
+      T output_value = (T) 0.0;
+      for (UInt k=0; k<matrix_a.num_columns(); ++k) {
+        output_value += matrix_a.element(i, k) * matrix_b.element(k, j);
+      }
+      output.set_element(i, j, output_value);
     }
   }
   return output;

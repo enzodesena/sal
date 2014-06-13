@@ -99,7 +99,7 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
   
   std::vector<double> NumCoeffs(2*FilterOrder+1);
   
-  std::vector<std::complex<double>> NormalizedKernel(2*FilterOrder+1);
+  std::vector<std::complex<double> > NormalizedKernel(2*FilterOrder+1);
   // if( NormalizedKernel == NULL ) return( NULL );
   
   std::vector<double> TCoeffs = ComputeHP(FilterOrder);
