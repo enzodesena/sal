@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.68])
 AC_INIT(MCL, 0.9.3, enzodesena@me.com)
 AC_OUTPUT(Makefile)
 AC_CONFIG_SRCDIR([src/])
