@@ -13,6 +13,7 @@
 #include "mcltypes.h"
 #include "pointwiseop.h"
 #include <vector>
+#include <limits>
 using std::vector;
 
 namespace mcl {

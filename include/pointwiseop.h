@@ -15,6 +15,7 @@
 #include <cassert>
 #include "mcltypes.h"
 #include <vector>
+#include <limits>
 
 
 namespace mcl {

@@ -13,6 +13,7 @@
 #include "comparisonop.h"
 #include "vectorop.h"
 #include "butter.h"
+#include <limits>
 
 namespace mcl {
   
