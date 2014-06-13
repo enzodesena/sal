@@ -20,7 +20,6 @@ AC_FUNC_ALLOCA
 AC_CHECK_HEADERS([limits.h stdlib.h string.h sys/time.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_HEADER_STDBOOL
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
