@@ -1,4 +1,4 @@
-To install MCL, run the following:
+To install, run the following:
 
 ./autogen.sh
 ./configure
