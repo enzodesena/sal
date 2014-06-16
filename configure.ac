@@ -18,7 +18,7 @@ AM_PROG_CC_C_O
 
 # Checks for header files.
 AC_FUNC_ALLOCA
-AC_CHECK_HEADERS([limits.h stdlib.h string.h sys/time.h])
+AC_CHECK_HEADERS([malloc.h limits.h stdlib.h string.h sys/time.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T

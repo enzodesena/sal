@@ -4,6 +4,7 @@ AUTOMAKE_OPTIONS = gnu
 # what flags you want to pass to the C compiler & linker
 AM_CFLAGS = --pedantic -Wall -std=c99 -O2
 AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/include/lib
+AM_CXXFLAGS = -std=c++11
 
 # this lists the binaries to produce, the (non-PHONY, binary) targets in
 # the previous manual Makefile
