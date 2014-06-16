@@ -1,4 +1,7 @@
-To install, run the following:
+If you don't have already, please install libsndfile 
+(www.mega-nerd.com/libsndfile/).
+
+Then, to install, run the following:
 
 ./autogen.sh
 ./configure
