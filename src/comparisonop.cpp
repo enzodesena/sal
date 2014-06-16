@@ -13,10 +13,21 @@
 #include <vector>
 
 
+#if defined(__APPLE__)
+#if (__GNUC__ >= 4)
+#include <cmath>
+#define isnan(x) std::isnan(x)
+#else
+#include <math.h>
+#define isnan(x) __isnand((double)x)
+#endif
+#endif
+
 namespace mcl {
 
 
 bool IsEqual(Real num_a, Real num_b, Real precision) {
+  if (isnan(num_a) || isnan(num_b)) { return false; }
   return fabs(num_a - num_b) < precision;
 }
   

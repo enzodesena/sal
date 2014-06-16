@@ -16,15 +16,6 @@
 #include <cassert>
 
 
-#if defined(__APPLE__)
-#if (__GNUC__ >= 4)
-#include <cmath>
-#define isnan(x) std::isnan(x)
-#else
-#include <math.h>
-#define isnan(x) __isnand((double)x)
-#endif
-#endif
 
 namespace mcl {
   
