@@ -5,7 +5,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>
+#else
+#include <malloc/malloc.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
