@@ -6,10 +6,15 @@
 #include <math.h>
 #include <string.h>
 
-#ifdef HAVE_MALLOC_H
-#include <malloc.h>
+#ifndef NO_AUTOTOOLS_BUILD // IF AUTOTOOLS BUILD
+  #include <config.h>
+  #ifdef HAVE_MALLOC_H
+    #include <malloc.h>
+  #else
+    #include <malloc/malloc.h>
+  #endif
 #else
-#include <malloc/malloc.h>
+  #include <malloc/malloc.h>
 #endif
 
 #ifdef __cplusplus
