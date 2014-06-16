@@ -43,6 +43,8 @@ bool AmbisonicsMic::Test() {
   assert(IsEqual(stream_a->Pull(2, 1), sample*(-1.414213562373095)));
   assert(IsEqual(stream_a->Pull(2, -1), sample*0.0));
   
+  
+#ifdef MCL_LOAD_BOOST
   // Testing Ambisonics encoding
   const UInt N_b = 3; // Ambisonics order
   AmbisonicsMic mic_b(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, N_b, N3D);
@@ -94,7 +96,8 @@ bool AmbisonicsMic::Test() {
   assert(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
   assert(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*cos(phi)*(5.0*pow(sin(phi),2.0)-1.0)*cos(theta)));
   assert(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
-  
+#endif  
+
   return true;
 }
 
