@@ -320,6 +320,12 @@ Real Sum(const std::vector<Real>& input);
 Real Mean(const std::vector<Real>& input);
   
 /**
+ Returns the geometric mean of the input vector. Equivalent
+ to Matlab's geomean(input)
+ **/
+Real Geomean(const std::vector<Real>& input);
+  
+/**
  Weighted mean. Not implemented in Matlab (but should be). The weights are
  normalised inside the function. Hence Mean(input, ones(N)) gives the same
  result as Mean(input, ones(N)/N).

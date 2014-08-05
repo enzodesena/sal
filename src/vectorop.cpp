@@ -62,7 +62,10 @@ Real Mean(const std::vector<Real>& input,
   return Sum(Multiply(input, normalised_weights));
 }
 
-  
+Real Geomean(const std::vector<Real>& input) {
+  // TODO: Throw error for negative entries
+  return Pow(Prod(input), 1.0/((Real)input.size()));
+}
 
 Real Std(const std::vector<Real>& input) {
   return sqrt(Var(input));

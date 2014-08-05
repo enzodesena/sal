@@ -572,7 +572,8 @@ bool VectorOpTest() {
   vector_cumsum_e_cmp[3] = 44.79999999999999;
   assert(IsEqual(vector_cumsum_e, vector_cumsum_e_cmp));
   
-  
+  // Geomean
+  assert(IsEqual(mcl::Geomean(vector_o), 2.189759569943945));
   
   return true;
 }
