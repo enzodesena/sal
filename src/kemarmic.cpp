@@ -94,6 +94,7 @@ Array<Array<std::vector<Sample>, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
       std::ifstream file;
       
       file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
+      if (! file.good()) { throw "Kemar lib not found."; }
       long size = file.tellg();
       assert(sizeof(short) == 2);
       short* data = new short[size/2];
