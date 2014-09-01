@@ -169,6 +169,10 @@ public:
     return output;
   }
   
+  MonoStream* left_stream() { return &stream_left_; }
+  
+  MonoStream* right_stream() { return &stream_right_; }
+  
 private:
   MonoStream stream_left_;
   MonoStream stream_right_;

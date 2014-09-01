@@ -17,14 +17,12 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   SF_INFO input_file_info;
   
   if (! (input_file = sf_open(file_name.c_str(), SFM_READ, &input_file_info))) {
-    std::cout<<"Error : could not open file : "<<file_name<<"\n";
-    exit(1);
+    throw "Error : could not open file.";
   }
   
   if (! sf_format_check (&input_file_info)) {
     sf_close (input_file);
-    std::cout<<"Invalid encoding\n";
-    exit(1);
+    throw "Error : could not open file.";
   }
   
   assert(input_file_info.frames > 0);

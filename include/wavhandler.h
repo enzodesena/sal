@@ -22,9 +22,9 @@ namespace sal {
 
 class WavHandler {
 public:
-  static std::vector<Signal> Read(const std::string file_name);
+static std::vector<Signal> Read(const std::string file_name);
   
-  static Time ReadSamplingFrequency(const std::string file_name);
+static Time ReadSamplingFrequency(const std::string file_name);
 
 
 static void Write(const std::vector<Signal>& signals,
