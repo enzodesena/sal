@@ -19,6 +19,22 @@
 		571F9A701795AA8B0059A90D /* statisticsop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A671795AA8B0059A90D /* statisticsop_test.cpp */; };
 		571F9A711795AA8B0059A90D /* transformop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A681795AA8B0059A90D /* transformop_test.cpp */; };
 		571F9A721795AA8B0059A90D /* vectorop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A691795AA8B0059A90D /* vectorop_test.cpp */; };
+		572A876919C070ED00F62F8F /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
+		572A876A19C070ED00F62F8F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
+		572A876B19C070ED00F62F8F /* vectorop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700B15B42BBD002F077F /* vectorop.cpp */; };
+		572A876C19C070ED00F62F8F /* elementaryop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700F15B43B64002F077F /* elementaryop.cpp */; };
+		572A876D19C070ED00F62F8F /* comparisonop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701315B43C60002F077F /* comparisonop.cpp */; };
+		572A876E19C070ED00F62F8F /* transformop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701715B4915E002F077F /* transformop.cpp */; };
+		572A876F19C070ED00F62F8F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
+		572A877019C070ED00F62F8F /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
+		572A877119C070ED00F62F8F /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
+		572A877219C070ED00F62F8F /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
+		572A877319C070ED00F62F8F /* dataop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EAE5C118AA8148001DC4D4 /* dataop.cpp */; };
+		572A877419C070ED00F62F8F /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
+		572A877519C070ED00F62F8F /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
+		572A877619C070ED00F62F8F /* statisticsop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5917955BD60059A90D /* statisticsop.cpp */; };
+		572A877919C070ED00F62F8F /* statisticsop.h in Headers */ = {isa = PBXBuildFile; fileRef = 571F9A5717955B160059A90D /* statisticsop.h */; };
+		572A877A19C070ED00F62F8F /* dataop.h in Headers */ = {isa = PBXBuildFile; fileRef = 57EAE5BF18AA80FC001DC4D4 /* dataop.h */; };
 		573F9FA21662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		573F9FA31662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
@@ -73,6 +89,7 @@
 		571F9A671795AA8B0059A90D /* statisticsop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop_test.cpp; path = test/statisticsop_test.cpp; sourceTree = "<group>"; };
 		571F9A681795AA8B0059A90D /* transformop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = transformop_test.cpp; path = test/transformop_test.cpp; sourceTree = "<group>"; };
 		571F9A691795AA8B0059A90D /* vectorop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vectorop_test.cpp; path = test/vectorop_test.cpp; sourceTree = "<group>"; };
+		572A877E19C070ED00F62F8F /* libMCLiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCLiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		573F9FA01662799800929EE2 /* matrixop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop.cpp; path = src/matrixop.cpp; sourceTree = "<group>"; };
 		5778D80915B616260015AAC9 /* digitalfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = digitalfilter.h; path = include/digitalfilter.h; sourceTree = "<group>"; };
 		5778D80A15B616260015AAC9 /* firfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = firfilter.h; path = include/firfilter.h; sourceTree = "<group>"; };
@@ -111,6 +128,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		572A877719C070ED00F62F8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57A157131593475000AA6445 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -211,6 +235,7 @@
 			children = (
 				57A158AA1593501200AA6445 /* MCL_test */,
 				57A158AC1593501200AA6445 /* libMCL.a */,
+				572A877E19C070ED00F62F8F /* libMCLiOS.a */,
 			);
 			name = bin;
 			sourceTree = "<group>";
@@ -239,6 +264,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		572A877819C070ED00F62F8F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				572A877919C070ED00F62F8F /* statisticsop.h in Headers */,
+				572A877A19C070ED00F62F8F /* dataop.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57A157141593475000AA6445 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -251,6 +285,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		572A876719C070ED00F62F8F /* MCLiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 572A877B19C070ED00F62F8F /* Build configuration list for PBXNativeTarget "MCLiOS" */;
+			buildPhases = (
+				572A876819C070ED00F62F8F /* Sources */,
+				572A877719C070ED00F62F8F /* Frameworks */,
+				572A877819C070ED00F62F8F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MCLiOS;
+			productName = MCL;
+			productReference = 572A877E19C070ED00F62F8F /* libMCLiOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		57A157151593475000AA6445 /* MCL */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57A157191593475000AA6445 /* Build configuration list for PBXNativeTarget "MCL" */;
@@ -307,11 +358,33 @@
 			targets = (
 				57B8B2251593398E0030B619 /* MCL_test */,
 				57A157151593475000AA6445 /* MCL */,
+				572A876719C070ED00F62F8F /* MCLiOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		572A876819C070ED00F62F8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				572A876919C070ED00F62F8F /* kiss_fft.c in Sources */,
+				572A876A19C070ED00F62F8F /* pointwiseop.cpp in Sources */,
+				572A876B19C070ED00F62F8F /* vectorop.cpp in Sources */,
+				572A876C19C070ED00F62F8F /* elementaryop.cpp in Sources */,
+				572A876D19C070ED00F62F8F /* comparisonop.cpp in Sources */,
+				572A876E19C070ED00F62F8F /* transformop.cpp in Sources */,
+				572A876F19C070ED00F62F8F /* basicop.cpp in Sources */,
+				572A877019C070ED00F62F8F /* firfilter.cpp in Sources */,
+				572A877119C070ED00F62F8F /* iirfilter.cpp in Sources */,
+				572A877219C070ED00F62F8F /* butter.cpp in Sources */,
+				572A877319C070ED00F62F8F /* dataop.cpp in Sources */,
+				572A877419C070ED00F62F8F /* randomop.cpp in Sources */,
+				572A877519C070ED00F62F8F /* matrixop.cpp in Sources */,
+				572A877619C070ED00F62F8F /* statisticsop.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57A157121593475000AA6445 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -367,6 +440,71 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		572A877C19C070ED00F62F8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_INPUT_FILETYPE = automatic;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NO_AUTOTOOLS_BUILD=1",
+					"DEBUG=1",
+				);
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = "";
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = MCLiOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+			};
+			name = Debug;
+		};
+		572A877D19C070ED00F62F8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_INPUT_FILETYPE = automatic;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_PREPROCESSOR_DEFINITIONS = "NO_AUTOTOOLS_BUILD=1";
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = "";
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "-DNDEBUG";
+				PRODUCT_NAME = MCLiOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+			};
+			name = Release;
+		};
 		57A157171593475000AA6445 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -540,6 +678,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		572A877B19C070ED00F62F8F /* Build configuration list for PBXNativeTarget "MCLiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				572A877C19C070ED00F62F8F /* Debug */,
+				572A877D19C070ED00F62F8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		57A157191593475000AA6445 /* Build configuration list for PBXNativeTarget "MCL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
