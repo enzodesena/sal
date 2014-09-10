@@ -19,6 +19,22 @@
 		5728690217E2E5CE00E1D390 /* psrmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 572868F717E2E5CE00E1D390 /* psrmic_test.cpp */; };
 		5728690317E2E5CE00E1D390 /* sphericalheadmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 572868F817E2E5CE00E1D390 /* sphericalheadmic_test.cpp */; };
 		5728690417E2E5CE00E1D390 /* stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 572868F917E2E5CE00E1D390 /* stream_test.cpp */; };
+		572A878319C0712500F62F8F /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
+		572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
+		572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
+		572A878619C0712500F62F8F /* microphonearray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E01593460A00AA6445 /* microphonearray.cpp */; };
+		572A878719C0712500F62F8F /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
+		572A878819C0712500F62F8F /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
+		572A878919C0712500F62F8F /* point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E11593460A00AA6445 /* point.cpp */; };
+		572A878A19C0712500F62F8F /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
+		572A878B19C0712500F62F8F /* psrmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5720520F1624896A00E32B53 /* psrmic.cpp */; };
+		572A878C19C0712500F62F8F /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5C16304F18002C962B /* delayfilter.cpp */; };
+		572A878D19C0712500F62F8F /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
+		572A878E19C0712500F62F8F /* slowdelayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F6616304F9E002C962B /* slowdelayfilter.cpp */; };
+		572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
+		572A879219C0712500F62F8F /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CFD4EC1636E94100EB98A6 /* libsndfile.a */; };
+		572A879419C0712500F62F8F /* slowdelayfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 57895F6416304F82002C962B /* slowdelayfilter.h */; };
+		572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572A879C19C0712500F62F8F /* libMCLiOS.a */; };
 		5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57595410174123EE0015B9A0 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
@@ -53,6 +69,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		572A879B19C0712500F62F8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 572A877E19C070ED00F62F8F;
+			remoteInfo = MCLiOS;
+		};
+		572A879D19C0713F00F62F8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 572A876719C070ED00F62F8F;
+			remoteInfo = MCLiOS;
+		};
 		57FE7B4017B41B6B000F7343 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
@@ -112,6 +142,7 @@
 		572868F717E2E5CE00E1D390 /* psrmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = psrmic_test.cpp; path = test/psrmic_test.cpp; sourceTree = "<group>"; };
 		572868F817E2E5CE00E1D390 /* sphericalheadmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalheadmic_test.cpp; path = test/sphericalheadmic_test.cpp; sourceTree = "<group>"; };
 		572868F917E2E5CE00E1D390 /* stream_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stream_test.cpp; path = test/stream_test.cpp; sourceTree = "<group>"; };
+		572A879819C0712500F62F8F /* libSALiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSALiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		574D27FB161B3ECF00F4A0B1 /* decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = decoder.h; path = include/decoder.h; sourceTree = "<group>"; };
 		574D27FC161B3F5900F4A0B1 /* stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stream.h; path = include/stream.h; sourceTree = "<group>"; };
 		5768D6231639CFFB00F557B8 /* wavhandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavhandler.cpp; path = src/wavhandler.cpp; sourceTree = "<group>"; };
@@ -149,6 +180,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		572A879019C0712500F62F8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */,
+				572A879219C0712500F62F8F /* libsndfile.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57A156C21593457600AA6445 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,6 +226,7 @@
 			children = (
 				57A156C51593457600AA6445 /* SAL_test */,
 				57A1574515934AEC00AA6445 /* libSAL.a */,
+				572A879819C0712500F62F8F /* libSALiOS.a */,
 			);
 			name = targets;
 			sourceTree = "<group>";
@@ -295,6 +336,7 @@
 			children = (
 				57FE7B4117B41B6B000F7343 /* MCL_test */,
 				57FE7B4317B41B6B000F7343 /* libMCL.a */,
+				572A879C19C0712500F62F8F /* libMCLiOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -302,6 +344,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		572A879319C0712500F62F8F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				572A879419C0712500F62F8F /* slowdelayfilter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57A1574315934AEC00AA6445 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -313,6 +363,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		572A877F19C0712500F62F8F /* SALiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 572A879519C0712500F62F8F /* Build configuration list for PBXNativeTarget "SALiOS" */;
+			buildPhases = (
+				572A878219C0712500F62F8F /* Sources */,
+				572A879019C0712500F62F8F /* Frameworks */,
+				572A879319C0712500F62F8F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				572A879E19C0713F00F62F8F /* PBXTargetDependency */,
+			);
+			name = SALiOS;
+			productName = SAT;
+			productReference = 572A879819C0712500F62F8F /* libSALiOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		57A156C41593457600AA6445 /* SAL_test */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL_test" */;
@@ -377,11 +445,19 @@
 			targets = (
 				57A156C41593457600AA6445 /* SAL_test */,
 				57A1574415934AEC00AA6445 /* SAL */,
+				572A877F19C0712500F62F8F /* SALiOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		572A879C19C0712500F62F8F /* libMCLiOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMCLiOS.a;
+			remoteRef = 572A879B19C0712500F62F8F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		57FE7B4117B41B6B000F7343 /* MCL_test */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -399,6 +475,26 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
+		572A878219C0712500F62F8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				572A878319C0712500F62F8F /* ambisonics.cpp in Sources */,
+				572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */,
+				572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */,
+				572A878619C0712500F62F8F /* microphonearray.cpp in Sources */,
+				572A878719C0712500F62F8F /* kemarmic.cpp in Sources */,
+				572A878819C0712500F62F8F /* microphone.cpp in Sources */,
+				572A878919C0712500F62F8F /* point.cpp in Sources */,
+				572A878A19C0712500F62F8F /* source.cpp in Sources */,
+				572A878B19C0712500F62F8F /* psrmic.cpp in Sources */,
+				572A878C19C0712500F62F8F /* delayfilter.cpp in Sources */,
+				572A878D19C0712500F62F8F /* propagationline.cpp in Sources */,
+				572A878E19C0712500F62F8F /* slowdelayfilter.cpp in Sources */,
+				572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57A156C11593457600AA6445 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -454,6 +550,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		572A879E19C0713F00F62F8F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MCLiOS;
+			targetProxy = 572A879D19C0713F00F62F8F /* PBXContainerItemProxy */;
+		};
 		57FE7B4517B41B79000F7343 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
@@ -467,6 +568,58 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		572A879619C0712500F62F8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.2;
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
+				LLVM_LTO = YES;
+				LLVM_VECTORIZE_LOOPS = YES;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = SALiOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/**";
+			};
+			name = Debug;
+		};
+		572A879719C0712500F62F8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.2;
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
+				LLVM_LTO = YES;
+				LLVM_VECTORIZE_LOOPS = YES;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				PRODUCT_NAME = SALiOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/**";
+			};
+			name = Release;
+		};
 		57A156CD1593457600AA6445 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -638,6 +791,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		572A879519C0712500F62F8F /* Build configuration list for PBXNativeTarget "SALiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				572A879619C0712500F62F8F /* Debug */,
+				572A879719C0712500F62F8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		57A156BF1593457600AA6445 /* Build configuration list for PBXProject "SAL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
