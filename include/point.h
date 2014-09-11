@@ -72,7 +72,8 @@ public:
   static Length Distance(Point, Point);
   static Angle Theta(Point, Point);
   static Angle Phi(Point, Point);
-  static Angle AngleBetweenDirections(Angle, Angle, Angle, Angle);
+  static Angle AngleBetweenDirections(Angle theta_a, Angle phi_a,
+                                      Angle theta_b, Angle phi_b);
   static Angle AngleBetweenPoints(Point, Point);
   
   /**
