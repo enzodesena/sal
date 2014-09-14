@@ -21,7 +21,7 @@ namespace mcl {
 class DigitalFilter {
 public:
   
-  /** Returns the output of the filter for an input equal to `input`. */
+  /** Returns the output of the filter for an input equal to `input` . */
   virtual Real Filter(const Real input) = 0;
   
   /** Returns the output of the filter for an input signal equal to `input`. */
