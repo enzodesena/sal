@@ -28,10 +28,12 @@ public:
    This constructs a `PropagationLine` object. You need to feed the `distance`
    between the two points (in [m]), the `sampling_frequency` and the maximum
    distance you expect that this propagaiton line may have.
+   This constructor also accepts an `air_filter` (default is identical filter).
    */
-  PropagationLine(const sal::Length distance, 
-                  const sal::Time sampling_frequency, 
-                  const sal::Length max_distance = 100);
+  PropagationLine(const sal::Length distance,
+                  const sal::Time sampling_frequency,
+                  const sal::Length max_distance = 100,
+                  const mcl::IirFilter air_filter = mcl::IirFilter());
   
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
@@ -44,7 +46,9 @@ public:
   }
   
   /** Returns the current read sample */
-  inline sal::Sample Read() const { return delay_filter_.Read() * gain_; }
+  inline sal::Sample Read() {
+    return air_filter_.Filter(delay_filter_.Read() * gain_);
+  }
   
   /** Ticks time to next sample */
   inline void Tick() { delay_filter_.Tick(); }
@@ -70,6 +74,8 @@ private:
                                  const sal::Time);
   sal::Sample gain_;
   sal::Time sampling_frequency_;
+  bool air_absorption_;
+  mcl::IirFilter air_filter_;
 };
 
 } // namespace sal
