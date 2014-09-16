@@ -61,6 +61,18 @@ KemarMic::KemarMic(Point position, Angle theta, Angle phi, Angle psi,
   hrtf_database_left_ = Load(left_ear, directory);
     
 }
+  
+void KemarMic::FilterAll(mcl::DigitalFilter* filter) {
+  filter->Reset();
+  for (UInt i=0; i<NUM_ELEVATIONS; ++i) {
+    for (UInt j=0; j<MAX_NUM_AZIMUTHS; ++j) {
+      hrtf_database_right_[i][j] = filter->Filter(hrtf_database_right_[i][j]);
+      filter->Reset();
+      hrtf_database_left_[i][j] = filter->Filter(hrtf_database_left_[i][j]);
+      filter->Reset();
+    }
+  }
+}
 
 Array<Array<std::vector<Sample>, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
           KemarMic::Load(const Ear ear, const std::string directory) {

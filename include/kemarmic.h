@@ -31,7 +31,8 @@ class KemarMicInstance;
 class KemarMic : public StereoMicrophone {
 public:
   /** 
-   directory must contain the hrtf database.
+   Constructs a Kemar microphone opject. 
+   `directory` contains the hrtf database.
    */
   KemarMic(Point position, Angle theta, Angle phi, Angle psi,
            const std::string directory);
@@ -41,6 +42,12 @@ public:
   virtual void Reset();
   
   static bool Test();
+  
+  /** 
+   Filters all responses by `filter`. Useful for instance for including
+   an inverse headphone filter 
+   */
+  void FilterAll(mcl::DigitalFilter* filter);
   
   virtual ~KemarMic() {}
 private:
