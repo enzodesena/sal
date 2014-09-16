@@ -20,7 +20,11 @@ std::vector<Real> FirFilter::impulse_response() {
   return impulse_response_; 
 }
   
-
+FirFilter::FirFilter() : impulse_response_(mcl::UnaryVector(1.0)),
+counter_(0), length_(1) {
+  delay_line_.assign(length_, 0.0);
+}
+  
 FirFilter::FirFilter(std::vector<Real> B) : impulse_response_(B),
         counter_(0), length_(B.size()) {
   delay_line_.assign(length_, 0.0);

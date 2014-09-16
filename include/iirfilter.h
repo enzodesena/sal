@@ -43,6 +43,9 @@ enum WallType {
 /** IIR Filter */
 class IirFilter : public DigitalFilter {
 public:
+  /** Constructs a default filter, i.e. identical filter*/
+  IirFilter();
+  
   /** 
    Constructs an IIR filter (II-type direct implementation). B and A are numerator
    and denominator of the filter, respectively.

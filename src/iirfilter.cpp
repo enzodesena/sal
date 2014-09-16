@@ -28,6 +28,13 @@ std::vector<Real> IirFilter::A() const {
 }
 
 // Constructor
+IirFilter::IirFilter() :
+  B_(mcl::UnaryVector(1.0)), A_(mcl::UnaryVector(1.0)) {
+  UInt size = B_.size();
+  state_ = new Real[size];
+  for (int i=0; i<size; ++i) { state_[i] = 0.0; }
+}
+  
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
           B_(B), A_(A) {
   // TODO: implement also for B.size != A.size

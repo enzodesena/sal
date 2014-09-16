@@ -20,6 +20,9 @@ namespace mcl {
 /** FIR Filter */
 class FirFilter : public DigitalFilter {
 public:
+  /** Constructs a default FIR filter, i.e. identical filter */
+  FirFilter();
+  
   /** Constructs an FIR filter with impulse response B. */
   FirFilter(std::vector<Real> B);
   
