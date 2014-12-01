@@ -381,6 +381,9 @@ Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y);
  */
 std::vector<Real> CumSum(const std::vector<Real>& input);
   
+/** Writes the vector to a file. The separator is endline. */
+void Save(const std::vector<Real>& vector,
+          std::string file_name, mcl::UInt precision);
   
 } /**< namespace mcl */
 

@@ -252,6 +252,13 @@ std::vector<Real> CumSum(const std::vector<Real>& input) {
   return output;
 }
   
+void Save(const std::vector<Real>& vector,
+          std::string file_name, mcl::UInt precision = 5) {
+  mcl::Matrix<mcl::Real> output(vector.size(), 1);
+  output.set_column(0, vector);
+  output.Save(file_name, precision);
+}
+  
   
   
 } // namespace mcl
