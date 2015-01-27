@@ -646,7 +646,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"MCL_LOAD_BOOST=1",
+					"MCL_LOAD_BOOST=0",
 					"NO_AUTOTOOLS_BUILD=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -668,7 +668,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"MCL_LOAD_BOOST=1",
+					"MCL_LOAD_BOOST=0",
 					"NO_AUTOTOOLS_BUILD=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
