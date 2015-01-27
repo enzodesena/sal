@@ -582,7 +582,7 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -608,7 +608,7 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -754,7 +754,7 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -780,7 +780,7 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				LIBRARY_SEARCH_PATHS = /Users/enzodesena/repos/sal/lib;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
