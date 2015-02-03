@@ -113,14 +113,6 @@ std::vector<Real> XCorr(const std::vector<Real>& vector_a,
   return output;
 }
   
-void Save(const std::vector<Real>& vector, const char* file_name) {
-  std::ofstream output_file;
-  output_file.open(file_name);
-  for (UInt i=0; i<vector.size(); ++i) {
-    output_file<<vector[i]<<"\n";
-  }
-  output_file.close();
-}
   
   
 std::vector<std::string> Split(const std::string &s, char delim) {
@@ -251,14 +243,7 @@ std::vector<Real> CumSum(const std::vector<Real>& input) {
   
   return output;
 }
-  
-void Save(const std::vector<Real>& vector,
-          std::string file_name, mcl::UInt precision = 5) {
-  mcl::Matrix<mcl::Real> output(vector.size(), 1);
-  output.set_column(0, vector);
-  output.Save(file_name, precision);
-}
-  
+
   
   
 } // namespace mcl

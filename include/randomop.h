@@ -64,6 +64,12 @@ public:
    */
   std::vector<Real> Rand(const UInt size);
   
+  /** 
+   Returns a single pseudorandom value drawn from the uniform
+   distribution. Equivalent to Matlab's rand(1,1);
+   */
+  Real Rand() { return Rand(1)[0]; }
+  
   /** Set seed of the for random generator */
   void set_seed(unsigned int seed) { generator_.seed(seed); }
   

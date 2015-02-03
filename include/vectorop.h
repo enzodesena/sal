@@ -348,13 +348,6 @@ Real Var(const std::vector<Real>& input, const std::vector<Real>& weights);
 /** Equivalent to Matlab's xcorr(vect_a, vect_b) */
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b);
-
-
-/** 
- Writes the vector into a text file at `file_path` with an endline after
- each sample.
- */
-void Save(const std::vector<Real>& vector, const char* file_path);  
   
 /** Splits a string using a delimiter. */
 std::vector<std::string> Split(const std::string& string, char delim);
@@ -380,10 +373,6 @@ Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y);
  the elements of X. Equivalent to Matlab's cumsum(input) 
  */
 std::vector<Real> CumSum(const std::vector<Real>& input);
-  
-/** Writes the vector to a file. The separator is endline. */
-void Save(const std::vector<Real>& vector,
-          std::string file_name, mcl::UInt precision);
   
 } /**< namespace mcl */
 
