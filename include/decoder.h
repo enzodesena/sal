@@ -12,6 +12,7 @@
 #define SAL_decoder_h
 
 #include "stream.h"
+#include "vectorop.h"
 
 namespace sal {
 
