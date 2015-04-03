@@ -468,6 +468,10 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DNDEBUG",
+				);
 				PRODUCT_NAME = MCLiOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -500,6 +504,10 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DNDEBUG",
+				);
 				PRODUCT_NAME = MCLiOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
