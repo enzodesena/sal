@@ -44,6 +44,8 @@ public:
   
   sal::Sample Read(const UInt& delay_tap) const;
   
+  sal::Sample FractionalRead(const Time fractional_delay_tap) const;
+  
   /** This causes time to tick by one sample. */
   inline void Tick() {
     write_index_ = (write_index_ != end_) ? (write_index_+1) : start_;

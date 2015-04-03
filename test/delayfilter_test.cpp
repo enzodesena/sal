@@ -187,7 +187,9 @@ bool DelayFilter::Test() {
   delay_line_a.Tick();
   
   delay_line_a.Write(-1.2);
+  assert(IsEqual(delay_line_a.FractionalRead(0), -1.2));
   assert(IsEqual(delay_line_a.Read(0), -1.2));
+  assert(IsEqual(delay_line_a.FractionalRead(1), 1.5));
   assert(IsEqual(delay_line_a.Read(1), 1.5));
   assert(IsEqual(delay_line_a.Read(2), 0.0));
   assert(IsEqual(delay_line_a.Read(3), 0.0));
@@ -197,6 +199,10 @@ bool DelayFilter::Test() {
   delay_line_a.Write(0.0);
   assert(IsEqual(delay_line_a.Read(0), 0.0));
   assert(IsEqual(delay_line_a.Read(1), -1.2));
+  assert(IsEqual(delay_line_a.FractionalRead(1.01), -1.173));
+  assert(IsEqual(delay_line_a.FractionalRead(1.5), 0.15));
+  assert(IsEqual(delay_line_a.FractionalRead(1.7), 0.69));
+  assert(IsEqual(delay_line_a.FractionalRead(1.99), 1.473));
   assert(IsEqual(delay_line_a.Read(2), 1.5));
   assert(IsEqual(delay_line_a.Read(3), 0.0));
   assert(IsEqual(delay_line_a.Read(4), 0.0));

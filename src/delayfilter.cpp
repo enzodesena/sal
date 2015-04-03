@@ -10,6 +10,7 @@
 
 #include "delayfilter.h"
 #include <cassert>
+#include <tgmath.h>
 
 using sal::Sample;
 using sal::UInt;
@@ -76,7 +77,7 @@ UInt DelayFilter::latency() const { return latency_; }
 
 UInt DelayFilter::max_latency() const { return max_latency_; }
 
-sal::Sample DelayFilter::Read(const UInt& delay_tap) const {
+Sample DelayFilter::Read(const UInt& delay_tap) const {
   assert(delay_tap < max_latency_);
   assert(write_index_>=start_);
   assert(write_index_<=end_);
@@ -84,5 +85,15 @@ sal::Sample DelayFilter::Read(const UInt& delay_tap) const {
           *(write_index_ - delay_tap) :
           *(write_index_ - delay_tap + max_latency_ + 1);
 }
+
+Sample DelayFilter::FractionalRead(const Time fractional_delay_tap) const {
+  sal::Time x_a = floor(fractional_delay_tap);
+  sal::Time x_b = x_a+1.0;
+  Sample f_x_a = Read(x_a);
+  Sample f_x_b = Read(x_b);
+  return (f_x_b-f_x_a)/(x_b-x_a)*(fractional_delay_tap-x_a)+f_x_a;
+}
+  
+  
 
 } // namespace sal
