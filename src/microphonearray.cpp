@@ -164,7 +164,7 @@ CircularPSR::CircularPSR(const Point& position,
     // Initialise streams.
     microphones_.push_back(PSRMic(positions_[i], PI/2.0, angles_[i], 0.0,
                                   radius,
-                                  abs(angles_[1]-angles_[0]),
+                                  std::abs(angles_[1]-angles_[0]),
                                   sound_speed));
     microphone_pointers_[i] = (MonoMic*) &(microphones_[i]);
   }
