@@ -41,7 +41,7 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) :
   assert(B.size() == A.size());
   assert(B.size() >= 1);
   A0_ = A[0];
-  if (abs(A[0]-1.0) < std::numeric_limits<Real>::epsilon()) { // ! IsEqual(A[0], 1.0)
+    if (std::abs(A[0]-1.0) < std::numeric_limits<Real>::epsilon()) { // ! IsEqual(A[0], 1.0)
     B_ = Multiply(B, (Real) 1.0 / A[0]);
     A_ = Multiply(A, (Real) 1.0 / A[0]);
   }
