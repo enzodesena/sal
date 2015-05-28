@@ -21,7 +21,7 @@ SphericalHeadMic::SphericalHeadMic(const Point position,
                                    const Length sphere_radius,
                                    const UInt ir_length,
                                    const Time sampling_frequency) :
-          StereoMicrophone(position, theta, phi, psi),
+          BinauralMic(position, theta, phi, psi),
           ears_angle_(ears_angle), sphere_radius_(sphere_radius),
           sampling_frequency_(sampling_frequency),
           impulse_response_length_(ir_length),
@@ -29,67 +29,6 @@ SphericalHeadMic::SphericalHeadMic(const Point position,
           alg_threshold_(0.0001) {}
   
   
-void SphericalHeadMic::RecordPlaneWaveRelative(const Sample& sample,
-                                               const Point& point,
-                                               const UInt& wave_id) {
-  if (instances_left_.count(wave_id) == 0) {
-    assert(instances_right_.count(wave_id) == 0);
-    instances_left_.insert(std::make_pair(wave_id,
-                                             SHMicInstance(this, left_ear)));
-    instances_right_.insert(std::make_pair(wave_id,
-                                              SHMicInstance(this, right_ear)));
-  }
-  
-  assert(instances_left_.count(wave_id) != 0);
-  assert(instances_right_.count(wave_id) != 0);
-  
-  stream_.Add(instances_left_.at(wave_id).
-              RecordPlaneWaveRelative(sample, point),
-              instances_right_.at(wave_id).
-              RecordPlaneWaveRelative(sample, point));
-}
-
-void SphericalHeadMic::Reset() {
-  typedef std::map<UInt, SHMicInstance>::iterator it_type;
-  
-  for(it_type iterator = instances_left_.begin();
-      iterator != instances_left_.end();
-      ++iterator) {
-    iterator->second.filter_.Reset();
-  }
-  
-  for(it_type iterator = instances_right_.begin();
-      iterator != instances_right_.end();
-      ++iterator) {
-    iterator->second.filter_.Reset();
-  }
-}
-  
-
-void SphericalHeadMic::Tick() {
-  stream_.Tick();
-}
-  
-
-  
-Sample SHMicInstance::RecordPlaneWaveRelative(const Sample& sample,
-                                              const Point& point) {
-  
-  if (! Point::IsEqual(point, previous_point_)) {
-    // Update cache variables
-    previous_point_ = point;
-    filter_.UpdateFilter(SphericalHeadMic::GenerateImpulseResponse(
-            base_mic_->sphere_radius_,
-            point.norm(), // point distance
-            SphericalHeadMic::GetTheta(point, base_mic_->ears_angle_, ear_),
-            base_mic_->sound_speed_,
-            base_mic_->alg_threshold_,
-            base_mic_->impulse_response_length_,
-            base_mic_->sampling_frequency_)); 
-  }
-  
-  return filter_.Filter(sample);
-}
   
 Angle SphericalHeadMic::GetTheta(const Point& point,
                                   const Angle& ears_angle,
@@ -166,6 +105,17 @@ mcl::Complex SphericalHeadMic::Sphere(Length a, Length r,
   return (rho * exp(- Complex(0.0,1.0) * mu) * sum) / (Complex(0.0,1.0) * mu);
 }
   
+Signal SphericalHeadMic::GetBrir(const Ear ear, const Point& point) {
+  return GenerateImpulseResponse(sphere_radius_,
+                                 point.norm(), // point distance
+                                 GetTheta(point, ears_angle_, ear),
+                                 sound_speed_,
+                                 alg_threshold_,
+                                 impulse_response_length_,
+                                 sampling_frequency_);
+}
+  
+  
 Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius, 
                                                  Length source_distance,
                                                  Angle theta,
@@ -174,7 +124,6 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
                                                  UInt num_samples,
                                                  Time sampling_frequency,
                                                  bool minimum_phase) {
-
   // TODO: implement for the odd case.
   assert(num_samples % 2 == 0);
   
@@ -254,15 +203,5 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   
   return h;
 }
-  
-//std::vector<Sample> SHMicInstance::ImpulseResponse(Point point) const {
-//  return GenerateImpulseResponse(sphere_radius_, 
-//                                 point.norm(), // point distance 
-//                                 GetTheta(point), // theta angle
-//                                 sound_speed_, 
-//                                 alg_threshold_,
-//                                 impulse_response_length_,
-//                                 sampling_frequency_);
-//}
   
 } // namespace sal

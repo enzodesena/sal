@@ -20,14 +20,11 @@
 
 namespace sal {
 
-class SHMicInstance;
-  
-
 /**
  This object implements the spherical head model proposed by Duda et al in the
  article "Range dependence of the response of a spherical head model"
  */
-class SphericalHeadMic : public StereoMicrophone {
+class SphericalHeadMic : public BinauralMic {
 public:
   SphericalHeadMic(const Point position, const Angle theta,
                    const Angle phi, const Angle psi,
@@ -36,16 +33,12 @@ public:
                    const UInt ir_length,
                    const Time sampling_frequency);
   
-  virtual void Tick();
-  
-  virtual void Reset();
-  
   static bool Test();
   
   virtual ~SphericalHeadMic() {}
 private:
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
-                                       const UInt& wave_id);
+  
+  virtual Signal GetBrir(const Ear ear, const Point& point);
   
   /** For the various definitions see Duda's paper. */
   static mcl::Complex Sphere(Length a, Length r, Angle theta,
@@ -99,41 +92,7 @@ private:
   /** This is the threshold of the sphere algorithm. */
   mcl::Real alg_threshold_;
   
-  std::map<UInt, SHMicInstance> instances_left_;
-  std::map<UInt, SHMicInstance> instances_right_;
-  
-  friend class SHMicInstance;
 };
-  
-class SHMicInstance {
-private:
-  SHMicInstance(SphericalHeadMic* base_mic, Ear ear) :
-          base_mic_(base_mic),
-          filter_(mcl::FirFilter::GainFilter(1.0)),
-          ear_(ear),
-          previous_point_(Point(NAN, NAN, NAN)) {}
-  
-  
-  Sample RecordPlaneWaveRelative(const Sample& sample,
-                                 const Point& point);
-
-  /**
-   The microphone object is called for every sample, while the position
-   of SDN's elements is changed once in a while. Hence, these angles are
-   stored so that we don't need to update the filter coefficients at every
-   sample, but only when something changes.
-   */
-  Point previous_point_;
-  
-  mcl::FirFilter filter_;
-  
-  Ear ear_;
-  
-  SphericalHeadMic* base_mic_;
-  
-  friend class SphericalHeadMic;
-};
-
   
 } // namespace sal
 
