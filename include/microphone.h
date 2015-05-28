@@ -79,7 +79,7 @@ public:
   }
   
   /**
-   This is the method being implemented by any microphone. We need to
+   We need to
    keep track of the wave_id because some microphones (e.g. kemar) need
    to do some filtering on the signal longer than one sample.
    The function Tick tells the microphone to advance in time.
@@ -87,8 +87,8 @@ public:
    the first time it sees a new wave_id, it will allocate a new filter
    for it. 
    */
-  virtual void RecordPlaneWave(const Sample& sample, const Point& point,
-                               const UInt& wave_id);
+  void RecordPlaneWave(const Sample& sample, const Point& point,
+                       const UInt& wave_id);
   
   /**
    This function tells the microphone to advance by one `tick` in time.
