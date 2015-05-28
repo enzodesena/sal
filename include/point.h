@@ -36,8 +36,15 @@ public:
   void set_y(Length);
   void set_z(Length);
   
+  /** Returns the norm of the vector, or, in other words, the distance
+   of the point from the origin (0,0,0) */
   Length norm() const;
+  
+  /** Returns the angle formed with the z-axis */
   Angle theta() const;
+  
+  /** Returns the angle formed between the projection on the x-y axis and
+   the x-axis */
   Angle phi() const;
   
   /** Modifies the point (i.e. vector) such that its norm is equal to 1. */
