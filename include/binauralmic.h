@@ -40,14 +40,15 @@ public:
   
 private:
   
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
-                                       const UInt& wave_id);
-  
   /** Retrieves the BRIR for a source in position `point`.
-   The head is assumed to be positioned lying on the x-axis and facing 
+   The head is assumed to be positioned lying on the x-axis and facing
    the positive z-direction. E.g. a point on the positive z-axis
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const Point& point) = 0;
+  
+  
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+                                       const UInt& wave_id);
   
   std::map<UInt, BinauralMicInstance> instances_left_;
   std::map<UInt, BinauralMicInstance> instances_right_;

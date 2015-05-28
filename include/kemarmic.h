@@ -48,13 +48,6 @@ private:
   
   virtual Signal GetBrir(const Ear ear, const Point& point);
   
-  // Database
-  std::vector<std::vector<Signal> > hrtf_database_right_;
-  std::vector<std::vector<Signal> > hrtf_database_left_;
-  
-  Array<mcl::Int, NUM_ELEVATIONS> num_measurements_;
-  Array<mcl::Int, NUM_ELEVATIONS> elevations_;
-  
   std::vector<std::vector<Signal> > Load(const Ear ear,
                                          const std::string directory);
   
@@ -71,6 +64,13 @@ private:
    */
   UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index);
   
+  
+  // Database
+  std::vector<std::vector<Signal> > hrtf_database_right_;
+  std::vector<std::vector<Signal> > hrtf_database_left_;
+  
+  Array<mcl::Int, NUM_ELEVATIONS> num_measurements_;
+  Array<mcl::Int, NUM_ELEVATIONS> elevations_;
 };
   
 
