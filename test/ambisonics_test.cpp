@@ -8,10 +8,10 @@
  
  */
 
+#include "mcl.h"
 #include "ambisonics.h"
 #include "microphone.h"
 #include "stream.h"
-#include "mcl.h"
 
 namespace sal {
   
@@ -160,8 +160,8 @@ bool AmbisonicsHorizDec::Test() {
   
   IirFilter filter_a = NFCFilter(2, R, Fs, c);
   
-  assert(IsEqual(filter_a.B(), BB));
-  assert(IsEqual(filter_a.A(), AA));
+  assert(IsEqual(filter_a.B(), BB, 1.0E-3));
+  assert(IsEqual(filter_a.A(), AA, 1.0E-3));
   
   IirFilter filter_b = NFCFilter(1, R, Fs, c);
   // TODO: I copied this values from my Matlab implementation,
