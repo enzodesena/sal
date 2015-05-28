@@ -1,7 +1,7 @@
 /*
- directivityhrtf.h
+ kemarmic.h
  Spatial Audio Library (SAL)
- Copyright (c) 2011, Enzo De Sena
+ Copyright (c) 2015, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
@@ -12,7 +12,6 @@
 #define SAL_KEMARMIC_H
 
 #define NUM_ELEVATIONS 14
-#define MAX_NUM_AZIMUTHS 72
 #define NORMALISING_VALUE 30000.0
 
 #include <map>
@@ -36,27 +35,41 @@ public:
   KemarMic(Point position, Angle theta, Angle phi, Angle psi,
            const std::string directory);
   
+  /**
+   Filters all responses by `filter`. Useful for instance for including
+   an inverse headphone filter
+   */
+  void FilterAll(mcl::DigitalFilter* filter);
+  
   static bool Test();
   
   virtual ~KemarMic() {}
 private:
   
+  virtual Signal GetBrir(const Ear ear, const Point& point);
   
-  static Array<Array<Signal, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
-          Load(const Ear ear, const std::string directory);
+  // Database
+  std::vector<std::vector<Signal> > hrtf_database_right_;
+  std::vector<std::vector<Signal> > hrtf_database_left_;
+  
+  Array<mcl::Int, NUM_ELEVATIONS> num_measurements_;
+  Array<mcl::Int, NUM_ELEVATIONS> elevations_;
+  
+  std::vector<std::vector<Signal> > Load(const Ear ear,
+                                         const std::string directory);
   
   /**
    Returns the elevation index for kemar database for elevation in azimuth.
    The index departs from 0.
    */
-  virtual UInt FindElevationIndex(Angle elevation);
+  UInt FindElevationIndex(Angle elevation);
   
   
   /** 
    Returns the azimuthal index for kemar database for azimuth in grad.
    The index departs from 0.
    */
-  virtual UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index);
+  UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index);
   
 };
   

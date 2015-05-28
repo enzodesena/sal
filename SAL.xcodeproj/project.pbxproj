@@ -36,6 +36,9 @@
 		572A879419C0712500F62F8F /* slowdelayfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 57895F6416304F82002C962B /* slowdelayfilter.h */; };
 		572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572A879C19C0712500F62F8F /* libMCLiOS.a */; };
 		57444D261B17671E00EC31F4 /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
+		57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
+		57444D2B1B1776A400EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
+		57444D2D1B17B08E00EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
 		5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57595410174123EE0015B9A0 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
@@ -146,6 +149,8 @@
 		572868F817E2E5CE00E1D390 /* sphericalheadmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalheadmic_test.cpp; path = test/sphericalheadmic_test.cpp; sourceTree = "<group>"; };
 		572868F917E2E5CE00E1D390 /* stream_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stream_test.cpp; path = test/stream_test.cpp; sourceTree = "<group>"; };
 		572A879819C0712500F62F8F /* libSALiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSALiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57444D281B1776A400EC31F4 /* cipicmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cipicmic.cpp; path = src/cipicmic.cpp; sourceTree = "<group>"; };
+		57444D2C1B1776FB00EC31F4 /* cipicmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cipicmic.h; path = include/cipicmic.h; sourceTree = "<group>"; };
 		574D27FB161B3ECF00F4A0B1 /* decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = decoder.h; path = include/decoder.h; sourceTree = "<group>"; };
 		574D27FC161B3F5900F4A0B1 /* stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stream.h; path = include/stream.h; sourceTree = "<group>"; };
 		5768D6231639CFFB00F557B8 /* wavhandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavhandler.cpp; path = src/wavhandler.cpp; sourceTree = "<group>"; };
@@ -240,8 +245,9 @@
 			isa = PBXGroup;
 			children = (
 				57A156E41593460E00AA6445 /* targets */,
-				57C2C7A71B1739A600B7F58C /* binauralmic.cpp */,
 				57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */,
+				57C2C7A71B1739A600B7F58C /* binauralmic.cpp */,
+				57444D281B1776A400EC31F4 /* cipicmic.cpp */,
 				57895F5C16304F18002C962B /* delayfilter.cpp */,
 				57895F6616304F9E002C962B /* slowdelayfilter.cpp */,
 				57895F5D16304F18002C962B /* propagationline.cpp */,
@@ -263,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				57C2C7A51B17399000B7F58C /* binauralmic.h */,
+				57444D2C1B1776FB00EC31F4 /* cipicmic.h */,
 				57895F6416304F82002C962B /* slowdelayfilter.h */,
 				57895F5A16304F00002C962B /* delayfilter.h */,
 				57895F5B16304F00002C962B /* propagationline.h */,
@@ -500,6 +507,7 @@
 				572A878E19C0712500F62F8F /* slowdelayfilter.cpp in Sources */,
 				572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */,
 				57C2C7AA1B1739A600B7F58C /* binauralmic.cpp in Sources */,
+				57444D2B1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +515,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57444D2D1B17B08E00EC31F4 /* cipicmic.cpp in Sources */,
 				57444D261B17671E00EC31F4 /* binauralmic.cpp in Sources */,
 				57A79245163E9C360063863D /* freefieldsimulation.cpp in Sources */,
 				57895F7A16305460002C962B /* delayfilter.cpp in Sources */,
@@ -554,6 +563,7 @@
 				57895F6816304F9E002C962B /* slowdelayfilter.cpp in Sources */,
 				5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */,
 				57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */,
+				57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

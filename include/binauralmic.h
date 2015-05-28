@@ -1,5 +1,5 @@
 /*
- directivityhrtf.h
+ binauralmic.h
  Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
@@ -10,10 +10,6 @@
 
 #ifndef SAL_BINAURALMIC_H
 #define SAL_BINAURALMIC_H
-
-#define NUM_ELEVATIONS 14
-#define MAX_NUM_AZIMUTHS 72
-#define NORMALISING_VALUE 30000.0
 
 #include <map>
 #include <vector>
@@ -40,39 +36,18 @@ public:
   
   virtual void Reset();
   
-  /**
-   Filters all responses by `filter`. Useful for instance for including
-   an inverse headphone filter
-   */
-  void FilterAll(mcl::DigitalFilter* filter);
-  
   virtual ~BinauralMic() {}
-  
-protected:
-  
-  // Database
-  Array<Array<Signal, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS> hrtf_database_right_;
-  Array<Array<Signal, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS> hrtf_database_left_;
-  
   
 private:
   
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
                                        const UInt& wave_id);
   
-  /**
-   Returns the elevation index for the database for elevation in azimuth.
-   The index departs from 0.
-   */
-  virtual UInt FindElevationIndex(Angle elevation) = 0;
-  
-  
-  /**
-   Returns the azimuthal index for the database for azimuth in grad.
-   The index departs from 0.
-   */
-  virtual UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index) = 0;
-  
+  /** Retrieves the BRIR for a source in position `point`.
+   The head is assumed to be positioned lying on the x-axis and facing 
+   the positive z-direction. E.g. a point on the positive z-axis
+   is facing directly ahead of the head. */
+  virtual Signal GetBrir(const Ear ear, const Point& point) = 0;
   
   std::map<UInt, BinauralMicInstance> instances_left_;
   std::map<UInt, BinauralMicInstance> instances_right_;

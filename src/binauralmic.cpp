@@ -1,5 +1,5 @@
 /*
- directivityfunction.cpp
+ binauralmic.cpp
  Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
@@ -33,8 +33,6 @@ void BinauralMic::RecordPlaneWaveRelative(const Sample& sample,
               RecordPlaneWaveRelative(sample, point));
 }
 
-
-
 void BinauralMic::Tick() {
   stream_.Tick();
 }
@@ -56,17 +54,7 @@ void BinauralMic::Reset() {
 BinauralMic::BinauralMic(Point position, Angle theta, Angle phi, Angle psi) :
   StereoMicrophone(position, theta, phi, psi) {}
 
-void BinauralMic::FilterAll(mcl::DigitalFilter* filter) {
-  filter->Reset();
-  for (UInt i=0; i<NUM_ELEVATIONS; ++i) {
-    for (UInt j=0; j<MAX_NUM_AZIMUTHS; ++j) {
-      hrtf_database_right_[i][j] = filter->Filter(hrtf_database_right_[i][j]);
-      filter->Reset();
-      hrtf_database_left_[i][j] = filter->Filter(hrtf_database_left_[i][j]);
-      filter->Reset();
-    }
-  }
-}
+
 
 // Use signals with 44100 sampling frequency!!!
 Sample BinauralMicInstance::RecordPlaneWaveRelative(const Sample& sample,
@@ -75,30 +63,8 @@ Sample BinauralMicInstance::RecordPlaneWaveRelative(const Sample& sample,
     // Update cache variables
     previous_point_ = point;
     
-    // For forward looking direction, Azimuth = 0 and elevation =0
-    Point norm_point = Point::Normalized(point);
-    Angle elevation = (asin(-norm_point.x())) / PI * 180.0;
-    
-    Angle azimuth;
-    if (norm_point.z() >= 0) azimuth = (asin(norm_point.y())) / PI * 180.0;
-    else azimuth = (acos(norm_point.y())+PI/2.0) / PI * 180.0;
-    
-    azimuth = mcl::Mod(azimuth, 360.0);
-    
-    assert(elevation >= (-90.0-VERY_SMALL) & elevation <= (90.0+VERY_SMALL));
-    assert(azimuth >= (0.0-VERY_SMALL) & azimuth <= (360.0+VERY_SMALL));
-    
-    UInt elevation_index = base_mic_->FindElevationIndex(elevation);
-    UInt azimuth_index = base_mic_->FindAzimuthIndex(azimuth, elevation_index);
-    
-    if (ear_ == left_ear) {
-      filter_.UpdateFilter(
-                           base_mic_->hrtf_database_left_[elevation_index][azimuth_index]);
-    } else {
-      filter_.UpdateFilter(
-                           base_mic_->hrtf_database_right_[elevation_index][azimuth_index]);
-    }
-  }
+    filter_.UpdateFilter(base_mic_->GetBrir(ear_, point));
+      }
   
   return filter_.Filter(sample);
 }

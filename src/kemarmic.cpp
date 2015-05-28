@@ -1,7 +1,7 @@
 /*
- directivityfunction.cpp
+ kemarmic.cpp
  Spatial Audio Library (SAL)
- Copyright (c) 2011, Enzo De Sena
+ Copyright (c) 2015, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
@@ -20,27 +20,26 @@ namespace sal {
 KemarMic::KemarMic(Point position, Angle theta, Angle phi, Angle psi,
                    const std::string directory) :
           BinauralMic(position, theta, phi, psi) {
-    
+            
+  num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
+  elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
+            
   hrtf_database_right_ = Load(right_ear, directory);
   hrtf_database_left_ = Load(left_ear, directory);
-    
 }
   
 
-Array<Array<std::vector<Sample>, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
-          KemarMic::Load(const Ear ear, const std::string directory) {
-  
-  const int num_elevations = NUM_ELEVATIONS;
-  const Angle elevations[] = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
-  const int num_measurements[] = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
-  
-  Array<Array<std::vector<Sample>, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
-          hrtf_database;
+std::vector<std::vector<Signal> >
+KemarMic::Load(const Ear ear, const std::string directory) {
+  std::vector<std::vector<Signal> > hrtf_database;
           
-  for (UInt i=0; i<num_elevations; ++i) {
-    Angle resolution = 360.0 / num_measurements[i];
-    Angle elevation = elevations[i];
-    UInt num_measurement = floor(num_measurements[i]/2.0)+1;
+  for (UInt i=0; i<NUM_ELEVATIONS; ++i) {
+    // Initialise vector
+    hrtf_database.push_back(std::vector<Signal>(num_measurements_[i]));
+    
+    Angle resolution = 360.0 / num_measurements_[i];
+    Angle elevation = elevations_[i];
+    UInt num_measurement = floor(num_measurements_[i]/2.0)+1;
     
     for (UInt j=0; j<num_measurement; ++j) {
       Angle angle = round(j * resolution);
@@ -80,7 +79,8 @@ Array<Array<std::vector<Sample>, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
       for (UInt k=0; k<size; k+=2) {
         UInt ipsilateral_index = j;
         UInt contralateral_index = (UInt)
-              ((((Int) num_measurements[i]) - ((Int) j)) % (Int) num_measurements[i]);
+                ((((Int) num_measurements_[i]) -
+                  ((Int) j)) % (Int) num_measurements_[i]);
         
         if (ear == right_ear) {
           hrtf_database[i][ipsilateral_index].
@@ -112,7 +112,7 @@ Array<Array<std::vector<Sample>, MAX_NUM_AZIMUTHS>, NUM_ELEVATIONS>
 
   
 UInt KemarMic::FindElevationIndex(Angle elevation) {
-  Int elevation_index = round(elevation/10) + 4;
+  Int elevation_index = round(elevation/10.0) + 4;
   if (elevation_index < 0) {
     return 0;
   } else if (elevation_index > 13) {
@@ -136,5 +136,41 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth,
   return azimuth_index;
 }
   
+void KemarMic::FilterAll(mcl::DigitalFilter* filter) {
+  filter->Reset();
+  for (UInt i=0; i<hrtf_database_right_.size(); ++i) {
+    for (UInt j=0; j<hrtf_database_right_[i].size(); ++j) {
+      hrtf_database_right_[i][j] = filter->Filter(hrtf_database_right_[i][j]);
+      filter->Reset();
+      hrtf_database_left_[i][j] = filter->Filter(hrtf_database_left_[i][j]);
+      filter->Reset();
+    }
+  }
+}
+
+Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
+  
+  // For forward looking direction, Azimuth = 0 and elevation =0
+  Point norm_point = Point::Normalized(point);
+  Angle elevation = (asin(-norm_point.x())) / PI * 180.0;
+  
+  Angle azimuth;
+  if (norm_point.z() >= 0) azimuth = (asin(norm_point.y())) / PI * 180.0;
+  else azimuth = (acos(norm_point.y())+PI/2.0) / PI * 180.0;
+      
+  azimuth = mcl::Mod(azimuth, 360.0);
+  
+  assert(elevation >= (-90.0-VERY_SMALL) & elevation <= (90.0+VERY_SMALL));
+  assert(azimuth >= (0.0-VERY_SMALL) & azimuth <= (360.0+VERY_SMALL));
+  
+  UInt elevation_index = FindElevationIndex(elevation);
+  UInt azimuth_index = FindAzimuthIndex(azimuth, elevation_index);
+  
+  if (ear == left_ear) {
+    return hrtf_database_left_[elevation_index][azimuth_index];
+  } else {
+    return hrtf_database_right_[elevation_index][azimuth_index];
+  }
+}
   
 } // namespace sal
