@@ -11,8 +11,8 @@
 #ifndef SAL_KEMARMIC_H
 #define SAL_KEMARMIC_H
 
-#define NUM_ELEVATIONS 14
-#define NORMALISING_VALUE 30000.0
+#define NUM_ELEVATIONS_KEMAR 14
+#define NORMALISING_VALUE_KEMAR 30000.0
 
 #include <map>
 #include <vector>
@@ -69,8 +69,8 @@ private:
   std::vector<std::vector<Signal> > hrtf_database_right_;
   std::vector<std::vector<Signal> > hrtf_database_left_;
   
-  Array<mcl::Int, NUM_ELEVATIONS> num_measurements_;
-  Array<mcl::Int, NUM_ELEVATIONS> elevations_;
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations_;
 };
   
 

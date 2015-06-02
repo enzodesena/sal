@@ -33,7 +33,7 @@ std::vector<std::vector<Signal> >
 KemarMic::Load(const Ear ear, const std::string directory) {
   std::vector<std::vector<Signal> > hrtf_database;
           
-  for (UInt i=0; i<NUM_ELEVATIONS; ++i) {
+  for (UInt i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
     hrtf_database.push_back(std::vector<Signal>(num_measurements_[i]));
     
@@ -84,19 +84,19 @@ KemarMic::Load(const Ear ear, const std::string directory) {
         
         if (ear == right_ear) {
           hrtf_database[i][ipsilateral_index].
-                  push_back(data[k]/NORMALISING_VALUE);
+                  push_back(data[k]/NORMALISING_VALUE_KEMAR);
           // In the two cases for azimuth = 0, and azimuth = 180 the signals at
           // left and right ears are equal.
           if (ipsilateral_index != contralateral_index) {
             hrtf_database[i][contralateral_index].
-                    push_back(data[k+1]/NORMALISING_VALUE);
+                    push_back(data[k+1]/NORMALISING_VALUE_KEMAR);
           }
         } else {
           hrtf_database[i][ipsilateral_index].
-                    push_back(data[k+1]/NORMALISING_VALUE);
+                    push_back(data[k+1]/NORMALISING_VALUE_KEMAR);
           if (ipsilateral_index != contralateral_index) {
             hrtf_database[i][contralateral_index].
-                    push_back(data[k]/NORMALISING_VALUE);
+                    push_back(data[k]/NORMALISING_VALUE_KEMAR);
           }
         }
       }

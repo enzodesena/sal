@@ -25,7 +25,7 @@ bool KemarMic::Test() {
   Signal impulse = mcl::Zeros<Sample>(impulse_response_length);
   impulse[0] = 1.0;
   
-  Sample normalising_value = 1.0/NORMALISING_VALUE;
+  Sample normalising_value = 1.0/NORMALISING_VALUE_KEMAR;
   
   
   // Testing frontal direction
@@ -56,6 +56,18 @@ bool KemarMic::Test() {
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, sample);
   
   assert(IsEqual(cmp_imp_front_left, output_front[0]));
+  
+  
+  KemarMic mic_o(Point(0.0,0.0,0.0), PI/2.0, PI/2.0, 0.0,
+                 kemar_path);
+  StereoStream* stream_o = mic_o.stream();
+  
+  mic_o.RecordPlaneWave(mcl::Multiply(impulse, (Sample) 0.5),
+                        Point(0.0,1.0,0.0));
+  std::vector<Signal> output_front_2 = stream_o->Pull(impulse_response_length);
+  
+  assert(mcl::IsEqual(output_front[0], output_front_2[0]));
+
   
   // Testing upward direction
   const Sample imp_up_left[] = {5,-16,26,-41,63,-81,119,-73,2020,4378,5862,
@@ -91,17 +103,6 @@ bool KemarMic::Test() {
 //  std::vector<Signal> output_up = stream_n.Pull(impulse_response_length);
 //  
 //  assert(mcl::IsEqual(cmp_imp_up_left, output_up_left));
-
-  
-  KemarMic mic_o(Point(0.0,0.0,0.0), PI/2.0, PI/2.0, 0.0,
-                 kemar_path);
-  StereoStream* stream_o = mic_o.stream();
-  
-  mic_o.RecordPlaneWave(mcl::Multiply(impulse, (Sample) 0.5),
-                        Point(0.0,1.0,0.0));
-  std::vector<Signal> output_front_2 = stream_o->Pull(impulse_response_length);
-  
-  assert(mcl::IsEqual(output_front[0], output_front_2[0]));
 
 
 
@@ -165,7 +166,7 @@ bool KemarMic::Test() {
   assert(mcl::IsEqual(output_left[0], cmp_imp_left_left));
   assert(mcl::IsEqual(output_left[1], cmp_imp_left_right));
 
-
+  // Case for a source in the back
   const Sample imp_back[] = {-3,-4,3,-4,6,-9,16,-25,19,-31,34,-46,60,-8,
     2200,5530,192,-4501,-1159,994,-791,3572,12125,6811,-604,2758,2477,-2946,
     -4064,-3530,-5220,-5273,-2800,-2070,-2631,-454,1570,847,1284,2371,1898,744,
