@@ -143,6 +143,8 @@ public:
     output_file.close();
   }
   
+  /** Returns the raw data */
+  std::vector<std::vector<T> > data() { return data_; }
   
   /**
    Reads a matrix. Elements have to be separated by tabs and there
