@@ -1,137 +1,116 @@
-///*
-// kemarmic.cpp
-// Spatial Audio Library (SAL)
-// Copyright (c) 2015, Enzo De Sena
-// All rights reserved.
-// 
-// Authors: Enzo De Sena, enzodesena@me.com
-// 
-// */
-//
-//#include "cipicmic.h"
-//#include "mcl.h"
-//#include "point.h"
-//#include "salconstants.h"
-//#include <string.h>
-//
-//namespace sal {
-//
-//
-//CipicMic::CipicMic(Point position, Angle theta, Angle phi, Angle psi,
-//                   const std::string directory) :
-//BinauralMic(position, theta, phi, psi) {
-//  
-//  azimuths_ = std::vector<mcl::Int>({-80,-65,-55,-45,-40,-35,-30,-25,-20,-15,-10,-5,
-//    0,5,10,15,20,25,30,35,40,45,55,65,80});
-//  
-//  hrtf_database_right_ = Load(right_ear, directory);
-//  hrtf_database_left_ = Load(left_ear, directory);
-//}
-//
-//std::vector<std::vector<Signal> >
-//CipicMic::Load(const Ear ear, const std::string directory) {
-//  std::vector<std::vector<Signal> > hrtf_database;
-//  
-//  for (UInt j=0; j<azimuths_.size(); ++j) {
-//    // Initialise vector
-//    hrtf_database.push_back(std::vector<Signal>(NUM_ELEVATIONS));
-//    
-//    Int azimuth = azimuths_[j];
-//    
-//    for (UInt i=0; i<NUM_ELEVATIONS; ++i) {
-//      Angle angle = round(j * resolution);
-//      
-//      char file_name[1000];
-//      char directory_name[1000];
-//      char file_path[1000];
-//      sprintf(directory_name, "/elev%d/", (int)elevation);
-//      
-//      sprintf(file_name, "H%de%03da.dat", (int)elevation, (int)angle);
-//      
-//      strcpy(file_path, directory.c_str());
-//      strcat(file_path, directory_name);
-//      strcat(file_path, file_name);
-//      
-//      std::ifstream file;
-//      
-//      file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-//      if (! file.good()) { throw "Kemar lib not found."; }
-//      long size = (long) file.tellg();
-//      assert(sizeof(short) == 2);
-//      short* data = new short[size/2];
-//      
-//      for (int k=0; k<size; k+=sizeof(short)) {
-//        file.seekg (k, std::ios::beg);
-//        short big_endian;
-//        file.read ((char*)&big_endian, sizeof(short));
-//        short little_endian(((big_endian & 0xff)<<8) |
-//                            ((big_endian & 0xff00)>>8));
-//        data[k/2] = little_endian;
-//      }
-//      
-//      size = size / 2; // Length in number of samples
-//      assert(size%2 == 0);
-//      assert((size/2)%2 == 0);
-//      
-//      for (UInt k=0; k<size; k+=2) {
-//        UInt ipsilateral_index = j;
-//        UInt contralateral_index = (UInt)
-//        ((((Int) num_measurements_[i]) -
-//          ((Int) j)) % (Int) num_measurements_[i]);
-//        
-//        if (ear == right_ear) {
-//          hrtf_database[i][ipsilateral_index].
-//          push_back(data[k]/NORMALISING_VALUE);
-//          // In the two cases for azimuth = 0, and azimuth = 180 the signals at
-//          // left and right ears are equal.
-//          if (ipsilateral_index != contralateral_index) {
-//            hrtf_database[i][contralateral_index].
-//            push_back(data[k+1]/NORMALISING_VALUE);
-//          }
-//        } else {
-//          hrtf_database[i][ipsilateral_index].
-//          push_back(data[k+1]/NORMALISING_VALUE);
-//          if (ipsilateral_index != contralateral_index) {
-//            hrtf_database[i][contralateral_index].
-//            push_back(data[k]/NORMALISING_VALUE);
-//          }
-//        }
-//      }
-//      
-//      delete[] data;
-//    }
-//  }
-//  
-//  return hrtf_database;
-//}
-//
-//
-//
-//
-//UInt CipicMic::FindElevationIndex(Angle elevation) {
-//  Int elevation_index = round(elevation/10.0) + 4;
-//  if (elevation_index < 0) {
-//    return 0;
-//  } else if (elevation_index > 13) {
-//    return 13;
-//  } else {
-//    return (UInt) elevation_index;
-//  }
-//}
-//
-//UInt CipicMic::FindAzimuthIndex(Angle azimuth,
-//                                UInt elevation_index) {
-//  const UInt num_measurements[] =
-//  {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
-//  
-//  Angle angular_resolution = 360.0 /
-//  ((Angle) num_measurements[elevation_index]);
-//  UInt azimuth_index = (UInt) round(azimuth/angular_resolution);
-//  
-//  if (azimuth_index == num_measurements[elevation_index]) { azimuth_index = 0; }
-//  
-//  return azimuth_index;
-//}
-//  
-//  
-//} // namespace sal
+/*
+ kemarmic.cpp
+ Spatial Audio Library (SAL)
+ Copyright (c) 2015, Enzo De Sena
+ All rights reserved.
+ 
+ Authors: Enzo De Sena, enzodesena@me.com
+ 
+ */
+
+#include "cipicmic.h"
+#include "mcl.h"
+#include "point.h"
+#include "salconstants.h"
+#include <string.h>
+
+namespace sal {
+
+
+CipicMic::CipicMic(Point position, Angle theta, Angle phi, Angle psi,
+                   const std::string directory) :
+BinauralMic(position, theta, phi, psi) {
+  
+  azimuths_ = std::vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
+    -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
+    30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0});
+  
+  hrtf_database_right_ = Load(right_ear, directory);
+  hrtf_database_left_ = Load(left_ear, directory);
+}
+
+std::vector<std::vector<Signal> >
+CipicMic::Load(const Ear ear, const std::string directory) {
+  std::vector<std::vector<Signal> > hrtf_database;
+  
+  for (UInt j=0; j<azimuths_.size(); ++j) {
+    Int azimuth = azimuths_[j];
+    
+    std::string sign_text = (azimuth < 0) ? "neg" : "";
+    std::string azimuth_text = std::to_string((azimuth > 0) ? azimuth:-azimuth);
+    std::string ear_text = (ear == left_ear) ? "left" : "right";
+    
+    std::string file_name = sign_text + azimuth_text + "az" + ear_text + ".wav";
+    std::string file_path = directory + "/" + file_name;
+    
+    std::ifstream file;
+    
+    file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
+    if (! file.good()) { throw "Cipic lib not found."; }
+    file.close();
+  
+    std::vector<std::vector<sal::Sample> > brirs = WavHandler::Read(file_path);
+    // For some reason I can't understand, the wav files contain the
+    // BRIR across channels--there are 200 channels, one per sample;
+    // there are 50 samples, one per elevation....
+    mcl::Matrix<sal::Sample> brirs_matrix(brirs);
+    mcl::Matrix<sal::Sample> transposed = mcl::Transpose(brirs_matrix);
+    
+    assert(transposed.data().size() == NUM_ELEVATIONS_CIPIC);
+    
+    hrtf_database.push_back(transposed.data());
+  }
+  
+  return hrtf_database;
+}
+
+
+Signal CipicMic::GetBrir(const Ear ear, const Point& point) {
+  // Calculate azimuth
+  // For forward looking direction, Azimuth = 0 and elevation =0
+  // "positive azimuth coresponds to moving right."
+  Angle azimuth = (M_PI/2.0 -
+            Point::AngleBetweenPoints(point, Point(0.0, -1.0, 0.0)))/M_PI*180.0;
+  
+  // Calculate elevation
+  Point proj_xz = Point::Projection(point, Point(0.0, 1.0, 0.0));
+  // "Positive evelation coresponds to moving up"
+  Angle elevation;
+  if (point.x() < 0.0) {
+    elevation = proj_xz.theta()/M_PI*180.0;
+  } else if (point.x() >= 0.0 && point.z() >= 0.0) {
+    elevation = -proj_xz.theta()/M_PI*180.0;
+  } else { // i.e. point.x() >= 0.0 && point.z() < 0.0
+    elevation = 360.0 - proj_xz.theta()/M_PI*180.0;
+  }
+  
+  if (isnan(elevation)) { elevation = 0.0; }
+  if (isnan(azimuth)) { azimuth = 0.0; }
+  
+  assert(elevation >= (-90.0-VERY_SMALL) &
+         elevation <= (270.0+VERY_SMALL));
+  assert(azimuth >= (-90.0-VERY_SMALL) &
+         azimuth <= (90.0+VERY_SMALL));
+  
+  UInt azimuth_index = mcl::MinIndex(mcl::Abs(mcl::Add(azimuths_,
+                                                       -azimuth)));
+  
+  UInt elevation_index;
+  if (elevation < -45.0) {
+    elevation_index = 0;
+  } else if (elevation > -45.0+360.0/64.0*49.0) {
+    elevation_index = 49;
+  } else {
+    elevation_index = round((elevation + 45.0) * 64.0 / 360.0);
+  }
+  
+  assert(azimuth_index >= 0 & azimuth_index < azimuths_.size());
+  assert(elevation_index >= 0 & elevation_index <= 49);
+  
+  return (ear == left_ear) ?
+          hrtf_database_left_[azimuth_index][elevation_index] :
+          hrtf_database_right_[azimuth_index][elevation_index];
+}
+  
+  
+} // namespace sal

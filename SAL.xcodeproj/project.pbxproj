@@ -35,6 +35,7 @@
 		572A879219C0712500F62F8F /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CFD4EC1636E94100EB98A6 /* libsndfile.a */; };
 		572A879419C0712500F62F8F /* slowdelayfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 57895F6416304F82002C962B /* slowdelayfilter.h */; };
 		572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572A879C19C0712500F62F8F /* libMCLiOS.a */; };
+		573FAAE91B1DE385003F128F /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573FAAE81B1DE385003F128F /* cipicmic_test.cpp */; };
 		57444D261B17671E00EC31F4 /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
 		57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
 		57444D2B1B1776A400EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
@@ -149,6 +150,7 @@
 		572868F817E2E5CE00E1D390 /* sphericalheadmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalheadmic_test.cpp; path = test/sphericalheadmic_test.cpp; sourceTree = "<group>"; };
 		572868F917E2E5CE00E1D390 /* stream_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stream_test.cpp; path = test/stream_test.cpp; sourceTree = "<group>"; };
 		572A879819C0712500F62F8F /* libSALiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSALiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		573FAAE81B1DE385003F128F /* cipicmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cipicmic_test.cpp; path = test/cipicmic_test.cpp; sourceTree = "<group>"; };
 		57444D281B1776A400EC31F4 /* cipicmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cipicmic.cpp; path = src/cipicmic.cpp; sourceTree = "<group>"; };
 		57444D2C1B1776FB00EC31F4 /* cipicmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cipicmic.h; path = include/cipicmic.h; sourceTree = "<group>"; };
 		574D27FB161B3ECF00F4A0B1 /* decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = decoder.h; path = include/decoder.h; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				572868EF17E2E5CE00E1D390 /* ambisonics_test.cpp */,
+				573FAAE81B1DE385003F128F /* cipicmic_test.cpp */,
 				572868F017E2E5CE00E1D390 /* delayfilter_test.cpp */,
 				572868F117E2E5CE00E1D390 /* freefieldsimulation_test.cpp */,
 				572868F217E2E5CE00E1D390 /* kemarmic_test.cpp */,
@@ -533,6 +536,7 @@
 				5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */,
 				572868FA17E2E5CE00E1D390 /* ambisonics_test.cpp in Sources */,
 				572868FB17E2E5CE00E1D390 /* delayfilter_test.cpp in Sources */,
+				573FAAE91B1DE385003F128F /* cipicmic_test.cpp in Sources */,
 				572868FC17E2E5CE00E1D390 /* freefieldsimulation_test.cpp in Sources */,
 				572868FD17E2E5CE00E1D390 /* kemarmic_test.cpp in Sources */,
 				572868FE17E2E5CE00E1D390 /* microphone_test.cpp in Sources */,

@@ -19,9 +19,11 @@
 #include "propagationline.h"
 #include "freefieldsimulation.h"
 #include "wavhandler.h"
+#include "cipicmic.h"
 
 int main(int argc, char * const argv[]) {
   sal::KemarMic::Test();
+  sal::CipicMic::Test();
   sal::Point::Test();
   sal::Stream::Test();
   sal::Microphone::Test();
