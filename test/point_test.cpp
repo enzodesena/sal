@@ -145,6 +145,26 @@ bool Point::Test() {
                                        0.742781352708207,
                                        0.557086014531156), VERY_SMALL));
   
+  // Test projections
+  Point point_i(2.0, 0.0, 0.0);
+  assert(Point::IsEqual(Point::Projection(point_i, Point(1.0, 0.0, 0.0)),
+                        Point(0.0, 0.0, 0.0)));
+  assert(Point::IsEqual(Point::Projection(point_i, Point(0.0, 1.0, 0.0)),
+                        point_i));
+  assert(Point::IsEqual(Point::Projection(point_i, Point(0.0, 2.0, 0.0)),
+                        point_i));
+  assert(Point::IsEqual(Point::Projection(point_i, Point(0.0, 0.0, 1.0)),
+                        point_i));
+  assert(Point::IsEqual(Point::Projection(point_i, Point(0.0, 0.0, 2.0)),
+                        point_i));
+  
+  Point point_l(1.5, 2.0, 3.0);
+  Point point_l_cmp =
+          Point::PointSpherical(point_l.norm()*cos(M_PI/2.0-point_l.theta()),
+                                M_PI/2.0,
+                                point_l.phi());
+  assert(Point::IsEqual(Point::Projection(point_l, Point(0,0,1)), point_l_cmp));
+  
   return true;
 }
 

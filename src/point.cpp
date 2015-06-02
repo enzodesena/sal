@@ -49,7 +49,6 @@ void Point::Normalize() {
 }
 
 
-
 Point Point::RotateAboutX(const Point& point, Angle angle) {
   Length cos_angle = cos(angle);
   Length sin_angle = sin(angle);
@@ -148,6 +147,13 @@ Point Point::Subtract(const Point point_a, const Point point_b) {
                point_a.z()-point_b.z());
 }
   
+
+Point Point::Multiply(const Point point, const Length constant) {
+  return Point(point.x() * constant,
+               point.y() * constant,
+               point.z() * constant);
+}
+  
 Point Point::PointOnLine(const Point point_a, const Point point_b, 
                          const Length distance) {
   Point point_centered = Point::Subtract(point_b, point_a);
@@ -171,6 +177,13 @@ bool Point::IsEqual(std::vector<Point> points_a,
 Point Point::Normalized(Point point) {
   point.Normalize();
   return point;
+}
+  
+Point Point::Projection(const Point& vector, const Point& plane_normal_vector) {
+  Point normalised_plane_normal_vector = Point::Normalized(plane_normal_vector);
+  return Subtract(vector, Multiply(normalised_plane_normal_vector,
+                                   DotProduct(vector,
+                                              normalised_plane_normal_vector)));
 }
   
 } // namespace sal

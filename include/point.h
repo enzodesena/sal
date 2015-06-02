@@ -96,20 +96,32 @@ public:
   /** Subtracts the coordinates of `point_a` from `point_b` (point_a-point_b) */
   static Point Subtract(const Point point_a, const Point point_b);
   
+  /** 
+   Multiplies all coordinates by given constant. Has the effect of changing
+   of changing the length of the vector.
+   */
+  static Point Multiply(const Point point, const Length constant);
+  
   /**
    Contructs a point from spherical coordinates, with (r, 0, 0) corresponding
    to the z-axis, and (r, pi/2, 0) corresponding to x-axis. Right-hand rule. 
    */
   static Point PointSpherical(Length r, Angle theta, Angle phi);
   
-  static bool
-  IsEqual(const Point& point_a, const Point& point_b,
-          const Length precision = VERY_SMALL);
+  static bool IsEqual(const Point& point_a, const Point& point_b,
+                      const Length precision = VERY_SMALL);
   
   static bool IsEqual(std::vector<Point> points_a,
                       std::vector<Point> points_b);
   
   /** 
+   Constructs a vector that is the the projection of the input `vector`
+   on the plane (passing through the origin) identified by the vector
+   normal to the plane `plane_normal_vector`.
+   */
+  static Point Projection(const Point& vector, const Point& plane_normal_vector);
+  
+  /**
    Returns a new point that is a normalized (norm == 1) version of `point`.
    */
   static Point Normalized(Point point);
