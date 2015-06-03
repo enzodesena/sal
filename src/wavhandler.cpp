@@ -9,6 +9,7 @@
  */
 
 #include "wavhandler.h"
+#include "sndfile.hh"
 
 namespace sal {
 
