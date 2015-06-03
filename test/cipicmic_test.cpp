@@ -30,7 +30,7 @@ namespace sal {
     
     // Testing frontal direction
     CipicMic mic_i(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
-                   cipic_path);
+                   cipic_path, wav);
     StereoStream* stream_i = mic_i.stream();
     
     Sample sample = 0.5;
@@ -48,12 +48,12 @@ namespace sal {
                               imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
     cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
     cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, sample);
-    
-    assert(IsEqual(cmp_imp_front_left, stream_i->PullAllLeft()));
+    Signal akdk = stream_i->PullAllLeft();
+    assert(IsEqual(cmp_imp_front_left, akdk));
     
     
     CipicMic mic_o(Point(0.0,0.0,0.0), PI/2.0, PI/2.0, 0.0,
-                   cipic_path);
+                   cipic_path, wav);
     StereoStream* stream_o = mic_o.stream();
     
     mic_o.RecordPlaneWave(mcl::Multiply(impulse, (Sample) 0.5),
@@ -76,7 +76,7 @@ namespace sal {
     cmp_imp_up_left = mcl::Multiply(cmp_imp_up_left, normalising_value);
     
     
-    CipicMic mic_m(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, cipic_path);
+    CipicMic mic_m(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, cipic_path, wav);
     StereoStream* stream_m = mic_m.stream();
     
     mic_m.RecordPlaneWave(impulse, Point(-1.0,0.0,0.0));
@@ -161,7 +161,7 @@ namespace sal {
     
     
     CipicMic mic_p(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
-                   cipic_path);
+                   cipic_path, wav);
     StereoStream* stream_p = mic_p.stream();
     
     // The cipic database has no entry at 90deg. All sources at 80deg azimuth
@@ -259,7 +259,7 @@ namespace sal {
     cmp_imp_left_left = mcl::Multiply(cmp_imp_left_left, normalising_value);
     
     CipicMic mic_r(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
-                   cipic_path);
+                   cipic_path, wav);
     StereoStream* stream_r = mic_r.stream();
     
     mic_r.RecordPlaneWave(impulse, Point(0.0,1.0,0.0));
@@ -323,7 +323,7 @@ namespace sal {
                              sizeof(imp_back_right) / sizeof(Sample));
     cmp_imp_back_right = mcl::Multiply(cmp_imp_back_right, normalising_value);
     
-    CipicMic mic_t(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, cipic_path);
+    CipicMic mic_t(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, cipic_path, wav);
     StereoStream* stream_t = mic_t.stream();
     
     mic_t.RecordPlaneWave(impulse, Point(0.0,0.0,-1.0));

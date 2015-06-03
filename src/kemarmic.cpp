@@ -19,7 +19,7 @@ namespace sal {
   
 KemarMic::KemarMic(Point position, Angle theta, Angle phi, Angle psi,
                    const std::string directory) :
-          BinauralMic(position, theta, phi, psi) {
+          DatabaseBinauralMic(position, theta, phi, psi) {
             
   num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
@@ -136,17 +136,6 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth,
   return azimuth_index;
 }
   
-void KemarMic::FilterAll(mcl::DigitalFilter* filter) {
-  filter->Reset();
-  for (UInt i=0; i<hrtf_database_right_.size(); ++i) {
-    for (UInt j=0; j<hrtf_database_right_[i].size(); ++j) {
-      hrtf_database_right_[i][j] = filter->Filter(hrtf_database_right_[i][j]);
-      filter->Reset();
-      hrtf_database_left_[i][j] = filter->Filter(hrtf_database_left_[i][j]);
-      filter->Reset();
-    }
-  }
-}
 
 Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
   

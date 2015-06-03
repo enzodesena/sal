@@ -32,7 +32,6 @@
 		572A878D19C0712500F62F8F /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		572A878E19C0712500F62F8F /* slowdelayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F6616304F9E002C962B /* slowdelayfilter.cpp */; };
 		572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
-		572A879219C0712500F62F8F /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CFD4EC1636E94100EB98A6 /* libsndfile.a */; };
 		572A879419C0712500F62F8F /* slowdelayfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 57895F6416304F82002C962B /* slowdelayfilter.h */; };
 		572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572A879C19C0712500F62F8F /* libMCLiOS.a */; };
 		573FAAE91B1DE385003F128F /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573FAAE81B1DE385003F128F /* cipicmic_test.cpp */; };
@@ -197,7 +196,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */,
-				572A879219C0712500F62F8F /* libsndfile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

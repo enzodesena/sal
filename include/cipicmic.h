@@ -22,18 +22,25 @@
 
 
 #define NUM_ELEVATIONS_CIPIC 50
+#define LENGTH_BRIR_CIPIC 200
+
 #define NORMALISING_VALUE_CIPIC 1.0
 
 namespace sal {
   
-class CipicMic : public BinauralMic {
+enum CipicDataType {
+  txt,
+  wav
+};
+  
+class CipicMic : public DatabaseBinauralMic {
 public:
   /**
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
   CipicMic(Point position, Angle theta, Angle phi, Angle psi,
-           const std::string directory);
+           const std::string directory, const CipicDataType data_type);
   
   static bool Test();
   
@@ -42,16 +49,13 @@ private:
   
   
   std::vector<std::vector<Signal> > Load(const Ear ear,
-                                         const std::string directory);
+                                         const std::string directory,
+                                         const CipicDataType data_type);
   
   virtual Signal GetBrir(const Ear ear, const Point& point);
   
   std::vector<sal::Angle> azimuths_;
   
-  
-  // Database
-  std::vector<std::vector<Signal> > hrtf_database_right_;
-  std::vector<std::vector<Signal> > hrtf_database_left_;
 };
   
   

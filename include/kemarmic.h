@@ -26,7 +26,7 @@
 
 namespace sal {
   
-class KemarMic : public BinauralMic {
+class KemarMic : public DatabaseBinauralMic {
 public:
   /** 
    Constructs a Kemar microphone opject. 
@@ -34,12 +34,6 @@ public:
    */
   KemarMic(Point position, Angle theta, Angle phi, Angle psi,
            const std::string directory);
-  
-  /**
-   Filters all responses by `filter`. Useful for instance for including
-   an inverse headphone filter
-   */
-  void FilterAll(mcl::DigitalFilter* filter);
   
   static bool Test();
   
@@ -64,10 +58,6 @@ private:
    */
   UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index);
   
-  
-  // Database
-  std::vector<std::vector<Signal> > hrtf_database_right_;
-  std::vector<std::vector<Signal> > hrtf_database_left_;
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations_;

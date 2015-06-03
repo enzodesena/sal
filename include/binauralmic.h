@@ -57,6 +57,10 @@ private:
   friend class BinauralMicInstance;
 };
 
+
+  
+  
+  
 class BinauralMicInstance {
 private:
   BinauralMicInstance(BinauralMic* base_mic, Ear ear) :
@@ -87,6 +91,23 @@ private:
 };
   
   
+  
+  
+class DatabaseBinauralMic : public BinauralMic {
+public:
+  DatabaseBinauralMic(Point position, Angle theta, Angle phi, Angle psi);
+  
+  /**
+   Filters all responses by `filter`. Useful for instance for including
+   an inverse headphone filter
+   */
+  void FilterAll(mcl::DigitalFilter* filter);
+  
+protected:
+  // Database
+  std::vector<std::vector<Signal> > hrtf_database_right_;
+  std::vector<std::vector<Signal> > hrtf_database_left_;
+};
 } // namespace sal
 
 #endif

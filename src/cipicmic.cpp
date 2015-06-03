@@ -8,6 +8,39 @@
  
  */
 
+// To convert the CIPIC database to text, please run the following in Matlab
+// in the directory where you see the various 'subject_021' etc
+
+//azimuths = [-80,-65,-55,-45:5:45, 55, 65, 80];
+//listing = dir;
+//for i = 1:numel(listing)
+//listing_name = listing(i).name;
+//if listing_name == '.'
+//continue
+//end
+//if ~isempty(strfind(listing_name, 'show_data')) | ...
+//~isempty(strfind(listing_name, 'convertToText.m')) | ...
+//~isempty(strfind(listing_name, '.DS_Store'))
+//continue
+//end
+//
+//load(strcat(listing_name, '/hrir_final.mat'));
+//
+//for j=1:25
+//azimuth = azimuths(j);
+//if azimuth < 0; sign_text = 'neg'; else sign_text = ''; end
+//
+//dlmwrite(strcat(listing_name, '/', sign_text, num2str(abs(azimuth)), 'azleft.txt'), ...
+//         squeeze(hrir_l(j, :, :)), ...
+//         'delimiter','\t');
+//dlmwrite(strcat(listing_name, '/', sign_text, num2str(abs(azimuth)), 'azright.txt'), ...
+//         squeeze(hrir_r(j, :, :)), ...
+//         'delimiter','\t');
+//end
+//end
+
+
+
 #include "cipicmic.h"
 #include "mcl.h"
 #include "point.h"
@@ -18,19 +51,20 @@ namespace sal {
 
 
 CipicMic::CipicMic(Point position, Angle theta, Angle phi, Angle psi,
-                   const std::string directory) :
-BinauralMic(position, theta, phi, psi) {
+                   const std::string directory, const CipicDataType data_type) :
+        DatabaseBinauralMic(position, theta, phi, psi) {
   
   azimuths_ = std::vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
     -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
     30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0});
   
-  hrtf_database_right_ = Load(right_ear, directory);
-  hrtf_database_left_ = Load(left_ear, directory);
+  hrtf_database_right_ = Load(right_ear, directory, data_type);
+  hrtf_database_left_ = Load(left_ear, directory, data_type);
 }
 
-std::vector<std::vector<Signal> >
-CipicMic::Load(const Ear ear, const std::string directory) {
+std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
+                                                 const std::string directory,
+                                                 const CipicDataType data_type) {
   std::vector<std::vector<Signal> > hrtf_database;
   
   for (UInt j=0; j<azimuths_.size(); ++j) {
@@ -39,27 +73,44 @@ CipicMic::Load(const Ear ear, const std::string directory) {
     std::string sign_text = (azimuth < 0) ? "neg" : "";
     std::string azimuth_text = std::to_string((azimuth > 0) ? azimuth:-azimuth);
     std::string ear_text = (ear == left_ear) ? "left" : "right";
-    
-    std::string file_name = sign_text + azimuth_text + "az" + ear_text + ".wav";
+    std::string data_type_text = (data_type == wav) ? ".wav" : ".txt";
+    std::string file_name =
+    sign_text + azimuth_text + "az" + ear_text + data_type_text;
     std::string file_path = directory + "/" + file_name;
     
     std::ifstream file;
-    
     file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
     if (! file.good()) { throw "Cipic lib not found."; }
     file.close();
   
-    std::vector<std::vector<sal::Sample> > brirs = WavHandler::Read(file_path);
-    // For some reason I can't understand, the wav files contain the
-    // BRIR across channels--there are 200 channels, one per sample;
-    // there are 50 samples, one per elevation....
-    mcl::Matrix<sal::Sample> brirs_matrix(brirs);
-    mcl::Matrix<sal::Sample> transposed = mcl::Transpose(brirs_matrix);
+    std::vector<std::vector<sal::Sample> > brirs;
+    switch (data_type) {
+
+#ifdef __x86_64__
+ 
+      case wav:
+        // For some reason I can't understand, the wav files contain the
+        // BRIR across channels--there are 200 channels, one per sample;
+        // there are 50 samples, one per elevation....
+        brirs =
+        mcl::Transpose(mcl::Matrix<sal::Sample>(WavHandler::Read(file_path))).data();
+        break;
+        
+#endif
+        
+      case txt:
+        brirs = mcl::Matrix<sal::Sample>::Load(file_path).data();
+        break;
+      default:
+        assert(false);
+        break;
+    }
     
-    assert(transposed.data().size() == NUM_ELEVATIONS_CIPIC);
-    
-    hrtf_database.push_back(transposed.data());
+    assert(brirs.size() == NUM_ELEVATIONS_CIPIC);
+    assert(brirs[0].size() == LENGTH_BRIR_CIPIC);
+    hrtf_database.push_back(brirs);
   }
+  
   
   return hrtf_database;
 }
