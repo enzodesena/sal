@@ -213,6 +213,20 @@ std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
   
   return output;
 }
+ 
+/** Interleaves two vectors, with the first element of `vector_a` going 
+ first.*/
+template<class T>
+std::vector<T> Interleave(const std::vector<T>& vector_a,
+                          const std::vector<T>& vector_b) {
+  assert(vector_a.size() == vector_b.size());
+  std::vector<T> output;
+  for (UInt i=0; i<vector_a.size(); ++i) {
+    output.push_back(vector_a[i]);
+    output.push_back(vector_b[i]);
+  }
+  return output;
+}
 
 /**
  This is equivalent to Matlab's from:to. E.g. 3:5 outputs a vector [3,4,5].

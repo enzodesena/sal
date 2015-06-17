@@ -575,6 +575,30 @@ bool VectorOpTest() {
   // Geomean
   assert(IsEqual(mcl::Geomean(vector_o), 2.189759569943945));
   
+  
+  // Inteleaves
+  //  std::vector<Real> vector_e(4);
+  //  vector_e[0] = -0.3;
+  //  vector_e[1] = 30.3;
+  //  vector_e[2] = 2.4;
+  //  vector_e[3] = 12.4;
+  //
+  //  std::vector<Real> vector_f(4);
+  //  vector_f[0] = 2.5;
+  //  vector_f[1] = 1.3;
+  //  vector_f[2] = -2.4;
+  //  vector_f[3] = -1.0;
+  std::vector<Real> interleaves_e_f_cmp;
+  interleaves_e_f_cmp.push_back(vector_e[0]);
+  interleaves_e_f_cmp.push_back(vector_f[0]);
+  interleaves_e_f_cmp.push_back(vector_e[1]);
+  interleaves_e_f_cmp.push_back(vector_f[1]);
+  interleaves_e_f_cmp.push_back(vector_e[2]);
+  interleaves_e_f_cmp.push_back(vector_f[2]);
+  interleaves_e_f_cmp.push_back(vector_e[3]);
+  interleaves_e_f_cmp.push_back(vector_f[3]);
+  assert(IsEqual(Interleave(vector_e, vector_f), interleaves_e_f_cmp));
+  
   return true;
 }
   
