@@ -9,7 +9,6 @@
  */
 
 #include "iirfilter.h"
-#include <cassert>
 #include "comparisonop.h"
 #include "vectorop.h"
 #include "butter.h"
@@ -38,8 +37,9 @@ IirFilter::IirFilter() :
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
           B_(B), A_(A) {
   // TODO: implement also for B.size != A.size
-  assert(B.size() == A.size());
-  assert(B.size() >= 1);
+  if (B.size() != A.size()) { throw_line(); }
+  if (B.size() < 1) { throw_line(); }
+  
   A0_ = A[0];
   if (! IsEqual(A[0], 1.0, std::numeric_limits<Real>::epsilon())) {
     B_ = Multiply(B, (Real) 1.0 / A[0]);
@@ -81,8 +81,9 @@ IirFilter::~IirFilter() { delete [] state_; }
 void IirFilter::UpdateFilter(std::vector<Real> B,
                              std::vector<Real> A) {
   // TODO: implement case where length changes.
-  assert(B_.size() == B.size());
-  assert(A_.size() == A.size());
+  if (B_.size() != B.size()) { throw_line(); }
+  if (A_.size() != A.size()) { throw_line(); }
+  
   B_ = B;
   A_ = A;
 }
@@ -146,7 +147,8 @@ IirFilter IirFilter::IdenticalFilter() { return IirFilter::GainFilter(1.0); }
 
 IirFilter IirFilter::WallFilter(WallType wall_type, Real sampling_frequency) {
   // TODO: implement for frequencies other than 44100
-  assert(IsEqual(sampling_frequency, 44100));
+  if (! IsEqual(sampling_frequency, 44100)) { throw_line(); }
+  
   std::vector<Real> B;
   std::vector<Real> A;
   

@@ -15,7 +15,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <iomanip>
 #include "mcltypes.h"
 #include "comparisonop.h"
@@ -54,7 +53,7 @@ public:
       num_columns_ = vectors[0].size();
       for (UInt i=1; i<num_rows_; ++i) {
         // Check that all rows have the same number of columns
-        assert(vectors[i].size() == num_columns_);
+        if (vectors[i].size() != num_columns_) { throw_line(); }
       }
       data_ = vectors;
     }
@@ -66,15 +65,15 @@ public:
   /** Sets element in given row and column */
   void set_element(const UInt& index_row, const UInt& index_column,
                    const T& element) {
-    assert(index_row>=0 & index_row<num_rows_);
-    assert(index_column>=0 & index_column<num_columns_);
+    if (index_row>=num_rows_) { throw_line(); }
+    if (index_column>=num_columns_) { throw_line(); }
     data_[index_row][index_column] = element;
   }
   
   /** Sets an entire column */
   void set_column(UInt index_column, std::vector<T> column) {
-    assert(column.size() == num_rows_);
-    assert(index_column>=0 & index_column<num_columns_);
+    if (column.size() != num_rows_) { throw_line(); }
+    if (index_column >= num_columns_) { throw_line(); }
     for (UInt i=0; i<num_rows_; ++i) {
       set_element(i, index_column, column[i]);
     }
@@ -82,27 +81,27 @@ public:
   
   /** Sets an entire row */
   void set_row(UInt index_row, std::vector<T> row) {
-    assert(row.size() == num_columns_);
-    assert(index_row>=0 & index_row<num_rows_);
+    if (row.size() != num_columns_) { throw_line(); }
+    if (index_row >= num_rows_) { throw_line(); }
     data_[index_row] = row;
   }
   
   /** Accesses an element in given row and column */
   T element(const UInt& index_row, const UInt& index_column) const {
-    assert(index_row>=0 & index_row<num_rows_);
-    assert(index_column>=0 & index_column<num_columns_);
+    if (index_row >= num_rows_) { throw_line(); }
+    if (index_column >= num_columns_) { throw_line(); }
     return data_[index_row][index_column];
   }
   
   /** Accesses an entire row */
   std::vector<T> row(UInt index_row) const {
-    assert(index_row>=0 & index_row<num_rows_);
+    if (index_row >= num_rows_) { throw_line(); }
     return data_[index_row];
   }
   
   /** Accesses an entire column */
   std::vector<T> column(UInt index_column) const {
-    assert(index_column>=0 & index_column<num_columns_);
+    if (index_column >= num_columns_) { throw_line(); }
     std::vector<T> output(num_rows_);
     for (UInt i=0; i<num_rows_; ++i) { output[i] = data_[i][index_column]; }
     return output;
@@ -153,7 +152,7 @@ public:
   static Matrix Load(std::string file_name) {
     std::string line;
     std::ifstream in_file (file_name.c_str());
-    assert(in_file.is_open());
+    if (! in_file.is_open()) { throw_line(); }
     
     // First: lets count the number of rows
     UInt number_of_rows = 0;
@@ -161,7 +160,9 @@ public:
     while (std::getline(in_file, line)) {
       std::vector<std::string> elements = Split(line, '\t');
       if (number_of_columns == 0) { number_of_columns = elements.size(); }
-      else { assert(number_of_columns == elements.size()); }
+      else {
+        if (number_of_columns != elements.size()) { throw_line(); }
+      }
       
       ++number_of_rows; 
     }
@@ -254,7 +255,7 @@ Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
 /** Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b */
 template<class T>
 Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
-  assert(matrix_a.num_columns() == matrix_b.num_rows());
+  if (matrix_a.num_columns() != matrix_b.num_rows()) { throw_line(); }
   
   Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
   for (UInt i=0; i<output.num_rows(); ++i) {
@@ -272,12 +273,12 @@ Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
 template<class T>
 std::vector<T>
 Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
-  assert(matrix_a.num_columns() == vector.size());
+  if (matrix_a.num_columns() != vector.size()) { throw_line(); }
   Matrix<T> temp_input(vector.size(), 1);
   temp_input.set_column(0, vector);
   Matrix<T> temp_output = Multiply(matrix_a, temp_input);
-  assert(temp_output.num_columns() == 1);
-  assert(temp_output.num_rows() == vector.size());
+  if (temp_output.num_columns() != 1) { throw_line(); }
+  if (temp_output.num_rows() != vector.size()) { throw_line(); }
   
   return temp_output.column(0);
 }

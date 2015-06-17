@@ -108,8 +108,6 @@ Real Entropy(std::vector<Real> pdf, Real base) {
   
   
 UInt Factorial(const UInt input) {
-  assert(input >= 0);
-  
   if(input <= 1) return 1;
   
   UInt temp;

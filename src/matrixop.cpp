@@ -37,7 +37,8 @@ Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input) {
   
   
 EigOutput Eig(const Matrix<Real>& matrix) {
-  assert(matrix.num_columns() == matrix.num_rows());
+  if (matrix.num_columns() != matrix.num_rows()) { throw_line(); }
+  
   const UInt N = matrix.num_columns();
   EigOutput output;
   output.eigen_values = std::vector<Complex>(N);

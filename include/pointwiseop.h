@@ -11,7 +11,6 @@
 #ifndef MCL_POINTWISE_H
 #define MCL_POINTWISE_H
 
-
 #include <cassert>
 #include "mcltypes.h"
 #include <vector>
@@ -27,7 +26,8 @@ namespace mcl {
 template<class T> 
 std::vector<T> Add(const std::vector<T>& vector_a,
                    const std::vector<T>& vector_b) {
-  assert(vector_a.size() == vector_b.size());
+  if (vector_a.size() != vector_b.size()) { throw_line(); }
+  
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]+vector_b[i];
@@ -70,7 +70,8 @@ std::vector<T> Subtract(const std::vector<T>& vector_a,
 template<class T> 
 std::vector<T> Multiply(const std::vector<T>& vector_a,
                         const std::vector<T>& vector_b) {
-  assert(vector_a.size() == vector_b.size());
+  if (vector_a.size() != vector_b.size()) { throw_line(); }
+  
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]*vector_b[i];
@@ -85,7 +86,7 @@ std::vector<T> Multiply(const std::vector<T>& vector_a,
 template<class T>
 std::vector<T> Divide(const std::vector<T>& vector_a,
                       const std::vector<T>& vector_b) {
-  assert(vector_a.size() == vector_b.size());
+  if (vector_a.size() != vector_b.size()) { throw_line(); }
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]/vector_b[i];

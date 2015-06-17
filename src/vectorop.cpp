@@ -9,7 +9,6 @@
  */
 
 #include "vectorop.h"
-#include <cassert>
 #include <fstream>
 #include "mcltypes.h"
 #include "pointwiseop.h"
@@ -17,6 +16,7 @@
 #include <cmath>
 #include "comparisonop.h"
 #include <vector>
+#include <cassert>
 
 
 
@@ -54,8 +54,9 @@ Real Mean(const std::vector<Real>& input) {
   
 Real Mean(const std::vector<Real>& input,
           const std::vector<Real>& weights) {
-  assert(input.size() == weights.size());
-  assert(IsNonNegative(weights));
+  if (input.size() != weights.size()) { throw_line(); }
+  if (! IsNonNegative(weights)) { throw_line(); }
+  
   // Normalise the weigths
   std::vector<Real> normalised_weights = Multiply(weights, 1.0/Sum(weights));
   assert(IsEqual(Sum(normalised_weights), 1.0));
@@ -79,7 +80,8 @@ Real Var(const std::vector<Real>& input) {
 }
   
 Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
-  assert(IsNonNegative(weights));
+  if(! IsNonNegative(weights)) { throw_line(); }
+  
   Real weighted_mean = Mean(input, weights);
   std::vector<Real> temp = Pow(Add(input, -weighted_mean), 2.0);
   std::vector<Real> norm_weights = Multiply(weights, 1.0/Sum(weights));
@@ -90,7 +92,8 @@ Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b) {
   // TODO: implement for different sizes
-  assert(vector_a.size() == vector_b.size());
+  if (vector_a.size() != vector_b.size()) { throw_line(); }
+  
   UInt M = vector_a.size();
   
   UInt n_fft = pow(2.0, NextPow2(2*M-1));
@@ -149,7 +152,7 @@ std::vector<Complex> Poly(const std::vector<Real> roots) {
   
 std::vector<Real>
 ColonOperator(const Real from, const Real step, const Real to) {
-  assert(step>0);
+  if (step <= 0) { throw_line(); }
   std::vector<Real> output;
   output.push_back(from);
   UInt i = 0;
@@ -227,7 +230,8 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) {
   
 Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y) {
   const UInt N = x.size();
-  assert(N == y.size());
+  if (N != y.size()) { throw_line(); }
+  
   Real output = Sum(Multiply(Add(x, -Mean(x)), Add(y, -Mean(y))));
   // In case N>1 use the unbiased estimator of covariance.
   output = (N > 1) ? output/((Real) (N-1)) : output/((Real) (N));
