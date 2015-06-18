@@ -57,6 +57,8 @@ public:
   /** Tests */
   static bool Test();
   
+  static void SpeedTests();
+  
   virtual ~FirFilter() {}
   
 private:

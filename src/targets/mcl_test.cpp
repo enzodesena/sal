@@ -29,7 +29,10 @@ int main (int argc, char * const argv[]) {
   
   IirFilter::Test();
   FirFilter::Test();
+  FirFilter::SpeedTests();
   RandomGenerator::Test();
+  
+  
   
   std::cout<<"All tests succeded!\n";
   

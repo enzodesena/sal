@@ -256,8 +256,58 @@ bool FirFilter::Test() {
   assert(IsEqual(filter_i.Filter(1.2), 1.2));
   assert(IsEqual(filter_i.Filter(-0.2), -0.2));
   
+  std::vector<Real> impulse_resp_b = {0.1, 0.3, -0.2, 1.2, -4.5, 0.0, -2.1, -1.2};
+  FirFilter filter_l(impulse_resp_b);
+  std::vector<Real> input_b = {0.3377, 0.9001, 0.3692, 0.1112, 0.7803, 0.3897, 0.2417, 0.4039, 0.0965, 0.1320, 0.9421, 0.9561};
+  std::vector<Real> output_b_cmp = {0.033770000000000, 0.191320000000000, 0.239410000000000, 0.347100000000000, -0.401980000000000, -3.356590000000000, -2.252110000000000, -1.824530000000000, -4.816670000000000, -2.178800000000000, -2.260530000000000, -3.104640000000000};
+  std::vector<Real> output_b = filter_l.Filter(input_b);
+  assert(IsEqual(output_b_cmp, output_b));
+  
   return true;
 }
 
+void FirFilter::SpeedTests() {
+  
+  mcl::RandomGenerator random_generator;
+  
+  std::vector<Real> impulse_response = random_generator.Rand(1024);
+  FirFilter fir_filter(impulse_response);
+  std::vector<Real> input = random_generator.Rand(100000);
+  
+  clock_t launch=clock();
+  std::vector<Real> output = fir_filter.Filter(input);
+  clock_t done=clock();
+  
+  std::cout<<"Fir filter speed (batch; length is power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  
+  launch=clock();
+  for (UInt i=0; i<input.size(); ++i) {
+    output[i] = fir_filter.Filter(input[i]);
+  }
+  done=clock();
+  
+  std::cout<<"Fir filter speed (sequential; length is power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  
+  FirFilter fir_filter_b(random_generator.Rand(1025));
+  
+  launch=clock();
+  output = fir_filter_b.Filter(input);
+  done=clock();
+  
+  std::cout<<"Fir filter speed (batch; length is not power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  
+  launch=clock();
+  for (UInt i=0; i<input.size(); ++i) {
+    output[i] = fir_filter_b.Filter(input[i]);
+  }
+  done=clock();
+  
+  std::cout<<"Fir filter speed (sequential; length is not power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  
+}
 
 } // namespace mcl
