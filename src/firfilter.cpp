@@ -13,7 +13,7 @@
 #include "mcltypes.h"
 #include <vector>
 
-#ifdef __ACCELERATE__
+#ifdef OSXIOS
   #include <Accelerate/Accelerate.h>
 #endif
 
@@ -48,8 +48,22 @@ Real FirFilter::Filter(Real input_sample) {
   delay_line_[counter_] = input_sample;
   double result = 0.0;
   
-#ifdef __ACCELERATE__
+#ifdef OSXIOS
+  std::vector<Real> result_a(length_-counter_, 0.0);
+  vDSP_vmulD(&impulse_response_[0], 1,
+             &delay_line_[counter_], 1,
+             &result_a[0], 1,
+             length_-counter_);
+  for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
   
+  if (counter_ > 0) {
+    std::vector<Real> result_b(counter_, 0.0);
+    vDSP_vmulD(&impulse_response_[length_-counter_], 1,
+               &delay_line_[0], 1,
+               &result_b[0], 1,
+               counter_);
+    for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
+  }
 #else
   Int index = (Int) counter_;
   
