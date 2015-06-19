@@ -31,8 +31,8 @@ bool ElementaryOpTest() {
 
   
   
-  
-  assert(IsEqual(Rem((Real)2.0, 2.0), 0.0));
+  Real rem_a = Rem((Real)2.0, 2.0);
+  assert(IsEqual(rem_a, 0.0));
   assert(IsEqual(Rem((Real)5.0, 2.0), 1.0));
   assert(IsEqual(Rem((Real)5.5, 2.0), 1.5));
   assert(IsEqual(Rem((Real)2.0, 3.0), 2.0));
