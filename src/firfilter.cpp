@@ -13,6 +13,9 @@
 #include "mcltypes.h"
 #include <vector>
 
+#ifdef __ACCELERATE__
+  #include <Accelerate/Accelerate.h>
+#endif
 
 namespace mcl {
 
@@ -44,6 +47,10 @@ void FirFilter::UpdateFilter(std::vector<Real> B) {
 Real FirFilter::Filter(Real input_sample) {
   delay_line_[counter_] = input_sample;
   double result = 0.0;
+  
+#ifdef __ACCELERATE__
+  
+#else
   Int index = (Int) counter_;
   
   if (length_%8 != 0) { //
@@ -52,6 +59,7 @@ Real FirFilter::Filter(Real input_sample) {
       if (index >= length_) { index = 0; }
     }
   } else {
+    // This is easier for the compiler to vectorise
     double result_a = 0;
     double result_b = 0;
     double result_c = 0;
@@ -78,9 +86,10 @@ Real FirFilter::Filter(Real input_sample) {
         }
       }
     }
-    result += result_a + result_b + result_c + result_d + result_e + result_f + result_g + result_h;
+    result += result_a + result_b + result_c + result_d + result_e + result_f +
+    result_g + result_h;
   }
-  
+#endif
   
   if (--counter_ < 0) { counter_ = length_-1; }
   
