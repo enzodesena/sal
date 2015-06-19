@@ -18,11 +18,11 @@
 namespace mcl {
 
 Real Pow(Real input, Real exponent) {
-  return pow(input, exponent);
+  return (Real) pow((double) input, (double) exponent);
 }
   
 Real Sqrt(Real input) {
-  return sqrt(input);
+  return (Real) sqrt((double) input);
 }
 
 Int Sign(const Real scalar) {
@@ -32,8 +32,8 @@ Int Sign(const Real scalar) {
 }
 
 Int Fix(const Real scalar) {
-  if (scalar >= 0.0) { return floor(scalar); }
-  else { return ceil(scalar); }
+  if (scalar >= 0.0) { return (Real) floor((double) scalar); }
+  else { return (Real) ceil((double) scalar); }
 }
 
 
@@ -78,7 +78,7 @@ Real ImagPart(Complex scalar) {
   return scalar.imag();
 }
   
-UInt NextPow2(Real input) { return ceil(log2(fabs(input))); }
+UInt NextPow2(Real input) { return (Real) ceil(log2(fabs((double) input))); }
 
   
 double StringToDouble(const std::string& s) {
@@ -90,11 +90,11 @@ double StringToDouble(const std::string& s) {
 }
   
 Real Abs(Real input) {
-  return fabs(input);
+  return (Real) fabs((double) input);
 }
   
 Real Abs(Complex input) {
-  return abs(input);
+  return (Real) abs(input);
 }
   
 UInt Next2(UInt input) {
@@ -102,7 +102,7 @@ UInt Next2(UInt input) {
 }
   
 Real Entropy(std::vector<Real> pdf, Real base) {
-  pdf = Multiply(pdf, 1.0/Sum(pdf));
+  pdf = Multiply<Real>(pdf, 1.0/Sum(pdf));
   return -Sum(Multiply(pdf, Log(pdf)))/log(base);
 }
   

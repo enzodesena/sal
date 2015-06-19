@@ -42,7 +42,7 @@ bool ElementaryOpTest() {
   assert(IsEqual(Rem((Real)-2.0, -3.0), -2.0));
 
   
-  
+  assert(Mod((Real) -90.0, 360.0) > 0.0);
   
   assert(IsEqual(Mod((Real) 3.0, 0.0), 3.0));
   assert(IsEqual(Mod((Real) 2.0, 2.0), 0.0));

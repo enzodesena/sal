@@ -28,7 +28,7 @@ std::vector<Real> IirFilter::A() const {
 
 // Constructor
 IirFilter::IirFilter() :
-  B_(mcl::UnaryVector(1.0)), A_(mcl::UnaryVector(1.0)) {
+  B_(mcl::UnaryVector<Real>(1.0)), A_(mcl::UnaryVector<Real>(1.0)) {
   UInt size = B_.size();
   state_ = new Real[size];
   for (int i=0; i<size; ++i) { state_[i] = 0.0; }
@@ -225,12 +225,12 @@ IirFilter IirFilter::PinkifierFilter() {
   
 IirFilter IirFilter::Butter(const UInt order,
                             const Real w_low, const Real w_high) {
-  
   std::vector<double> DenC = ComputeDenCoeffs((int) order, w_low, w_high);
   std::vector<double> NumC = ComputeNumCoeffs((int) order, w_low, w_high, DenC);
+  std::vector<Real> denominator(DenC.begin(), DenC.end());
+  std::vector<Real> numerator(NumC.begin(), NumC.end());
   
-  
-  return IirFilter(NumC, DenC);
+  return IirFilter(numerator, denominator);
 }
 
 IirFilter IirFilter::OctaveFilter(const UInt order,

@@ -58,7 +58,7 @@ Real Mean(const std::vector<Real>& input,
   if (! IsNonNegative(weights)) { throw_line(); }
   
   // Normalise the weigths
-  std::vector<Real> normalised_weights = Multiply(weights, 1.0/Sum(weights));
+  std::vector<Real> normalised_weights = Multiply<Real>(weights, 1.0/Sum(weights));
   assert(IsEqual(Sum(normalised_weights), 1.0));
   return Sum(Multiply(input, normalised_weights));
 }
@@ -84,7 +84,7 @@ Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
   
   Real weighted_mean = Mean(input, weights);
   std::vector<Real> temp = Pow(Add(input, -weighted_mean), 2.0);
-  std::vector<Real> norm_weights = Multiply(weights, 1.0/Sum(weights));
+  std::vector<Real> norm_weights = Multiply<Real>(weights, 1.0/Sum(weights));
   
   return (Sum(Multiply(norm_weights, temp)));
 }
@@ -163,7 +163,7 @@ ColonOperator(const Real from, const Real step, const Real to) {
 }
 
 std::vector<Real> TukeyWin(const UInt length, const Real ratio) {
-  if (length == 1) { return UnaryVector(1.0); }
+  if (length == 1) { return UnaryVector<Real>(1.0); }
   if (ratio <= 0) { return Ones(length); }
   else if (ratio >= 1.0) { return Hann(length); }
   else {

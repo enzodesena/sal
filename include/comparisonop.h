@@ -11,7 +11,7 @@
 #define MCL_EQUALITYOP_H
 
 #ifndef VERY_SMALL
-  #define VERY_SMALL (1.0E-6)
+  #define VERY_SMALL (1.0E-3)
 #endif
 
 #include "mcltypes.h"

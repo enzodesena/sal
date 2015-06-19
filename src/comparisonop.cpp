@@ -28,7 +28,7 @@ namespace mcl {
 
 bool IsEqual(Real num_a, Real num_b, Real precision) {
   if (isnan(num_a) || isnan(num_b)) { return false; }
-  return fabs(num_a - num_b) < precision;
+  return ((Real) fabs(((double) num_a) - ((double) num_a))) < precision;
 }
   
 

@@ -342,14 +342,14 @@ bool VectorOpTest() {
   
   // Testing CopyFrom
   
-  std::vector<double> vector_i(3);
+  std::vector<Real> vector_i(3);
   vector_i[0] = 0.1;
   vector_i[1] = -0.5;
   vector_i[2] = 4.0;
   
-  std::vector<double> vector_i_restr_1 = Elements(vector_i, 1, 2);
+  std::vector<Real> vector_i_restr_1 = Elements(vector_i, 1, 2);
   assert(vector_i_restr_1.size() == 2);
-  std::vector<double> vector_i_restr_1_cmp(2);
+  std::vector<Real> vector_i_restr_1_cmp(2);
   vector_i_restr_1_cmp[0] = -0.5;
   vector_i_restr_1_cmp[1] = 4.0;
   assert(IsEqual(vector_i_restr_1, vector_i_restr_1_cmp));
@@ -516,9 +516,9 @@ bool VectorOpTest() {
   assert(IsEqual(Norm(vector_ba, 2.4), 6.056130782634900));
   
   
-  std::vector<Real> weights_uniform_a = Multiply(Ones(4), 1.0/4.0);
+  std::vector<Real> weights_uniform_a = Multiply<Real>(Ones(4), 1.0/4.0);
   assert(IsEqual(Mean(vector_ba), Mean(vector_ba, weights_uniform_a)));
-  std::vector<Real> weights_uniform_b = Multiply(Ones(4), 1.0);
+  std::vector<Real> weights_uniform_b = Multiply<Real>(Ones(4), 1.0);
   assert(IsEqual(Mean(vector_ba), Mean(vector_ba, weights_uniform_b)));
   std::vector<Real> weights_uniform_c = Zeros<Real>(4);
   weights_uniform_c[0] = 0.5;

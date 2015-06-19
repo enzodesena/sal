@@ -63,6 +63,7 @@ public:
   
 private:
   std::vector<Real> impulse_response_;
+  std::vector<float> impulse_response_float_;
   std::vector<Real> delay_line_;
   Int counter_;
   Int length_;
