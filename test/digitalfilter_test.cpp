@@ -222,7 +222,8 @@ bool FirFilter::Test() {
   impulse[2] = 0.0;
   
   FirFilter filter_a(impulse_resp);
-  assert(IsEqual(filter_a.Filter(impulse), impulse_resp));
+  std::vector<Real> output_aa_cmp = filter_a.Filter(impulse);
+  assert(IsEqual(output_aa_cmp, impulse_resp));
   
   FirFilter filter_b(impulse_resp);
   std::vector<Real> input_a(4);
@@ -262,6 +263,13 @@ bool FirFilter::Test() {
   std::vector<Real> output_b_cmp = {0.033770000000000, 0.191320000000000, 0.239410000000000, 0.347100000000000, -0.401980000000000, -3.356590000000000, -2.252110000000000, -1.824530000000000, -4.816670000000000, -2.178800000000000, -2.260530000000000, -3.104640000000000};
   std::vector<Real> output_b = filter_l.Filter(input_b);
   assert(IsEqual(output_b_cmp, output_b));
+  
+  std::vector<Real> input_c = {0.8147, 0.9058, 0.1270, 0.9134, 0.6324, 0.0975, 0.2785, 0.5469, 0.9575, 0.9649, 0.1576, 0.9706, 0.9572, 0.4854, 0.8003, 0.1419, 0.4218, 0.9157, 0.7922, 0.9595};
+  std::vector<Real> impulse_resp_c = {0.6948, 0.3171, 0.9502, 0.0344, 0.4387, 0.3816, 0.7655, 0.7952, 0.1869, 0.4898, 0.4456, 0.6463, 0.7094, 0.7547, 0.2760, 0.6797};
+  FirFilter filter_m(impulse_resp_c);
+  std::vector<Real> output_c_cmp = {0.566053560000000, 0.887691210000000, 1.149596720000000, 1.563618860000000, 1.238274470000000, 1.848822500000000, 1.881767519999999, 2.373108650000000, 2.702443100000000, 3.155909820000000, 3.544349419999999, 3.760939330000000, 3.860796740000000, 5.071760400000001, 5.228588220000000, 5.070855620000001, 5.216075850000000, 4.336750739999999, 5.636061180000000,5.665156830000000};
+  std::vector<Real> output_c = filter_m.Filter(input_c);
+  assert(IsEqual(output_c_cmp, output_c));
   
   return true;
 }

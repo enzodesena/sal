@@ -28,8 +28,8 @@ int main (int argc, char * const argv[]) {
   ComparisonOpTest();
   
   IirFilter::Test();
-  FirFilter::Test();
   FirFilter::SpeedTests();
+  FirFilter::Test();
   RandomGenerator::Test();
   
   

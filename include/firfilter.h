@@ -64,8 +64,8 @@ public:
 private:
   std::vector<Real> impulse_response_;
   std::vector<Real> delay_line_;
-  UInt counter_;
-  UInt length_;
+  Int counter_;
+  Int length_;
 };
   
 } // namespace mcl

@@ -43,17 +43,45 @@ void FirFilter::UpdateFilter(std::vector<Real> B) {
 
 Real FirFilter::Filter(Real input_sample) {
   delay_line_[counter_] = input_sample;
-  double result = 0.0;
+  float result = 0.0;
   Int index = (Int) counter_;
-  for (int i=0; i<length_; ++i) {
-    result += impulse_response_[i] * delay_line_[index--];
-    if (index < 0) index = length_-1;
+  
+  if (length_%4 != 0) { // 
+    for (int i=0; i<length_; ++i) {
+      result += impulse_response_[i] * delay_line_[index++];
+      if (index >= length_) { index = 0; }
+    }
+  } else {
+    float result_a = 0;
+    float result_b = 0;
+    float result_c = 0;
+    float result_d = 0;
+    float rest = 0;
+    Int i = 0;
+    while (i < length_) {
+      if (index < (length_-4)) {
+        result_a += impulse_response_[i++] * delay_line_[index++];
+        result_b += impulse_response_[i++] * delay_line_[index++];
+        result_c += impulse_response_[i++] * delay_line_[index++];
+        result_d += impulse_response_[i++] * delay_line_[index++];
+      } else {
+        rest += impulse_response_[i++] * delay_line_[index++];
+        if (index >= length_) { index = 0; }
+        rest += impulse_response_[i++] * delay_line_[index++];
+        if (index >= length_) { index = 0; }
+        rest += impulse_response_[i++] * delay_line_[index++];
+        if (index >= length_) { index = 0; }
+        rest += impulse_response_[i++] * delay_line_[index++];
+        if (index >= length_) { index = 0; }
+      }
+    }
+    result += result_a + result_b + result_c + result_d + rest;
   }
   
-  if (++counter_ >= length_) { counter_ = 0; }
   
-  return result;
+  if (--counter_ < 0) { counter_ = length_-1; }
   
+  return (Real) result;
 }
   
 std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
