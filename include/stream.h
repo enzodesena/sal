@@ -138,7 +138,7 @@ public:
   }
   
   inline bool IsEmpty() const {
-    return (stream_left_.IsEmpty() & stream_left_.IsEmpty());
+    return (stream_left_.IsEmpty() | stream_left_.IsEmpty());
   }
   
   /** Returns a vector with two signals. First signal is the left one. */

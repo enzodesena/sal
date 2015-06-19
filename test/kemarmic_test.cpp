@@ -194,7 +194,8 @@ bool KemarMic::Test() {
   // Testing reset
   assert(stream_t->IsEmpty());
   mic_t.RecordPlaneWave(1.0, Point(0.0,0.0,-1.0));
-  assert(! IsEqual(stream_t->PullLeft(), 0.0));
+  Sample sample_v = stream_t->PullLeft();
+  assert(! IsEqual(sample_v, 0.0));
   assert(! IsEqual(stream_t->PullRight(), 0.0));
   assert(stream_t->IsEmpty());
   mic_t.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));

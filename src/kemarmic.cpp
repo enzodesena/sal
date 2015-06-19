@@ -39,7 +39,7 @@ KemarMic::Load(const Ear ear, const std::string directory) {
     
     Angle resolution = 360.0 / num_measurements_[i];
     Angle elevation = elevations_[i];
-    UInt num_measurement = floor(num_measurements_[i]/2.0)+1;
+    UInt num_measurement = floor((double) ((Angle) num_measurements_[i])/2.0)+1;
     
     for (UInt j=0; j<num_measurement; ++j) {
       Angle angle = round(j * resolution);
@@ -76,7 +76,7 @@ KemarMic::Load(const Ear ear, const std::string directory) {
       assert(size%2 == 0);
       assert((size/2)%2 == 0);
       
-      for (UInt k=0; k<size; k+=2) {
+      for (UInt k=0; k<(size); k+=2) {
         UInt ipsilateral_index = j;
         UInt contralateral_index = (UInt)
                 ((((Int) num_measurements_[i]) -
@@ -141,11 +141,11 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
   
   // For forward looking direction, Azimuth = 0 and elevation =0
   Point norm_point = Point::Normalized(point);
-  Angle elevation = (asin(-norm_point.x())) / PI * 180.0;
+  Angle elevation = (asin((double) -norm_point.x())) / PI * 180.0;
   
   Angle azimuth;
-  if (norm_point.z() >= 0) azimuth = (asin(norm_point.y())) / PI * 180.0;
-  else azimuth = (acos(norm_point.y())+PI/2.0) / PI * 180.0;
+  if (norm_point.z() >= 0.0) { azimuth = (asin((double) norm_point.y())) / PI * 180.0; }
+  else azimuth = (acos((double) norm_point.y())+PI/2.0) / PI * 180.0;
       
   azimuth = mcl::Mod(azimuth, 360.0);
   

@@ -17,11 +17,11 @@
 
 namespace sal {
 
-typedef double Sample;
-typedef double Time;
-typedef double Speed;
-typedef double Length;
-typedef double Angle;
+typedef float Sample;
+typedef float Time;
+typedef float Speed;
+typedef float Length;
+typedef float Angle;
 typedef unsigned long UInt;
 typedef long Int;
 

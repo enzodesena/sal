@@ -76,7 +76,7 @@ mcl::Complex SphericalHeadMic::Sphere(Length a, Length r,
   sum = sum + term;
   // term = (3 * x * zr * (zr - 1) ) / (za * (2 * za^2 - 2 * za + 1) ); 
   term = (Complex(3.0,0.0) * x * zr * (zr - Complex(1.0, 0.0)) ) / 
-         (za * (Complex(2.0,0.0) * pow(za,2) - 
+         (za * (Complex(2.0,0.0) * pow(za, (Real) 2.0) -
                 Complex(2.0,0.0) * za + Complex(1.0, 0.0))); 
   sum = sum + term;
   Real oldratio = 1; 
@@ -190,7 +190,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
     } else {
       // The minimum in this formula is due to the shortest path around the head.
       distance = sqrt(pow(source_distance,2.0) - pow(sphere_radius,2.0))
-              + sphere_radius*mcl::Min(theta-theta_0,(2.0*PI-theta_0)-theta);
+              + sphere_radius*mcl::Min<Real>(theta-theta_0,(2.0*PI-theta_0)-theta);
     }
     // Subract the distance between sphere and source
     distance = distance - (source_distance-sphere_radius);
