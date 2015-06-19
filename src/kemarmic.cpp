@@ -18,19 +18,21 @@ namespace sal {
 
   
 KemarMic::KemarMic(Point position, Angle theta, Angle phi, Angle psi,
-                   const std::string directory) :
+                   const std::string directory,
+                   const UInt num_samples) :
           DatabaseBinauralMic(position, theta, phi, psi) {
             
   num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
             
-  hrtf_database_right_ = Load(right_ear, directory);
-  hrtf_database_left_ = Load(left_ear, directory);
+  hrtf_database_right_ = Load(right_ear, directory, num_samples);
+  hrtf_database_left_ = Load(left_ear, directory, num_samples);
 }
   
 
 std::vector<std::vector<Signal> >
-KemarMic::Load(const Ear ear, const std::string directory) {
+  KemarMic::Load(const Ear ear, const std::string directory,
+                 const UInt num_samples) {
   std::vector<std::vector<Signal> > hrtf_database;
           
   for (UInt i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
@@ -72,11 +74,16 @@ KemarMic::Load(const Ear ear, const std::string directory) {
         data[k/2] = little_endian;
       }
       
+      
       size = size / 2; // Length in number of samples
       assert(size%2 == 0);
       assert((size/2)%2 == 0);
       
-      for (UInt k=0; k<(size); k+=2) {
+      if (num_samples > 0) {
+        size = num_samples;
+      }
+      
+      for (UInt k=0; k<size; k+=2) {
         UInt ipsilateral_index = j;
         UInt contralateral_index = (UInt)
                 ((((Int) num_measurements_[i]) -

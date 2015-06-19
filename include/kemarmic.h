@@ -31,9 +31,11 @@ public:
   /** 
    Constructs a Kemar microphone opject. 
    `directory` contains the hrtf database.
+   With `num_samples` you can choose the length of the 
+   BRIR. If set to zero yields the entire BRIR.
    */
   KemarMic(Point position, Angle theta, Angle phi, Angle psi,
-           const std::string directory);
+           const std::string directory, const UInt num_samples = 0);
   
   static bool Test();
   
@@ -43,7 +45,8 @@ private:
   virtual Signal GetBrir(const Ear ear, const Point& point);
   
   std::vector<std::vector<Signal> > Load(const Ear ear,
-                                         const std::string directory);
+                                         const std::string directory,
+                                         const UInt num_samples);
   
   /**
    Returns the elevation index for kemar database for elevation in azimuth.
