@@ -13,6 +13,8 @@
 #ifndef SAL_TYPES_H
 #define SAL_TYPES_H
 
+#define EPSILON std::numeric_limits<float>::epsilon()
+
 #include <vector>
 
 namespace sal {
