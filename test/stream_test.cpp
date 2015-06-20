@@ -10,6 +10,7 @@
 
 #include "stream.h"
 #include "comparisonop.h"
+#include "mcl.h"
 #include <assert.h>
 
 namespace sal {
@@ -86,6 +87,21 @@ bool Stream::Test() {
   assert(IsEqual(stream_e.Pull(), 2.0));
   assert(IsEqual(stream_e.Pull(), 3.0));
   assert(IsEqual(stream_e.Pull(), 4.0));
+  
+  MonoStream stream_f;
+  stream_f.Push(mcl::Zeros<sal::Sample>(5));
+  stream_f.Push(0.5);
+  stream_f.Add(mcl::Ones(2));
+  stream_f.Add(mcl::Ones(3));
+  stream_f.Tick();
+  stream_f.Add(mcl::Multiply<sal::Sample>(mcl::Ones(2),-0.5));
+  stream_f.Add(-1);
+  stream_f.Push(-2);
+  std::vector<sal::Sample> output_f = stream_f.PullAll();
+  std::vector<sal::Sample> output_f_cmp = {0,0,0,0,0, 1.5, 2, 2, -0.5, -1.5, -2};
+  assert(IsEqual(output_f, output_f_cmp));
+  assert(stream_f.IsEmpty());
+  
   
   return true;
 }

@@ -52,6 +52,11 @@ private:
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
                                        const UInt& wave_id);
   
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const Point& point,
+                                       const UInt& wave_id);
+  
+  void CreateInstanceIfNotExist(const UInt& wave_id);
+  
   std::map<UInt, BinauralMicInstance> instances_left_;
   std::map<UInt, BinauralMicInstance> instances_right_;
   
@@ -74,6 +79,7 @@ private:
   
   Sample RecordPlaneWaveRelative(const Sample& sample, const Point& point);
   
+  Signal RecordPlaneWaveRelative(const Signal& signal, const Point& point);
   
   /**
    The microphone object is called for every sample, while the position
@@ -82,6 +88,8 @@ private:
    sample, but only when something changes.
    */
   Point previous_point_;
+  
+  void UpdateFilter(const Point& point);
   
   mcl::FirFilter filter_;
   

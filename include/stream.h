@@ -12,6 +12,7 @@
 #define SAL_stream_h
 
 #include "saltypes.h"
+#include "mcltypes.h"
 #include <queue>
 #include <vector>
 #include <map>
@@ -44,7 +45,7 @@ class MonoStream : public Stream {
 public:
   MonoStream() : push_new_sample_(true) {}
   
-  inline void Push(const Sample& sample) { queue_.push(sample); }
+  inline void Push(const Sample& sample) { queue_.push_back(sample); }
   
   
   
@@ -59,20 +60,33 @@ public:
   
   inline void Add(const Sample& sample) {
     if (push_new_sample_) {
-      queue_.push(sample);
+      queue_.push_back(sample);
       push_new_sample_ = false;
     } else {
-      assert(! queue_.empty());
+      if (queue_.empty()) { throw_line(); }
       queue_.back() += sample;
     }
   }
   
+  inline void Add(const Signal& signal) {
+    if (push_new_sample_) {
+      queue_.insert(queue_.end(), signal.begin(), signal.end());
+      push_new_sample_ = false;
+    } else {
+      if (queue_.empty()) { throw_line(); }
+      if (queue_.size() < signal.size()) { throw_line(); }
+      
+      const Int offset = queue_.size()-signal.size();
+      for (Int i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
+    }
+  }
+
   inline void Tick() { push_new_sample_ = true; }
   
   Sample Pull() {
     assert(! queue_.empty());
     Sample output = queue_.front();
-    queue_.pop();
+    queue_.erase(queue_.begin());
     return output;
   }
   
@@ -87,10 +101,8 @@ public:
   
   /** Pull all samples until the stream is depleted. */
   Signal PullAll() {
-    Signal output;
-    while (! IsEmpty()) {
-      output.push_back(Pull());
-    }
+    Signal output = queue_;
+    queue_.clear();
     return output;
   }
   
@@ -109,7 +121,7 @@ public:
   }
   
 private:
-  std::queue<Sample> queue_;
+  std::vector<Sample> queue_;
   
   /** 
    This bool reminds the method Add() when to create a new sample. This
@@ -130,6 +142,11 @@ public:
   void Add(Sample sample_left, Sample sample_right) {
     stream_left_.Add(sample_left);
     stream_right_.Add(sample_right);
+  }
+  
+  void Add(const Signal& signal_left, const Signal& signal_right) {
+    stream_left_.Add(signal_left);
+    stream_right_.Add(signal_right);
   }
   
   void Tick() {

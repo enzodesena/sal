@@ -34,46 +34,51 @@ void Microphone::set_psi(Angle psi) {
   psi_ = psi;
   last_point_.clear();
 }
-  
-  
-//std::vector<Sample> Microphone::IRPlaneWave(const Point point) const {
-//  Point relative_point = GetRelativePoint(point);
-//  return this->IRPlaneWaveRelative(relative_point);
-//}
 
-  
-void Microphone::RecordPlaneWave(const Sample& sample, const Point& point,
-                                 const UInt& wave_id) {
+void Microphone::CalculateRelativePoint(const Point& point,
+                                        const UInt& wave_id) {
   if (last_point_.count(wave_id) == 0 ||
       ! Point::IsEqual(last_point_[wave_id], point)) {
     last_point_[wave_id] = point;
     last_relative_point_[wave_id] = GetRelativePoint(point);
   }
-  
+}
+
+void Microphone::RecordPlaneWave(const Sample& sample, const Point& point,
+                                 const UInt& wave_id) {
+  CalculateRelativePoint(point, wave_id);
   this->RecordPlaneWaveRelative(sample, last_relative_point_[wave_id], wave_id);
 }
-  
-  
-//Stream Microphone::RecordPlaneWave(const Signal& input, const Point& point) {
-//  std::vector<Stream> output(input.size());
-//  for (UInt i=0; i<input.size(); ++i) {
-//    output[i] = RecordPlaneWave(input[i], point);
-//  }
-//  return Stream(output);
-//}
 
-    
+void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
+                                 const UInt& wave_id) {
+  CalculateRelativePoint(point, wave_id);
+  this->RecordPlaneWaveRelative(signal, last_relative_point_[wave_id], wave_id);
+}
+
+// If there is no declaration of this method, then revert back to
+// the normal record and tick.
+void Microphone::RecordPlaneWaveRelative(const Signal& signal,
+                                         const Point& point,
+                                         const UInt& wave_id) {
+  for (UInt i=0; i<signal.size(); ++i) {
+    RecordPlaneWaveRelative(signal[i], point, 0);
+    Tick();
+  }
+}
+
+
 Point Microphone::GetRelativePoint(const Point& point) const {
   // Centering the reference system around the microphone
   Point centered(point.x()-position_.x(),
                  point.y()-position_.y(),
                  point.z()-position_.z());
   
-  // Rotating using the 3 euler angles with ZYX convention for phi, theta and 
+  // Rotating using the 3 euler angles with ZYX convention for phi, theta and
   // psi, respectively.
   Point rotated = Point::Rotate(centered, -phi_, -theta_, -psi_);
   return rotated;
 }
-  
+
   
 } // namespace sal

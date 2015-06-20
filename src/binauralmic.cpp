@@ -19,6 +19,26 @@ namespace sal {
 void BinauralMic::RecordPlaneWaveRelative(const Sample& sample,
                                           const Point& point,
                                           const UInt& wave_id) {
+  CreateInstanceIfNotExist(wave_id);
+  
+  stream_.Add(instances_left_.at(wave_id).
+              RecordPlaneWaveRelative(sample, point),
+              instances_right_.at(wave_id).
+              RecordPlaneWaveRelative(sample, point));
+}
+  
+void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
+                                          const Point& point,
+                                          const UInt& wave_id) {
+  CreateInstanceIfNotExist(wave_id);
+  
+  stream_.Add(instances_left_.at(wave_id).
+              RecordPlaneWaveRelative(signal, point),
+              instances_right_.at(wave_id).
+              RecordPlaneWaveRelative(signal, point));
+}
+
+void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) {
   // If there is no instance associated to the given wave_id then create
   if (instances_left_.count(wave_id) == 0) {
     instances_left_.insert(std::make_pair(wave_id,
@@ -26,13 +46,8 @@ void BinauralMic::RecordPlaneWaveRelative(const Sample& sample,
     instances_right_.insert(std::make_pair(wave_id,
                                            BinauralMicInstance(this, right_ear)));
   }
-  
-  stream_.Add(instances_left_.at(wave_id).
-              RecordPlaneWaveRelative(sample, point),
-              instances_right_.at(wave_id).
-              RecordPlaneWaveRelative(sample, point));
 }
-
+  
 void BinauralMic::Tick() {
   stream_.Tick();
 }
@@ -59,19 +74,24 @@ BinauralMic::BinauralMic(Point position, Angle theta, Angle phi, Angle psi) :
 // Use signals with 44100 sampling frequency!!!
 Sample BinauralMicInstance::RecordPlaneWaveRelative(const Sample& sample,
                                                     const Point& point) {
+  UpdateFilter(point);
+  return filter_.Filter(sample);
+}
+
+Signal BinauralMicInstance::RecordPlaneWaveRelative(const Signal& signal,
+                                                    const Point& point) {
+  UpdateFilter(point);
+  return filter_.Filter(signal);
+}
+  
+void BinauralMicInstance::UpdateFilter(const Point& point) {
   if (! Point::IsEqual(point, previous_point_)) {
     // Update cache variables
     previous_point_ = point;
     
     filter_.UpdateFilter(base_mic_->GetBrir(ear_, point));
-      }
-  
-  return filter_.Filter(sample);
+  }
 }
-
-  
-  
-  
 
 DatabaseBinauralMic::DatabaseBinauralMic(Point position,
                                        Angle theta,
