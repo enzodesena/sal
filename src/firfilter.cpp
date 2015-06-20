@@ -1,4 +1,4 @@
-/*
+ /*
  iirfilter.cpp
  MCL
  Copyright (c) 2012, Enzo De Sena
@@ -31,7 +31,7 @@ counter_(0), length_(1) {
 }
   
 FirFilter::FirFilter(std::vector<Real> B) : impulse_response_(B),
-        counter_(0), length_(B.size()) {
+        counter_(B.size()-1), length_(B.size()) {
   delay_line_.assign(length_, 0.0);
     impulse_response_float_ = std::vector<float>(impulse_response_.begin(),
                                                  impulse_response_.end());
@@ -43,7 +43,7 @@ void FirFilter::UpdateFilter(std::vector<Real> B) {
     // If the impulse response changes length, then reset everything.
     length_ = B.size();
     delay_line_.assign(length_, 0.0);
-    counter_ = 0;
+    counter_ = B.size()-1;
   }
   impulse_response_float_ = std::vector<float>(impulse_response_.begin(),
                                                impulse_response_.end());
@@ -117,14 +117,51 @@ Real FirFilter::Filter(Real input_sample) {
 }
   
 std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
-  std::vector<Real> output(input.size());
   
+#ifdef OSXIOS
+  if (input.size() < length_) { return FilterSequential(input); }
+  
+  std::vector<float> output(input.size(), 0.0);
+  
+  // Construct long input signal
+  std::vector<float> conv_input;
+  conv_input.insert(conv_input.begin(),
+                    delay_line_.begin()+counter_, delay_line_.end());
+  if (counter_ >= 1) {
+    conv_input.insert(conv_input.end(),
+                      delay_line_.begin(), delay_line_.begin()+counter_);
+  }
+  
+  std::reverse(conv_input.begin(), conv_input.end());
+  conv_input.pop_back();
+  assert(conv_input.size() == length_-1);
+  
+  conv_input.insert(conv_input.end(), input.begin(), input.end());
+  assert(conv_input.size() == (input.size()+length_-1));
+  
+  vDSP_conv(&conv_input[0], 1,
+            &impulse_response_float_[length_-1], -1,
+            &output[0], 1,
+            input.size(), length_);
+  
+  assert(output.size() == input.size());
+  delay_line_ = std::vector<float>(input.rbegin(), input.rbegin()+length_);
+  counter_ = length_-1;
+  
+  return std::vector<Real>(output.begin(), output.end());
+#else
+  return FilterSequential(input);
+#endif
+}
+  
+std::vector<Real> FirFilter::FilterSequential(const std::vector<Real>& input) {
+  std::vector<Real> output(input.size());
   for (UInt i=0; i<input.size(); ++i) {
     output[i] = this->Filter(input[i]);
   }
-  
   return output;
 }
+  
 
 FirFilter FirFilter::GainFilter(Real gain) {
   std::vector<Real> B(1);

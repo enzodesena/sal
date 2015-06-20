@@ -237,8 +237,9 @@ bool FirFilter::Test() {
   output_a_cmp[1] = -0.7600;
   output_a_cmp[2] = 2.9700;
   output_a_cmp[3] = -8.8500;
+  std::vector<Real> output_a = filter_b.Filter(input_a);
   
-  assert(IsEqual(filter_b.Filter(input_a), output_a_cmp));
+  assert(IsEqual(output_a, output_a_cmp));
   
   FirFilter filter_c(impulse_resp);
   assert(IsEqual(filter_c.Filter(0.6), 0.1200));
@@ -264,12 +265,97 @@ bool FirFilter::Test() {
   std::vector<Real> output_b = filter_l.Filter(input_b);
   assert(IsEqual(output_b_cmp, output_b));
   
+  filter_l.Reset();
+  for (UInt i=0; i<input_b.size(); ++i) {
+    assert(mcl::IsEqual(filter_l.Filter(input_b[i]), output_b_cmp[i]));
+  }
+  
+  
   std::vector<Real> input_c = {0.8147, 0.9058, 0.1270, 0.9134, 0.6324, 0.0975, 0.2785, 0.5469, 0.9575, 0.9649, 0.1576, 0.9706, 0.9572, 0.4854, 0.8003, 0.1419, 0.4218, 0.9157, 0.7922, 0.9595};
   std::vector<Real> impulse_resp_c = {0.6948, 0.3171, 0.9502, 0.0344, 0.4387, 0.3816, 0.7655, 0.7952, 0.1869, 0.4898, 0.4456, 0.6463, 0.7094, 0.7547, 0.2760, 0.6797};
   FirFilter filter_m(impulse_resp_c);
   std::vector<Real> output_c_cmp = {0.566053560000000, 0.887691210000000, 1.149596720000000, 1.563618860000000, 1.238274470000000, 1.848822500000000, 1.881767519999999, 2.373108650000000, 2.702443100000000, 3.155909820000000, 3.544349419999999, 3.760939330000000, 3.860796740000000, 5.071760400000001, 5.228588220000000, 5.070855620000001, 5.216075850000000, 4.336750739999999, 5.636061180000000,5.665156830000000};
   std::vector<Real> output_c = filter_m.Filter(input_c);
   assert(IsEqual(output_c_cmp, output_c));
+  
+  
+  // Various attempt to check that the batch processing does not mess up
+  filter_m.Reset();
+  std::vector<Real> input_c_sub_a(input_c.begin(), input_c.begin()+16);
+  std::vector<Real> output_c_cmp_sub_a(output_c_cmp.begin(), output_c_cmp.begin()+16);
+  assert(mcl::IsEqual(filter_m.Filter(input_c_sub_a), output_c_cmp_sub_a));
+  
+  assert(mcl::IsEqual(filter_m.Filter(input_c[16]), output_c_cmp[16]));
+  
+  std::vector<Real> input_c_sub_b(input_c.begin()+17, input_c.end());
+  std::vector<Real> output_c_cmp_sub_b(output_c_cmp.begin()+17, output_c_cmp.end());
+  std::vector<Real> output_c_sub_b = filter_m.Filter(input_c_sub_b);
+  assert(mcl::IsEqual(output_c_sub_b, output_c_cmp_sub_b));
+  
+  //
+  filter_m.Reset();
+  assert(mcl::IsEqual(filter_m.Filter(input_c[0]), output_c_cmp[0]));
+  assert(mcl::IsEqual(filter_m.Filter(input_c[1]), output_c_cmp[1]));
+  assert(mcl::IsEqual(filter_m.Filter(input_c[2]), output_c_cmp[2]));
+  std::vector<Real> input_c_sub_ab(input_c.begin()+3, input_c.begin()+19);
+  std::vector<Real> output_c_cmp_sub_ab(output_c_cmp.begin()+3, output_c_cmp.begin()+19);
+  assert(mcl::IsEqual(filter_m.Filter(input_c_sub_ab), output_c_cmp_sub_ab));
+  assert(mcl::IsEqual(filter_m.Filter(input_c[19]), output_c_cmp[19]));
+  
+  
+  //
+  std::vector<Real> impulse_response_k = {0.8147, 0.9058, 0.1270, 0.9134, 0.6324};
+  FirFilter filter_k(impulse_response_k);
+  std::vector<Real> input_k = input_c;
+  std::vector<Real> output_k_cmp = {0.663736090000000, 1.475910520000000, 1.027407440000000, 1.718367160000000, 2.701277000000000, 1.457092690000000, 1.310138610000000, 1.865475550000000, 1.799813030000000, 2.038904730000000, 1.799667500000000, 2.276484260000000, 3.165878180000000, 2.139907940000000, 2.199456410000000, 2.390277390000000, 1.622509220000000, 2.184069510000000, 2.164136180000000, 2.090582990000000};
+  assert(mcl::IsEqual(filter_k.Filter(input_k), output_k_cmp));
+  
+  //
+  filter_k.Reset();
+  for (UInt i=0; i<input_c.size()-1; ++i) {
+    assert(IsEqual(filter_k.Filter(input_k[i]), output_k_cmp[i]));
+  }
+  
+  //
+  filter_k.Reset();
+  assert(IsEqual(filter_k.Filter(input_k[0]), output_k_cmp[0]));
+  assert(IsEqual(filter_k.Filter(input_k[1]), output_k_cmp[1]));
+  std::vector<Real> input_k_sub_a = std::vector<Real>(input_k.begin()+2,
+                                                      input_k.begin()+7);
+  std::vector<Real> output_k_cmp_sub_a = std::vector<Real>(output_k_cmp.begin()+2,
+                                                           output_k_cmp.begin()+7);
+  std::vector<Real> output_k_sub_a = filter_k.Filter(input_k_sub_a);
+  assert(IsEqual(output_k_sub_a, output_k_cmp_sub_a));
+  
+  assert(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+7,
+                                                   input_k.begin()+9)),
+                 std::vector<Real>(output_k_cmp.begin()+7,
+                                   output_k_cmp.begin()+9)));
+  assert(IsEqual(filter_k.Filter(input_k[9]), output_k_cmp[9]));
+  assert(IsEqual(filter_k.Filter(input_k[10]), output_k_cmp[10]));
+  assert(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+11,
+                                                   input_k.begin()+20)),
+                 std::vector<Real>(output_k_cmp.begin()+11,
+                                   output_k_cmp.begin()+20)));
+  
+  
+  //
+  filter_k.Reset();
+  assert(IsEqual(filter_k.Filter(input_k[0]), output_k_cmp[0]));
+  assert(IsEqual(filter_k.Filter(input_k[1]), output_k_cmp[1]));
+  assert(IsEqual(filter_k.Filter(input_k[2]), output_k_cmp[2]));
+  assert(IsEqual(filter_k.Filter(input_k[3]), output_k_cmp[3]));
+  assert(IsEqual(filter_k.Filter(input_k[4]), output_k_cmp[4]));
+  assert(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+5,
+                                                   input_k.begin()+10)),
+                 std::vector<Real>(output_k_cmp.begin()+5,
+                                   output_k_cmp.begin()+10)));
+  assert(IsEqual(filter_k.Filter(input_k[10]), output_k_cmp[10]));
+  assert(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+11,
+                                                   input_k.begin()+19)),
+                 std::vector<Real>(output_k_cmp.begin()+11,
+                                   output_k_cmp.begin()+19)));
+  assert(IsEqual(filter_k.Filter(input_k[19]), output_k_cmp[19]));
   
   return true;
 }
@@ -298,7 +384,7 @@ void FirFilter::SpeedTests() {
   std::cout<<"Fir filter speed (sequential; length is power of 2): "<<
   (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
   
-  FirFilter fir_filter_b(random_generator.Rand(1025));
+  FirFilter fir_filter_b(random_generator.Rand(1024));
   
   launch=clock();
   output = fir_filter_b.Filter(input);
