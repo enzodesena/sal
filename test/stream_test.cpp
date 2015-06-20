@@ -102,6 +102,16 @@ bool Stream::Test() {
   assert(IsEqual(output_f, output_f_cmp));
   assert(stream_f.IsEmpty());
   
+  MonoStream stream_g;
+  stream_g.Push(0.5);
+  stream_g.Push(0.1);
+  stream_g.Push(-0.2);
+  Signal output_g = stream_g.Pull(2);
+  Signal output_g_cmp = {0.5, 0.1};
+  assert(IsEqual(output_g_cmp, output_g));
+  assert(stream_g.size() == 1);
+  assert(IsEqual(stream_g.Pull(), -0.2));
+  
   
   return true;
 }

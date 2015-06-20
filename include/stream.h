@@ -76,8 +76,8 @@ public:
       if (queue_.empty()) { throw_line(); }
       if (queue_.size() < signal.size()) { throw_line(); }
       
-      const Int offset = queue_.size()-signal.size();
-      for (Int i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
+      const UInt offset = queue_.size()-signal.size();
+      for (UInt i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
     }
   }
 
@@ -86,22 +86,20 @@ public:
   Sample Pull() {
     assert(! queue_.empty());
     Sample output = queue_.front();
-    queue_.erase(queue_.begin());
+    queue_.pop_front();
     return output;
   }
   
   Signal Pull(const UInt num_samples) {
-    Signal output(num_samples);
-    for (UInt i=0; i<num_samples; ++i) {
-      assert(! IsEmpty());
-      output[i] = Pull();
-    }
+    if (num_samples > queue_.size()) { throw_line(); }
+    Signal output(queue_.begin(), queue_.begin() + num_samples);
+    queue_.erase(queue_.begin(), queue_.begin() + num_samples);
     return output;
   }
   
   /** Pull all samples until the stream is depleted. */
   Signal PullAll() {
-    Signal output = queue_;
+    Signal output(queue_.begin(), queue_.end());
     queue_.clear();
     return output;
   }
@@ -121,7 +119,7 @@ public:
   }
   
 private:
-  std::vector<Sample> queue_;
+  std::deque<Sample> queue_;
   
   /** 
    This bool reminds the method Add() when to create a new sample. This
