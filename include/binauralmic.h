@@ -36,6 +36,8 @@ public:
   
   virtual void Reset();
   
+  virtual bool IsCoincident() { return true; }
+  
   virtual ~BinauralMic() {}
   
 private:

@@ -97,7 +97,7 @@ public:
    */
   virtual void Tick() = 0;
   
-  virtual bool IsCoincident() { return true; }
+  virtual bool IsCoincident() = 0;
   
   /** This method translates `point` in the reference system of the mic. */
   Point GetRelativePoint(const Point& point) const;

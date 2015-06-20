@@ -41,6 +41,8 @@ public:
           MonoMic(position, theta, phi, psi),
           gain_(gain) {}
   
+  virtual bool IsCoincident() { return true; }
+  
   virtual ~GainMic() {}
 private:
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point&,
@@ -56,6 +58,8 @@ class OmniMic : public GainMic {
 public:
   OmniMic(Point position, Angle theta, Angle phi, Angle psi) :
           GainMic(position, theta, phi, psi, (Sample) 1.0) {}
+  
+  virtual bool IsCoincident() { return true; }
 };
   
 
@@ -70,6 +74,8 @@ public:
           std::vector<Sample> coefficients) :
           MonoMic(position, theta, phi, psi),
           coefficients_(coefficients) {}
+  
+  virtual bool IsCoincident() { return true; }
   
   virtual ~TrigMic() {}
   

@@ -45,7 +45,7 @@ public:
    Returns true if the array is coincident. If there are 0 or 1 microphones
    the array is considered coincident.
    */
-  bool IsCoincident();
+  virtual bool IsCoincident();
   
   void InitStream();
   
