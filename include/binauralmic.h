@@ -37,6 +37,7 @@ public:
   virtual void Reset();
   
   virtual bool IsCoincident() { return true; }
+  virtual bool IsFrameEnabled() { return true; }
   
   virtual ~BinauralMic() {}
   

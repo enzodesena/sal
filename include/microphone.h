@@ -116,6 +116,11 @@ public:
   
   virtual bool IsCoincident() = 0;
   
+  /*
+   This is true when the microphone can handle frames.
+   */
+  virtual bool IsFrameEnabled() { return false; }
+  
   /** This method translates `point` in the reference system of the mic. */
   Point GetRelativePoint(const Point& point) const;
   

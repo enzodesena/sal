@@ -42,12 +42,18 @@ public:
           gain_(gain) {}
   
   virtual bool IsCoincident() { return true; }
+  virtual bool IsFrameEnabled() { return true; }
   
   virtual ~GainMic() {}
 private:
   virtual void RecordPlaneWaveRelative(const Sample& sample, const Point&,
                                        const UInt&) {
     stream_.Add(sample*gain_);
+  }
+  
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const Point&,
+                                       const UInt&) {
+    stream_.Add(mcl::Multiply<sal::Sample>(signal, gain_));
   }
   
   Sample gain_;

@@ -56,15 +56,15 @@ void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
   this->RecordPlaneWaveRelative(signal, last_relative_point_[wave_id], wave_id);
 }
 
-// If there is no declaration of this method, then revert back to
-// the normal record and tick.
+
+/**
+ This method has to be defined by the microphone. This is not a pure virtual
+ method because it is optional to implement this.
+ */
 void Microphone::RecordPlaneWaveRelative(const Signal& signal,
                                          const Point& point,
                                          const UInt& wave_id) {
-  for (UInt i=0; i<signal.size(); ++i) {
-    RecordPlaneWaveRelative(signal[i], point, 0);
-    Tick();
-  }
+  throw_line();
 }
 
 
