@@ -29,6 +29,7 @@
 #include <sys/time.h>
 #include "mcltypes.h"
 #include <vector>
+#include <cassert>
 
 
 namespace mcl {
@@ -53,6 +54,16 @@ std::vector<Real> RandomGenerator::Rand(const UInt size) {
   for (UInt i = 0; i < size; i++) {
     output[i] = distribution_uniform_(generator_);
   }
+  return output;
+}
+  
+Int RandomGenerator::RandInt(const Int& minimum, const Int& maximum) {
+  // number of possible outcomes
+  // e.g. max = 2, min = 0 => num_outcomes = 3
+  const Int num_outcomes = maximum - minimum + 1;
+  Int output = floor((double) (Rand()*((Real) num_outcomes))) + minimum;
+  assert(output >= minimum);
+  assert(output <= maximum);
   return output;
 }
 

@@ -70,6 +70,12 @@ public:
    */
   Real Rand() { return Rand(1)[0]; }
   
+  /**
+   Returns a single pseudorandom integer value, uniformly distributed 
+   between the given extrema (which are included).
+   */
+  Int RandInt(const Int& minimum, const Int& maximum);
+  
   /** Set seed of the for random generator */
   void set_seed(unsigned int seed) { generator_.seed(seed); }
   
