@@ -61,7 +61,10 @@ Int RandomGenerator::RandInt(const Int& minimum, const Int& maximum) {
   // number of possible outcomes
   // e.g. max = 2, min = 0 => num_outcomes = 3
   const Int num_outcomes = maximum - minimum + 1;
-  Int output = floor((double) (Rand()*((Real) num_outcomes))) + minimum;
+  Int output =
+  floor((double) (distribution_uniform_(generator_)*((double) num_outcomes))) +
+  minimum;
+  
   assert(output >= minimum);
   assert(output <= maximum);
   return output;

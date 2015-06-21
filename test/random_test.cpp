@@ -62,7 +62,22 @@ bool RandomGenerator::Test() {
                       ((Real) mcl::Max(num_occurrances)) / ((Real) num_samples),
                       1.0E-2));
   
-                      
+  // Test integer generator
+  std::vector<Int> rand_int_vector_b;
+  const UInt num_samples_b = 1000000;
+  const Int min_value_b = 0;
+  const Int max_value_b = 1;
+  std::vector<Int> num_occurrances_b(max_value_b-min_value_b+1, 0);
+  for (UInt i=0; i<num_samples_b; ++i) {
+    Int output = rand_gen.RandInt(min_value_b, max_value_b);
+    rand_int_vector_b.push_back(output);
+    num_occurrances_b.at(output-min_value_b)++;
+  }
+  assert(mcl::Min(rand_int_vector_b) >= min_value_b);
+  assert(mcl::Max(rand_int_vector_b) <= max_value_b);
+  assert(mcl::IsEqual(((Real) mcl::Min(num_occurrances_b)) / ((Real) num_samples_b),
+                      ((Real) mcl::Max(num_occurrances_b)) / ((Real) num_samples_b),
+                      1.0E-2));
   
   return true;
 }
