@@ -11,6 +11,7 @@
 #include "delayfilter.h"
 #include <cassert>
 #include <tgmath.h>
+#include "mcl.h"
 
 using sal::Sample;
 using sal::UInt;
@@ -63,8 +64,7 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
 
 void DelayFilter::set_latency(const UInt latency) {
   latency_ = latency;
-  assert(latency >= 0);
-  assert(latency <= max_latency_);
+  if (latency > max_latency_) { throw_line(); }
   
   read_index_ = write_index_ - latency;
   
