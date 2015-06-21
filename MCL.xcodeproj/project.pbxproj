@@ -482,6 +482,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DNDEBUG",
+					"-DOSXIOS",
 				);
 				PRODUCT_NAME = MCLiOS;
 				SDKROOT = iphoneos;
@@ -519,6 +520,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DNDEBUG",
+					"-DOSXIOS",
 				);
 				PRODUCT_NAME = MCLiOS;
 				SDKROOT = iphoneos;
