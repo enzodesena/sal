@@ -13,9 +13,8 @@
   #define PI 3.141592653589793238462643383279502884197169399375105820974944
 #endif
 
-#ifndef throw_line
-  #define throw_line(arg) throw std::runtime_error(std::string("Error at line n. ") +std::string(std::to_string(__LINE__)) + std::string(" of file ") + std::string(__FILE__));
-#endif
+#define throw_line(arg) throw
+// #define throw_line(arg) throw std::runtime_error(std::string("Error at line n. ") +std::string(std::to_string(__LINE__)) + std::string(" of file ") + std::string(__FILE__));
 
 #include <complex>
 #include <vector>
