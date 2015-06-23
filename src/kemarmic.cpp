@@ -74,6 +74,7 @@ std::vector<std::vector<Signal> >
         data[k/2] = little_endian;
       }
       
+      file.close();
       
       size = size / 2; // Length in number of samples
       assert(size%2 == 0);
