@@ -41,6 +41,10 @@ public:
   // give always the same output.
   inline sal::Sample Read() const { return *read_index_; }
   
+  sal::Sample Read(const UInt& delay_tap) const;
+  
+  sal::Sample FractionalRead(const Time fractional_delay_tap) const;
+  
   // This causes time to tick by one sample.
   void Tick();
   

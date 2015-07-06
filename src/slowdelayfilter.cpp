@@ -12,6 +12,7 @@
 #include "saltypes.h"
 #include <cassert>
 #include <iostream>
+#include <tgmath.h>
 
 using sal::Sample;
 using sal::UInt;
@@ -60,6 +61,14 @@ SlowDelayFilter& SlowDelayFilter::operator= (const SlowDelayFilter& other) {
   }
   return *this;
 }
+  
+Sample SlowDelayFilter::FractionalRead(const Time fractional_delay_tap) const {
+  sal::Time x_a = floor(fractional_delay_tap);
+  sal::Time x_b = x_a+1.0;
+  Sample f_x_a = Read(x_a);
+  Sample f_x_b = Read(x_b);
+  return (f_x_b-f_x_a)/(x_b-x_a)*(fractional_delay_tap-x_a)+f_x_a;
+}
 
 
 void SlowDelayFilter::set_latency(const UInt latency) {
@@ -72,6 +81,15 @@ void SlowDelayFilter::set_latency(const UInt latency) {
     target_latency_ = latency;
     chasing_latency_index_ = 0;
   }
+}
+  
+Sample SlowDelayFilter::Read(const UInt& delay_tap) const {
+  assert(delay_tap < max_latency_);
+  assert(write_index_>=start_);
+  assert(write_index_<=end_);
+  return (write_index_ - delay_tap >= start_) ?
+  *(write_index_ - delay_tap) :
+  *(write_index_ - delay_tap + max_latency_ + 1);
 }
   
 void SlowDelayFilter::UpdateLatency(const UInt latency) {
