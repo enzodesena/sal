@@ -12,6 +12,7 @@
 #include "firfilter.h"
 #include <vector>
 #include "mcltypes.h"
+#include "maxgradientfilter.h"
 #include "mcl.h"
 
 namespace mcl {
@@ -356,6 +357,25 @@ bool FirFilter::Test() {
                  std::vector<Real>(output_k_cmp.begin()+11,
                                    output_k_cmp.begin()+19)));
   assert(IsEqual(filter_k.Filter(input_k[19]), output_k_cmp[19]));
+  
+  
+  //
+  MaxGradientFilter filter_y(1.0);
+  assert(IsEqual(filter_y.Filter(0.0), 0.0));
+  assert(IsEqual(filter_y.Filter(1.0), 1.0));
+  assert(IsEqual(filter_y.Filter(0.0), 0.0));
+  assert(IsEqual(filter_y.Filter(-1.0), -1.0));
+  assert(IsEqual(filter_y.Filter(-3.0), -2.0));
+  assert(IsEqual(filter_y.Filter(-3.0), -3.0));
+  assert(IsEqual(filter_y.Filter(1.5), -2.0));
+  assert(IsEqual(filter_y.Filter(1.5), -1.0));
+  assert(IsEqual(filter_y.Filter(1.5), 0.0));
+  assert(IsEqual(filter_y.Filter(1.5), 1.0));
+  assert(IsEqual(filter_y.Filter(1.5), 1.5));
+  assert(IsEqual(filter_y.Filter(-1.5), 0.5));
+  assert(IsEqual(filter_y.Filter(-1.5), -0.5));
+  assert(IsEqual(filter_y.Filter(-2.5), -1.5));
+  assert(IsEqual(filter_y.Filter(-2.5), -2.5));
   
   return true;
 }

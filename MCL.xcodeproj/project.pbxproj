@@ -93,6 +93,7 @@
 		571F9A681795AA8B0059A90D /* transformop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = transformop_test.cpp; path = test/transformop_test.cpp; sourceTree = "<group>"; };
 		571F9A691795AA8B0059A90D /* vectorop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vectorop_test.cpp; path = test/vectorop_test.cpp; sourceTree = "<group>"; };
 		572A877E19C070ED00F62F8F /* libMCLiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCLiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		572B38811B4B84AE004C0DFD /* maxgradientfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = maxgradientfilter.h; path = include/maxgradientfilter.h; sourceTree = "<group>"; };
 		573F9FA01662799800929EE2 /* matrixop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop.cpp; path = src/matrixop.cpp; sourceTree = "<group>"; };
 		5778D80915B616260015AAC9 /* digitalfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = digitalfilter.h; path = include/digitalfilter.h; sourceTree = "<group>"; };
 		5778D80A15B616260015AAC9 /* firfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = firfilter.h; path = include/firfilter.h; sourceTree = "<group>"; };
@@ -167,6 +168,7 @@
 				57BA701215B43BC9002F077F /* comparisonop.h */,
 				57EAE5BF18AA80FC001DC4D4 /* dataop.h */,
 				5778D80915B616260015AAC9 /* digitalfilter.h */,
+				572B38811B4B84AE004C0DFD /* maxgradientfilter.h */,
 				57BA700E15B43B07002F077F /* elementaryop.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
 				5778D80B15B616260015AAC9 /* iirfilter.h */,

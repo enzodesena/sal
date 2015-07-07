@@ -23,6 +23,7 @@
 #include "digitalfilter.h"
 #include "iirfilter.h"
 #include "firfilter.h"
+#include "maxgradientfilter.h"
 #include "butter.h"
   
   
