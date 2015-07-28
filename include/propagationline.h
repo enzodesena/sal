@@ -11,7 +11,7 @@
 #ifndef SAL_PROPAGATIONLINE_H
 #define SAL_PROPAGATIONLINE_H
 
-#include "delayfilter.h"
+#include "slowdelayfilter.h"
 #include "delayfilter.h"
 #include "iirfilter.h"
 #include "point.h"
@@ -62,7 +62,7 @@ public:
   
   static bool Test();
 private:
-  DelayFilter delay_filter_;
+  SlowDelayFilter delay_filter_;
   static sal::Time ComputeLatency(const sal::Length,
                                   const sal::Time);
   

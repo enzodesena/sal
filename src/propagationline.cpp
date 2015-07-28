@@ -21,7 +21,7 @@ namespace sal {
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance) :
-        delay_filter_(DelayFilter(round(ComputeLatency(distance, sampling_frequency)),
+        delay_filter_(SlowDelayFilter(round(ComputeLatency(distance, sampling_frequency)),
                                   round(ComputeLatency(max_distance, sampling_frequency)))),
         gain_(ComputeGain(distance, sampling_frequency)),
         sampling_frequency_(sampling_frequency) {} 
