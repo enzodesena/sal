@@ -48,7 +48,7 @@ public:
   
   /** 
    Constructs an IIR filter (II-type direct implementation). B and A are numerator
-   and denominator of the filter, respectively.
+   and denominator of the filter, respectively. HELLO OPTEC!
    */
   IirFilter(std::vector<Real> B,std::vector<Real> A);
   
