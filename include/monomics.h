@@ -104,6 +104,47 @@ public:
 };
   
   
+/**
+ This class describes directivity pattern whose expression is of the type:
+ a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
+ Note that such an expression is axisimmetric.
+ */
+class TanMic : public MonoMic {
+public:
+  TanMic(Point position, Angle theta, Angle phi, Angle psi,
+         sal::Sample base_angle) :
+  MonoMic(position, theta, phi, psi),
+  base_angle_(base_angle) {}
+  
+  virtual bool IsCoincident() { return true; }
+  
+  virtual ~TanMic() {}
+  
+private:
+  Sample GetDirectivity(const Point& point) {
+    Angle theta = point.theta();
+    
+    sal::Angle phi_l = 0;
+    sal::Angle phi_lp1 = base_angle_; //PI/3.0;
+    
+    sal::Sample directivity;
+    if (theta < phi_lp1) {
+      directivity =
+      1.0/sqrt(1+pow(sin(theta-phi_l), 2.0)/pow(sin(phi_lp1-theta), 2.0));
+    } else {
+      directivity = 0.0;
+    }
+    
+    return directivity;
+  }
+  
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+                                       const UInt&) {
+    stream_.Add(sample*GetDirectivity(point));
+  }
+  
+  sal::Sample base_angle_;
+};
 
 
 
