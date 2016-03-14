@@ -19,34 +19,30 @@
 
 namespace mcl {
 
-std::vector<Real> FirFilter::impulse_response() { 
-  return impulse_response_; 
+std::vector<Real> FirFilter::impulse_response() {
+  return std::vector<Real>(impulse_response_.begin(),
+                           impulse_response_.end());
 }
   
-FirFilter::FirFilter() : impulse_response_(mcl::UnaryVector<Real>(1.0)),
+FirFilter::FirFilter() : impulse_response_(mcl::UnaryVector<float>(1.0)),
 counter_(0), length_(1) {
   delay_line_.assign(length_, 0.0);
-  impulse_response_float_ = std::vector<float>(impulse_response_.begin(),
-                                               impulse_response_.end());
 }
   
-FirFilter::FirFilter(std::vector<Real> B) : impulse_response_(B),
+FirFilter::FirFilter(std::vector<Real> B) :
+  impulse_response_(std::vector<float>(B.begin(), B.end())),
         counter_(B.size()-1), length_(B.size()) {
   delay_line_.assign(length_, 0.0);
-    impulse_response_float_ = std::vector<float>(impulse_response_.begin(),
-                                                 impulse_response_.end());
 }
   
 void FirFilter::UpdateFilter(std::vector<Real> B) {
-  impulse_response_ = B;
+  impulse_response_ = std::vector<float>(B.begin(), B.end());
   if (B.size() != length_) {
     // If the impulse response changes length, then reset everything.
     length_ = B.size();
     delay_line_.assign(length_, 0.0);
     counter_ = B.size()-1;
   }
-  impulse_response_float_ = std::vector<float>(impulse_response_.begin(),
-                                               impulse_response_.end());
 }
 
 
@@ -56,7 +52,7 @@ Real FirFilter::Filter(Real input_sample) {
   
 #ifdef OSXIOS
   std::vector<float> result_a(length_-counter_, 0.0);
-  vDSP_vmul(&impulse_response_float_.at(0), 1,
+  vDSP_vmul(&impulse_response_.at(0), 1,
              &delay_line_.at(counter_), 1,
              &result_a.at(0), 1,
              length_-counter_);
@@ -64,7 +60,7 @@ Real FirFilter::Filter(Real input_sample) {
   
   if (counter_ > 0) {
     std::vector<float> result_b(counter_, 0.0);
-    vDSP_vmul(&impulse_response_float_[length_-counter_], 1,
+    vDSP_vmul(&impulse_response_[length_-counter_], 1,
                &delay_line_[0], 1,
                &result_b[0], 1,
                counter_);
@@ -80,14 +76,14 @@ Real FirFilter::Filter(Real input_sample) {
     }
   } else {
     // This is easier for the compiler to vectorise
-    Real result_a = 0;
-    Real result_b = 0;
-    Real result_c = 0;
-    Real result_d = 0;
-    Real result_e = 0;
-    Real result_f = 0;
-    Real result_g = 0;
-    Real result_h = 0;
+    float result_a = 0;
+    float result_b = 0;
+    float result_c = 0;
+    float result_d = 0;
+    float result_e = 0;
+    float result_f = 0;
+    float result_g = 0;
+    float result_h = 0;
     Int i = 0;
     while (i < length_) {
       if (index < (length_-8)) {
@@ -113,7 +109,7 @@ Real FirFilter::Filter(Real input_sample) {
   
   if (--counter_ < 0) { counter_ = length_-1; }
   
-  return result;
+  return (Real) result;
 }
   
 std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
@@ -140,7 +136,7 @@ std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
   assert(conv_input.size() == (input.size()+length_-1));
   
   vDSP_conv(&conv_input[0], 1,
-            &impulse_response_float_[length_-1], -1,
+            &impulse_response_[length_-1], -1,
             &output[0], 1,
             input.size(), length_);
   

@@ -64,8 +64,7 @@ public:
 private:
   std::vector<Real> FilterSequential(const std::vector<Real>& input);
   
-  std::vector<Real> impulse_response_;
-  std::vector<float> impulse_response_float_;
+  std::vector<float> impulse_response_;
   std::vector<float> delay_line_;
   Int counter_;
   Int length_;
