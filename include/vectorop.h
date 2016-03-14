@@ -215,6 +215,24 @@ std::vector<T> AddVectors(const std::vector<std::vector<T> >& vectors) {
   return output;
 }
  
+/**
+ Adds two vectors and zero-pads the shorter one if they have different
+ lengths.
+ */
+template<class T>
+std::vector<T> AddVectors(const std::vector<T>& vector_a,
+                          const std::vector<T>& vector_b) {
+  // Get maximum length
+  UInt max_length(Max(vector_a.size(), vector_b.size()));
+  
+  std::vector<T> output = Zeros<T>(max_length);
+  output = Add(output, ZeroPad(vector_a, max_length));
+  output = Add(output, ZeroPad(vector_b, max_length));
+  
+  return output;
+}
+  
+  
 /** Interleaves two vectors, with the first element of `vector_a` going 
  first.*/
 template<class T>
