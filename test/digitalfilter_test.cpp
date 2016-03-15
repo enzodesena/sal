@@ -222,7 +222,8 @@ bool FirFilter::Test() {
   impulse[1] = 0.0;
   impulse[2] = 0.0;
   
-  FirFilter filter_a(impulse_resp);
+  FirFilter filter_a;
+  filter_a.UpdateFilter(impulse_resp);
   std::vector<Real> output_aa_cmp = filter_a.Filter(impulse);
   assert(IsEqual(output_aa_cmp, impulse_resp));
   
@@ -358,6 +359,15 @@ bool FirFilter::Test() {
                                    output_k_cmp.begin()+19)));
   assert(IsEqual(filter_k.Filter(input_k[19]), output_k_cmp[19]));
   
+  
+  // Testing slow ipdate of filter
+  FirFilter filter_t(mcl::UnaryVector<Real>(1.0), 2);
+  assert(IsEqual(filter_t.Filter(0.76), 0.76));
+  assert(IsEqual(filter_t.Filter(1.0), 1.0));
+  filter_t.UpdateFilter(mcl::UnaryVector<Real>(0.3));
+  assert(IsEqual(filter_t.Filter(1.0), 0.5*1.0+0.5*0.3));
+  assert(IsEqual(filter_t.Filter(1.0), 0.3));
+
   
   //
   MaxGradientFilter filter_y(1.0);
