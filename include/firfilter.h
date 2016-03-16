@@ -24,7 +24,7 @@ public:
   FirFilter();
   
   /** Constructs an FIR filter with impulse response B. */
-  FirFilter(std::vector<Real> B, Int update_length = 1);
+  FirFilter(std::vector<Real> B);
   
   /** 
    Returns the output of the filter for an input equal to `input`.
@@ -43,7 +43,7 @@ public:
    updated too rapidly. If the `impulse_response` changes length than the
    filter is resetted to zero state.
    */
-  void UpdateFilter(std::vector<Real> impulse_response);
+  void UpdateFilter(std::vector<Real> impulse_response, Int update_length = 1);
   
   /** Resets the state of the filter */
   void Reset();

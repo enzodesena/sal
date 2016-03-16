@@ -31,11 +31,11 @@ FirFilter::FirFilter() :
   delay_line_.assign(length_, 0.0);
 }
   
-FirFilter::FirFilter(std::vector<Real> B, Int update_length) :
+FirFilter::FirFilter(std::vector<Real> B) :
         impulse_response_(std::vector<float>(B.begin(), B.end())),
         coefficients_(std::vector<float>(B.begin(), B.end())),
         counter_(B.size()-1), length_(B.size()),
-        update_index_(0), update_length_(update_length) {
+        update_index_(0), update_length_(1) {
   delay_line_.assign(length_, 0.0);
 }
   
@@ -165,10 +165,12 @@ void FirFilter::Reset() {
   delay_line_ = Zeros<float>(delay_line_.size());
 }
   
-void FirFilter::UpdateFilter(std::vector<Real> B) {
-  impulse_response_old_ = mcl::ZeroPad(impulse_response_, B.size());
+void FirFilter::UpdateFilter(std::vector<Real> B, Int update_length) {
+  update_length_ = update_length;
+  impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_, B.size());
   impulse_response_ = std::vector<float>(B.begin(), B.end());
   update_index_ = update_length_;
+  
   if (B.size() != length_) {
     // If the impulse response changes length, then reset everything.
     length_ = B.size();

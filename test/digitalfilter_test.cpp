@@ -361,10 +361,10 @@ bool FirFilter::Test() {
   
   
   // Testing slow ipdate of filter
-  FirFilter filter_t(mcl::UnaryVector<Real>(1.0), 2);
+  FirFilter filter_t(mcl::UnaryVector<Real>(1.0));
   assert(IsEqual(filter_t.Filter(0.76), 0.76));
   assert(IsEqual(filter_t.Filter(1.0), 1.0));
-  filter_t.UpdateFilter(mcl::UnaryVector<Real>(0.3));
+  filter_t.UpdateFilter(mcl::UnaryVector<Real>(0.3), 2);
   assert(IsEqual(filter_t.Filter(1.0), 0.5*1.0+0.5*0.3));
   assert(IsEqual(filter_t.Filter(1.0), 0.3));
 
