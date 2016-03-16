@@ -89,15 +89,15 @@ void BinauralMicInstance::UpdateFilter(const Point& point) {
     // Update cache variables
     previous_point_ = point;
     
-    filter_.UpdateFilter(base_mic_->GetBrir(ear_, point));
+    filter_.UpdateFilter(base_mic_->GetBrir(ear_, point), 10);
   }
 }
 
 DatabaseBinauralMic::DatabaseBinauralMic(Point position,
-                                       Angle theta,
-                                       Angle phi,
-                                       Angle psi) :
-BinauralMic(position, theta, phi, psi) {}
+                                         Angle theta,
+                                         Angle phi,
+                                         Angle psi) :
+          BinauralMic(position, theta, phi, psi) {}
   
   
 void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {
