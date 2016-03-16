@@ -39,9 +39,11 @@ public:
   virtual std::vector<Real> Filter(const std::vector<Real>& input);
   
   /** 
-   Updates the filter coefficients. May cause articafts if the coefficients are
-   updated too rapidly. If the `impulse_response` changes length than the
-   filter is resetted to zero state.
+   Updates the filter coefficients. You can set how long it takes to 
+   update the coefficients (using linear interpolation between old and new
+   impulse response), and whether to jump an update if another update
+   was previously in progress (to avoid artifacts, but risking leaving
+   the filter in an old state).
    */
   void UpdateFilter(std::vector<Real> impulse_response, Int update_length = 1);
   
