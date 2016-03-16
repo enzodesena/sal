@@ -165,11 +165,16 @@ void FirFilter::Reset() {
   delay_line_ = Zeros<float>(delay_line_.size());
 }
   
-void FirFilter::UpdateFilter(std::vector<Real> B, Int update_length) {
+void FirFilter::UpdateFilter(std::vector<Real> B,
+                             Int update_length) {
+  if (update_index_ == 0) { // If there is no update being carried out
+    impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_, B.size());
+  } else {
+    impulse_response_old_ = mcl::ZeroPad<float>(coefficients_, B.size());
+  }
   update_length_ = update_length;
-  impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_, B.size());
-  impulse_response_ = std::vector<float>(B.begin(), B.end());
   update_index_ = update_length_;
+  impulse_response_ = std::vector<float>(B.begin(), B.end());
   
   if (B.size() != length_) {
     // If the impulse response changes length, then reset everything.
