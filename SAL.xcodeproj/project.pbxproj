@@ -793,7 +793,7 @@
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\" /usr/local/include/";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\" /usr/local/include/ \"$(SRCROOT)/include/lib\"";
 			};
 			name = Debug;
 		};
@@ -820,7 +820,7 @@
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\" /usr/local/include/";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\" /usr/local/include/ \"$(SRCROOT)/include/lib\"";
 			};
 			name = Release;
 		};

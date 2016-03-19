@@ -20,9 +20,9 @@
 
 namespace sal {
 
-  // This is like a DelayFilter, but when a change in latency of more than one
-  // sample is requested it doesn't update it immediately, but spreads the
-  // change overtime so as to avoid audio artefacts.
+// This is like a DelayFilter, but when a change in latency of more than one
+// sample is requested it doesn't update it immediately, but spreads the
+// change over time so as to avoid audible artefacts.
 class SlowDelayFilter {
   
 public:
@@ -48,7 +48,7 @@ public:
   // This causes time to tick by one sample.
   void Tick();
   
-  void set_latency(const sal::UInt);
+  void set_latency(const sal::UInt, const sal::UInt update_step = 1);
   
   sal::UInt latency() const { return latency_; }
   
@@ -72,6 +72,7 @@ private:
   void UpdateLatency(const sal::UInt latency);
   
   // This is the latency that has been set but not yet achieved
+  sal::UInt update_step_;
   sal::UInt target_latency_;
   sal::UInt chasing_latency_index_;
 };

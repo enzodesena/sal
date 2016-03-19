@@ -69,19 +69,6 @@ Sample SlowDelayFilter::FractionalRead(const Time fractional_delay_tap) const {
   Sample f_x_b = Read(x_b);
   return (f_x_b-f_x_a)/(x_b-x_a)*(fractional_delay_tap-x_a)+f_x_a;
 }
-
-
-void SlowDelayFilter::set_latency(const UInt latency) {
-  using sal::Int;
-  if (abs(((int) latency)-((int)latency_)) <= MAX_LATENCY_JUMP) {
-    UpdateLatency(latency);
-    target_latency_ = latency;
-    chasing_latency_index_ = 0;
-  } else {
-    target_latency_ = latency;
-    chasing_latency_index_ = 0;
-  }
-}
   
 Sample SlowDelayFilter::Read(const UInt& delay_tap) const {
   assert(delay_tap < max_latency_);
@@ -90,6 +77,13 @@ Sample SlowDelayFilter::Read(const UInt& delay_tap) const {
   return (write_index_ - delay_tap >= start_) ?
   *(write_index_ - delay_tap) :
   *(write_index_ - delay_tap + max_latency_ + 1);
+}
+
+void SlowDelayFilter::set_latency(const UInt latency,
+                                  const UInt update_step) {
+  update_step_ = update_step;
+  target_latency_ = latency;
+  chasing_latency_index_ = 0;
 }
   
 void SlowDelayFilter::UpdateLatency(const UInt latency) {
@@ -109,7 +103,7 @@ void SlowDelayFilter::Tick() {
   using sal::UInt;
   
   if (target_latency_ != latency_) {
-    if (++chasing_latency_index_ >= UPDATE_STEP) {
+    if (++chasing_latency_index_ >= update_step_) {
       const Int latency_step =
       ((((Int) target_latency_)-((Int) latency_)) > 0) ? 1 : -1;
       const Int new_latency = ((Int) latency_) + latency_step;
@@ -117,7 +111,6 @@ void SlowDelayFilter::Tick() {
       UpdateLatency((UInt) new_latency);
       chasing_latency_index_ = 0;
     }
-    
   }
   
   write_index_ = (write_index_ != end_) ? (write_index_+1) : start_;
