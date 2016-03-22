@@ -30,7 +30,9 @@ public:
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  BinauralMic(Point position, Angle theta, Angle phi, Angle psi);
+  BinauralMic(const Point& position,
+              const Angle theta, const Angle phi, const Angle psi,
+              const UInt update_length = 1);
   
   virtual void Tick();
   
@@ -61,6 +63,8 @@ private:
   std::map<UInt, BinauralMicInstance> instances_left_;
   std::map<UInt, BinauralMicInstance> instances_right_;
   
+  /** How long it takes to update the underlying HRTF filter */
+  UInt update_length_;
   
   friend class BinauralMicInstance;
 };
@@ -71,12 +75,12 @@ private:
   
 class BinauralMicInstance {
 private:
-  BinauralMicInstance(BinauralMic* base_mic, Ear ear) :
+  BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::UInt update_length) :
   base_mic_(base_mic),
   filter_(mcl::FirFilter::GainFilter(1.0)),
   ear_(ear),
-  previous_point_(Point(NAN, NAN, NAN)) {}
-  
+  previous_point_(Point(NAN, NAN, NAN)),
+  update_length_(update_length) {}
   
   Sample RecordPlaneWaveRelative(const Sample& sample, const Point& point);
   
@@ -97,6 +101,8 @@ private:
   Ear ear_;
   
   BinauralMic* base_mic_;
+  
+  sal::UInt update_length_;
   
   friend class BinauralMic;
 };

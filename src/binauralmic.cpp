@@ -42,9 +42,11 @@ void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) {
   // If there is no instance associated to the given wave_id then create
   if (instances_left_.count(wave_id) == 0) {
     instances_left_.insert(std::make_pair(wave_id,
-                                          BinauralMicInstance(this, left_ear)));
+                                          BinauralMicInstance(this, left_ear,
+                                                              update_length_)));
     instances_right_.insert(std::make_pair(wave_id,
-                                           BinauralMicInstance(this, right_ear)));
+                                           BinauralMicInstance(this, right_ear,
+                                                               update_length_)));
   }
 }
   
@@ -66,8 +68,10 @@ void BinauralMic::Reset() {
   }
 }
 
-BinauralMic::BinauralMic(Point position, Angle theta, Angle phi, Angle psi) :
-  StereoMicrophone(position, theta, phi, psi) {}
+BinauralMic::BinauralMic(const Point& position,
+                         const Angle theta, const Angle phi, const Angle psi,
+                         const UInt update_length) :
+  StereoMicrophone(position, theta, phi, psi), update_length_(update_length) {}
 
 
 
@@ -89,7 +93,7 @@ void BinauralMicInstance::UpdateFilter(const Point& point) {
     // Update cache variables
     previous_point_ = point;
     
-    filter_.UpdateFilter(base_mic_->GetBrir(ear_, point), 10);
+    filter_.UpdateFilter(base_mic_->GetBrir(ear_, point), update_length_);
   }
 }
 
