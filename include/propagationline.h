@@ -11,10 +11,11 @@
 #ifndef SAL_PROPAGATIONLINE_H
 #define SAL_PROPAGATIONLINE_H
 
-#include "slowdelayfilter.h"
+#include "delayfilter.h"
 #include "delayfilter.h"
 #include "iirfilter.h"
 #include "point.h"
+#include "firfilter.h"
 
 namespace sal {
 /** This describes a simple propagation line. It has one input and one output
@@ -31,7 +32,10 @@ public:
    */
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
-                  const sal::Length max_distance = 100);
+                  const sal::Length max_distance = 100,
+                  const sal::Length update_step = 100,
+                  const bool air_filters_active = false,
+                  const UInt air_filters_update_step = 1);
   
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
@@ -39,15 +43,15 @@ public:
   /** This overwrites the 1/r rule attenuation. */
   void set_gain(const sal::Sample);
   
-  inline void Write(const sal::Sample &sample) {
-    delay_filter_.Write(sample);
-  }
+  void set_air_filters_active(const bool);
+  
+  void Write(const sal::Sample &sample);
   
   /** Returns the current read sample */
-  inline sal::Sample Read() const { return delay_filter_.Read() * gain_; }
+  inline sal::Sample Read() const { return delay_filter_.Read(); }
   
   /** Ticks time to next sample */
-  inline void Tick() { delay_filter_.Tick(); }
+  void Tick();
   
   /**
    This resets the propagation line's length. It updates also the attenuation
@@ -57,19 +61,36 @@ public:
    */
   void set_distance(const sal::Length distance);
   
+  void set_update_step(const sal::Length update_step);
+  
   /** Returns the latency of the propagation line */
   sal::Time latency() const;
   
+  /** Resets the state of the filter */
+  void Reset();
+  
   static bool Test();
 private:
-  SlowDelayFilter delay_filter_;
+  DelayFilter delay_filter_;
   static sal::Time ComputeLatency(const sal::Length,
                                   const sal::Time);
   
   static sal::Sample ComputeGain(const sal::Length,
                                  const sal::Time);
+  
+  static std::vector<sal::Sample> GetAirFilter(sal::Length distance);
+  
   sal::Sample gain_;
   sal::Time sampling_frequency_;
+  
+  bool updating_distance_;
+  sal::Length update_step_;
+  sal::Length target_distance_;
+  sal::Length current_distance_;
+  
+  bool air_filters_active_;
+  mcl::FirFilter air_filter_;
+  sal::UInt air_filters_update_step_;
 };
 
 } // namespace sal

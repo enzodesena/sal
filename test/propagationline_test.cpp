@@ -40,37 +40,54 @@ bool PropagationLine::Test() {
   
   assert(IsEqual(latency, 3.0));
   
-  PropagationLine propLine = PropagationLine(distance, FS);
+  PropagationLine prop_line_a = PropagationLine(distance, FS);
   
   
   
-  propLine.Write(1.0);
-  assert(IsEqual(propLine.Read(),0.0));
+  prop_line_a.Write(1.0);
+  assert(IsEqual(prop_line_a.Read(),0.0));
   
-  propLine.Tick();
-  propLine.Write(2.0);
-  assert(IsEqual(propLine.Read(),0.0));
+  prop_line_a.Tick();
+  prop_line_a.Write(2.0);
+  assert(IsEqual(prop_line_a.Read(),0.0));
   
-  propLine.Tick();
-  propLine.Write(3.0);
-  assert(IsEqual(propLine.Read(),0.0));
+  prop_line_a.Tick();
+  prop_line_a.Write(3.0);
+  assert(IsEqual(prop_line_a.Read(),0.0));
   
-  propLine.Tick();
-  propLine.Write(-1.0);
-  assert(IsEqual(propLine.Read(),1.0*attenuation));
+  prop_line_a.Tick();
+  prop_line_a.Write(-1.0);
+  assert(IsEqual(prop_line_a.Read(),1.0*attenuation));
   
-  propLine.Tick();
-  propLine.Write(-1.0);
-  assert(IsEqual(propLine.Read(),2.0*attenuation));
+  prop_line_a.Tick();
+  prop_line_a.Write(-1.0);
+  assert(IsEqual(prop_line_a.Read(),2.0*attenuation));
   
-  propLine.Tick();
-  propLine.Write(-1.0);
-  assert(IsEqual(propLine.Read(),3.0*attenuation));
+  prop_line_a.Tick();
+  prop_line_a.Write(-1.0);
+  assert(IsEqual(prop_line_a.Read(),3.0*attenuation));
   
-  propLine.Tick();
-  propLine.Write(-1.0);
-  assert(IsEqual(propLine.Read(),-1.0*attenuation));
+  prop_line_a.Tick();
+  prop_line_a.Write(-1.0);
+  assert(IsEqual(prop_line_a.Read(),-1.0*attenuation));
 
+  //
+  prop_line_a.Reset();
+  prop_line_a.set_distance((Length) 2.0 * SOUND_SPEED/FS);
+  attenuation = 1.0 / 2.0;
+  
+  prop_line_a.Tick();
+  prop_line_a.Write(1.0);
+  assert(IsEqual(prop_line_a.Read(),0.0));
+  
+  prop_line_a.Tick();
+  prop_line_a.Write(2.0);
+  assert(IsEqual(prop_line_a.Read(),0.0));
+  
+  prop_line_a.Tick();
+  prop_line_a.Write(3.0);
+  assert(IsEqual(prop_line_a.Read(),1.0*attenuation));
+  
   return true;
 }
 
