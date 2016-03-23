@@ -34,6 +34,8 @@ public:
               const Angle theta, const Angle phi, const Angle psi,
               const UInt update_length = 1);
   
+  void set_update_length(UInt update_length) { update_length_ = update_length; }
+  
   virtual void Tick();
   
   virtual void Reset();

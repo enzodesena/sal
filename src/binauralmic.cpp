@@ -93,7 +93,8 @@ void BinauralMicInstance::UpdateFilter(const Point& point) {
     // Update cache variables
     previous_point_ = point;
     
-    filter_.UpdateFilter(base_mic_->GetBrir(ear_, point), update_length_);
+    filter_.set_impulse_response(base_mic_->GetBrir(ear_, point),
+                                 update_length_);
   }
 }
 

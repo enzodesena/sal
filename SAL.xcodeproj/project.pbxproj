@@ -639,7 +639,6 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
-					"-DNDEBUG",
 					"-IOSARM",
 				);
 				PRODUCT_NAME = SALiOS;
@@ -674,7 +673,6 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
-					"-DNDEBUG",
 					"-IOSARM",
 				);
 				PRODUCT_NAME = SALiOS;
