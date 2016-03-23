@@ -45,7 +45,8 @@ public:
    was previously in progress (to avoid artifacts, but risking leaving
    the filter in an old state).
    */
-  void UpdateFilter(std::vector<Real> impulse_response, Int update_length = 1);
+  void set_impulse_response(const std::vector<Real>& impulse_response,
+                            const Int update_length = 1);
   
   /** Resets the state of the filter */
   void Reset();

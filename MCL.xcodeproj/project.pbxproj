@@ -483,7 +483,6 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
-					"-DNDEBUG",
 					"-DOSXIOS",
 				);
 				PRODUCT_NAME = MCLiOS;
@@ -521,7 +520,6 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
-					"-DNDEBUG",
 					"-DOSXIOS",
 				);
 				PRODUCT_NAME = MCLiOS;

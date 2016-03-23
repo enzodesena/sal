@@ -28,7 +28,7 @@ FirFilter::FirFilter() :
         impulse_response_(mcl::UnaryVector<float>(1.0)),
         coefficients_(mcl::UnaryVector<float>(1.0)),
         counter_(0), length_(1), update_index_(0), update_length_(1) {
-  delay_line_.assign(length_, 0.0);
+  delay_line_.assign(1, 0.0);
 }
   
 FirFilter::FirFilter(std::vector<Real> B) :
@@ -45,23 +45,23 @@ Real FirFilter::Filter(Real input_sample) {
   delay_line_[counter_] = input_sample;
   float result = 0.0;
   
-#ifdef OSXIOS
-  std::vector<float> result_a(length_-counter_, 0.0);
-  vDSP_vmul(&coefficients_.at(0), 1,
-             &delay_line_.at(counter_), 1,
-             &result_a.at(0), 1,
-             length_-counter_);
-  for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
-  
-  if (counter_ > 0) {
-    std::vector<float> result_b(counter_, 0.0);
-    vDSP_vmul(&coefficients_[length_-counter_], 1,
-               &delay_line_[0], 1,
-               &result_b[0], 1,
-               counter_);
-    for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
-  }
-#else
+//#ifdef OSXIOS
+//  std::vector<float> result_a(length_-counter_, 0.0);
+//  vDSP_vmul(&coefficients_.at(0), 1,
+//             &delay_line_.at(counter_), 1,
+//             &result_a.at(0), 1,
+//             length_-counter_);
+//  for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
+//  
+//  if (counter_ > 0) {
+//    std::vector<float> result_b(counter_, 0.0);
+//    vDSP_vmul(&coefficients_[length_-counter_], 1,
+//               &delay_line_[0], 1,
+//               &result_b[0], 1,
+//               counter_);
+//    for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
+//  }
+//#else
   Int index = (Int) counter_;
   
   if (length_%8 != 0) { //
@@ -100,7 +100,7 @@ Real FirFilter::Filter(Real input_sample) {
     result += result_a + result_b + result_c + result_d + result_e + result_f +
     result_g + result_h;
   }
-#endif
+//#endif
   
   if (--counter_ < 0) { counter_ = length_-1; }
   
@@ -165,23 +165,28 @@ void FirFilter::Reset() {
   delay_line_ = Zeros<float>(delay_line_.size());
 }
   
-void FirFilter::UpdateFilter(std::vector<Real> B,
-                             Int update_length) {
+void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
+                                     const Int update_length) {
   if (update_index_ == 0) { // If there is no update being carried out
-    impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_, B.size());
+    impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_,
+                                                impulse_response.size());
   } else {
-    impulse_response_old_ = mcl::ZeroPad<float>(coefficients_, B.size());
+    impulse_response_old_ = mcl::ZeroPad<float>(coefficients_,
+                                                impulse_response.size());
   }
-  update_length_ = update_length;
-  update_index_ = update_length_;
-  impulse_response_ = std::vector<float>(B.begin(), B.end());
   
-  if (B.size() != length_) {
+  update_length_ = update_length;
+  update_index_ = update_length;
+  impulse_response_ = std::vector<float>(impulse_response.begin(),
+                                         impulse_response.end());
+  
+  if (impulse_response.size() != length_) {
     // If the impulse response changes length, then reset everything.
-    length_ = B.size();
+    length_ = impulse_response.size();
     delay_line_.assign(length_, 0.0);
-    counter_ = B.size()-1;
+    counter_ = impulse_response.size()-1;
   }
+  assert(impulse_response_.size() == impulse_response_old_.size());
 }
 
 void FirFilter::UpdateCoefficients() {
