@@ -41,7 +41,8 @@ FirFilter::FirFilter(std::vector<Real> B) :
   
 
 Real FirFilter::Filter(Real input_sample) {
-  UpdateCoefficients();
+  if (update_index_ > 0) { UpdateCoefficients(); }
+  
   delay_line_[counter_] = input_sample;
   float result = 0.0;
   
@@ -108,7 +109,7 @@ Real FirFilter::Filter(Real input_sample) {
 }
   
 std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
-  UpdateCoefficients();
+  if (update_index_ > 0) { UpdateCoefficients(); }
 #ifdef OSXIOS
   if (input.size() < length_) { return FilterSequential(input); }
   
@@ -167,6 +168,8 @@ void FirFilter::Reset() {
   
 void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
                                      const Int update_length) {
+  if (mcl::IsEqual(impulse_response, impulse_response_)) { return; }
+  
   if (update_index_ == 0) { // If there is no update being carried out
     impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_,
                                                 impulse_response.size());
@@ -190,15 +193,14 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
 }
 
 void FirFilter::UpdateCoefficients() {
-  if (update_index_ > 0) {
-    assert(impulse_response_.size() == impulse_response_old_.size());
-    float weight_old = ((float)(update_index_-1))/
-                        (float)update_length_;
-    float weight_new = 1.0-weight_old;
-    coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
-                             mcl::Multiply(impulse_response_old_, weight_old));
-    update_index_--;
-  }
+  assert(update_index_>0);
+  assert(impulse_response_.size() == impulse_response_old_.size());
+  float weight_old = ((float)(update_index_-1))/
+                      (float)update_length_;
+  float weight_new = 1.0-weight_old;
+  coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
+                           mcl::Multiply(impulse_response_old_, weight_old));
+  update_index_--;
 }
   
 } // namespace mcl
