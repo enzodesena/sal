@@ -98,11 +98,12 @@ void BinauralMicInstance::UpdateFilter(const Point& point) {
   }
 }
 
-DatabaseBinauralMic::DatabaseBinauralMic(Point position,
-                                         Angle theta,
-                                         Angle phi,
-                                         Angle psi) :
-          BinauralMic(position, theta, phi, psi) {}
+DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
+                                         const Angle theta,
+                                         const Angle phi,
+                                         const Angle psi,
+                                         const UInt update_length) :
+          BinauralMic(position, theta, phi, psi, update_length) {}
   
   
 void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {

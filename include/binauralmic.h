@@ -32,7 +32,7 @@ public:
    */
   BinauralMic(const Point& position,
               const Angle theta, const Angle phi, const Angle psi,
-              const UInt update_length = 1);
+              const UInt update_length);
   
   void set_update_length(UInt update_length) { update_length_ = update_length; }
   
@@ -114,7 +114,9 @@ private:
   
 class DatabaseBinauralMic : public BinauralMic {
 public:
-  DatabaseBinauralMic(Point position, Angle theta, Angle phi, Angle psi);
+  DatabaseBinauralMic(const Point& position,
+                      const Angle theta, const Angle phi, const Angle psi,
+                      const UInt update_length);
   
   /**
    Filters all responses by `filter`. Useful for instance for including

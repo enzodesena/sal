@@ -51,8 +51,9 @@ namespace sal {
 
 
 CipicMic::CipicMic(Point position, Angle theta, Angle phi, Angle psi,
-                   const std::string directory, const CipicDataType data_type) :
-        DatabaseBinauralMic(position, theta, phi, psi) {
+                   const std::string directory, const CipicDataType data_type,
+                   const UInt update_length) :
+        DatabaseBinauralMic(position, theta, phi, psi, update_length) {
   
   azimuths_ = std::vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
     -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,

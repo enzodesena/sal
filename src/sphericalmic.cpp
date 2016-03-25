@@ -20,8 +20,9 @@ SphericalHeadMic::SphericalHeadMic(const Point position,
                                    const Angle ears_angle,
                                    const Length sphere_radius,
                                    const UInt ir_length,
-                                   const Time sampling_frequency) :
-          BinauralMic(position, theta, phi, psi),
+                                   const Time sampling_frequency,
+                                   const UInt update_length) :
+          BinauralMic(position, theta, phi, psi, update_length),
           ears_angle_(ears_angle), sphere_radius_(sphere_radius),
           sampling_frequency_(sampling_frequency),
           impulse_response_length_(ir_length),

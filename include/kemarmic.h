@@ -34,8 +34,10 @@ public:
    With `num_samples` you can choose the length of the 
    BRIR. If set to zero yields the entire BRIR.
    */
-  KemarMic(Point position, Angle theta, Angle phi, Angle psi,
-           const std::string directory, const UInt num_samples = 0);
+  KemarMic(const Point& position,
+           const Angle theta, const Angle phi, const Angle psi,
+           const std::string directory, const UInt num_samples = 0,
+           const UInt update_length = 1);
   
   static bool Test();
   

@@ -31,7 +31,8 @@ public:
                    const Angle ears_angle,
                    const Length sphere_radius,
                    const UInt ir_length,
-                   const Time sampling_frequency);
+                   const Time sampling_frequency,
+                   const UInt update_length = 1);
   
   static bool Test();
   

@@ -17,10 +17,12 @@
 namespace sal {
 
   
-KemarMic::KemarMic(Point position, Angle theta, Angle phi, Angle psi,
+KemarMic::KemarMic(const Point& position,
+                   const Angle theta, const Angle phi, const Angle psi,
                    const std::string directory,
-                   const UInt num_samples) :
-          DatabaseBinauralMic(position, theta, phi, psi) {
+                   const UInt num_samples,
+                   const UInt update_length) :
+          DatabaseBinauralMic(position, theta, phi, psi, update_length) {
             
   num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};

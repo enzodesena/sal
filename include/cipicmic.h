@@ -40,7 +40,8 @@ public:
    `directory` contains the hrtf database.
    */
   CipicMic(Point position, Angle theta, Angle phi, Angle psi,
-           const std::string directory, const CipicDataType data_type);
+           const std::string directory, const CipicDataType data_type,
+           const UInt update_length = 1);
   
   static bool Test();
   
