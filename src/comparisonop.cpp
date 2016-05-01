@@ -31,7 +31,43 @@ bool IsEqual(Real num_a, Real num_b, Real precision) {
   return ((Real) fabs(((double) num_a) - ((double) num_b))) < precision;
 }
   
-
+bool IsNan(Real num) {
+  return isnan(num);
+}
+  
+std::vector<bool> IsNan(std::vector<Real> input) {
+  std::vector<bool> output;
+  for (UInt i=0; i<input.size(); ++i) {
+    output.push_back(IsNan(input[i]));
+  }
+  return output;
+}
+  
+std::vector<bool> Not(std::vector<bool> input) {
+  std::vector<bool> output;
+  for (UInt i=0; i<input.size(); ++i) {
+    output.push_back(!input[i]);
+  }
+  return output;
+}
+  
+bool All(std::vector<bool> input) {
+  for (UInt i=0; i<input.size(); ++i) {
+    if (input[i] == false) {
+      return false;
+    }
+  }
+  return true;
+}
+  
+bool Any(std::vector<bool> input) {
+  for (UInt i=0; i<input.size(); ++i) {
+    if (input[i] == true) {
+      return true;
+    }
+  }
+  return false;
+}
 
 bool IsSmallerOrEqual(const Real num_a, const Real num_b) {
   return num_a <= (num_b + VERY_SMALL);

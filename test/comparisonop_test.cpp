@@ -41,6 +41,36 @@ bool ComparisonOpTest() {
   
   assert(! AreAllSmallerOrEqual(vector_c, vector_a));
   
+  
+  
+  /* Returns true if num is nan */
+  assert(IsNan(NAN));
+  assert(!IsNan(1.0));
+  assert(!IsNan(-1.0));
+  
+  /* Returns true if num is nan */
+  std::vector<Real> input;
+  input.push_back(1.0);
+  input.push_back(NAN);
+  std::vector<bool> output_a = IsNan(input);
+  assert(!output_a[0]);
+  assert(output_a[1]);
+  
+  /* Returns opposite bool as input */
+  std::vector<bool> output_b = Not(output_a);
+  assert(output_b[0]);
+  assert(!output_b[1]);
+  
+  /* Returns true if all bools are true */
+  assert(!All(output_b));
+  assert(Any(output_b));
+  output_b[1] = true;
+  assert(All(output_b));
+  assert(Any(output_b));
+  assert(!Any(Not(output_b)));
+  
+  
+  
   return true;
 }
 

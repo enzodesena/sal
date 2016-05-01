@@ -49,6 +49,22 @@ bool IsEqual(const std::vector<Int>& vector_a,
              const std::vector<Int>& vector_b);
   
   
+/** Returns true if num is nan */
+bool IsNan(Real num);
+
+/** Returns true if num is nan */
+std::vector<bool> IsNan(std::vector<Real> input);
+
+/** Returns opposite bool as input */
+std::vector<bool> Not(std::vector<bool> input);
+  
+/** Returns true if all bools are true */
+bool All(std::vector<bool> input);
+
+/** Returns true if any one of the bools is true */
+bool Any(std::vector<bool> input);
+  
+  
   
 bool ComparisonOpTest();
   
