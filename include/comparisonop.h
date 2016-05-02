@@ -64,7 +64,8 @@ bool All(std::vector<bool> input);
 /** Returns true if any one of the bools is true */
 bool Any(std::vector<bool> input);
   
-  
+/** Opposite of All: returns true if none of the inputs are true */
+bool None(std::vector<bool> input);
   
 bool ComparisonOpTest();
   

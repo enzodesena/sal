@@ -60,6 +60,10 @@ bool All(std::vector<bool> input) {
   return true;
 }
   
+bool None(std::vector<bool> input) {
+  return All(Not(input));
+}
+  
 bool Any(std::vector<bool> input) {
   for (UInt i=0; i<input.size(); ++i) {
     if (input[i] == true) {

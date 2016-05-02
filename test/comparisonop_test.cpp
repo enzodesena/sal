@@ -69,6 +69,17 @@ bool ComparisonOpTest() {
   assert(Any(output_b));
   assert(!Any(Not(output_b)));
   
+  std::vector<bool> output_c;
+  output_c.push_back(false);
+  output_c.push_back(false);
+  output_c.push_back(false);
+  assert(None(output_c));
+  
+  output_c[0] = true;
+  assert(!None(output_c));
+  output_c[1] = true;
+  output_c[2] = true;
+  assert(!None(output_c));
   
   
   return true;
