@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5704D1411CD7BC1C00ACA678 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5704D13C1CD7BBEE00ACA678 /* libMCL.a */; };
 		571C2D961CA0B71000EE4AC7 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C01C95AA9900149808 /* libportaudio.a */; };
 		571C2D981CA0B71200EE4AC7 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72D11C95ADC800149808 /* libsndfile.a */; };
 		572052121624896A00E32B53 /* psrmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5720520F1624896A00E32B53 /* psrmic.cpp */; };
@@ -35,7 +36,6 @@
 		572A878B19C0712500F62F8F /* psrmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5720520F1624896A00E32B53 /* psrmic.cpp */; };
 		572A878D19C0712500F62F8F /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
-		572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572A879C19C0712500F62F8F /* libMCLiOS.a */; };
 		572C3BEB1B35F9CF0071BB39 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */; };
 		573FAAE91B1DE385003F128F /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573FAAE81B1DE385003F128F /* cipicmic_test.cpp */; };
 		57444D261B17671E00EC31F4 /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
@@ -76,49 +76,33 @@
 		57E74B5516274A2900C8BDDB /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
 		57E74B5E16274A3800C8BDDB /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E61593462F00AA6445 /* sal_tests.cpp */; };
 		57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
-		57FE7B4617B41B7E000F7343 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE7B4317B41B6B000F7343 /* libMCL.a */; };
-		57FE7B4917B41B85000F7343 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE7B4317B41B6B000F7343 /* libMCL.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		572A879B19C0712500F62F8F /* PBXContainerItemProxy */ = {
+		5704D1391CD7BBEE00ACA678 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 572A877E19C070ED00F62F8F;
-			remoteInfo = MCLiOS;
-		};
-		572A879D19C0713F00F62F8F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 572A876719C070ED00F62F8F;
-			remoteInfo = MCLiOS;
-		};
-		57FE7B4017B41B6B000F7343 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
+			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AA1593501200AA6445;
 			remoteInfo = MCL_test;
 		};
-		57FE7B4217B41B6B000F7343 /* PBXContainerItemProxy */ = {
+		5704D13B1CD7BBEE00ACA678 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
+			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AC1593501200AA6445;
 			remoteInfo = MCL;
 		};
-		57FE7B4417B41B79000F7343 /* PBXContainerItemProxy */ = {
+		5704D13D1CD7BBEE00ACA678 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57A157151593475000AA6445;
-			remoteInfo = MCL;
+			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 572A877E19C070ED00F62F8F;
+			remoteInfo = MCLiOS;
 		};
-		57FE7B4717B41B82000F7343 /* PBXContainerItemProxy */ = {
+		5704D13F1CD7BC0400ACA678 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
+			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 57A157151593475000AA6445;
 			remoteInfo = MCL;
@@ -138,6 +122,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = lib/mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 		57061AD815B6D6CE000CD42D /* array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = array.h; path = include/array.h; sourceTree = "<group>"; };
 		5713F76E15F38C4800AF1DE2 /* salconstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = salconstants.h; path = include/salconstants.h; sourceTree = "<group>"; };
 		5719A9AD15B57CCC000AD692 /* saltypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = saltypes.h; path = include/saltypes.h; sourceTree = "<group>"; };
@@ -199,7 +184,6 @@
 		57CE72D11C95ADC800149808 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = lib/libsndfile.a; sourceTree = "<group>"; };
 		57F7B3BF15D3DE7000D4E64A /* ambisonics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ambisonics.h; path = include/ambisonics.h; sourceTree = "<group>"; };
 		57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics.cpp; path = src/ambisonics.cpp; sourceTree = "<group>"; };
-		57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = ../mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,7 +191,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				572A879F19C0714500F62F8F /* libMCLiOS.a in Frameworks */,
 				571C2D961CA0B71000EE4AC7 /* libportaudio.a in Frameworks */,
 				571C2D981CA0B71200EE4AC7 /* libsndfile.a in Frameworks */,
 			);
@@ -217,12 +200,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5704D1411CD7BC1C00ACA678 /* libMCL.a in Frameworks */,
 				57CE72D01C95AD8C00149808 /* Carbon.framework in Frameworks */,
 				57CE72CD1C95AD6900149808 /* AudioToolbox.framework in Frameworks */,
 				57CE72CB1C95AD5700149808 /* AudioUnit.framework in Frameworks */,
 				57CE72CA1C95AD4900149808 /* CoreAudio.framework in Frameworks */,
 				572C3BEB1B35F9CF0071BB39 /* Accelerate.framework in Frameworks */,
-				57FE7B4617B41B7E000F7343 /* libMCL.a in Frameworks */,
 				57CE72C11C95AA9900149808 /* libportaudio.a in Frameworks */,
 				57CE72D21C95ADC800149808 /* libsndfile.a in Frameworks */,
 			);
@@ -234,13 +217,22 @@
 			files = (
 				57CE72D31C95ADC800149808 /* libsndfile.a in Frameworks */,
 				57CE72C21C95AA9900149808 /* libportaudio.a in Frameworks */,
-				57FE7B4917B41B85000F7343 /* libMCL.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5704D1341CD7BBEE00ACA678 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5704D13A1CD7BBEE00ACA678 /* MCL_test */,
+				5704D13C1CD7BBEE00ACA678 /* libMCL.a */,
+				5704D13E1CD7BBEE00ACA678 /* libMCLiOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		57A156BA1593457600AA6445 = {
 			isa = PBXGroup;
 			children = (
@@ -361,7 +353,7 @@
 		57A156FA1593465600AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */,
+				5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */,
 				57CE72C01C95AA9900149808 /* libportaudio.a */,
 				57CE72D11C95ADC800149808 /* libsndfile.a */,
 				57CE72CE1C95AD7600149808 /* Carbon.framework */,
@@ -371,16 +363,6 @@
 				572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */,
 			);
 			name = lib;
-			sourceTree = "<group>";
-		};
-		57FE7B3C17B41B6B000F7343 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				57FE7B4117B41B6B000F7343 /* MCL_test */,
-				57FE7B4317B41B6B000F7343 /* libMCL.a */,
-				572A879C19C0712500F62F8F /* libMCLiOS.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -414,7 +396,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				572A879E19C0713F00F62F8F /* PBXTargetDependency */,
 			);
 			name = SALiOS;
 			productName = SAT;
@@ -432,7 +413,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				57FE7B4517B41B79000F7343 /* PBXTargetDependency */,
+				5704D1401CD7BC0400ACA678 /* PBXTargetDependency */,
 			);
 			name = SAL_test;
 			productName = SAT;
@@ -450,7 +431,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				57FE7B4817B41B82000F7343 /* PBXTargetDependency */,
 			);
 			name = SAL;
 			productName = SAT;
@@ -477,8 +457,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 57FE7B3C17B41B6B000F7343 /* Products */;
-					ProjectRef = 57FE7B3B17B41B6B000F7343 /* MCL.xcodeproj */;
+					ProductGroup = 5704D1341CD7BBEE00ACA678 /* Products */;
+					ProjectRef = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -491,25 +471,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		572A879C19C0712500F62F8F /* libMCLiOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libMCLiOS.a;
-			remoteRef = 572A879B19C0712500F62F8F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		57FE7B4117B41B6B000F7343 /* MCL_test */ = {
+		5704D13A1CD7BBEE00ACA678 /* MCL_test */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = MCL_test;
-			remoteRef = 57FE7B4017B41B6B000F7343 /* PBXContainerItemProxy */;
+			remoteRef = 5704D1391CD7BBEE00ACA678 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		57FE7B4317B41B6B000F7343 /* libMCL.a */ = {
+		5704D13C1CD7BBEE00ACA678 /* libMCL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libMCL.a;
-			remoteRef = 57FE7B4217B41B6B000F7343 /* PBXContainerItemProxy */;
+			remoteRef = 5704D13B1CD7BBEE00ACA678 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5704D13E1CD7BBEE00ACA678 /* libMCLiOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMCLiOS.a;
+			remoteRef = 5704D13D1CD7BBEE00ACA678 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -596,20 +576,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		572A879E19C0713F00F62F8F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCLiOS;
-			targetProxy = 572A879D19C0713F00F62F8F /* PBXContainerItemProxy */;
-		};
-		57FE7B4517B41B79000F7343 /* PBXTargetDependency */ = {
+		5704D1401CD7BC0400ACA678 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
-			targetProxy = 57FE7B4417B41B79000F7343 /* PBXContainerItemProxy */;
-		};
-		57FE7B4817B41B82000F7343 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCL;
-			targetProxy = 57FE7B4717B41B82000F7343 /* PBXContainerItemProxy */;
+			targetProxy = 5704D13F1CD7BC0400ACA678 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -781,7 +751,7 @@
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\" /usr/local/include/ \"$(SRCROOT)/include/lib\"";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/lib/mcl/include\"/** \"$(SRCROOT)/lib/mcl/lib\" /usr/local/include/ \"$(SRCROOT)/include/lib\"";
 			};
 			name = Debug;
 		};
@@ -808,7 +778,7 @@
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../mcl/include\"/** \"$(SRCROOT)/../mcl/lib\" /usr/local/include/ \"$(SRCROOT)/include/lib\"";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/lib/mcl/include\"/** \"$(SRCROOT)/lib/mcl/lib\" /usr/local/include/ \"$(SRCROOT)/include/lib\"";
 			};
 			name = Release;
 		};

@@ -1,0 +1,3 @@
+[submodule "lib/mcl"]
+	path = lib/mcl
+	url = http://pub.git.desena.org/mcl.git
