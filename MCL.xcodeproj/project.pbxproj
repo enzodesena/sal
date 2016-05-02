@@ -19,7 +19,6 @@
 		571F9A701795AA8B0059A90D /* statisticsop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A671795AA8B0059A90D /* statisticsop_test.cpp */; };
 		571F9A711795AA8B0059A90D /* transformop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A681795AA8B0059A90D /* transformop_test.cpp */; };
 		571F9A721795AA8B0059A90D /* vectorop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A691795AA8B0059A90D /* vectorop_test.cpp */; };
-		572A876919C070ED00F62F8F /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
 		572A876A19C070ED00F62F8F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
 		572A876B19C070ED00F62F8F /* vectorop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700B15B42BBD002F077F /* vectorop.cpp */; };
 		572A876C19C070ED00F62F8F /* elementaryop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA700F15B43B64002F077F /* elementaryop.cpp */; };
@@ -28,7 +27,6 @@
 		572A876F19C070ED00F62F8F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		572A877019C070ED00F62F8F /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		572A877119C070ED00F62F8F /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
-		572A877219C070ED00F62F8F /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
 		572A877319C070ED00F62F8F /* dataop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EAE5C118AA8148001DC4D4 /* dataop.cpp */; };
 		572A877419C070ED00F62F8F /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
 		572A877519C070ED00F62F8F /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
@@ -41,8 +39,6 @@
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
 		5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
-		57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
-		57A1571C1593475D00AA6445 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57A1565615933BB600AA6445 /* kiss_fft.c */; };
 		57B71D14162DD231003411BA /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
 		57B71D15162DD231003411BA /* randomop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D13162DD231003411BA /* randomop.cpp */; };
 		57BA700015B42297002F077F /* pointwiseop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6FFF15B42297002F077F /* pointwiseop.cpp */; };
@@ -58,11 +54,15 @@
 		57BA701C15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701D15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701F15B49459002F077F /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701E15B49459002F077F /* mcl_test.cpp */; };
-		57DB7E7618327D6600B47CEE /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
-		57DB7E7718327D6600B47CEE /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57DB7E7518327D6600B47CEE /* butter.cpp */; };
-		57E52D081B342D7D0085A25B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E52D071B342D7D0085A25B /* Accelerate.framework */; };
-		57E52D091B342D820085A25B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E52D071B342D7D0085A25B /* Accelerate.framework */; };
-		57E52D0B1B342D860085A25B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E52D0A1B342D860085A25B /* Accelerate.framework */; };
+		57E73F951CD7CB0000095F6E /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F941CD7CB0000095F6E /* butter.cpp */; };
+		57E73F961CD7CB0000095F6E /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F941CD7CB0000095F6E /* butter.cpp */; };
+		57E73F971CD7CB0000095F6E /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F941CD7CB0000095F6E /* butter.cpp */; };
+		57E73F991CD7CB0B00095F6E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F981CD7CB0B00095F6E /* kiss_fft.c */; };
+		57E73F9A1CD7CB0B00095F6E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F981CD7CB0B00095F6E /* kiss_fft.c */; };
+		57E73F9B1CD7CB0B00095F6E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F981CD7CB0B00095F6E /* kiss_fft.c */; };
+		57E73F9D1CD7CB1D00095F6E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */; };
+		57E73FA51CD7CBAC00095F6E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */; };
+		57E73FA81CD7CBBA00095F6E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */; };
 		57EAE5C018AA80FC001DC4D4 /* dataop.h in Headers */ = {isa = PBXBuildFile; fileRef = 57EAE5BF18AA80FC001DC4D4 /* dataop.h */; };
 		57EAE5C318AA8148001DC4D4 /* dataop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EAE5C118AA8148001DC4D4 /* dataop.cpp */; };
 		57F0B65B181D8D840095A28F /* comparisonop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F0B659181D8D840095A28F /* comparisonop_test.cpp */; };
@@ -100,11 +100,7 @@
 		5778D80B15B616260015AAC9 /* iirfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iirfilter.h; path = include/iirfilter.h; sourceTree = "<group>"; };
 		5778D80D15B616320015AAC9 /* firfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = firfilter.cpp; path = src/firfilter.cpp; sourceTree = "<group>"; };
 		5778D80E15B616320015AAC9 /* iirfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iirfilter.cpp; path = src/iirfilter.cpp; sourceTree = "<group>"; };
-		57A1565615933BB600AA6445 /* kiss_fft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = src/lib/kiss_fft.c; sourceTree = "<group>"; };
 		57A1565915933BCC00AA6445 /* mcl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mcl.h; path = include/mcl.h; sourceTree = "<group>"; };
-		57A1565A15933BD400AA6445 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = _kiss_fft_guts.h; path = include/lib/_kiss_fft_guts.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		57A1565B15933BD400AA6445 /* kiss_fft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = include/lib/kiss_fft.h; sourceTree = "<group>"; };
-		57A1565C15933BD400AA6445 /* kissfft.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kissfft.hh; path = include/lib/kissfft.hh; sourceTree = "<group>"; };
 		57A158AA1593501200AA6445 /* MCL_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MCL_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A158AC1593501200AA6445 /* libMCL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B71D12162DD224003411BA /* randomop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = randomop.h; path = include/randomop.h; sourceTree = "<group>"; };
@@ -124,10 +120,13 @@
 		57BA701A15B49263002F077F /* basicop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = basicop.h; path = include/basicop.h; sourceTree = "<group>"; };
 		57BA701B15B492D4002F077F /* basicop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop.cpp; path = src/basicop.cpp; sourceTree = "<group>"; };
 		57BA701E15B49459002F077F /* mcl_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mcl_test.cpp; path = src/targets/mcl_test.cpp; sourceTree = "<group>"; };
-		57DB7E7418327D5700B47CEE /* butter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = butter.h; path = include/lib/butter.h; sourceTree = "<group>"; };
-		57DB7E7518327D6600B47CEE /* butter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = butter.cpp; path = src/lib/butter.cpp; sourceTree = "<group>"; };
-		57E52D071B342D7D0085A25B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		57E52D0A1B342D860085A25B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
+		57E73F941CD7CB0000095F6E /* butter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = butter.cpp; path = lib/butter/src/butter.cpp; sourceTree = "<group>"; };
+		57E73F981CD7CB0B00095F6E /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = lib/kissfft/src/kiss_fft.c; sourceTree = "<group>"; };
+		57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		57E73FA11CD7CB4100095F6E /* butter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = butter.h; path = lib/butter/include/butter.h; sourceTree = "<group>"; };
+		57E73FA21CD7CB7600095F6E /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = lib/kissfft/include/_kiss_fft_guts.h; sourceTree = "<group>"; };
+		57E73FA31CD7CB7600095F6E /* kiss_fft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = lib/kissfft/include/kiss_fft.h; sourceTree = "<group>"; };
+		57E73FA41CD7CB7600095F6E /* kissfft.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kissfft.hh; path = lib/kissfft/include/kissfft.hh; sourceTree = "<group>"; };
 		57EAE5BF18AA80FC001DC4D4 /* dataop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dataop.h; path = include/dataop.h; sourceTree = "<group>"; };
 		57EAE5C118AA8148001DC4D4 /* dataop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dataop.cpp; path = src/dataop.cpp; sourceTree = "<group>"; };
 		57F0B659181D8D840095A28F /* comparisonop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = comparisonop_test.cpp; path = test/comparisonop_test.cpp; sourceTree = "<group>"; };
@@ -138,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57E52D0B1B342D860085A25B /* Accelerate.framework in Frameworks */,
+				57E73FA81CD7CBBA00095F6E /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57E52D091B342D820085A25B /* Accelerate.framework in Frameworks */,
+				57E73FA51CD7CBAC00095F6E /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57E52D081B342D7D0085A25B /* Accelerate.framework in Frameworks */,
+				57E73F9D1CD7CB1D00095F6E /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +179,6 @@
 				571F9A5717955B160059A90D /* statisticsop.h */,
 				57BA701615B490C4002F077F /* transformop.h */,
 				57BA700315B4274D002F077F /* vectorop.h */,
-				57A1565815933BC100AA6445 /* lib */,
 			);
 			name = include;
 			sourceTree = "<group>";
@@ -202,28 +200,6 @@
 			name = test;
 			sourceTree = "<group>";
 		};
-		57A1565415933B9B00AA6445 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				57E52D0A1B342D860085A25B /* Accelerate.framework */,
-				57E52D071B342D7D0085A25B /* Accelerate.framework */,
-				57DB7E7518327D6600B47CEE /* butter.cpp */,
-				57A1565615933BB600AA6445 /* kiss_fft.c */,
-			);
-			name = lib;
-			sourceTree = "<group>";
-		};
-		57A1565815933BC100AA6445 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				57DB7E7418327D5700B47CEE /* butter.h */,
-				57A1565A15933BD400AA6445 /* _kiss_fft_guts.h */,
-				57A1565B15933BD400AA6445 /* kiss_fft.h */,
-				57A1565C15933BD400AA6445 /* kissfft.hh */,
-			);
-			name = lib;
-			sourceTree = "<group>";
-		};
 		57A1566015933C5200AA6445 /* targets */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +213,7 @@
 			children = (
 				57A1565115933B8A00AA6445 /* include */,
 				57B8B237159339E70030B619 /* src */,
+				57E73F8D1CD7CAA600095F6E /* lib */,
 				57B8B2271593398E0030B619 /* bin */,
 				57A1565315933B9500AA6445 /* test */,
 			);
@@ -267,10 +244,71 @@
 				571F9A5917955BD60059A90D /* statisticsop.cpp */,
 				57BA701715B4915E002F077F /* transformop.cpp */,
 				57BA700B15B42BBD002F077F /* vectorop.cpp */,
-				57A1565415933B9B00AA6445 /* lib */,
 				57A1566015933C5200AA6445 /* targets */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		57E73F8D1CD7CAA600095F6E /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */,
+				57E73F911CD7CAD200095F6E /* kissfft */,
+				57E73F8E1CD7CABE00095F6E /* butter */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		57E73F8E1CD7CABE00095F6E /* butter */ = {
+			isa = PBXGroup;
+			children = (
+				57E73F8F1CD7CAC300095F6E /* include */,
+				57E73F901CD7CAC800095F6E /* src */,
+			);
+			name = butter;
+			sourceTree = "<group>";
+		};
+		57E73F8F1CD7CAC300095F6E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				57E73FA11CD7CB4100095F6E /* butter.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		57E73F901CD7CAC800095F6E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				57E73F981CD7CB0B00095F6E /* kiss_fft.c */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		57E73F911CD7CAD200095F6E /* kissfft */ = {
+			isa = PBXGroup;
+			children = (
+				57E73F931CD7CADB00095F6E /* include */,
+				57E73F921CD7CAD700095F6E /* src */,
+			);
+			name = kissfft;
+			sourceTree = "<group>";
+		};
+		57E73F921CD7CAD700095F6E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				57E73F941CD7CB0000095F6E /* butter.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		57E73F931CD7CADB00095F6E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				57E73FA21CD7CB7600095F6E /* _kiss_fft_guts.h */,
+				57E73FA31CD7CB7600095F6E /* kiss_fft.h */,
+				57E73FA41CD7CB7600095F6E /* kissfft.hh */,
+			);
+			name = include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,7 +418,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				572A876919C070ED00F62F8F /* kiss_fft.c in Sources */,
 				572A876A19C070ED00F62F8F /* pointwiseop.cpp in Sources */,
 				572A876B19C070ED00F62F8F /* vectorop.cpp in Sources */,
 				572A876C19C070ED00F62F8F /* elementaryop.cpp in Sources */,
@@ -389,8 +426,9 @@
 				572A876F19C070ED00F62F8F /* basicop.cpp in Sources */,
 				572A877019C070ED00F62F8F /* firfilter.cpp in Sources */,
 				572A877119C070ED00F62F8F /* iirfilter.cpp in Sources */,
-				572A877219C070ED00F62F8F /* butter.cpp in Sources */,
+				57E73F9B1CD7CB0B00095F6E /* kiss_fft.c in Sources */,
 				572A877319C070ED00F62F8F /* dataop.cpp in Sources */,
+				57E73F971CD7CB0000095F6E /* butter.cpp in Sources */,
 				572A877419C070ED00F62F8F /* randomop.cpp in Sources */,
 				572A877519C070ED00F62F8F /* matrixop.cpp in Sources */,
 				572A877619C070ED00F62F8F /* statisticsop.cpp in Sources */,
@@ -401,7 +439,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57A1571C1593475D00AA6445 /* kiss_fft.c in Sources */,
 				57BA700115B42297002F077F /* pointwiseop.cpp in Sources */,
 				57BA700D15B42BBD002F077F /* vectorop.cpp in Sources */,
 				57BA701115B43B64002F077F /* elementaryop.cpp in Sources */,
@@ -410,8 +447,9 @@
 				57BA701D15B492D5002F077F /* basicop.cpp in Sources */,
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
-				57DB7E7718327D6600B47CEE /* butter.cpp in Sources */,
+				57E73F9A1CD7CB0B00095F6E /* kiss_fft.c in Sources */,
 				57EAE5C318AA8148001DC4D4 /* dataop.cpp in Sources */,
+				57E73F961CD7CB0000095F6E /* butter.cpp in Sources */,
 				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
 				573F9FA31662799800929EE2 /* matrixop.cpp in Sources */,
 				571F9A5C17955BD60059A90D /* statisticsop.cpp in Sources */,
@@ -422,13 +460,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57A1566B15933ED000AA6445 /* kiss_fft.c in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
 				57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */,
 				57BA701015B43B64002F077F /* elementaryop.cpp in Sources */,
 				57BA701415B43C61002F077F /* comparisonop.cpp in Sources */,
 				57BA701815B4915E002F077F /* transformop.cpp in Sources */,
 				57BA701C15B492D5002F077F /* basicop.cpp in Sources */,
+				57E73F951CD7CB0000095F6E /* butter.cpp in Sources */,
 				57BA701F15B49459002F077F /* mcl_test.cpp in Sources */,
 				5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */,
@@ -439,10 +477,10 @@
 				571F9A6B1795AA8B0059A90D /* digitalfilter_test.cpp in Sources */,
 				571F9A6C1795AA8B0059A90D /* elementaryop_test.cpp in Sources */,
 				571F9A6D1795AA8B0059A90D /* matrixop_test.cpp in Sources */,
-				57DB7E7618327D6600B47CEE /* butter.cpp in Sources */,
 				571F9A6E1795AA8B0059A90D /* pointwiseop_test.cpp in Sources */,
 				571F9A6F1795AA8B0059A90D /* random_test.cpp in Sources */,
 				571F9A701795AA8B0059A90D /* statisticsop_test.cpp in Sources */,
+				57E73F991CD7CB0B00095F6E /* kiss_fft.c in Sources */,
 				57F0B65B181D8D840095A28F /* comparisonop_test.cpp in Sources */,
 				571F9A711795AA8B0059A90D /* transformop_test.cpp in Sources */,
 				571F9A721795AA8B0059A90D /* vectorop_test.cpp in Sources */,
@@ -455,7 +493,7 @@
 		572A877C19C070ED00F62F8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
@@ -476,7 +514,7 @@
 				);
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -488,14 +526,14 @@
 				PRODUCT_NAME = MCLiOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
 		572A877D19C070ED00F62F8F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
@@ -513,7 +551,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NO_AUTOTOOLS_BUILD=1";
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -525,14 +563,14 @@
 				PRODUCT_NAME = MCLiOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
 		57A157171593475000AA6445 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_X86_VECTOR_INSTRUCTIONS = default;
@@ -552,7 +590,7 @@
 				);
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -564,14 +602,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
 		57A157181593475000AA6445 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_X86_VECTOR_INSTRUCTIONS = default;
@@ -588,7 +626,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NO_AUTOTOOLS_BUILD=1";
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -600,7 +638,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
@@ -675,7 +713,7 @@
 		57B8B2311593398E0030B619 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_X86_VECTOR_INSTRUCTIONS = default;
@@ -686,7 +724,7 @@
 					"NO_AUTOTOOLS_BUILD=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include;
+				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -695,14 +733,14 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = /usr/local/include;
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
 		57B8B2321593398E0030B619 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_X86_VECTOR_INSTRUCTIONS = default;
@@ -713,7 +751,7 @@
 					"NO_AUTOTOOLS_BUILD=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include;
+				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -722,7 +760,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = /usr/local/include;
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
