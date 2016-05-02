@@ -16,14 +16,16 @@
 #define EPSILON std::numeric_limits<float>::epsilon()
 
 #include <vector>
+#include "mcltypes.h"
+
 
 namespace sal {
 
-typedef float Sample;
-typedef float Time;
-typedef float Speed;
-typedef float Length;
-typedef float Angle;
+typedef mcl::Real Sample;
+typedef mcl::Real Time;
+typedef mcl::Real Speed;
+typedef mcl::Real Length;
+typedef mcl::Real Angle;
 typedef unsigned long UInt;
 typedef long Int;
 
