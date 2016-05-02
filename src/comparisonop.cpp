@@ -43,6 +43,18 @@ std::vector<bool> IsNan(std::vector<Real> input) {
   return output;
 }
   
+bool IsInf(Real num) {
+  return isinf(num);
+}
+
+std::vector<bool> IsInf(std::vector<Real> input) {
+  std::vector<bool> output;
+  for (UInt i=0; i<input.size(); ++i) {
+    output.push_back(IsInf(input[i]));
+  }
+  return output;
+}
+  
 std::vector<bool> Not(std::vector<bool> input) {
   std::vector<bool> output;
   for (UInt i=0; i<input.size(); ++i) {

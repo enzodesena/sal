@@ -67,6 +67,12 @@ bool Any(std::vector<bool> input);
 /** Opposite of All: returns true if none of the inputs are true */
 bool None(std::vector<bool> input);
   
+/** Returns true if num is +inf or -inf */
+bool IsInf(Real num);
+
+/** Returns true if num is +inf or -inf */
+std::vector<bool> IsInf(std::vector<Real> input);
+  
 bool ComparisonOpTest();
   
 } // namespace mcl

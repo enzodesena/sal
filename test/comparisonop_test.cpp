@@ -81,6 +81,20 @@ bool ComparisonOpTest() {
   output_c[2] = true;
   assert(!None(output_c));
   
+  // Testing infs
+  assert(IsInf(INFINITY));
+  assert(IsInf(-INFINITY));
+  
+  std::vector<Real> input_d;
+  input_d.push_back(INFINITY);
+  input_d.push_back(-INFINITY);
+  input_d.push_back(0.1);
+  
+  std::vector<bool> output_d = IsInf(input_d);
+  assert(output_d[0] == true);
+  assert(output_d[1] == true);
+  assert(output_d[2] == false);
+  
   
   return true;
 }
