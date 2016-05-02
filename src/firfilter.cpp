@@ -168,7 +168,10 @@ void FirFilter::Reset() {
   
 void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
                                      const Int update_length) {
-  if (mcl::IsEqual(impulse_response, impulse_response_)) { return; }
+  if (mcl::IsEqual(std::vector<float>(impulse_response.begin(), impulse_response.end()),
+                   impulse_response_)) {
+    return;
+  }
   
   if (update_index_ == 0) { // If there is no update being carried out
     impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_,
