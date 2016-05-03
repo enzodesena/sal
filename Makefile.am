@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = gnu
 
 # what flags you want to pass to the C compiler & linker
 AM_CFLAGS = --pedantic -Wall -std=c99 -O2
-AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/lib/libsndfile/include -I$(top_srcdir)/lib/mcl/include -I$(top_srcdir)/lib/mcl/lib/butter/include -I$(top_srcdir)/lib/mcl/lib/kissfft/include
+AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/lib/libsndfile/include -I$(includedir)/mcl
 AM_LDFLAGS = -L$(libdir) -L$(top_srcdir)/lib
 AM_CXXFLAGS = -std=c++11
 
@@ -18,4 +18,4 @@ lib_LIBRARIES = libsal.a
 libsal_a_SOURCES = src/ambisonics.cpp src/binauralmic.cpp src/cipicmic.cpp src/delayfilter.cpp src/freefieldsimulation.cpp src/kemarmic.cpp src/microphone.cpp src/microphonearray.cpp src/pawrapper.src src/point.cpp src/propagationline.cpp src/psrmic.cpp src/source.cpp src/sphericalmic.cpp src/wavhandler.cpp
 libsal_a_LIBADD = $(libdir)/libmcl.a $(libdir)/libsndfile.a
 
-pkginclude_HEADERS = include/*.h lib/sndfile/include/sndfile.h lib/sndfile/include/sndfile.hh
+pkginclude_HEADERS = include/*.h lib/libsndfile/include/sndfile.h lib/libsndfile/include/sndfile.hh
