@@ -15,4 +15,4 @@ mcltest_SOURCES = src/basicop.cpp src/comparisonop.cpp src/dataop.cpp src/elemen
 lib_LIBRARIES = libmcl.a
 libmcl_a_SOURCES = src/basicop.cpp src/comparisonop.cpp src/dataop.cpp src/elementaryop.cpp src/firfilter.cpp src/iirfilter.cpp src/matrixop.cpp src/pointwiseop.cpp src/randomop.cpp src/statisticsop.cpp src/transformop.cpp src/vectorop.cpp lib/kissfft/src/kiss_fft.c lib/butter/src/butter.cpp
 
-pkginclude_HEADERS = include/basicop.h include/comparisonop.h include/dataop.h include/digitalfilter.h include/elementaryop.h include/firfilter.h include/iirfilter.h include/matrixop.h include/mcl.h include/mcltypes.h include/pointwiseop.h include/randomop.h include/statisticsop.h include/transformop.h include/vectorop.h lib/butter/include/butter.h lib/kissfft/include/kiss_fft.h lib/kissfft/include/kissfft.hh lib/kissfft/include/_kiss_fft_guts.h
+pkginclude_HEADERS = include/*.h lib/butter/include/butter.h lib/kissfft/include/*.h lib/kissfft/include/*.hh
