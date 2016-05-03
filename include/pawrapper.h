@@ -15,6 +15,7 @@
 #include "mcltypes.h"
 #include "portaudio.h"
 #include "decoder.h"
+#include <strings.h>
 
 namespace sal {
   
