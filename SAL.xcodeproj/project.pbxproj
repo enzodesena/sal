@@ -663,18 +663,8 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/lib\"",
-					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -705,18 +695,8 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/lib\"",
-					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -766,6 +746,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib/mcl/include",
+					"$(PROJECT_DIR)/lib/portaudio/include",
+					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
+					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib/portaudio/lib",
+					"$(PROJECT_DIR)/lib/libsndfile/lib",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -800,6 +790,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib/mcl/include",
+					"$(PROJECT_DIR)/lib/portaudio/include",
+					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
+					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib/portaudio/lib",
+					"$(PROJECT_DIR)/lib/libsndfile/lib",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
@@ -822,16 +822,8 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
@@ -853,16 +845,8 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
@@ -884,18 +868,8 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/lib\"",
-					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -921,18 +895,8 @@
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/lib\"",
-					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
