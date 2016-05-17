@@ -19,25 +19,38 @@ namespace sal {
 void BinauralMic::RecordPlaneWaveRelative(const Sample& sample,
                                           const Point& point,
                                           const UInt& wave_id) {
-  CreateInstanceIfNotExist(wave_id);
-  
-  stream_.Add(instances_left_.at(wave_id).
-              RecordPlaneWaveRelative(sample, point),
-              instances_right_.at(wave_id).
-              RecordPlaneWaveRelative(sample, point));
+  if (!bypass_) {
+    CreateInstanceIfNotExist(wave_id);
+    
+    stream_.Add(instances_left_.at(wave_id).
+                RecordPlaneWaveRelative(sample, point),
+                instances_right_.at(wave_id).
+                RecordPlaneWaveRelative(sample, point));
+  } else {
+    stream_.Add(sample, sample);
+  }
 }
   
 void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
                                           const Point& point,
                                           const UInt& wave_id) {
-  CreateInstanceIfNotExist(wave_id);
-  
-  stream_.Add(instances_left_.at(wave_id).
-              RecordPlaneWaveRelative(signal, point),
-              instances_right_.at(wave_id).
-              RecordPlaneWaveRelative(signal, point));
+  if (!bypass_) {
+    CreateInstanceIfNotExist(wave_id);
+    
+    stream_.Add(instances_left_.at(wave_id).
+                RecordPlaneWaveRelative(signal, point),
+                instances_right_.at(wave_id).
+                RecordPlaneWaveRelative(signal, point));
+  } else {
+    stream_.Add(signal, signal);
+  }
 }
 
+void BinauralMic::set_bypass(bool bypass) {
+  if (bypass_ == true & bypass == false) { this->Reset(); }
+  bypass_ = bypass;
+}
+  
 void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) {
   // If there is no instance associated to the given wave_id then create
   if (instances_left_.count(wave_id) == 0) {
@@ -71,7 +84,8 @@ void BinauralMic::Reset() {
 BinauralMic::BinauralMic(const Point& position,
                          const Angle theta, const Angle phi, const Angle psi,
                          const UInt update_length) :
-  StereoMicrophone(position, theta, phi, psi), update_length_(update_length) {}
+  StereoMicrophone(position, theta, phi, psi), update_length_(update_length),
+  bypass_(false) {}
 
 
 

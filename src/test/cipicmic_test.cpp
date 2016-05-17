@@ -348,6 +348,18 @@ bool CipicMic::Test() {
   assert(IsEqual(stream_t->PullLeft(), 0.0));
   assert(IsEqual(stream_t->PullRight(), 0.0));
   
+  // Testing bypass
+  mic_t.set_bypass(false);
+  mic_t.set_bypass(true);
+  mic_t.RecordPlaneWave(1.2, Point(0.0,0.0,-1.0));
+  assert(IsEqual(stream_t->PullLeft(), 1.2));
+  assert(IsEqual(stream_t->PullRight(), 1.2));
+  
+  mic_t.set_bypass(false);
+  mic_t.RecordPlaneWave(impulse, Point(0.0,0.0,-1.0));
+  assert(mcl::IsEqual(stream_t->PullAllLeft(), cmp_imp_back_left));
+  assert(mcl::IsEqual(stream_t->PullAllRight(), cmp_imp_back_right));
+  
 
   return true;
 }

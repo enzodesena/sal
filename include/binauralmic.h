@@ -36,6 +36,9 @@ public:
   
   void set_update_length(UInt update_length) { update_length_ = update_length; }
   
+  /** When bypass_ is true, the signals will not be filtered by the HRTF */
+  void set_bypass(bool bypass);
+    
   virtual void Tick();
   
   virtual void Reset();
@@ -67,6 +70,9 @@ private:
   
   /** How long it takes to update the underlying HRTF filter */
   UInt update_length_;
+  
+  /** When bypass_ is true, the signals will not be filtered by the HRTF */
+  bool bypass_;
   
   friend class BinauralMicInstance;
 };
