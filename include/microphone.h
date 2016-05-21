@@ -43,8 +43,7 @@ public:
    on a new sample. Methods without wave_id (i.e. assuming there
    is a single plane wave incoming) do this automatically.
    */
-  Microphone(Point position, Angle theta, Angle phi, Angle psi) :
-  position_(position), theta_(theta), phi_(phi), psi_(psi) {}
+  Microphone(Point position, Angle theta, Angle phi, Angle psi);
   
   Point position() const;
   void set_position(const Point& position);
@@ -65,32 +64,21 @@ public:
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Sample& sample, const Point& point) {
-    RecordPlaneWave(sample, point, 0);
-    Tick();
-  }
+  void RecordPlaneWave(const Sample& sample, const Point& point);
   
   /**
    This method should only be called in case of a single plane wave
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Signal& signal, const Point& point) {
-    for (UInt i=0; i<signal.size(); ++i) {
-      RecordPlaneWave(signal[i], point);
-    }
-  }
+  void RecordPlaneWave(const Signal& signal, const Point& point);
   
   /**
    This method should only be called in case of a single plane wave
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(Source source) {
-    if (! source.stream()->IsEmpty()) {
-      RecordPlaneWave(source.stream()->PullAll(), source.position());
-    }
-  }
+  void RecordPlaneWave(Source source);
   
   /**
    We need to
@@ -129,7 +117,7 @@ public:
   
   static bool Test();
   
-  virtual ~Microphone() {}
+  virtual ~Microphone();
 private:
   /**
    Cache variables to speed up. Since most of the times two consecutive calls
@@ -165,6 +153,9 @@ private:
   virtual void RecordPlaneWaveRelative(const Signal& signal,
                                        const Point& point,
                                        const UInt& wave_id);
+  
+  /** Lock to make object thread safe */
+  pthread_rwlock_t rw_lock_;
   
 protected:
   Point position_;

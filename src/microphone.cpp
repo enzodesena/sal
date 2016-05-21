@@ -11,28 +11,42 @@
 #include "microphone.h"
 
 namespace sal {
+  
+Microphone::Microphone(Point position, Angle theta, Angle phi, Angle psi) :
+  position_(position), theta_(theta), phi_(phi), psi_(psi) {
+  pthread_rwlock_init(&rw_lock_, NULL);
+}
+  
 
 Point Microphone::position() const { return position_; }
 
 void Microphone::set_position(const Point& position) {
+  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   position_ = position;
   last_point_.clear();
+  pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
   
   
 void Microphone::set_theta(Angle theta) {
+  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   theta_ = theta;
   last_point_.clear();
+  pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
 
 void Microphone::set_phi(Angle phi) {
+  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   phi_ = phi;
   last_point_.clear();
+  pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
 
 void Microphone::set_psi(Angle psi) {
+  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   psi_ = psi;
   last_point_.clear();
+  pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
 
 void Microphone::CalculateRelativePoint(const Point& point,
@@ -46,13 +60,17 @@ void Microphone::CalculateRelativePoint(const Point& point,
 
 void Microphone::RecordPlaneWave(const Sample& sample, const Point& point,
                                  const UInt& wave_id) {
+  pthread_rwlock_rdlock(&rw_lock_); // Request read lock
   CalculateRelativePoint(point, wave_id);
+  pthread_rwlock_unlock(&rw_lock_); // Release read lock
   this->RecordPlaneWaveRelative(sample, last_relative_point_[wave_id], wave_id);
 }
 
 void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
                                  const UInt& wave_id) {
+  pthread_rwlock_rdlock(&rw_lock_); // Request read lock
   CalculateRelativePoint(point, wave_id);
+  pthread_rwlock_unlock(&rw_lock_); // Release read lock
   this->RecordPlaneWaveRelative(signal, last_relative_point_[wave_id], wave_id);
 }
 
@@ -79,6 +97,31 @@ Point Microphone::GetRelativePoint(const Point& point) const {
   Point rotated = Point::Rotate(centered, -phi_, -theta_, -psi_);
   return rotated;
 }
+  
+  
+void Microphone::RecordPlaneWave(const Sample& sample, const Point& point) {
+  RecordPlaneWave(sample, point, 0);
+  Tick();
+}
 
+  
+void Microphone::RecordPlaneWave(const Signal& signal, const Point& point) {
+  for (UInt i=0; i<signal.size(); ++i) {
+    RecordPlaneWave(signal[i], point);
+  }
+}
+
+  
+void Microphone::RecordPlaneWave(Source source) {
+  if (! source.stream()->IsEmpty()) {
+    RecordPlaneWave(source.stream()->PullAll(), source.position());
+  }
+}
+  
+  
+Microphone::~Microphone() {
+  pthread_rwlock_destroy(&rw_lock_);
+}
+  
   
 } // namespace sal
