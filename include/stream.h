@@ -25,6 +25,9 @@ class Stream {
 public:
   virtual bool IsEmpty() const = 0;
   
+  /** Resets stream to original state */
+  virtual void Reset() = 0;
+  
 public:
   static bool Test();
 };
@@ -48,14 +51,12 @@ public:
   inline void Push(const Sample& sample) { queue_.push_back(sample); }
   
   
-  
   void Push(const Signal& signal) {
     const UInt num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(signal.at(i));
     }
   }
-  
   
   
   inline void Add(const Sample& sample) {
@@ -67,6 +68,7 @@ public:
       queue_.back() += sample;
     }
   }
+  
   
   inline void Add(const Signal& signal) {
     if (push_new_sample_) {
@@ -81,7 +83,9 @@ public:
     }
   }
 
+  
   inline void Tick() { push_new_sample_ = true; }
+  
   
   Sample Pull() {
     assert(! queue_.empty());
@@ -90,12 +94,14 @@ public:
     return output;
   }
   
+  
   Signal Pull(const UInt num_samples) {
     if (num_samples > queue_.size()) { throw_line(); }
     Signal output(queue_.begin(), queue_.begin() + num_samples);
     queue_.erase(queue_.begin(), queue_.begin() + num_samples);
     return output;
   }
+  
   
   /** Pull all samples until the stream is depleted. */
   Signal PullAll() {
@@ -104,13 +110,22 @@ public:
     return output;
   }
   
+  
+  void Reset() {
+    PullAll();
+    Tick();
+  }
+  
+  
   inline UInt size() const {
     return queue_.size();
   }
   
+  
   inline bool IsEmpty() const {
     return queue_.empty();
   }
+  
   
   void PushAll(MonoStream* stream) {
     while (! stream->IsEmpty()) {
