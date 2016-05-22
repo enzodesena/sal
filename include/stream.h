@@ -186,6 +186,11 @@ public:
     return output;
   }
   
+  void Reset() {
+    stream_left_.Reset();
+    stream_right_.Reset();
+  }
+  
   Sample PullLeft() { return stream_left_.Pull(); }
   Sample PullRight() { return stream_right_.Pull(); }
   
@@ -228,6 +233,10 @@ public:
     return streams_[0]->IsEmpty();
   }
   
+  void Reset() {
+    for (UInt i=0; i<streams_.size(); ++i) { streams_[i]->Reset(); }
+  }
+  
   bool initialised() { return initialised_; }
   
 private:
@@ -268,7 +277,17 @@ public:
     }
   }
   
-
+  void Reset() {
+    for(auto outer_iter = streams_.begin();
+        outer_iter != streams_.end();
+        ++outer_iter) {
+      for(auto inner_iter = outer_iter->second.begin();
+          inner_iter != outer_iter->second.end();
+          ++inner_iter) {
+        inner_iter->second.Reset();
+      }
+    }
+  }
   
   Sample Pull(UInt degree, Int order) {
     assert(IsDefined(degree, order));

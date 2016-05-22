@@ -113,6 +113,15 @@ bool Stream::Test() {
   assert(IsEqual(stream_g.Pull(), -0.2));
   
   
+  stream_g.Push(-0.5);
+  stream_g.Reset();
+  stream_g.Push(0.5);
+  assert(stream_g.PullAll().size()==1);
+  stream_g.Push(-0.5);
+  stream_g.Reset();
+  stream_g.Push(0.4);
+  assert(IsEqual(stream_g.PullAll()[0], 0.4));
+  
   return true;
 }
 
