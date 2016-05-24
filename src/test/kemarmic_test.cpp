@@ -32,12 +32,12 @@ bool KemarMic::Test() {
   KemarMic mic_i(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
                  kemar_path);
   StereoStream* stream_i = mic_i.stream();
-
+  
   Sample sample = 0.5;
   mic_i.RecordPlaneWave(mcl::Multiply(impulse, sample), Point(1.0,0.0,0.0));
-  std::vector<Signal> output_front =
-            stream_i->Pull(impulse_response_length);
-
+  Signal output_front_left = stream_i->left_stream()->Pull(impulse_response_length);
+  Signal output_front_right = stream_i->right_stream()->Pull(impulse_response_length);
+  
   const Sample imp_front_left[] = {5,-6,19,-24,39,-56,74,-101,120,-137,161,30,
     5321,6066,-6762,-253,195,-5129,7285,5986,2332,11785,11069,-6536,-5109,4539,
     -8167,-13539,-2026,-1365,-7336,-1277,3012,80,1084,4212,3286,1359,2467,1543,
@@ -47,14 +47,14 @@ bool KemarMic::Test() {
     -395,-292,-165,-175,-147,-5,-60,-246,-136,59,57,16,36,-37,-145,-119,-153,
     -195,-179,-216,-240,-128,25,74,12,-44,-33,-95,-202,-185,-158,-192,-162,-83,
     -51,-27,-21,-53,-58,-38,-56,-58};
-
+  
   Signal cmp_imp_front_left(imp_front_left,
-          imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
+                            imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, sample);
   
-  assert(IsEqual(output_front[1], output_front[0]));
-  assert(IsEqual(cmp_imp_front_left, output_front[0]));
+  assert(IsEqual(output_front_right, output_front_left));
+  assert(IsEqual(cmp_imp_front_left, output_front_left));
   
   
   KemarMic mic_o(Point(0.0,0.0,0.0), PI/2.0, PI/2.0, 0.0,
@@ -63,10 +63,10 @@ bool KemarMic::Test() {
   
   mic_o.RecordPlaneWave(mcl::Multiply(impulse, (Sample) 0.5),
                         Point(0.0,1.0,0.0));
-  std::vector<Signal> output_front_2 = stream_o->Pull(impulse_response_length);
+  Signal output_front_2_left = stream_o->left_stream()->Pull(impulse_response_length);
   
-  assert(mcl::IsEqual(output_front[0], output_front_2[0]));
-
+  assert(mcl::IsEqual(output_front_left, output_front_2_left));
+  
   
   // Testing upward direction
   const Sample imp_up_left[] = {5,-16,26,-41,63,-81,119,-73,2020,4378,5862,
@@ -78,21 +78,21 @@ bool KemarMic::Test() {
     -387,-120,23,-107,-440,-607,-424,-74,136,51,-75,-11,93,170,173,79,-115,-263,
     -269,-222,-146,-100,-138,-198,-199,-118,6,70,29,-59,-127,-124,-20,69,38,-69,
     -132,-141};
-
+  
   Signal cmp_imp_up_left(imp_up_left,
-          imp_up_left + sizeof(imp_up_left) / sizeof(Sample));
+                         imp_up_left + sizeof(imp_up_left) / sizeof(Sample));
   cmp_imp_up_left = mcl::Multiply(cmp_imp_up_left, normalising_value);
-
+  
   
   KemarMic mic_m(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, kemar_path);
   StereoStream* stream_m = mic_m.stream();
-
+  
   mic_m.RecordPlaneWave(impulse, Point(-1.0,0.0,0.0));
-  std::vector<Signal> output_up = stream_m->Pull(impulse_response_length);
+  Signal output_up_left = stream_m->left_stream()->Pull(impulse_response_length);
   
-  assert(IsEqual(cmp_imp_up_left, output_up[0]));
+  assert(IsEqual(cmp_imp_up_left, output_up_left));
   
-
+  
   // Case for a source to the right (90deg) of the kemar.
   const Sample imp_right_left[] = {0,-1,-1,-1,-1,-1,-1,0,-1,1,0,-1,1,0,-1,0,
     -3,-2,-2,3,1,-3,5,17,8,1,14,-17,-17,142,652,557,356,1077,804,509,932,639,
@@ -102,11 +102,11 @@ bool KemarMic::Test() {
     -220,-251,-323,-346,-341,-344,-352,-298,-175,-99,-45,-14,15,41,37,-16,-73,
     -89,-103,-130,-168,-193,-164,-147,-163,-151,-116,-74,-54,-51,-73,-98,-93,
     -104,-114,-126,-133,-138,-155,-170,-195,-172,-112,-56,-26};
-
+  
   Signal cmp_imp_right_left(imp_right_left,
-          imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
+                            imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
   cmp_imp_right_left = mcl::Multiply(cmp_imp_right_left, normalising_value);
-
+  
   const Sample imp_right_right[] = {-335,531,-666,11016,14274,-20450,-14263,
     12368,6401,-801,19447,19852,-12004,-5756,12468,1733,-9639,-5131,-8237,-8810,
     85,-2066,-8668,-5494,3117,1712,-260,4570,5301,2338,1627,2189,-842,-1992,
@@ -116,43 +116,45 @@ bool KemarMic::Test() {
     254,128,-151,-100,40,131,284,246,-105,-429,-382,-195,-60,-30,-174,-450,-620,
     -324,100,208,-37,-213,-289,-228,-13,73,-31,-230,-347,-326,-174,2,46,-72,
     -203,-152,84,193,130,18,-104,-176,-72,82,65,-52,-127,-156};
-
+  
   Signal cmp_imp_right_right(imp_right_right,
-          imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
+                             imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
   cmp_imp_right_right = mcl::Multiply(cmp_imp_right_right, normalising_value);
-
+  
   
   KemarMic mic_p(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
                  kemar_path);
   StereoStream* stream_p = mic_p.stream();
-
+  
   mic_p.RecordPlaneWave(impulse, Point(0.0,-1.0,0.0));
-  std::vector<Signal> output_right = stream_p->Pull(impulse_response_length);
-
-  assert(mcl::IsEqual(output_right[0], cmp_imp_right_left));
-  assert(mcl::IsEqual(output_right[1], cmp_imp_right_right));
-
-
+  Signal output_right_left = stream_p->left_stream()->Pull(impulse_response_length);
+  Signal output_right_right = stream_p->right_stream()->Pull(impulse_response_length);
+  
+  assert(mcl::IsEqual(output_right_left, cmp_imp_right_left));
+  assert(mcl::IsEqual(output_right_right, cmp_imp_right_right));
+  
+  
   // Case for a source to the left (-90deg) of the kemar.
   Signal cmp_imp_left_right(imp_right_left,
-          imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
+                            imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
   cmp_imp_left_right = mcl::Multiply(cmp_imp_left_right, normalising_value);
   
   Signal cmp_imp_left_left(imp_right_right,
-          imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
+                           imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
   cmp_imp_left_left = mcl::Multiply(cmp_imp_left_left, normalising_value);
-
- 
+  
+  
   KemarMic mic_r(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
                  kemar_path);
   StereoStream* stream_r = mic_r.stream();
-
+  
   mic_r.RecordPlaneWave(impulse, Point(0.0,1.0,0.0));
-  std::vector<Signal> output_left = stream_r->Pull(impulse_response_length);
-
-  assert(mcl::IsEqual(output_left[0], cmp_imp_left_left));
-  assert(mcl::IsEqual(output_left[1], cmp_imp_left_right));
-
+  Signal output_left_left = stream_r->left_stream()->Pull(impulse_response_length);
+  Signal output_left_right = stream_r->right_stream()->Pull(impulse_response_length);
+  
+  assert(mcl::IsEqual(output_left_left, cmp_imp_left_left));
+  assert(mcl::IsEqual(output_left_right, cmp_imp_left_right));
+  
   // Case for a source in the back
   const Sample imp_back[] = {-3,-4,3,-4,6,-9,16,-25,19,-31,34,-46,60,-8,
     2200,5530,192,-4501,-1159,994,-791,3572,12125,6811,-604,2758,2477,-2946,
@@ -163,9 +165,9 @@ bool KemarMic::Test() {
     -265,-124,53,48,-53,-68,-32,61,155,167,37,-124,-209,-254,-266,-276,-308,
     -389,-407,-289,-120,-33,-35,-51,-66,-41,3,26,-14,-87,-134,-143,-108,-50,
     -25,-76,-124,-110};
-
+  
   Signal cmp_imp_back(imp_back,
-          imp_back + sizeof(imp_back) / sizeof(Sample));
+                      imp_back + sizeof(imp_back) / sizeof(Sample));
   cmp_imp_back = mcl::Multiply(cmp_imp_back, normalising_value);
   
   KemarMic mic_t(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0,
@@ -173,26 +175,30 @@ bool KemarMic::Test() {
   StereoStream* stream_t = mic_t.stream();
   
   mic_t.RecordPlaneWave(impulse, Point(0.0,0.0,-1.0));
-  std::vector<Signal> output_back = stream_t->Pull(impulse_response_length);
-
-  assert(mcl::IsEqual(output_back[0], cmp_imp_back));
-  assert(mcl::IsEqual(output_back[1], cmp_imp_back));
+  Signal output_back_left = stream_t->left_stream()->Pull(impulse_response_length);
+  Signal output_back_right = stream_t->right_stream()->Pull(impulse_response_length);
+  
+  assert(mcl::IsEqual(output_back_left, cmp_imp_back));
+  assert(mcl::IsEqual(output_back_right, cmp_imp_back));
   
   // Testing reset
-  assert(stream_t->IsEmpty());
+  assert(stream_t->left_stream()->IsEmpty());
+  assert(stream_t->right_stream()->IsEmpty());
   mic_t.RecordPlaneWave(1.0, Point(0.0,0.0,-1.0));
-  Sample sample_v = stream_t->PullLeft();
+  Sample sample_v = stream_t->left_stream()->Pull();
   assert(! IsEqual(sample_v, 0.0, 1.0E-10));
-  assert(! IsEqual(stream_t->PullRight(), 0.0, 1.0E-10));
-  assert(stream_t->IsEmpty());
+  assert(! IsEqual(stream_t->right_stream()->Pull(), 0.0, 1.0E-10));
+  assert(stream_t->left_stream()->IsEmpty());
+  assert(stream_t->right_stream()->IsEmpty());
   mic_t.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));
-  assert(! IsEqual(stream_t->PullLeft(), 0.0, 1.0E-10));
-  assert(! IsEqual(stream_t->PullRight(), 0.0, 1.0E-10));
-  assert(stream_t->IsEmpty());
+  assert(! IsEqual(stream_t->left_stream()->Pull(), 0.0, 1.0E-10));
+  assert(! IsEqual(stream_t->right_stream()->Pull(), 0.0, 1.0E-10));
+  assert(stream_t->left_stream()->IsEmpty());
+  assert(stream_t->right_stream()->IsEmpty());
   mic_t.Reset();
   mic_t.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));
-  assert(IsEqual(stream_t->PullLeft(), 0.0));
-  assert(IsEqual(stream_t->PullRight(), 0.0));
+  assert(IsEqual(stream_t->left_stream()->Pull(), 0.0));
+  assert(IsEqual(stream_t->right_stream()->Pull(), 0.0));
   
   
   
@@ -206,25 +212,28 @@ bool KemarMic::Test() {
   mic_u.RecordPlaneWave(impulse, Point(0.0,-1.0,0.0), 2);
   mic_u.Tick();
   
-  std::vector<Signal> output_u = mic_u.stream()->Pull(impulse_response_length);
+  Signal output_u_left = mic_u.stream()->left_stream()->Pull(impulse_response_length);
+  Signal output_u_right = mic_u.stream()->right_stream()->Pull(impulse_response_length);
   
   Signal cmp_u_left = mcl::Add(cmp_imp_front_left, cmp_imp_right_left);
   Signal cmp_u_right = mcl::Add(cmp_imp_front_left, cmp_imp_right_right);
- 
-  assert(IsEqual(cmp_u_left, output_u[0]));
-  assert(IsEqual(cmp_u_right, output_u[1]));
+  
+  assert(IsEqual(cmp_u_left, output_u_left));
+  assert(IsEqual(cmp_u_right, output_u_right));
   
   
   mic_u.RecordPlaneWave(mcl::Multiply(impulse, sample), Point(1.0,0.0,0.0), 1);
   mic_u.RecordPlaneWave(impulse, Point(0.0,1.0,0.0), 2);
+  mic_u.Tick();
   
-  std::vector<Signal> output_u_b = mic_u.stream()->Pull(impulse_response_length);
+  Signal output_u_b_left = mic_u.stream()->left_stream()->Pull(impulse_response_length);
+  Signal output_u_b_right = mic_u.stream()->right_stream()->Pull(impulse_response_length);
   
   Signal cmp_u_left_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_left);
   Signal cmp_u_right_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_right);
   
-  assert(IsEqual(cmp_u_left_b, output_u_b[0]));
-  assert(IsEqual(cmp_u_right_b, output_u_b[1]));
+  assert(IsEqual(cmp_u_left_b, output_u_b_left));
+  assert(IsEqual(cmp_u_right_b, output_u_b_right));
   
   return true;
 }
