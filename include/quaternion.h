@@ -81,6 +81,19 @@ Quaternion QuatMultiply(const Quaternion& q, const Quaternion& r);
 Quaternion Eul2Quat(const Real angle_1, const Real angle_2, const Real angle_3,
                     const EulerOrder order = zyx);
   
+/** Returns the Euler angle around the x-axis associated to a given quaternion
+ and for a given Euler rotation convention */
+Real Quat2EulX(const Quaternion q, const EulerOrder order = zyx);
+  
+/** Returns the Euler angle around the y-axis associated to a given quaternion
+ and for a given Euler rotation convention */
+Real Quat2EulY(const Quaternion q, const EulerOrder order = zyx);
+  
+/** Returns the Euler angle around the z-axis associated to a given quaternion
+ and for a given Euler rotation convention */
+Real Quat2EulZ(const Quaternion q, const EulerOrder order = zyx);
+  
+  
 } // namespace mcl
 
 #endif

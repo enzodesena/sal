@@ -108,4 +108,43 @@ Quaternion Quaternion::Identity() {
   return Quaternion(1.0, 0.0, 0.0, 0.0);
 }
   
+Real Quat2EulX(const Quaternion q, const EulerOrder order) {
+  switch (order) {
+    case zyx:
+      return atan2(-2.0*q.y()*q.z()+2.0*q.w()*q.x(),
+                   pow(q.w(),2.0)+pow(q.z(),2.0)-pow(q.y(),2.0)-pow(q.x(),2.0));
+      break;
+    default:
+      throw_line();
+      return NAN;
+      break;
+  }
+}
+  
+Real Quat2EulZ(const Quaternion q, const EulerOrder order) {
+  switch (order) {
+    case zyx:
+      return atan2(-2.0*q.x()*q.y()+2.0*q.w()*q.z(),
+                   pow(q.w(), 2.0)+pow(q.x(), 2.0)
+                   -pow(q.y(), 2.0)-pow(q.z(), 2.0));
+      break;
+    default:
+      throw_line();
+      return NAN;
+      break;
+  }
+}
+
+Real Quat2EulY(const Quaternion q, const EulerOrder order) {
+  switch (order) {
+    case zyx:
+      return asin(2.0*q.x()*q.z()+2.0*q.w()*q.y());
+      break;
+    default:
+      throw_line();
+      return NAN;
+      break;
+  }
+}
+  
 } // namespace mcl

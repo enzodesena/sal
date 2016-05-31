@@ -56,7 +56,11 @@ bool Quaternion::Test() {
   // Test Euler to Quaternion conversion
   assert(IsEqual(Eul2Quat(0,PI/2.0,0, zyx), Quaternion(sqrt(2.0)/2.0,0.0,sqrt(2.0)/2.0,0)));
   assert(IsEqual(Eul2Quat(PI/2.0,0,0, zyz), Quaternion(sqrt(2.0)/2.0,0,0,sqrt(2.0)/2.0)));
-    
+  
+  assert(IsEqual(Quat2EulX(Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,0), zyx), PI/2.0));
+  assert(IsEqual(Quat2EulY(Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,0), zyx), 0.0));
+  assert(IsEqual(Quat2EulZ(Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,0), zyx), 0.0));
+  
   return true;
 }
   
