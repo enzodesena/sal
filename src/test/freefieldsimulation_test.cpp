@@ -12,6 +12,8 @@
 #include "microphone.h"
 #include "monomics.h"
 
+using mcl::Point;
+
 namespace sal {
   
 bool FreeFieldSim::Test() {

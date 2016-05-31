@@ -14,6 +14,7 @@
 
 namespace sal {
 
+using mcl::Point;
   
 bool MicrophoneArray::Test() {
   

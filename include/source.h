@@ -22,16 +22,16 @@ namespace sal {
 
 class Source {
 public:
-  Source(const Point);
+  Source(const mcl::Point);
   
-  Source(const Point, const Signal signal);
+  Source(const mcl::Point, const Signal signal);
   
-  Point position() const;
-  void set_position(const Point);
+  mcl::Point position() const;
+  void set_position(const mcl::Point);
   
   MonoStream* stream() { return &stream_; }
   
-  static Source WavRead(Point point, const std::string file_name) {
+  static Source WavRead(mcl::Point point, const std::string file_name) {
     std::vector<Signal> audio = WavHandler::Read(file_name);
     Source output(point);
     output.stream()->Push(audio[0]);
@@ -41,7 +41,7 @@ public:
 private:
   
   MonoStream stream_;
-  Point position_;
+  mcl::Point position_;
 };
 
 } // namespace sal

@@ -43,10 +43,10 @@ public:
    on a new sample. Methods without wave_id (i.e. assuming there
    is a single plane wave incoming) do this automatically.
    */
-  Microphone(Point position, Angle theta, Angle phi, Angle psi);
+  Microphone(mcl::Point position, Angle theta, Angle phi, Angle psi);
   
-  Point position() const;
-  void set_position(const Point& position);
+  mcl::Point position() const;
+  void set_position(const mcl::Point& position);
   
   Angle theta() const { return theta_; }
   void set_theta(Angle theta);
@@ -64,14 +64,14 @@ public:
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Sample& sample, const Point& point);
+  void RecordPlaneWave(const Sample& sample, const mcl::Point& point);
   
   /**
    This method should only be called in case of a single plane wave
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Signal& signal, const Point& point);
+  void RecordPlaneWave(const Signal& signal, const mcl::Point& point);
   
   /**
    This method should only be called in case of a single plane wave
@@ -89,10 +89,10 @@ public:
    the first time it sees a new wave_id, it will allocate a new filter
    for it.
    */
-  void RecordPlaneWave(const Sample& sample, const Point& point,
+  void RecordPlaneWave(const Sample& sample, const mcl::Point& point,
                        const UInt& wave_id);
   
-  void RecordPlaneWave(const Signal& signal, const Point& point,
+  void RecordPlaneWave(const Signal& signal, const mcl::Point& point,
                        const UInt& wave_id);
   
   /**
@@ -110,7 +110,7 @@ public:
   virtual bool IsFrameEnabled() { return false; }
   
   /** This method translates `point` in the reference system of the mic. */
-  Point GetRelativePoint(const Point& point) const;
+  mcl::Point GetRelativePoint(const mcl::Point& point) const;
   
   /** Resets the state of the microphone (if any). */
   virtual void Reset() {}
@@ -121,20 +121,20 @@ public:
 private:
   /**
    Cache variables to speed up. Since most of the times two consecutive calls
-   to `Filter()` are for the same `Point` in space, we save the result of the
+   to `Filter()` are for the same `mcl::Point` in space, we save the result of the
    geometrical calculations.
    */
-  std::map<UInt,Point> last_point_;
+  std::map<UInt,mcl::Point> last_point_;
   
   /**
    This point is the most up-to-date point in the reference system of the mic.
    */
-  std::map<UInt,Point> last_relative_point_;
+  std::map<UInt,mcl::Point> last_relative_point_;
   
-  void CalculateRelativePoint(const Point& point, const UInt& wave_id);
+  void CalculateRelativePoint(const mcl::Point& point, const UInt& wave_id);
   
   /**
-   This is implemented by the specific type of microphones. `Point` in this
+   This is implemented by the specific type of microphones. `mcl::Point` in this
    case is relative to the microphone reference system.
    This is the most important function of this object. This filters the
    sample `sample` as a function of the position from where the sound is
@@ -147,18 +147,18 @@ private:
    higher levels.
    */
   virtual void RecordPlaneWaveRelative(const Sample& sample,
-                                       const Point& point,
+                                       const mcl::Point& point,
                                        const UInt& wave_id) = 0;
   
   virtual void RecordPlaneWaveRelative(const Signal& signal,
-                                       const Point& point,
+                                       const mcl::Point& point,
                                        const UInt& wave_id);
   
   /** Lock to make object thread safe */
   pthread_rwlock_t rw_lock_;
   
 protected:
-  Point position_;
+  mcl::Point position_;
   Angle theta_;
   Angle phi_;
   Angle psi_;
@@ -170,7 +170,7 @@ protected:
 
 class StereoMicrophone : public Microphone {
 public:
-  StereoMicrophone(Point position, Angle theta, Angle phi, Angle psi) :
+  StereoMicrophone(mcl::Point position, Angle theta, Angle phi, Angle psi) :
   Microphone(position, theta, phi, psi) {}
   
   StereoStream* stream() { return &stream_; }

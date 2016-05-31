@@ -17,7 +17,7 @@
 using mcl::IsEqual;
 using sal::Length;
 using sal::Time;
-using sal::Point;
+using mcl::Point;
 using sal::Sample;
 
 

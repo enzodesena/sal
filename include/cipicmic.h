@@ -39,7 +39,7 @@ public:
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  CipicMic(Point position, Angle theta, Angle phi, Angle psi,
+  CipicMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
            const std::string directory, const CipicDataType data_type,
            const UInt update_length = 1);
   
@@ -53,7 +53,7 @@ private:
                                          const std::string directory,
                                          const CipicDataType data_type);
   
-  virtual Signal GetBrir(const Ear ear, const Point& point);
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point);
   
   std::vector<sal::Angle> azimuths_;
   

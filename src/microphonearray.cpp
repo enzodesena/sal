@@ -12,8 +12,9 @@
 #include "microphonearray.h"
 #include <vector>
 
-namespace sal {
+using mcl::Point;
 
+namespace sal {
   
 void MicrophoneArray::RecordPlaneWaveRelative(const Sample& sample,
                                               const Point& point,
@@ -44,7 +45,7 @@ bool MicrophoneArray::IsCoincident() {
   
   Point position = microphone_pointers_[0]->position();
   for (UInt i=1; i<num_microphones; ++i) {
-    if (! Point::IsEqual(microphone_pointers_[i]->position(), position)) {
+    if (! IsEqual(microphone_pointers_[i]->position(), position)) {
       return false;
     }
   }

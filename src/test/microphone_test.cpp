@@ -15,6 +15,8 @@
 #include "sphericalheadmic.h"
 #include "mcl.h"
 
+using mcl::Point;
+
 namespace sal {
 
 bool Microphone::Test() {

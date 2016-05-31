@@ -47,8 +47,9 @@
 #include "salconstants.h"
 #include <string.h>
 
-namespace sal {
+using mcl::Point;
 
+namespace sal {
 
 CipicMic::CipicMic(Point position, Angle theta, Angle phi, Angle psi,
                    const std::string directory, const CipicDataType data_type,

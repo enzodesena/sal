@@ -30,7 +30,7 @@ class MicrophoneArray : public Microphone {
 public:
   
   MicrophoneArray() :
-          Microphone(Point(0.0, 0.0, 0.0), (Angle) 0.0,
+          Microphone(mcl::Point(0.0, 0.0, 0.0), (Angle) 0.0,
                      (Angle) 0.0, (Angle) 0.0) {}
   
 
@@ -38,8 +38,8 @@ public:
   virtual void Tick();
   
   // TODO: implement these two virtual methods
-  //  Point position() const;
-  //  virtual void set_position(const Point&);
+  //  mcl::Point position() const;
+  //  virtual void set_position(const mcl::Point&);
   
   /** 
    Returns true if the array is coincident. If there are 0 or 1 microphones
@@ -62,7 +62,7 @@ private:
    are in fact included in the `FreeFieldSimulation` in SAT or are
    are implemented as delay lines in SDN.
    */
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
                                        const UInt& wave_id);
   
   MultichannelStream stream_;
@@ -81,7 +81,7 @@ protected:
  */
 class CircularArray : public MicrophoneArray {
 public:
-  CircularArray(const Point& position,
+  CircularArray(const mcl::Point& position,
                 const Length radius,
                 const UInt num_microphones,
                 const Angle first_element_heading,
@@ -89,20 +89,20 @@ public:
   static std::vector<Angle> GetAngles(const UInt num_microphones,
                                       const Angle first_element_heading,
                                       const Angle span_angle);
-  static std::vector<Point> GetPositions(const Point& position,
+  static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
                                          const Length radius,
                                          const UInt num_microphones,
                                          const Angle first_element_heading,
                                          const Angle span_angle);
 protected:
   std::vector<Angle> angles_;
-  std::vector<Point> positions_;
+  std::vector<mcl::Point> positions_;
 };
   
 
 class CircularTrig : public CircularArray {
 public:
-  CircularTrig(const Point& position,
+  CircularTrig(const mcl::Point& position,
                const Length radius,
                const UInt num_microphones,
                const Angle first_element_heading,
@@ -117,7 +117,7 @@ private:
 
 class CircularPSR : public CircularArray {
 public:
-  CircularPSR(const Point& position,
+  CircularPSR(const mcl::Point& position,
               const Length radius,
               const UInt num_microphones,
               const Angle first_element_heading,
@@ -140,7 +140,7 @@ private:
  */
 class StereoMic : public CircularArray {
 public:
-  StereoMic(const Point& position,
+  StereoMic(const mcl::Point& position,
             const Length radius,
             const Angle midline_heading,
             const Angle base_angle) :
@@ -151,7 +151,7 @@ public:
   
 class StereoPSR : public StereoMic {
 public:
-  StereoPSR(const Point& position,
+  StereoPSR(const mcl::Point& position,
             const Length radius,
             const Angle midline_heading,
             const Angle base_angle,

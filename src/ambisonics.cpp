@@ -15,6 +15,8 @@
 #include "mcl.h"
 #include "matrixop.h"
 
+using mcl::Point;
+
 namespace sal {
 
 void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,

@@ -13,6 +13,8 @@
 #include "microphone.h"
 #include "salconstants.h"
 
+using mcl::Point;
+
 namespace sal {
   
 bool SphericalHeadMic::Test() {

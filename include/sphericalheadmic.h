@@ -26,7 +26,7 @@ namespace sal {
  */
 class SphericalHeadMic : public BinauralMic {
 public:
-  SphericalHeadMic(const Point position, const Angle theta,
+  SphericalHeadMic(const mcl::Point position, const Angle theta,
                    const Angle phi, const Angle psi,
                    const Angle ears_angle,
                    const Length sphere_radius,
@@ -39,7 +39,7 @@ public:
   virtual ~SphericalHeadMic() {}
 private:
   
-  virtual Signal GetBrir(const Ear ear, const Point& point);
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point);
   
   /** For the various definitions see Duda's paper. */
   static mcl::Complex Sphere(Length a, Length r, Angle theta,
@@ -62,7 +62,7 @@ private:
                                         bool minimum_phase = false);
   
   /** Calculates the angle in the reference system of the sphere. */
-  static Angle GetTheta(const Point& point,
+  static Angle GetTheta(const mcl::Point& point,
                             const Angle& ears_angle,
                             const Ear& ear);
 

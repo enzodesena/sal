@@ -10,6 +10,8 @@
 
 #include "microphone.h"
 
+using mcl::Point;
+
 namespace sal {
   
 Microphone::Microphone(Point position, Angle theta, Angle phi, Angle psi) :
@@ -52,7 +54,7 @@ void Microphone::set_psi(Angle psi) {
 void Microphone::CalculateRelativePoint(const Point& point,
                                         const UInt& wave_id) {
   if (last_point_.count(wave_id) == 0 ||
-      ! Point::IsEqual(last_point_[wave_id], point)) {
+      ! IsEqual(last_point_[wave_id], point)) {
     last_point_[wave_id] = point;
     last_relative_point_[wave_id] = GetRelativePoint(point);
   }

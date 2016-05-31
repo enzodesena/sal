@@ -22,6 +22,8 @@
 #include "mcl.h"
 #include <vector>
 
+using mcl::Point;
+
 namespace sal {
   
 FreeFieldSim::FreeFieldSim(std::vector<Microphone*> microphones,

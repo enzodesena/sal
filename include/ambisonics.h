@@ -38,7 +38,7 @@ public:
    if theta = 0.0. I am thinking of soundfield microphone, which is pointing
    upwards.
    */
-  AmbisonicsMic(const Point& position, Angle theta, Angle phi, Angle psi,
+  AmbisonicsMic(const mcl::Point& position, Angle theta, Angle phi, Angle psi,
                 UInt order, AmbisonicsConvention convention = sqrt2) :
           Microphone(position, theta, phi, psi),
           order_(order), convention_(convention) {}
@@ -56,7 +56,7 @@ public:
   
   static bool Test();
 private:
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
                                        const UInt& wave_id);
   
   const UInt order_;

@@ -21,7 +21,7 @@ namespace sal {
   
 class MonoMic : public Microphone {
 public:
-  MonoMic(Point position, Angle theta, Angle phi, Angle psi) :
+  MonoMic(mcl::Point position, Angle theta, Angle phi, Angle psi) :
           Microphone(position, theta, phi, psi) {}
   
   virtual void Tick() {
@@ -36,7 +36,7 @@ protected:
   
 class GainMic : public MonoMic {
 public:
-  GainMic(Point position, Angle theta, Angle phi, Angle psi,
+  GainMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
           Sample gain) :
           MonoMic(position, theta, phi, psi),
           gain_(gain) {}
@@ -46,12 +46,12 @@ public:
   
   virtual ~GainMic() {}
 private:
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point&,
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point&,
                                        const UInt&) {
     stream_.Add(sample*gain_);
   }
   
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const Point&,
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point&,
                                        const UInt&) {
     stream_.Add(mcl::Multiply<sal::Sample>(signal, gain_));
   }
@@ -62,7 +62,7 @@ private:
 
 class OmniMic : public GainMic {
 public:
-  OmniMic(Point position, Angle theta, Angle phi, Angle psi) :
+  OmniMic(mcl::Point position, Angle theta, Angle phi, Angle psi) :
           GainMic(position, theta, phi, psi, (Sample) 1.0) {}
   
   virtual bool IsCoincident() { return true; }
@@ -76,7 +76,7 @@ public:
  */
 class TrigMic : public MonoMic {
 public:
-  TrigMic(Point position, Angle theta, Angle phi, Angle psi,
+  TrigMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
           std::vector<Sample> coefficients) :
           MonoMic(position, theta, phi, psi),
           coefficients_(coefficients) {}
@@ -86,7 +86,7 @@ public:
   virtual ~TrigMic() {}
   
   private:
-  Sample GetDirectivity(const Point& point) {
+  Sample GetDirectivity(const mcl::Point& point) {
     Angle theta = point.theta();
     
     const UInt N = coefficients_.size();
@@ -95,7 +95,7 @@ public:
     return directivity;
   }
   
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
                                        const UInt&) {
     stream_.Add(sample*GetDirectivity(point));
   }
@@ -111,7 +111,7 @@ public:
  */
 class TanMic : public MonoMic {
 public:
-  TanMic(Point position, Angle theta, Angle phi, Angle psi,
+  TanMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
          sal::Sample base_angle) :
   MonoMic(position, theta, phi, psi),
   base_angle_(base_angle) {}
@@ -121,7 +121,7 @@ public:
   virtual ~TanMic() {}
   
 private:
-  Sample GetDirectivity(const Point& point) {
+  Sample GetDirectivity(const mcl::Point& point) {
     Angle theta = point.theta();
     
     sal::Angle phi_l = 0;
@@ -138,7 +138,7 @@ private:
     return directivity;
   }
   
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
                                        const UInt&) {
     stream_.Add(sample*GetDirectivity(point));
   }

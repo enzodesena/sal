@@ -30,7 +30,7 @@ public:
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  BinauralMic(const Point& position,
+  BinauralMic(const mcl::Point& position,
               const Angle theta, const Angle phi, const Angle psi,
               const UInt update_length);
   
@@ -54,13 +54,13 @@ private:
    The head is assumed to be positioned lying on the x-axis and facing
    the positive z-direction. E.g. a point on the positive z-axis
    is facing directly ahead of the head. */
-  virtual Signal GetBrir(const Ear ear, const Point& point) = 0;
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) = 0;
   
   
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const Point& point,
+  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
                                        const UInt& wave_id);
   
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const Point& point,
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
                                        const UInt& wave_id);
   
   void CreateInstanceIfNotExist(const UInt& wave_id);
@@ -87,12 +87,12 @@ private:
   base_mic_(base_mic),
   filter_(mcl::FirFilter::GainFilter(1.0)),
   ear_(ear),
-  previous_point_(Point(NAN, NAN, NAN)),
+  previous_point_(mcl::Point(NAN, NAN, NAN)),
   update_length_(update_length) {}
   
-  Sample RecordPlaneWaveRelative(const Sample& sample, const Point& point);
+  Sample RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point);
   
-  Signal RecordPlaneWaveRelative(const Signal& signal, const Point& point);
+  Signal RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point);
   
   /**
    The microphone object is called for every sample, while the position
@@ -100,9 +100,9 @@ private:
    stored so that we don't need to update the filter coefficients at every
    sample, but only when something changes.
    */
-  Point previous_point_;
+  mcl::Point previous_point_;
   
-  void UpdateFilter(const Point& point);
+  void UpdateFilter(const mcl::Point& point);
   
   mcl::FirFilter filter_;
   
@@ -120,7 +120,7 @@ private:
   
 class DatabaseBinauralMic : public BinauralMic {
 public:
-  DatabaseBinauralMic(const Point& position,
+  DatabaseBinauralMic(const mcl::Point& position,
                       const Angle theta, const Angle phi, const Angle psi,
                       const UInt update_length);
   

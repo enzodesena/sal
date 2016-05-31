@@ -12,7 +12,10 @@
 #include "salconstants.h"
 #include <cmath>
 
+using mcl::Point;
+
 namespace sal {
+
 SphericalHeadMic::SphericalHeadMic(const Point position,
                                    const Angle theta,
                                    const Angle phi,

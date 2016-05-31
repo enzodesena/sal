@@ -14,9 +14,10 @@
 #include "salconstants.h"
 #include <string.h>
 
+using mcl::Point;
+
 namespace sal {
 
-  
 KemarMic::KemarMic(const Point& position,
                    const Angle theta, const Angle phi, const Angle psi,
                    const std::string directory,

@@ -13,6 +13,8 @@
 #include "microphone.h"
 #include "stream.h"
 
+using mcl::Point;
+
 namespace sal {
   
 bool AmbisonicsMic::Test() {
