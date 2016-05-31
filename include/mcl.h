@@ -19,6 +19,8 @@
 #include "basicop.h"
 #include "statisticsop.h"
 #include "dataop.h"
+#include "quaternion.h"
+#include "point.h"
 
 #include "digitalfilter.h"
 #include "iirfilter.h"

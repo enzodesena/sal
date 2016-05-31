@@ -15,6 +15,7 @@
 #endif
 
 #include "mcltypes.h"
+#include "quaternion.h"
 #include <vector>
 
 
@@ -47,7 +48,15 @@ bool IsEqual(const std::vector<T>& vector_a,
 
 bool IsEqual(const std::vector<Int>& vector_a,
              const std::vector<Int>& vector_b);
+
+bool IsEqual(const Quaternion& quaternion_a, const Quaternion& quaternion_b);
   
+  
+  
+bool IsEqual(const Point& point_a, const Point& point_b,
+             const Real precision = VERY_SMALL);
+  
+bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b);
   
 /** Returns true if num is nan */
 bool IsNan(Real num);

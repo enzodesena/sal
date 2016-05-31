@@ -18,6 +18,7 @@
 int main (int argc, char * const argv[]) {
   using namespace mcl;
   
+  Quaternion::Test();
   ElementaryOpTest();
   BasicOpTest();
   VectorOpTest();
@@ -26,6 +27,7 @@ int main (int argc, char * const argv[]) {
   MatrixOpTest();
   StatisticsOpTest();
   ComparisonOpTest();
+  Point::Test();
   
   IirFilter::Test();
   FirFilter::SpeedTests();

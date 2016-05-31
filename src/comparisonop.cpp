@@ -10,6 +10,7 @@
 #include "mcltypes.h"
 #include "vectorop.h"
 #include "pointwiseop.h"
+#include "quaternion.h"
 #include <vector>
 
 
@@ -105,6 +106,11 @@ bool IsEqual(Complex num_a, Complex num_b, Real precision) {
   return (fabs(num_a.real() - num_b.real()) < precision) &
   (fabs(num_a.imag() - num_b.imag()) < precision);
 }
+  
+bool IsEqual(const Quaternion& q_a, const Quaternion& q_b) {
+  return IsEqual(q_a.w(), q_b.w()) & IsEqual(q_a.x(), q_b.x()) &
+         IsEqual(q_a.y(), q_b.y()) & IsEqual(q_a.z(), q_b.z());
+}
 
 
 
@@ -126,5 +132,25 @@ bool IsReal(const std::vector<Complex>& input) {
   }
   return true;
 }
+  
+  
+  
+bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b) {
+  const UInt num_points = points_a.size();
+  if (num_points != points_b.size()) { return false; }
+  for (UInt i=0; i<num_points; ++i) {
+    if (! IsEqual(points_a[i], points_b[i])) { return false; }
+  }
+  return true;
+}
+  
+  
+bool IsEqual(const Point& point_a, const Point& point_b,
+             const Real precision) {
+  return mcl::IsEqual(point_a.x(), point_b.x(), precision) &&
+  mcl::IsEqual(point_a.y(), point_b.y(), precision) &&
+  mcl::IsEqual(point_a.z(), point_b.z(), precision);
+}
+
   
 } // namespace mcl
