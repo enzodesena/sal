@@ -47,19 +47,25 @@ bool Quaternion::Test() {
   assert(IsEqual(AxAng2Quat(1,0,0,PI/2.0),
                  Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.0,0.0)));
   
+  assert(IsEqual(QuatRotate(AxAng2Quat(0,1,0,-PI/2.0), Point(1.0,0.0,0.0), right_handed),
+                 Point(0,0,1)));
+  assert(IsEqual(QuatRotate(QuatConj(AxAng2Quat(0,1,0,PI/2.0)), Point(1.0,0.0,0.0), right_handed),
+                 Point(0,0,1)));
+  assert(IsEqual(QuatRotate(AxAng2Quat(0,1,0,PI/2.0), Point(1.0,0.0,0.0), left_handed),
+                 Point(0,0,1)));
+  assert(IsEqual(QuatRotate(AxAng2Quat(0,1,0,PI/2.0), Point(-1.0,0.0,0.0), right_handed),
+                 Point(0,0,1)));
+  assert(IsEqual(QuatRotate(AxAng2Quat(0,1,0,-PI/2.0), Point(-1.0,0.0,0.0), left_handed),
+                 Point(0,0,1)));
+  
   // Test identity quaternion
   assert(IsEqual(QuatRotate(Quaternion::Identity(), Point(1.0, 2.0, 3.0)), Point(1.0, 2.0, 3.0)));
   assert(IsEqual(QuatMultiply(Quaternion::Identity(), p), p));
   assert(IsEqual(QuatMultiply(Quaternion::Identity(), r), r));
   assert(IsEqual(QuatMultiply(Quaternion::Identity(), s), s));
   
-  // Test Euler to Quaternion conversion
-  assert(IsEqual(Eul2Quat(0,PI/2.0,0, zyx), Quaternion(sqrt(2.0)/2.0,0.0,sqrt(2.0)/2.0,0)));
-  assert(IsEqual(Eul2Quat(PI/2.0,0,0, zyz), Quaternion(sqrt(2.0)/2.0,0,0,sqrt(2.0)/2.0)));
-  
-  assert(IsEqual(Quat2EulX(Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,0), zyx), PI/2.0));
-  assert(IsEqual(Quat2EulY(Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,0), zyx), 0.0));
-  assert(IsEqual(Quat2EulZ(Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,0), zyx), 0.0));
+  // Test QuatInverse
+  assert(IsEqual(QuatInverse(Quaternion(1,0,1,0)), Quaternion(0.5,0,-0.5,0)));
   
   return true;
 }

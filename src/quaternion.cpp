@@ -147,4 +147,11 @@ Real Quat2EulY(const Quaternion q, const EulerOrder order) {
   }
 }
   
+Quaternion QuatInverse(const Quaternion q) {
+  Real norm_sq = pow(Norm(q), 2.0);
+  Quaternion conj = QuatConj(q);
+  return Quaternion(conj.w()/norm_sq,
+                    conj.x()/norm_sq, conj.y()/norm_sq, conj.z()/norm_sq);
+}
+  
 } // namespace mcl

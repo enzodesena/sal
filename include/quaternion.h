@@ -93,6 +93,7 @@ Real Quat2EulY(const Quaternion q, const EulerOrder order = zyx);
  and for a given Euler rotation convention */
 Real Quat2EulZ(const Quaternion q, const EulerOrder order = zyx);
   
+Quaternion QuatInverse(const Quaternion q);
   
 } // namespace mcl
 

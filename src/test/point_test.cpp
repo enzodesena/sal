@@ -97,6 +97,17 @@ bool Point::Test() {
   assert((Point::Rotate(Point(0.0,1.0,0.0), -PI/2.0, -PI/2.0, 0.0)).Equals(Point(0.0,0.0,1.0)));
 
   
+  assert((Point::Rotate(Point(0.0,1.0,0.0),
+                        PI/2.0, PI/2.0, 0.0)).Equals(Point(0.0,0.0,1.0)));
+  
+  // Proof that is extrinsic, not intrinsic
+  assert(!Point::Rotate(Point(0.0,1.0,0.0),
+                        PI/2.0, PI/2.0, 0.0).Equals(Point(-1.0,0.0,0.0))); // Intrinsic rotation
+  assert(Point::Rotate(Point(0.0,1.0,0.0),
+                       PI/2.0, PI/2.0, 0.0).Equals(Point(0.0,0.0,1.0))); // Extrinsic rotation
+  
+
+  
   assert(Point::PointSpherical(1.0, PI/2.0, 0.0).Equals(Point(1.0, 0.0, 0.0)));
   assert(Point::PointSpherical(2.0, PI/2.0, 0.0).Equals(Point(2.0, 0.0, 0.0)));
   assert(Point::PointSpherical(1.0, 0.0, 0.0).Equals(Point(0.0, 0.0, 1.0)));
