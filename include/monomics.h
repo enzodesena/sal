@@ -21,8 +21,8 @@ namespace sal {
   
 class MonoMic : public Microphone {
 public:
-  MonoMic(mcl::Point position, Angle theta, Angle phi, Angle psi) :
-          Microphone(position, theta, phi, psi) {}
+  MonoMic(mcl::Point position, mcl::Quaternion orientation) :
+          Microphone(position, orientation) {}
   
   virtual void Tick() {
     stream_.Tick();
@@ -36,9 +36,9 @@ protected:
   
 class GainMic : public MonoMic {
 public:
-  GainMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
+  GainMic(mcl::Point position, mcl::Quaternion orientation,
           Sample gain) :
-          MonoMic(position, theta, phi, psi),
+          MonoMic(position, orientation),
           gain_(gain) {}
   
   virtual bool IsCoincident() { return true; }
@@ -62,8 +62,8 @@ private:
 
 class OmniMic : public GainMic {
 public:
-  OmniMic(mcl::Point position, Angle theta, Angle phi, Angle psi) :
-          GainMic(position, theta, phi, psi, (Sample) 1.0) {}
+  OmniMic(mcl::Point position, mcl::Quaternion orientation ) :
+          GainMic(position, orientation, (Sample) 1.0) {}
   
   virtual bool IsCoincident() { return true; }
 };
@@ -76,9 +76,9 @@ public:
  */
 class TrigMic : public MonoMic {
 public:
-  TrigMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
+  TrigMic(mcl::Point position, mcl::Quaternion orientation,
           std::vector<Sample> coefficients) :
-          MonoMic(position, theta, phi, psi),
+          MonoMic(position, orientation),
           coefficients_(coefficients) {}
   
   virtual bool IsCoincident() { return true; }
@@ -87,11 +87,12 @@ public:
   
   private:
   Sample GetDirectivity(const mcl::Point& point) {
-    Angle theta = point.theta();
+    Angle phi = mcl::Point::AngleBetweenPoints(point,
+                                               mcl::Point(1.0, 0.0, 0.0));
     
     const UInt N = coefficients_.size();
     Sample directivity(coefficients_[0]);
-    for (UInt i=1; i<N; ++i) { directivity += coefficients_[i]*pow(cos(theta),i); }
+    for (UInt i=1; i<N; ++i) { directivity += coefficients_[i]*pow(cos(phi),i); }
     return directivity;
   }
   
@@ -111,9 +112,9 @@ public:
  */
 class TanMic : public MonoMic {
 public:
-  TanMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
+  TanMic(mcl::Point position, mcl::Quaternion orientation,
          sal::Sample base_angle) :
-  MonoMic(position, theta, phi, psi),
+  MonoMic(position, orientation),
   base_angle_(base_angle) {}
   
   virtual bool IsCoincident() { return true; }
@@ -122,18 +123,17 @@ public:
   
 private:
   Sample GetDirectivity(const mcl::Point& point) {
-    Angle theta = point.theta();
+    Angle phi = mcl::Point::AngleBetweenPoints(point,
+                                               mcl::Point(1.0, 0.0, 0.0));
     
     sal::Angle phi_l = 0;
     sal::Angle phi_lp1 = base_angle_; //PI/3.0;
     
     sal::Sample directivity;
-    if (theta < phi_lp1) {
+    if (phi < phi_lp1) {
       directivity =
-      1.0/sqrt(1+pow(sin(theta-phi_l), 2.0)/pow(sin(phi_lp1-theta), 2.0));
-    } else {
-      directivity = 0.0;
-    }
+      1.0/sqrt(1+pow(sin(phi-phi_l), 2.0)/pow(sin(phi_lp1-phi), 2.0));
+    } else { directivity = 0.0; }
     
     return directivity;
   }

@@ -13,19 +13,18 @@
 #include <cmath>
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
 
 SphericalHeadMic::SphericalHeadMic(const Point position,
-                                   const Angle theta,
-                                   const Angle phi,
-                                   const Angle psi,
+                                   const Quaternion orientation,
                                    const Angle ears_angle,
                                    const Length sphere_radius,
                                    const UInt ir_length,
                                    const Time sampling_frequency,
                                    const UInt update_length) :
-          BinauralMic(position, theta, phi, psi, update_length),
+          BinauralMic(position, orientation, update_length),
           ears_angle_(ears_angle), sphere_radius_(sphere_radius),
           sampling_frequency_(sampling_frequency),
           impulse_response_length_(ir_length),
@@ -35,10 +34,10 @@ SphericalHeadMic::SphericalHeadMic(const Point position,
   
   
 Angle SphericalHeadMic::GetTheta(const Point& point,
-                                  const Angle& ears_angle,
-                                  const Ear& ear) {
-  Angle theta_ear = ears_angle;
-  Angle phi_ear = (ear==left_ear) ? PI/2.0 : -PI/2.0;
+                                 const Angle& ears_angle,
+                                 const Ear& ear) {
+  Angle theta_ear = PI/2.0;
+  Angle phi_ear = (ear==left_ear) ? ears_angle : -ears_angle;
   
   // Here we compute the angle between the direction of the ear and the 
   // direction of the incoming wave.

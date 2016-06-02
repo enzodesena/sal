@@ -9,13 +9,15 @@
  */
 
 #include "microphone.h"
+#include "quaternion.h"
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
   
-Microphone::Microphone(Point position, Angle theta, Angle phi, Angle psi) :
-  position_(position), theta_(theta), phi_(phi), psi_(psi) {
+Microphone::Microphone(Point position, mcl::Quaternion orientation) :
+  position_(position), orientation_(orientation) {
   pthread_rwlock_init(&rw_lock_, NULL);
 }
   
@@ -25,28 +27,6 @@ Point Microphone::position() const { return position_; }
 void Microphone::set_position(const Point& position) {
   pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   position_ = position;
-  last_point_.clear();
-  pthread_rwlock_unlock(&rw_lock_); // Release lock
-}
-  
-  
-void Microphone::set_theta(Angle theta) {
-  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
-  theta_ = theta;
-  last_point_.clear();
-  pthread_rwlock_unlock(&rw_lock_); // Release lock
-}
-
-void Microphone::set_phi(Angle phi) {
-  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
-  phi_ = phi;
-  last_point_.clear();
-  pthread_rwlock_unlock(&rw_lock_); // Release lock
-}
-
-void Microphone::set_psi(Angle psi) {
-  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
-  psi_ = psi;
   last_point_.clear();
   pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
@@ -94,9 +74,9 @@ Point Microphone::GetRelativePoint(const Point& point) const {
                  point.y()-position_.y(),
                  point.z()-position_.z());
   
-  // Rotating using the 3 euler angles with ZYX convention for phi, theta and
-  // psi, respectively.
-  Point rotated = Point::Rotate(centered, -phi_, -theta_, -psi_);
+  // Instead of rotating the head, we are rotating the point in an opposite
+  // direction (that's why the QuatInverse).
+  Point rotated = mcl::QuatRotate(mcl::QuatInverse(orientation_), centered);
   return rotated;
 }
   

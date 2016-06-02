@@ -35,7 +35,7 @@ public:
    BRIR. If set to zero yields the entire BRIR.
    */
   KemarMic(const mcl::Point& position,
-           const Angle theta, const Angle phi, const Angle psi,
+           const mcl::Quaternion orientation,
            const std::string directory, const UInt num_samples = 0,
            const UInt update_length = 1);
   

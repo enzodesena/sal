@@ -14,6 +14,7 @@
 #include "salconstants.h"
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
   
@@ -50,7 +51,7 @@ bool SphericalHeadMic::Test() {
   
   
   Angle ears_angle(100.0/180.0*PI);
-  SphericalHeadMic mic_a(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0,
+  SphericalHeadMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
                          ears_angle, // ears angle
                          0.09, // sphere radius
                          6, // impulse response length
@@ -113,7 +114,7 @@ bool SphericalHeadMic::Test() {
   assert(IsEqual(output_b_left, output_contralateral));
   
   
-  SphericalHeadMic mic_b(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
+  SphericalHeadMic mic_b(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                          ears_angle, // ears angle
                          0.09, // sphere radius
                          6, // impulse response length

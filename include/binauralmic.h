@@ -31,7 +31,7 @@ public:
    `directory` contains the hrtf database.
    */
   BinauralMic(const mcl::Point& position,
-              const Angle theta, const Angle phi, const Angle psi,
+              const mcl::Quaternion orientation,
               const UInt update_length);
   
   void set_update_length(UInt update_length) { update_length_ = update_length; }
@@ -121,7 +121,7 @@ private:
 class DatabaseBinauralMic : public BinauralMic {
 public:
   DatabaseBinauralMic(const mcl::Point& position,
-                      const Angle theta, const Angle phi, const Angle psi,
+                      const mcl::Quaternion orientation,
                       const UInt update_length);
   
   /**

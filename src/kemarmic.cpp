@@ -15,15 +15,16 @@
 #include <string.h>
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
 
 KemarMic::KemarMic(const Point& position,
-                   const Angle theta, const Angle phi, const Angle psi,
+                   const Quaternion orientation,
                    const std::string directory,
                    const UInt num_samples,
                    const UInt update_length) :
-          DatabaseBinauralMic(position, theta, phi, psi, update_length) {
+          DatabaseBinauralMic(position, orientation, update_length) {
             
   num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
@@ -133,8 +134,7 @@ UInt KemarMic::FindElevationIndex(Angle elevation) {
   }
 }
 
-UInt KemarMic::FindAzimuthIndex(Angle azimuth,
-                                    UInt elevation_index) {
+UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
   const UInt num_measurements[] =
           {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   
@@ -152,7 +152,7 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
   
   // For forward looking direction, Azimuth = 0 and elevation =0
   Point norm_point = Point::Normalized(point);
-  Angle elevation = (asin((double) -norm_point.x())) / PI * 180.0;
+  Angle elevation = (asin((double) norm_point.z())) / PI * 180.0;
   
   Angle azimuth;
   if (norm_point.z() >= 0.0) { azimuth = (asin((double) norm_point.y())) / PI * 180.0; }

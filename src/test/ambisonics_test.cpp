@@ -14,6 +14,7 @@
 #include "stream.h"
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
   
@@ -25,7 +26,7 @@ bool AmbisonicsMic::Test() {
   // Testing Ambisonics encoding
   const UInt N = 2; // Ambisonics order
   
-  AmbisonicsMic mic_a(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0,
+  AmbisonicsMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
                       N);
   BFormatStream* stream_a = mic_a.stream();
   
@@ -49,7 +50,7 @@ bool AmbisonicsMic::Test() {
 #ifdef MCL_LOAD_BOOST
   // Testing Ambisonics encoding
   const UInt N_b = 3; // Ambisonics order
-  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, N_b, N3D);
+  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), N_b, N3D);
   BFormatStream* stream_b = mic_b.stream();
   
   
@@ -218,7 +219,7 @@ bool AmbisonicsHorizDec::Test() {
   const UInt num_theta(100);
   std::vector<Angle> thetas = mcl::LinSpace(0.0, 2.0*PI, num_theta);
   
-  AmbisonicsMic mic_a(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, order);
+  AmbisonicsMic mic_a(Point(0.0,0.0,0.0), Quaternion::Identity(), order);
   BFormatStream* stream_a = mic_a.stream();
   
   AmbisonicsHorizDec decoder_a(order,
@@ -268,7 +269,8 @@ bool AmbisonicsHorizDec::Test() {
   
   // A complete test comparing with Matlab's tested implementation
   
-  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, 2);
+  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), Quaternion::Identity()
+                      , 2);
   BFormatStream* stream_b = mic_b.stream();
   
   AmbisonicsHorizDec decoder_b(order,

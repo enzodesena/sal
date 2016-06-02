@@ -14,6 +14,7 @@
 #include "salconstants.h"
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
   
@@ -31,7 +32,7 @@ bool KemarMic::Test() {
   
   
   // Testing frontal direction
-  KemarMic mic_i(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
+  KemarMic mic_i(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  kemar_path);
   StereoStream* stream_i = mic_i.stream();
   
@@ -59,7 +60,7 @@ bool KemarMic::Test() {
   assert(IsEqual(cmp_imp_front_left, output_front_left));
   
   
-  KemarMic mic_o(Point(0.0,0.0,0.0), PI/2.0, PI/2.0, 0.0,
+  KemarMic mic_o(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0),
                  kemar_path);
   StereoStream* stream_o = mic_o.stream();
   
@@ -86,7 +87,7 @@ bool KemarMic::Test() {
   cmp_imp_up_left = mcl::Multiply(cmp_imp_up_left, normalising_value);
   
   
-  KemarMic mic_m(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, kemar_path);
+  KemarMic mic_m(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), kemar_path);
   StereoStream* stream_m = mic_m.stream();
   
   mic_m.RecordPlaneWave(impulse, Point(-1.0,0.0,0.0));
@@ -124,7 +125,7 @@ bool KemarMic::Test() {
   cmp_imp_right_right = mcl::Multiply(cmp_imp_right_right, normalising_value);
   
   
-  KemarMic mic_p(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
+  KemarMic mic_p(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  kemar_path);
   StereoStream* stream_p = mic_p.stream();
   
@@ -146,7 +147,7 @@ bool KemarMic::Test() {
   cmp_imp_left_left = mcl::Multiply(cmp_imp_left_left, normalising_value);
   
   
-  KemarMic mic_r(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
+  KemarMic mic_r(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  kemar_path);
   StereoStream* stream_r = mic_r.stream();
   
@@ -172,7 +173,7 @@ bool KemarMic::Test() {
                       imp_back + sizeof(imp_back) / sizeof(Sample));
   cmp_imp_back = mcl::Multiply(cmp_imp_back, normalising_value);
   
-  KemarMic mic_t(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0,
+  KemarMic mic_t(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
                  kemar_path);
   StereoStream* stream_t = mic_t.stream();
   
@@ -207,7 +208,7 @@ bool KemarMic::Test() {
   
   
   // Testing multiple wave_ids with signals
-  KemarMic mic_u(Point(0.0,0.0,0.0), PI/2.0, 0.0, 0.0,
+  KemarMic mic_u(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  kemar_path);
   
   mic_u.RecordPlaneWave(mcl::Multiply(impulse, sample), Point(1.0,0.0,0.0), 1);

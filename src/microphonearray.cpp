@@ -128,8 +128,8 @@ CircularTrig::CircularTrig(const Point& position,
             
   for (UInt i=0; i<num_microphones; ++i) {
     // Initialise streams.
-    microphones_.push_back(TrigMic(positions_[i], PI/2.0,
-                                   angles_[i], 0.0,
+    microphones_.push_back(TrigMic(positions_[i],
+                                   mcl::AxAng2Quat(0,0,1,angles_[i]),
                                    coefficients));
     
     microphone_pointers_[i] = &(microphones_[i]);
@@ -163,7 +163,8 @@ CircularPSR::CircularPSR(const Point& position,
             
   for (UInt i=0; i<num_microphones; ++i) {
     // Initialise streams.
-    microphones_.push_back(PSRMic(positions_[i], PI/2.0, angles_[i], 0.0,
+    microphones_.push_back(PSRMic(positions_[i],
+                                  mcl::AxAng2Quat(0,0,1,angles_[i]),
                                   radius,
                                   std::abs(angles_[1]-angles_[0]),
                                   sound_speed));
@@ -186,7 +187,8 @@ StereoPSR::StereoPSR(const Point& position,
             
   for (UInt i=0; i<num_microphones; ++i) {
     // Initialise streams.
-    microphones_.push_back(PSRMic(positions_[i], PI/2.0, angles_[i], 0.0,
+    microphones_.push_back(PSRMic(positions_[i],
+                                  mcl::AxAng2Quat(0,0,1,angles_[i]),
                                   radius,
                                   base_angle,
                                   sound_speed));

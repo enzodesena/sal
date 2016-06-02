@@ -15,6 +15,7 @@
 #include <vector>
 #include "microphone.h"
 #include "mcl.h"
+#include "quaternion.h"
 #include "saltypes.h"
 #include "stream.h"
 #include "array.h"
@@ -39,7 +40,7 @@ public:
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  CipicMic(mcl::Point position, Angle theta, Angle phi, Angle psi,
+  CipicMic(mcl::Point position, mcl::Quaternion orientation,
            const std::string directory, const CipicDataType data_type,
            const UInt update_length = 1);
   

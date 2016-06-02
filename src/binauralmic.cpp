@@ -15,6 +15,7 @@
 #include <string.h>
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
 
@@ -88,9 +89,9 @@ void BinauralMic::Reset() {
 }
 
 BinauralMic::BinauralMic(const Point& position,
-                         const Angle theta, const Angle phi, const Angle psi,
+                         const Quaternion orientation,
                          const UInt update_length) :
-StereoMicrophone(position, theta, phi, psi), update_length_(update_length),
+StereoMicrophone(position, orientation), update_length_(update_length),
 bypass_(false) {}
 
 
@@ -119,11 +120,9 @@ void BinauralMicInstance::UpdateFilter(const Point& point) {
 }
 
 DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
-                                         const Angle theta,
-                                         const Angle phi,
-                                         const Angle psi,
+                                         const Quaternion orientation,
                                          const UInt update_length) :
-BinauralMic(position, theta, phi, psi, update_length) {}
+BinauralMic(position, orientation, update_length) {}
 
 
 void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {

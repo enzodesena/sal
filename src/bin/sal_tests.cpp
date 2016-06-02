@@ -22,10 +22,10 @@
 #include "cipicmic.h"
 
 int main(int argc, char * const argv[]) {
+  sal::Microphone::Test();
   sal::KemarMic::Test();
   sal::CipicMic::Test();
   sal::Stream::Test();
-  sal::Microphone::Test();
   sal::PSRMic::Test();
   sal::SphericalHeadMic::Test();
   sal::MicrophoneArray::Test();

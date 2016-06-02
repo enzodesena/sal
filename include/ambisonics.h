@@ -38,9 +38,9 @@ public:
    if theta = 0.0. I am thinking of soundfield microphone, which is pointing
    upwards.
    */
-  AmbisonicsMic(const mcl::Point& position, Angle theta, Angle phi, Angle psi,
+  AmbisonicsMic(const mcl::Point& position, mcl::Quaternion orientation,
                 UInt order, AmbisonicsConvention convention = sqrt2) :
-          Microphone(position, theta, phi, psi),
+          Microphone(position, orientation),
           order_(order), convention_(convention) {}
   
   virtual void Tick() {

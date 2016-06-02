@@ -30,8 +30,7 @@ class MicrophoneArray : public Microphone {
 public:
   
   MicrophoneArray() :
-          Microphone(mcl::Point(0.0, 0.0, 0.0), (Angle) 0.0,
-                     (Angle) 0.0, (Angle) 0.0) {}
+  Microphone(mcl::Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity()) {}
   
 
 

@@ -26,8 +26,7 @@ namespace sal {
  */
 class SphericalHeadMic : public BinauralMic {
 public:
-  SphericalHeadMic(const mcl::Point position, const Angle theta,
-                   const Angle phi, const Angle psi,
+  SphericalHeadMic(const mcl::Point position, const mcl::Quaternion orientation, 
                    const Angle ears_angle,
                    const Length sphere_radius,
                    const UInt ir_length,

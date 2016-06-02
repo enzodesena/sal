@@ -48,13 +48,14 @@
 #include <string.h>
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
 
-CipicMic::CipicMic(Point position, Angle theta, Angle phi, Angle psi,
+CipicMic::CipicMic(Point position, Quaternion orientation,
                    const std::string directory, const CipicDataType data_type,
                    const UInt update_length) :
-        DatabaseBinauralMic(position, theta, phi, psi, update_length) {
+        DatabaseBinauralMic(position, orientation, update_length) {
   
   azimuths_ = std::vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
     -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
@@ -129,12 +130,10 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) {
   Point proj_xz = Point::Projection(point, Point(0.0, 1.0, 0.0));
   // "Positive evelation coresponds to moving up"
   Angle elevation;
-  if (point.x() < 0.0) {
-    elevation = proj_xz.theta()/M_PI*180.0;
-  } else if (point.x() >= 0.0 && point.z() >= 0.0) {
-    elevation = -proj_xz.theta()/M_PI*180.0;
-  } else { // i.e. point.x() >= 0.0 && point.z() < 0.0
-    elevation = 360.0 - proj_xz.theta()/M_PI*180.0;
+  if (point.x() >= 0.0) {
+    elevation = 90.0-proj_xz.theta()/M_PI*180.0;
+  } else {
+    elevation = 90.0 + proj_xz.theta()/M_PI*180.0;
   }
   
   if (isnan(elevation)) { elevation = 0.0; }

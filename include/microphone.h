@@ -16,6 +16,7 @@
 #include "point.h"
 #include "stream.h"
 #include "source.h"
+#include "quaternion.h"
 #include <assert.h>
 #include <map>
 
@@ -24,38 +25,31 @@ namespace sal {
 class Microphone {
 public:
   /**
-   `position` is the position of the microphone, where phi, theta and psi are
-   euler angles. Convention is ZYX with angles phi, theta and psi, respectively.
-   If the microphone is axisymmetric, this corresponds to using the spherical
-   coordinate system with the convention that theta is the angle formed with
-   the z-axis, and phi is the angle formed on the x-y plane with the x-axis.
+   `position` is the position of the microphone, and orientation 
+   is a quaternion describing the microphone rotation.
+   A microphone generally has its acoustical axis on the x-axis.
+   We are using a spherical coordinate system with the convention 
+   that theta is the angle formed with the z-axis, 
+   and phi is the angle formed on the projection on the x-y plane 
+   with the x-axis.
    The x-axis corresponds to (r, theta, phi) = (r, pi/2, 0).
-   A microphone generally has its acoustical axis on the z-axis
-   i.e. (r, theta, phi) = (r, pi/2, 0).
    
    An example on the use of this function is as follow:
-   the microphone is orientated in the direction of the x-axis => you need to
-   input theta=pi/2 and phi=0. For the case of a mic in the direction of the
-   y-axis these become phi=pi/2 theta=pi/2. (TODO: check this y-axis example)
+   if you don't want to change its orientation, then you should use
+   a Quaternion::Identical().
+   Otherwise, if you want to rotate it around the z-axis (i.e. a
+   rotation on the horizontal plane), then you should use 
+   mcl::AxAng2Quat(0,0,1,angle) with angle in radians.
    
    Methods with wave_id as a parameter imply that the user should
    explicitly tell the mic to `Tick`, i.e. to inform it that we are working
    on a new sample. Methods without wave_id (i.e. assuming there
    is a single plane wave incoming) do this automatically.
    */
-  Microphone(mcl::Point position, Angle theta, Angle phi, Angle psi);
+  Microphone(mcl::Point position, mcl::Quaternion orientation);
   
   mcl::Point position() const;
   void set_position(const mcl::Point& position);
-  
-  Angle theta() const { return theta_; }
-  void set_theta(Angle theta);
-  
-  Angle phi() const { return phi_; }
-  void set_phi(Angle phi);
-  
-  Angle psi() const { return psi_; }
-  void set_psi(Angle psi);
   
   /**
    We do not implement directly the case of a single plane wave because in
@@ -140,9 +134,9 @@ private:
    sample `sample` as a function of the position from where the sound is
    incoming `point`.
    Info for developer: the directivity should preferably have a maximum in
-   the direction of the z-axis (r, 0, 0). For anthropomorphic directivities,
-   the facing direction is the z-axis. An arrow going from the jaw trough
-   the skull and up should preferrably be in the direction of minus-x-axis.
+   the direction of the x-axis For anthropomorphic directivities,
+   the facing direction is the x-axis. An arrow going from the jaw trough
+   the skull and up should preferrably be in the direction of plus-z-axis.
    Other choices could be made, as long as the conventions are kept at
    higher levels.
    */
@@ -159,10 +153,7 @@ private:
   
 protected:
   mcl::Point position_;
-  Angle theta_;
-  Angle phi_;
-  Angle psi_;
-  
+  mcl::Quaternion orientation_;
   
   
   friend class MicrophoneArray;
@@ -170,8 +161,8 @@ protected:
 
 class StereoMicrophone : public Microphone {
 public:
-  StereoMicrophone(mcl::Point position, Angle theta, Angle phi, Angle psi) :
-  Microphone(position, theta, phi, psi) {}
+  StereoMicrophone(mcl::Point position, mcl::Quaternion orientation) :
+  Microphone(position, orientation) {}
   
   StereoStream* stream() { return &stream_; }
 protected:

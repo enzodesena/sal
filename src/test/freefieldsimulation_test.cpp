@@ -24,10 +24,10 @@ bool FreeFieldSim::Test() {
   signal[0] = 0.5;
   
   
-  OmniMic mic_a(Point(0,0,0), PI/2.0, 0.0, 0.0);
+  OmniMic mic_a(Point(0,0,0), mcl::Quaternion::Identity());
   MonoStream* output_stream_a = mic_a.stream();
   
-  OmniMic mic_b(Point(one_sample_space,0,0), PI/2.0, 0.0, 0.0);
+  OmniMic mic_b(Point(one_sample_space,0,0), mcl::Quaternion::Identity());
   MonoStream* output_stream_b = mic_b.stream();
   
   std::vector<Microphone*> microphones(2);
