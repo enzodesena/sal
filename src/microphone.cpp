@@ -30,6 +30,18 @@ void Microphone::set_position(const Point& position) {
   last_point_.clear();
   pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
+  
+  
+/** Returns current orientation of the microphone */
+Quaternion Microphone::orientation() const { return orientation_; }
+  
+/** Set microphone orientation */
+void Microphone::set_orientation(const mcl::Quaternion& orientation) {
+  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
+  orientation_ = orientation;
+  last_point_.clear();
+  pthread_rwlock_unlock(&rw_lock_); // Release lock
+}
 
 void Microphone::CalculateRelativePoint(const Point& point,
                                         const UInt& wave_id) {

@@ -46,10 +46,21 @@ public:
    on a new sample. Methods without wave_id (i.e. assuming there
    is a single plane wave incoming) do this automatically.
    */
-  Microphone(mcl::Point position, mcl::Quaternion orientation);
+  Microphone(mcl::Point position,
+             mcl::Quaternion orientation = mcl::Quaternion::Identity());
   
+  /** Returns current position of the microphone */
   mcl::Point position() const;
+  
+  /** Set microphone position */
   void set_position(const mcl::Point& position);
+  
+  /** Returns current orientation of the microphone */
+  mcl::Quaternion orientation() const;
+  
+  /** Set microphone orientation */
+  void set_orientation(const mcl::Quaternion& orientation);
+  
   
   /**
    We do not implement directly the case of a single plane wave because in
