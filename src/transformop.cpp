@@ -106,5 +106,54 @@ std::vector<Real> MinPhase(const std::vector<Real>& x) {
 }
 
 
+std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point) {
+  return Elements(Fft(ConvertToComplex(input), n_point), 0,
+                  floor(1.0+((double)n_point)/2.0)-1);
+}
+
+
+
+std::vector<std::vector<Complex> >
+Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) {
+  std::vector<std::vector<Complex> > outputs;
+  for (UInt i=0; i<input.size(); ++i) {
+    outputs.push_back(Rfft(input[i], n_point));
+  }
+  return outputs;
+}
+
+
+std::vector<Real> Irfft(const std::vector<Complex>& input, UInt n_point) {
+  // If n_point is even, then it includes the Nyquist term (the only
+  // non-repeated term, together with DC) and is of dimension M=N/2 + 1
+  // whereas if N is odd then there is no Nyquist term
+  // and the input is of dimension M=(N+1)/2.
+  UInt M = (Rem(n_point, 2) == 0) ? (n_point/2 + 1) : (n_point+1)/2;
+  const std::vector<Complex> zero_padded = ZeroPad(input, M);
+  std::vector<Complex> spectrum;
+  if (Rem(n_point, 2) == 0) { // If n_point is even
+    spectrum = Concatenate(zero_padded, Flip(Conj(Elements(zero_padded,
+                                                           1,
+                                                           n_point/2-1))));
+  } else {                    // If n_point is odd
+    spectrum = Concatenate(zero_padded, Flip(Conj(Elements(zero_padded,
+                                                           1,
+                                                           (n_point+1)/2-1))));
+  }
+  assert(spectrum.size() == n_point);
+  std::vector<Complex> output = Ifft(spectrum, n_point);
+  assert(IsReal(output));
+  return RealPart(output);
+}
+
+
+std::vector<std::vector<Real> >
+Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) {
+  std::vector<std::vector<Real> > outputs;
+  for (UInt i=0; i<input.size(); ++i) {
+    outputs.push_back(Irfft(input[i], n_point));
+  }
+  return outputs;
+}
   
 } // namespace mcl

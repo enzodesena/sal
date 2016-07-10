@@ -25,6 +25,35 @@ namespace mcl {
  */
 std::vector<Complex> Fft(const std::vector<Complex>& input, UInt n_point);
 
+/**
+ Performs the fft of the real input signal.
+ Equivalent to Voice Box's rfft(input, n_point)
+ */
+std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point);
+
+  
+/**
+ Performs the fft of real vectors.
+ Equivalent to Voice Box's rfft(input, n_point)
+ */
+std::vector<std::vector<Complex> >
+Rfft(const std::vector<std::vector<Real> >& input, UInt n_point);
+  
+  
+/**
+ Performs the inverse fft of conjugate symmetric spectrum.
+ Equivalent to Voice Box's rfft(input, n_point)
+ */
+std::vector<Real> Irfft(const std::vector<Complex>& input, UInt n_point);
+
+
+/**
+ Performs the inverse fft of conjugate symmetric spectra.
+ Equivalent to Voice Box's rfft(input, n_point)
+ */
+std::vector<std::vector<Real> >
+Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point);
+  
 /** 
  Performs the ifft of the input signal.
  Equivalent to Matlab's ifft(input, n_point)
