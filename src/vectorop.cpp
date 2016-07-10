@@ -247,6 +247,16 @@ std::vector<Real> CumSum(const std::vector<Real>& input) {
   
   return output;
 }
+  
+std::vector<Real> Hamming(const UInt length) {
+  const Real alpha = 0.54;
+  const Real beta = 1.0-alpha;
+  std::vector<Real> w = Ones(length);
+  for (UInt i=0; i<length; ++i) {
+    w[i] = alpha-beta*cos(2.0*PI*i/(length-1));
+  }
+  return w;
+}
 
   
   

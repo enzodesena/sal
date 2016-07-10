@@ -486,6 +486,34 @@ bool VectorOpTest() {
   
   assert(IsNonNegative(vector_hann_5_cmp));
   
+  // Testing Hamming window
+  std::vector<Real> vector_hamming_3 = Hamming(3);
+  std::vector<Real> vector_hamming_3_cmp(3);
+  vector_hamming_3_cmp[0] = 0.08;
+  vector_hamming_3_cmp[1] = 1.0;
+  vector_hamming_3_cmp[2] = 0.08;
+  assert(IsEqual(vector_hamming_3, vector_hamming_3_cmp));
+  
+  std::vector<Real> vector_hamming_4 = Hamming(4);
+  std::vector<Real> vector_hamming_4_cmp(4);
+  vector_hamming_4_cmp[0] = 0.08;
+  vector_hamming_4_cmp[1] = 0.77;
+  vector_hamming_4_cmp[2] = 0.77;
+  vector_hamming_4_cmp[3] = 0.08;
+  assert(IsEqual(vector_hamming_4, vector_hamming_4_cmp));
+  
+  std::vector<Real> vector_hamming_5 = Hann(5);
+  std::vector<Real> vector_hamming_5_cmp(5);
+  vector_hamming_5_cmp[0] = 0.0;
+  vector_hamming_5_cmp[1] = 0.5;
+  vector_hamming_5_cmp[2] = 1.0;
+  vector_hamming_5_cmp[3] = 0.5;
+  vector_hamming_5_cmp[4] = 0.0;
+  assert(IsEqual(vector_hamming_5, vector_hamming_5_cmp));
+  
+  assert(IsNonNegative(vector_hamming_5));
+  assert(false);
+  
   // Testing Tukey Window
   assert(IsEqual(TukeyWin(4, 1.0), vector_hann_4_cmp));
   std::vector<Real> vector_tukey_1 = TukeyWin(5,0.6);

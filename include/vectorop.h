@@ -342,6 +342,9 @@ std::vector<Real> Ones(UInt length);
   
 std::vector<Real> Hann(const UInt length);
   
+/** Returns a Hamming window of length `length' */
+std::vector<Real> Hamming(const UInt length);
+  
 std::vector<Real> TukeyWin(const UInt length, const Real ratio);
 
 
