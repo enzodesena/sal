@@ -258,6 +258,25 @@ std::vector<Real> Hamming(const UInt length) {
   return w;
 }
 
+std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
+                                        const std::vector<Real>& window,
+                                        const UInt frame_increment) {
+  std::vector<std::vector<Real> > output;
+  UInt i = 0;
+  while ((i + window.size())<=input.size()) {
+    UInt from_sample = i;
+    UInt to_sample = i + window.size()-1;
+    
+    assert(from_sample>=0 && from_sample<input.size());
+    assert(to_sample>=0 && to_sample<input.size());
+    
+    output.push_back(Multiply(Elements(input, from_sample, to_sample),
+                              window));
+    
+    i = i + frame_increment;
+  }
+  return output;
+}
   
   
 } // namespace mcl

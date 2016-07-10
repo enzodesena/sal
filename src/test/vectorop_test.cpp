@@ -626,6 +626,70 @@ bool VectorOpTest() {
   interleaves_e_f_cmp.push_back(vector_f[3]);
   assert(IsEqual(Interleave(vector_e, vector_f), interleaves_e_f_cmp));
   
+  
+  // Test Enframe
+  std::vector<Real> vector = LinSpace(1, 10, 10);
+  std::vector<Real> window = {0.2, 0.4};
+  std::vector<std::vector<Real> > output_3 = Enframe(vector, window, 3);
+  assert(output_3.size() == 3);
+  std::vector<Real> output_3_0_cmp = {0.2, 0.8};
+  std::vector<Real> output_3_1_cmp = {0.8, 2.0};
+  std::vector<Real> output_3_2_cmp = {1.4, 3.2};
+  assert(IsEqual(output_3[0], output_3_0_cmp));
+  assert(IsEqual(output_3[1], output_3_1_cmp));
+  assert(IsEqual(output_3[2], output_3_2_cmp));
+  
+  
+  std::vector<std::vector<Real> > output_full = Enframe(Ones(4), window, 2);
+  assert(output_full.size()==2);
+  std::vector<Real> output_full_0_cmp = {0.2, 0.4};
+  std::vector<Real> output_full_1_cmp = {0.2, 0.4};
+  assert(IsEqual(output_full[0], output_full_0_cmp));
+  assert(IsEqual(output_full[1], output_full_1_cmp));
+  
+  
+  std::vector<Real> window_b;
+  window_b.push_back(0.2);
+  window_b.push_back(0.4);
+  window_b.push_back(-0.3);
+  std::vector<std::vector<Real> > output_1 = Enframe(vector, window_b, 1);
+  assert(output_1.size() == 8);
+  std::vector<Real> output_1_0_cmp = {0.2000,   0.8000,   -0.9000};
+  std::vector<Real> output_1_1_cmp = {0.4000,   1.2000,   -1.2000};
+  std::vector<Real> output_1_2_cmp = {0.6000,   1.6000,   -1.5000};
+  std::vector<Real> output_1_3_cmp = {0.8000,   2.0000,   -1.8000};
+  std::vector<Real> output_1_4_cmp = {1.0000,   2.4000,   -2.1000};
+  std::vector<Real> output_1_5_cmp = {1.2000,   2.8000,   -2.4000};
+  std::vector<Real> output_1_6_cmp = {1.4000,   3.2000,   -2.7000};
+  std::vector<Real> output_1_7_cmp = {1.6000,   3.6000,   -3.0000};
+  assert(IsEqual(output_1[0], output_1_0_cmp));
+  assert(IsEqual(output_1[1], output_1_1_cmp));
+  assert(IsEqual(output_1[2], output_1_2_cmp));
+  assert(IsEqual(output_1[3], output_1_3_cmp));
+  assert(IsEqual(output_1[4], output_1_4_cmp));
+  assert(IsEqual(output_1[5], output_1_5_cmp));
+  assert(IsEqual(output_1[6], output_1_6_cmp));
+  assert(IsEqual(output_1[7], output_1_7_cmp));
+  
+  
+  
+  
+//  std::vector<std::vector<Real> > output_3 = Enframe(vector, window, 1);
+//  assert(output_3.size() == 3);
+//  std::vector<Real> output_3_0_cmp;
+//  output_3_0_cmp.push_back(0.200000000000000);
+//  output_3_0_cmp.push_back(0.800000000000000);
+//  assert(IsEqual(output_3[0], output_3_0_cmp));
+//  std::vector<Real> output_3_1_cmp;
+//  output_3_1_cmp.push_back(0.800000000000000);
+//  output_3_1_cmp.push_back(2.000000000000000);
+//  assert(IsEqual(output_3[1], output_3_1_cmp));
+//  std::vector<Real> output_3_2_cmp;
+//  output_3_2_cmp.push_back(1.400000000000000);
+//  output_3_2_cmp.push_back(3.200000000000000);
+//  assert(IsEqual(output_3[2], output_3_2_cmp));
+//  
+  
   return true;
 }
   

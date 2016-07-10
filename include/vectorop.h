@@ -412,6 +412,11 @@ Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y);
  */
 std::vector<Real> CumSum(const std::vector<Real>& input);
   
+/** Splits signal up into (overlapping) frames */
+std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
+                                        const std::vector<Real>& window,
+                                        const UInt frame_increment);
+  
 } /**< namespace mcl */
 
 #endif
