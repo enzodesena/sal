@@ -671,24 +671,25 @@ bool VectorOpTest() {
   assert(IsEqual(output_1[6], output_1_6_cmp));
   assert(IsEqual(output_1[7], output_1_7_cmp));
   
+  // Test overlapadd
+  std::vector<std::vector<Real> > frames_a;
+  std::vector<Real> frames_a_0 = {1,2,3};
+  std::vector<Real> frames_a_1 = {4,5,6};
+  std::vector<Real> frames_a_2 = {7,8,9};
+  frames_a.push_back(frames_a_0);
+  frames_a.push_back(frames_a_1);
+  frames_a.push_back(frames_a_2);
+  std::vector<Real> window_d = {0.2,-0.4, 0.3};
   
-  
-  
-//  std::vector<std::vector<Real> > output_3 = Enframe(vector, window, 1);
-//  assert(output_3.size() == 3);
-//  std::vector<Real> output_3_0_cmp;
-//  output_3_0_cmp.push_back(0.200000000000000);
-//  output_3_0_cmp.push_back(0.800000000000000);
-//  assert(IsEqual(output_3[0], output_3_0_cmp));
-//  std::vector<Real> output_3_1_cmp;
-//  output_3_1_cmp.push_back(0.800000000000000);
-//  output_3_1_cmp.push_back(2.000000000000000);
-//  assert(IsEqual(output_3[1], output_3_1_cmp));
-//  std::vector<Real> output_3_2_cmp;
-//  output_3_2_cmp.push_back(1.400000000000000);
-//  output_3_2_cmp.push_back(3.200000000000000);
-//  assert(IsEqual(output_3[2], output_3_2_cmp));
-//  
+  std::vector<Real> frames_a_1_cmp = {0.2000, 0, 0.3000, -1.4000, 2.7000};
+  assert(IsEqual(OverlapAdd(frames_a, window_d, 1), frames_a_1_cmp));
+  std::vector<Real> frames_a_2_cmp = {0.2000, -0.8000, 1.7000,  -2.0000,
+                                    3.2000, -3.2000, 2.7000};
+  assert(IsEqual(OverlapAdd(frames_a, window_d, 2), frames_a_2_cmp));
+  std::vector<Real> frames_a_4_cmp = {0.2000, -0.8000, 0.9000, 0, 0.8000,
+                                      -2.0000, 1.8000, 0, 1.4000, -3.2000,
+                                      2.7000};
+  assert(IsEqual(OverlapAdd(frames_a, window_d, 4), frames_a_4_cmp));
   
   return true;
 }

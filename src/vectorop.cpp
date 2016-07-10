@@ -277,6 +277,22 @@ std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
   }
   return output;
 }
+
+std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
+                             const std::vector<Real>& window,
+                             const UInt frame_increment) {
+  const UInt num_frames = frames.size();
+  std::vector<Real> output(window.size()+(num_frames-1)*frame_increment);
+  for (UInt frame_i=0; frame_i<num_frames; ++frame_i) {
+    if (frames[frame_i].size() != window.size()) {
+      throw_line("Frame length different from window length");
+    }
+    for (UInt k=0; k<window.size(); ++k) {
+      output[frame_i*frame_increment+k] += window[k] * frames[frame_i][k];
+    }
+  }
+  return output;
+}
   
 std::vector<Complex> ConvertToComplex(std::vector<Real> input) {
   std::vector<Complex> output;
