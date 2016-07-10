@@ -512,7 +512,6 @@ bool VectorOpTest() {
   assert(IsEqual(vector_hamming_5, vector_hamming_5_cmp));
   
   assert(IsNonNegative(vector_hamming_5));
-  assert(false);
   
   // Testing Tukey Window
   assert(IsEqual(TukeyWin(4, 1.0), vector_hann_4_cmp));
