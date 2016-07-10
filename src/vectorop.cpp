@@ -278,5 +278,12 @@ std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
   return output;
 }
   
+std::vector<Complex> ConvertToComplex(std::vector<Real> input) {
+  std::vector<Complex> output;
+  for (UInt i=0; i<input.size(); ++i) {
+    output.push_back(Complex(input[i], 0.0));
+  }
+  return output;
+}
   
 } // namespace mcl

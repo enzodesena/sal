@@ -417,6 +417,8 @@ std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
                                         const std::vector<Real>& window,
                                         const UInt frame_increment);
   
+std::vector<Complex> ConvertToComplex(std::vector<Real> input);
+  
 } /**< namespace mcl */
 
 #endif
