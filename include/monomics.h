@@ -28,6 +28,8 @@ public:
     stream_.Tick();
   }
   
+  virtual bool IsOmni() { return true; }
+  
   MonoStream* stream() { return &stream_; }
   
 protected:

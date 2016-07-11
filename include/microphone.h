@@ -114,6 +114,8 @@ public:
    */
   virtual bool IsFrameEnabled() { return false; }
   
+  virtual bool IsOmni() { return false; }
+  
   /** This method translates `point` in the reference system of the mic. */
   mcl::Point GetRelativePoint(const mcl::Point& point) const;
   
