@@ -14,10 +14,11 @@
 #define DEFAULT_MAX_LATENCY 3276800
 
 #include "saltypes.h"
+#include "digitalfilter.h"
 
 namespace sal {
   
-class DelayFilter {
+class DelayFilter : public mcl::DigitalFilter {
   
 public:
   /**
@@ -37,7 +38,7 @@ public:
   inline void Write(const sal::Sample& sample) { *write_index_ = sample; }
   
   /** Resets the state of the filter */
-  void Reset();
+  virtual void Reset();
   
   /**
    Returns the current sample from the filter. Between two Tick() operation it will
@@ -71,6 +72,7 @@ public:
   DelayFilter& operator= (const DelayFilter&);
   DelayFilter (const DelayFilter&);
   
+  virtual mcl::Real Filter(const mcl::Real input);
   
   static bool Test();
 protected:

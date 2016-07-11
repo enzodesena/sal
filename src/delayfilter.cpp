@@ -98,4 +98,11 @@ void DelayFilter::Reset() {
   for (UInt i=0; i<(max_latency_+1); ++i) { start_[i] = 0.0; }
 }
   
+mcl::Real DelayFilter::Filter(const mcl::Real input) {
+  Write(input);
+  mcl::Real output = Read();
+  Tick();
+  return output;
+}
+  
 } // namespace sal

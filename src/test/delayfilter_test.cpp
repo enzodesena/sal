@@ -254,6 +254,16 @@ bool DelayFilter::Test() {
   assert(IsEqual(delay_line_a.Read(2), 0.0));
   assert(IsEqual(delay_line_a.Read(3), 0.0));
   assert(IsEqual(delay_line_a.Read(4), 0.0));
+  
+  // Testing DelayLine with Filter
+  DelayFilter delay_filter_e = DelayFilter(0, 100);
+  assert(IsEqual(delay_filter_e.Filter(0.0), 0.0));
+  assert(IsEqual(delay_filter_e.Filter(0.2), 0.2));
+  delay_filter_e.set_latency(1);
+  delay_filter_e.Reset();
+  assert(IsEqual(delay_filter_e.Filter(1.0), 0.0));
+  assert(IsEqual(delay_filter_e.Filter(0.0), 1.0));
+  
   return true;
 }
 
