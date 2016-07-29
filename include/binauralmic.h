@@ -51,8 +51,8 @@ public:
 private:
   
   /** Retrieves the BRIR for a source in position `point`.
-   The head is assumed to be positioned lying on the x-axis and facing
-   the positive z-direction. E.g. a point on the positive z-axis
+   The head is assumed to be positioned lying on the z-axis and facing
+   the positive x-direction. E.g. a point on the positive x-axis
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) = 0;
   
