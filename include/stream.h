@@ -29,27 +29,33 @@ public:
 
 
 /*
- MonoStream has two modality for inserting samples:
+ MonoStream has three modalities:
  - Push(sample) which pushes a sample in the stream
  - Add(sample) which adds the sample to the back of the queue (initialises
- to zero if the stream is empty) which is followed by Tick() which moves
+ to zero if the stream is empty). This is followed by Tick(), which moves
  to the next sample in time.
+ - Merge stream
  The second methodology was introduced because given the recording method
  in the `Microphone`, I had to keep track of temporary outputs at some point
  of the chain. It makes sense that this happens in the stream because
- it is the only way to avoid duplication and increases speed.
+ it is the only way that increases speed by avoiding data duplication.
  */
 class MonoStream : public Stream {
 public:
   MonoStream() : num_temp_samples_(0) {}
   
+  MonoStream(const std::vector<MonoStream*>& streams) :
+          merge_streams_(streams) {}
+  
   inline void Push(const Sample& sample) {
+    if (merge_streams_.size() > 0) { throw_line(); }
     if (num_temp_samples_ > 0) { throw_line(); }
     queue_.push_back(sample);
   }
   
   
   void Push(const Signal& signal) {
+    if (merge_streams_.size() > 0) { throw_line(); }
     const UInt num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(signal.at(i));
@@ -58,6 +64,7 @@ public:
   
   
   void PushAll(MonoStream* stream) {
+    if (merge_streams_.size() > 0) { throw_line(); }
     if (num_temp_samples_ > 0) { throw_line(); }
     while (! stream->IsEmpty()) {
       Push(stream->Pull());
@@ -69,6 +76,7 @@ public:
   
   
   void Add(const Signal& signal) {
+    if (merge_streams_.size() > 0) { throw_line(); }
     if (num_temp_samples_ == 0) {
       queue_.insert(queue_.end(), signal.begin(), signal.end());
       num_temp_samples_ = signal.size();
@@ -81,22 +89,44 @@ public:
   }
   
   
-  inline void Tick() { num_temp_samples_ = 0; }
+  inline void Tick() {
+    if (merge_streams_.size() > 0) { throw_line(); }
+    num_temp_samples_ = 0;
+  }
   
   
   Sample Pull() {
-    if (size() == 0) { throw_line(); }
-    const Sample output = queue_.front();
-    queue_.pop_front();
-    return output;
+    if (merge_streams_.size() == 0) {
+      if (size() == 0) { throw_line(); }
+      const Sample output = queue_.front();
+      queue_.pop_front();
+      return output;
+    } else {
+      // Merging mode
+      Sample output = 0.0;
+      for (UInt i=0; i<merge_streams_.size(); ++i) {
+        output += merge_streams_[i]->Pull();
+      }
+      return output;
+    }
   }
   
   
   Signal Pull(const UInt num_samples) {
     if (num_samples > size()) { throw_line(); }
-    Signal output(queue_.begin(), queue_.begin() + num_samples);
-    queue_.erase(queue_.begin(), queue_.begin() + num_samples);
-    return output;
+    
+    if (merge_streams_.size() == 0) {
+      Signal output(queue_.begin(), queue_.begin() + num_samples);
+      queue_.erase(queue_.begin(), queue_.begin() + num_samples);
+      return output;
+    } else {
+      // Merging mode
+      Signal output = mcl::Zeros<sal::Sample>(num_samples);
+      for (UInt i=0; i<merge_streams_.size(); ++i) {
+        output = mcl::Add(output, merge_streams_[i]->Pull(num_samples));
+      }
+      return output;
+    }
   }
   
   
@@ -108,14 +138,22 @@ public:
   
   void Reset() {
     PullAll();
-    Tick();
+    num_temp_samples_ = 0;
   }
   
   
   inline UInt size() const {
-    Int size = (Int)queue_.size()-(Int)num_temp_samples_;
-    assert(size>=0);
-    return size;
+    if (merge_streams_.size() == 0) {
+      Int size = (Int)queue_.size()-(Int)num_temp_samples_;
+      assert(size>=0);
+      return size;
+    } else {
+      std::vector<UInt> sizes;
+      for (UInt i=0; i<merge_streams_.size(); ++i) {
+        sizes.push_back(merge_streams_[i]->size());
+      }
+      return mcl::Min(sizes);
+    }
   }
   
   
@@ -127,21 +165,34 @@ private:
   std::deque<Sample> queue_;
   
   UInt num_temp_samples_;
+  
+  std::vector<MonoStream*> merge_streams_;
 };
 
 
 
 class StereoStream : public Stream {
 public:
-  MonoStream* left_stream() { return &stream_left_; }
+  StereoStream() : left_stream_(MonoStream()), right_stream_(MonoStream()) {}
   
-  MonoStream* right_stream() { return &stream_right_; }
+  StereoStream(const std::vector<StereoStream*>& streams) {
+    std::vector<MonoStream*> left_streams(streams.size());
+    std::vector<MonoStream*> right_streams(streams.size());
+    for (UInt i=0; i<streams.size(); ++i) {
+      left_streams[i] = streams[i]->left_stream();
+      right_streams[i] = streams[i]->right_stream();
+    }
+    left_stream_ = MonoStream(left_streams);
+    right_stream_ = MonoStream(right_streams);
+  }
   
+  MonoStream* left_stream() { return &left_stream_; }
+  MonoStream* right_stream() { return &right_stream_; }
 private:
-  MonoStream stream_left_;
-  MonoStream stream_right_;
+  MonoStream left_stream_;
+  MonoStream right_stream_;
 };
-
+  
 
 class MultichannelStream : public Stream {
 public:

@@ -124,6 +124,34 @@ bool Stream::Test() {
   stream_g.Push(0.4);
   assert(IsEqual(stream_g.PullAll()[0], 0.4));
   
+  
+  MonoStream stream_k_a;
+  MonoStream stream_k_b;
+  
+  std::vector<MonoStream*> streams_to_merge;
+  streams_to_merge.push_back(&stream_k_a);
+  streams_to_merge.push_back(&stream_k_b);
+  
+  MonoStream stream_k_merge(streams_to_merge);
+  
+  stream_k_a.Push(1.0);
+  stream_k_a.Push(3.0);
+  stream_k_a.Push(-1.0);
+  
+  stream_k_b.Push(0.0);
+  stream_k_b.Push(0.5);
+  assert(stream_k_merge.size() == 2);
+  stream_k_b.Push(-2.0);
+  assert(stream_k_merge.size() == 3);
+  
+  Signal merge_output = stream_k_merge.PullAll();
+  Signal merge_output_cmp;
+  merge_output_cmp.push_back(1.0+0.0);
+  merge_output_cmp.push_back(3.0+0.5);
+  merge_output_cmp.push_back(-1.0-2.0);
+  assert(IsEqual(merge_output, merge_output_cmp));
+  
+  
   return true;
 }
   
