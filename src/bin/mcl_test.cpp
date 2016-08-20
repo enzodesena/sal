@@ -27,7 +27,7 @@ int main (int argc, char * const argv[]) {
   MatrixOpTest();
   StatisticsOpTest();
   ComparisonOpTest();
-  Point::Test();
+  PointTest();
   
   IirFilter::Test();
   FirFilter::SpeedTests();
