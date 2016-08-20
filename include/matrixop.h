@@ -34,6 +34,9 @@ std::vector<std::string> Split(const std::string& string, char delim);
 template<class T>
 class Matrix {
 public:
+  /** Default constructor with empty (0x0) matrix */
+  Matrix() : num_rows_(0), num_columns_(0) {}
+  
   /** 
    Constructs a matrix with default entries
    */
