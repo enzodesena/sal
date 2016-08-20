@@ -32,7 +32,7 @@ bool PropagationLine::Test() {
   Point point_a(0,0,0);
   Point point_b(distance,0,0);
   
-  assert(IsEqual(Point::Distance(point_a, point_b), distance));
+  assert(IsEqual(Distance(point_a, point_b), distance));
   
   Sample attenuation = (Sample) (SOUND_SPEED/FS) / (distance);
   Time delay = distance / SOUND_SPEED;

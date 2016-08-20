@@ -41,10 +41,9 @@ Angle SphericalHeadMic::GetTheta(const Point& point,
   
   // Here we compute the angle between the direction of the ear and the 
   // direction of the incoming wave.
-  Angle relative_angle = Point::AngleBetweenDirections(theta_ear,
-                                                       phi_ear,
-                                                       point.theta(),
-                                                       point.phi());
+  Angle relative_angle = mcl::AngleBetweenDirections(theta_ear, phi_ear,
+                                                     point.theta(),
+                                                     point.phi());
   return relative_angle;
 }
   

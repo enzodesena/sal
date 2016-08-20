@@ -89,7 +89,7 @@ public:
   
   private:
   Sample GetDirectivity(const mcl::Point& point) {
-    Angle phi = mcl::Point::AngleBetweenPoints(point,
+    Angle phi = AngleBetweenPoints(point,
                                                mcl::Point(1.0, 0.0, 0.0));
     
     const UInt N = coefficients_.size();
@@ -125,7 +125,7 @@ public:
   
 private:
   Sample GetDirectivity(const mcl::Point& point) {
-    Angle phi = mcl::Point::AngleBetweenPoints(point,
+    Angle phi = AngleBetweenPoints(point,
                                                mcl::Point(1.0, 0.0, 0.0));
     
     sal::Angle phi_l = 0;

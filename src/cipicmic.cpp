@@ -124,10 +124,10 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) {
   // For forward looking direction, Azimuth = 0 and elevation =0
   // "positive azimuth coresponds to moving right."
   Angle azimuth = (M_PI/2.0 -
-            Point::AngleBetweenPoints(point, Point(0.0, -1.0, 0.0)))/M_PI*180.0;
+            AngleBetweenPoints(point, Point(0.0, -1.0, 0.0)))/M_PI*180.0;
   
   // Calculate elevation
-  Point proj_xz = Point::Projection(point, Point(0.0, 1.0, 0.0));
+  Point proj_xz = Projection(point, Point(0.0, 1.0, 0.0));
   // "Positive evelation coresponds to moving up"
   Angle elevation;
   if (point.x() >= 0.0) {

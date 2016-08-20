@@ -81,7 +81,7 @@ void FreeFieldSim::Init(std::vector<Microphone*> microphones,
     for (UInt mic_i=0; mic_i<num_microphones; ++mic_i) {
       Microphone* microphone = microphones_[mic_i];
       
-      Length distance = Point::Distance(source->position(),
+      Length distance = Distance(source->position(),
                                         microphone->position());
       
       propagation_lines_[source_i][mic_i] =
@@ -176,7 +176,7 @@ FreeFieldSim::AllDistances(const std::vector<Microphone*>& microphones,
   std::vector<Length> distances;
   for (UInt mic_index=0; mic_index<num_microphones; ++mic_index) {
     for (UInt source_index=0; source_index<num_sources; ++source_index) {
-      distances.push_back(Point::Distance(microphones[mic_index]->position(),
+      distances.push_back(Distance(microphones[mic_index]->position(),
                                           sources[source_index]->position()));
     }
   }

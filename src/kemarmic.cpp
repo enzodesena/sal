@@ -151,7 +151,7 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
 Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
   
   // For forward looking direction, Azimuth = 0 and elevation =0
-  Point norm_point = Point::Normalized(point);
+  Point norm_point = Normalized(point);
   Angle elevation = (asin((double) norm_point.z())) / PI * 180.0;
   
   Angle azimuth;
