@@ -28,6 +28,8 @@ bool IsEqual(Complex num_a, Complex num_b, Real precision = VERY_SMALL);
 
 bool IsSmallerOrEqual(const Real num_a, const Real num_b);
   
+bool IsLargerOrEqual(const Real num_a, const Real num_b);
+  
 bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
                           const std::vector<Real>& vector_b);
   

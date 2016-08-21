@@ -90,6 +90,10 @@ bool IsSmallerOrEqual(const Real num_a, const Real num_b) {
   return num_a <= (num_b + VERY_SMALL);
 }
   
+bool IsLargerOrEqual(const Real num_a, const Real num_b) {
+  return num_a >= (num_b - VERY_SMALL);
+}
+  
 bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
                           const std::vector<Real>& vector_b) {
   if (vector_a.size() != vector_b.size())
