@@ -31,6 +31,16 @@ public:
   
   UInt num_loudspeakers() { return output_streams_.size(); }
   
+  UInt size() {
+    std::vector<Int> sizes(num_loudspeakers());
+    for (UInt i=0; i<num_loudspeakers(); i++) { sizes[i] = stream(i)->size(); }
+    return mcl::Max(sizes);
+  }
+  
+  bool IsEmpty() {
+    return size() == 0;
+  }
+  
   virtual ~Decoder() {}
   
 protected:
@@ -44,16 +54,14 @@ public:
           input_streams_(mcl::UnaryVector(stream)) {}
   
   IdenticalDecoder(std::vector<MonoStream*> streams) : Decoder(streams.size()),
-        input_streams_(streams) {}
+          input_streams_(streams) {}
   
   virtual void Decode() {
     const UInt num_streams = output_streams_.size();
     assert(num_streams == input_streams_.size());
     
-    while (! input_streams_[0]->IsEmpty()) {
-      for (UInt i=0; i<num_streams; ++i) {
-        output_streams_[i].Push(input_streams_[i]->Pull());
-      }
+    for (UInt i=0; i<num_streams; ++i) {
+      output_streams_[i].Push(input_streams_[i]->PullAll());
     }
   }
   

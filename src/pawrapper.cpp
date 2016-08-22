@@ -13,119 +13,141 @@
 
 namespace sal {
   
-PaWrapper::PaWrapper(Decoder& decoder,
+  
+PaError PaWrapper::Init() { return Pa_Initialize(); }
+  
+  
+void PaWrapper::PrintDevicesInfo() {
+  Init();
+  
+  const PaDeviceInfo *deviceInfo;
+  int numDevices = Pa_GetDeviceCount();
+  for(int i=0; i<numDevices; ++i) {
+    deviceInfo = Pa_GetDeviceInfo(i);
+    std::cout<<"Device id:"<<i<<", name: "<<deviceInfo->name<<
+    ", max output channels: "<<deviceInfo->maxOutputChannels<<"\n";
+  }
+  
+  Terminate();
+}
+  
+std::vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
+                                                  const Int out_dev_id) {
+  Init();
+  
+  const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int) out_dev_id));
+  const UInt max_num_channels(deviceInfo->maxOutputChannels);
+  std::vector<mcl::Int> channel_ids = std::vector<Int>(max_num_channels, -1);
+  for (int i=0; i<num_loudspeakers; ++i) {
+    UInt channel_id;
+    std::cout<<"Select channel id for mic n.: "<<i<<" (from 0 to "<<
+    (max_num_channels-1)<<"): ";
+    std::cin >> channel_id;
+    channel_ids[channel_id] = i;
+  }
+  
+  Terminate();
+  
+  return channel_ids;
+}
+  
+Int PaWrapper::NumOutputChannels(const Int out_dev_id) {
+  Init();
+  const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int) out_dev_id));
+  const UInt max_num_channels(deviceInfo->maxOutputChannels);
+  Terminate();
+  return max_num_channels;
+}
+  
+
+PaWrapper::PaWrapper(Decoder* decoder,
                      Time sampling_frequency,
                      UInt frames_per_buffer,
                      Int out_dev_num,
-                     std::vector<Int> channel_ids) {
-  decoder_ = &decoder;
-  frames_per_buffer_ = frames_per_buffer;
-  channel_ids_ = channel_ids;
+                     std::vector<Int> channel_ids) :
+          decoder_(decoder), frames_per_buffer_(frames_per_buffer),
+          channel_ids_(channel_ids) {
+  //if (decoder->num_loudspeakers() != channel_ids.size()) { throw_line(); }
   
+  Init();
   
-  PaError err;
-  
-  std::cout<<"Starting portaudio...\n"; std::cout.flush();
-  
-  err = Pa_Initialize();
-  if( err != paNoError ) { PaErrorHandler(err); }
-  
-  
-//  const   PaDeviceInfo *deviceInfo;
-//  int numDevices = Pa_GetDeviceCount();
-//  for(int i=0; i<numDevices; ++i) {
-//    deviceInfo = Pa_GetDeviceInfo( i );
-//    std::cout<<"Device id:"<<i<<", name: "<<deviceInfo->name<<
-//    ", max output channels: "<<deviceInfo->maxOutputChannels<<"\n";
-//  }
-//  std::cout<<"Select the device id: ";
-//  int outDevNum;
-//  std::cin >> outDevNum;
-  
-//  UInt num_loudspeakers = decoder_->num_loudspeakers();
-//  const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int) out_dev_num));
-//  const UInt max_num_channels(deviceInfo->maxOutputChannels);
-//  channel_ids_ = std::vector<Int>(max_num_channels, -1);
-//  for (int i=0; i<num_loudspeakers; ++i) {
-//    UInt channel_id;
-//    std::cout<<"Select channel id for mic n.: "<<i<<" (from 0 to "<<
-//    (max_num_channels-1)<<"): ";
-//    std::cin >> channel_id;
-//    channel_ids_[channel_id] = i;
-//  }
-  
-  PaStreamParameters outputParameters;
-  bzero( &outputParameters, sizeof( outputParameters ) );
-  outputParameters.channelCount = 8;
-  outputParameters.device = (int) out_dev_num;
-  outputParameters.hostApiSpecificStreamInfo = NULL;
-  outputParameters.sampleFormat = paFloat32;
-  outputParameters.suggestedLatency =
-        Pa_GetDeviceInfo((int) out_dev_num)->defaultLowOutputLatency ;
+  const PaDeviceInfo* device_info = Pa_GetDeviceInfo((int) out_dev_num);
+            
+  PaStreamParameters output_parameters;
+  bzero(&output_parameters, sizeof(output_parameters));
+  output_parameters.channelCount = device_info->maxOutputChannels;
+  output_parameters.device = (int) out_dev_num;
+  output_parameters.hostApiSpecificStreamInfo = NULL;
+  output_parameters.sampleFormat = paFloat32;
+  output_parameters.suggestedLatency = device_info->defaultLowOutputLatency;
   //See you specific host's API docs for info on using this field
-  outputParameters.hostApiSpecificStreamInfo = NULL;
+  output_parameters.hostApiSpecificStreamInfo = NULL;
   
   /* Open an audio I/O stream. */
-  err = Pa_OpenStream(&stream_,
-                      NULL,
-                      &outputParameters,
-                      sampling_frequency,
-                      frames_per_buffer,
-                      paNoFlag, //flags that can be used to define dither, clip settings and more
-                      NULL, //your callback function
-                      NULL); //data to be passed to callback. In C++, it is frequently (void *)this
-  if(err != paNoError) { PaErrorHandler(err); }
+  Pa_OpenStream(&stream_,
+                NULL,
+                &output_parameters,
+                sampling_frequency,
+                frames_per_buffer,
+                paNoFlag, //flags that can be used to define dither, clip settings and more
+                NULL, //your callback function
+                NULL); //data to be passed to callback. In C++, it is frequently (void *)this
 }
   
-void PaWrapper::StartStream() {
-  PaError err = Pa_StartStream(stream_);
-  if(err != paNoError) { PaErrorHandler(err); }
+PaError PaWrapper::StartStream() { return Pa_StartStream(stream_); }
+
+PaError PaWrapper::WriteDecoderToStream() {
+  PaError error = WriteDecoderToStream(decoder_->size());
+  return error;
 }
 
-void PaWrapper::WriteStream() {
-  sal::UInt max_num_channels = channel_ids_.size();
-  float sample_block[frames_per_buffer_*max_num_channels];
-  
-  sal::UInt num_channels(0);
-  for (mcl::UInt i=0; i<max_num_channels; ++i) {
-    if (channel_ids_[i] != -1) { ++num_channels; }
+PaError PaWrapper::WriteDecoderToStream(const UInt tot_num_samples) {
+  UInt i = 0;
+  while (i+frames_per_buffer_ <= tot_num_samples) {
+    PaError error = WriteStream(frames_per_buffer_);
+    if (error) { return error; }
+    i += frames_per_buffer_;
   }
   
-  mcl::Int i = 0;
-  while(! decoder_->stream(0)->IsEmpty()) {
-    for (int j=0; j<max_num_channels; ++j) {
-      float sample = (channel_ids_[j] != -1) ?
-      (float) (200.0*decoder_->stream(channel_ids_[j])->Pull()) : 0.0;
+  return paNoError;
+}
+  
+PaError PaWrapper::WriteStream(const UInt num_samples) {
+  sal::UInt max_num_channels = channel_ids_.size();
+  const UInt block_length = num_samples*max_num_channels;
+  float sample_block[block_length];
+   
+  for (UInt i=0; i<num_samples; ++i) {
+    for (UInt j=0; j<max_num_channels; ++j) {
+      float sample;
+      if (channel_ids_[j] == -1 ||
+          decoder_->stream(channel_ids_[j])->IsEmpty()) {
+        sample = 0.0;
+      } else {
+        sample = (float) decoder_->stream(channel_ids_[j])->Pull();
+      }
+      assert(i*max_num_channels+j<block_length);
       sample_block[i*max_num_channels+j] = sample;
     }
-    i++;
   }
   
-  PaError err = Pa_WriteStream(stream_, sample_block, frames_per_buffer_);
-  
-  if( err != paNoError ) { PaErrorHandler(err); }
+  return Pa_WriteStream(stream_, sample_block, num_samples);
 }
   
-void PaWrapper::StopStream() {
-  if(stream_) {
-    Pa_AbortStream(stream_);
-    Pa_CloseStream(stream_);
-  }
-}
+PaError PaWrapper::StopStream() { return Pa_CloseStream(stream_); }
   
-void PaWrapper::PaErrorHandler(PaError err) {
+void PaWrapper::PrintError(PaError err) {
   fprintf( stderr, "An error occured while using the portaudio stream\n" );
   fprintf( stderr, "Error number: %d\n", err );
   fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-  StopStream();
-  Pa_Terminate();
-  exit(1);
 }
   
+PaError PaWrapper::Terminate() {
+  return Pa_Terminate();
+}
   
 PaWrapper::~PaWrapper() {
-  StopStream();
-  Pa_Terminate();
+  Terminate();
 }
   
 } // namespace sal

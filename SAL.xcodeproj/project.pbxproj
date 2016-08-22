@@ -45,6 +45,40 @@
 		57B053F61D6B03AC00202654 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
 		57B053F71D6B03B000202654 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
 		57B053F81D6B03B300202654 /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053EF1D6B039100202654 /* libMCLiOS.a */; };
+		57B054791D6B361300202654 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
+		57B0547A1D6B361300202654 /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */; };
+		57B0547B1D6B361300202654 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
+		57B0547C1D6B361300202654 /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
+		57B0547D1D6B361300202654 /* delayfilter_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF881CD81AB400134991 /* delayfilter_test.cpp */; };
+		57B0547E1D6B361300202654 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
+		57B054801D6B361300202654 /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
+		57B054811D6B361300202654 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
+		57B054821D6B361300202654 /* psrmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5720520F1624896A00E32B53 /* psrmic.cpp */; };
+		57B054831D6B361300202654 /* stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF911CD81AB400134991 /* stream_test.cpp */; };
+		57B054841D6B361300202654 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
+		57B054851D6B361300202654 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
+		57B054861D6B361300202654 /* psrmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8F1CD81AB400134991 /* psrmic_test.cpp */; };
+		57B054871D6B361300202654 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
+		57B054881D6B361300202654 /* propagationline_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */; };
+		57B054891D6B361300202654 /* microphonearray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E01593460A00AA6445 /* microphonearray.cpp */; };
+		57B0548A1D6B361300202654 /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5722E2401C9ECB49007FCF59 /* delayfilter.cpp */; };
+		57B0548B1D6B361300202654 /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicmic_test.cpp */; };
+		57B0548C1D6B361300202654 /* sphericalheadmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */; };
+		57B0548D1D6B361300202654 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
+		57B0548E1D6B361300202654 /* microphone_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.cpp */; };
+		57B0548F1D6B361300202654 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
+		57B054901D6B361300202654 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF861CD81AB400134991 /* ambisonics_test.cpp */; };
+		57B054911D6B361300202654 /* kemarmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8A1CD81AB400134991 /* kemarmic_test.cpp */; };
+		57B054921D6B361300202654 /* freefieldsimulation_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF891CD81AB400134991 /* freefieldsimulation_test.cpp */; };
+		57B054941D6B361300202654 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
+		57B054951D6B361300202654 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DB1D6B030A00202654 /* libsndfile.a */; };
+		57B054961D6B361300202654 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72CE1C95AD7600149808 /* Carbon.framework */; };
+		57B054971D6B361300202654 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72CC1C95AD6900149808 /* AudioToolbox.framework */; };
+		57B054981D6B361300202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
+		57B054991D6B361300202654 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C81C95AD3F00149808 /* AudioUnit.framework */; };
+		57B0549A1D6B361300202654 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C61C95AD2E00149808 /* CoreAudio.framework */; };
+		57B0549B1D6B361300202654 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */; };
+		57B054A11D6B363100202654 /* sal_sound_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B054731D6B360B00202654 /* sal_sound_test.cpp */; };
 		57B4EF851CD81A8D00134991 /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF841CD81A8D00134991 /* sal_tests.cpp */; };
 		57B4EF921CD81AB400134991 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF861CD81AB400134991 /* ambisonics_test.cpp */; };
 		57B4EF931CD81AB400134991 /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicmic_test.cpp */; };
@@ -119,10 +153,26 @@
 			remoteGlobalIDString = 572A876719C070ED00F62F8F;
 			remoteInfo = MCLiOS;
 		};
+		57B054771D6B361300202654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 57A157151593475000AA6445;
+			remoteInfo = MCL;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		57A156C31593457600AA6445 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		57B0549C1D6B361300202654 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -171,6 +221,8 @@
 		57B053DF1D6B031500202654 /* libportaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportaudio.a; path = portaudio/lib/libportaudio.a; sourceTree = "<group>"; };
 		57B053E31D6B031F00202654 /* portaudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = portaudio.h; path = portaudio/include/portaudio.h; sourceTree = "<group>"; };
 		57B053E41D6B039100202654 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = mcl/MCL.xcodeproj; sourceTree = "<group>"; };
+		57B054731D6B360B00202654 /* sal_sound_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sal_sound_test.cpp; path = src/bin/sal_sound_test.cpp; sourceTree = "<group>"; };
+		57B054A01D6B361300202654 /* SAL sound test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SAL sound test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B4EF841CD81A8D00134991 /* sal_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sal_tests.cpp; path = src/bin/sal_tests.cpp; sourceTree = "<group>"; };
 		57B4EF861CD81AB400134991 /* ambisonics_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics_test.cpp; path = src/test/ambisonics_test.cpp; sourceTree = "<group>"; };
 		57B4EF871CD81AB400134991 /* cipicmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cipicmic_test.cpp; path = src/test/cipicmic_test.cpp; sourceTree = "<group>"; };
@@ -232,6 +284,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		57B054931D6B361300202654 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57B054941D6B361300202654 /* libMCL.a in Frameworks */,
+				57B054951D6B361300202654 /* libsndfile.a in Frameworks */,
+				57B054961D6B361300202654 /* Carbon.framework in Frameworks */,
+				57B054971D6B361300202654 /* AudioToolbox.framework in Frameworks */,
+				57B054981D6B361300202654 /* libportaudio.a in Frameworks */,
+				57B054991D6B361300202654 /* AudioUnit.framework in Frameworks */,
+				57B0549A1D6B361300202654 /* CoreAudio.framework in Frameworks */,
+				57B0549B1D6B361300202654 /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -251,6 +318,7 @@
 				57A156C51593457600AA6445 /* SAL_test */,
 				57B4EF9F1CD81B6900134991 /* libSAL.a */,
 				57B4EFA01CD81B6900134991 /* libSALiOS.a */,
+				57B054A01D6B361300202654 /* SAL sound test */,
 			);
 			name = targets;
 			sourceTree = "<group>";
@@ -309,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				57B4EF841CD81A8D00134991 /* sal_tests.cpp */,
+				57B054731D6B360B00202654 /* sal_sound_test.cpp */,
 			);
 			name = bin;
 			sourceTree = "<group>";
@@ -445,9 +514,9 @@
 			productReference = 57B4EFA01CD81B6900134991 /* libSALiOS.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		57A156C41593457600AA6445 /* SAL_test */ = {
+		57A156C41593457600AA6445 /* SAL test */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL_test" */;
+			buildConfigurationList = 57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL test" */;
 			buildPhases = (
 				57A156C11593457600AA6445 /* Sources */,
 				57A156C21593457600AA6445 /* Frameworks */,
@@ -458,7 +527,7 @@
 			dependencies = (
 				57B053F11D6B039700202654 /* PBXTargetDependency */,
 			);
-			name = SAL_test;
+			name = "SAL test";
 			productName = SAT;
 			productReference = 57A156C51593457600AA6445 /* SAL_test */;
 			productType = "com.apple.product-type.tool";
@@ -480,6 +549,24 @@
 			productName = SAT;
 			productReference = 57B4EF9F1CD81B6900134991 /* libSAL.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		57B054751D6B361300202654 /* SAL sound test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 57B0549D1D6B361300202654 /* Build configuration list for PBXNativeTarget "SAL sound test" */;
+			buildPhases = (
+				57B054781D6B361300202654 /* Sources */,
+				57B054931D6B361300202654 /* Frameworks */,
+				57B0549C1D6B361300202654 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				57B054761D6B361300202654 /* PBXTargetDependency */,
+			);
+			name = "SAL sound test";
+			productName = SAT;
+			productReference = 57B054A01D6B361300202654 /* SAL sound test */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -507,9 +594,10 @@
 			);
 			projectRoot = "";
 			targets = (
-				57A156C41593457600AA6445 /* SAL_test */,
+				57A156C41593457600AA6445 /* SAL test */,
 				57A1574415934AEC00AA6445 /* SAL */,
 				572A877F19C0712500F62F8F /* SALiOS */,
+				57B054751D6B361300202654 /* SAL sound test */,
 			);
 		};
 /* End PBXProject section */
@@ -613,6 +701,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		57B054781D6B361300202654 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57B054A11D6B363100202654 /* sal_sound_test.cpp in Sources */,
+				57B0547A1D6B361300202654 /* microphonearray_test.cpp in Sources */,
+				57B0547B1D6B361300202654 /* cipicmic.cpp in Sources */,
+				57B0547C1D6B361300202654 /* binauralmic.cpp in Sources */,
+				57B0547D1D6B361300202654 /* delayfilter_test.cpp in Sources */,
+				57B0547E1D6B361300202654 /* freefieldsimulation.cpp in Sources */,
+				57B054801D6B361300202654 /* propagationline.cpp in Sources */,
+				57B054811D6B361300202654 /* ambisonics.cpp in Sources */,
+				57B054821D6B361300202654 /* psrmic.cpp in Sources */,
+				57B054831D6B361300202654 /* stream_test.cpp in Sources */,
+				57B054841D6B361300202654 /* kemarmic.cpp in Sources */,
+				57B054851D6B361300202654 /* sphericalmic.cpp in Sources */,
+				57B054861D6B361300202654 /* psrmic_test.cpp in Sources */,
+				57B054791D6B361300202654 /* pawrapper.cpp in Sources */,
+				57B054871D6B361300202654 /* microphone.cpp in Sources */,
+				57B054881D6B361300202654 /* propagationline_test.cpp in Sources */,
+				57B054891D6B361300202654 /* microphonearray.cpp in Sources */,
+				57B0548A1D6B361300202654 /* delayfilter.cpp in Sources */,
+				57B0548B1D6B361300202654 /* cipicmic_test.cpp in Sources */,
+				57B0548C1D6B361300202654 /* sphericalheadmic_test.cpp in Sources */,
+				57B0548D1D6B361300202654 /* source.cpp in Sources */,
+				57B0548E1D6B361300202654 /* microphone_test.cpp in Sources */,
+				57B0548F1D6B361300202654 /* wavhandler.cpp in Sources */,
+				57B054901D6B361300202654 /* ambisonics_test.cpp in Sources */,
+				57B054911D6B361300202654 /* kemarmic_test.cpp in Sources */,
+				57B054921D6B361300202654 /* freefieldsimulation_test.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -630,6 +751,11 @@
 			isa = PBXTargetDependency;
 			name = MCLiOS;
 			targetProxy = 57B053F41D6B039E00202654 /* PBXContainerItemProxy */;
+		};
+		57B054761D6B361300202654 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MCL;
+			targetProxy = 57B054771D6B361300202654 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -918,6 +1044,63 @@
 			};
 			name = Release;
 		};
+		57B0549E1D6B361300202654 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"__DIR__=\\\"$(SRCROOT)/\\\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
+				LLVM_LTO = NO;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		57B0549F1D6B361300202654 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "__DIR__=\\\"$(SRCROOT)/\\\"";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
+				LLVM_LTO = NO;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -939,7 +1122,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL_test" */ = {
+		57A156CF1593457600AA6445 /* Build configuration list for PBXNativeTarget "SAL test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57A156D01593457600AA6445 /* Debug */,
@@ -953,6 +1136,15 @@
 			buildConfigurations = (
 				57A1574715934AEC00AA6445 /* Debug */,
 				57A1574815934AEC00AA6445 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		57B0549D1D6B361300202654 /* Build configuration list for PBXNativeTarget "SAL sound test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				57B0549E1D6B361300202654 /* Debug */,
+				57B0549F1D6B361300202654 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

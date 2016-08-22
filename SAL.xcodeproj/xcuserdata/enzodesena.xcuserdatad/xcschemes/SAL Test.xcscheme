@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "57A156C41593457600AA6445"
                BuildableName = "SAL_test"
-               BlueprintName = "SAL_test"
+               BlueprintName = "SAL test"
                ReferencedContainer = "container:SAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,7 +34,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "57A156C41593457600AA6445"
             BuildableName = "SAL_test"
-            BlueprintName = "SAL_test"
+            BlueprintName = "SAL test"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "57A156C41593457600AA6445"
             BuildableName = "SAL_test"
-            BlueprintName = "SAL_test"
+            BlueprintName = "SAL test"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -77,7 +77,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "57A156C41593457600AA6445"
             BuildableName = "SAL_test"
-            BlueprintName = "SAL_test"
+            BlueprintName = "SAL test"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

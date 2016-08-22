@@ -22,17 +22,32 @@ namespace sal {
 /** A wrapper for portaudio */
 class PaWrapper {
 public:
-
-  PaWrapper(Decoder& decoder, Time sampling_frequency, UInt frames_per_buffer,
+  PaWrapper(Decoder* decoder, Time sampling_frequency, UInt frames_per_buffer,
             Int out_dev_num, std::vector<Int> channel_ids);
   
-  void StartStream();
-  void WriteStream();
-  void StopStream();
+  PaError StartStream();
+  
+  PaError WriteDecoderToStream();
+  
+  PaError WriteDecoderToStream(const UInt num_samples);
+  
+  PaError WriteStream(const UInt num_samples);
+  
+  PaError StopStream();
+  
+  Int max_num_channels() { return channel_ids_.size(); }
+  
+  static void PrintError(PaError err);
+  
+  static void PrintDevicesInfo();
+  static Int NumOutputChannels(const Int out_dev_id);
+  static std::vector<mcl::Int> SelectChannelIds(const Int num_loudspeakers,
+                                                const Int out_dev_id);
   
   ~PaWrapper();
 private:
-  void PaErrorHandler(PaError err);
+  static PaError Init();
+  static PaError Terminate();
   
   PaStream* stream_;
   Decoder* decoder_;
