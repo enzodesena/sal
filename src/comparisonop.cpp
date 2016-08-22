@@ -3,7 +3,7 @@
  MCL
  
  Authors: Enzo De Sena, enzodesena@me.com
-
+ 
  */
 
 #include "comparisonop.h"
@@ -25,17 +25,17 @@
 #endif
 
 namespace mcl {
-
+  
 
 bool IsEqual(Real num_a, Real num_b, Real precision) {
   if (isnan(num_a) || isnan(num_b)) { return false; }
   return ((Real) fabs(((double) num_a) - ((double) num_b))) < precision;
 }
-  
+
 bool IsNan(Real num) {
   return isnan(num);
 }
-  
+
 std::vector<bool> IsNan(std::vector<Real> input) {
   std::vector<bool> output;
   for (UInt i=0; i<input.size(); ++i) {
@@ -43,7 +43,7 @@ std::vector<bool> IsNan(std::vector<Real> input) {
   }
   return output;
 }
-  
+
 bool IsInf(Real num) {
   return isinf(num);
 }
@@ -55,7 +55,7 @@ std::vector<bool> IsInf(std::vector<Real> input) {
   }
   return output;
 }
-  
+
 std::vector<bool> Not(std::vector<bool> input) {
   std::vector<bool> output;
   for (UInt i=0; i<input.size(); ++i) {
@@ -63,7 +63,7 @@ std::vector<bool> Not(std::vector<bool> input) {
   }
   return output;
 }
-  
+
 bool All(std::vector<bool> input) {
   for (UInt i=0; i<input.size(); ++i) {
     if (input[i] == false) {
@@ -72,11 +72,11 @@ bool All(std::vector<bool> input) {
   }
   return true;
 }
-  
+
 bool None(std::vector<bool> input) {
   return All(Not(input));
 }
-  
+
 bool Any(std::vector<bool> input) {
   for (UInt i=0; i<input.size(); ++i) {
     if (input[i] == true) {
@@ -86,14 +86,14 @@ bool Any(std::vector<bool> input) {
   return false;
 }
 
-bool IsSmallerOrEqual(const Real num_a, const Real num_b) {
-  return num_a <= (num_b + VERY_SMALL);
+bool IsSmallerOrEqual(const Real num_a, const Real num_b, const Real precision) {
+  return num_a <= (num_b + precision);
 }
-  
-bool IsLargerOrEqual(const Real num_a, const Real num_b) {
-  return num_a >= (num_b - VERY_SMALL);
+
+bool IsLargerOrEqual(const Real num_a, const Real num_b, const Real precision) {
+  return num_a >= (num_b - precision);
 }
-  
+
 bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
                           const std::vector<Real>& vector_b) {
   if (vector_a.size() != vector_b.size())
@@ -105,15 +105,15 @@ bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
   
   return true;
 }
-  
+
 bool IsEqual(Complex num_a, Complex num_b, Real precision) {
   return (fabs(num_a.real() - num_b.real()) < precision) &
   (fabs(num_a.imag() - num_b.imag()) < precision);
 }
-  
+
 bool IsEqual(const Quaternion& q_a, const Quaternion& q_b) {
   return IsEqual(q_a.w(), q_b.w()) & IsEqual(q_a.x(), q_b.x()) &
-         IsEqual(q_a.y(), q_b.y()) & IsEqual(q_a.z(), q_b.z());
+  IsEqual(q_a.y(), q_b.y()) & IsEqual(q_a.z(), q_b.z());
 }
 
 
@@ -136,9 +136,9 @@ bool IsReal(const std::vector<Complex>& input) {
   }
   return true;
 }
-  
-  
-  
+
+
+
 bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b) {
   const UInt num_points = points_a.size();
   if (num_points != points_b.size()) { return false; }
@@ -147,8 +147,8 @@ bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b) {
   }
   return true;
 }
-  
-  
+
+
 bool IsEqual(const Point& point_a, const Point& point_b,
              const Real precision) {
   return mcl::IsEqual(point_a.x(), point_b.x(), precision) &&
