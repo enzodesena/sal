@@ -24,6 +24,12 @@
 		572A877619C070ED00F62F8F /* statisticsop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5917955BD60059A90D /* statisticsop.cpp */; };
 		572A877919C070ED00F62F8F /* statisticsop.h in Headers */ = {isa = PBXBuildFile; fileRef = 571F9A5717955B160059A90D /* statisticsop.h */; };
 		572A877A19C070ED00F62F8F /* dataop.h in Headers */ = {isa = PBXBuildFile; fileRef = 57EAE5BF18AA80FC001DC4D4 /* dataop.h */; };
+		57301BCA1D6B01A000D6F5B0 /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57301BC91D6B01A000D6F5B0 /* butter.cpp */; };
+		57301BCB1D6B01A000D6F5B0 /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57301BC91D6B01A000D6F5B0 /* butter.cpp */; };
+		57301BCC1D6B01A000D6F5B0 /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57301BC91D6B01A000D6F5B0 /* butter.cpp */; };
+		57301BCE1D6B01A800D6F5B0 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57301BCD1D6B01A800D6F5B0 /* kiss_fft.c */; };
+		57301BCF1D6B01A800D6F5B0 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57301BCD1D6B01A800D6F5B0 /* kiss_fft.c */; };
+		57301BD01D6B01A800D6F5B0 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57301BCD1D6B01A800D6F5B0 /* kiss_fft.c */; };
 		573F9FA21662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		573F9FA31662799800929EE2 /* matrixop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573F9FA01662799800929EE2 /* matrixop.cpp */; };
 		575737C61CFD07C6008E46CD /* quaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575737C51CFD07C6008E46CD /* quaternion.cpp */; };
@@ -58,12 +64,6 @@
 		57BA701915B4915E002F077F /* transformop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701715B4915E002F077F /* transformop.cpp */; };
 		57BA701C15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
 		57BA701D15B492D5002F077F /* basicop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA701B15B492D4002F077F /* basicop.cpp */; };
-		57E73F951CD7CB0000095F6E /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F941CD7CB0000095F6E /* butter.cpp */; };
-		57E73F961CD7CB0000095F6E /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F941CD7CB0000095F6E /* butter.cpp */; };
-		57E73F971CD7CB0000095F6E /* butter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F941CD7CB0000095F6E /* butter.cpp */; };
-		57E73F991CD7CB0B00095F6E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F981CD7CB0B00095F6E /* kiss_fft.c */; };
-		57E73F9A1CD7CB0B00095F6E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F981CD7CB0B00095F6E /* kiss_fft.c */; };
-		57E73F9B1CD7CB0B00095F6E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 57E73F981CD7CB0B00095F6E /* kiss_fft.c */; };
 		57E73F9D1CD7CB1D00095F6E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */; };
 		57E73FA51CD7CBAC00095F6E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */; };
 		57E73FA81CD7CBBA00095F6E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */; };
@@ -93,6 +93,12 @@
 		571F9A5917955BD60059A90D /* statisticsop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop.cpp; path = src/statisticsop.cpp; sourceTree = "<group>"; };
 		572A877E19C070ED00F62F8F /* libMCLiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCLiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		572B38811B4B84AE004C0DFD /* maxgradientfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = maxgradientfilter.h; path = include/maxgradientfilter.h; sourceTree = "<group>"; };
+		57301BC91D6B01A000D6F5B0 /* butter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = butter.cpp; path = butter/src/butter.cpp; sourceTree = "<group>"; };
+		57301BCD1D6B01A800D6F5B0 /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = kissfft/src/kiss_fft.c; sourceTree = "<group>"; };
+		57301BD31D6B01F900D6F5B0 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = kissfft/include/_kiss_fft_guts.h; sourceTree = "<group>"; };
+		57301BD41D6B01F900D6F5B0 /* kiss_fft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = kissfft/include/kiss_fft.h; sourceTree = "<group>"; };
+		57301BD51D6B01F900D6F5B0 /* kissfft.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kissfft.hh; path = kissfft/include/kissfft.hh; sourceTree = "<group>"; };
+		57301BDA1D6B022400D6F5B0 /* butter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = butter.h; path = butter/include/butter.h; sourceTree = "<group>"; };
 		573F9FA01662799800929EE2 /* matrixop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop.cpp; path = src/matrixop.cpp; sourceTree = "<group>"; };
 		575737C51CFD07C6008E46CD /* quaternion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = quaternion.cpp; path = src/quaternion.cpp; sourceTree = "<group>"; };
 		576B25781CF9DFD200673FC0 /* quaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = quaternion.h; path = include/quaternion.h; sourceTree = "<group>"; };
@@ -131,13 +137,7 @@
 		57BA701715B4915E002F077F /* transformop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = transformop.cpp; path = src/transformop.cpp; sourceTree = "<group>"; };
 		57BA701A15B49263002F077F /* basicop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = basicop.h; path = include/basicop.h; sourceTree = "<group>"; };
 		57BA701B15B492D4002F077F /* basicop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop.cpp; path = src/basicop.cpp; sourceTree = "<group>"; };
-		57E73F941CD7CB0000095F6E /* butter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = butter.cpp; path = lib/butter/src/butter.cpp; sourceTree = "<group>"; };
-		57E73F981CD7CB0B00095F6E /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = lib/kissfft/src/kiss_fft.c; sourceTree = "<group>"; };
 		57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		57E73FA11CD7CB4100095F6E /* butter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = butter.h; path = lib/butter/include/butter.h; sourceTree = "<group>"; };
-		57E73FA21CD7CB7600095F6E /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = lib/kissfft/include/_kiss_fft_guts.h; sourceTree = "<group>"; };
-		57E73FA31CD7CB7600095F6E /* kiss_fft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = lib/kissfft/include/kiss_fft.h; sourceTree = "<group>"; };
-		57E73FA41CD7CB7600095F6E /* kissfft.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kissfft.hh; path = lib/kissfft/include/kissfft.hh; sourceTree = "<group>"; };
 		57EAE5BF18AA80FC001DC4D4 /* dataop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dataop.h; path = include/dataop.h; sourceTree = "<group>"; };
 		57EAE5C118AA8148001DC4D4 /* dataop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dataop.cpp; path = src/dataop.cpp; sourceTree = "<group>"; };
 		57FE67C71CFB61EE00E3CB2A /* quaternion_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = quaternion_test.cpp; path = src/test/quaternion_test.cpp; sourceTree = "<group>"; };
@@ -174,6 +174,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		57301BD11D6B01CF00D6F5B0 /* kissfft */ = {
+			isa = PBXGroup;
+			children = (
+				57301BD61D6B01FE00D6F5B0 /* src */,
+				57301BD21D6B01F000D6F5B0 /* include */,
+			);
+			name = kissfft;
+			sourceTree = "<group>";
+		};
+		57301BD21D6B01F000D6F5B0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				57301BD31D6B01F900D6F5B0 /* _kiss_fft_guts.h */,
+				57301BD41D6B01F900D6F5B0 /* kiss_fft.h */,
+				57301BD51D6B01F900D6F5B0 /* kissfft.hh */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		57301BD61D6B01FE00D6F5B0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				57301BCD1D6B01A800D6F5B0 /* kiss_fft.c */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		57301BD71D6B020600D6F5B0 /* butter */ = {
+			isa = PBXGroup;
+			children = (
+				57301BD91D6B021100D6F5B0 /* src */,
+				57301BD81D6B020E00D6F5B0 /* include */,
+			);
+			name = butter;
+			sourceTree = "<group>";
+		};
+		57301BD81D6B020E00D6F5B0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				57301BDA1D6B022400D6F5B0 /* butter.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		57301BD91D6B021100D6F5B0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				57301BC91D6B01A000D6F5B0 /* butter.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
 		57A1565115933B8A00AA6445 /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,63 +324,11 @@
 		57E73F8D1CD7CAA600095F6E /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57301BD71D6B020600D6F5B0 /* butter */,
+				57301BD11D6B01CF00D6F5B0 /* kissfft */,
 				57E73F9C1CD7CB1D00095F6E /* Accelerate.framework */,
-				57E73F911CD7CAD200095F6E /* kissfft */,
-				57E73F8E1CD7CABE00095F6E /* butter */,
 			);
 			name = lib;
-			sourceTree = "<group>";
-		};
-		57E73F8E1CD7CABE00095F6E /* butter */ = {
-			isa = PBXGroup;
-			children = (
-				57E73F8F1CD7CAC300095F6E /* include */,
-				57E73F901CD7CAC800095F6E /* src */,
-			);
-			name = butter;
-			sourceTree = "<group>";
-		};
-		57E73F8F1CD7CAC300095F6E /* include */ = {
-			isa = PBXGroup;
-			children = (
-				57E73FA11CD7CB4100095F6E /* butter.h */,
-			);
-			name = include;
-			sourceTree = "<group>";
-		};
-		57E73F901CD7CAC800095F6E /* src */ = {
-			isa = PBXGroup;
-			children = (
-				57E73F981CD7CB0B00095F6E /* kiss_fft.c */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
-		57E73F911CD7CAD200095F6E /* kissfft */ = {
-			isa = PBXGroup;
-			children = (
-				57E73F931CD7CADB00095F6E /* include */,
-				57E73F921CD7CAD700095F6E /* src */,
-			);
-			name = kissfft;
-			sourceTree = "<group>";
-		};
-		57E73F921CD7CAD700095F6E /* src */ = {
-			isa = PBXGroup;
-			children = (
-				57E73F941CD7CB0000095F6E /* butter.cpp */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
-		57E73F931CD7CADB00095F6E /* include */ = {
-			isa = PBXGroup;
-			children = (
-				57E73FA21CD7CB7600095F6E /* _kiss_fft_guts.h */,
-				57E73FA31CD7CB7600095F6E /* kiss_fft.h */,
-				57E73FA41CD7CB7600095F6E /* kissfft.hh */,
-			);
-			name = include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -442,15 +442,15 @@
 				572A876B19C070ED00F62F8F /* vectorop.cpp in Sources */,
 				572A876C19C070ED00F62F8F /* elementaryop.cpp in Sources */,
 				572A876D19C070ED00F62F8F /* comparisonop.cpp in Sources */,
+				57301BD01D6B01A800D6F5B0 /* kiss_fft.c in Sources */,
 				572A876E19C070ED00F62F8F /* transformop.cpp in Sources */,
 				575737C81CFD07C6008E46CD /* quaternion.cpp in Sources */,
 				57FE67CC1CFB794300E3CB2A /* point.cpp in Sources */,
 				572A876F19C070ED00F62F8F /* basicop.cpp in Sources */,
 				572A877019C070ED00F62F8F /* firfilter.cpp in Sources */,
 				572A877119C070ED00F62F8F /* iirfilter.cpp in Sources */,
-				57E73F9B1CD7CB0B00095F6E /* kiss_fft.c in Sources */,
 				572A877319C070ED00F62F8F /* dataop.cpp in Sources */,
-				57E73F971CD7CB0000095F6E /* butter.cpp in Sources */,
+				57301BCC1D6B01A000D6F5B0 /* butter.cpp in Sources */,
 				572A877419C070ED00F62F8F /* randomop.cpp in Sources */,
 				572A877519C070ED00F62F8F /* matrixop.cpp in Sources */,
 				572A877619C070ED00F62F8F /* statisticsop.cpp in Sources */,
@@ -465,15 +465,15 @@
 				57BA700D15B42BBD002F077F /* vectorop.cpp in Sources */,
 				57BA701115B43B64002F077F /* elementaryop.cpp in Sources */,
 				57BA701515B43C61002F077F /* comparisonop.cpp in Sources */,
+				57301BCF1D6B01A800D6F5B0 /* kiss_fft.c in Sources */,
 				57BA701915B4915E002F077F /* transformop.cpp in Sources */,
 				575737C71CFD07C6008E46CD /* quaternion.cpp in Sources */,
 				57FE67CB1CFB794300E3CB2A /* point.cpp in Sources */,
 				57BA701D15B492D5002F077F /* basicop.cpp in Sources */,
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
-				57E73F9A1CD7CB0B00095F6E /* kiss_fft.c in Sources */,
 				57EAE5C318AA8148001DC4D4 /* dataop.cpp in Sources */,
-				57E73F961CD7CB0000095F6E /* butter.cpp in Sources */,
+				57301BCB1D6B01A000D6F5B0 /* butter.cpp in Sources */,
 				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
 				573F9FA31662799800929EE2 /* matrixop.cpp in Sources */,
 				571F9A5C17955BD60059A90D /* statisticsop.cpp in Sources */,
@@ -486,11 +486,13 @@
 			files = (
 				57B4EF6D1CD8174E00134991 /* mcl_test.cpp in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
+				57301BCA1D6B01A000D6F5B0 /* butter.cpp in Sources */,
 				57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */,
 				57BA701015B43B64002F077F /* elementaryop.cpp in Sources */,
 				57B4EF7B1CD8177900134991 /* elementaryop_test.cpp in Sources */,
 				57B4EF7E1CD8177900134991 /* random_test.cpp in Sources */,
 				57FE67CF1CFB7A4D00E3CB2A /* point_test.cpp in Sources */,
+				57301BCE1D6B01A800D6F5B0 /* kiss_fft.c in Sources */,
 				57BA701415B43C61002F077F /* comparisonop.cpp in Sources */,
 				57BA701815B4915E002F077F /* transformop.cpp in Sources */,
 				57B4EF7C1CD8177900134991 /* matrixop_test.cpp in Sources */,
@@ -500,7 +502,6 @@
 				575737C61CFD07C6008E46CD /* quaternion.cpp in Sources */,
 				57B4EF781CD8177900134991 /* basicop_test.cpp in Sources */,
 				57BA701C15B492D5002F077F /* basicop.cpp in Sources */,
-				57E73F951CD7CB0000095F6E /* butter.cpp in Sources */,
 				57B4EF801CD8177900134991 /* transformop_test.cpp in Sources */,
 				5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */,
@@ -510,7 +511,6 @@
 				573F9FA21662799800929EE2 /* matrixop.cpp in Sources */,
 				571F9A5B17955BD60059A90D /* statisticsop.cpp in Sources */,
 				57B4EF7D1CD8177900134991 /* pointwiseop_test.cpp in Sources */,
-				57E73F991CD7CB0B00095F6E /* kiss_fft.c in Sources */,
 				57B4EF791CD8177900134991 /* comparisonop_test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
