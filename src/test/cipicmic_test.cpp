@@ -21,7 +21,7 @@ namespace sal {
 bool CipicMic::Test() {
   using mcl::IsEqual;
   
-  const std::string cipic_path = std::string("lib/cipic/subject21");
+  const std::string cipic_path = std::string("hrtfs/cipic/subject21");
   
   const UInt impulse_response_length = 34;
   

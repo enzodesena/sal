@@ -21,7 +21,7 @@ namespace sal {
 bool KemarMic::Test() {
   using mcl::IsEqual;
   
-  const std::string kemar_path = std::string("lib/kemar");
+  const std::string kemar_path = std::string("hrtfs/kemar");
   
   const UInt impulse_response_length = 128;
   

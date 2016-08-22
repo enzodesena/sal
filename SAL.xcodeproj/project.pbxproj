@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5704D1411CD7BC1C00ACA678 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5704D13C1CD7BBEE00ACA678 /* libMCL.a */; };
-		5704D14F1CD7BEE700ACA678 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5704D13C1CD7BBEE00ACA678 /* libMCL.a */; };
-		5704D1521CD7BF0500ACA678 /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5704D13E1CD7BBEE00ACA678 /* libMCLiOS.a */; };
 		572052121624896A00E32B53 /* psrmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5720520F1624896A00E32B53 /* psrmic.cpp */; };
 		5722E2411C9ECB49007FCF59 /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5722E2401C9ECB49007FCF59 /* delayfilter.cpp */; };
 		5722E2421C9ECB49007FCF59 /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5722E2401C9ECB49007FCF59 /* delayfilter.cpp */; };
@@ -39,6 +36,15 @@
 		57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57A1575115934AFF00AA6445 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156E31593460A00AA6445 /* source.cpp */; };
 		57A79245163E9C360063863D /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
+		57B053DC1D6B030A00202654 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DB1D6B030A00202654 /* libsndfile.a */; };
+		57B053DD1D6B030A00202654 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DB1D6B030A00202654 /* libsndfile.a */; };
+		57B053DE1D6B030A00202654 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DB1D6B030A00202654 /* libsndfile.a */; };
+		57B053E01D6B031500202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
+		57B053E11D6B031500202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
+		57B053E21D6B031500202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
+		57B053F61D6B03AC00202654 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
+		57B053F71D6B03B000202654 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
+		57B053F81D6B03B300202654 /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053EF1D6B039100202654 /* libMCLiOS.a */; };
 		57B4EF851CD81A8D00134991 /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF841CD81A8D00134991 /* sal_tests.cpp */; };
 		57B4EF921CD81AB400134991 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF861CD81AB400134991 /* ambisonics_test.cpp */; };
 		57B4EF931CD81AB400134991 /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicmic_test.cpp */; };
@@ -51,12 +57,6 @@
 		57B4EF9B1CD81AB400134991 /* psrmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8F1CD81AB400134991 /* psrmic_test.cpp */; };
 		57B4EF9C1CD81AB400134991 /* sphericalheadmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */; };
 		57B4EF9D1CD81AB400134991 /* stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF911CD81AB400134991 /* stream_test.cpp */; };
-		57B4EFA81CD81D5600134991 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B4EFA71CD81D5600134991 /* libportaudio.a */; };
-		57B4EFA91CD81D5600134991 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B4EFA71CD81D5600134991 /* libportaudio.a */; };
-		57B4EFAA1CD81D5600134991 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B4EFA71CD81D5600134991 /* libportaudio.a */; };
-		57B4EFAF1CD81D7600134991 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B4EFAE1CD81D7600134991 /* libsndfile.a */; };
-		57B4EFB01CD81D7600134991 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B4EFAE1CD81D7600134991 /* libsndfile.a */; };
-		57B4EFB11CD81D7600134991 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B4EFAE1CD81D7600134991 /* libsndfile.a */; };
 		57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
 		57C2C7AA1B1739A600B7F58C /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
 		57CE72BA1C9583FC00149808 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
@@ -77,44 +77,44 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5704D1391CD7BBEE00ACA678 /* PBXContainerItemProxy */ = {
+		57B053EA1D6B039100202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AA1593501200AA6445;
 			remoteInfo = MCL_test;
 		};
-		5704D13B1CD7BBEE00ACA678 /* PBXContainerItemProxy */ = {
+		57B053EC1D6B039100202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AC1593501200AA6445;
 			remoteInfo = MCL;
 		};
-		5704D13D1CD7BBEE00ACA678 /* PBXContainerItemProxy */ = {
+		57B053EE1D6B039100202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 572A877E19C070ED00F62F8F;
 			remoteInfo = MCLiOS;
 		};
-		5704D13F1CD7BC0400ACA678 /* PBXContainerItemProxy */ = {
+		57B053F01D6B039700202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 57A157151593475000AA6445;
 			remoteInfo = MCL;
 		};
-		5704D14B1CD7BEE100ACA678 /* PBXContainerItemProxy */ = {
+		57B053F21D6B039B00202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 57A157151593475000AA6445;
 			remoteInfo = MCL;
 		};
-		5704D1501CD7BF0200ACA678 /* PBXContainerItemProxy */ = {
+		57B053F41D6B039E00202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 572A876719C070ED00F62F8F;
 			remoteInfo = MCLiOS;
@@ -134,7 +134,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = lib/mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 		57061AD815B6D6CE000CD42D /* array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = array.h; path = include/array.h; sourceTree = "<group>"; };
 		5713F76E15F38C4800AF1DE2 /* salconstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = salconstants.h; path = include/salconstants.h; sourceTree = "<group>"; };
 		5719A9AD15B57CCC000AD692 /* saltypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = saltypes.h; path = include/saltypes.h; sourceTree = "<group>"; };
@@ -166,6 +165,12 @@
 		57A156F11593464300AA6445 /* microphonearray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = microphonearray.h; path = include/microphonearray.h; sourceTree = "<group>"; };
 		57A156F51593464300AA6445 /* source.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = source.h; path = include/source.h; sourceTree = "<group>"; };
 		57A156F61593464300AA6445 /* wavhandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = wavhandler.h; path = include/wavhandler.h; sourceTree = "<group>"; };
+		57B053D91D6B030300202654 /* sndfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sndfile.h; path = libsndfile/include/sndfile.h; sourceTree = "<group>"; };
+		57B053DA1D6B030300202654 /* sndfile.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = sndfile.hh; path = libsndfile/include/sndfile.hh; sourceTree = "<group>"; };
+		57B053DB1D6B030A00202654 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = libsndfile/lib/libsndfile.a; sourceTree = "<group>"; };
+		57B053DF1D6B031500202654 /* libportaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportaudio.a; path = portaudio/lib/libportaudio.a; sourceTree = "<group>"; };
+		57B053E31D6B031F00202654 /* portaudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = portaudio.h; path = portaudio/include/portaudio.h; sourceTree = "<group>"; };
+		57B053E41D6B039100202654 /* MCL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MCL.xcodeproj; path = mcl/MCL.xcodeproj; sourceTree = "<group>"; };
 		57B4EF841CD81A8D00134991 /* sal_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sal_tests.cpp; path = src/bin/sal_tests.cpp; sourceTree = "<group>"; };
 		57B4EF861CD81AB400134991 /* ambisonics_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ambisonics_test.cpp; path = src/test/ambisonics_test.cpp; sourceTree = "<group>"; };
 		57B4EF871CD81AB400134991 /* cipicmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cipicmic_test.cpp; path = src/test/cipicmic_test.cpp; sourceTree = "<group>"; };
@@ -180,11 +185,6 @@
 		57B4EF911CD81AB400134991 /* stream_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stream_test.cpp; path = src/test/stream_test.cpp; sourceTree = "<group>"; };
 		57B4EF9F1CD81B6900134991 /* libSAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B4EFA01CD81B6900134991 /* libSALiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSALiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		57B4EFA61CD81D4C00134991 /* portaudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = portaudio.h; path = lib/portaudio/include/portaudio.h; sourceTree = "<group>"; };
-		57B4EFA71CD81D5600134991 /* libportaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportaudio.a; path = lib/portaudio/lib/libportaudio.a; sourceTree = "<group>"; };
-		57B4EFAE1CD81D7600134991 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = lib/libsndfile/lib/libsndfile.a; sourceTree = "<group>"; };
-		57B4EFB21CD81D7E00134991 /* sndfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sndfile.h; path = lib/libsndfile/include/sndfile.h; sourceTree = "<group>"; };
-		57B4EFB31CD81D7E00134991 /* sndfile.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = sndfile.hh; path = lib/libsndfile/include/sndfile.hh; sourceTree = "<group>"; };
 		57C2C7A51B17399000B7F58C /* binauralmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = binauralmic.h; path = include/binauralmic.h; sourceTree = "<group>"; };
 		57C2C7A71B1739A600B7F58C /* binauralmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = binauralmic.cpp; path = src/binauralmic.cpp; sourceTree = "<group>"; };
 		57CE72B91C9583FC00149808 /* pawrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pawrapper.cpp; path = src/pawrapper.cpp; sourceTree = "<group>"; };
@@ -201,9 +201,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57B4EFB11CD81D7600134991 /* libsndfile.a in Frameworks */,
-				5704D1521CD7BF0500ACA678 /* libMCLiOS.a in Frameworks */,
-				57B4EFAA1CD81D5600134991 /* libportaudio.a in Frameworks */,
+				57B053F81D6B03B300202654 /* libMCLiOS.a in Frameworks */,
+				57B053DE1D6B030A00202654 /* libsndfile.a in Frameworks */,
+				57B053E21D6B031500202654 /* libportaudio.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,14 +211,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5704D1411CD7BC1C00ACA678 /* libMCL.a in Frameworks */,
+				57B053F61D6B03AC00202654 /* libMCL.a in Frameworks */,
+				57B053DC1D6B030A00202654 /* libsndfile.a in Frameworks */,
 				57CE72D01C95AD8C00149808 /* Carbon.framework in Frameworks */,
 				57CE72CD1C95AD6900149808 /* AudioToolbox.framework in Frameworks */,
-				57B4EFA81CD81D5600134991 /* libportaudio.a in Frameworks */,
+				57B053E01D6B031500202654 /* libportaudio.a in Frameworks */,
 				57CE72CB1C95AD5700149808 /* AudioUnit.framework in Frameworks */,
 				57CE72CA1C95AD4900149808 /* CoreAudio.framework in Frameworks */,
 				572C3BEB1B35F9CF0071BB39 /* Accelerate.framework in Frameworks */,
-				57B4EFAF1CD81D7600134991 /* libsndfile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,25 +226,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57B4EFB01CD81D7600134991 /* libsndfile.a in Frameworks */,
-				5704D14F1CD7BEE700ACA678 /* libMCL.a in Frameworks */,
-				57B4EFA91CD81D5600134991 /* libportaudio.a in Frameworks */,
+				57B053F71D6B03B000202654 /* libMCL.a in Frameworks */,
+				57B053DD1D6B030A00202654 /* libsndfile.a in Frameworks */,
+				57B053E11D6B031500202654 /* libportaudio.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5704D1341CD7BBEE00ACA678 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5704D13A1CD7BBEE00ACA678 /* MCL_test */,
-				5704D13C1CD7BBEE00ACA678 /* libMCL.a */,
-				5704D13E1CD7BBEE00ACA678 /* libMCLiOS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		57A156BA1593457600AA6445 = {
 			isa = PBXGroup;
 			children = (
@@ -344,9 +334,9 @@
 		57A156FA1593465600AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57B053E41D6B039100202654 /* MCL.xcodeproj */,
 				57B4EFAB1CD81D5D00134991 /* libsndfile */,
 				57B4EFA21CD81D3000134991 /* portaudio */,
-				5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */,
 				57CE72CE1C95AD7600149808 /* Carbon.framework */,
 				57CE72CC1C95AD6900149808 /* AudioToolbox.framework */,
 				57CE72C81C95AD3F00149808 /* AudioUnit.framework */,
@@ -354,6 +344,16 @@
 				572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */,
 			);
 			name = lib;
+			sourceTree = "<group>";
+		};
+		57B053E51D6B039100202654 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				57B053EB1D6B039100202654 /* MCL_test */,
+				57B053ED1D6B039100202654 /* libMCL.a */,
+				57B053EF1D6B039100202654 /* libMCLiOS.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		57B4EFA21CD81D3000134991 /* portaudio */ = {
@@ -368,7 +368,7 @@
 		57B4EFA31CD81D3500134991 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				57B4EFA61CD81D4C00134991 /* portaudio.h */,
+				57B053E31D6B031F00202654 /* portaudio.h */,
 			);
 			name = include;
 			sourceTree = "<group>";
@@ -376,7 +376,7 @@
 		57B4EFA41CD81D3B00134991 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				57B4EFA71CD81D5600134991 /* libportaudio.a */,
+				57B053DF1D6B031500202654 /* libportaudio.a */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -393,8 +393,8 @@
 		57B4EFAC1CD81D6500134991 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				57B4EFB21CD81D7E00134991 /* sndfile.h */,
-				57B4EFB31CD81D7E00134991 /* sndfile.hh */,
+				57B053D91D6B030300202654 /* sndfile.h */,
+				57B053DA1D6B030300202654 /* sndfile.hh */,
 			);
 			name = include;
 			sourceTree = "<group>";
@@ -402,7 +402,7 @@
 		57B4EFAD1CD81D6C00134991 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				57B4EFAE1CD81D7600134991 /* libsndfile.a */,
+				57B053DB1D6B030A00202654 /* libsndfile.a */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -438,7 +438,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				5704D1511CD7BF0200ACA678 /* PBXTargetDependency */,
+				57B053F51D6B039E00202654 /* PBXTargetDependency */,
 			);
 			name = SALiOS;
 			productName = SAT;
@@ -456,7 +456,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				5704D1401CD7BC0400ACA678 /* PBXTargetDependency */,
+				57B053F11D6B039700202654 /* PBXTargetDependency */,
 			);
 			name = SAL_test;
 			productName = SAT;
@@ -474,7 +474,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				5704D14C1CD7BEE100ACA678 /* PBXTargetDependency */,
+				57B053F31D6B039B00202654 /* PBXTargetDependency */,
 			);
 			name = SAL;
 			productName = SAT;
@@ -501,8 +501,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5704D1341CD7BBEE00ACA678 /* Products */;
-					ProjectRef = 5704D1331CD7BBEE00ACA678 /* MCL.xcodeproj */;
+					ProductGroup = 57B053E51D6B039100202654 /* Products */;
+					ProjectRef = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -515,25 +515,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		5704D13A1CD7BBEE00ACA678 /* MCL_test */ = {
+		57B053EB1D6B039100202654 /* MCL_test */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = MCL_test;
-			remoteRef = 5704D1391CD7BBEE00ACA678 /* PBXContainerItemProxy */;
+			remoteRef = 57B053EA1D6B039100202654 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5704D13C1CD7BBEE00ACA678 /* libMCL.a */ = {
+		57B053ED1D6B039100202654 /* libMCL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libMCL.a;
-			remoteRef = 5704D13B1CD7BBEE00ACA678 /* PBXContainerItemProxy */;
+			remoteRef = 57B053EC1D6B039100202654 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5704D13E1CD7BBEE00ACA678 /* libMCLiOS.a */ = {
+		57B053EF1D6B039100202654 /* libMCLiOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libMCLiOS.a;
-			remoteRef = 5704D13D1CD7BBEE00ACA678 /* PBXContainerItemProxy */;
+			remoteRef = 57B053EE1D6B039100202654 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -616,20 +616,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5704D1401CD7BC0400ACA678 /* PBXTargetDependency */ = {
+		57B053F11D6B039700202654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
-			targetProxy = 5704D13F1CD7BC0400ACA678 /* PBXContainerItemProxy */;
+			targetProxy = 57B053F01D6B039700202654 /* PBXContainerItemProxy */;
 		};
-		5704D14C1CD7BEE100ACA678 /* PBXTargetDependency */ = {
+		57B053F31D6B039B00202654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
-			targetProxy = 5704D14B1CD7BEE100ACA678 /* PBXContainerItemProxy */;
+			targetProxy = 57B053F21D6B039B00202654 /* PBXContainerItemProxy */;
 		};
-		5704D1511CD7BF0200ACA678 /* PBXTargetDependency */ = {
+		57B053F51D6B039E00202654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCLiOS;
-			targetProxy = 5704D1501CD7BF0200ACA678 /* PBXContainerItemProxy */;
+			targetProxy = 57B053F41D6B039E00202654 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -650,7 +650,11 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -682,7 +686,11 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -733,14 +741,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
+					"$(PROJECT_DIR)/mcl/include",
+					"$(PROJECT_DIR)/portaudio/include",
+					"$(PROJECT_DIR)/mcl/butter/include",
+					"$(PROJECT_DIR)/mcl/kissfft/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+					"$(PROJECT_DIR)/libsndfile/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -777,14 +785,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/mcl/include",
-					"$(PROJECT_DIR)/lib/portaudio/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/butter/include",
-					"$(PROJECT_DIR)/lib/mcl/lib/kissfft/include",
+					"$(PROJECT_DIR)/mcl/include",
+					"$(PROJECT_DIR)/portaudio/include",
+					"$(PROJECT_DIR)/mcl/butter/include",
+					"$(PROJECT_DIR)/mcl/kissfft/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/lib/portaudio/lib",
-					"$(PROJECT_DIR)/lib/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+					"$(PROJECT_DIR)/libsndfile/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
@@ -809,7 +817,11 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
@@ -832,7 +844,11 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = SAL_test;
@@ -855,7 +871,11 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
@@ -882,7 +902,11 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libsndfile/lib",
+					"$(PROJECT_DIR)/portaudio/lib",
+				);
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
