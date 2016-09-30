@@ -76,7 +76,14 @@ bool Microphone::Test() {
   MonoStream* stream_h = mic_h.stream();
   mic_h.RecordPlaneWave(0.5, Point(2.0,2.0*tan(PI/5.0),0.0));
   assert(IsEqual(stream_h->Pull(), 0.5*(0.5-1.0-0.5)));
-    
+  
+  
+  TrigMic mic_p(Point(2.0,1.2,0.5), mcl::AxAng2Quat(0,0,1,0), coefficients);
+  mic_p.RecordPlaneWave(0.5, Point(2.0+cos(0),1.2+sin(0),0.5+0.4));
+  Sample sample = mic_p.stream()->Pull();
+  mic_p.set_orientation(mcl::AxAng2Quat(0,0,1,PI/10.0));
+  mic_p.RecordPlaneWave(0.5, Point(2.0+cos(PI/10.0),1.2+sin(PI/10.0),0.5+0.4));
+  assert(IsEqual(mic_p.stream()->Pull(), sample));
   
   //////////////////////////////////
   // GainMic tests                //
