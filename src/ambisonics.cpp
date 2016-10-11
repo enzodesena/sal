@@ -316,7 +316,7 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const UInt order,
                                              const Time sampling_frequency,
                                              const Length sound_speed) {
   // TODO: implement for orders higher than 6
-  assert(order>=0 & order<=6);
+  if (order > 6) { throw_line(""); }
   using mcl::Real;
   using mcl::Poly;
   using mcl::Ones;
