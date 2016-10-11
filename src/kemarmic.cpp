@@ -12,7 +12,13 @@
 #include "mcl.h"
 #include "point.h"
 #include "salconstants.h"
-#include <string.h>
+
+#ifdef _WIN32
+  #define sprintf(...) sprintf_s(__VA_ARGS__)
+  #define strcpy(...) strcpy_s(__VA_ARGS__)
+  #define strcat(...) strcat_s(__VA_ARGS__)
+#endif
+
 
 using mcl::Point;
 using mcl::Quaternion;

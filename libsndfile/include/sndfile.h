@@ -29,7 +29,6 @@
 /* This is the version 1.0.X header file. */
 #define	SNDFILE_1
 
-#include <stdio.h>
 #include <sys/types.h>
 
 #ifdef __cplusplus
