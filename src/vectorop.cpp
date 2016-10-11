@@ -96,7 +96,7 @@ std::vector<Real> XCorr(const std::vector<Real>& vector_a,
   
   UInt M = vector_a.size();
   
-  UInt n_fft = pow(2.0, NextPow2(2*M-1));
+  UInt n_fft = (UInt) pow(2.0, NextPow2(2*M-1));
   
   std::vector<Complex> x = Fft(ComplexVector(vector_a), n_fft);
   std::vector<Complex> y = Fft(ComplexVector(vector_b), n_fft);
@@ -170,15 +170,15 @@ std::vector<Real> TukeyWin(const UInt length, const Real ratio) {
     std::vector<Real> t = LinSpace(0.0, 1.0, length);
     // Defines period of the taper as 1/2 period of a sine wave.
     Real per = ratio/2.0;
-    Int tl = floor(per*(((Real) length)-1.0))+1;
+    Int tl = (Int) floor(per*(((Real) length)-1.0))+1;
     Int th = length-tl+1;
     // Window is defined in three sections: taper, constant, taper
     // w1 = ((1+cos(PI/per*(t(1:tl) - per)))/2);
     std::vector<Real> w = Ones(length);
-    for (UInt i=0; i<tl; ++i) {
+    for (Int i=0; i<tl; ++i) {
       w[i] = (1.0+cos(PI/per*(t[i] - per)))/2.0;
     }
-    for (UInt i=th-1; i<length; ++i) {
+    for (Int i=th-1; i<length; ++i) {
       w[i] = (1.0+cos(PI/per*(t[i] - 1.0 + per)))/2.0;
     }
     return w;

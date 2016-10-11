@@ -19,7 +19,7 @@
 #include "matrixop.h"
 #include <vector>
 #include <iostream>
-
+#include <algorithm>
 
 namespace mcl {
 

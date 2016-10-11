@@ -98,7 +98,7 @@ std::vector<Real> MinPhase(const std::vector<Real>& x) {
   //  wn = [1; 2*ones((n+odd)/2-1,1) ; ones(1-rem(n,2),1); zeros((n+odd)/2-1,1)];
   std::vector<Real> wn_1 = Concatenate(UnaryVector((Real) 1.0), 
                                        Multiply(Ones((n+odd)/2-1), (Real) 2.0));
-  std::vector<Real> wn_2 = Concatenate(wn_1, Ones(1-Rem((Int)n,2)));
+  std::vector<Real> wn_2 = Concatenate(wn_1, Ones(1-(Int)Rem((Int)n,2)));
   std::vector<Real> wn = Concatenate(wn_2, Zeros<Real>((n+odd)/2-1));
   
   // yhat(:) = real(ifft(exp(fft(wn.*xhat(:)))));
@@ -108,7 +108,7 @@ std::vector<Real> MinPhase(const std::vector<Real>& x) {
 
 std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point) {
   return Elements(Fft(ConvertToComplex(input), n_point), 0,
-                  floor(1.0+((double)n_point)/2.0)-1);
+                  (Int) floor(1.0+((double)n_point)/2.0)-1);
 }
 
 

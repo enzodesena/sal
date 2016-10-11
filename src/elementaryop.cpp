@@ -12,7 +12,7 @@
 #include <limits>
 
 #if MCL_LOAD_BOOST
-#include "boost/math/special_functions/spherical_harmonic.hpp"
+  #include "boost/math/special_functions/spherical_harmonic.hpp"
 #endif
 
 namespace mcl {
@@ -32,8 +32,8 @@ Int Sign(const Real scalar) {
 }
 
 Int Fix(const Real scalar) {
-  if (scalar >= 0.0) { return (Real) floor((double) scalar); }
-  else { return (Real) ceil((double) scalar); }
+  if (scalar >= 0.0) { return (Int) floor((double) scalar); }
+  else { return (Int) ceil((double) scalar); }
 }
 
 

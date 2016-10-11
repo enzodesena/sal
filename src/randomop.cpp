@@ -6,27 +6,8 @@
  
  */
 
-//#include <random>
-//#include "randomop.h"
-//#include "mcltypes.h"
-//#include <vector>
-//
-//
-//namespace mcl {
-//
-//  
-//std::vector<Real> RandomGenerator::Randn(const UInt size) {
-//  std::vector<Real> output(size);
-//  for (UInt i = 0; i < size; i++) {
-//    output[i] = distribution_(generator_);
-//  }
-//  return output;
-//}
-//  
-//} // namespace mcl
 
 #include "randomop.h"
-#include <sys/time.h>
 #include "mcltypes.h"
 #include <vector>
 #include <cassert>

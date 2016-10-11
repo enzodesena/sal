@@ -29,9 +29,9 @@ std::vector<UInt> FindPeaksIndexes(const std::vector<Real>& vector,
   // Allocate new vectors for the indexes of the local maxima
   std::vector<UInt> indexes;
   for (UInt i=1; i<(vector.size()-1); ++i) {
-    if (vector[i] > min_peak_height & 
-        vector[i] > vector[i-1] &
-        vector[i] > vector[i+1]) {
+    if ((vector[i] > min_peak_height) &
+        (vector[i] > vector[i-1]) &
+        (vector[i] > vector[i+1])) {
       indexes.push_back(i);
     }
   }

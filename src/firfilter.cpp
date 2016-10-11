@@ -44,7 +44,7 @@ Real FirFilter::Filter(Real input_sample) {
   if (update_index_ > 0) { UpdateCoefficients(); }
   
   delay_line_[counter_] = input_sample;
-  float result = 0.0;
+  float result = 0.0f;
   
 //#ifdef OSXIOS
 //  std::vector<float> result_a(length_-counter_, 0.0);
@@ -200,7 +200,7 @@ void FirFilter::UpdateCoefficients() {
   assert(impulse_response_.size() == impulse_response_old_.size());
   float weight_old = ((float)(update_index_-1))/
                       (float)update_length_;
-  float weight_new = 1.0-weight_old;
+  float weight_new = 1.0f-weight_old;
   coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
                            mcl::Multiply(impulse_response_old_, weight_old));
   update_index_--;
