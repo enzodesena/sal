@@ -43,7 +43,7 @@ FirFilter::FirFilter(std::vector<Real> B) :
 Real FirFilter::Filter(Real input_sample) {
   if (update_index_ > 0) { UpdateCoefficients(); }
   
-  delay_line_[counter_] = input_sample;
+  delay_line_[counter_] = (float) input_sample;
   float result = 0.0f;
   
 //#ifdef OSXIOS

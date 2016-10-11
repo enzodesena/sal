@@ -13,7 +13,11 @@
     #include <malloc/malloc.h>
   #endif
 #else
-  #include <malloc/malloc.h>
+  #ifdef _WIN32
+    #include <malloc.h>
+  #else
+    #include <malloc/malloc.h>
+  #endif
 #endif
 
 #ifdef __cplusplus

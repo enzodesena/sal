@@ -122,7 +122,7 @@ class kissfft
 
         void kf_bfly2( cpx_type * Fout, const size_t fstride, int m)
         {
-            for (size_t k=0;k<m;++k) {
+            for (int k=0;k<m;++k) {
                 cpx_type t = Fout[m+k] * _traits.twiddle(((int)k)*((int)fstride));
                 Fout[m+k] = Fout[k] - t;
                 Fout[k] += t;
