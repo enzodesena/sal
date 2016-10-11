@@ -170,8 +170,8 @@ bool PointTest() {
   
   Point point_l(1.5, 2.0, 3.0);
   Point point_l_cmp =
-          PointSpherical(point_l.norm()*cos(M_PI/2.0-point_l.theta()),
-                                M_PI/2.0,
+          PointSpherical(point_l.norm()*cos(PI/2.0-point_l.theta()),
+                                PI/2.0,
                                 point_l.phi());
   assert(IsEqual(Projection(point_l, Point(0,0,1)), point_l_cmp));
   
