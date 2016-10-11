@@ -48,14 +48,14 @@ public:
           merge_streams_(streams) {}
   
   inline void Push(const Sample& sample) {
-    if (merge_streams_.size() > 0) { throw_line(); }
-    if (num_temp_samples_ > 0) { throw_line(); }
+    if (merge_streams_.size() > 0) { throw_line(""); }
+    if (num_temp_samples_ > 0) { throw_line(""); }
     queue_.push_back(sample);
   }
   
   
   void Push(const Signal& signal) {
-    if (merge_streams_.size() > 0) { throw_line(); }
+    if (merge_streams_.size() > 0) { throw_line(""); }
     const UInt num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(signal.at(i));
@@ -64,8 +64,8 @@ public:
   
   
   void PushAll(MonoStream* stream) {
-    if (merge_streams_.size() > 0) { throw_line(); }
-    if (num_temp_samples_ > 0) { throw_line(); }
+    if (merge_streams_.size() > 0) { throw_line(""); }
+    if (num_temp_samples_ > 0) { throw_line(""); }
     while (! stream->IsEmpty()) {
       Push(stream->Pull());
     }
@@ -76,12 +76,12 @@ public:
   
   
   void Add(const Signal& signal) {
-    if (merge_streams_.size() > 0) { throw_line(); }
+    if (merge_streams_.size() > 0) { throw_line(""); }
     if (num_temp_samples_ == 0) {
       queue_.insert(queue_.end(), signal.begin(), signal.end());
       num_temp_samples_ = signal.size();
     } else {
-      if (num_temp_samples_ != signal.size()) { throw_line(); }
+      if (num_temp_samples_ != signal.size()) { throw_line(""); }
       
       const UInt offset = queue_.size()-signal.size();
       for (UInt i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
@@ -90,14 +90,14 @@ public:
   
   
   inline void Tick() {
-    if (merge_streams_.size() > 0) { throw_line(); }
+    if (merge_streams_.size() > 0) { throw_line(""); }
     num_temp_samples_ = 0;
   }
   
   
   Sample Pull() {
     if (merge_streams_.size() == 0) {
-      if (size() == 0) { throw_line(); }
+      if (size() == 0) { throw_line(""); }
       const Sample output = queue_.front();
       queue_.pop_front();
       return output;
@@ -113,7 +113,7 @@ public:
   
   
   Signal Pull(const UInt num_samples) {
-    if (num_samples > size()) { throw_line(); }
+    if (num_samples > size()) { throw_line(""); }
     
     if (merge_streams_.size() == 0) {
       Signal output(queue_.begin(), queue_.begin() + num_samples);

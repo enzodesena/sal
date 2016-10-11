@@ -67,7 +67,7 @@ PaWrapper::PaWrapper(Decoder* decoder,
                      std::vector<Int> channel_ids) :
           decoder_(decoder), frames_per_buffer_(frames_per_buffer),
           channel_ids_(channel_ids) {
-  //if (decoder->num_loudspeakers() != channel_ids.size()) { throw_line(); }
+  //if (decoder->num_loudspeakers() != channel_ids.size()) { throw_line(""); }
   
   Init();
   

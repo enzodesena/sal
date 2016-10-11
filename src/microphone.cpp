@@ -76,7 +76,7 @@ void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
 void Microphone::RecordPlaneWaveRelative(const Signal& signal,
                                          const Point& point,
                                          const UInt& wave_id) {
-  throw_line();
+  throw_line("");
 }
 
 

@@ -191,7 +191,7 @@ std::vector<sal::Sample>
       return {0.59941,0.33652,0.064613,0.00092966};
       break;
     default:
-      throw_line();
+      throw_line("");
       return std::vector<sal::Sample>(0, 1);
   }
 }
