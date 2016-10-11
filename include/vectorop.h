@@ -19,7 +19,6 @@
 #include "matrixop.h"
 #include <vector>
 #include <iostream>
-#include <algorithm>
 
 namespace mcl {
 
@@ -52,7 +51,7 @@ std::vector<T> EmptyVector() {
 template<class T> 
 std::vector<T> ZeroPad(const std::vector<T>& input, UInt total_length) {
   std::vector<T> output = Zeros<T>(total_length);
-  UInt M = std::min(input.size(), total_length);
+  UInt M = (input.size() < total_length) ? input.size() : total_length;
   for (UInt i=0; i<M; ++i) { output[i] = input[i]; }
   return output;
 }

@@ -178,7 +178,7 @@ std::vector<Real> TukeyWin(const UInt length, const Real ratio) {
     for (Int i=0; i<tl; ++i) {
       w[i] = (1.0+cos(PI/per*(t[i] - per)))/2.0;
     }
-    for (Int i=th-1; i<length; ++i) {
+    for (UInt i=th-1; i<length; ++i) {
       w[i] = (1.0+cos(PI/per*(t[i] - 1.0 + per)))/2.0;
     }
     return w;

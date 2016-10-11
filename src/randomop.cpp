@@ -15,10 +15,16 @@
 
 namespace mcl {
   
+RandomGenerator::RandomGenerator(unsigned int seed) :
+distribution_norm_(std::normal_distribution<double>(0.0,1.0)),
+distribution_uniform_(std::uniform_real_distribution<double>(0.0,1.0)) {
+  generator_.seed(seed);
+}
+  
 RandomGenerator::RandomGenerator() :
         distribution_norm_(std::normal_distribution<double>(0.0,1.0)),
         distribution_uniform_(std::uniform_real_distribution<double>(0.0,1.0)) {
-  generator_.seed((unsigned int) time(NULL));
+  generator_.seed(1u);
 }
 
   
