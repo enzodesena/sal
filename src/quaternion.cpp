@@ -115,7 +115,7 @@ Real Quat2EulX(const Quaternion q, const EulerOrder order) {
                    pow(q.w(),2.0)+pow(q.z(),2.0)-pow(q.y(),2.0)-pow(q.x(),2.0));
       break;
     default:
-      throw_line();
+      throw_line("");
       return NAN;
       break;
   }
@@ -129,7 +129,7 @@ Real Quat2EulZ(const Quaternion q, const EulerOrder order) {
                    -pow(q.y(), 2.0)-pow(q.z(), 2.0));
       break;
     default:
-      throw_line();
+      throw_line("");
       return NAN;
       break;
   }
@@ -141,7 +141,7 @@ Real Quat2EulY(const Quaternion q, const EulerOrder order) {
       return asin(2.0*q.x()*q.z()+2.0*q.w()*q.y());
       break;
     default:
-      throw_line();
+      throw_line("");
       return NAN;
       break;
   }

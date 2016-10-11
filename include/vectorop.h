@@ -96,9 +96,9 @@ std::vector<T> Add(const std::vector<T>& vector_a,
 template<class T> 
 std::vector<T> Subset(const std::vector<T>& vector, 
                       const UInt from_index, const UInt to_index) {
-  if (from_index >= vector.size()) { throw_line(); }
-  if (to_index >= vector.size()) { throw_line(); }
-  if (from_index > to_index) { throw_line(); }
+  if (from_index >= vector.size()) { throw_line(""); }
+  if (to_index >= vector.size()) { throw_line(""); }
+  if (from_index > to_index) { throw_line(""); }
   
   // Allocate output vector with appropriate length.
   std::vector<T> output(to_index-from_index+1);
@@ -238,7 +238,7 @@ std::vector<T> AddVectors(const std::vector<T>& vector_a,
 template<class T>
 std::vector<T> Interleave(const std::vector<T>& vector_a,
                           const std::vector<T>& vector_b) {
-  if (vector_a.size() != vector_b.size()) { throw_line(); }
+  if (vector_a.size() != vector_b.size()) { throw_line(""); }
   
   std::vector<T> output;
   for (UInt i=0; i<vector_a.size(); ++i) {
@@ -315,7 +315,7 @@ T Prod(const std::vector<T>& vector) {
 template<class T>
 T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b) {
   const UInt num_elements = vector_a.size();
-  if (num_elements != vector_b.size()) { throw_line(); }
+  if (num_elements != vector_b.size()) { throw_line(""); }
   
   T output = (T) 0.0;
   for (UInt i=0; i<num_elements; ++i) {
