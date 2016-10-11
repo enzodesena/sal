@@ -13,8 +13,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 #include <iomanip>
 #include "mcltypes.h"
 #include "comparisonop.h"
