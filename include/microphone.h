@@ -161,9 +161,6 @@ private:
                                        const mcl::Point& point,
                                        const UInt& wave_id);
   
-  /** Lock to make object thread safe */
-  pthread_rwlock_t rw_lock_;
-  
 protected:
   mcl::Point position_;
   mcl::Quaternion orientation_;

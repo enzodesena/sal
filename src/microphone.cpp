@@ -17,18 +17,14 @@ using mcl::Quaternion;
 namespace sal {
   
 Microphone::Microphone(Point position, mcl::Quaternion orientation) :
-  position_(position), orientation_(orientation) {
-  pthread_rwlock_init(&rw_lock_, NULL);
-}
+  position_(position), orientation_(orientation) {}
   
 
 Point Microphone::position() const { return position_; }
 
 void Microphone::set_position(const Point& position) {
-  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   position_ = position;
   last_point_.clear();
-  pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
   
   
@@ -37,10 +33,8 @@ Quaternion Microphone::orientation() const { return orientation_; }
   
 /** Set microphone orientation */
 void Microphone::set_orientation(const mcl::Quaternion& orientation) {
-  pthread_rwlock_wrlock(&rw_lock_); // Request write lock
   orientation_ = orientation;
   last_point_.clear();
-  pthread_rwlock_unlock(&rw_lock_); // Release lock
 }
 
 void Microphone::CalculateRelativePoint(const Point& point,
@@ -54,17 +48,13 @@ void Microphone::CalculateRelativePoint(const Point& point,
 
 void Microphone::RecordPlaneWave(const Sample& sample, const Point& point,
                                  const UInt& wave_id) {
-  pthread_rwlock_rdlock(&rw_lock_); // Request read lock
   CalculateRelativePoint(point, wave_id);
-  pthread_rwlock_unlock(&rw_lock_); // Release read lock
   this->RecordPlaneWaveRelative(sample, last_relative_point_[wave_id], wave_id);
 }
 
 void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
                                  const UInt& wave_id) {
-  pthread_rwlock_rdlock(&rw_lock_); // Request read lock
   CalculateRelativePoint(point, wave_id);
-  pthread_rwlock_unlock(&rw_lock_); // Release read lock
   this->RecordPlaneWaveRelative(signal, last_relative_point_[wave_id], wave_id);
 }
 
@@ -113,9 +103,7 @@ void Microphone::RecordPlaneWave(Source source) {
 }
   
   
-Microphone::~Microphone() {
-  pthread_rwlock_destroy(&rw_lock_);
-}
+Microphone::~Microphone() {}
   
   
 } // namespace sal
