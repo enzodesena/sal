@@ -304,7 +304,7 @@ private:
    it already existed.
    */
   bool InitOrderDegree(UInt degree, Int order) {
-    assert(order<=((Int)degree) & order>=-((Int)degree));
+    if((order<-((Int)degree)) || order>((Int)degree)) { throw_line(""); }
     // Check whether the stream already exists
     if (IsDefined(degree, order)) { return false; }
     

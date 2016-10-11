@@ -54,7 +54,7 @@ std::vector<std::vector<Signal> >
     UInt num_measurement = floor((double) ((Angle) num_measurements_[i])/2.0)+1;
     
     for (UInt j=0; j<num_measurement; ++j) {
-      Angle angle = round(j * resolution);
+      Angle angle = (Int) round(j * resolution);
       
       char file_name[1000];
       char directory_name[1000];
@@ -130,7 +130,7 @@ std::vector<std::vector<Signal> >
 
   
 UInt KemarMic::FindElevationIndex(Angle elevation) {
-  Int elevation_index = round(elevation/10.0) + 4;
+  Int elevation_index = (Int) round(elevation/10.0) + 4;
   if (elevation_index < 0) {
     return 0;
   } else if (elevation_index > 13) {

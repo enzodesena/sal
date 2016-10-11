@@ -26,8 +26,8 @@ PropagationLine::PropagationLine(const Length distance,
                                  const sal::Length update_step,
                                  const bool air_filters_active,
                                  const UInt air_filters_update_step) :
-        delay_filter_(DelayFilter(round(ComputeLatency(distance, sampling_frequency)),
-                                  round(ComputeLatency(max_distance, sampling_frequency)))),
+        delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
+                                  (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
         gain_(ComputeGain(distance, sampling_frequency)),
         sampling_frequency_(sampling_frequency), current_distance_(distance),
         update_step_(update_step),
@@ -89,7 +89,8 @@ void PropagationLine::Tick() {
       }
     }
     current_distance_ = new_distance;
-    UInt new_latency = round(ComputeLatency(new_distance, sampling_frequency_));
+    UInt new_latency = (UInt) round(ComputeLatency(new_distance,
+                                                   sampling_frequency_));
     delay_filter_.set_latency(new_latency);
   }
   delay_filter_.Tick();

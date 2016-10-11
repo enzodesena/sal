@@ -139,10 +139,10 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) {
   if (isnan(elevation)) { elevation = 0.0; }
   if (isnan(azimuth)) { azimuth = 0.0; }
   
-  assert(elevation >= (-90.0-VERY_SMALL) &
-         elevation <= (270.0+VERY_SMALL));
-  assert(azimuth >= (-90.0-VERY_SMALL) &
-         azimuth <= (90.0+VERY_SMALL));
+  assert((elevation >= (-90.0-VERY_SMALL)) &
+         (elevation <= (270.0+VERY_SMALL)));
+  assert((azimuth >= (-90.0-VERY_SMALL)) &
+         (azimuth <= (90.0+VERY_SMALL)));
   
   UInt azimuth_index = mcl::MinIndex(mcl::Abs(mcl::Add(azimuths_,
                                                        -azimuth)));
@@ -153,7 +153,7 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) {
   } else if (elevation > -45.0+360.0/64.0*49.0) {
     elevation_index = 49;
   } else {
-    elevation_index = round((elevation + 45.0) * 64.0 / 360.0);
+    elevation_index = (Int) round((elevation + 45.0) * 64.0 / 360.0);
   }
   
   assert(azimuth_index >= 0 & azimuth_index < azimuths_.size());

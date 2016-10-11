@@ -53,7 +53,7 @@ void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
 }
 
 void BinauralMic::set_bypass(bool bypass) {
-  if (bypass_ == true & bypass == false) { this->Reset(); }
+  if (bypass_  && !bypass) { this->Reset(); }
   bypass_ = bypass;
 }
 
