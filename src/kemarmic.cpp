@@ -51,7 +51,7 @@ std::vector<std::vector<Signal> >
     
     Angle resolution = 360.0 / num_measurements_[i];
     Angle elevation = elevations_[i];
-    UInt num_measurement = floor((double) ((Angle) num_measurements_[i])/2.0)+1;
+    UInt num_measurement = (UInt) floor(((Angle) num_measurements_[i])/2.0)+1;
     
     for (UInt j=0; j<num_measurement; ++j) {
       Angle angle = (Int) round(j * resolution);
@@ -94,7 +94,7 @@ std::vector<std::vector<Signal> >
         size = num_samples;
       }
       
-      for (UInt k=0; k<size; k+=2) {
+      for (Int k=0; k<size; k+=2) {
         UInt ipsilateral_index = j;
         UInt contralateral_index = (UInt)
                 ((((Int) num_measurements_[i]) -
@@ -166,8 +166,8 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
       
   azimuth = mcl::Mod(azimuth, 360.0);
   
-  assert(elevation >= (-90.0-VERY_SMALL) & elevation <= (90.0+VERY_SMALL));
-  assert(azimuth >= (0.0-VERY_SMALL) & azimuth <= (360.0+VERY_SMALL));
+  assert((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
+  assert((azimuth >= (0.0-VERY_SMALL)) & (azimuth <= (360.0+VERY_SMALL)));
   
   UInt elevation_index = FindElevationIndex(elevation);
   UInt azimuth_index = FindAzimuthIndex(azimuth, elevation_index);
