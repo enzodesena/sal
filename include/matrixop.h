@@ -20,7 +20,7 @@
 #include "elementaryop.h"
 
 #if MCL_LOAD_EIGEN
-#include <Eigen/Dense>
+  #include <Eigen/Dense>
 #endif
 
 namespace mcl {

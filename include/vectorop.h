@@ -20,6 +20,12 @@
 #include <vector>
 #include <iostream>
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 namespace mcl {
 
   
@@ -326,7 +332,7 @@ T Dot(const std::vector<T>& vector_a, const std::vector<T>& vector_b) {
 Real Norm(const std::vector<Real>& vector, Real l_norm = 2.0);
   
 template<class T>
-void Print(const std::vector<T>& vector) {
+MCL_API void Print(const std::vector<T>& vector) {
   const UInt num_elements = vector.size();
   std::cout<<"\n------------\n";
   for (UInt i=0; i<num_elements; ++i) {

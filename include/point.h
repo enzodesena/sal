@@ -13,9 +13,15 @@
 
 #include "mcltypes.h"
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 namespace mcl {
 
-class Point {
+class MCL_API Point {
 public:
   /** Constructs a `Point` with all coordinates set to zero. */
   Point();

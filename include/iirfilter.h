@@ -13,7 +13,11 @@
 
 #include "digitalfilter.h"
 
-
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
 
 namespace mcl {
 
@@ -41,7 +45,7 @@ enum WallType {
 
   
 /** IIR Filter */
-class IirFilter : public DigitalFilter {
+class MCL_API IirFilter : public DigitalFilter {
 public:
   /** Constructs a default filter, i.e. identical filter*/
   IirFilter();
