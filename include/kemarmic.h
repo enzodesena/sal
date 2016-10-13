@@ -23,10 +23,15 @@
 #include "array.h"
 #include "binauralmic.h"
 
+#ifdef SAL_EXPORTS
+  #define SAL_API __declspec(dllexport)
+#else
+  #define SAL_API
+#endif
 
 namespace sal {
   
-class KemarMic : public DatabaseBinauralMic {
+class SAL_API KemarMic : public DatabaseBinauralMic {
 public:
   /** 
    Constructs a Kemar microphone opject. 

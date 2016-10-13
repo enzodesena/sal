@@ -20,9 +20,15 @@
 #include <assert.h>
 #include <iostream>
 
+#ifdef SAL_EXPORTS
+  #define SAL_API __declspec(dllexport)
+#else
+  #define SAL_API
+#endif
+
 namespace sal {
   
-class Stream {
+class SAL_API Stream {
 public:
   static bool Test();
 };
@@ -40,7 +46,7 @@ public:
  of the chain. It makes sense that this happens in the stream because
  it is the only way that increases speed by avoiding data duplication.
  */
-class MonoStream : public Stream {
+class SAL_API MonoStream : public Stream {
 public:
   MonoStream() : num_temp_samples_(0) {}
   
@@ -171,7 +177,7 @@ private:
 
 
 
-class StereoStream : public Stream {
+class SAL_API StereoStream : public Stream {
 public:
   StereoStream() : left_stream_(MonoStream()), right_stream_(MonoStream()) {}
   
@@ -194,7 +200,7 @@ private:
 };
   
 
-class MultichannelStream : public Stream {
+class SAL_API MultichannelStream : public Stream {
 public:
   void InitStream(std::vector<MonoStream*> streams) {
     initialised_ = true;
@@ -224,7 +230,7 @@ private:
   bool initialised_;
 };
 
-class BFormatStream : public Stream {
+class SAL_API BFormatStream : public Stream {
 public:
   
   inline void Push(UInt degree, Int order, const Sample& sample) {

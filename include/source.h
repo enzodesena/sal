@@ -18,9 +18,15 @@
 #include "wavhandler.h"
 #include <vector>
 
+#ifdef SAL_EXPORTS
+  #define SAL_API __declspec(dllexport)
+#else
+  #define SAL_API
+#endif
+
 namespace sal {
 
-class Source {
+class SAL_API Source {
 public:
   Source(const mcl::Point);
   
