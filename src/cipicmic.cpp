@@ -47,6 +47,10 @@
 #include "salconstants.h"
 #include <string.h>
 
+#ifndef NO_WAV_HANDLER
+#include "wavhandler.h"
+#endif
+
 using mcl::Point;
 using mcl::Quaternion;
 
@@ -91,6 +95,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
 
 #ifdef __x86_64__
 #ifndef IOSARM
+#ifndef NO_WAV_HANDLER
       case wav:
         // For some reason I can't understand, the wav files contain the
         // BRIR across channels--there are 200 channels, one per sample;
@@ -98,6 +103,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
         brirs =
         mcl::Transpose(mcl::Matrix<sal::Sample>(WavHandler::Read(file_path))).data();
         break;
+#endif
 #endif
 #endif
         

@@ -15,7 +15,6 @@
 #include "saltypes.h"
 #include "point.h"
 #include "stream.h"
-#include "wavhandler.h"
 #include <vector>
 
 #ifdef SAL_EXPORTS
@@ -36,13 +35,6 @@ public:
   void set_position(const mcl::Point);
   
   MonoStream* stream() { return &stream_; }
-  
-  static Source WavRead(mcl::Point point, const std::string file_name) {
-    std::vector<Signal> audio = WavHandler::Read(file_name);
-    Source output(point);
-    output.stream()->Push(audio[0]);
-    return output;
-  }
   
 private:
   
