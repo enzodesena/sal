@@ -18,12 +18,7 @@
 #include "saltypes.h"
 #include "stream.h"
 #include "array.h"
-
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
+#include "salconstants.h"
 
 namespace sal {
   
@@ -123,7 +118,7 @@ private:
   
   
   
-class DatabaseBinauralMic : public BinauralMic {
+class SAL_API DatabaseBinauralMic : public BinauralMic {
 public:
   DatabaseBinauralMic(const mcl::Point& position,
                       const mcl::Quaternion orientation,

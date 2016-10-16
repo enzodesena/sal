@@ -17,6 +17,7 @@
 #include "mcl.h"
 #include "stream.h"
 #include <map>
+#include "salconstants.h"
 
 namespace sal {
 
@@ -24,7 +25,7 @@ namespace sal {
  This object implements the spherical head model proposed by Duda et al in the
  article "Range dependence of the response of a spherical head model"
  */
-class SphericalHeadMic : public BinauralMic {
+class SAL_API SphericalHeadMic : public BinauralMic {
 public:
   SphericalHeadMic(const mcl::Point position, const mcl::Quaternion orientation, 
                    const Angle ears_angle,

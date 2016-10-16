@@ -12,10 +12,10 @@
 #define SAL_PROPAGATIONLINE_H
 
 #include "delayfilter.h"
-#include "delayfilter.h"
 #include "iirfilter.h"
 #include "point.h"
 #include "firfilter.h"
+#include "salconstants.h"
 
 namespace sal {
 /** This describes a simple propagation line. It has one input and one output
@@ -23,7 +23,7 @@ namespace sal {
  two points, following 1/r rule. This object can also handle changes in the
  propagation line length.
  */
-class PropagationLine {
+class SAL_API PropagationLine {
 public:
   /**
    This constructs a `PropagationLine` object. You need to feed the `distance`

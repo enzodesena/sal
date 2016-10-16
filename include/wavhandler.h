@@ -16,10 +16,11 @@
 #include <vector>
 #include <iostream>
 #include "mcl.h"
+#include "salconstants.h"
 
 namespace sal {
 
-class WavHandler {
+class SAL_API WavHandler {
 public:
 static std::vector<Signal> Read(const std::string file_name);
   

@@ -16,11 +16,12 @@
 #include "portaudio.h"
 #include "decoder.h"
 #include <strings.h>
+#include "salconstants.h"
 
 namespace sal {
   
 /** A wrapper for portaudio */
-class PaWrapper {
+class SAL_API PaWrapper {
 public:
   PaWrapper(Decoder* decoder, Time sampling_frequency, UInt frames_per_buffer,
             Int out_dev_num, std::vector<Int> channel_ids);

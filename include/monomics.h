@@ -17,9 +17,11 @@
 #include "stream.h"
 #include "microphone.h"
 
+
+
 namespace sal {
   
-class MonoMic : public Microphone {
+class SAL_API MonoMic : public Microphone {
 public:
   MonoMic(mcl::Point position, mcl::Quaternion orientation) :
           Microphone(position, orientation) {}
@@ -36,7 +38,7 @@ protected:
   MonoStream stream_;
 };
   
-class GainMic : public MonoMic {
+class SAL_API GainMic : public MonoMic {
 public:
   GainMic(mcl::Point position, mcl::Quaternion orientation,
           Sample gain) :
@@ -62,7 +64,7 @@ private:
 };
   
 
-class OmniMic : public GainMic {
+class SAL_API OmniMic : public GainMic {
 public:
   OmniMic(mcl::Point position, mcl::Quaternion orientation ) :
           GainMic(position, orientation, (Sample) 1.0) {}
@@ -76,7 +78,7 @@ public:
  a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
  Note that such an expression is axisimmetric.
  */
-class TrigMic : public MonoMic {
+class SAL_API TrigMic : public MonoMic {
 public:
   TrigMic(mcl::Point position, mcl::Quaternion orientation,
           std::vector<Sample> coefficients) :
@@ -112,7 +114,7 @@ public:
  a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
  Note that such an expression is axisimmetric.
  */
-class TanMic : public MonoMic {
+class SAL_API TanMic : public MonoMic {
 public:
   TanMic(mcl::Point position, mcl::Quaternion orientation,
          sal::Sample base_angle) :

@@ -20,10 +20,11 @@
 #include "microphone.h"
 #include "propagationline.h"
 #include <vector>
+#include "salconstants.h"
 
 namespace sal {
   
-class FreeFieldSim {
+class SAL_API FreeFieldSim {
 public:
   FreeFieldSim(std::vector<Microphone*> microphones,
                std::vector<Source*> sources,

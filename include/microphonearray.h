@@ -21,12 +21,13 @@
 #include "salconstants.h"
 #include "monomics.h"
 #include "psrmic.h"
+#include "salconstants.h"
 
 namespace sal {
 
   
 /** An array of microphone each with monophonic outputs */
-class MicrophoneArray : public Microphone {
+class SAL_API MicrophoneArray : public Microphone {
 public:
   
   MicrophoneArray() :
@@ -78,7 +79,7 @@ protected:
  directivity_pattern is the directivity pattern of each microphone.
  A span_angle == 0 will position the microphones uniformly around 2PI
  */
-class CircularArray : public MicrophoneArray {
+class SAL_API CircularArray : public MicrophoneArray {
 public:
   CircularArray(const mcl::Point& position,
                 const Length radius,
@@ -99,7 +100,7 @@ protected:
 };
   
 
-class CircularTrig : public CircularArray {
+class SAL_API CircularTrig : public CircularArray {
 public:
   CircularTrig(const mcl::Point& position,
                const Length radius,
@@ -114,7 +115,7 @@ private:
   
 
 
-class CircularPSR : public CircularArray {
+class SAL_API CircularPSR : public CircularArray {
 public:
   CircularPSR(const mcl::Point& position,
               const Length radius,
@@ -137,7 +138,7 @@ private:
  Finally, directivity_pattern
  is the directivity apttern of each microphone.
  */
-class StereoMic : public CircularArray {
+class SAL_API StereoMic : public CircularArray {
 public:
   StereoMic(const mcl::Point& position,
             const Length radius,
@@ -148,7 +149,7 @@ public:
 };
 
   
-class StereoPSR : public StereoMic {
+class SAL_API StereoPSR : public StereoMic {
 public:
   StereoPSR(const mcl::Point& position,
             const Length radius,

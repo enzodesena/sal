@@ -16,12 +16,7 @@
 #include "point.h"
 #include "stream.h"
 #include <vector>
-
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
+#include "salconstants.h"
 
 namespace sal {
 

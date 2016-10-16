@@ -20,11 +20,10 @@
 #include "stream.h"
 #include "array.h"
 #include "binauralmic.h"
-
+#include "salconstants.h"
 
 #define NUM_ELEVATIONS_CIPIC 50
 #define LENGTH_BRIR_CIPIC 200
-
 #define NORMALISING_VALUE_CIPIC 1.0
 
 namespace sal {
@@ -34,7 +33,7 @@ enum CipicDataType {
   wav
 };
   
-class CipicMic : public DatabaseBinauralMic {
+class SAL_API CipicMic : public DatabaseBinauralMic {
 public:
   /**
    Constructs a Kemar microphone opject.

@@ -13,10 +13,11 @@
 
 #include "stream.h"
 #include "vectorop.h"
+#include "salconstants.h"
 
 namespace sal {
 
-class Decoder {
+class SAL_API Decoder {
 public:
   Decoder(UInt num_loudspeakers) :
           output_streams_(std::vector<MonoStream>(num_loudspeakers)) {}
@@ -48,7 +49,7 @@ protected:
 };
   
   
-class IdenticalDecoder : public Decoder {
+class SAL_API IdenticalDecoder : public Decoder {
 public:
   IdenticalDecoder(MonoStream* stream) : Decoder(1),
           input_streams_(mcl::UnaryVector(stream)) {}

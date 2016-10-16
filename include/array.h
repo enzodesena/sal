@@ -13,10 +13,12 @@
 #ifndef SAL_ARRAY_H
 #define SAL_ARRAY_H
 
+#include "salconstants.h"
+
 namespace sal {
 
 template<typename T, std::size_t N> 
-class Array {
+class SAL_API Array {
 public:
   T elems[N];
   

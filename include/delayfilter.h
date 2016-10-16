@@ -15,10 +15,11 @@
 
 #include "saltypes.h"
 #include "digitalfilter.h"
+#include "salconstants.h"
 
 namespace sal {
   
-class DelayFilter : public mcl::DigitalFilter {
+class SAL_API DelayFilter : public mcl::DigitalFilter {
   
 public:
   /**

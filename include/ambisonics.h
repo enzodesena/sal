@@ -20,6 +20,7 @@
 #include "stream.h"
 #include "decoder.h"
 #include "microphonearray.h"
+#include "salconstants.h"
 
 namespace sal {
 
@@ -28,7 +29,7 @@ enum AmbisonicsConvention {
   N3D
 };
 
-class AmbisonicsMic : public Microphone {
+class SAL_API AmbisonicsMic : public Microphone {
 public:
   /**
    Constructs an Ambisonics microphone.
@@ -69,7 +70,7 @@ private:
  Implements horizontal higher order ambisonics with regular loudspeakers
  configuration (e.g. pentagon for II-order etc..).
  */
-class AmbisonicsHorizDec : public Decoder {
+class SAL_API AmbisonicsHorizDec : public Decoder {
 public:
   /**
    `position` is the position of the microphone in the recording space.

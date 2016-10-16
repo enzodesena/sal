@@ -19,12 +19,7 @@
 #include "quaternion.h"
 #include <assert.h>
 #include <map>
-
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
+#include "salconstants.h"
 
 namespace sal {
 
@@ -175,7 +170,7 @@ protected:
   friend class MicrophoneArray;
 };
 
-class StereoMicrophone : public Microphone {
+class SAL_API StereoMicrophone : public Microphone {
 public:
   StereoMicrophone(mcl::Point position, mcl::Quaternion orientation) :
   Microphone(position, orientation) {}
