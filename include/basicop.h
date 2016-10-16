@@ -61,7 +61,7 @@ MCL_API UInt MaxIndex(const std::vector<T>& input) {
 }
   
 template<>
-MCL_API UInt MaxIndex<unsigned long>(const std::vector<unsigned long>& input);
+MCL_API UInt MaxIndex<UInt>(const std::vector<UInt>& input);
 
   
 /** Returns the maximum value of the vector. */

@@ -35,6 +35,7 @@
 		575737C61CFD07C6008E46CD /* quaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575737C51CFD07C6008E46CD /* quaternion.cpp */; };
 		575737C71CFD07C6008E46CD /* quaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575737C51CFD07C6008E46CD /* quaternion.cpp */; };
 		575737C81CFD07C6008E46CD /* quaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575737C51CFD07C6008E46CD /* quaternion.cpp */; };
+		5762F7B31DB30B82007A4C64 /* dataop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EAE5C118AA8148001DC4D4 /* dataop.cpp */; };
 		5778D80F15B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
@@ -484,6 +485,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5762F7B31DB30B82007A4C64 /* dataop.cpp in Sources */,
 				57B4EF6D1CD8174E00134991 /* mcl_test.cpp in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
 				57301BCA1D6B01A000D6F5B0 /* butter.cpp in Sources */,
