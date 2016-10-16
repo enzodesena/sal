@@ -11,89 +11,94 @@
 
 #include "mcltypes.h"
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
 
 namespace mcl {
   
 template<class T>
-T Max(const T& scalar_a, const T& scalar_b) {
+MCL_API T Max(const T& scalar_a, const T& scalar_b) {
   if (scalar_a >= scalar_b) { return scalar_a; }
   else { return scalar_b; }
 }
   
 template<class T>
-T Min(const T& scalar_a, const T& scalar_b) {
+MCL_API T Min(const T& scalar_a, const T& scalar_b) {
   if (scalar_a < scalar_b) { return scalar_a; }
   else { return scalar_b; }
 }
 
 /** Equivalent to Matlab's rem(scalar_a,scalar_b) */
-Real Rem(const Real& scalar_a, const Real& scalar_b);
+MCL_API Real Rem(const Real& scalar_a, const Real& scalar_b);
 
 /** Equivalent to Matlab's mod(scalar_a,scalar_b) */
-Real Mod(const Real& scalar_a, const Real& scalar_b);
+MCL_API Real Mod(const Real& scalar_a, const Real& scalar_b);
 
 /** Equivalent to Matlab's mod(scalar_a,scalar_b) */
-Int Mod(const Int& scalar_a, const Int& scalar_b);
+MCL_API Int Mod(const Int& scalar_a, const Int& scalar_b);
 
 /** Equivalent to Matlab's fix(scalar) */
-Int Fix(const Real scalar);
+MCL_API Int Fix(const Real scalar);
 
 /** Equivalent to Matlab's abs(scalar) */
-Real Abs(Real input);
+MCL_API Real Abs(Real input);
   
 /** Equivalent to Matlab's abs(scalar) */
-Real Abs(Complex input);
+MCL_API Real Abs(Complex input);
   
 /** Power function. Equivalent to Matlab's input^exponent. */
-Real Pow(Real input, Real exponent);
+MCL_API Real Pow(Real input, Real exponent);
   
 /** Square root function. Equivalent to Matlab's sqrt(input) */
-Real Sqrt(Real input);
+MCL_API Real Sqrt(Real input);
   
 /** 
  Equivalent to Matlab's sign. Returns 1 if the element
  is greater than zero, 0 if it equals zero and -1 if it is less than zero.
  */
-Int Sign(const Real scalar);
+MCL_API Int Sign(const Real scalar);
   
 /** Returns the conjugate of the element. Equivalent to Matlab's conj(scalar). */
-Complex Conj(Complex scalar);
+MCL_API Complex Conj(Complex scalar);
 
 /** Returns the real part of a complex scalar. Equivalent to Matlab's 
  real(scalar). I am calling it `RealPart' since `Real' denotes the number type */
-Real RealPart(Complex scalar);
+MCL_API Real RealPart(Complex scalar);
   
 /** Returns the imaginary part of a complex scalar. Equivalent to Matlab's
  imag(scalar). I am calling it `ImagPart' for consistency with `RealPart' */
-Real ImagPart(Complex scalar);
+MCL_API Real ImagPart(Complex scalar);
   
 /** Equivalent to Matlab's nextpow2(input) */
-UInt NextPow2(Real input);
+MCL_API UInt NextPow2(Real input);
   
 /** This returns the next power of 2. For instance 5=>8, 12=>16, 16=>16. */
-UInt Next2(UInt input);
+MCL_API UInt Next2(UInt input);
   
 /** Converts a string to a double */
-double StringToDouble(const std::string& s);
+MCL_API double StringToDouble(const std::string& s);
   
 /** Equivalent to Matlab's factorial(input) */
-UInt Factorial(const UInt input);
+MCL_API UInt Factorial(const UInt input);
   
   
 /** 
  Returns true if the imaginary part is approximately zero. The precision used
  is VERY_SMALL in equality operations, hence use only for testing.
  */
-bool IsReal(const std::vector<Complex>& input);
+MCL_API bool IsReal(const std::vector<Complex>& input);
   
 /** 
  Calculates the entropy of a discreate random variable with given `pdf'.
  It normalises the pdf if its sum is not 1.
  Note: this function is identical to Matlab's only for uint8 values.
  */
-Real Entropy(std::vector<Real> pdf, Real base);
+MCL_API Real Entropy(std::vector<Real> pdf, Real base);
   
-bool ElementaryOpTest();
+MCL_API bool ElementaryOpTest();
   
 #if MCL_LOAD_BOOST
 /** 
@@ -101,7 +106,7 @@ bool ElementaryOpTest();
  order `m' of the values x. Equivalent to the m-th value of the vector
  returned by Matlab's legendre(n, x) 
  */
-Real AssociatedLegendreP(Int n, Int m, Real x);
+MCL_API Real AssociatedLegendreP(Int n, Int m, Real x);
   
 /** 
  Returns the value of the spherical harmonic of degree n and order m,
@@ -113,7 +118,7 @@ Real AssociatedLegendreP(Int n, Int m, Real x);
  P_\ell^m ( \cos{\theta} ) \, e^{i m \varphi }
  which are orthonormal
  */
-Complex SphericalHarmonic(Int n, Int m, Real theta, Real phi);
+MCL_API Complex SphericalHarmonic(Int n, Int m, Real theta, Real phi);
 #endif
   
   

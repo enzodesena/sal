@@ -14,6 +14,13 @@
 #include "pointwiseop.h"
 #include <vector>
 #include <limits>
+
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 using std::vector;
 
 namespace mcl {
@@ -24,7 +31,7 @@ namespace mcl {
  the index of the first one is returned.
  */
 template<class T>
-UInt MinIndex(const std::vector<T>& input) {
+MCL_API UInt MinIndex(const std::vector<T>& input) {
   T min_value = std::numeric_limits<T>::max();
   UInt min_index = 0;
   for (UInt i=0; i<input.size(); ++i) {
@@ -38,7 +45,7 @@ UInt MinIndex(const std::vector<T>& input) {
   
 /** Returns the maximum value of the vector. */
 template<class T>  
-T Min(const std::vector<T>& input) {
+MCL_API T Min(const std::vector<T>& input) {
   return input[MinIndex(input)];
 }
 
@@ -49,17 +56,17 @@ T Min(const std::vector<T>& input) {
  the index of the first one is returned.
  */
 template<class T>
-unsigned long MaxIndex(const std::vector<T>& input) {
+MCL_API UInt MaxIndex(const std::vector<T>& input) {
   return MinIndex(Opposite(input));
 }
   
 template<>
-unsigned long MaxIndex<unsigned long>(const std::vector<unsigned long>& input);
+MCL_API UInt MaxIndex<unsigned long>(const std::vector<unsigned long>& input);
 
   
 /** Returns the maximum value of the vector. */
 template<class T>
-T Max(const std::vector<T>& input) {
+MCL_API T Max(const std::vector<T>& input) {
   return input[MaxIndex(input)];
 }
 
@@ -71,16 +78,16 @@ T Max(const std::vector<T>& input) {
  Equivalent to Matlab's findpeaks.
  */
 std::vector<UInt>
-FindPeaksIndexes(const std::vector<Real>& vector,
-                 const Real min_peak_height = std::numeric_limits<Real>::min());
+MCL_API FindPeaksIndexes(const std::vector<Real>& vector,
+                         const Real min_peak_height = std::numeric_limits<Real>::min());
 
 /** 
  Returns the values local peaks in the vector.
  Equivalent to Matlab's findpeaks.
  */
 std::vector<Real>
-FindPeaks(const std::vector<Real>& vector,
-          const Real min_peak_height = std::numeric_limits<Real>::min());
+MCL_API FindPeaks(const std::vector<Real>& vector,
+                  const Real min_peak_height = std::numeric_limits<Real>::min());
 
   
 bool BasicOpTest();

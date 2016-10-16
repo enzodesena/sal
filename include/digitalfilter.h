@@ -46,7 +46,7 @@ public:
 };
   
 /** Filter bank abstract class */
-class FilterBank {
+class MCL_API FilterBank {
 public:
   /** Returns the output of the filter bank for an input equal to `input`. Hello world! */
   virtual std::vector<Real> Filter(const Real input) = 0;

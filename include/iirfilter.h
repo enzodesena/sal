@@ -134,7 +134,7 @@ private:
 };
   
 /** Filter bank abstract class */
-class IirFilterBank : public FilterBank {
+class MCL_API IirFilterBank : public FilterBank {
 private:
   std::vector<IirFilter> filters_;
   

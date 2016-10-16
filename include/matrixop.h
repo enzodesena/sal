@@ -32,7 +32,7 @@
 namespace mcl {
 
 // Forward declaration
-std::vector<std::string> Split(const std::string& string, char delim);
+MCL_API std::vector<std::string> Split(const std::string& string, char delim);
   
 /** Matrix class */
 template<class T>
@@ -221,7 +221,7 @@ private:
 };
   
 template<class T>
-void Print(const Matrix<T>& matrix) {
+MCL_API void Print(const Matrix<T>& matrix) {
   for (UInt i=0; i<matrix.num_rows(); ++i) {
     for (UInt j=0; j<matrix.num_columns(); ++j) {
       std::cout<<matrix.element(i,j)<<"\t";
@@ -232,7 +232,7 @@ void Print(const Matrix<T>& matrix) {
 
 /** Transposes the matrix. Equivalent to Matlab's matrix' */
 template<class T>
-Matrix<T> Transpose(const Matrix<T>& matrix) {
+MCL_API Matrix<T> Transpose(const Matrix<T>& matrix) {
   Matrix<T> output(matrix.num_columns(), matrix.num_rows());
   
   for (UInt i=0; i<output.num_rows(); ++i) {
@@ -248,7 +248,7 @@ Matrix<T> Transpose(const Matrix<T>& matrix) {
  to Matlabs' matrix.*value
  */
 template<class T>
-Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
+MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
   Matrix<T> output(matrix.num_rows(), matrix.num_columns());
   for (UInt i=0; i<output.num_rows(); ++i) {
     for (UInt j=0; j<output.num_columns(); ++j) {
@@ -261,7 +261,8 @@ Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
   
 /** Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b */
 template<class T>
-Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
+MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
+                           const Matrix<T>& matrix_b) {
   if (matrix_a.num_columns() != matrix_b.num_rows()) { throw_line(""); }
   
   Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
@@ -278,8 +279,8 @@ Matrix<T> Multiply(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
 }
   
 template<class T>
-std::vector<T>
-Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
+MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
+                                const std::vector<T>& vector) {
   if (matrix_a.num_columns() != vector.size()) { throw_line(""); }
   Matrix<T> temp_input(vector.size(), 1);
   temp_input.set_column(0, vector);
@@ -296,7 +297,7 @@ Multiply(const Matrix<T>& matrix_a, const std::vector<T>& vector) {
  max(max(matrix)) 
  */
 template<class T>
-T Max(const Matrix<T>& matrix) {
+MCL_API T Max(const Matrix<T>& matrix) {
   return Max<T>(matrix.Serial());
 }
   
@@ -307,16 +308,16 @@ struct EigOutput {
   std::vector<std::vector<Complex> > eigen_vectors; /**< Eigenvectors */
 };
   
-EigOutput Eig(const Matrix<Real>& matrix);
+MCL_API EigOutput Eig(const Matrix<Real>& matrix);
 
-Matrix<Real> RealPart(const Matrix<Complex>& input);
+MCL_API Matrix<Real> RealPart(const Matrix<Complex>& input);
   
 #if MCL_LOAD_EIGEN
-Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
+MCL_API Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
 #endif
   
 template<class T>
-bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
+MCL_API bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
   if (matrix_a.num_rows() != matrix_b.num_rows() |
       matrix_a.num_columns() != matrix_b.num_columns()) { return false; }
   

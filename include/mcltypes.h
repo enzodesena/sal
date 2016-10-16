@@ -23,12 +23,12 @@ namespace mcl {
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
   
-#if __x86_64__
+#ifdef __x86_64__
   typedef unsigned long UInt; /**< Unisgned int type */
-  typedef long Int; /**< Int type */
-#else
-  typedef unsigned long long UInt; /**< Unisgned int type */
   typedef long long Int; /**< Int type */
+#else
+  typedef unsigned UInt; /**< Unisgned int type */
+  typedef long Int; /**< Int type */
 #endif
 
 
