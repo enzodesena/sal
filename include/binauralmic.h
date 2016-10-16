@@ -19,12 +19,17 @@
 #include "stream.h"
 #include "array.h"
 
+#ifdef SAL_EXPORTS
+  #define SAL_API __declspec(dllexport)
+#else
+  #define SAL_API
+#endif
 
 namespace sal {
   
 class BinauralMicInstance;
 
-class BinauralMic : public StereoMicrophone {
+class SAL_API BinauralMic : public StereoMicrophone {
 public:
   /**
    Constructs a Kemar microphone opject.

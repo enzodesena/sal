@@ -20,9 +20,15 @@
 #include <assert.h>
 #include <map>
 
+#ifdef SAL_EXPORTS
+  #define SAL_API __declspec(dllexport)
+#else
+  #define SAL_API
+#endif
+
 namespace sal {
 
-class Microphone {
+class SAL_API Microphone {
 public:
   /**
    `position` is the position of the microphone, and orientation 
