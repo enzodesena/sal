@@ -15,6 +15,12 @@
 #include "point.h"
 #include <cassert>
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 namespace mcl {
   
 /** Enum describing whether we are using a right handed or left handed
@@ -31,7 +37,7 @@ enum EulerOrder {
 };
   
 /** Quaternion class */
-class Quaternion {
+class MCL_API Quaternion {
 public:
   /** Constructs a quaternion, with the first element being the scalar
    component and the following three forming the vector component */

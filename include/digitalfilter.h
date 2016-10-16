@@ -15,10 +15,16 @@
 
 #include "mcltypes.h"
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 namespace mcl {
   
 /** Digital filter abstract class */
-class DigitalFilter {
+class MCL_API DigitalFilter {
 public:
   
   /** Returns the output of the filter for an input equal to `input` . */

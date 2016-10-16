@@ -16,9 +16,15 @@
 #include "mcltypes.h"
 #include "digitalfilter.h"
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 namespace mcl {
 /** FIR Filter */
-class FirFilter : public DigitalFilter {
+class MCL_API FirFilter : public DigitalFilter {
 public:
   /** Constructs a default FIR filter, i.e. identical filter */
   FirFilter();

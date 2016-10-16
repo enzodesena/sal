@@ -23,6 +23,12 @@
   #include <Eigen/Dense>
 #endif
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
+
 namespace mcl {
 
 // Forward declaration
@@ -30,7 +36,7 @@ std::vector<std::string> Split(const std::string& string, char delim);
   
 /** Matrix class */
 template<class T>
-class Matrix {
+class MCL_API Matrix {
 public:
   /** Default constructor with empty (0x0) matrix */
   Matrix() : num_rows_(0), num_columns_(0) {}

@@ -16,12 +16,17 @@
 #include <vector>
 #include <random>
 
+#ifdef MCL_EXPORTS
+  #define MCL_API __declspec(dllexport)
+#else
+  #define MCL_API
+#endif
 
 namespace mcl {
 /**
  RandomGenerator class
  */
-class RandomGenerator {
+class MCL_API RandomGenerator {
 public:
   RandomGenerator();
   
