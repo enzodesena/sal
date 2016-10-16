@@ -24,8 +24,8 @@ typedef mcl::Real Time;
 typedef mcl::Real Speed;
 typedef mcl::Real Length;
 typedef mcl::Real Angle;
-typedef unsigned long UInt;
-typedef long Int;
+typedef mcl::UInt UInt;
+typedef mcl::Int Int;
 
   
 typedef std::vector<Sample> Signal;
