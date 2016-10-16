@@ -41,10 +41,10 @@ typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
   
 #ifdef ENV64BIT
-  typedef unsigned long UInt; /**< Unsigned int type */
+  typedef unsigned long long UInt; /**< Unsigned int type */
   typedef long long Int; /**< Int type */
 #else // If it is 32 bits or unknown then...
-  typedef unsigned UInt; /**< Unisgned int type */
+  typedef unsigned long UInt; /**< Unisgned int type */
   typedef long Int; /**< Int type */
 #endif
 
