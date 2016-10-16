@@ -342,7 +342,7 @@ MCL_API void Print(const std::vector<T>& vector) {
 }
 
 /** Returns a real vector of `length` ones. */
-std::vector<Real> Ones(UInt length);
+MCL_API std::vector<Real> Ones(UInt length);
   
   
 std::vector<Real> Hann(const UInt length);
