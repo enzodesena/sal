@@ -46,26 +46,26 @@ Real FirFilter::Filter(Real input_sample) {
   delay_line_[counter_] = (float) input_sample;
   float result = 0.0f;
   
-//#ifdef OSXIOS
-//  std::vector<float> result_a(length_-counter_, 0.0);
-//  vDSP_vmul(&coefficients_.at(0), 1,
-//             &delay_line_.at(counter_), 1,
-//             &result_a.at(0), 1,
-//             length_-counter_);
-//  for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
-//  
-//  if (counter_ > 0) {
-//    std::vector<float> result_b(counter_, 0.0);
-//    vDSP_vmul(&coefficients_[length_-counter_], 1,
-//               &delay_line_[0], 1,
-//               &result_b[0], 1,
-//               counter_);
-//    for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
-//  }
-//#else
+#ifdef OSXIOS
+  std::vector<float> result_a(length_-counter_, 0.0);
+  vDSP_vmul(&coefficients_.at(0), 1,
+             &delay_line_.at(counter_), 1,
+             &result_a.at(0), 1,
+             length_-counter_);
+  for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
+  
+  if (counter_ > 0) {
+    std::vector<float> result_b(counter_, 0.0);
+    vDSP_vmul(&coefficients_[length_-counter_], 1,
+               &delay_line_[0], 1,
+               &result_b[0], 1,
+               counter_);
+    for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
+  }
+#else
   Int index = (Int) counter_;
   
-  if (length_%8 != 0) { //
+  if (length_%8 != 0) {
     for (int i=0; i<length_; ++i) {
       result += coefficients_[i] * delay_line_[index++];
       if (index >= length_) { index = 0; }
@@ -101,7 +101,7 @@ Real FirFilter::Filter(Real input_sample) {
     result += result_a + result_b + result_c + result_d + result_e + result_f +
     result_g + result_h;
   }
-//#endif
+#endif
   
   if (--counter_ < 0) { counter_ = length_-1; }
   

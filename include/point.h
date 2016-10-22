@@ -36,9 +36,9 @@ public:
   Real y() const { return y_; }
   Real z() const { return z_; }
   
-  void set_x(Real);
-  void set_y(Real);
-  void set_z(Real);
+  void set_x(Real x) { x_ = x; }
+  void set_y(Real y) { y_ = y; }
+  void set_z(Real z) { z_ = z; }
   
   /** Returns the norm of the vector, or, in other words, the distance
    of the point from the origin (0,0,0) */
