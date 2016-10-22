@@ -27,7 +27,7 @@ bool Microphone::Test() {
   // OmniMic tests                //
   //////////////////////////////////
   
-  OmniMic mic_a(Point(0.0,0.0,1.0), Quaternion::Identity());
+  OmniMic mic_a(Point(0.0,0.0,1.0));
   MonoStream* stream_a = mic_a.stream();
   
   assert(mic_a.position().Equals(Point(0.0,0.0,1.0)));
@@ -89,7 +89,7 @@ bool Microphone::Test() {
   // GainMic tests                //
   //////////////////////////////////
   
-  GainMic mic_v(Point(0.0,0.0,0.0), Quaternion::Identity(), 0.5);
+  GainMic mic_v(Point(0.0,0.0,0.0), 0.5);
   MonoStream* stream_v = mic_v.stream();
   mic_v.RecordPlaneWave(-1.0,Point(1.0,0.0,2.0));
   assert(IsEqual(stream_v->Pull(),-0.5));

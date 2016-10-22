@@ -40,9 +40,8 @@ protected:
   
 class SAL_API GainMic : public MonoMic {
 public:
-  GainMic(mcl::Point position, mcl::Quaternion orientation,
-          Sample gain) :
-          MonoMic(position, orientation),
+  GainMic(mcl::Point position, Sample gain) :
+          MonoMic(position, mcl::Quaternion::Identity()),
           gain_(gain) {}
   
   virtual bool IsCoincident() { return true; }
@@ -66,8 +65,8 @@ private:
 
 class SAL_API OmniMic : public GainMic {
 public:
-  OmniMic(mcl::Point position, mcl::Quaternion orientation ) :
-          GainMic(position, orientation, (Sample) 1.0) {}
+  OmniMic(mcl::Point position) :
+        GainMic(position, (Sample) 1.0) {}
   
   virtual bool IsCoincident() { return true; }
 };
