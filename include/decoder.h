@@ -28,7 +28,7 @@ public:
    */
   virtual void Decode() = 0;
   
-  MonoStream* stream(UInt chan_id) { return &(output_streams_.at(chan_id)); }
+  MonoStream* stream(Int chan_id) { return &(output_streams_.at(chan_id)); }
   
   UInt num_loudspeakers() { return output_streams_.size(); }
   
