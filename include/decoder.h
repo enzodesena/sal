@@ -28,7 +28,10 @@ public:
    */
   virtual void Decode() = 0;
   
-  MonoStream* stream(Int chan_id) { return &(output_streams_.at(chan_id)); }
+  MonoStream* stream(Int chan_id) {
+    if (chan_id < 0 || chan_id > output_streams_.size()) { throw_line(""); }
+    return &(output_streams_.at(chan_id));
+  }
   
   UInt num_loudspeakers() { return output_streams_.size(); }
   
