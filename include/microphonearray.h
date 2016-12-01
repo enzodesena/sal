@@ -20,7 +20,6 @@
 #include "stream.h"
 #include "salconstants.h"
 #include "monomics.h"
-#include "psrmic.h"
 #include "salconstants.h"
 
 namespace sal {
@@ -115,19 +114,6 @@ private:
   
 
 
-class SAL_API CircularPSR : public CircularArray {
-public:
-  CircularPSR(const mcl::Point& position,
-              const Length radius,
-              const UInt num_microphones,
-              const Angle first_element_heading,
-              const Angle span_angle,
-              const Length sound_speed);
-  
-private:
-  std::vector<PSRMic> microphones_;
-};
-
   
 /**
  This generates a stereophonic microphone array centered in position,
@@ -148,17 +134,6 @@ public:
                       base_angle) {}
 };
 
-  
-class SAL_API StereoPSR : public StereoMic {
-public:
-  StereoPSR(const mcl::Point& position,
-            const Length radius,
-            const Angle midline_heading,
-            const Angle base_angle,
-            const Length sound_speed);
-private:
-  std::vector<PSRMic> microphones_;
-};
 
 } // namespace sal
   

@@ -140,63 +140,6 @@ CircularTrig::CircularTrig(const Point& position,
   InitStream();
 }
   
-
-
-
-CircularPSR::CircularPSR(const Point& position,
-                         const Length radius,
-                         const UInt num_microphones,
-                         const Angle first_element_heading,
-                         const Angle span_angle,
-                         const Length sound_speed) :
-          CircularArray(position, radius, num_microphones, first_element_heading,
-                        span_angle) {
-  assert(! mcl::IsEqual(angles_[0], angles_[1]));
-  
-  microphone_pointers_ = std::vector<MonoMic*>(num_microphones);
-  // I have to reserve because otherwise the `microphones_` vector
-  // could reassign variables in memory and then `microphone_pointers_
-  // would not point anymore to the correct Microphones object.
-  // I still don't feel confident that there wont be memory leaks.
-  // TODO: consider using container other than `std::vector`.
-  microphones_.reserve(10);
-            
-  for (UInt i=0; i<num_microphones; ++i) {
-    // Initialise streams.
-    microphones_.push_back(PSRMic(positions_[i],
-                                  mcl::AxAng2Quat(0,0,1,angles_[i]),
-                                  radius,
-                                  std::abs(angles_[1]-angles_[0]),
-                                  sound_speed));
-    microphone_pointers_[i] = (MonoMic*) &(microphones_[i]);
-  }
-  
-  InitStream();
-}
-
-StereoPSR::StereoPSR(const Point& position,
-                     const Length radius,
-                     const Angle midline_heading,
-                     const Angle base_angle,
-                     const Length sound_speed) :
-          StereoMic(position, radius, midline_heading, base_angle) {
-  const UInt num_microphones = 2;
-  
-  microphone_pointers_ = std::vector<MonoMic*>(num_microphones);
-  microphones_.reserve(num_microphones);
-            
-  for (UInt i=0; i<num_microphones; ++i) {
-    // Initialise streams.
-    microphones_.push_back(PSRMic(positions_[i],
-                                  mcl::AxAng2Quat(0,0,1,angles_[i]),
-                                  radius,
-                                  base_angle,
-                                  sound_speed));
-    microphone_pointers_[i] = (MonoMic*) (&microphones_[i]);
-  }
-
-  InitStream();
-}
   
   
   

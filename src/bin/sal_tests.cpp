@@ -26,7 +26,6 @@ int main(int argc, char * const argv[]) {
   sal::KemarMic::Test();
   sal::CipicMic::Test();
   sal::Stream::Test();
-  sal::PSRMic::Test();
   sal::SphericalHeadMic::Test();
   sal::MicrophoneArray::Test();
   sal::AmbisonicsMic::Test();
