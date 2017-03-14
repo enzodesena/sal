@@ -48,7 +48,8 @@ public:
    is a single plane wave incoming) do this automatically.
    */
   Microphone(mcl::Point position,
-             mcl::Quaternion orientation = mcl::Quaternion::Identity());
+             mcl::Quaternion orientation = mcl::Quaternion::Identity(),
+             mcl::Handedness handedness = mcl::right_handed);
   
   /** Returns current position of the microphone */
   mcl::Point position() const;
@@ -62,6 +63,8 @@ public:
   /** Set microphone orientation */
   void set_orientation(const mcl::Quaternion& orientation);
   
+  /** Set handedness of reference system */
+  void set_handedness(const mcl::Handedness handedness);
   
   /**
    We do not implement directly the case of a single plane wave because in
@@ -165,7 +168,7 @@ private:
 protected:
   mcl::Point position_;
   mcl::Quaternion orientation_;
-  
+  mcl::Handedness handedness_;
   
   friend class MicrophoneArray;
 };

@@ -16,8 +16,9 @@ using mcl::Quaternion;
 
 namespace sal {
   
-Microphone::Microphone(Point position, mcl::Quaternion orientation) :
-  position_(position), orientation_(orientation) {}
+Microphone::Microphone(Point position, mcl::Quaternion orientation,
+                       mcl::Handedness handedness) :
+  position_(position), orientation_(orientation), handedness_(handedness) {}
   
 
 Point Microphone::position() const { return position_; }
@@ -36,6 +37,12 @@ void Microphone::set_orientation(const mcl::Quaternion& orientation) {
   orientation_ = orientation;
   last_point_.clear();
 }
+  
+  
+void Microphone::set_handedness(const mcl::Handedness handedness) {
+  handedness_ = handedness;
+}
+  
 
 void Microphone::CalculateRelativePoint(const Point& point,
                                         const UInt& wave_id) {
@@ -78,7 +85,8 @@ Point Microphone::GetRelativePoint(const Point& point) const {
   
   // Instead of rotating the head, we are rotating the point in an opposite
   // direction (that's why the QuatInverse).
-  Point rotated = mcl::QuatRotate(mcl::QuatInverse(orientation_), centered);
+  Point rotated = mcl::QuatRotate(mcl::QuatInverse(orientation_), centered,
+                                  handedness_);
   return rotated;
 }
   
