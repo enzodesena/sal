@@ -40,6 +40,8 @@ public:
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
   
+  sal::Length distance() const;
+  
   /** This overwrites the 1/r rule attenuation. */
   void set_gain(const sal::Sample);
   

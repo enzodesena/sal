@@ -51,7 +51,6 @@ void PropagationLine::set_update_step(const sal::Length update_step) {
 }
   
 void PropagationLine::set_distance(const Length distance) {
-  gain_ = ComputeGain(distance, sampling_frequency_);
   updating_distance_ = true;
   target_distance_ = distance;
   if (air_filters_active_) {
@@ -89,6 +88,7 @@ void PropagationLine::Tick() {
       }
     }
     current_distance_ = new_distance;
+    gain_ = ComputeGain(current_distance_, sampling_frequency_);
     UInt new_latency = (UInt) round(ComputeLatency(new_distance,
                                                    sampling_frequency_));
     delay_filter_.set_latency(new_latency);
@@ -109,6 +109,9 @@ Sample PropagationLine::ComputeGain(const Length distance,
   return (Sample) 1.0 / ComputeLatency(distance, sampling_frequency);
 }
   
+sal::Length PropagationLine::distance() const {
+  return current_distance_;
+}
   
 void PropagationLine::Write(const sal::Sample &sample) {
   if (air_filters_active_) {
