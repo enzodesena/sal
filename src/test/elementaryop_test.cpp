@@ -124,6 +124,10 @@ bool ElementaryOpTest() {
   assert(Factorial(6) == 720);
   assert(Factorial(9) == 362880);
   
+  assert(IsEqual(LinearInterpolation(1.0, 0.0, 2.0, 1.0, 1.0), 0.0));
+  assert(IsEqual(LinearInterpolation(1.0, 0.0, 2.0, 1.0, 2.0), 1.0));
+  assert(IsEqual(LinearInterpolation(1.0, 0.0, 2.0, 1.0, 1.5), 0.5));
+  
 #if MCL_LOAD_BOOST  
   assert(IsEqual(AssociatedLegendreP(3, 0, 0.8), 0.08));
   assert(IsEqual(AssociatedLegendreP(3, 1, 0.8), -1.980000000000001));

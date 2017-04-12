@@ -84,6 +84,8 @@ MCL_API double StringToDouble(const std::string& s);
 /** Equivalent to Matlab's factorial(input) */
 MCL_API UInt Factorial(const UInt input);
   
+/** Linear interpolation between two values */
+MCL_API Real LinearInterpolation(Real x1, Real y1, Real x2, Real y2, Real x);
   
 /** 
  Returns true if the imaginary part is approximately zero. The precision used

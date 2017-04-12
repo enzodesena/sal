@@ -114,6 +114,11 @@ UInt Factorial(const UInt input) {
   temp = input * Factorial(input - 1);
   return temp;
 }
+  
+Real LinearInterpolation(Real x0, Real y0, Real x1, Real y1, Real x) {
+  Real m = (y1-y0)/(x1-x0);
+  return y0+(x-x0)*m;
+}
 
 #if MCL_LOAD_BOOST
 Real AssociatedLegendreP(Int n, Int m, Real x) {
