@@ -23,18 +23,24 @@ namespace sal {
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance,
-                                 const sal::Length update_step,
+                                 const sal::Length distance_update_step,
                                  const bool air_filters_active,
-                                 const UInt air_filters_update_step) :
+                                 const UInt air_filters_update_step,
+                                 const UInt gain_update_length) :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
-        gain_(ComputeGain(distance, sampling_frequency)),
-        sampling_frequency_(sampling_frequency), current_distance_(distance),
-        update_step_(update_step),
+        target_gain_(ComputeGain(distance, sampling_frequency)),
+        current_gain_(ComputeGain(distance, sampling_frequency)),
+        previous_gain_(ComputeGain(distance, sampling_frequency)),
+        sampling_frequency_(sampling_frequency),
+        current_distance_(distance),
+        distance_update_step_(distance_update_step),
         updating_distance_(false),
+        updating_gain_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
-        air_filters_update_step_(air_filters_update_step) {
+        air_filters_update_step_(air_filters_update_step),
+        gain_update_length_(gain_update_length) {
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
@@ -42,17 +48,24 @@ PropagationLine::PropagationLine(const Length distance,
 
 Time PropagationLine::latency() const { return delay_filter_.latency(); }
 
-Sample PropagationLine::gain() const { return gain_; }
+Sample PropagationLine::gain() const { return current_gain_; }
 
-void PropagationLine::set_gain(Sample gain) { gain_ = gain; }
+void PropagationLine::set_gain(Sample gain) {
+  updating_gain_ = true;
+  previous_gain_ = current_gain_;
+  target_gain_ = gain;
+  gain_update_counter_ = 0;
+}
   
 void PropagationLine::set_update_step(const sal::Length update_step) {
-  update_step_ = update_step;
+  distance_update_step_ = update_step;
 }
   
 void PropagationLine::set_distance(const Length distance) {
   updating_distance_ = true;
   target_distance_ = distance;
+  set_gain(ComputeGain(distance, sampling_frequency_));
+  
   if (air_filters_active_) {
     air_filter_.set_impulse_response(GetAirFilter(distance),
                                      air_filters_update_step_);
@@ -72,23 +85,34 @@ void PropagationLine::Reset() {
 }
   
 void PropagationLine::Tick() {
+  if (updating_gain_) {
+    if (gain_update_counter_ == gain_update_length_) {
+      current_gain_ = target_gain_;
+      updating_gain_ = false;
+    } else {
+      current_gain_ = mcl::LinearInterpolation(0.0, previous_gain_,
+                                               gain_update_length_, target_gain_,
+                                               gain_update_counter_);
+    }
+    gain_update_counter_++;
+  }
+  
   if (updating_distance_) {
     sal::Length new_distance;
     if (mcl::IsSmallerOrEqual(current_distance_, target_distance_)) {
-      new_distance = current_distance_ + update_step_;
+      new_distance = current_distance_ + distance_update_step_;
       if (new_distance > target_distance_) {
         new_distance = target_distance_;
         updating_distance_ = false;
       }
     } else {
-      new_distance = current_distance_ - update_step_;
+      new_distance = current_distance_ - distance_update_step_;
       if (new_distance <= target_distance_) {
         new_distance = target_distance_;
         updating_distance_ = false;
       }
     }
     current_distance_ = new_distance;
-    gain_ = ComputeGain(current_distance_, sampling_frequency_);
     UInt new_latency = (UInt) round(ComputeLatency(new_distance,
                                                    sampling_frequency_));
     delay_filter_.set_latency(new_latency);
@@ -115,11 +139,16 @@ sal::Length PropagationLine::distance() const {
   
 void PropagationLine::Write(const sal::Sample &sample) {
   if (air_filters_active_) {
-    delay_filter_.Write(air_filter_.Filter(sample*gain_));
+    delay_filter_.Write(air_filter_.Filter(sample));
   } else {
-    delay_filter_.Write(sample*gain_);
+    delay_filter_.Write(sample);
   }
 }
+  
+sal::Sample PropagationLine::Read() const {
+  return delay_filter_.Read() * current_gain_;
+}
+  
 
 std::vector<sal::Sample>
   PropagationLine::GetAirFilter(sal::Length distance) {

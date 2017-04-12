@@ -29,13 +29,20 @@ public:
    This constructs a `PropagationLine` object. You need to feed the `distance`
    between the two points (in [m]), the `sampling_frequency` and the maximum
    distance you expect that this propagaiton line may have.
+   The value of `distance_update_step` is the length (in meters)
+   by which the delay line length changes at each sample.
+   A `distance_update_step` of 0 will not change the delay line length.
+   The value of `gain_update_length` is the number of samples it takes 
+   to update the gain. A `gain_update_length` of 0 will immediately change the
+   gain of the delay line.
    */
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100,
-                  const sal::Length update_step = 100,
+                  const sal::Length distance_update_step = 100,
                   const bool air_filters_active = false,
-                  const UInt air_filters_update_step = 1);
+                  const UInt air_filters_update_step = 1,
+                  const UInt gain_update_length = 0);
   
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
@@ -50,8 +57,8 @@ public:
   void Write(const sal::Sample &sample);
   
   /** Returns the current read sample */
-  inline sal::Sample Read() const { return delay_filter_.Read(); }
-  
+  sal::Sample Read() const;
+
   /** Ticks time to next sample */
   void Tick();
   
@@ -82,11 +89,17 @@ private:
   
   static std::vector<sal::Sample> GetAirFilter(sal::Length distance);
   
-  sal::Sample gain_;
+  bool updating_gain_;
+  sal::Sample current_gain_;
+  sal::Sample previous_gain_;
+  sal::Sample target_gain_;
+  sal::Int gain_update_counter_;
+  sal::UInt gain_update_length_;
+  
   sal::Time sampling_frequency_;
   
   bool updating_distance_;
-  sal::Length update_step_;
+  sal::Length distance_update_step_;
   sal::Length target_distance_;
   sal::Length current_distance_;
   
