@@ -23,24 +23,22 @@ namespace sal {
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance,
-                                 const sal::Length distance_update_step,
+                                 const UInt update_length,
                                  const bool air_filters_active,
-                                 const UInt air_filters_update_step,
-                                 const UInt gain_update_length) :
+                                 const UInt air_filters_update_step) :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
+        sampling_frequency_(sampling_frequency),
         target_gain_(ComputeGain(distance, sampling_frequency)),
         current_gain_(ComputeGain(distance, sampling_frequency)),
         previous_gain_(ComputeGain(distance, sampling_frequency)),
-        sampling_frequency_(sampling_frequency),
-        current_distance_(distance),
-        distance_update_step_(distance_update_step),
-        updating_distance_(false),
         updating_gain_(false),
+        current_latency_(ComputeLatency(distance, sampling_frequency)),
+        update_length_(update_length),
+        updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
-        air_filters_update_step_(air_filters_update_step),
-        gain_update_length_(gain_update_length) {
+        air_filters_update_step_(air_filters_update_step) {
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
@@ -57,13 +55,16 @@ void PropagationLine::set_gain(Sample gain) {
   gain_update_counter_ = 0;
 }
   
-void PropagationLine::set_update_step(const sal::Length update_step) {
-  distance_update_step_ = update_step;
+void PropagationLine::set_update_length(const sal::UInt update_step) {
+  update_length_ = update_step;
 }
   
 void PropagationLine::set_distance(const Length distance) {
-  updating_distance_ = true;
-  target_distance_ = distance;
+  updating_latency_ = true;
+  previous_latency_ = current_latency_;
+  target_latency_ = ComputeLatency(distance, sampling_frequency_);
+  latency_update_counter_ = 0;
+  
   set_gain(ComputeGain(distance, sampling_frequency_));
   
   if (air_filters_active_) {
@@ -84,44 +85,42 @@ void PropagationLine::Reset() {
   delay_filter_.Reset();
 }
   
-void PropagationLine::Tick() {
+void PropagationLine::Update() {
   if (updating_gain_) {
-    if (gain_update_counter_ == gain_update_length_) {
+    if (gain_update_counter_ == update_length_) {
       current_gain_ = target_gain_;
       updating_gain_ = false;
     } else {
       current_gain_ = mcl::LinearInterpolation(0.0, previous_gain_,
-                                               gain_update_length_, target_gain_,
+                                               update_length_, target_gain_,
                                                gain_update_counter_);
     }
     gain_update_counter_++;
   }
   
-  if (updating_distance_) {
-    sal::Length new_distance;
-    if (mcl::IsSmallerOrEqual(current_distance_, target_distance_)) {
-      new_distance = current_distance_ + distance_update_step_;
-      if (new_distance > target_distance_) {
-        new_distance = target_distance_;
-        updating_distance_ = false;
-      }
+  if (updating_latency_) {
+    
+    if (latency_update_counter_ == update_length_) {
+      current_latency_ = target_latency_;
+      updating_latency_ = false;
     } else {
-      new_distance = current_distance_ - distance_update_step_;
-      if (new_distance <= target_distance_) {
-        new_distance = target_distance_;
-        updating_distance_ = false;
-      }
+      current_latency_ = mcl::LinearInterpolation(0.0, previous_latency_,
+                                                  update_length_, target_latency_,
+                                                  latency_update_counter_);
     }
-    current_distance_ = new_distance;
-    UInt new_latency = (UInt) round(ComputeLatency(new_distance,
-                                                   sampling_frequency_));
-    delay_filter_.set_latency(new_latency);
+    
+    latency_update_counter_ ++;
+    delay_filter_.set_latency(round(current_latency_));
   }
+}
+  
+void PropagationLine::Tick() {
+  Update();
   delay_filter_.Tick();
 }
   
 Time PropagationLine::ComputeLatency(const Length distance, 
-                                         const Time sampling_frequency) {
+                                     const Time sampling_frequency) {
   return (Time) (distance / SOUND_SPEED * sampling_frequency);
 }
 
@@ -134,7 +133,7 @@ Sample PropagationLine::ComputeGain(const Length distance,
 }
   
 sal::Length PropagationLine::distance() const {
-  return current_distance_;
+  return current_latency_/sampling_frequency_*SOUND_SPEED;
 }
   
 void PropagationLine::Write(const sal::Sample &sample) {

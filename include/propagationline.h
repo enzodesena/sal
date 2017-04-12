@@ -39,10 +39,9 @@ public:
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100,
-                  const sal::Length distance_update_step = 100,
+                  const UInt update_length = 0,
                   const bool air_filters_active = false,
-                  const UInt air_filters_update_step = 1,
-                  const UInt gain_update_length = 0);
+                  const UInt air_filters_update_step = 1);
   
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
@@ -58,7 +57,7 @@ public:
   
   /** Returns the current read sample */
   sal::Sample Read() const;
-
+  
   /** Ticks time to next sample */
   void Tick();
   
@@ -70,7 +69,7 @@ public:
    */
   void set_distance(const sal::Length distance);
   
-  void set_update_step(const sal::Length update_step);
+  void set_update_length(const sal::UInt update_length);
   
   /** Returns the latency of the propagation line */
   sal::Time latency() const;
@@ -81,6 +80,9 @@ public:
   static bool Test();
 private:
   DelayFilter delay_filter_;
+  
+  void Update();
+  
   static sal::Time ComputeLatency(const sal::Length,
                                   const sal::Time);
   
@@ -89,19 +91,21 @@ private:
   
   static std::vector<sal::Sample> GetAirFilter(sal::Length distance);
   
+  sal::Time sampling_frequency_;
+  sal::UInt update_length_;
+  
   bool updating_gain_;
   sal::Sample current_gain_;
   sal::Sample previous_gain_;
   sal::Sample target_gain_;
   sal::Int gain_update_counter_;
-  sal::UInt gain_update_length_;
   
-  sal::Time sampling_frequency_;
   
-  bool updating_distance_;
-  sal::Length distance_update_step_;
-  sal::Length target_distance_;
-  sal::Length current_distance_;
+  bool updating_latency_;
+  sal::Time previous_latency_;
+  sal::Time target_latency_;
+  sal::Time current_latency_;
+  sal::Int latency_update_counter_;
   
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
