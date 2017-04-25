@@ -70,6 +70,13 @@ bool KemarMic::Test() {
   
   assert(mcl::IsEqual(output_front_left, output_front_2_left));
   
+  // Testing frontal direction for reference point at y-axis
+  KemarMic mic_ia(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
+                 kemar_path, 0, 1, y_z);
+  mic_ia.RecordPlaneWave(mcl::Multiply(impulse, sample), Point(0.0,1.0,0.0));
+  
+  assert(mcl::IsEqual(cmp_imp_front_left,
+                      mic_ia.stream()->left_stream()->Pull(impulse_response_length)));
   
   // Testing upward direction
   const Sample imp_up_left[] = {5,-16,26,-41,63,-81,119,-73,2020,4378,5862,

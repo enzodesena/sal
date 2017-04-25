@@ -90,9 +90,10 @@ void BinauralMic::Reset() {
 
 BinauralMic::BinauralMic(const Point& position,
                          const Quaternion orientation,
-                         const UInt update_length) :
-StereoMicrophone(position, orientation), update_length_(update_length),
-bypass_(false) {}
+                         const UInt update_length,
+                         const HeadRefOrientation reference_orientation) :
+        StereoMicrophone(position, orientation), update_length_(update_length),
+        bypass_(false), reference_orientation_(reference_orientation) {}
 
 
 
@@ -121,8 +122,9 @@ void BinauralMicInstance::UpdateFilter(const Point& point) {
 
 DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
                                          const Quaternion orientation,
-                                         const UInt update_length) :
-BinauralMic(position, orientation, update_length) {}
+                                         const UInt update_length,
+                                         const HeadRefOrientation reference_orientation) :
+BinauralMic(position, orientation, update_length, reference_orientation) {}
 
 
 void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {

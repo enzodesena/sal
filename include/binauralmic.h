@@ -22,6 +22,11 @@
 
 namespace sal {
   
+enum HeadRefOrientation {
+  standard, // Head facing positive x-axis; positive z-axis passing through jaw and then scalp
+  y_z  // Head facing positive y-axis; positive z-axis passing through jaw and then scalp
+};
+  
 class BinauralMicInstance;
 
 class SAL_API BinauralMic : public StereoMicrophone {
@@ -32,7 +37,8 @@ public:
    */
   BinauralMic(const mcl::Point& position,
               const mcl::Quaternion orientation,
-              const UInt update_length);
+              const UInt update_length,
+              const HeadRefOrientation reference_orientation = standard);
   
   void set_update_length(UInt update_length) { update_length_ = update_length; }
   
@@ -75,6 +81,9 @@ private:
   bool bypass_;
   
   friend class BinauralMicInstance;
+  
+protected:
+  HeadRefOrientation reference_orientation_;
 };
 
 
@@ -83,12 +92,14 @@ private:
   
 class BinauralMicInstance {
 private:
-  BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::UInt update_length) :
+  BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::UInt update_length,
+                      const HeadRefOrientation reference_orientation = standard) :
   base_mic_(base_mic),
   filter_(mcl::FirFilter::GainFilter(1.0)),
   ear_(ear),
   previous_point_(mcl::Point(NAN, NAN, NAN)),
-  update_length_(update_length) {}
+  update_length_(update_length),
+  reference_orientation_(reference_orientation) {}
   
   Sample RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point);
   
@@ -112,6 +123,8 @@ private:
   
   sal::UInt update_length_;
   
+  HeadRefOrientation reference_orientation_;
+  
   friend class BinauralMic;
 };
   
@@ -122,7 +135,8 @@ class SAL_API DatabaseBinauralMic : public BinauralMic {
 public:
   DatabaseBinauralMic(const mcl::Point& position,
                       const mcl::Quaternion orientation,
-                      const UInt update_length);
+                      const UInt update_length,
+                      const HeadRefOrientation reference_orientation = standard);
   
   /**
    Filters all responses by `filter`. Useful for instance for including

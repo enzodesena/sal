@@ -26,6 +26,8 @@
 
 namespace sal {
   
+
+  
 class SAL_API KemarMic : public DatabaseBinauralMic {
 public:
   /** 
@@ -37,7 +39,8 @@ public:
   KemarMic(const mcl::Point& position,
            const mcl::Quaternion orientation,
            const std::string directory, const UInt num_samples = 0,
-           const UInt update_length = 1);
+           const UInt update_length = 1,
+           const HeadRefOrientation reference_orientation = standard);
   
   static bool Test();
   

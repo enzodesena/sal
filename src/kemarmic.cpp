@@ -29,8 +29,10 @@ KemarMic::KemarMic(const Point& position,
                    const Quaternion orientation,
                    const std::string directory,
                    const UInt num_samples,
-                   const UInt update_length) :
-          DatabaseBinauralMic(position, orientation, update_length) {
+                   const UInt update_length,
+                   const HeadRefOrientation reference_orientation) :
+          DatabaseBinauralMic(position, orientation, update_length,
+                              reference_orientation) {
             
   num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
@@ -155,15 +157,29 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
   
 
 Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
-  
   // For forward looking direction, Azimuth = 0 and elevation =0
   Point norm_point = Normalized(point);
   Angle elevation = (asin((double) norm_point.z())) / PI * 180.0;
   
   Angle azimuth;
-  if (norm_point.z() >= 0.0) { azimuth = (asin((double) norm_point.y())) / PI * 180.0; }
-  else azimuth = (acos((double) norm_point.y())+PI/2.0) / PI * 180.0;
-      
+  
+  switch (reference_orientation_) {
+    case standard:
+      azimuth = atan((double) norm_point.y()/norm_point.x())/PI*180.0;
+      if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
+      if (norm_point.x() < 0.0) { azimuth += 180.0; }
+      break;
+    case y_z:
+      azimuth = atan((double) norm_point.x()/norm_point.y())/PI*180.0;
+      if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
+      if (norm_point.y() < 0.0) { azimuth += 180.0; }
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  
+  
   azimuth = mcl::Mod(azimuth, 360.0);
   
   assert((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
