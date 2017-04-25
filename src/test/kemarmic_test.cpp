@@ -143,6 +143,14 @@ bool KemarMic::Test() {
   assert(mcl::IsEqual(output_right_left, cmp_imp_right_left));
   assert(mcl::IsEqual(output_right_right, cmp_imp_right_right));
   
+  // Case for a source to the right (90deg) of the kemar with reference on the y axis
+  KemarMic mic_pa(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
+                 kemar_path, 0, 1, y_z);
+  mic_pa.RecordPlaneWave(impulse, Point(1.0,0.0,0.0));
+  assert(mcl::IsEqual(cmp_imp_right_left,
+                      mic_pa.stream()->left_stream()->Pull(impulse_response_length)));
+  assert(mcl::IsEqual(cmp_imp_right_right,
+                      mic_pa.stream()->right_stream()->Pull(impulse_response_length)));
   
   // Case for a source to the left (-90deg) of the kemar.
   Signal cmp_imp_left_right(imp_right_left,
