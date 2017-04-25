@@ -155,15 +155,15 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
   
 
 Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
-  
   // For forward looking direction, Azimuth = 0 and elevation =0
   Point norm_point = Normalized(point);
   Angle elevation = (asin((double) norm_point.z())) / PI * 180.0;
   
-  Angle azimuth;
-  if (norm_point.z() >= 0.0) { azimuth = (asin((double) norm_point.y())) / PI * 180.0; }
-  else azimuth = (acos((double) norm_point.y())+PI/2.0) / PI * 180.0;
-      
+  Angle azimuth = atan((double) norm_point.y()/norm_point.x())/PI*180.0;
+  if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
+  
+  if (norm_point.x() < 0.0) { azimuth += 180.0; }
+  
   azimuth = mcl::Mod(azimuth, 360.0);
   
   assert((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
