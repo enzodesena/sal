@@ -46,7 +46,7 @@ public:
   MonoStream() : num_temp_samples_(0) {}
   
   MonoStream(const std::vector<MonoStream*>& streams) :
-          merge_streams_(streams) {}
+  merge_streams_(streams) {}
   
   inline void Push(const Sample& sample) {
     if (merge_streams_.size() > 0) { throw_line(""); }
@@ -117,8 +117,8 @@ public:
     if (num_samples > size()) { throw_line(""); }
     
     if (merge_streams_.size() == 0) {
-      Signal output(queue_.begin(), queue_.begin() + num_samples);
-      queue_.erase(queue_.begin(), queue_.begin() + num_samples);
+      Signal output(queue_.begin(), queue_.begin() + (long)num_samples);
+      queue_.erase(queue_.begin(), queue_.begin() + (long)num_samples);
       return output;
     } else {
       // Merging mode
@@ -147,7 +147,7 @@ public:
     if (merge_streams_.size() == 0) {
       Int size = (Int)queue_.size()-(Int)num_temp_samples_;
       assert(size>=0);
-      return size;
+      return (UInt) size;
     } else {
       std::vector<UInt> sizes;
       for (UInt i=0; i<merge_streams_.size(); ++i) {
@@ -193,7 +193,7 @@ private:
   MonoStream left_stream_;
   MonoStream right_stream_;
 };
-  
+
 
 class SAL_API MultichannelStream : public Stream {
 public:
