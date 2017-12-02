@@ -30,15 +30,15 @@ public:
   
   MonoStream* stream(Int chan_id) {
     if (chan_id < 0 || chan_id > (Int) output_streams_.size()) { throw_line(""); }
-    return &(output_streams_.at(chan_id));
+    return &(output_streams_.at((unsigned long)chan_id));
   }
   
   UInt num_loudspeakers() { return output_streams_.size(); }
   
   UInt size() {
-    std::vector<Int> sizes(num_loudspeakers());
-    for (UInt i=0; i<num_loudspeakers(); i++) { sizes[i] = stream(i)->size(); }
-    return mcl::Max(sizes);
+    std::vector<UInt> sizes(num_loudspeakers());
+    for (UInt i=0; i<num_loudspeakers(); i++) { sizes[i] = stream((Int) i)->size(); }
+    return (UInt) mcl::Max(sizes);
   }
   
   bool IsEmpty() {
