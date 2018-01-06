@@ -426,6 +426,19 @@ bool VectorOpTest() {
   vector_aa_cmp[2] = 2.5;
   assert(IsEqual(vector_aa, vector_aa_cmp));
   
+  std::vector<Real> vector_ab = mcl::ColonOperator(-0.001, 0.00025, 0.001);
+  std::vector<Real> vector_ab_cmp(9);
+  vector_ab_cmp[0] = -0.001;
+  vector_ab_cmp[1] = -0.00075;
+  vector_ab_cmp[2] = -0.0005;
+  vector_ab_cmp[3] = -0.00025;
+  vector_ab_cmp[4] = 0;
+  vector_ab_cmp[5] = 0.00025;
+  vector_ab_cmp[6] = 0.0005;
+  vector_ab_cmp[7] = 0.00075;
+  vector_ab_cmp[8] = 0.001;
+  assert(IsEqual(vector_ab, vector_ab_cmp));
+  
   // Testing summation
   std::vector<Real> vector_zb = Add(vector_z, (Real) 1.5);
   assert(vector_zb.size() == 3);
