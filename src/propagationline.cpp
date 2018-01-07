@@ -145,7 +145,8 @@ void PropagationLine::Write(const sal::Sample &sample) {
 }
   
 sal::Sample PropagationLine::Read() const {
-  return delay_filter_.Read() * current_gain_;
+//  return delay_filter_.Read() * current_gain_;
+  return delay_filter_.FractionalRead(current_latency_)*current_gain_;
 }
   
 

@@ -22,9 +22,9 @@ using sal::Sample;
 
 
 namespace sal {
-
+  
 bool PropagationLine::Test() {
-
+  
   
   Time FS = 40000;
   Length distance = (Length) 3.0 * SOUND_SPEED/FS;
@@ -70,7 +70,7 @@ bool PropagationLine::Test() {
   prop_line_a.Tick();
   prop_line_a.Write(-1.0);
   assert(IsEqual(prop_line_a.Read(),-1.0*attenuation));
-
+  
   //
   prop_line_a.Reset();
   prop_line_a.set_distance((Length) 2.0 * SOUND_SPEED/FS);
@@ -88,27 +88,35 @@ bool PropagationLine::Test() {
   prop_line_a.Write(3.0);
   assert(IsEqual(prop_line_a.Read(),1.0*attenuation));
   
-//  FS = 40000;
-//  
-//  std::vector<sal::Sample> output;
-//  
-//  PropagationLine prop_line_b = PropagationLine(4.3, FS, 100.0, 1000);
-//  //prop_line_b.set_gain(1.0);
-//  for (UInt i=0; i<round(FS/10.0); ++i) {
-//    Time t = ((sal::Time) i)/FS;
-//    if (mcl::Mod((Int) i+1, (Int) round(FS/40.0))==0) {
-//      prop_line_b.set_distance(prop_line_b.distance()-0.8);
-//      //prop_line_b.set_gain(1.0);
-//    }
-//    
-//    prop_line_b.Write(cos(2.0*PI*100.0*t));
-//    output.push_back(prop_line_b.Read());
-//    prop_line_b.Tick();
-//  }
-//  
-//  mcl::Save(output, "/Users/enzodesena/Documents/MATLAB/vector.txt");
+  //
+  PropagationLine prop_line_b = PropagationLine((Length) 5.0 * SOUND_SPEED/FS, FS, 100.0, 10);
+  attenuation = 1.0 / 5.0;
+  
+  prop_line_b.Tick();
+  prop_line_b.Write(1.0);
+  for (UInt i=0; i<5; ++i) {
+    prop_line_b.Tick();
+    prop_line_b.Write(0.0);
+  }
+  assert(IsEqual(prop_line_b.Read(), 1.0*attenuation));
+  
+  
+  prop_line_b.set_distance((Length) 2.0 * SOUND_SPEED/FS);
+  attenuation = 1.0 / 2.0;
+  for (UInt i=0; i<20; ++i) {
+    prop_line_b.Tick();
+    prop_line_b.Write(0.0);
+  }
+  prop_line_b.Tick();
+  prop_line_b.Write(1.0);
+  for (UInt i=0; i<2; ++i) {
+    prop_line_b.Tick();
+    prop_line_b.Write(0.0);
+  }
+  assert(IsEqual(prop_line_b.Read(), 1.0*attenuation));
   
   return true;
 }
-
+  
 } // namespace sal
+
