@@ -25,7 +25,8 @@ PropagationLine::PropagationLine(const Length distance,
                                  const Length max_distance,
                                  const UInt update_length,
                                  const bool air_filters_active,
-                                 const UInt air_filters_update_step) :
+                                 const UInt air_filters_update_step,
+                                 const bool fractional_delays) :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
         sampling_frequency_(sampling_frequency),
@@ -38,7 +39,8 @@ PropagationLine::PropagationLine(const Length distance,
         updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
-        air_filters_update_step_(air_filters_update_step) {
+        air_filters_update_step_(air_filters_update_step),
+        fractional_delays_(fractional_delays) {
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
@@ -145,8 +147,11 @@ void PropagationLine::Write(const sal::Sample &sample) {
 }
   
 sal::Sample PropagationLine::Read() const {
-//  return delay_filter_.Read() * current_gain_;
-  return delay_filter_.FractionalRead(current_latency_)*current_gain_;
+  if (fractional_delays_) {
+    return delay_filter_.FractionalRead(current_latency_)*current_gain_;
+  } else {
+    return delay_filter_.Read() * current_gain_;
+  }
 }
   
 

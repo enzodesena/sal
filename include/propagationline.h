@@ -41,7 +41,8 @@ public:
                   const sal::Length max_distance = 100,
                   const UInt update_length = 0,
                   const bool air_filters_active = false,
-                  const UInt air_filters_update_step = 1);
+                  const UInt air_filters_update_step = 1,
+                  const bool fractional_delays = false);
   
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
@@ -106,6 +107,8 @@ private:
   sal::Time target_latency_;
   sal::Time current_latency_;
   sal::Int latency_update_counter_;
+  
+  bool fractional_delays_;
   
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
