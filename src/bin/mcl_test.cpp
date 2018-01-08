@@ -1,17 +1,20 @@
 /*
- mcl_tests.cpp
  MCL
- Copyright (c) 2012, Enzo De Sena
+ Copyright (c) 2012-18, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
- 
  */
 
 
 #include <iostream>
-#include "mcl.h"
 #include "matrixop.h"
+#include "vectorop.h"
+#include "transformop.h"
+#include "statisticsop.h"
+#include "firfilter.h"
+#include "randomop.h"
+#include "iirfilter.h"
 
 
 

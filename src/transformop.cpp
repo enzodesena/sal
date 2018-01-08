@@ -1,11 +1,9 @@
 /*
- transformop.cpp
  MCL
- 
- This contains transforming operations (fft, ifft, hilbert...)
+ Copyright (c) 2012-18, Enzo De Sena
+ All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
-
  */
 
 #include "transformop.h"

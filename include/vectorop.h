@@ -1,12 +1,9 @@
 /*
- vectorop.h
  MCL
- 
- This contains vector operations. This only include simple operations on vectors
- such as: creating a vector, zero padding, getting a subset, flipping etc.
+ Copyright (c) 2012-18, Enzo De Sena
+ All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
- 
  */
 
 #ifndef MCL_VECTOROP_H

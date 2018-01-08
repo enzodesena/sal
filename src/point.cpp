@@ -1,11 +1,9 @@
 /*
- point.cpp
- Spatial Audio Library (SAL)
- Copyright (c) 2011, Enzo De Sena
+ MCL
+ Copyright (c) 2012-18, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
- 
  */
 
 #include "point.h"

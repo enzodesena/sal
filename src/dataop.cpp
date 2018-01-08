@@ -1,9 +1,9 @@
 /*
- mathfunctions.h
  MCL
+ Copyright (c) 2012-18, Enzo De Sena
+ All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
- 
  */
 
 #include "dataop.h"

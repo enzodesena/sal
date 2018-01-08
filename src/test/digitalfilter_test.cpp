@@ -1,11 +1,9 @@
 /*
- digitalfilter_test.cpp
  MCL
- Copyright (c) 2012, Enzo De Sena
+ Copyright (c) 2012-18, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@me.com
- 
  */
 
 #include "iirfilter.h"
@@ -13,7 +11,9 @@
 #include <vector>
 #include "mcltypes.h"
 #include "maxgradientfilter.h"
-#include "mcl.h"
+#include "comparisonop.h"
+#include "randomop.h"
+#include "vectorop.h"
 
 namespace mcl {
 
