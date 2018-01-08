@@ -14,11 +14,11 @@
 #include <map>
 #include <vector>
 #include "microphone.h"
-#include "mcl.h"
 #include "saltypes.h"
 #include "stream.h"
 #include "array.h"
 #include "salconstants.h"
+#include "firfilter.h"
 
 namespace sal {
   

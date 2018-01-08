@@ -11,6 +11,7 @@
 #include "sphericalheadmic.h"
 #include "salconstants.h"
 #include <cmath>
+#include "transformop.h"
 
 using mcl::Point;
 using mcl::Quaternion;

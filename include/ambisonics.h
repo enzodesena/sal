@@ -21,6 +21,7 @@
 #include "decoder.h"
 #include "microphonearray.h"
 #include "salconstants.h"
+#include "iirfilter.h"
 
 namespace sal {
 

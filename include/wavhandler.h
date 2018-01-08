@@ -15,7 +15,6 @@
 #include "saltypes.h"
 #include <vector>
 #include <iostream>
-#include "mcl.h"
 #include "salconstants.h"
 
 namespace sal {

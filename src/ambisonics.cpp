@@ -12,7 +12,6 @@
  */
 
 #include "ambisonics.h"
-#include "mcl.h"
 #include "matrixop.h"
 
 using mcl::Point;

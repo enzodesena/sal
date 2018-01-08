@@ -10,7 +10,6 @@
 
 #include "stream.h"
 #include "comparisonop.h"
-#include "mcl.h"
 #include <assert.h>
 
 namespace sal {

@@ -9,7 +9,7 @@
  */
 
 #include "delayfilter.h"
-#include "mcl.h"
+#include "comparisonop.h"
 
 
 namespace sal {

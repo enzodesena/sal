@@ -11,7 +11,6 @@
 #ifndef SAL_DIRECTIVITYFUNCTION_H
 #define SAL_DIRECTIVITYFUNCTION_H
 
-#include "mcl.h"
 #include "point.h"
 #include "salconstants.h"
 #include "stream.h"

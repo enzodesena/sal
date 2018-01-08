@@ -8,7 +8,6 @@
  
  */
 
-#include "mcl.h"
 #include "ambisonics.h"
 #include "microphone.h"
 #include "stream.h"

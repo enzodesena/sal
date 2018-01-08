@@ -9,7 +9,6 @@
  */
 
 #include "cipicmic.h"
-#include "mcl.h"
 #include "microphone.h"
 #include "salconstants.h"
 

@@ -12,7 +12,6 @@
 #ifndef SAL_MICROPHONE_H
 #define SAL_MICROPHONE_H
 
-#include "mcl.h"
 #include "point.h"
 #include "stream.h"
 #include "source.h"

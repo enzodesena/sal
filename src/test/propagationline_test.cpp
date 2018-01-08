@@ -11,8 +11,8 @@
 
 #include "propagationline.h"
 #include "saltypes.h"
-#include "mcl.h"
 #include "salconstants.h"
+#include "comparisonop.h"
 
 using mcl::IsEqual;
 using sal::Length;

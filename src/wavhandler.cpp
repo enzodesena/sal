@@ -10,6 +10,8 @@
 
 #include "wavhandler.h"
 #include "sndfile.hh"
+#include "vectorop.h"
+#include <assert.h>
 
 namespace sal {
 

@@ -13,7 +13,6 @@
 #include "signal.h"
 #include "kemarmic.h"
 #include "sphericalheadmic.h"
-#include "mcl.h"
 
 using mcl::Point;
 using mcl::Quaternion;

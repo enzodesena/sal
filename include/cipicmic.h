@@ -14,7 +14,6 @@
 #include <map>
 #include <vector>
 #include "microphone.h"
-#include "mcl.h"
 #include "quaternion.h"
 #include "saltypes.h"
 #include "stream.h"

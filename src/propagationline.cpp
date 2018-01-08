@@ -12,7 +12,6 @@
 #include "salconstants.h"
 #include "delayfilter.h"
 #include "matrixop.h"
-#include "mcl.h"
 
 using sal::Length;
 using sal::Time;

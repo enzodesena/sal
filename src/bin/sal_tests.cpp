@@ -13,7 +13,6 @@
 #include "microphonearray.h"
 #include "sphericalheadmic.h"
 #include "kemarmic.h"
-#include "mcl.h"
 #include "ambisonics.h"
 #include "delayfilter.h"
 #include "propagationline.h"

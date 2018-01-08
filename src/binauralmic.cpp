@@ -9,7 +9,6 @@
  */
 
 #include "binauralmic.h"
-#include "mcl.h"
 #include "point.h"
 #include "salconstants.h"
 #include <string.h>

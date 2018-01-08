@@ -9,7 +9,6 @@
  */
 
 #include "kemarmic.h"
-#include "mcl.h"
 #include "point.h"
 #include "salconstants.h"
 

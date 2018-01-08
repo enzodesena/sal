@@ -10,7 +10,6 @@
 
 #include "delayfilter.h"
 #include <cassert>
-#include "mcl.h"
 
 using sal::Sample;
 using sal::UInt;

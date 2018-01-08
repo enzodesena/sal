@@ -13,13 +13,13 @@
 
 #include "saltypes.h"
 #include "mcltypes.h"
-#include "mcl.h"
 #include <queue>
 #include <vector>
 #include <map>
 #include <assert.h>
 #include <iostream>
 #include "salconstants.h"
+#include "vectorop.h"
 
 namespace sal {
   

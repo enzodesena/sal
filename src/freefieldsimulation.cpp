@@ -19,7 +19,6 @@
 #include "point.h"
 #include "source.h"
 #include "microphone.h"
-#include "mcl.h"
 #include <vector>
 
 using mcl::Point;
