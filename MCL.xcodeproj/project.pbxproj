@@ -40,6 +40,7 @@
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
 		5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
+		57AF67B92022DEEB00189594 /* exception_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AF67B82022DEEB00189594 /* exception_test.cpp */; };
 		57B4EF6D1CD8174E00134991 /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF6C1CD8174E00134991 /* mcl_test.cpp */; };
 		57B4EF781CD8177900134991 /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF6E1CD8177900134991 /* basicop_test.cpp */; };
 		57B4EF791CD8177900134991 /* comparisonop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF6F1CD8177900134991 /* comparisonop_test.cpp */; };
@@ -110,6 +111,8 @@
 		5778D80E15B616320015AAC9 /* iirfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iirfilter.cpp; path = src/iirfilter.cpp; sourceTree = "<group>"; };
 		57A158AA1593501200AA6445 /* MCL_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MCL_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A158AC1593501200AA6445 /* libMCL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCL.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57AF67B82022DEEB00189594 /* exception_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = exception_test.cpp; path = src/test/exception_test.cpp; sourceTree = "<group>"; };
+		57AF67BA2022DF2100189594 /* exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exception.h; path = include/exception.h; sourceTree = "<group>"; };
 		57B4EF6C1CD8174E00134991 /* mcl_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mcl_test.cpp; path = src/bin/mcl_test.cpp; sourceTree = "<group>"; };
 		57B4EF6E1CD8177900134991 /* basicop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = basicop_test.cpp; path = src/test/basicop_test.cpp; sourceTree = "<group>"; };
 		57B4EF6F1CD8177900134991 /* comparisonop_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = comparisonop_test.cpp; path = src/test/comparisonop_test.cpp; sourceTree = "<group>"; };
@@ -233,6 +236,7 @@
 				57BA701215B43BC9002F077F /* comparisonop.h */,
 				57EAE5BF18AA80FC001DC4D4 /* dataop.h */,
 				5778D80915B616260015AAC9 /* digitalfilter.h */,
+				57AF67BA2022DF2100189594 /* exception.h */,
 				572B38811B4B84AE004C0DFD /* maxgradientfilter.h */,
 				57BA700E15B43B07002F077F /* elementaryop.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
@@ -265,6 +269,7 @@
 				57B4EF761CD8177900134991 /* transformop_test.cpp */,
 				57B4EF771CD8177900134991 /* vectorop_test.cpp */,
 				57FE67C71CFB61EE00E3CB2A /* quaternion_test.cpp */,
+				57AF67B82022DEEB00189594 /* exception_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -484,6 +489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5762F7B31DB30B82007A4C64 /* dataop.cpp in Sources */,
+				57AF67B92022DEEB00189594 /* exception_test.cpp in Sources */,
 				57B4EF6D1CD8174E00134991 /* mcl_test.cpp in Sources */,
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
 				57301BCA1D6B01A000D6F5B0 /* butter.cpp in Sources */,
