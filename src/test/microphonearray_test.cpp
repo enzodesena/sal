@@ -18,13 +18,18 @@ using mcl::Point;
   
 bool MicrophoneArray::Test() {
   
-  const UInt num_microphones = 5;
+  const UInt num_microphones(5);
+  const Length array_radius(1.0);
   
-  CircularTrig microphone_array_a = CircularTrig(Point(0.0,0.0,1.5), 1.0,
-                                     num_microphones,
-                                     0.0,
-                                     0.0, // i.e. uniformly distributed in 2PI
-                                     mcl::UnaryVector<Sample>(1.0));
+  
+  CircularTrig microphone_array_a(Point(0.0,0.0,1.5),
+                                  mcl::Quaternion::Identity(),
+                                  array_radius,
+                                  num_microphones,
+                                  0.0, // i.e. uniformly distributed in 2PI
+                                  mcl::UnaryVector<Sample>(1.0));
+  
+  assert(mcl::IsEqual(microphone_array_a.position(), Point(0.0,0.0,1.5)));
   
   std::vector<MonoMic*> microphones_a = microphone_array_a.microphones();
   assert(microphones_a.size() == num_microphones);
@@ -34,7 +39,11 @@ bool MicrophoneArray::Test() {
                                                    1.0*sin(2*PI/5),
                                                    1.5)));
   
-    
+  microphone_array_a.set_position(Point(1.0,0.0,1.5));
+  assert(microphones_a[0]->position().Equals(Point(2.0,0.0,1.5)));
+  assert(microphones_a[1]->position().Equals(Point(1.0+1.0*cos(2*PI/5),
+                                                   0.0+1.0*sin(2*PI/5),
+                                                   1.5)));
   
   return true;
 }

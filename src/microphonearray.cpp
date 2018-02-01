@@ -10,16 +10,32 @@
 
 #include "microphone.h"
 #include "microphonearray.h"
+#include "exception.h"
 #include <vector>
 
 using mcl::Point;
+using mcl::Quaternion;
 
 namespace sal {
+  
+  
+void MicrophoneArray::set_position(const mcl::Point& position) {
+  Point position_delta(position.x()-position_.x(),
+                       position.y()-position_.y(),
+                       position.z()-position_.z());
+  for (UInt i=0; i<microphone_pointers_.size(); ++i) {
+    Point old_mic_position = microphone_pointers_[i]->position();
+    Point new_mic_position(old_mic_position.x()+position_delta.x(),
+                           old_mic_position.y()+position_delta.y(),
+                           old_mic_position.z()+position_delta.z());
+    microphone_pointers_[i]->set_position(new_mic_position);
+  }
+  position_ = position;
+}
   
 void MicrophoneArray::RecordPlaneWaveRelative(const Sample& sample,
                                               const Point& point,
                                               const UInt& wave_id) {
-  assert(stream_.initialised());
   UInt num_microphones(microphone_pointers_.size());
   for (UInt i=0; i<num_microphones; ++i) {
     // Each microphone will push in his own mono stream. The multichannel
@@ -29,7 +45,6 @@ void MicrophoneArray::RecordPlaneWaveRelative(const Sample& sample,
 }
   
 void MicrophoneArray::Tick() {
-  assert(stream_.initialised());
   UInt num_microphones(microphone_pointers_.size());
   for (UInt i=0; i<num_microphones; ++i) {
     // Each microphone will push in his own mono stream. The multichannel
@@ -99,33 +114,34 @@ std::vector<Point> CircularArray::GetPositions(const Point& position,
 }
   
 CircularArray::CircularArray(const Point& position,
+                             const Quaternion& orientation,
                              const Length radius,
                              const UInt num_microphones,
-                             const Angle first_element_heading,
-                             const Angle span_angle) {
+                             const Angle span_angle) :
+  MicrophoneArray(position, orientation) {
             
-  angles_ = GetAngles(num_microphones, first_element_heading, span_angle);
+  angles_ = GetAngles(num_microphones, 0, span_angle);
   
   positions_ = GetPositions(position, radius, num_microphones,
-                            first_element_heading, span_angle);
+                            0, span_angle);
 }
   
   
   
 CircularTrig::CircularTrig(const Point& position,
+                           const Quaternion& orientation,
                            const Length radius,
                            const UInt num_microphones,
-                           const Angle first_element_heading,
                            const Angle span_angle,
                            std::vector<Sample> coefficients) :
-          CircularArray(position, radius, num_microphones,
-                        first_element_heading, span_angle) {
+          CircularArray(position, orientation, radius,
+                        num_microphones, span_angle) {
   microphone_pointers_ = std::vector<MonoMic*>(num_microphones);
             
   // The following reservation makes the position in memory of the vector
   // static (TODO: double-check this)
   microphones_.reserve(num_microphones);
-            
+  
   for (UInt i=0; i<num_microphones; ++i) {
     // Initialise streams.
     microphones_.push_back(TrigMic(positions_[i],
@@ -134,9 +150,7 @@ CircularTrig::CircularTrig(const Point& position,
     
     microphone_pointers_[i] = &(microphones_[i]);
   }
-            
-            
-            
+  
   InitStream();
 }
   

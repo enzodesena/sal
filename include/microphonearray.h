@@ -28,17 +28,14 @@ namespace sal {
 /** An array of microphone each with monophonic outputs */
 class SAL_API MicrophoneArray : public Microphone {
 public:
+  MicrophoneArray(mcl::Point position,
+                  mcl::Quaternion orientation,
+                  mcl::Handedness handedness = mcl::right_handed) :
+          Microphone(position, orientation) {}
   
-  MicrophoneArray() :
-  Microphone(mcl::Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity()) {}
-  
-
-
   virtual void Tick();
   
-  // TODO: implement these two virtual methods
-  //  mcl::Point position() const;
-  //  virtual void set_position(const mcl::Point&);
+  virtual void set_position(const mcl::Point&);
   
   /** 
    Returns true if the array is coincident. If there are 0 or 1 microphones
@@ -48,7 +45,11 @@ public:
   
   void InitStream();
   
-  MultichannelStream* stream() { return &stream_; }
+  MultichannelStream* stream() {
+    if (! stream_.initialised()) { InitStream(); }
+    return &stream_;
+    
+  }
   
   std::vector<MonoMic*> microphones() { return microphone_pointers_; }
   
@@ -58,8 +59,7 @@ private:
    Simulates the output of the microphone array to a source in the direction
    of source.position() and with input signal `source.signal()`.
    This does not include attenuation nor delay due to propagation. These
-   are in fact included in the `FreeFieldSimulation` in SAT or are
-   are implemented as delay lines in SDN.
+   are in fact included in the `FreeFieldSimulation` in SAL.
    */
   virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
                                        const UInt& wave_id);
@@ -81,13 +81,15 @@ protected:
 class SAL_API CircularArray : public MicrophoneArray {
 public:
   CircularArray(const mcl::Point& position,
+                const mcl::Quaternion& orientation,
                 const Length radius,
                 const UInt num_microphones,
-                const Angle first_element_heading,
                 const Angle span_angle);
+  
   static std::vector<Angle> GetAngles(const UInt num_microphones,
                                       const Angle first_element_heading,
                                       const Angle span_angle);
+  
   static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
                                          const Length radius,
                                          const UInt num_microphones,
@@ -102,9 +104,9 @@ protected:
 class SAL_API CircularTrig : public CircularArray {
 public:
   CircularTrig(const mcl::Point& position,
+               const mcl::Quaternion& orientation,
                const Length radius,
                const UInt num_microphones,
-               const Angle first_element_heading,
                const Angle span_angle,
                std::vector<Sample> coefficients);
 private:
@@ -127,11 +129,11 @@ private:
 class SAL_API StereoMic : public CircularArray {
 public:
   StereoMic(const mcl::Point& position,
+            const mcl::Quaternion& orientation,
             const Length radius,
-            const Angle midline_heading,
             const Angle base_angle) :
-        CircularArray(position, radius, 2, midline_heading-base_angle/2.0,
-                      base_angle) {}
+        CircularArray(position, orientation,
+                      radius, 2, base_angle) {}
 };
 
 
