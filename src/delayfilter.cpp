@@ -9,6 +9,7 @@
  */
 
 #include "delayfilter.h"
+#include "exception.h"
 #include <cassert>
 
 using sal::Sample;
