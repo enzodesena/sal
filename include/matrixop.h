@@ -60,7 +60,10 @@ public:
       num_columns_ = vectors[0].size();
       for (UInt i=1; i<num_rows_; ++i) {
         // Check that all rows have the same number of columns
-        if (vectors[i].size() != num_columns_) { throw_line(""); }
+        if (vectors[i].size() != num_columns_) {
+          throw(mcl::Exception("One or more rows does not have the "
+                               "same number of columns"));
+        }
       }
       data_ = vectors;
     }
@@ -72,8 +75,8 @@ public:
   /** Sets element in given row and column */
   void set_element(const UInt& index_row, const UInt& index_column,
                    const T& element) {
-    if (index_row>=num_rows_) { throw_line(""); }
-    if (index_column>=num_columns_) { throw_line(""); }
+    if (index_row>=num_rows_ || index_column>=num_columns_) {
+      throw(mcl::Exception("Out-of-bounds index in setting matrix element"));}
     data_[index_row][index_column] = element;
   }
   

@@ -13,6 +13,7 @@
 #include "mcltypes.h"
 #include <vector>
 #include <limits>
+#include "exception.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)

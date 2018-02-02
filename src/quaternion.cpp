@@ -7,6 +7,8 @@
  */
 
 #include "quaternion.h"
+#include "exception.h"
+
 
 namespace mcl {
 

@@ -6,6 +6,10 @@
  Authors: Enzo De Sena, enzodesena@me.com
  */
 
+
+#ifndef MCL_EXCEPTION_H
+#define MCL_EXCEPTION_H
+
 #include <iostream>
 #include <string>
 
@@ -43,3 +47,5 @@ private:
   
 } // namespace mcl
 
+
+#endif

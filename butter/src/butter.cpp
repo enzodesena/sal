@@ -10,6 +10,7 @@
 
 #include "butter.h"
 #include "mcltypes.h"
+#include "exception.h"
 #include <vector>
 #include <math.h>
 #include <complex>

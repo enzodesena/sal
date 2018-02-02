@@ -10,6 +10,7 @@
 #include <iostream>
 #include <cmath>
 #include "comparisonop.h"
+#include "exception.h"
 
 namespace mcl {
 
