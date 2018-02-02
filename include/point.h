@@ -135,7 +135,7 @@ MCL_API Point Normalized(Point point);
  p=d line_point+line_direction, with d any scalar).
  The plane is identified as any point on the plane, plane_point, and
  the normal to the plane, plane_normal (every point on the plane can be
- expressed as <p-plane_point, plane_normal>=0 where <x,y> is scalar product).
+ expressed as (p-plane_point, plane_normal)=0 where (x,y) is scalar product).
  If the line is contained in the plane, the function returns line_point.
  If there is no intersection, then the function throws an exception.
  The user should first check whether an intersection exists using
@@ -154,7 +154,7 @@ MCL_API Point IntersectionPlaneLine(const Point& line_point,
  p=d line_point+line_direction, with d any scalar).
  The plane is identified as any point on the plane, plane_point, and
  the normal to the plane, plane_normal (every point on the plane can be
- expressed as <p-plane_point, plane_normal>=0 where <x,y> is scalar product).
+ expressed as (p-plane_point, plane_normal)=0 where (x,y) is scalar product).
  */
 MCL_API bool IntersectionPlaneLineExists(const Point& line_point,
                                          const Point& line_direction,
