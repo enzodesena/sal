@@ -31,7 +31,7 @@ public:
   MicrophoneArray(mcl::Point position,
                   mcl::Quaternion orientation,
                   mcl::Handedness handedness = mcl::right_handed) :
-          Microphone(position, orientation) {}
+          Microphone(position, orientation, handedness) {}
   
   virtual void Tick();
   
@@ -48,7 +48,6 @@ public:
   MultichannelStream* stream() {
     if (! stream_.initialised()) { InitStream(); }
     return &stream_;
-    
   }
   
   std::vector<MonoMic*> microphones() { return microphone_pointers_; }
@@ -114,17 +113,11 @@ private:
 };
   
   
-
-
-  
 /**
  This generates a stereophonic microphone array centered in position,
- with radius `radius`,
- midline_heading is the heading of the midline microphone
- - e.g. first_element_heading=0, means that the first microphone is
+ with radius `radius`. For identity orientation, the first microphone
+ element is at angle 0, i.e.
  at (position.x() + radius, position.y(), position.z()).
- Finally, directivity_pattern
- is the directivity apttern of each microphone.
  */
 class SAL_API StereoMic : public CircularArray {
 public:
@@ -132,8 +125,8 @@ public:
             const mcl::Quaternion& orientation,
             const Length radius,
             const Angle base_angle) :
-        CircularArray(position, orientation,
-                      radius, 2, base_angle) {}
+  CircularArray(position, orientation,
+                radius, 2, base_angle) {}
 };
 
 
