@@ -11,6 +11,7 @@
 #include "wavhandler.h"
 #include "sndfile.hh"
 #include "vectorop.h"
+#include "exception.h"
 #include <assert.h>
 
 namespace sal {
@@ -20,12 +21,12 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   SF_INFO input_file_info;
   
   if (! (input_file = sf_open(file_name.c_str(), SFM_READ, &input_file_info))) {
-    throw "Error : could not open file.";
+    throw(mcl::Exception("Error : could not open file."));
   }
   
   if (! sf_format_check (&input_file_info)) {
     sf_close (input_file);
-    throw "Error : could not open file.";
+    throw(mcl::Exception("Error : could not open file."));
   }
   
   assert(input_file_info.frames > 0);

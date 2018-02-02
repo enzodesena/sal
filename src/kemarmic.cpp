@@ -11,6 +11,7 @@
 #include "kemarmic.h"
 #include "point.h"
 #include "salconstants.h"
+#include "exception.h"
 
 #ifdef _WIN32
   #define sprintf(...) sprintf_s(__VA_ARGS__)
@@ -71,7 +72,7 @@ std::vector<std::vector<Signal> >
       std::ifstream file;
       
       file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-      if (! file.good()) { throw "Kemar lib not found."; }
+      if (! file.good()) { throw(mcl::Exception("Kemar lib not found.")); }
       long size = (long) file.tellg();
       assert(sizeof(short) == 2);
       short* data = new short[size/2];

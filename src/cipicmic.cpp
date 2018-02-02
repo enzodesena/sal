@@ -44,6 +44,7 @@
 #include "cipicmic.h"
 #include "point.h"
 #include "salconstants.h"
+#include "exception.h"
 #include <string.h>
 
 #ifndef NO_WAV_HANDLER
@@ -86,7 +87,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
     
     std::ifstream file;
     file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-    if (! file.good()) { throw "Cipic lib not found."; }
+    if (! file.good()) { throw(mcl::Exception("Cipic lib not found.")); }
     file.close();
   
     std::vector<std::vector<sal::Sample> > brirs;
