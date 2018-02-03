@@ -1,4 +1,4 @@
-[submodule "lib/mcl"]
+[submodule "mcl"]
 	path = mcl
 	url = http://pub.git.desena.org/mcl.git
-	brach = master
+	branch = master
