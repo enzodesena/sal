@@ -45,15 +45,15 @@ bool MicrophoneArray::Test() {
                                                    0.0+1.0*sin(2*PI/5),
                                                    1.5)));
   
-  StereoMic stereo_mic(Point(0.2,0.0,1.5),
-                       mcl::Quaternion::Identity(),
-                       1.0, PI/4.0);
-  
-  std::vector<MonoMic*> stereo_mics =  stereo_mic.microphones();
-  std::cout<<stereo_mics.size()<<std::endl;
-  assert(stereo_mics.size() == 2);
-  assert(mcl::IsEqual(stereo_mics[0]->position(), Point(0.2 + 1.0*cos(0), 1.0*sin(0), 1.5)));
-  assert(mcl::IsEqual(stereo_mics[1]->position(), Point(0.2 + 1.0*cos(PI/4.0), 1.0*sin(PI/4.0), 1.5)));
+//  StereoMic stereo_mic(Point(0.2,0.0,1.5),
+//                       mcl::Quaternion::Identity(),
+//                       1.0, PI/4.0);
+//
+//  std::vector<MonoMic*> stereo_mics =  stereo_mic.microphones();
+//  std::cout<<stereo_mics.size()<<std::endl;
+//  assert(stereo_mics.size() == 2);
+//  assert(mcl::IsEqual(stereo_mics[0]->position(), Point(0.2 + 1.0*cos(0), 1.0*sin(0), 1.5)));
+//  assert(mcl::IsEqual(stereo_mics[1]->position(), Point(0.2 + 1.0*cos(PI/4.0), 1.0*sin(PI/4.0), 1.5)));
   
   return true;
 }

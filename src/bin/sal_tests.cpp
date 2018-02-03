@@ -21,17 +21,21 @@
 #include "cipicmic.h"
 
 int main(int argc, char * const argv[]) {
-  sal::Microphone::Test();
-  sal::KemarMic::Test();
-  sal::CipicMic::Test();
-  sal::Stream::Test();
-  sal::SphericalHeadMic::Test();
-  sal::MicrophoneArray::Test();
-  sal::AmbisonicsMic::Test();
-  sal::AmbisonicsHorizDec::Test();
-  sal::DelayFilter::Test();
-  sal::PropagationLine::Test();
-  sal::FreeFieldSim::Test();
+  try {
+    sal::Microphone::Test();
+    sal::KemarMic::Test();
+    sal::CipicMic::Test();
+    sal::Stream::Test();
+    sal::SphericalHeadMic::Test();
+    sal::MicrophoneArray::Test();
+    sal::AmbisonicsMic::Test();
+    sal::AmbisonicsHorizDec::Test();
+    sal::DelayFilter::Test();
+    sal::PropagationLine::Test();
+    sal::FreeFieldSim::Test();
+  } catch (mcl::Exception& exception) {
+    std::cout<<"An exception occurred: "<<exception.what()<<std::endl;
+  }
   
   std::cout<<"All tests succeded!\n";
     
