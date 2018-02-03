@@ -63,7 +63,10 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
 
 void DelayFilter::set_latency(const UInt latency) {
   latency_ = latency;
-  if (latency > max_latency_) { throw_line(""); }
+  if (latency > max_latency_) {
+    throw(mcl::Exception("Trying to set a delay filter latency larger than "
+                         "the maximum latency."));
+  }
   
   read_index_ = write_index_ - latency;
   
@@ -77,15 +80,22 @@ UInt DelayFilter::latency() const { return latency_; }
 UInt DelayFilter::max_latency() const { return max_latency_; }
 
 Sample DelayFilter::Read(const UInt& delay_tap) const {
-  assert(delay_tap < max_latency_);
+  if (delay_tap >= max_latency_) {
+    throw(mcl::Exception("Tried to access a delay tap larger than delay filter"
+                         "length."));
+  }
   assert(write_index_>=start_);
   assert(write_index_<=end_);
   return (write_index_ - delay_tap >= start_) ?
-  *(write_index_ - delay_tap) :
-  *(write_index_ - delay_tap + max_latency_ + 1);
+      *(write_index_ - delay_tap) :
+      *(write_index_ - delay_tap + max_latency_ + 1);
 }
 
 Sample DelayFilter::FractionalRead(const Time fractional_delay_tap) const {
+  if (fractional_delay_tap >= max_latency_) {
+    throw(mcl::Exception("Tried to access a delay tap larger than delay filter"
+                         "length."));
+  }
   UInt x_a = (UInt) floor(fractional_delay_tap);
   UInt x_b = x_a+1;
   Sample f_x_a = Read(x_a);
