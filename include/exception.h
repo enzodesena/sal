@@ -30,8 +30,6 @@ public:
       message_(message.c_str()), exception_id_(exception_id),
       exception_code_(exception_code.c_str()) {}
   
-  ~Exception() {}
-  
   virtual const char* what() const throw() {
     return message_;
   }
