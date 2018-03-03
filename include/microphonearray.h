@@ -25,17 +25,48 @@
 namespace sal {
 
   
-/** An array of microphone each with monophonic outputs */
+/** This object creates a microphone array based on a microphone prototype.
+ So, for instance, you can take an omnimic, and create an array of N omni mics.
+ This class is a parent for more specific classes, e.g. a circular array etc.
+ This class simply creates N copies of the mic_prototype and repositions them
+ in the set `position`, with given `orientation` and `handedness`. A call
+ to RecordPlaneWave will call the RecordPlaneWave of each microphone.
+ You can then access the streams of each microphone by first extracting
+ pointers to the microphone with the microphones() method and then accessing
+ each one's stream. Alternatively, the object also has a multichannel stream
+ object, which contains pointers to the individual streams. */
 class SAL_API MicrophoneArray : public Microphone {
 public:
-  MicrophoneArray(mcl::Point position,
-                  mcl::Quaternion orientation,
-                  mcl::Handedness handedness = mcl::right_handed) :
-          Microphone(position, orientation, handedness) {}
+  MicrophoneArray(const sal::MonoMic& mic_prototype,
+                  const mcl::UInt num_microphones,
+                  const mcl::Point position,
+                  const mcl::Quaternion orientation,
+                  const mcl::Handedness handedness = mcl::right_handed) :
+          Microphone(position, orientation, handedness) {
+    
+    std::vector<MonoStream*> streams(num_microphones);
+    microphones_.reserve(num_microphones);
+    for (UInt i=0; i<num_microphones; ++i) {
+      microphones_.push_back(mic_prototype);
+      microphones_[i].set_position(position);
+      microphones_[i].set_orientation(orientation);
+      microphones_[i].set_handedness(handedness);
+      streams[i] = microphone_pointers_[i]->stream();
+    }
+    
+    stream_ = MultichannelStream(streams);
+  }
   
   virtual void Tick();
   
+  /**
+   This method will move all the internal microphones to a new position.
+   The relative positions of the different microphones will stay unchanged.
+   */
   virtual void set_position(const mcl::Point&);
+  
+  // TODO: Implement this method
+  virtual void set_orientation(const mcl::Quaternion&) { assert(false); }
   
   /** 
    Returns true if the array is coincident. If there are 0 or 1 microphones
@@ -43,16 +74,14 @@ public:
    */
   virtual bool IsCoincident();
   
-  void InitStream();
-  
-  MultichannelStream* stream() {
-    if (! stream_.initialised()) { InitStream(); }
-    return &stream_;
-  }
+  MultichannelStream* stream() { return &stream_; }
   
   std::vector<MonoMic*> microphones() { return microphone_pointers_; }
   
   static bool Test();
+protected:
+  std::vector<MonoMic> microphones_;
+  
 private:
   /**
    Simulates the output of the microphone array to a source in the direction
@@ -79,37 +108,24 @@ protected:
  */
 class SAL_API CircularArray : public MicrophoneArray {
 public:
-  CircularArray(const mcl::Point& position,
-                const mcl::Quaternion& orientation,
-                const Length radius,
+  CircularArray(const sal::MonoMic& mic_prototype,
                 const UInt num_microphones,
-                const Angle span_angle);
+                const Length radius,
+                const Angle span_angle,
+                const mcl::Point& position,
+                const mcl::Quaternion& orientation,
+                const mcl::Handedness& handedness = mcl::right_handed);
   
+private:
   static std::vector<Angle> GetAngles(const UInt num_microphones,
                                       const Angle first_element_heading,
                                       const Angle span_angle);
   
   static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
-                                         const Length radius,
-                                         const UInt num_microphones,
-                                         const Angle first_element_heading,
-                                         const Angle span_angle);
-protected:
-  std::vector<Angle> angles_;
-  std::vector<mcl::Point> positions_;
-};
-  
-
-class SAL_API CircularTrig : public CircularArray {
-public:
-  CircularTrig(const mcl::Point& position,
-               const mcl::Quaternion& orientation,
-               const Length radius,
-               const UInt num_microphones,
-               const Angle span_angle,
-               std::vector<Sample> coefficients);
-private:
-  std::vector<TrigMic> microphones_;
+                                              const Length radius,
+                                              const UInt num_microphones,
+                                              const Angle first_element_heading,
+                                              const Angle span_angle);
 };
   
   
@@ -121,12 +137,15 @@ private:
  */
 class SAL_API StereoMic : public CircularArray {
 public:
-  StereoMic(const mcl::Point& position,
-            const mcl::Quaternion& orientation,
+  StereoMic(const sal::MonoMic& mic_prototype,
+            const UInt num_microphones,
             const Length radius,
-            const Angle base_angle) :
-  CircularArray(position, orientation,
-                radius, 2, base_angle) {}
+            const Angle base_angle,
+            const mcl::Point& position,
+            const mcl::Quaternion& orientation,
+            const mcl::Handedness& handedness = mcl::right_handed) :
+  CircularArray(mic_prototype, 2, radius, base_angle,
+                position, orientation, handedness) {}
 };
 
 

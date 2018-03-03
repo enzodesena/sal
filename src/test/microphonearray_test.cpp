@@ -22,12 +22,15 @@ bool MicrophoneArray::Test() {
   const Length array_radius(1.0);
   
   
-  CircularTrig microphone_array_a(Point(0.0,0.0,1.5),
-                                  mcl::Quaternion::Identity(),
-                                  array_radius,
-                                  num_microphones,
-                                  0.0, // i.e. uniformly distributed in 2PI
-                                  mcl::UnaryVector<Sample>(1.0));
+  TrigMic mic_prototype(Point(0,0,0), mcl::Quaternion::Identity(),
+                        mcl::UnaryVector<Sample>(1.0));
+  
+  CircularArray microphone_array_a(mic_prototype,
+                                   array_radius,
+                                   num_microphones,
+                                   0.0, // i.e. uniformly distributed in 2PI
+                                   Point(0.0,0.0,1.5),
+                                   mcl::Quaternion::Identity());
   
   assert(mcl::IsEqual(microphone_array_a.position(), Point(0.0,0.0,1.5)));
   

@@ -67,16 +67,6 @@ bool MicrophoneArray::IsCoincident() {
   return true;
 }
   
-
-void MicrophoneArray::InitStream() {
-  const UInt num_mics = microphone_pointers_.size();
-  std::vector<MonoStream*> streams(num_mics);
-  for (UInt i=0; i<num_mics; ++i) {
-    streams[i] = microphone_pointers_[i]->stream();
-  }
-  stream_.InitStream(streams);
-}
-
   
 std::vector<Angle> CircularArray::GetAngles(const UInt num_microphones,
                              const Angle first_element_heading,
@@ -113,49 +103,24 @@ std::vector<Point> CircularArray::GetPositions(const Point& position,
   return positions;
 }
   
-CircularArray::CircularArray(const Point& position,
-                             const Quaternion& orientation,
-                             const Length radius,
+CircularArray::CircularArray(const sal::MonoMic& mic_prototype,
                              const UInt num_microphones,
-                             const Angle span_angle) :
-  MicrophoneArray(position, orientation) {
-            
-  angles_ = GetAngles(num_microphones, 0, span_angle);
+                             const Length radius,
+                             const Angle span_angle,
+                             const mcl::Point& position,
+                             const mcl::Quaternion& orientation,
+                             const mcl::Handedness& handedness) :
+  MicrophoneArray(mic_prototype, num_microphones,
+                  position, orientation, handedness) {
   
-  positions_ = GetPositions(position, radius, num_microphones,
-                            0, span_angle);
-}
-  
-  
-  
-CircularTrig::CircularTrig(const Point& position,
-                           const Quaternion& orientation,
-                           const Length radius,
-                           const UInt num_microphones,
-                           const Angle span_angle,
-                           std::vector<Sample> coefficients) :
-          CircularArray(position, orientation, radius,
-                        num_microphones, span_angle) {
-  microphone_pointers_ = std::vector<MonoMic*>(num_microphones);
-            
-  // The following reservation makes the position in memory of the vector
-  // static (TODO: double-check this)
-  microphones_.reserve(num_microphones);
-  
-  for (UInt i=0; i<num_microphones; ++i) {
-    // Initialise streams.
-    microphones_.push_back(TrigMic(positions_[i],
-                                   mcl::AxAng2Quat(0,0,1,angles_[i]),
-                                   coefficients));
-    
-    microphone_pointers_[i] = &(microphones_[i]);
+  std::vector<sal::Angle> angles =
+      GetAngles(num_microphones, 0, span_angle);
+  std::vector<mcl::Point> positions =
+      GetPositions(position, radius, num_microphones, 0, span_angle);
+  for (mcl::UInt i=0; i<num_microphones; ++i) {
+    microphones_[i].set_position(positions[i]);
+    microphones_[i].set_orientation(mcl::AxAng2Quat(0, 0, 1, angles[i]));
   }
-  
-  InitStream();
 }
-  
-  
-  
-  
   
 } // namespace sal

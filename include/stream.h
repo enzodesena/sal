@@ -197,13 +197,12 @@ private:
 
 class SAL_API MultichannelStream : public Stream {
 public:
-  void InitStream(std::vector<MonoStream*> streams) {
-    initialised_ = true;
-    streams_ = streams;
-  }
+  MultichannelStream() : streams_(std::vector<MonoStream*>(0)) {}
+  
+  MultichannelStream(const std::vector<MonoStream*> streams) :
+      streams_(streams) {}
   
   std::vector<Sample> Pull() {
-    assert(initialised_);
     const UInt num_streams = streams_.size();
     std::vector<Sample> output(num_streams);
     for (UInt i=0; i<num_streams; ++i) { output[i] = streams_[i]->Pull(); }
@@ -218,11 +217,8 @@ public:
     for (UInt i=0; i<streams_.size(); ++i) { streams_[i]->Reset(); }
   }
   
-  bool initialised() { return initialised_; }
-  
 private:
   std::vector<MonoStream*> streams_;
-  bool initialised_;
 };
 
 class SAL_API BFormatStream : public Stream {
