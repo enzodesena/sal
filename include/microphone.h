@@ -169,6 +169,7 @@ protected:
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;
   
+  template<typename T>
   friend class MicrophoneArray;
 };
 

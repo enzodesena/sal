@@ -87,7 +87,7 @@ public:
   
   virtual ~TrigMic() {}
   
-  private:
+private:
   Sample GetDirectivity(const mcl::Point& point) {
     Angle phi = AngleBetweenPoints(point,
                                                mcl::Point(1.0, 0.0, 0.0));
