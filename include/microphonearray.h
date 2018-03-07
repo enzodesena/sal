@@ -23,7 +23,6 @@
 #include "salconstants.h"
 
 namespace sal {
-
   
 /** This object creates a microphone array based on a microphone prototype.
  So, for instance, you can take an omnimic, and create an array of N omni mics.
@@ -117,7 +116,6 @@ public:
   }
   
 private:
-  
   MultichannelStream stream_;
   
   /**
@@ -139,8 +137,6 @@ private:
   
 protected:
   std::vector<T*> microphones_;
-  
-
 };
   
 
@@ -170,19 +166,6 @@ public:
       this->microphones_[i]->set_orientation(mcl::AxAng2Quat(0, 0, 1, angles[i]));
     }
   }
-  
-  static std::vector<Angle> UniformAngles(const UInt num_microphones,
-                                          const Angle first_element_heading) {
-    std::vector<Angle> angles(num_microphones);
-    for (UInt i=0; i<num_microphones; ++i) {
-      // In this case position the microphones uniformly around 2PI
-      angles[i] = first_element_heading +
-      2.0*PI/((Angle) num_microphones)*((Angle) i);
-    }
-    return angles;
-  }
-
-  
 private:
   static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
                                               const Length radius,
@@ -196,6 +179,7 @@ private:
     return positions;
   }
 };
+
   
 
 /**
@@ -226,7 +210,7 @@ private:
     return angles;
   }
 };
-
+  
 
 bool MicrophoneArrayTest();
   

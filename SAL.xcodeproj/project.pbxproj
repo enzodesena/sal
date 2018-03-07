@@ -87,6 +87,7 @@
 		57B4EF9D1CD81AB400134991 /* stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF911CD81AB400134991 /* stream_test.cpp */; };
 		57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
 		57C2C7AA1B1739A600B7F58C /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
+		57C94CC7204F853400471213 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
 		57CE72BA1C9583FC00149808 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57CE72BC1C95844A00149808 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57CE72CA1C95AD4900149808 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C61C95AD2E00149808 /* CoreAudio.framework */; };
@@ -225,6 +226,8 @@
 		57B4EFA01CD81B6900134991 /* libSALiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSALiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57C2C7A51B17399000B7F58C /* binauralmic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = binauralmic.h; path = include/binauralmic.h; sourceTree = "<group>"; };
 		57C2C7A71B1739A600B7F58C /* binauralmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = binauralmic.cpp; path = src/binauralmic.cpp; sourceTree = "<group>"; };
+		57C94CC4204F851100471213 /* salutilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = salutilities.h; path = include/salutilities.h; sourceTree = "<group>"; };
+		57C94CC6204F853400471213 /* salutilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = salutilities.cpp; path = src/salutilities.cpp; sourceTree = "<group>"; };
 		57CE72B91C9583FC00149808 /* pawrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pawrapper.cpp; path = src/pawrapper.cpp; sourceTree = "<group>"; };
 		57CE72C61C95AD2E00149808 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		57CE72C81C95AD3F00149808 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -322,6 +325,7 @@
 				578751E715AE01590008761C /* sphericalmic.cpp */,
 				57A156DF1593460A00AA6445 /* microphone.cpp */,
 				57CE72B91C9583FC00149808 /* pawrapper.cpp */,
+				57C94CC6204F853400471213 /* salutilities.cpp */,
 				578A62251D89346200233890 /* source.cpp */,
 				578E967215D128820094FBBE /* freefieldsimulation.cpp */,
 				5768D6231639CFFB00F557B8 /* wavhandler.cpp */,
@@ -348,6 +352,7 @@
 				57895F5B16304F00002C962B /* propagationline.h */,
 				5713F76E15F38C4800AF1DE2 /* salconstants.h */,
 				5719A9AD15B57CCC000AD692 /* saltypes.h */,
+				57C94CC4204F851100471213 /* salutilities.h */,
 				57A156F51593464300AA6445 /* source.h */,
 				578ABE0115ACA8BB00966F2E /* sphericalheadmic.h */,
 				574D27FC161B3F5900F4A0B1 /* stream.h */,
@@ -636,6 +641,7 @@
 				57444D2D1B17B08E00EC31F4 /* cipicmic.cpp in Sources */,
 				57444D261B17671E00EC31F4 /* binauralmic.cpp in Sources */,
 				57B4EF941CD81AB400134991 /* delayfilter_test.cpp in Sources */,
+				57C94CC7204F853400471213 /* salutilities.cpp in Sources */,
 				57A79245163E9C360063863D /* freefieldsimulation.cpp in Sources */,
 				57B4EF851CD81A8D00134991 /* sal_tests.cpp in Sources */,
 				57895F7C16305460002C962B /* propagationline.cpp in Sources */,

@@ -11,6 +11,7 @@
 #include "microphone.h"
 #include "microphonearray.h"
 #include "salconstants.h"
+#include "salutilities.h"
 
 namespace sal {
 
@@ -30,7 +31,7 @@ bool MicrophoneArrayTest() {
                                             mcl::Quaternion::Identity(),
                                             mic_prototype,
                                             array_radius,
-                                            CircularArray<TrigMic>::UniformAngles(num_microphones, 0));
+                                            UniformAngles(num_microphones, 0));
 
   assert(mcl::IsEqual(microphone_array_a.position(), Point(0.0,0.0,1.5)));
   

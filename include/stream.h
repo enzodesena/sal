@@ -209,6 +209,15 @@ public:
     return output;
   }
   
+  std::vector<Signal> Pull(const UInt num_samples) {
+    const UInt num_streams = streams_.size();
+    std::vector<Signal> output(num_streams);
+    for (UInt i=0; i<num_streams; ++i) {
+      output[i] = streams_[i]->Pull(num_samples);
+    }
+    return output;
+  }
+  
   inline bool IsEmpty() const {
     return streams_[0]->IsEmpty();
   }
