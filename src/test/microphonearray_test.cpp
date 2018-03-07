@@ -22,13 +22,15 @@ bool MicrophoneArrayTest() {
   const Length array_radius(1.0);
   
   
-  TrigMic mic_prototype(Point(0,0,0), mcl::Quaternion::Identity(),
+  TrigMic mic_prototype(Point(0,0,0),
+                        mcl::Quaternion::Identity(),
                         mcl::UnaryVector<Sample>(1.0));
   
-  CircularArray<TrigMic> microphone_array_a(mic_prototype,
+  CircularArray<TrigMic> microphone_array_a(Point(0.0,0.0,1.5),
+                                            mcl::Quaternion::Identity(),
+                                            mic_prototype,
                                             array_radius,
-                                            CircularArray<TrigMic>::UniformAngles(num_microphones, 0),
-                                            Point(0.0,0.0,1.5));
+                                            CircularArray<TrigMic>::UniformAngles(num_microphones, 0));
 
   assert(mcl::IsEqual(microphone_array_a.position(), Point(0.0,0.0,1.5)));
   
@@ -47,9 +49,10 @@ bool MicrophoneArrayTest() {
                                                    0.0+1.0*sin(2.0*PI/5.0),
                                                    1.5)));
   
-  StereoMic<TrigMic> stereo_mic(mic_prototype,
-                                1.0, PI/4.0, +PI/8.0,
-                                Point(0.2,0.0,1.5));
+  StereoMic<TrigMic> stereo_mic(Point(0.2,0.0,1.5),
+                                mcl::Quaternion::Identity(),
+                                mic_prototype,
+                                1.0, PI/4.0, +PI/8.0);
 
   std::vector<TrigMic*> stereo_mics =  stereo_mic.microphones();
   

@@ -41,17 +41,16 @@ static_assert(std::is_base_of<MonoMic, T>::value,
               "You can only create microphone arrays of MonoMics");
   
 public:
-  MicrophoneArray(const T& mic_prototype,
-                  const mcl::UInt num_microphones,
-                  const mcl::Point position,
-                  const mcl::Handedness handedness = mcl::right_handed) :
-          Microphone(position, mcl::Quaternion::Identity(), handedness) {
+  MicrophoneArray(const mcl::Point& position,
+                  const mcl::Quaternion& orientation,
+                  const T& mic_prototype,
+                  const mcl::UInt num_microphones) :
+          Microphone(position, orientation) {
     std::vector<MonoStream*> streams;
             
     for (UInt i=0; i<num_microphones; ++i) {
       T* microphone = new T(mic_prototype);
       microphone->set_position(position);
-      microphone->set_handedness(handedness);
       streams.push_back(microphone->stream());
       microphones_.push_back(microphone);
     }
@@ -103,10 +102,6 @@ public:
     }
     return true;
   }
-  
-
-  // TODO: Implement this method
-  virtual void set_orientation(const mcl::Quaternion&) { assert(false); }
 
   MultichannelStream* stream() { return &stream_; }
 
@@ -160,13 +155,13 @@ protected:
 template<class T>
 class SAL_API CircularArray : public MicrophoneArray<T> {
 public:
-  CircularArray(const T& mic_prototype,
+  CircularArray(const mcl::Point& position,
+                const mcl::Quaternion& orientation,
+                const T& mic_prototype,
                 const Length radius,
-                const std::vector<Angle>& angles,
-                const mcl::Point& position,
-                const mcl::Handedness& handedness = mcl::right_handed) :
-        MicrophoneArray<T>(mic_prototype, angles.size(),
-                           position, handedness) {
+                const std::vector<Angle>& angles) :
+        MicrophoneArray<T>(position, orientation,
+                           mic_prototype, angles.size()) {
     
     std::vector<mcl::Point> positions = GetPositions(position, radius, angles);
           
@@ -189,8 +184,6 @@ public:
 
   
 private:
-  
-  
   static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
                                               const Length radius,
                                               const std::vector<Angle>& angles) {
@@ -214,15 +207,15 @@ private:
 template<class T>
 class SAL_API StereoMic : public CircularArray<T> {
 public:
-  StereoMic(const T& mic_prototype,
+  StereoMic(const mcl::Point& position,
+            const mcl::Quaternion& orientation,
+            const T& mic_prototype,
             const Length radius,
             const Angle base_angle,
-            const Angle center_angle,
-            const mcl::Point& position,
-            const mcl::Handedness& handedness = mcl::right_handed) :
-  CircularArray<T>(mic_prototype, radius,
-                   StereoAngles(base_angle, center_angle),
-                   position, handedness) {}
+            const Angle center_angle) :
+  CircularArray<T>(position, orientation,
+                   mic_prototype, radius,
+                   StereoAngles(base_angle, center_angle)) {}
   
 private:
   static std::vector<Angle> StereoAngles(const Angle base_angle,

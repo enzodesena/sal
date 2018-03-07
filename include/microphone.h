@@ -47,8 +47,7 @@ public:
    is a single plane wave incoming) do this automatically.
    */
   Microphone(mcl::Point position,
-             mcl::Quaternion orientation = mcl::Quaternion::Identity(),
-             mcl::Handedness handedness = mcl::right_handed);
+             mcl::Quaternion orientation = mcl::Quaternion::Identity());
   
   /** Returns current position of the microphone */
   mcl::Point position() const;

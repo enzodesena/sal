@@ -16,9 +16,9 @@ using mcl::Quaternion;
 
 namespace sal {
   
-Microphone::Microphone(Point position, mcl::Quaternion orientation,
-                       mcl::Handedness handedness) :
-  position_(position), orientation_(orientation), handedness_(handedness) {}
+Microphone::Microphone(Point position, mcl::Quaternion orientation) :
+  position_(position), orientation_(orientation),
+  handedness_(mcl::right_handed) {}
   
 
 Point Microphone::position() const { return position_; }
