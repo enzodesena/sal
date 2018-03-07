@@ -88,6 +88,8 @@
 		57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
 		57C2C7AA1B1739A600B7F58C /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
 		57C94CC7204F853400471213 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
+		57C94CD2204F86E200471213 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
+		57C94CD4204F86E500471213 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
 		57CE72BA1C9583FC00149808 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57CE72BC1C95844A00149808 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57CE72CA1C95AD4900149808 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C61C95AD2E00149808 /* CoreAudio.framework */; };
@@ -629,6 +631,7 @@
 				57C2C7AA1B1739A600B7F58C /* binauralmic.cpp in Sources */,
 				57444D2B1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
 				5722E2431C9ECB49007FCF59 /* delayfilter.cpp in Sources */,
+				57C94CD4204F86E500471213 /* salutilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,6 +682,7 @@
 				5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */,
 				57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */,
 				57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
+				57C94CD2204F86E200471213 /* salutilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
