@@ -18,8 +18,16 @@ namespace sal {
 std::vector<Angle> UniformAngles(const UInt num_microphones,
                                  const Angle first_element_heading);
 
+
+  
 template<class T, class V>
-std::vector<V> ConvertToType(std::vector<T> vector);
+std::vector<V> ConvertToType(std::vector<T> vector) {
+  std::vector<V> new_vector(vector.size());
+  for (mcl::UInt i=0; i<vector.size(); ++i) {
+    new_vector[i] = (V) vector[i];
+  }
+  return new_vector;
+}
 
 } // namespace sal
 
