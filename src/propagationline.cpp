@@ -22,10 +22,8 @@ namespace sal {
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance,
-                                 const UInt update_length,
-                                 const bool air_filters_active,
-                                 const UInt air_filters_update_step,
-                                 const bool fractional_delays) :
+                                 const bool fractional_delays,
+                                 const bool air_filters_active) :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
         sampling_frequency_(sampling_frequency),
@@ -34,11 +32,9 @@ PropagationLine::PropagationLine(const Length distance,
         previous_gain_(ComputeGain(distance, sampling_frequency)),
         updating_gain_(false),
         current_latency_(ComputeLatency(distance, sampling_frequency)),
-        update_length_(update_length),
         updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
-        air_filters_update_step_(air_filters_update_step),
         fractional_delays_(fractional_delays) {
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
@@ -49,28 +45,27 @@ Time PropagationLine::latency() const { return delay_filter_.latency(); }
 
 Sample PropagationLine::gain() const { return current_gain_; }
 
-void PropagationLine::set_gain(Sample gain) {
+void PropagationLine::set_gain(Sample gain, const sal::Time ramp_time) {
   updating_gain_ = true;
   previous_gain_ = current_gain_;
   target_gain_ = gain;
   gain_update_counter_ = 0;
+  gain_update_length_ = round(ramp_time*sampling_frequency_);
 }
   
-void PropagationLine::set_update_length(const sal::UInt update_step) {
-  update_length_ = update_step;
-}
-  
-void PropagationLine::set_distance(const Length distance) {
+void PropagationLine::set_distance(const Length distance,
+                                   const sal::Time ramp_time) {
   updating_latency_ = true;
   previous_latency_ = current_latency_;
   target_latency_ = ComputeLatency(distance, sampling_frequency_);
   latency_update_counter_ = 0;
+  latency_update_length_ = round(ramp_time*sampling_frequency_);
   
-  set_gain(ComputeGain(distance, sampling_frequency_));
+  set_gain(ComputeGain(distance, sampling_frequency_), ramp_time);
   
   if (air_filters_active_) {
     air_filter_.set_impulse_response(GetAirFilter(distance),
-                                     air_filters_update_step_);
+                                     round(ramp_time*sampling_frequency_));
   }
 }
 
@@ -88,12 +83,12 @@ void PropagationLine::Reset() {
   
 void PropagationLine::Update() {
   if (updating_gain_) {
-    if (gain_update_counter_ == update_length_) {
+    if (gain_update_counter_ == gain_update_length_) {
       current_gain_ = target_gain_;
       updating_gain_ = false;
     } else {
       current_gain_ = mcl::LinearInterpolation(0.0, previous_gain_,
-                                               update_length_, target_gain_,
+                                               gain_update_length_, target_gain_,
                                                gain_update_counter_);
     }
     gain_update_counter_++;
@@ -101,12 +96,12 @@ void PropagationLine::Update() {
   
   if (updating_latency_) {
     
-    if (latency_update_counter_ == update_length_) {
+    if (latency_update_counter_ == latency_update_length_) {
       current_latency_ = target_latency_;
       updating_latency_ = false;
     } else {
       current_latency_ = mcl::LinearInterpolation(0.0, previous_latency_,
-                                                  update_length_, target_latency_,
+                                                  latency_update_length_, target_latency_,
                                                   latency_update_counter_);
     }
     

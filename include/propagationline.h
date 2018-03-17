@@ -38,11 +38,9 @@ public:
    */
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
-                  const sal::Length max_distance = 100,
-                  const UInt update_length = 0,
-                  const bool air_filters_active = false,
-                  const UInt air_filters_update_step = 1,
-                  const bool fractional_delays = false);
+                  const sal::Length max_distance = 100.0,
+                  const bool fractional_delays = false,
+                  const bool air_filters_active = false);
   
   /** Returns the multiplicative gain of the propagation line */
   sal::Sample gain() const;
@@ -50,7 +48,7 @@ public:
   sal::Length distance() const;
   
   /** This overwrites the 1/r rule attenuation. */
-  void set_gain(const sal::Sample);
+  void set_gain(const sal::Sample, const sal::Time ramp_time = 0.0);
   
   void set_air_filters_active(const bool);
   
@@ -68,9 +66,8 @@ public:
    since if the distance is changed too fast, sound distortion will be
    observed.
    */
-  void set_distance(const sal::Length distance);
-  
-  void set_update_length(const sal::UInt update_length);
+  void set_distance(const sal::Length distance,
+                    const sal::Time ramp_time = 0.0);
   
   /** Returns the latency of the propagation line */
   sal::Time latency() const;
@@ -93,26 +90,25 @@ private:
   static std::vector<sal::Sample> GetAirFilter(sal::Length distance);
   
   sal::Time sampling_frequency_;
-  sal::UInt update_length_;
   
   bool updating_gain_;
   sal::Sample current_gain_;
   sal::Sample previous_gain_;
   sal::Sample target_gain_;
   sal::Int gain_update_counter_;
-  
+  sal::UInt gain_update_length_;
   
   bool updating_latency_;
   sal::Time previous_latency_;
   sal::Time target_latency_;
   sal::Time current_latency_;
   sal::Int latency_update_counter_;
+  sal::UInt latency_update_length_;
   
   bool fractional_delays_;
   
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
-  sal::UInt air_filters_update_step_;
 };
 
 } // namespace sal

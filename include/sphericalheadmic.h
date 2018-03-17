@@ -31,7 +31,7 @@ public:
                    const Length sphere_radius,
                    const UInt ir_length,
                    const Time sampling_frequency,
-                   const UInt update_length = 1);
+                   const UInt update_length = 0);
   
   static bool Test();
   

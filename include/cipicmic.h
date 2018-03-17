@@ -40,7 +40,7 @@ public:
    */
   CipicMic(mcl::Point position, mcl::Quaternion orientation,
            const std::string directory, const CipicDataType data_type,
-           const UInt update_length = 1);
+           const UInt update_length = 0);
   
   static bool Test();
   
