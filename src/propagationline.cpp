@@ -88,27 +88,30 @@ void PropagationLine::Update() {
       updating_gain_ = false;
     } else {
       current_gain_ = mcl::LinearInterpolation(0.0, previous_gain_,
-                                               gain_update_length_, target_gain_,
-                                               gain_update_counter_);
+                                               gain_update_length_+1, target_gain_,
+                                               gain_update_counter_+1);
     }
     gain_update_counter_++;
   }
   
   if (updating_latency_) {
-    
     if (latency_update_counter_ == latency_update_length_) {
       current_latency_ = target_latency_;
       updating_latency_ = false;
     } else {
+      // To understand the +1 below, think of the example where latency_update_length_ is 2
+      // Indeed, by adding 1, you ensure that the update starts from the first sample.
       current_latency_ = mcl::LinearInterpolation(0.0, previous_latency_,
-                                                  latency_update_length_, target_latency_,
-                                                  latency_update_counter_);
+                                                  latency_update_length_+1, target_latency_,
+                                                  latency_update_counter_+1);
     }
     
     latency_update_counter_ ++;
     delay_filter_.set_latency(round(current_latency_));
   }
 }
+  
+sal::Time PropagationLine::current_latency() const { return current_latency_; }
   
 void PropagationLine::Tick() {
   Update();

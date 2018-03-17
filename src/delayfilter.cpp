@@ -17,8 +17,7 @@ using sal::UInt;
 
 namespace sal {
 
-DelayFilter::DelayFilter(UInt latency, UInt max_latency) :
-latency_(latency) {
+DelayFilter::DelayFilter(UInt latency, UInt max_latency) : latency_(NAN) {
   UInt integer_latency = latency;
   if (max_latency < integer_latency) { max_latency = integer_latency; }
   max_latency_ = max_latency;
@@ -62,6 +61,7 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
 }
 
 void DelayFilter::set_latency(const UInt latency) {
+  if (latency_ == latency) { return; }
   latency_ = latency;
   if (latency > max_latency_) {
     throw(mcl::Exception("Trying to set a delay filter latency larger than "

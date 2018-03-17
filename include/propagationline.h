@@ -50,6 +50,8 @@ public:
   /** This overwrites the 1/r rule attenuation. */
   void set_gain(const sal::Sample, const sal::Time ramp_time = 0.0);
   
+  sal::Time current_latency() const;
+  
   void set_air_filters_active(const bool);
   
   void Write(const sal::Sample &sample);
