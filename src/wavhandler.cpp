@@ -98,7 +98,7 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   SF_INFO output_file_info;
   output_file_info.frames = (int) file_length;
   output_file_info.channels = (int) num_channels;
-  output_file_info.samplerate = sampling_frequency;
+  output_file_info.samplerate = (int) sampling_frequency;
   output_file_info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
   
   assert(sf_format_check (&output_file_info));

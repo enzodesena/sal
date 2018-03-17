@@ -27,8 +27,8 @@ public:
    latency has to be given to allocate the maximum amount of memory of the circular
    memory.
    */
-  DelayFilter(const sal::UInt latency,
-              sal::UInt max_latency);
+  DelayFilter(const sal::Int latency,
+              sal::Int max_latency);
   
   ~DelayFilter() { delete[] start_; }
   
@@ -59,10 +59,10 @@ public:
   
   
   /**
-   Resets the latency of the filter. This can introduce artifacts if the latency is
-   updated too fast.
+   Resets the latency of the filter. This can introduce artifacts if the
+   latency is updated too fast.
    */
-  void set_latency(const sal::UInt);
+  void set_latency(const sal::Int);
   
   /** Returns the current latency of the delay filter */
   sal::UInt latency() const;
@@ -81,8 +81,8 @@ protected:
   sal::Sample* end_;
   sal::Sample* write_index_;
   sal::Sample* read_index_;
-  sal::UInt latency_;
-  sal::UInt max_latency_;
+  sal::Int latency_;
+  sal::Int max_latency_;
 };
   
 } // namespace sal

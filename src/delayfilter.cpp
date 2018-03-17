@@ -14,12 +14,16 @@
 
 using sal::Sample;
 using sal::UInt;
+using mcl::Exception;
 
 namespace sal {
 
-DelayFilter::DelayFilter(UInt latency, UInt max_latency) : latency_(NAN) {
-  UInt integer_latency = latency;
-  if (max_latency < integer_latency) { max_latency = integer_latency; }
+DelayFilter::DelayFilter(Int latency, Int max_latency) : latency_(-1) {
+  if (latency < 0) { throw(Exception("The latency cannot be nagative.")); }
+  if (max_latency < 0) {
+    throw(Exception("The maximum latency cannot be nagative."));
+  }
+  
   max_latency_ = max_latency;
   start_ = new Sample[max_latency+1];
   end_ = start_+max_latency;
@@ -60,7 +64,7 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
   return *this;
 }
 
-void DelayFilter::set_latency(const UInt latency) {
+void DelayFilter::set_latency(const Int latency) {
   if (latency_ == latency) { return; }
   latency_ = latency;
   if (latency > max_latency_) {

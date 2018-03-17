@@ -81,8 +81,8 @@ std::vector<std::vector<Signal> >
         file.seekg (k, std::ios::beg);
         short big_endian;
         file.read ((char*)&big_endian, sizeof(short));
-        short little_endian(((big_endian & 0xff)<<8) |
-                            ((big_endian & 0xff00)>>8));
+        short little_endian = (short) (((big_endian & 0xff)<<8) |
+                                      ((big_endian & 0xff00)>>8));
         data[k/2] = little_endian;
       }
       

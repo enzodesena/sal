@@ -12,10 +12,12 @@
 #include "salconstants.h"
 #include "delayfilter.h"
 #include "matrixop.h"
+#include "exception.h"
 
 using sal::Length;
 using sal::Time;
 using sal::Sample;
+using mcl::Exception;
 
 namespace sal {
 
@@ -36,6 +38,13 @@ PropagationLine::PropagationLine(const Length distance,
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
         fractional_delays_(fractional_delays) {
+  if (sampling_frequency < 0) {
+    throw(Exception("The sampling frequency cannot be negative."));
+  }
+  if (max_distance < 0) {
+    throw(Exception("The maximum distance cannot be negative."));
+  }
+          
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
@@ -46,26 +55,28 @@ Time PropagationLine::latency() const { return delay_filter_.latency(); }
 Sample PropagationLine::gain() const { return current_gain_; }
 
 void PropagationLine::set_gain(Sample gain, const sal::Time ramp_time) {
+  if (ramp_time < 0) { throw(Exception("Ramp time cannot be negative.")); }
   updating_gain_ = true;
   previous_gain_ = current_gain_;
   target_gain_ = gain;
   gain_update_counter_ = 0;
-  gain_update_length_ = round(ramp_time*sampling_frequency_);
+  gain_update_length_ = (int) round(ramp_time*sampling_frequency_);
 }
   
 void PropagationLine::set_distance(const Length distance,
                                    const sal::Time ramp_time) {
+  if (ramp_time < 0) { throw(Exception("Ramp time cannot be negative.")); }
   updating_latency_ = true;
   previous_latency_ = current_latency_;
   target_latency_ = ComputeLatency(distance, sampling_frequency_);
   latency_update_counter_ = 0;
-  latency_update_length_ = round(ramp_time*sampling_frequency_);
+  latency_update_length_ = (int) round(ramp_time*sampling_frequency_);
   
   set_gain(ComputeGain(distance, sampling_frequency_), ramp_time);
   
   if (air_filters_active_) {
     air_filter_.set_impulse_response(GetAirFilter(distance),
-                                     round(ramp_time*sampling_frequency_));
+                                     (int) round(ramp_time*sampling_frequency_));
   }
 }
 
@@ -107,7 +118,7 @@ void PropagationLine::Update() {
     }
     
     latency_update_counter_ ++;
-    delay_filter_.set_latency(round(current_latency_));
+    delay_filter_.set_latency((int) round(current_latency_));
   }
 }
   
@@ -120,14 +131,17 @@ void PropagationLine::Tick() {
   
 Time PropagationLine::ComputeLatency(const Length distance, 
                                      const Time sampling_frequency) {
+  if (distance < 0) { throw(Exception("Distance cannot be negative.")); }
   return (Time) (distance / SOUND_SPEED * sampling_frequency);
 }
 
 Sample PropagationLine::ComputeGain(const Length distance, 
                                     const Time sampling_frequency) {
+  // If you do the math looking into ComputeLatency, you'll realise that
+  // the result of these operations is (SPEED_OF_SOUND/Fs_) / (distance).
   // Please observe that this gain is actually 1/r rule. In fact, 1/r rule has to be
-  // normalized to some value. In this software we choose 
-  // (SPEED_OF_SOUND/Fs_) / (distance) i.e. the minimum distance.
+  // normalized to some value, which in this case we choose to be the
+  // minimum possible distance in the software.
   return (Sample) 1.0 / ComputeLatency(distance, sampling_frequency);
 }
   
