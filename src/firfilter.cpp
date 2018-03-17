@@ -25,7 +25,8 @@ std::vector<Real> FirFilter::impulse_response() {
 FirFilter::FirFilter() :
         impulse_response_(mcl::UnaryVector<float>(1.0)),
         coefficients_(mcl::UnaryVector<float>(1.0)),
-        counter_(0), length_(1), update_index_(0), update_length_(1) {
+        counter_(0), length_(1), update_index_(0), update_length_(0),
+        updating_(false) {
   delay_line_.assign(1, 0.0);
 }
   
@@ -33,13 +34,14 @@ FirFilter::FirFilter(std::vector<Real> B) :
         impulse_response_(std::vector<float>(B.begin(), B.end())),
         coefficients_(std::vector<float>(B.begin(), B.end())),
         counter_(B.size()-1), length_(B.size()),
-        update_index_(0), update_length_(1) {
+        update_index_(0), update_length_(0),
+        updating_(false)  {
   delay_line_.assign(length_, 0.0);
 }
   
 
 Real FirFilter::Filter(Real input_sample) {
-  if (update_index_ > 0) { UpdateCoefficients(); }
+  if (updating_) { UpdateCoefficients(); }
   
   delay_line_[counter_] = (float) input_sample;
   float result = 0.0f;
@@ -107,7 +109,7 @@ Real FirFilter::Filter(Real input_sample) {
 }
   
 std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
-  if (update_index_ > 0) { UpdateCoefficients(); }
+  if (updating_) { UpdateCoefficients(); }
 #ifdef OSXIOS
   if (input.size() < length_) { return FilterSequential(input); }
   
@@ -166,12 +168,13 @@ void FirFilter::Reset() {
   
 void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
                                      const Int update_length) {
-  if (mcl::IsEqual(std::vector<float>(impulse_response.begin(), impulse_response.end()),
+  if (mcl::IsEqual(std::vector<float>(impulse_response.begin(),
+                                      impulse_response.end()),
                    impulse_response_)) {
     return;
   }
   
-  if (update_index_ == 0) { // If there is no update being carried out
+  if (! updating_) { // If there is no update being carried out
     impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_,
                                                 impulse_response.size());
   } else {
@@ -179,8 +182,9 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
                                                 impulse_response.size());
   }
   
+  updating_ = true;
   update_length_ = update_length;
-  update_index_ = update_length;
+  update_index_ = 0;
   impulse_response_ = std::vector<float>(impulse_response.begin(),
                                          impulse_response.end());
   
@@ -194,14 +198,18 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
 }
 
 void FirFilter::UpdateCoefficients() {
-  assert(update_index_>0);
+  assert(update_index_>=0 & update_index_<=update_length_);
   assert(impulse_response_.size() == impulse_response_old_.size());
-  float weight_old = ((float)(update_index_-1))/
-                      (float)update_length_;
-  float weight_new = 1.0f-weight_old;
+  float weight_new = ((float)update_index_+1)/((float)update_length_+1);
+  float weight_old = 1.0f-weight_new;
   coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
                            mcl::Multiply(impulse_response_old_, weight_old));
-  update_index_--;
+  
+  if (update_index_ == update_length_) {
+    updating_ = false;
+  } else {
+    update_index_++;
+  }
 }
   
 } // namespace mcl

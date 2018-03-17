@@ -45,12 +45,17 @@ public:
   /** 
    Updates the filter coefficients. You can set how long it takes to 
    update the coefficients (using linear interpolation between old and new
-   impulse response), and whether to jump an update if another update
-   was previously in progress (to avoid artifacts, but risking leaving
-   the filter in an old state).
+   impulse response). If an update is requested while another is already in
+   progress, the new interpolation will pick up from where the old one left
+   off to avoid audible artifacts.
+   @param[in] update_length How many calls to Filter it takes to update the
+   coefficients. A value of 0 means that the update is instantaneous. A call
+   to Filter(const Real input) counts one, just like
+   Filter(const std::vector<Real>& input). This is due to the fact that it
+   is difficult to update a filter when using DSP-enabled batch filtering. 
    */
   void set_impulse_response(const std::vector<Real>& impulse_response,
-                            const Int update_length = 1);
+                            const Int update_length = 0);
   
   /** Resets the state of the filter */
   void Reset();
@@ -80,6 +85,8 @@ private:
   std::vector<float> impulse_response_old_;
   Int update_index_;
   Int update_length_;
+  
+  bool updating_;
   
   std::vector<float> coefficients_;
   std::vector<float> delay_line_;
