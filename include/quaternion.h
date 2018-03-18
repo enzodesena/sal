@@ -36,6 +36,13 @@ enum EulerOrder {
   xyz, yzx, zxy, xzy, zyx, yxz
 };
   
+struct AxAng {
+  Real x;
+  Real y;
+  Real z;
+  Real angle;
+};
+  
 /** Quaternion class */
 class MCL_API Quaternion {
 public:
@@ -66,6 +73,8 @@ private:
 /** Returns a Quaternion using a given axis-angle representation */
 MCL_API Quaternion AxAng2Quat(const Real x, const Real y, const Real z,
                               const Real angle);
+  
+MCL_API AxAng Quat2AxAng(const Quaternion& q);
   
 MCL_API Quaternion QuatConj(const Quaternion& q);
 

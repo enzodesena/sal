@@ -8,6 +8,8 @@
 
 #include "quaternion.h"
 #include "exception.h"
+#include "elementaryop.h"
+#include "comparisonop.h"
 
 
 namespace mcl {
@@ -51,6 +53,32 @@ Quaternion AxAng2Quat(const Real x, const Real y, const Real z,
                     sin(angle/2.0)*y/norm,
                     sin(angle/2.0)*z/norm);
 }
+  
+AxAng Quat2AxAng(const Quaternion& input) {
+  AxAng output;
+  
+  Quaternion q = (Norm(input)>1.0) ? Quaternion(input.w()/Norm(input),
+                                                input.x()/Norm(input),
+                                                input.y()/Norm(input),
+                                                input.z()/Norm(input)) : input;
+  
+  Point q_r(q.x(), q.y(), q.z());
+  if (IsEqual(q_r.norm(), 0.0)) {
+    output.x = 0;
+    output.y = 0;
+    output.z = 1;
+    output.angle = 0;
+    return output;
+  }
+  
+  Real n_inv = 1.0/Sqrt(1.0-q.w()*q.w());
+  output.angle = 2.0*acos(q.w());
+  output.x = q.x()*n_inv;
+  output.y = q.y()*n_inv;
+  output.z = q.z()*n_inv;
+  return output;
+}
+  
   
 Quaternion Eul2Quat(const Real angle_1, const Real angle_2, const Real angle_3,
                     const EulerOrder order) {
