@@ -26,6 +26,26 @@
 		57595410174123EE0015B9A0 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
 		5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
+		5778112420600683004B9C6F /* ism.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778111E20600683004B9C6F /* ism.cpp */; };
+		5778112520600683004B9C6F /* ism.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778111E20600683004B9C6F /* ism.cpp */; };
+		5778112620600683004B9C6F /* ism.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778111E20600683004B9C6F /* ism.cpp */; };
+		5778112720600683004B9C6F /* tdbem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112020600683004B9C6F /* tdbem.cpp */; };
+		5778112820600683004B9C6F /* tdbem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112020600683004B9C6F /* tdbem.cpp */; };
+		5778112920600683004B9C6F /* tdbem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112020600683004B9C6F /* tdbem.cpp */; };
+		5778112A20600683004B9C6F /* cuboidroom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112120600683004B9C6F /* cuboidroom.cpp */; };
+		5778112B20600683004B9C6F /* cuboidroom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112120600683004B9C6F /* cuboidroom.cpp */; };
+		5778112C20600683004B9C6F /* cuboidroom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112120600683004B9C6F /* cuboidroom.cpp */; };
+		5778112D20600683004B9C6F /* riranalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112220600683004B9C6F /* riranalysis.cpp */; };
+		5778112E20600683004B9C6F /* riranalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112220600683004B9C6F /* riranalysis.cpp */; };
+		5778112F20600683004B9C6F /* riranalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112220600683004B9C6F /* riranalysis.cpp */; };
+		5778113020600683004B9C6F /* fdtd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112320600683004B9C6F /* fdtd.cpp */; };
+		5778113120600683004B9C6F /* fdtd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112320600683004B9C6F /* fdtd.cpp */; };
+		5778113220600683004B9C6F /* fdtd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112320600683004B9C6F /* fdtd.cpp */; };
+		5778113E20600B5B004B9C6F /* riranalysis_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113920600B5A004B9C6F /* riranalysis_test.cpp */; };
+		5778113F20600B5B004B9C6F /* ism_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113A20600B5A004B9C6F /* ism_test.cpp */; };
+		5778114020600B5B004B9C6F /* cuboidroom_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */; };
+		5778114120600B5B004B9C6F /* tdbem_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113C20600B5A004B9C6F /* tdbem_test.cpp */; };
+		5778114220600B5B004B9C6F /* fdtd_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113D20600B5A004B9C6F /* fdtd_test.cpp */; };
 		57895F6216304F18002C962B /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		57895F7C16305460002C962B /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		578A62261D89346200233890 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
@@ -237,6 +257,22 @@
 		574D27FB161B3ECF00F4A0B1 /* decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = decoder.h; path = include/decoder.h; sourceTree = "<group>"; };
 		574D27FC161B3F5900F4A0B1 /* stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stream.h; path = include/stream.h; sourceTree = "<group>"; };
 		5768D6231639CFFB00F557B8 /* wavhandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavhandler.cpp; path = src/wavhandler.cpp; sourceTree = "<group>"; };
+		5778111E20600683004B9C6F /* ism.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ism.cpp; path = src/ism.cpp; sourceTree = "<group>"; };
+		5778112020600683004B9C6F /* tdbem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tdbem.cpp; path = src/tdbem.cpp; sourceTree = "<group>"; };
+		5778112120600683004B9C6F /* cuboidroom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cuboidroom.cpp; path = src/cuboidroom.cpp; sourceTree = "<group>"; };
+		5778112220600683004B9C6F /* riranalysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = riranalysis.cpp; path = src/riranalysis.cpp; sourceTree = "<group>"; };
+		5778112320600683004B9C6F /* fdtd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fdtd.cpp; path = src/fdtd.cpp; sourceTree = "<group>"; };
+		57781133206006D1004B9C6F /* room.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = room.h; path = include/room.h; sourceTree = "<group>"; };
+		57781134206006D1004B9C6F /* cuboidroom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cuboidroom.h; path = include/cuboidroom.h; sourceTree = "<group>"; };
+		57781135206006D1004B9C6F /* fdtd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = fdtd.h; path = include/fdtd.h; sourceTree = "<group>"; };
+		57781136206006D1004B9C6F /* ism.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ism.h; path = include/ism.h; sourceTree = "<group>"; };
+		57781137206006D1004B9C6F /* tdbem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tdbem.h; path = include/tdbem.h; sourceTree = "<group>"; };
+		57781138206006D1004B9C6F /* riranalysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = riranalysis.h; path = include/riranalysis.h; sourceTree = "<group>"; };
+		5778113920600B5A004B9C6F /* riranalysis_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = riranalysis_test.cpp; path = src/test/riranalysis_test.cpp; sourceTree = "<group>"; };
+		5778113A20600B5A004B9C6F /* ism_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ism_test.cpp; path = src/test/ism_test.cpp; sourceTree = "<group>"; };
+		5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cuboidroom_test.cpp; path = src/test/cuboidroom_test.cpp; sourceTree = "<group>"; };
+		5778113C20600B5A004B9C6F /* tdbem_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tdbem_test.cpp; path = src/test/tdbem_test.cpp; sourceTree = "<group>"; };
+		5778113D20600B5A004B9C6F /* fdtd_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fdtd_test.cpp; path = src/test/fdtd_test.cpp; sourceTree = "<group>"; };
 		578751E715AE01590008761C /* sphericalmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalmic.cpp; path = src/sphericalmic.cpp; sourceTree = "<group>"; };
 		57895F5B16304F00002C962B /* propagationline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = propagationline.h; path = include/propagationline.h; sourceTree = "<group>"; };
 		57895F5D16304F18002C962B /* propagationline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = propagationline.cpp; path = src/propagationline.cpp; sourceTree = "<group>"; };
@@ -385,6 +421,11 @@
 			isa = PBXGroup;
 			children = (
 				57A156E41593460E00AA6445 /* bin */,
+				5778112120600683004B9C6F /* cuboidroom.cpp */,
+				5778112320600683004B9C6F /* fdtd.cpp */,
+				5778111E20600683004B9C6F /* ism.cpp */,
+				5778112220600683004B9C6F /* riranalysis.cpp */,
+				5778112020600683004B9C6F /* tdbem.cpp */,
 				57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */,
 				57C2C7A71B1739A600B7F58C /* binauralmic.cpp */,
 				5722E2401C9ECB49007FCF59 /* delayfilter.cpp */,
@@ -406,6 +447,12 @@
 		57A156D8159345E700AA6445 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				57781134206006D1004B9C6F /* cuboidroom.h */,
+				57781135206006D1004B9C6F /* fdtd.h */,
+				57781136206006D1004B9C6F /* ism.h */,
+				57781138206006D1004B9C6F /* riranalysis.h */,
+				57781133206006D1004B9C6F /* room.h */,
+				57781137206006D1004B9C6F /* tdbem.h */,
 				57F7B3BF15D3DE7000D4E64A /* ambisonics.h */,
 				57061AD815B6D6CE000CD42D /* array.h */,
 				57C2C7A51B17399000B7F58C /* binauralmic.h */,
@@ -443,6 +490,11 @@
 		57A156E51593462300AA6445 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */,
+				5778113D20600B5A004B9C6F /* fdtd_test.cpp */,
+				5778113A20600B5A004B9C6F /* ism_test.cpp */,
+				5778113920600B5A004B9C6F /* riranalysis_test.cpp */,
+				5778113C20600B5A004B9C6F /* tdbem_test.cpp */,
 				57B4EF861CD81AB400134991 /* ambisonics_test.cpp */,
 				57B4EF871CD81AB400134991 /* cipicmic_test.cpp */,
 				57B4EF881CD81AB400134991 /* delayfilter_test.cpp */,
@@ -708,16 +760,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				572A878319C0712500F62F8F /* ambisonics.cpp in Sources */,
+				5778112F20600683004B9C6F /* riranalysis.cpp in Sources */,
 				572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */,
 				572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */,
 				572A878719C0712500F62F8F /* kemarmic.cpp in Sources */,
 				572A878819C0712500F62F8F /* microphone.cpp in Sources */,
+				5778112C20600683004B9C6F /* cuboidroom.cpp in Sources */,
+				5778112620600683004B9C6F /* ism.cpp in Sources */,
 				572A878D19C0712500F62F8F /* propagationline.cpp in Sources */,
 				572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */,
 				578A62281D89346200233890 /* source.cpp in Sources */,
 				57C2C7AA1B1739A600B7F58C /* binauralmic.cpp in Sources */,
 				57444D2B1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
 				5722E2431C9ECB49007FCF59 /* delayfilter.cpp in Sources */,
+				5778113220600683004B9C6F /* fdtd.cpp in Sources */,
+				5778112920600683004B9C6F /* tdbem.cpp in Sources */,
 				57C94CD4204F86E500471213 /* salutilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -731,12 +788,14 @@
 				57444D2D1B17B08E00EC31F4 /* cipicmic.cpp in Sources */,
 				57444D261B17671E00EC31F4 /* binauralmic.cpp in Sources */,
 				57B4EF941CD81AB400134991 /* delayfilter_test.cpp in Sources */,
+				5778114220600B5B004B9C6F /* fdtd_test.cpp in Sources */,
 				57C94CC7204F853400471213 /* salutilities.cpp in Sources */,
 				57A79245163E9C360063863D /* freefieldsimulation.cpp in Sources */,
 				57B4EF851CD81A8D00134991 /* sal_tests.cpp in Sources */,
 				57895F7C16305460002C962B /* propagationline.cpp in Sources */,
 				57EB0A06162C2C0A001CB5E3 /* ambisonics.cpp in Sources */,
 				57B4EF9D1CD81AB400134991 /* stream_test.cpp in Sources */,
+				5778113E20600B5B004B9C6F /* riranalysis_test.cpp in Sources */,
 				57E74B4F16274A2900C8BDDB /* kemarmic.cpp in Sources */,
 				57E74B5016274A2900C8BDDB /* sphericalmic.cpp in Sources */,
 				57E74B5216274A2900C8BDDB /* microphone.cpp in Sources */,
@@ -747,7 +806,15 @@
 				57B4EF971CD81AB400134991 /* microphone_test.cpp in Sources */,
 				5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */,
 				578A62261D89346200233890 /* source.cpp in Sources */,
+				5778114020600B5B004B9C6F /* cuboidroom_test.cpp in Sources */,
 				57B4EF921CD81AB400134991 /* ambisonics_test.cpp in Sources */,
+				5778114120600B5B004B9C6F /* tdbem_test.cpp in Sources */,
+				5778113F20600B5B004B9C6F /* ism_test.cpp in Sources */,
+				5778112A20600683004B9C6F /* cuboidroom.cpp in Sources */,
+				5778113020600683004B9C6F /* fdtd.cpp in Sources */,
+				5778112720600683004B9C6F /* tdbem.cpp in Sources */,
+				5778112420600683004B9C6F /* ism.cpp in Sources */,
+				5778112D20600683004B9C6F /* riranalysis.cpp in Sources */,
 				57B4EF961CD81AB400134991 /* kemarmic_test.cpp in Sources */,
 				57B4EF951CD81AB400134991 /* freefieldsimulation_test.cpp in Sources */,
 			);
@@ -759,14 +826,19 @@
 			files = (
 				57CE72BC1C95844A00149808 /* pawrapper.cpp in Sources */,
 				5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */,
+				5778112B20600683004B9C6F /* cuboidroom.cpp in Sources */,
 				57595410174123EE0015B9A0 /* freefieldsimulation.cpp in Sources */,
 				57D7EB601625CE5A00771188 /* sphericalmic.cpp in Sources */,
 				578A62271D89346200233890 /* source.cpp in Sources */,
 				57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */,
 				57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */,
 				5722E2421C9ECB49007FCF59 /* delayfilter.cpp in Sources */,
+				5778112E20600683004B9C6F /* riranalysis.cpp in Sources */,
 				57895F6216304F18002C962B /* propagationline.cpp in Sources */,
+				5778113120600683004B9C6F /* fdtd.cpp in Sources */,
+				5778112520600683004B9C6F /* ism.cpp in Sources */,
 				5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */,
+				5778112820600683004B9C6F /* tdbem.cpp in Sources */,
 				57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */,
 				57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
 				57C94CD2204F86E200471213 /* salutilities.cpp in Sources */,

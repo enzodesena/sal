@@ -71,9 +71,9 @@ int main(int argc, char * const argv[]) {
     }
   }
   
-  original_sine.Save("/Users/enzodesena/sine_original.txt", 5);
-  doppler_sine.Save("/Users/enzodesena/sine_doppler.txt", 5);
-  current_latency.Save("/Users/enzodesena/current_latency.txt", 10);
+  original_sine.Save("/Users/enzodesena/repos/sal/src/bin/sine_original.txt", 5);
+  doppler_sine.Save("/Users/enzodesena/repos/sal/src/bin/sine_doppler.txt", 5);
+  current_latency.Save("/Users/enzodesena/repos/sal/src/bin/current_latency.txt", 10);
   
   return 0;
 }

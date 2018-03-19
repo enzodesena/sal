@@ -19,6 +19,11 @@
 #include "freefieldsimulation.h"
 #include "wavhandler.h"
 #include "cipicmic.h"
+#include "ism.h"
+#include "cuboidroom.h"
+#include "fdtd.h"
+#include "riranalysis.h"
+#include "tdbem.h"
 
 int main(int argc, char * const argv[]) {
   try {
@@ -33,6 +38,15 @@ int main(int argc, char * const argv[]) {
     sal::DelayFilter::Test();
     sal::PropagationLine::Test();
     sal::FreeFieldSim::Test();
+    sal::CuboidRoom::Test();
+    sal::Ism::Test();
+    sal::RirAnalysis::Test();
+    
+    sal::Fdtd::Test();
+    sal::TdBem::Test();
+    
+    std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
+    
   } catch (mcl::Exception& exception) {
     std::cout<<"An exception occurred: "<<exception.what()<<std::endl;
   }

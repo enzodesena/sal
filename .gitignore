@@ -1,5 +1,7 @@
 # Mac OS X
+*sine_*
 *.DS_Store
+*current_latency.txt
 
 # Xcode
 *.pbxuser
