@@ -83,6 +83,13 @@ public:
     }
     position_ = position;
   }
+  
+  virtual void set_orientation(const mcl::Quaternion& orientation) {
+    for (UInt i=0; i<microphones_.size(); ++i) {
+      microphones_[i]->set_orientation(orientation);
+    }
+    orientation_ = orientation;
+  }
 
   /**
    Returns true if the array is coincident. If there are 0 or 1 microphones
@@ -157,16 +164,34 @@ public:
                 const Length radius,
                 const std::vector<Angle>& angles) :
         MicrophoneArray<T>(position, orientation,
-                           mic_prototype, angles.size()) {
+                           mic_prototype, angles.size()),
+      radius_(radius), angles_(angles) {
+    set_orientation(orientation);
+  }
+  
+  virtual void set_orientation(const mcl::Quaternion& orientation) {
+    mcl::Point position(this->position());
+    std::vector<mcl::Point> positions = GetPositions(position,
+                                                     radius_,
+                                                     angles_);
     
-    std::vector<mcl::Point> positions = GetPositions(position, radius, angles);
-          
-    for (mcl::UInt i=0; i<angles.size(); ++i) {
-      this->microphones_[i]->set_position(positions[i]);
-      this->microphones_[i]->set_orientation(mcl::AxAng2Quat(0, 0, 1, angles[i]));
+    mcl::AxAng axang = mcl::Quat2AxAng(orientation);
+    for (mcl::UInt i=0; i<angles_.size(); ++i) {
+      mcl::Quaternion q = mcl::AxAng2Quat(axang.x, axang.y, axang.z,
+                                          axang.angle + angles_[i]);
+      
+      mcl::Point relative_position = mcl::QuatRotate(orientation,
+                                                     mcl::Subtract(positions[i],
+                                                                   position));
+      this->microphones_[i]->set_position(mcl::Sum(relative_position, position));
+      this->microphones_[i]->set_orientation(q);
     }
   }
+  
 private:
+  Length radius_;
+  std::vector<Angle> angles_;
+  
   static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
                                               const Length radius,
                                               const std::vector<Angle>& angles) {

@@ -20,7 +20,7 @@ using mcl::Point;
 bool MicrophoneArrayTest() {
   
   const UInt num_microphones(5);
-  const Length array_radius(1.0);
+  const Length array_radius(0.5);
   
   
   TrigMic mic_prototype(Point(0,0,0),
@@ -39,16 +39,57 @@ bool MicrophoneArrayTest() {
   
   assert(microphones_a.size() == num_microphones);
 
-  assert(microphones_a[0]->position().Equals(Point(1.0,0.0,1.5)));
-  assert(microphones_a[1]->position().Equals(Point(1.0*cos(2.0*PI/5.0),
-                                                   1.0*sin(2.0*PI/5.0),
+  assert(microphones_a[0]->position().Equals(Point(array_radius,0.0,1.5)));
+  assert(microphones_a[1]->position().Equals(Point(array_radius*cos(2.0*PI/5.0),
+                                                   array_radius*sin(2.0*PI/5.0),
                                                    1.5)));
+  
+  assert(mcl::IsEqual(microphones_a[0]->orientation(), mcl::AxAng2Quat(0,0,1,0)));
+  assert(mcl::IsEqual(microphones_a[1]->orientation(), mcl::AxAng2Quat(0,0,1,2.0*PI/5.0)));
 
   microphone_array_a.set_position(Point(1.0,0.0,1.5));
-  assert(microphones_a[0]->position().Equals(Point(2.0,0.0,1.5)));
-  assert(microphones_a[1]->position().Equals(Point(1.0+1.0*cos(2.0*PI/5.0),
-                                                   0.0+1.0*sin(2.0*PI/5.0),
+  assert(microphones_a[0]->position().Equals(Point(1.0+array_radius,0.0,1.5)));
+  assert(microphones_a[1]->position().Equals(Point(1.0+array_radius*cos(2.0*PI/5.0),
+                                                   0.0+array_radius*sin(2.0*PI/5.0),
                                                    1.5)));
+  
+  CircularArray<TrigMic> microphone_array_b(Point(0.0,0.0,0.0),
+                                            mcl::AxAng2Quat(0, 0, 1, PI/2.0),
+                                            mic_prototype,
+                                            array_radius,
+                                            UniformAngles(num_microphones, 0));
+  
+  std::vector<TrigMic*> microphones_b = microphone_array_b.microphones();
+  
+  assert(mcl::IsEqual(microphones_b[0]->orientation(),
+                      mcl::AxAng2Quat(0,0,1,PI/2.0)));
+  assert(mcl::IsEqual(microphones_b[1]->orientation(),
+                      mcl::AxAng2Quat(0,0,1,PI/2.0+2.0*PI/5.0)));
+  
+  assert(microphones_b[0]->position().Equals(Point(0.0,array_radius,0.0)));
+  assert(microphones_b[1]->position().Equals(Point(array_radius*cos(2.0*PI/5.0+PI/2.0),
+                                                   array_radius*sin(2.0*PI/5.0+PI/2.0),
+                                                   0.0)));
+  
+  
+  CircularArray<TrigMic> microphone_array_c(Point(0.0,1.0,-1.0),
+                                            mcl::AxAng2Quat(0, 0, 1, PI/2.0),
+                                            mic_prototype,
+                                            array_radius,
+                                            UniformAngles(num_microphones, 0));
+  
+  std::vector<TrigMic*> microphones_c = microphone_array_c.microphones();
+  
+  assert(mcl::IsEqual(microphones_c[0]->orientation(),
+                      mcl::AxAng2Quat(0,0,1,PI/2.0)));
+  assert(mcl::IsEqual(microphones_c[1]->orientation(),
+                      mcl::AxAng2Quat(0,0,1,PI/2.0+2.0*PI/5.0)));
+  
+  assert(microphones_c[0]->position().Equals(Point(0.0,1.0+array_radius,-1.0)));
+  assert(microphones_c[1]->position().Equals(Point(array_radius*cos(2.0*PI/5.0+PI/2.0),
+                                                   1.0+array_radius*sin(2.0*PI/5.0+PI/2.0),
+                                                   -1.0)));
+  
   
   StereoMic<TrigMic> stereo_mic(Point(0.2,0.0,1.5),
                                 mcl::Quaternion::Identity(),
