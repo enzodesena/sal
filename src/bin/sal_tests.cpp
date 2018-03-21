@@ -42,11 +42,10 @@ int main(int argc, char * const argv[]) {
     sal::Ism::Test();
     sal::RirAnalysis::Test();
     
-    sal::Fdtd::Test();
-    sal::TdBem::Test();
-    
     std::cout<<"All tests succeded!\n";
     
+    sal::Fdtd::Test();
+    sal::TdBem::Test();
     std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
     
   } catch (mcl::Exception& exception) {

@@ -34,6 +34,8 @@ PropagationLine::PropagationLine(const Length distance,
         previous_gain_(ComputeGain(distance, sampling_frequency)),
         updating_gain_(false),
         current_latency_(ComputeLatency(distance, sampling_frequency)),
+        previous_latency_(ComputeLatency(distance, sampling_frequency)),
+        target_latency_(ComputeLatency(distance, sampling_frequency)),
         updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
@@ -62,13 +64,15 @@ void PropagationLine::set_gain(Sample gain, const sal::Time ramp_time) {
   gain_update_counter_ = 0;
   gain_update_length_ = (int) round(ramp_time*sampling_frequency_);
 }
-  
+
 void PropagationLine::set_distance(const Length distance,
                                    const sal::Time ramp_time) {
   if (ramp_time < 0) { throw(Exception("Ramp time cannot be negative.")); }
+  Time target_latency(ComputeLatency(distance, sampling_frequency_));
+  if (mcl::IsEqual(target_latency_, target_latency)) { return; }
   updating_latency_ = true;
   previous_latency_ = current_latency_;
-  target_latency_ = ComputeLatency(distance, sampling_frequency_);
+  target_latency_ = target_latency;
   latency_update_counter_ = 0;
   latency_update_length_ = (int) round(ramp_time*sampling_frequency_);
   
