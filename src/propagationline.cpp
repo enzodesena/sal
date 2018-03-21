@@ -24,7 +24,7 @@ namespace sal {
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance,
-                                 const bool fractional_delays,
+                                 const InterpolationType interpolation_type,
                                  const bool air_filters_active) :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
@@ -37,7 +37,7 @@ PropagationLine::PropagationLine(const Length distance,
         updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
-        fractional_delays_(fractional_delays) {
+        interpolation_type_(interpolation_type) {
   if (sampling_frequency < 0) {
     throw(Exception("The sampling frequency cannot be negative."));
   }
@@ -158,10 +158,21 @@ void PropagationLine::Write(const sal::Sample &sample) {
 }
   
 sal::Sample PropagationLine::Read() const {
-  if (fractional_delays_) {
-    return delay_filter_.FractionalRead(current_latency_)*current_gain_;
-  } else {
-    return delay_filter_.Read() * current_gain_;
+  switch (interpolation_type_) {
+    case rounding: {
+      return delay_filter_.Read() * current_gain_;
+    }
+    case linear: {
+      return delay_filter_.FractionalRead(current_latency_)*current_gain_;
+    }
+    case linear_dynamic: {
+      return (updating_latency_) ?
+          delay_filter_.FractionalRead(current_latency_)*current_gain_ :
+          delay_filter_.Read() * current_gain_;
+    }
+    default:
+      assert(false);
+      exit(1);
   }
 }
   

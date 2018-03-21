@@ -89,7 +89,8 @@ bool PropagationLine::Test() {
   assert(IsEqual(prop_line_a.Read(),1.0*attenuation));
   
   //
-  PropagationLine prop_line_b = PropagationLine((Length) 5.0 * SOUND_SPEED/FS, FS, 100.0, 10);
+  PropagationLine prop_line_b = PropagationLine((Length) 5.0 * SOUND_SPEED/FS,
+                                                FS, 100.0, rounding);
   attenuation = 1.0 / 5.0;
   
   prop_line_b.Tick();

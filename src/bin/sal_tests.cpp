@@ -45,13 +45,14 @@ int main(int argc, char * const argv[]) {
     sal::Fdtd::Test();
     sal::TdBem::Test();
     
+    std::cout<<"All tests succeded!\n";
+    
     std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
     
   } catch (mcl::Exception& exception) {
     std::cout<<"An exception occurred: "<<exception.what()<<std::endl;
   }
   
-  std::cout<<"All tests succeded!\n";
     
   return 0;
 }

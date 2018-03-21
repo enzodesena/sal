@@ -18,6 +18,18 @@
 #include "salconstants.h"
 
 namespace sal {
+  
+enum InterpolationType {
+  rounding, /** Rounds the latency to the nearest integer. */
+  linear, /** Applies fractional delays with linear interpolation.
+            It reduces audible clicks, but can cause low-pass
+            effect. */
+  linear_dynamic /** Only applies fractional delays with linear
+                   interpolation when the propagation line
+                   is changing length. It reduces audible clicks
+                   while not adding low-pass effects. */
+};
+  
 /** This describes a simple propagation line. It has one input and one output
  and models the delay between them. It also models attenuation between these
  two points, following 1/r rule. This object can also handle changes in the
@@ -39,7 +51,7 @@ public:
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100.0,
-                  const bool fractional_delays = false,
+                  const InterpolationType = rounding,
                   const bool air_filters_active = false);
   
   /** Returns the multiplicative gain of the propagation line */
@@ -107,7 +119,7 @@ private:
   sal::Int latency_update_counter_;
   sal::UInt latency_update_length_;
   
-  bool fractional_delays_;
+  InterpolationType interpolation_type_;
   
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
