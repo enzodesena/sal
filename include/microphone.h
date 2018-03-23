@@ -114,7 +114,7 @@ public:
   /*
    This is true when the microphone can handle frames.
    */
-  virtual bool IsFrameEnabled() { return false; }
+  virtual bool IsFrameEnabled() { return true; }
   
   virtual bool IsOmni() { return false; }
   
@@ -157,11 +157,11 @@ private:
    */
   virtual void RecordPlaneWaveRelative(const Sample& sample,
                                        const mcl::Point& point,
-                                       const UInt& wave_id) = 0;
+                                       const UInt& wave_id);
   
   virtual void RecordPlaneWaveRelative(const Signal& signal,
                                        const mcl::Point& point,
-                                       const UInt& wave_id);
+                                       const UInt& wave_id) = 0;
   
 protected:
   mcl::Point position_;

@@ -18,23 +18,6 @@ using mcl::Quaternion;
 
 namespace sal {
 
-void BinauralMic::RecordPlaneWaveRelative(const Sample& sample,
-                                          const Point& point,
-                                          const UInt& wave_id) {
-  if (!bypass_) {
-    CreateInstanceIfNotExist(wave_id);
-    
-    stream_.left_stream()->Add(instances_left_.at(wave_id).
-                               RecordPlaneWaveRelative(sample, point));
-    
-    stream_.right_stream()->Add(instances_right_.at(wave_id).
-                                RecordPlaneWaveRelative(sample, point));
-  } else {
-    stream_.left_stream()->Add(sample);
-    stream_.right_stream()->Add(sample);
-  }
-}
-
 void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
                                           const Point& point,
                                           const UInt& wave_id) {
@@ -97,12 +80,6 @@ BinauralMic::BinauralMic(const Point& position,
 
 
 // Use signals with 44100 sampling frequency!!!
-Sample BinauralMicInstance::RecordPlaneWaveRelative(const Sample& sample,
-                                                    const Point& point) {
-  UpdateFilter(point);
-  return filter_.Filter(sample);
-}
-
 Signal BinauralMicInstance::RecordPlaneWaveRelative(const Signal& signal,
                                                     const Point& point) {
   UpdateFilter(point);

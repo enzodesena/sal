@@ -15,10 +15,11 @@
 #include "matrixop.h"
 
 using mcl::Point;
+using mcl::Multiply;
 
 namespace sal {
 
-void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,
+void AmbisonicsMic::RecordPlaneWaveRelative(const Signal& signal,
                                             const Point& point,
                                             const UInt& wave_id) {
   // Precompute for performance gain
@@ -29,12 +30,14 @@ void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,
     case sqrt2: {
       
       // Zero-th component
-      stream_.Add(0, 0, 1.0*sample);
+      stream_.Add(0, 0, signal);
       
       for (UInt i=1; i<=order_; ++i) {
         // TODO: add 3D components
-        stream_.Add(i, 1, sqrt_2*cos(((Angle) i)*phi)*sample);
-        stream_.Add(i, -1, sqrt_2*sin(((Angle) i)*phi)*sample);
+        stream_.Add(i, 1,
+                    Multiply<sal::Sample>(signal, sqrt_2*cos(((Angle) i)*phi)));
+        stream_.Add(i, -1,
+                    Multiply<sal::Sample>(signal, sqrt_2*sin(((Angle) i)*phi)));
       }
       break;
     }
@@ -56,8 +59,10 @@ void AmbisonicsMic::RecordPlaneWaveRelative(const Sample& sample,
               sqrt_4pi *
               mcl::SphericalHarmonic(degree_n, mcl::Abs(order_m), theta, phi);
           
-          stream_.Add(degree_n, -order_m, mcl::ImagPart(spherical_harmonic)*sample);
-          stream_.Add(degree_n, order_m, mcl::RealPart(spherical_harmonic)*sample);
+          stream_.Add(degree_n, -order_m,
+                      Multiply<sal::Sample>(signal, mcl::ImagPart(spherical_harmonic)));
+          stream_.Add(degree_n, order_m,
+                      Multiply<sal::Sample>(signal, mcl::RealPart(spherical_harmonic)));
           // The order of the two statements above is not random, since the case
           // order_m equals zero should give back the non-zero cosine term,
           // i.e. the one corresponding to the real part.

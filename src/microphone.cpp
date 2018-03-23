@@ -66,14 +66,10 @@ void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
 }
 
 
-/**
- This method has to be defined by the microphone. This is not a pure virtual
- method because it is optional to implement this.
- */
-void Microphone::RecordPlaneWaveRelative(const Signal& signal,
+void Microphone::RecordPlaneWaveRelative(const Sample& sample,
                                          const Point& point,
                                          const UInt& wave_id) {
-  throw_line("");
+  RecordPlaneWaveRelative(mcl::UnaryVector(sample), point, wave_id);
 }
 
 

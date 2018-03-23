@@ -44,14 +44,9 @@ public:
           gain_(gain) {}
   
   virtual bool IsCoincident() { return true; }
-  virtual bool IsFrameEnabled() { return true; }
   
   virtual ~GainMic() {}
 private:
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point&,
-                                       const UInt&) {
-    stream_.Add(sample*gain_);
-  }
   
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point&,
                                        const UInt&) {
@@ -98,17 +93,10 @@ private:
     return directivity;
   }
   
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
-                                       const UInt& wave_id) {
-    RecordPlaneWaveRelative(mcl::UnaryVector(sample), point, wave_id);
-  }
-  
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
                                        const UInt&) {
     stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
   }
-  
-  virtual bool IsFrameEnabled() { return true; }
   
   std::vector<Sample> coefficients_;
 };
@@ -147,9 +135,9 @@ private:
     return directivity;
   }
   
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
                                        const UInt&) {
-    stream_.Add(sample*GetDirectivity(point));
+    stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
   }
   
   sal::Sample base_angle_;

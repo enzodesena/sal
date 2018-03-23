@@ -131,14 +131,16 @@ private:
    This does not include attenuation nor delay due to propagation. These
    are in fact included in the `FreeFieldSimulation` in SAL.
    */
-  virtual void RecordPlaneWaveRelative(const Sample& sample,
+  virtual void RecordPlaneWaveRelative(const Signal& signal,
                                        const mcl::Point& point,
                                        const UInt& wave_id) {
     UInt num_microphones(microphones_.size());
     for (UInt i=0; i<num_microphones; ++i) {
       // Each microphone will push in his own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
-      ((MonoMic*) microphones_[i])->RecordPlaneWaveRelative(sample, point, wave_id);
+      ((MonoMic*) microphones_[i])->RecordPlaneWaveRelative(signal,
+                                                            point,
+                                                            wave_id);
     }
   }
   

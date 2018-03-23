@@ -251,6 +251,11 @@ public:
     streams_[degree][order].Add(sample);
   }
   
+  void Add(UInt degree, Int order, Signal signal) {
+    InitOrderDegree(degree, order);
+    streams_[degree][order].Add(signal);
+  }
+  
   void Tick() {
     for(auto outer_iter = streams_.begin();
         outer_iter != streams_.end();

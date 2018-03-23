@@ -58,7 +58,7 @@ public:
   
   static bool Test();
 private:
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
                                        const UInt& wave_id);
   
   const UInt order_;

@@ -62,10 +62,6 @@ private:
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) = 0;
   
-  
-  virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
-                                       const UInt& wave_id);
-  
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
                                        const UInt& wave_id);
   
@@ -100,8 +96,6 @@ private:
   ear_(ear),
   update_length_(update_length),
   reference_orientation_(reference_orientation) {}
-  
-  Sample RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point);
   
   Signal RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point);
   
