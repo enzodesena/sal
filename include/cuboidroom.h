@@ -127,6 +127,7 @@ public:
   virtual bool IsPointInRoom(const mcl::Point& point,
                              const sal::Length precision = VERY_SMALL) const;
   
+  virtual ~CuboidRoom() {}
 private:
   
   // Dimensions of the cuboid

@@ -289,7 +289,7 @@ public:
     return streams_.at(degree).at(order).IsEmpty();
   }
   
-  virtual bool IsEmpty() const {
+  bool IsEmpty() const {
     // TODO: think this through
     assert(IsDefined(0, 0));
     // The order 0 and degree 0 always has to be defined.

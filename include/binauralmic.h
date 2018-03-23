@@ -94,16 +94,18 @@ class BinauralMicInstance {
 private:
   BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::UInt update_length,
                       const HeadRefOrientation reference_orientation = standard) :
+  previous_point_(mcl::Point(NAN, NAN, NAN)),
   base_mic_(base_mic),
   filter_(mcl::FirFilter::GainFilter(1.0)),
   ear_(ear),
-  previous_point_(mcl::Point(NAN, NAN, NAN)),
   update_length_(update_length),
   reference_orientation_(reference_orientation) {}
   
   Sample RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point);
   
   Signal RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point);
+  
+  void UpdateFilter(const mcl::Point& point);
   
   /**
    The microphone object is called for every sample, while the position
@@ -113,16 +115,10 @@ private:
    */
   mcl::Point previous_point_;
   
-  void UpdateFilter(const mcl::Point& point);
-  
-  mcl::FirFilter filter_;
-  
-  Ear ear_;
-  
   BinauralMic* base_mic_;
-  
+  mcl::FirFilter filter_;
+  Ear ear_;
   sal::UInt update_length_;
-  
   HeadRefOrientation reference_orientation_;
   
   friend class BinauralMic;
