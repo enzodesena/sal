@@ -99,9 +99,16 @@ private:
   }
   
   virtual void RecordPlaneWaveRelative(const Sample& sample, const mcl::Point& point,
-                                       const UInt&) {
-    stream_.Add(sample*GetDirectivity(point));
+                                       const UInt& wave_id) {
+    RecordPlaneWaveRelative(mcl::UnaryVector(sample), point, wave_id);
   }
+  
+  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
+                                       const UInt&) {
+    stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
+  }
+  
+  virtual bool IsFrameEnabled() { return true; }
   
   std::vector<Sample> coefficients_;
 };
