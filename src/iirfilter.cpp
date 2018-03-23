@@ -121,16 +121,6 @@ void IirFilter::Reset() {
 }
 
 
-std::vector<Real> IirFilter::Filter(const std::vector<Real>& input) {
-  
-  std::vector<Real> output(input.size());
-  
-  for (UInt i=0; i<input.size(); ++i) {
-    output[i] = this->Filter(input[i]);
-  }
-  
-  return output;
-}
 
 IirFilter IirFilter::GainFilter(Real gain) {
   std::vector<Real> B(1);

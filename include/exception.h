@@ -21,14 +21,14 @@ public:
   Exception(const char* message,
             const char* exception_code = "UNDEFINED",
             int exception_id = 0) :
-  message_(message), exception_id_(exception_id),
-  exception_code_(exception_code) {}
+      message_(message), exception_code_(exception_code),
+      exception_id_(exception_id) {}
   
   Exception(const std::string message,
             const std::string exception_code = "UNDEFINED",
             int exception_id = 0) :
-      message_(message.c_str()), exception_id_(exception_id),
-      exception_code_(exception_code.c_str()) {}
+      message_(message.c_str()), exception_code_(exception_code.c_str()),
+      exception_id_(exception_id) {}
   
   virtual const char* what() const throw() {
     return message_;

@@ -10,6 +10,7 @@
 #define MCL_IIRFILTER_H
 
 #include "digitalfilter.h"
+#include "exception.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)
@@ -64,8 +65,7 @@ public:
    */
   virtual Real Filter(const Real input);
   
-  /** Returns the output of the filter for an input signal equal to `input`. */
-  virtual std::vector<Real> Filter(const std::vector<Real>& input);
+  using DigitalFilter::Filter;
   
   /** 
    Updates the filter coefficients. May cause articafts if the coefficients are
@@ -156,7 +156,36 @@ public:
                                         const Real starting_frequency,
                                         const Real sampling_frequency);
 };
-    
+  
+/** Implements a first-order IIR low-pass filter with a given decay constant. */
+class MCL_API SmoothingFilter : public DigitalFilter {
+public:
+  /**
+   @param[in] decay_samples number of samples after which the value decreases
+   to 1/e of the original value. */
+  SmoothingFilter(Real decay_samples) {
+    if (decay_samples<0) {
+      throw(Exception("Decay constant cannot be negative "));
+    }
+    a1_ = exp(-1.0/decay_samples);
+    b0_ = 1.0 - a1_;
+    output_ = 0.0;
+  }
+  
+  virtual Real Filter(const Real input) {
+    output_ = b0_*input + a1_*output_;
+    return output_;
+  }
+  
+  using DigitalFilter::Filter;
+  
+  virtual void Reset() { output_ = 0.0; }
+  
+private:
+  Real output_;
+  Real b0_;
+  Real a1_;
+};
   
 } // namespace mcl
 
