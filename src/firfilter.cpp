@@ -33,10 +33,10 @@ FirFilter::FirFilter() :
   
 FirFilter::FirFilter(std::vector<Real> B) :
         impulse_response_(std::vector<float>(B.begin(), B.end())),
+        impulse_response_old_(std::vector<float>(B.begin(), B.end())),
+        update_index_(0), update_length_(0), updating_(false),
         coefficients_(std::vector<float>(B.begin(), B.end())),
-        counter_(B.size()-1), length_(B.size()),
-        update_index_(0), update_length_(0),
-        updating_(false)  {
+        counter_(B.size()-1), length_(B.size()) {
   delay_line_.assign(length_, 0.0);
 }
   
