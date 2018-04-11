@@ -16,11 +16,10 @@ bool CuboidRoom::Test() {
   using mcl::IsEqual;
   using mcl::IirFilter;
   using mcl::Point;
-  using sal::Length;
-  using sal::Sample;
-  using sal::Time;
+  using mcl::GainFilter;
+  using mcl::IdenticalFilter;
   
-  IirFilter filter = IirFilter::IdenticalFilter();
+  IirFilter filter = IdenticalFilter();
   CuboidRoom room(1.0, 1.0, 1.0, filter);
   
   assert(IsEqual(room.max_distance(), sqrt(3.0)));
@@ -86,7 +85,7 @@ bool CuboidRoom::Test() {
   Length edge = 3.0;
   Sample beta = 0.6;
   Sample alpha = 1.0 - pow(beta,2.0);
-  CuboidRoom room_sabine(edge, edge, edge, IirFilter::GainFilter(beta));
+  CuboidRoom room_sabine(edge, edge, edge, GainFilter(beta));
   
   Time rt60 = 0.161*edge/(6.0*alpha);
   assert(mcl::IsEqual(room_sabine.SabineRt60(), rt60));
@@ -100,22 +99,22 @@ bool CuboidRoom::Test() {
   std::vector<mcl::IirFilter> wall_filters;
   Sample alpha_x1 = 0.1;
   Sample beta_x1 = sqrt(1.0-alpha_x1);
-  wall_filters.push_back(mcl::IirFilter::GainFilter(beta_x1));
+  wall_filters.push_back(GainFilter(beta_x1));
   Sample alpha_x2 = 0.2;
   Sample beta_x2 = sqrt(1.0-alpha_x2);
-  wall_filters.push_back(mcl::IirFilter::GainFilter(beta_x2));
+  wall_filters.push_back(GainFilter(beta_x2));
   Sample alpha_y1 = 0.3;
   Sample beta_y1 = sqrt(1.0-alpha_y1);
-  wall_filters.push_back(mcl::IirFilter::GainFilter(beta_y1));
+  wall_filters.push_back(GainFilter(beta_y1));
   Sample alpha_y2 = 0.4;
   Sample beta_y2 = sqrt(1.0-alpha_y2);
-  wall_filters.push_back(mcl::IirFilter::GainFilter(beta_y2));
+  wall_filters.push_back(GainFilter(beta_y2));
   Sample alpha_z1 = 0.5;
   Sample beta_z1 = sqrt(1.0-alpha_z1);
-  wall_filters.push_back(mcl::IirFilter::GainFilter(beta_z1));
+  wall_filters.push_back(GainFilter(beta_z1));
   Sample alpha_z2 = 0.6;
   Sample beta_z2 = sqrt(1.0-alpha_z2);
-  wall_filters.push_back(mcl::IirFilter::GainFilter(beta_z2));
+  wall_filters.push_back(GainFilter(beta_z2));
   
   CuboidRoom room_sabine_2(room_x, room_y, room_z, wall_filters);
   

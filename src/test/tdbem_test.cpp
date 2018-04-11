@@ -40,8 +40,7 @@ bool TdBem::Test() {
   Source source(Point(1.23, 2.556, 0.856),
                 input);
   
-  CuboidRoom room(5.23, 4.86, 2.1,
-                  mcl::IirFilter::GainFilter(1));
+  CuboidRoom room(5.23, 4.86, 2.1, mcl::GainFilter(1));
   
   
   clock_t launch=clock();

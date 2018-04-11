@@ -26,6 +26,7 @@ using mcl::Point;
 using sal::Sample;
 using sal::OmniMic;
 using sal::Length;
+using mcl::GainFilter;
 
 
 
@@ -53,7 +54,7 @@ bool Ism::Test() {
   CuboidRoom room(5.0*SOUND_SPEED/sampling_frequency,
                   5.0*SOUND_SPEED/sampling_frequency,
                   1000.0*SOUND_SPEED/sampling_frequency,
-                  mcl::IirFilter::GainFilter(1.0));
+                  GainFilter(1.0));
   
   Ism ism(&room, &source, &mic, none, 9, sampling_frequency);
   ism.Run();
@@ -115,12 +116,12 @@ bool Ism::Test() {
   
   
   std::vector<mcl::IirFilter> iir_filters;
-  iir_filters.push_back(mcl::IirFilter::GainFilter(beta_x1));
-  iir_filters.push_back(mcl::IirFilter::GainFilter(beta_x2));
-  iir_filters.push_back(mcl::IirFilter::GainFilter(beta_y1));
-  iir_filters.push_back(mcl::IirFilter::GainFilter(beta_y2));
-  iir_filters.push_back(mcl::IirFilter::GainFilter(0.0));
-  iir_filters.push_back(mcl::IirFilter::GainFilter(0.0));
+  iir_filters.push_back(GainFilter(beta_x1));
+  iir_filters.push_back(GainFilter(beta_x2));
+  iir_filters.push_back(GainFilter(beta_y1));
+  iir_filters.push_back(GainFilter(beta_y2));
+  iir_filters.push_back(GainFilter(0.0));
+  iir_filters.push_back(GainFilter(0.0));
   
   CuboidRoom room_absorption(5.0*SOUND_SPEED/sampling_frequency,
                              5.0*SOUND_SPEED/sampling_frequency,
