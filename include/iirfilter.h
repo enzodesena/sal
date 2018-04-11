@@ -122,11 +122,6 @@ public:
   
   /** Resets the state of the filter */
   virtual void Reset();
-  
-  static IirFilterBank OctaveFilterBank(const UInt order,
-                                        const UInt num_bands,
-                                        const Real starting_frequency,
-                                        const Real sampling_frequency);
 };
   
 /** Implements a first-order IIR low-pass filter with a given decay constant. */

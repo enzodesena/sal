@@ -240,22 +240,6 @@ void IirFilterBank::Reset() {
   }
 }
 
-IirFilterBank IirFilterBank::OctaveFilterBank(const UInt order,
-                                              const UInt num_bands,
-                                              const Real starting_frequency,
-                                              const Real sampling_frequency) {
-  Real current_frequency = starting_frequency;
-  std::vector<IirFilter> filters;
-  for (UInt i=0; i<num_bands; ++i) {
-    
-    mcl::IirFilter
-    octave_filter = mcl::OctaveFilter(order, current_frequency,
-                                      sampling_frequency);
-    filters.push_back(octave_filter);
-    current_frequency = current_frequency * 2.0;
-  }
-  return IirFilterBank(filters);
-}
   
 } // namespace mcl
 

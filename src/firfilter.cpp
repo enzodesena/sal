@@ -24,9 +24,10 @@ std::vector<Real> FirFilter::impulse_response() {
   
 FirFilter::FirFilter() :
         impulse_response_(mcl::UnaryVector<float>(1.0)),
+        impulse_response_old_(mcl::UnaryVector<float>(1.0)),
+        update_index_(0), update_length_(0), updating_(false),
         coefficients_(mcl::UnaryVector<float>(1.0)),
-        counter_(0), length_(1), update_index_(0), update_length_(0),
-        updating_(false) {
+        counter_(0), length_(1) {
   delay_line_.assign(1, 0.0);
 }
   

@@ -219,8 +219,8 @@ public:
 private:
   // Outer is rows, inner is columns. Hence, data_[0] is the first column.
   std::vector<std::vector<T> > data_;
-  UInt num_columns_;
   UInt num_rows_;
+  UInt num_columns_;
 };
   
 template<class T>

@@ -30,6 +30,11 @@ IirFilter OctaveFilter(const UInt order,
                        const Real center_frequency,
                        const Real sampling_frequency);
   
+IirFilterBank OctaveFilterBank(const UInt order,
+                               const UInt num_bands,
+                               const Real starting_frequency,
+                               const Real sampling_frequency);
+  
 std::vector<double> ComputeLP(int FilterOrder);
 std::vector<double> ComputeHP(int FilterOrder);
 std::vector<double> TrinomialMultiply(int FilterOrder,
