@@ -163,6 +163,47 @@ MCL_API bool IntersectionPlaneLineExists(const Point& line_point,
   
 bool PointTest();
   
+/** */
+class PointSpeedLimiter {
+public:
+  PointSpeedLimiter(Point position, Real max_speed) :
+  max_speed_(max_speed),
+  next_position_(position), current_position_(position) {}
+  
+  void SetNextPosition(mcl::Point next_position) {
+    next_position_ = next_position;
+  }
+  
+  void Tick(Real time_elapsed_since_last_tick) {
+    // Detect if the point is moving faster than `max_speed`
+    Real speed = Distance(next_position_, current_position_) /
+          time_elapsed_since_last_tick;
+    
+    if (speed <= max_speed_) {
+      current_position_ = next_position_;
+    } else {
+      current_position_ = PointOnLine(current_position_,
+                                      next_position_,
+                                      max_speed_*time_elapsed_since_last_tick);
+    }
+  }
+  
+  bool HasReachedPosition() {
+    return current_position_.Equals(next_position_);
+  }
+  
+  mcl::Point position() {
+    return current_position_;
+  }
+  
+private:
+  /** This is the (un-throttled position) */
+  Point next_position_;
+  Point current_position_;
+  Real max_speed_;
+};
+  
+  
 } // namespace mcl
 
 #endif

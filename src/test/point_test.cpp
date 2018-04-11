@@ -213,6 +213,30 @@ bool PointTest() {
                                        Point(2,0,0), Point(0,0,1)));
   
   
+  PointSpeedLimiter speed_limiter(Point(0,0,0), 1);
+  speed_limiter.SetNextPosition(Point(1,0,0));
+  speed_limiter.Tick(1.0);
+  assert(IsEqual(speed_limiter.position(), Point(1,0,0)));
+  assert(speed_limiter.HasReachedPosition());
+  
+  speed_limiter.SetNextPosition(Point(2,0,0));
+  speed_limiter.Tick(1.0);
+  assert(IsEqual(speed_limiter.position(), Point(2,0,0)));
+  assert(speed_limiter.HasReachedPosition());
+  
+  speed_limiter.SetNextPosition(Point(0,0,0));
+  speed_limiter.Tick(2.0);
+  assert(IsEqual(speed_limiter.position(), Point(0,0,0)));
+  assert(speed_limiter.HasReachedPosition());
+  
+  speed_limiter.SetNextPosition(Point(2,0,0));
+  speed_limiter.Tick(1.0);
+  assert(IsEqual(speed_limiter.position(), Point(1,0,0)));
+  assert(!speed_limiter.HasReachedPosition());
+  speed_limiter.Tick(1.0);
+  assert(IsEqual(speed_limiter.position(), Point(2,0,0)));
+  assert(speed_limiter.HasReachedPosition());
+  
   return true;
 }
 
