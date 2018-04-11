@@ -122,7 +122,7 @@ void IirFilter::Reset() {
 
 
 
-IirFilter IirFilter::GainFilter(Real gain) {
+IirFilter GainFilter(Real gain) {
   std::vector<Real> B(1);
   std::vector<Real> A(1);
   B[0] = 1.0*gain;
@@ -131,9 +131,9 @@ IirFilter IirFilter::GainFilter(Real gain) {
   return IirFilter(B,A);
 }
 
-IirFilter IirFilter::IdenticalFilter() { return IirFilter::GainFilter(1.0); }
+IirFilter IdenticalFilter() { return GainFilter(1.0); }
 
-IirFilter IirFilter::WallFilter(WallType wall_type, Real sampling_frequency) {
+IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
   // TODO: implement for frequencies other than 44100
   if (! IsEqual(sampling_frequency, 44100)) { throw_line(""); }
   
@@ -191,7 +191,7 @@ IirFilter IirFilter::WallFilter(WallType wall_type, Real sampling_frequency) {
   return IirFilter(B,A);
 }
 
-IirFilter IirFilter::PinkifierFilter() {
+IirFilter PinkifierFilter() {
   std::vector<Real> poles(5);
   poles[0] = 0.9986823;
   poles[1] = 0.9914651;
@@ -209,35 +209,6 @@ IirFilter IirFilter::PinkifierFilter() {
   std::vector<Complex> den = Poly(poles);
   
   return IirFilter(RealPart(num),RealPart(den));
-}
-  
-IirFilter IirFilter::Butter(const UInt order,
-                            const Real w_low, const Real w_high) {
-  std::vector<double> DenC = ComputeDenCoeffs((int) order, w_low, w_high);
-  std::vector<double> NumC = ComputeNumCoeffs((int) order, w_low, w_high, DenC);
-  std::vector<Real> denominator(DenC.begin(), DenC.end());
-  std::vector<Real> numerator(NumC.begin(), NumC.end());
-  
-  return IirFilter(numerator, denominator);
-}
-
-IirFilter IirFilter::OctaveFilter(const UInt order,
-                                  const Real center_frequency,
-                                  const Real sampling_frequency) {
-  // beta = pi/2/N/sin(pi/2/N);
-  Real beta = PI/2.0/((Real) order)/sin(PI/2.0/((Real) order));
-  
-  // alpha = (1+sqrt(1+8*beta^2))/4/beta;
-  Real alpha = (1.0+sqrt(1.0+8.0*pow(beta,2.0)))/4.0/beta;
-  
-  // W1 = Fc/(Fs/2)*sqrt(1/2)/alpha;
-  Real W1 = center_frequency/(sampling_frequency/2.0)*sqrt(1.0/2.0)/alpha;
-  
-  // W2 = Fc/(Fs/2)*sqrt(2)*alpha;
-  Real W2 = center_frequency/(sampling_frequency/2.0)*sqrt(2.0)*alpha;
-  
-  // [B,A] = butter(N,[W1,W2]);
-  return IirFilter::Butter(order, W1, W2);
 }
 
   
@@ -278,9 +249,8 @@ IirFilterBank IirFilterBank::OctaveFilterBank(const UInt order,
   for (UInt i=0; i<num_bands; ++i) {
     
     mcl::IirFilter
-    octave_filter = mcl::IirFilter::OctaveFilter(order,
-                                                 current_frequency,
-                                                 sampling_frequency);
+    octave_filter = mcl::OctaveFilter(order, current_frequency,
+                                      sampling_frequency);
     filters.push_back(octave_filter);
     current_frequency = current_frequency * 2.0;
   }

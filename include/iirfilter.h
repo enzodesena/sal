@@ -73,34 +73,6 @@ public:
    */
   void UpdateFilter(std::vector<Real> B,std::vector<Real> A);
   
-  /** Constructs a filter for which output==input always. */
-  static IirFilter IdenticalFilter();
-  
-  /** Constructs a filter for which output==gain*input always. */
-  static IirFilter GainFilter(const Real gain);
-  
-  /** 
-   Construncts a bandpass butterworth filter. Equivalent to Matlab's
-   butter(order, [w_low, w_high])
-   */
-  static IirFilter Butter(const UInt order,
-                          const Real w_low, const Real w_high);
-  
-  /** Constructs a digital octave filter with given center frequency 
-   and sampling frequency.
-   */
-  static IirFilter OctaveFilter(const UInt order,
-                                const Real center_frequency,
-                                const Real sampling_frequency);
-  
-  /** 
-   Get wall filters of type wall_type and for FS given by sampling_frequency
-   */
-  static IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
-  
-  /** Returns a pinkifier filter */
-  static IirFilter PinkifierFilter();
-  
   /** Returns the forward coefficients */
   std::vector<Real> B() const;
   
@@ -186,6 +158,20 @@ private:
   Real b0_;
   Real a1_;
 };
+  
+/** Constructs a filter for which output==input always. */
+IirFilter IdenticalFilter();
+
+/** Constructs a filter for which output==gain*input always. */
+IirFilter GainFilter(const Real gain);
+
+/**
+ Get wall filters of type wall_type and for FS given by sampling_frequency
+ */
+IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
+
+/** Returns a pinkifier filter */
+IirFilter PinkifierFilter();
   
 } // namespace mcl
 

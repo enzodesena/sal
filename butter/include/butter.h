@@ -12,9 +12,23 @@
 #define MCL_BUTTER_H
 
 #include <vector>
+#include "iirfilter.h"
 
 namespace mcl {
   
+/**
+ Construncts a bandpass butterworth filter. Equivalent to Matlab's
+ butter(order, [w_low, w_high])
+ */
+IirFilter Butter(const UInt order,
+                 const Real w_low, const Real w_high);
+
+/** Constructs a digital octave filter with given center frequency
+ and sampling frequency.
+ */
+IirFilter OctaveFilter(const UInt order,
+                       const Real center_frequency,
+                       const Real sampling_frequency);
   
 std::vector<double> ComputeLP(int FilterOrder);
 std::vector<double> ComputeHP(int FilterOrder);
