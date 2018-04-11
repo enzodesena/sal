@@ -105,24 +105,25 @@ private:
   
   sal::Time sampling_frequency_;
   
-  bool updating_gain_;
-  sal::Sample current_gain_;
-  sal::Sample previous_gain_;
-  sal::Sample target_gain_;
   sal::Int gain_update_counter_;
   sal::UInt gain_update_length_;
   
-  bool updating_latency_;
-  sal::Time previous_latency_;
-  sal::Time target_latency_;
-  sal::Time current_latency_;
+  sal::Sample target_gain_;
+  sal::Sample current_gain_;
+  sal::Sample previous_gain_;
+  bool updating_gain_;
+  
   sal::Int latency_update_counter_;
   sal::UInt latency_update_length_;
-  
-  InterpolationType interpolation_type_;
+  sal::Time current_latency_;
+  sal::Time previous_latency_;
+  sal::Time target_latency_;
+  bool updating_latency_;
   
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
+  
+  InterpolationType interpolation_type_;
 };
 
 } // namespace sal
