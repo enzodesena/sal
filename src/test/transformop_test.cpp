@@ -187,6 +187,59 @@ bool TransformOpTest() {
   assert(IsEqual(mphase_vector_g_cmp, mphase_vector_g));
 
   
+  std::vector<Real> vector_ef(4);
+  vector_ef[0] = -0.3;
+  vector_ef[1] = 30.3;
+  vector_ef[2] = 2.4;
+  vector_ef[3] = 12.4;
+  
+  std::vector<Real> vector_ff(4);
+  vector_ff[0] = 2.5;
+  vector_ff[1] = 1.3;
+  vector_ff[2] = -2.4;
+  vector_ff[3] = -1.0;
+  
+  
+  std::vector<Real> xcorr_vector_f = XCorr(vector_ef, vector_ff);
+  std::vector<Real> xcorr_vector_f_cmp(7);
+  xcorr_vector_f_cmp[0] = 0.3;
+  xcorr_vector_f_cmp[1] = -29.58;
+  xcorr_vector_f_cmp[2] = -75.51;
+  xcorr_vector_f_cmp[3] = 20.48;
+  xcorr_vector_f_cmp[4] = 49.110;
+  xcorr_vector_f_cmp[5] = 22.12;
+  xcorr_vector_f_cmp[6] = 31.0;
+  assert(IsEqual(xcorr_vector_f, xcorr_vector_f_cmp));
+  
+  
+  std::vector<Real> vector_gf(3);
+  vector_gf[0] = 2.5;
+  vector_gf[1] = 0.0;
+  vector_gf[2] = -2.4;
+  
+  
+  std::vector<Real> vector_hf(3);
+  vector_hf[0] = -2.5;
+  vector_hf[1] = 1.3;
+  vector_hf[2] = 2.4;
+  
+  std::vector<Real> xcorr_vector_g_h = XCorr(vector_gf, vector_hf);
+  std::vector<Real> xcorr_vector_g_h_cmp(5);
+  xcorr_vector_g_h_cmp[0] = 6.0;
+  xcorr_vector_g_h_cmp[1] = 3.25;
+  xcorr_vector_g_h_cmp[2] = -12.01;
+  xcorr_vector_g_h_cmp[3] = -3.12;
+  xcorr_vector_g_h_cmp[4] = 6.0;
+  assert(IsEqual(xcorr_vector_g_h, xcorr_vector_g_h_cmp));
+  
+  std::vector<Real> xcorr_vector_h_g = XCorr(vector_hf, vector_gf);
+  std::vector<Real> xcorr_vector_h_g_cmp(5);
+  xcorr_vector_h_g_cmp[0] = 6.0;
+  xcorr_vector_h_g_cmp[1] = -3.12;
+  xcorr_vector_h_g_cmp[2] = -12.01;
+  xcorr_vector_h_g_cmp[3] = 3.25;
+  xcorr_vector_h_g_cmp[4] = 6.0;
+  assert(IsEqual(xcorr_vector_h_g, xcorr_vector_h_g_cmp));
   return true;
 }
   

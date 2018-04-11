@@ -385,10 +385,6 @@ MCL_API Real Var(const std::vector<Real>& input);
 /** Weighted var (biased estimator) */
 MCL_API Real Var(const std::vector<Real>& input, const std::vector<Real>& weights);
   
-/** Equivalent to Matlab's xcorr(vect_a, vect_b) */
-MCL_API std::vector<Real> XCorr(const std::vector<Real>& vector_a,
-                                const std::vector<Real>& vector_b);
-  
 /** Splits a string using a delimiter. */
 MCL_API std::vector<std::string> Split(const std::string& string, char delim);
   

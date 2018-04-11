@@ -154,4 +154,32 @@ Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) {
   return outputs;
 }
   
+  
+std::vector<Real> XCorr(const std::vector<Real>& vector_a,
+                        const std::vector<Real>& vector_b) {
+  // TODO: implement for different sizes
+  if (vector_a.size() != vector_b.size()) { throw_line(""); }
+  
+  UInt M = vector_a.size();
+  
+  UInt n_fft = (UInt) pow(2.0, NextPow2(2*M-1));
+  
+  std::vector<Complex> x = Fft(ComplexVector(vector_a), n_fft);
+  std::vector<Complex> y = Fft(ComplexVector(vector_b), n_fft);
+  
+  std::vector<Complex> c = Ifft(Multiply(x, Conj(y)), n_fft);
+  
+  // Ignore residual imaginary part
+  std::vector<Real> c_real = RealPart(c);
+  std::vector<Real> output = Zeros<Real>(2*M-1);
+  UInt end = c_real.size(); // Matlab's index of the last element of c
+  UInt maxlag = M-1;
+  // c = [c(end-maxlag+1:end,:);c(1:maxlag+1,:)];
+  UInt k = 0; // running index
+  for (UInt i=end-maxlag+1-1; i<=(end-1); ++i) { output[k++] = c_real[i]; }
+  for (UInt i=1-1; i<=(maxlag+1-1); ++i) { output[k++] = c_real[i]; }
+  
+  return output;
+}
+  
 } // namespace mcl

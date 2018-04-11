@@ -86,31 +86,6 @@ bool VectorOpTest() {
   assert(Length(pad_vector_c) == 5);
   assert(IsEqual(pad_vector_c, pad_vector_c_cmp));
   
-  std::vector<Real> vector_e(4);
-  vector_e[0] = -0.3;
-  vector_e[1] = 30.3;
-  vector_e[2] = 2.4;
-  vector_e[3] = 12.4;
-  
-  std::vector<Real> vector_f(4);
-  vector_f[0] = 2.5;
-  vector_f[1] = 1.3;
-  vector_f[2] = -2.4;
-  vector_f[3] = -1.0;
-  
-  
-  std::vector<Real> xcorr_vector_f = XCorr(vector_e, vector_f);
-  std::vector<Real> xcorr_vector_f_cmp(7);
-  xcorr_vector_f_cmp[0] = 0.3;
-  xcorr_vector_f_cmp[1] = -29.58;
-  xcorr_vector_f_cmp[2] = -75.51;
-  xcorr_vector_f_cmp[3] = 20.48;
-  xcorr_vector_f_cmp[4] = 49.110;
-  xcorr_vector_f_cmp[5] = 22.12;
-  xcorr_vector_f_cmp[6] = 31.0;
-  assert(IsEqual(xcorr_vector_f, xcorr_vector_f_cmp));
-
-  
   
   std::vector<Real> circ_2_vector_n = CircShift(vector_n, 2);
   std::vector<Real> circ_2_vector_n_cmp(4);
@@ -136,8 +111,17 @@ bool VectorOpTest() {
   flip_vector_d_cmp[3] = -0.3;
   assert(IsEqual(flip_vector_d_cmp, flip_vector_d));
   
+  std::vector<Real> vector_e(4);
+  vector_e[0] = -0.3;
+  vector_e[1] = 30.3;
+  vector_e[2] = 2.4;
+  vector_e[3] = 12.4;
   
-  
+  std::vector<Real> vector_f(4);
+  vector_f[0] = 2.5;
+  vector_f[1] = 1.3;
+  vector_f[2] = -2.4;
+  vector_f[3] = -1.0;
   
   assert(IsEqual(Sum(vector_e), -0.3+30.3+2.4+12.4));
   
@@ -177,24 +161,6 @@ bool VectorOpTest() {
   assert(IsEqual(vector_g_h[1], 0.0));
   assert(IsEqual(vector_g_h[3], -2.5));
 
-  
-  std::vector<Real> xcorr_vector_g_h = XCorr(vector_g, vector_h);
-  std::vector<Real> xcorr_vector_g_h_cmp(5);
-  xcorr_vector_g_h_cmp[0] = 6.0;
-  xcorr_vector_g_h_cmp[1] = 3.25;
-  xcorr_vector_g_h_cmp[2] = -12.01;
-  xcorr_vector_g_h_cmp[3] = -3.12;
-  xcorr_vector_g_h_cmp[4] = 6.0;
-  assert(IsEqual(xcorr_vector_g_h, xcorr_vector_g_h_cmp));
-  
-  std::vector<Real> xcorr_vector_h_g = XCorr(vector_h, vector_g);
-  std::vector<Real> xcorr_vector_h_g_cmp(5);
-  xcorr_vector_h_g_cmp[0] = 6.0;
-  xcorr_vector_h_g_cmp[1] = -3.12;
-  xcorr_vector_h_g_cmp[2] = -12.01;
-  xcorr_vector_h_g_cmp[3] = 3.25;
-  xcorr_vector_h_g_cmp[4] = 6.0;
-  assert(IsEqual(xcorr_vector_h_g, xcorr_vector_h_g_cmp));
   
   
   std::vector<Real> unary_vector = UnaryVector((Real) 2.0);

@@ -84,6 +84,13 @@ MCL_API std::vector<Real> RCeps(const std::vector<Real>& vector);
  */
 MCL_API std::vector<Real> MinPhase(const std::vector<Real>& vector);
 
+  
+/** Equivalent to Matlab's xcorr(vect_a, vect_b) */
+MCL_API std::vector<Real> XCorr(const std::vector<Real>& vector_a,
+                                const std::vector<Real>& vector_b);
+// The method XCorr naturally is placed in vectorop, but since it depends
+// on the Fft method, I place it here, so someone who doesn't want to
+// compile with KissFFT won't get compilation errors.
 
 bool TransformOpTest();
 
