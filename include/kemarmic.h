@@ -46,7 +46,7 @@ public:
   virtual ~KemarMic() {}
 private:
   
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point);
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   std::vector<std::vector<Signal> > Load(const Ear ear,
                                          const std::string directory,

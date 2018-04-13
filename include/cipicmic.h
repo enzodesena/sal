@@ -52,7 +52,7 @@ private:
                                          const std::string directory,
                                          const CipicDataType data_type);
   
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point);
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   std::vector<sal::Angle> azimuths_;
   

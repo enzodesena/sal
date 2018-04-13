@@ -9,20 +9,17 @@
  */
 
 #include "delayfilter.h"
-#include "exception.h"
 #include <cassert>
 
 using sal::Sample;
 using sal::UInt;
-using mcl::Exception;
 
 namespace sal {
 
-DelayFilter::DelayFilter(Int latency, Int max_latency) : latency_(-1) {
-  if (latency < 0) { throw(Exception("The latency cannot be nagative.")); }
-  if (max_latency < 0) {
-    throw(Exception("The maximum latency cannot be nagative."));
-  }
+DelayFilter::DelayFilter(Int latency, Int max_latency) noexcept : latency_(-1) {
+  ASSERT_WITH_MESSAGE(latency >= 0, "The latency cannot be nagative.");
+  ASSERT_WITH_MESSAGE(max_latency >= 0,
+                      "The maximum latency cannot be nagative.");
   
   max_latency_ = max_latency;
   start_ = new Sample[max_latency+1];
@@ -64,13 +61,12 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
   return *this;
 }
 
-void DelayFilter::set_latency(const Int latency) {
+void DelayFilter::set_latency(const Int latency) noexcept {
   if (latency_ == latency) { return; }
   latency_ = latency;
-  if (latency > max_latency_) {
-    throw(mcl::Exception("Trying to set a delay filter latency larger than "
-                         "the maximum latency."));
-  }
+  ASSERT_WITH_MESSAGE(latency <= max_latency_,
+                      "Trying to set a delay filter latency larger than "
+                      "the maximum latency.");
   
   read_index_ = write_index_ - latency;
   
@@ -79,15 +75,14 @@ void DelayFilter::set_latency(const Int latency) {
   assert((read_index_ >= start_) & (read_index_ <= end_));
 }
 
-UInt DelayFilter::latency() const { return latency_; }
+UInt DelayFilter::latency() const noexcept { return latency_; }
 
-UInt DelayFilter::max_latency() const { return max_latency_; }
+UInt DelayFilter::max_latency() const noexcept { return max_latency_; }
 
-Sample DelayFilter::Read(const UInt& delay_tap) const {
-  if (delay_tap >= max_latency_) {
-    throw(mcl::Exception("Tried to access a delay tap larger than delay filter"
-                         "length."));
-  }
+Sample DelayFilter::Read(const UInt& delay_tap) const noexcept {
+  ASSERT_WITH_MESSAGE(delay_tap < max_latency_, "Tried to access a delay tap larger than delay filter"
+                      "length.");
+                                
   assert(write_index_>=start_);
   assert(write_index_<=end_);
   return (write_index_ - delay_tap >= start_) ?
@@ -95,11 +90,12 @@ Sample DelayFilter::Read(const UInt& delay_tap) const {
       *(write_index_ - delay_tap + max_latency_ + 1);
 }
 
-Sample DelayFilter::FractionalRead(const Time fractional_delay_tap) const {
-  if (fractional_delay_tap >= max_latency_) {
-    throw(mcl::Exception("Tried to access a delay tap larger than delay filter"
-                         "length."));
-  }
+Sample DelayFilter::FractionalRead(const Time fractional_delay_tap)
+  const noexcept {
+  ASSERT_WITH_MESSAGE(fractional_delay_tap<max_latency_,
+                      "Tried to access a delay tap larger than delay filter"
+                      "length.");
+  
   UInt x_a = (UInt) floor(fractional_delay_tap);
   UInt x_b = x_a+1;
   Sample f_x_a = Read(x_a);
@@ -107,11 +103,11 @@ Sample DelayFilter::FractionalRead(const Time fractional_delay_tap) const {
   return (f_x_b-f_x_a)/(x_b-x_a)*(fractional_delay_tap-x_a)+f_x_a;
 }
   
-void DelayFilter::Reset() {
+void DelayFilter::Reset() noexcept {
   for (UInt i=0; i<(max_latency_+1); ++i) { start_[i] = 0.0; }
 }
   
-mcl::Real DelayFilter::Filter(const mcl::Real input) {
+mcl::Real DelayFilter::Filter(const mcl::Real input) noexcept {
   Write(input);
   mcl::Real output = Read();
   Tick();

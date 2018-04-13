@@ -50,27 +50,27 @@ public:
              mcl::Quaternion orientation = mcl::Quaternion::Identity());
   
   /** Returns current position of the microphone */
-  mcl::Point position() const;
+  mcl::Point position() const noexcept;
   
   /** Set microphone position */
-  void set_position(const mcl::Point& position);
+  virtual void set_position(const mcl::Point& position) noexcept;
   
-  void set_target_position(const mcl::Point& target_position);
+  virtual void set_target_position(const mcl::Point& target_position) noexcept;
   
-  void set_max_speed(const Speed max_speed);
+  void set_max_speed(const Speed max_speed) noexcept;
   
-  void UpdatePosition(const Time time_elapsed_since_last_tick);
+  virtual void UpdatePosition(const Time time_elapsed_since_last_tick) noexcept;
   
-  bool HasReachedTarget();
+  bool HasReachedTarget() noexcept;
   
   /** Returns current orientation of the microphone */
-  mcl::Quaternion orientation() const;
+  mcl::Quaternion orientation() const noexcept;
   
   /** Set microphone orientation */
-  void set_orientation(const mcl::Quaternion& orientation);
+  void set_orientation(const mcl::Quaternion& orientation) noexcept;
   
   /** Set handedness of reference system */
-  void set_handedness(const mcl::Handedness handedness);
+  void set_handedness(const mcl::Handedness handedness) noexcept;
   
   /**
    We do not implement directly the case of a single plane wave because in
@@ -79,21 +79,21 @@ public:
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Sample& sample, const mcl::Point& point);
+  void RecordPlaneWave(const Sample& sample, const mcl::Point& point) noexcept;
   
   /**
    This method should only be called in case of a single plane wave
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Signal& signal, const mcl::Point& point);
+  void RecordPlaneWave(const Signal& signal, const mcl::Point& point) noexcept;
   
   /**
    This method should only be called in case of a single plane wave
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(Source source);
+  void RecordPlaneWave(Source source) noexcept;
   
   /**
    We need to
@@ -105,27 +105,27 @@ public:
    for it.
    */
   void RecordPlaneWave(const Sample& sample, const mcl::Point& point,
-                       const UInt& wave_id);
+                       const UInt& wave_id) noexcept;
   
   void RecordPlaneWave(const Signal& signal, const mcl::Point& point,
-                       const UInt& wave_id);
+                       const UInt& wave_id) noexcept;
   
   /**
    This function tells the microphone to advance by one `tick` in time.
    This is meant to inform the microphone that we are working on a
    new sample in time. Only need to use this when calling wave_ids explicitly.
    */
-  virtual void Tick() = 0;
+  virtual void Tick() noexcept = 0;
   
   virtual bool IsCoincident() = 0;
   
   virtual bool IsOmni() { return false; }
   
   /** This method translates `point` in the reference system of the mic. */
-  mcl::Point GetRelativePoint(const mcl::Point& point) const;
+  mcl::Point GetRelativePoint(const mcl::Point& point) const noexcept;
   
   /** Resets the state of the microphone (if any). */
-  virtual void Reset() {}
+  virtual void Reset() noexcept {}
   
   static bool Test();
   
@@ -160,11 +160,11 @@ private:
    */
   virtual void RecordPlaneWaveRelative(const Sample& sample,
                                        const mcl::Point& point,
-                                       const UInt& wave_id);
+                                       const UInt& wave_id) noexcept;
   
   virtual void RecordPlaneWaveRelative(const Signal& signal,
                                        const mcl::Point& point,
-                                       const UInt& wave_id) = 0;
+                                       const UInt& wave_id) noexcept = 0;
   
 protected:
   TripletHandler position_;

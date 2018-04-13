@@ -29,7 +29,7 @@ public:
   virtual void Decode() = 0;
   
   MonoStream* stream(Int chan_id) {
-    if (chan_id < 0 || chan_id > (Int) output_streams_.size()) { throw_line(""); }
+    if (chan_id < 0 || chan_id > (Int) output_streams_.size()) { assert(false); }
     return &(output_streams_.at((unsigned long)chan_id));
   }
   

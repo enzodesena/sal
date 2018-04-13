@@ -108,7 +108,7 @@ mcl::Complex SphericalHeadMic::Sphere(Length a, Length r,
   return (rho * exp(- Complex(0.0,1.0) * mu) * sum) / (Complex(0.0,1.0) * mu);
 }
   
-Signal SphericalHeadMic::GetBrir(const Ear ear, const Point& point) {
+Signal SphericalHeadMic::GetBrir(const Ear ear, const Point& point) noexcept {
   return GenerateImpulseResponse(sphere_radius_,
                                  point.norm(), // point distance
                                  GetTheta(point, ears_angle_, ear),

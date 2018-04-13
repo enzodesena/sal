@@ -12,7 +12,6 @@
 
 #include <vector>
 #include "saltypes.h"
-#include "exception.h"
 #include "point.h"
 
 

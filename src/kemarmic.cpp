@@ -11,7 +11,6 @@
 #include "kemarmic.h"
 #include "point.h"
 #include "salconstants.h"
-#include "exception.h"
 
 #ifdef _WIN32
   #define sprintf(...) sprintf_s(__VA_ARGS__)
@@ -72,7 +71,7 @@ std::vector<std::vector<Signal> >
       std::ifstream file;
       
       file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-      if (! file.good()) { throw(mcl::Exception("Kemar lib not found.")); }
+      if (! file.good()) { throw("Kemar lib not found."); }
       long size = (long) file.tellg();
       assert(sizeof(short) == 2);
       short* data = new short[size/2];
@@ -156,7 +155,7 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
 }
   
 
-Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
+Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
   // For forward looking direction, Azimuth = 0 and elevation =0
   Point norm_point = Normalized(point);
   Angle elevation = (asin((double) norm_point.z())) / PI * 180.0;

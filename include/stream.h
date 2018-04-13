@@ -43,20 +43,20 @@ public:
  */
 class SAL_API MonoStream : public Stream {
 public:
-  MonoStream() : num_temp_samples_(0) {}
+  MonoStream() noexcept : num_temp_samples_(0) {}
   
-  MonoStream(const std::vector<MonoStream*>& streams) :
+  MonoStream(const std::vector<MonoStream*>& streams) noexcept :
   merge_streams_(streams) {}
   
-  inline void Push(const Sample& sample) {
-    if (merge_streams_.size() > 0) { throw_line(""); }
-    if (num_temp_samples_ > 0) { throw_line(""); }
+  inline void Push(const Sample& sample) noexcept {
+    if (merge_streams_.size() > 0) { assert(false); }
+    if (num_temp_samples_ > 0) { assert(false); }
     queue_.push_back(sample);
   }
   
   
-  void Push(const Signal& signal) {
-    if (merge_streams_.size() > 0) { throw_line(""); }
+  void Push(const Signal& signal) noexcept {
+    if (merge_streams_.size() > 0) { assert(false); }
     const UInt num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(signal.at(i));
@@ -64,25 +64,27 @@ public:
   }
   
   
-  void PushAll(MonoStream* stream) {
-    if (merge_streams_.size() > 0) { throw_line(""); }
-    if (num_temp_samples_ > 0) { throw_line(""); }
+  void PushAll(MonoStream* stream) noexcept {
+    if (merge_streams_.size() > 0) { assert(false); }
+    if (num_temp_samples_ > 0) { assert(false); }
     while (! stream->IsEmpty()) {
       Push(stream->Pull());
     }
   }
   
   
-  void Add(const Sample& sample) { Add(mcl::UnaryVector<Sample>(sample)); }
+  void Add(const Sample& sample) noexcept {
+    Add(mcl::UnaryVector<Sample>(sample));
+  }
   
   
-  void Add(const Signal& signal) {
-    if (merge_streams_.size() > 0) { throw_line(""); }
+  void Add(const Signal& signal) noexcept {
+    if (merge_streams_.size() > 0) { assert(false); }
     if (num_temp_samples_ == 0) {
       queue_.insert(queue_.end(), signal.begin(), signal.end());
       num_temp_samples_ = signal.size();
     } else {
-      if (num_temp_samples_ != signal.size()) { throw_line(""); }
+      if (num_temp_samples_ != signal.size()) { assert(false); }
       
       const UInt offset = queue_.size()-signal.size();
       for (UInt i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
@@ -90,15 +92,15 @@ public:
   }
   
   
-  inline void Tick() {
-    if (merge_streams_.size() > 0) { throw_line(""); }
+  inline void Tick() noexcept {
+    if (merge_streams_.size() > 0) { assert(false); }
     num_temp_samples_ = 0;
   }
   
   
-  Sample Pull() {
+  Sample Pull() noexcept {
     if (merge_streams_.size() == 0) {
-      if (size() == 0) { throw_line(""); }
+      if (size() == 0) { assert(false); }
       const Sample output = queue_.front();
       queue_.pop_front();
       return output;
@@ -113,8 +115,8 @@ public:
   }
   
   
-  Signal Pull(const UInt num_samples) {
-    if (num_samples > size()) { throw_line(""); }
+  Signal Pull(const UInt num_samples) noexcept {
+    if (num_samples > size()) { assert(false); }
     
     if (merge_streams_.size() == 0) {
       Signal output(queue_.begin(), queue_.begin() + (long)num_samples);
@@ -132,18 +134,18 @@ public:
   
   
   /** Pull all samples until the stream is depleted. */
-  Signal PullAll() {
+  Signal PullAll() noexcept {
     return Pull(size());
   }
   
   
-  void Reset() {
+  void Reset() noexcept {
     PullAll();
     num_temp_samples_ = 0;
   }
   
   
-  inline UInt size() const {
+  inline UInt size() const noexcept {
     if (merge_streams_.size() == 0) {
       Int size = (Int)queue_.size()-(Int)num_temp_samples_;
       assert(size>=0);
@@ -158,7 +160,7 @@ public:
   }
   
   
-  inline bool IsEmpty() const {
+  inline bool IsEmpty() const noexcept {
     return (size()==0);
   }
   
@@ -174,9 +176,10 @@ private:
 
 class SAL_API StereoStream : public Stream {
 public:
-  StereoStream() : left_stream_(MonoStream()), right_stream_(MonoStream()) {}
+  StereoStream() noexcept :
+        left_stream_(MonoStream()), right_stream_(MonoStream()) {}
   
-  StereoStream(const std::vector<StereoStream*>& streams) {
+  StereoStream(const std::vector<StereoStream*>& streams) noexcept {
     std::vector<MonoStream*> left_streams(streams.size());
     std::vector<MonoStream*> right_streams(streams.size());
     for (UInt i=0; i<streams.size(); ++i) {
@@ -187,8 +190,8 @@ public:
     right_stream_ = MonoStream(right_streams);
   }
   
-  MonoStream* left_stream() { return &left_stream_; }
-  MonoStream* right_stream() { return &right_stream_; }
+  MonoStream* left_stream() noexcept { return &left_stream_; }
+  MonoStream* right_stream() noexcept { return &right_stream_; }
 private:
   MonoStream left_stream_;
   MonoStream right_stream_;
@@ -197,19 +200,19 @@ private:
 
 class SAL_API MultichannelStream : public Stream {
 public:
-  MultichannelStream() : streams_(std::vector<MonoStream*>(0)) {}
+  MultichannelStream() noexcept : streams_(std::vector<MonoStream*>(0)) {}
   
-  MultichannelStream(const std::vector<MonoStream*> streams) :
+  MultichannelStream(const std::vector<MonoStream*> streams) noexcept :
       streams_(streams) {}
   
-  std::vector<Sample> Pull() {
+  std::vector<Sample> Pull() noexcept {
     const UInt num_streams = streams_.size();
     std::vector<Sample> output(num_streams);
     for (UInt i=0; i<num_streams; ++i) { output[i] = streams_[i]->Pull(); }
     return output;
   }
   
-  std::vector<Signal> Pull(const UInt num_samples) {
+  std::vector<Signal> Pull(const UInt num_samples) noexcept {
     const UInt num_streams = streams_.size();
     std::vector<Signal> output(num_streams);
     for (UInt i=0; i<num_streams; ++i) {
@@ -218,11 +221,11 @@ public:
     return output;
   }
   
-  inline bool IsEmpty() const {
+  inline bool IsEmpty() const noexcept {
     return streams_[0]->IsEmpty();
   }
   
-  void Reset() {
+  void Reset() noexcept {
     for (UInt i=0; i<streams_.size(); ++i) { streams_[i]->Reset(); }
   }
   
@@ -233,12 +236,12 @@ private:
 class SAL_API BFormatStream : public Stream {
 public:
   
-  inline void Push(UInt degree, Int order, const Sample& sample) {
+  inline void Push(UInt degree, Int order, const Sample& sample) noexcept {
     InitOrderDegree(degree, order);
     streams_[degree][order].Push(sample);
   }
   
-  void Push(UInt degree, Int order, const Signal& signal) {
+  void Push(UInt degree, Int order, const Signal& signal) noexcept {
     InitOrderDegree(degree, order);
     const UInt num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
@@ -246,17 +249,17 @@ public:
     }
   }
   
-  void Add(UInt degree, Int order, Sample sample) {
+  void Add(UInt degree, Int order, Sample sample) noexcept {
     InitOrderDegree(degree, order);
     streams_[degree][order].Add(sample);
   }
   
-  void Add(UInt degree, Int order, Signal signal) {
+  void Add(UInt degree, Int order, Signal signal) noexcept {
     InitOrderDegree(degree, order);
     streams_[degree][order].Add(signal);
   }
   
-  void Tick() {
+  void Tick() noexcept {
     for(auto outer_iter = streams_.begin();
         outer_iter != streams_.end();
         ++outer_iter) {
@@ -268,7 +271,7 @@ public:
     }
   }
   
-  void Reset() {
+  void Reset() noexcept {
     for(auto outer_iter = streams_.begin();
         outer_iter != streams_.end();
         ++outer_iter) {
@@ -280,7 +283,7 @@ public:
     }
   }
   
-  Sample Pull(UInt degree, Int order) {
+  Sample Pull(UInt degree, Int order) noexcept {
     assert(IsDefined(degree, order));
     return streams_[degree][order].Pull();
   }
@@ -289,22 +292,22 @@ public:
    Returns true if the stream associated to `order` and `degree` is empty.
    Asserts if that stream is not defined.
    */
-  inline bool IsEmpty(UInt degree, Int order) const {
+  inline bool IsEmpty(UInt degree, Int order) const noexcept {
     assert(IsDefined(degree, order));
     return streams_.at(degree).at(order).IsEmpty();
   }
   
-  bool IsEmpty() const {
+  bool IsEmpty() const noexcept {
     // TODO: think this through
     assert(IsDefined(0, 0));
     // The order 0 and degree 0 always has to be defined.
     return streams_.at(0).at(0).IsEmpty();
   }
   
-  bool initialised() { return initialised_; }
+  bool initialised() noexcept { return initialised_; }
   
 private:
-  inline bool IsDefined(UInt degree, Int order) const {
+  inline bool IsDefined(UInt degree, Int order) const noexcept {
     if (streams_.count(degree) == 0) { return false; }
     if (streams_.at(degree).count(order) == 0) { return false; }
     return true;
@@ -314,8 +317,8 @@ private:
    Returns true if the new stream was initialised correctly. False if
    it already existed.
    */
-  bool InitOrderDegree(UInt degree, Int order) {
-    if((order<-((Int)degree)) || order>((Int)degree)) { throw_line(""); }
+  bool InitOrderDegree(UInt degree, Int order) noexcept {
+    if((order<-((Int)degree)) || order>((Int)degree)) { assert(false); }
     // Check whether the stream already exists
     if (IsDefined(degree, order)) { return false; }
     

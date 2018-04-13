@@ -44,7 +44,6 @@
 #include "cipicmic.h"
 #include "point.h"
 #include "salconstants.h"
-#include "exception.h"
 #include <string.h>
 
 #ifndef NO_WAV_HANDLER
@@ -87,7 +86,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
     
     std::ifstream file;
     file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-    if (! file.good()) { throw(mcl::Exception("Cipic lib not found.")); }
+    if (! file.good()) { throw("Cipic lib not found."); }
     file.close();
   
     std::vector<std::vector<sal::Sample> > brirs;
@@ -125,7 +124,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
 }
 
 
-Signal CipicMic::GetBrir(const Ear ear, const Point& point) {
+Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
   // Calculate azimuth
   // For forward looking direction, Azimuth = 0 and elevation =0
   // "positive azimuth coresponds to moving right."

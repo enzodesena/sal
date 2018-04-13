@@ -7,7 +7,6 @@
  */
 
 #include "cuboidroom.h"
-#include "exception.h"
 #include <vector>
 #include <cassert>
 #define EPSILON 1E-10
@@ -23,11 +22,10 @@ using sal::Time;
 using sal::Sample;
 using mcl::IsLargerOrEqual;
 using mcl::IsSmallerOrEqual;
-using mcl::Exception;
 
 
 bool CuboidRoom::IsPointInRoom(const Point& point,
-                               const Length precision) const {
+                               const Length precision) const noexcept {
   return IsLargerOrEqual(point.x(), 0.0, precision) &&
          IsLargerOrEqual(point.y(), 0.0, precision) &&
          IsLargerOrEqual(point.z(), 0.0, precision) &&
@@ -37,14 +35,7 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
-                                                       const Point& mic_point) {
-  if (! IsPointInRoom(source_point)) {
-    throw(Exception("The source is not inside the room."));
-  }
-  if (! IsPointInRoom(mic_point)) {
-    throw(Exception("The microphone is not inside the room."));
-  }
-  
+                                                       const Point& mic_point) noexcept {
   
   std::vector<Point> reflection_points;
   
@@ -100,8 +91,9 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   return reflection_points;
 }
 
-std::vector<mcl::IirFilter> CuboidRoom::GetBoundaryFilters(const Point& source_point,
-                                                           const Point& mic_point) {
+std::vector<mcl::IirFilter>
+CuboidRoom::GetBoundaryFilters(const Point& source_point,
+                               const Point& mic_point) noexcept {
   std::vector<mcl::IirFilter> boundary_filters(wall_filters_);
   
   if (boundary_set_type_ == first_and_second_cross_horiz) {
@@ -140,7 +132,7 @@ std::vector<mcl::IirFilter> CuboidRoom::GetBoundaryFilters(const Point& source_p
   return boundary_filters;
 }
 
-mcl::UInt CuboidRoom::num_boundary_points() {
+mcl::UInt CuboidRoom::num_boundary_points() noexcept {
   switch (boundary_set_type_) {
     case first_order_only:
       return 6;
@@ -150,7 +142,7 @@ mcl::UInt CuboidRoom::num_boundary_points() {
       break;
     default:
       assert(false);
-      throw_line("");
+      assert(false);
       return (mcl::UInt) NAN;
       break;
   }
@@ -229,7 +221,7 @@ Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
       break;
     default:
       assert(false);
-      throw_line("");
+      assert(false);
   }
   return IntersectionPoint(wall_id, observation_pos, image_position);
 }
@@ -274,8 +266,12 @@ Time CuboidRoom::SabineRt60() {
 }
 
 mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
-                                           const Int mx, const Int my, const Int mz,
-                                           const Int px, const Int py, const Int pz) {
+                                           const Int mx,
+                                           const Int my,
+                                           const Int mz,
+                                           const Int px,
+                                           const Int py,
+                                           const Int pz) noexcept {
   Length r2l_x = 2.0*dimensions_.value().x()*((sal::Length)mx);
   Length r2l_y = 2.0*dimensions_.value().y()*((sal::Length)my);
   Length r2l_z = 2.0*dimensions_.value().z()*((sal::Length)mz);
@@ -284,20 +280,20 @@ mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
                (1.0-2.0*((Length)pz))*source_position.z()+r2l_z);
 }
   
-void CuboidRoom::set_target_dimensions(const Triplet& dimensions) {
+void CuboidRoom::set_target_dimensions(const Triplet& dimensions) noexcept {
   dimensions_.set_target_value(dimensions);
 }
 
-bool CuboidRoom::HasReachedTarget() {
+bool CuboidRoom::HasReachedTarget() noexcept {
   return dimensions_.HasReachedTarget();
 }
 
-void CuboidRoom::set_max_speed(const Speed max_speed) {
+void CuboidRoom::set_max_speed(const Speed max_speed) noexcept {
   dimensions_.set_max_speed(max_speed);
 }
 
-void CuboidRoom::UpdateDimensions(const Time time_elapsed_since_last_update) {
-  dimensions_.Update(time_elapsed_since_last_update);
+void CuboidRoom::UpdateShape(const Time time_since_last_update) noexcept {
+  dimensions_.Update(time_since_last_update);
 }
   
 } // namespace sal

@@ -38,7 +38,7 @@ public:
   virtual ~SphericalHeadMic() {}
 private:
   
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point);
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   /** For the various definitions see Duda's paper. */
   static mcl::Complex Sphere(Length a, Length r, Angle theta,

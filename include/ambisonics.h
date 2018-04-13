@@ -45,7 +45,7 @@ public:
           Microphone(position, orientation),
           order_(order), convention_(convention) {}
   
-  virtual void Tick() {
+  virtual void Tick() noexcept {
     stream_.Tick();
   }
   
@@ -59,7 +59,7 @@ public:
   static bool Test();
 private:
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt& wave_id);
+                                       const UInt& wave_id) noexcept;
   
   const UInt order_;
   BFormatStream stream_;

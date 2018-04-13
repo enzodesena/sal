@@ -21,40 +21,40 @@ Microphone::Microphone(Point position, mcl::Quaternion orientation) :
   handedness_(mcl::right_handed) {}
   
 
-Point Microphone::position() const { return position_.value(); }
+Point Microphone::position() const noexcept { return position_.value(); }
 
-void Microphone::set_position(const Point& position) {
+void Microphone::set_position(const Point& position) noexcept {
   position_.set_value(position);
   last_point_.clear();
 }
   
-void Microphone::set_target_position(const Point& position) {
+void Microphone::set_target_position(const Point& position) noexcept {
   position_.set_target_value(position);
 }
 
-bool Microphone::HasReachedTarget() {
+bool Microphone::HasReachedTarget() noexcept {
   return position_.HasReachedTarget();
 }
 
-void Microphone::set_max_speed(const Speed max_speed) {
+void Microphone::set_max_speed(const Speed max_speed) noexcept {
   position_.set_max_speed(max_speed);
 }
 
-void Microphone::UpdatePosition(const Time time_elapsed_since_last_update) {
-  position_.Update(time_elapsed_since_last_update);
+void Microphone::UpdatePosition(const Time time_since_last_update) noexcept {
+  position_.Update(time_since_last_update);
 }
   
 /** Returns current orientation of the microphone */
-Quaternion Microphone::orientation() const { return orientation_; }
+Quaternion Microphone::orientation() const noexcept { return orientation_; }
   
 /** Set microphone orientation */
-void Microphone::set_orientation(const mcl::Quaternion& orientation) {
+void Microphone::set_orientation(const mcl::Quaternion& orientation) noexcept {
   orientation_ = orientation;
   last_point_.clear();
 }
   
   
-void Microphone::set_handedness(const mcl::Handedness handedness) {
+void Microphone::set_handedness(const mcl::Handedness handedness) noexcept {
   handedness_ = handedness;
 }
   
@@ -69,13 +69,13 @@ void Microphone::CalculateRelativePoint(const Point& point,
 }
 
 void Microphone::RecordPlaneWave(const Sample& sample, const Point& point,
-                                 const UInt& wave_id) {
+                                 const UInt& wave_id) noexcept {
   CalculateRelativePoint(point, wave_id);
   this->RecordPlaneWaveRelative(sample, last_relative_point_[wave_id], wave_id);
 }
 
 void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
-                                 const UInt& wave_id) {
+                                 const UInt& wave_id) noexcept {
   CalculateRelativePoint(point, wave_id);
   this->RecordPlaneWaveRelative(signal, last_relative_point_[wave_id], wave_id);
 }
@@ -83,12 +83,12 @@ void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
 
 void Microphone::RecordPlaneWaveRelative(const Sample& sample,
                                          const Point& point,
-                                         const UInt& wave_id) {
+                                         const UInt& wave_id) noexcept {
   RecordPlaneWaveRelative(mcl::UnaryVector(sample), point, wave_id);
 }
 
 
-Point Microphone::GetRelativePoint(const Point& point) const {
+Point Microphone::GetRelativePoint(const Point& point) const noexcept {
   // Centering the reference system around the microphone
   Point centered(point.x()-position_.value().x(),
                  point.y()-position_.value().y(),
@@ -102,20 +102,22 @@ Point Microphone::GetRelativePoint(const Point& point) const {
 }
   
   
-void Microphone::RecordPlaneWave(const Sample& sample, const Point& point) {
+void Microphone::RecordPlaneWave(const Sample& sample,
+                                 const Point& point) noexcept {
   RecordPlaneWave(sample, point, 0);
   Tick();
 }
 
   
-void Microphone::RecordPlaneWave(const Signal& signal, const Point& point) {
+void Microphone::RecordPlaneWave(const Signal& signal,
+                                 const Point& point) noexcept {
   for (UInt i=0; i<signal.size(); ++i) {
     RecordPlaneWave(signal[i], point);
   }
 }
 
   
-void Microphone::RecordPlaneWave(Source source) {
+void Microphone::RecordPlaneWave(Source source) noexcept {
   if (! source.stream()->IsEmpty()) {
     RecordPlaneWave(source.stream()->PullAll(), source.position());
   }

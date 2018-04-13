@@ -23,23 +23,23 @@ namespace sal {
 
 class SAL_API Source {
 public:
-  Source(const mcl::Point&);
+  Source(const mcl::Point&) noexcept;
   
-  Source(const mcl::Point&, const Signal& signal);
+  Source(const mcl::Point&, const Signal& signal) noexcept;
   
-  mcl::Point position() const;
+  mcl::Point position() const noexcept;
   
-  void set_position(const mcl::Point& target_position);
+  void set_position(const mcl::Point& target_position) noexcept;
   
-  void set_target_position(const mcl::Point& target_position);
+  void set_target_position(const mcl::Point& target_position) noexcept;
   
-  void set_max_speed(const Speed max_speed);
+  void set_max_speed(const Speed max_speed) noexcept;
   
-  void UpdatePosition(const Time time_elapsed_since_last_update);
+  void UpdatePosition(const Time time_elapsed_since_last_update) noexcept;
   
-  bool HasReachedTarget();
+  bool HasReachedTarget() noexcept;
   
-  MonoStream* stream() { return &stream_; }
+  MonoStream* stream() noexcept { return &stream_; }
   
 private:
   MonoStream stream_;

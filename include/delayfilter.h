@@ -28,31 +28,31 @@ public:
    memory.
    */
   DelayFilter(const sal::Int latency,
-              sal::Int max_latency);
+              sal::Int max_latency) noexcept;
   
-  ~DelayFilter() { delete[] start_; }
+  ~DelayFilter() noexcept { delete[] start_; }
   
   /**
    This writes the next sample into the filter. If this method is called 2 times
    before the Tick() operation, the former value will be overwritten.
    */
-  inline void Write(const sal::Sample& sample) { *write_index_ = sample; }
+  inline void Write(const sal::Sample& sample) noexcept { *write_index_ = sample; }
   
   /** Resets the state of the filter */
-  virtual void Reset();
+  virtual void Reset() noexcept;
   
   /**
    Returns the current sample from the filter. Between two Tick() operation it will
    give always the same output.
    */
-  inline sal::Sample Read() const { return *read_index_; }
+  inline sal::Sample Read() const noexcept { return *read_index_; }
   
-  sal::Sample Read(const UInt& delay_tap) const;
+  sal::Sample Read(const UInt& delay_tap) const noexcept;
   
-  sal::Sample FractionalRead(const Time fractional_delay_tap) const;
+  sal::Sample FractionalRead(const Time fractional_delay_tap) const noexcept;
   
   /** This causes time to tick by one sample. */
-  inline void Tick() {
+  inline void Tick() noexcept {
     write_index_ = (write_index_ != end_) ? (write_index_+1) : start_;
     read_index_ = (read_index_ != end_) ? (read_index_+1) : start_;
   }
@@ -62,18 +62,18 @@ public:
    Resets the latency of the filter. This can introduce artifacts if the
    latency is updated too fast.
    */
-  void set_latency(const sal::Int);
+  void set_latency(const sal::Int) noexcept;
   
   /** Returns the current latency of the delay filter */
-  sal::UInt latency() const;
+  sal::UInt latency() const noexcept;
   
   /** Returns the maximum latency of the delay filter */
-  sal::UInt max_latency() const;
+  sal::UInt max_latency() const noexcept;
   
   DelayFilter& operator= (const DelayFilter&);
   DelayFilter (const DelayFilter&);
   
-  virtual mcl::Real Filter(const mcl::Real input);
+  virtual mcl::Real Filter(const mcl::Real input) noexcept;
   
   static bool Test();
 protected:

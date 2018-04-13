@@ -52,27 +52,27 @@ public:
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100.0,
                   const InterpolationType = rounding,
-                  const bool air_filters_active = false);
+                  const bool air_filters_active = false) noexcept;
   
   /** Returns the multiplicative gain of the propagation line */
-  sal::Sample gain() const;
+  sal::Sample gain() const noexcept;
   
-  sal::Length distance() const;
+  sal::Length distance() const noexcept;
   
   /** This overwrites the 1/r rule attenuation. */
-  void set_gain(const sal::Sample, const sal::Time ramp_time = 0.0);
+  void set_gain(const sal::Sample, const sal::Time ramp_time = 0.0) noexcept;
   
-  sal::Time current_latency() const;
+  sal::Time current_latency() const noexcept;
   
-  void set_air_filters_active(const bool);
+  void set_air_filters_active(const bool) noexcept;
   
-  void Write(const sal::Sample &sample);
+  void Write(const sal::Sample &sample) noexcept;
   
   /** Returns the current read sample */
-  sal::Sample Read() const;
+  sal::Sample Read() const noexcept;
   
   /** Ticks time to next sample */
-  void Tick();
+  void Tick() noexcept;
   
   /**
    This resets the propagation line's length. It updates also the attenuation
@@ -81,27 +81,27 @@ public:
    observed.
    */
   void set_distance(const sal::Length distance,
-                    const sal::Time ramp_time = 0.0);
+                    const sal::Time ramp_time = 0.0) noexcept;
   
   /** Returns the latency of the propagation line */
-  sal::Time latency() const;
+  sal::Time latency() const noexcept;
   
   /** Resets the state of the filter */
-  void Reset();
+  void Reset() noexcept;
   
   static bool Test();
 private:
   DelayFilter delay_filter_;
   
-  void Update();
+  void Update() noexcept;
   
   static sal::Time ComputeLatency(const sal::Length,
-                                  const sal::Time);
+                                  const sal::Time) noexcept;
   
   static sal::Sample ComputeGain(const sal::Length,
-                                 const sal::Time);
+                                 const sal::Time) noexcept;
   
-  static std::vector<sal::Sample> GetAirFilter(sal::Length distance);
+  static std::vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
   
   sal::Time sampling_frequency_;
   

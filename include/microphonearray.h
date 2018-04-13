@@ -57,7 +57,7 @@ public:
     stream_ = MultichannelStream(streams);
   }
   
-  virtual void Tick() {
+  virtual void Tick() noexcept {
     UInt num_microphones(microphones_.size());
     for (UInt i=0; i<num_microphones; ++i) {
       // Each microphone will push in his own mono stream. The multichannel
@@ -70,7 +70,7 @@ public:
    This method will move all the internal microphones to a new position.
    The relative positions of the different microphones will stay unchanged.
    */
-  virtual void set_position(const mcl::Point& position) {
+  virtual void set_position(const mcl::Point& position) noexcept {
     mcl::Point position_delta(position.x()-position_.value().x(),
                               position.y()-position_.value().y(),
                               position.z()-position_.value().z());
@@ -133,7 +133,7 @@ private:
    */
   virtual void RecordPlaneWaveRelative(const Signal& signal,
                                        const mcl::Point& point,
-                                       const UInt& wave_id) {
+                                       const UInt& wave_id) noexcept {
     UInt num_microphones(microphones_.size());
     for (UInt i=0; i<num_microphones; ++i) {
       // Each microphone will push in his own mono stream. The multichannel

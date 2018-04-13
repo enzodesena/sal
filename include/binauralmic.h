@@ -40,19 +40,19 @@ public:
               const UInt update_length,
               const HeadRefOrientation reference_orientation = standard);
   
-  void set_update_length(UInt update_length) { update_length_ = update_length; }
+  void set_update_length(UInt update_length) noexcept { update_length_ = update_length; }
   
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
-  void set_bypass(bool bypass);
+  void set_bypass(bool bypass) noexcept;
     
-  virtual void Tick();
+  virtual void Tick() noexcept;
   
-  virtual void Reset();
+  virtual void Reset() noexcept;
   
-  virtual bool IsCoincident() { return true; }
-  virtual bool IsFrameEnabled() { return true; }
+  virtual bool IsCoincident() noexcept { return true; }
+  virtual bool IsFrameEnabled() noexcept { return true; }
   
-  virtual ~BinauralMic() {}
+  virtual ~BinauralMic() noexcept {}
   
 private:
   
@@ -60,12 +60,12 @@ private:
    The head is assumed to be positioned lying on the z-axis and facing
    the positive x-direction. E.g. a point on the positive x-axis
    is facing directly ahead of the head. */
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) = 0;
+  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept = 0;
   
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt& wave_id);
+                                       const UInt& wave_id) noexcept;
   
-  void CreateInstanceIfNotExist(const UInt& wave_id);
+  void CreateInstanceIfNotExist(const UInt& wave_id) noexcept;
   
   std::map<UInt, BinauralMicInstance> instances_left_;
   std::map<UInt, BinauralMicInstance> instances_right_;
@@ -97,9 +97,9 @@ private:
   update_length_(update_length),
   reference_orientation_(reference_orientation) {}
   
-  Signal RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point);
+  Signal RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point) noexcept;
   
-  void UpdateFilter(const mcl::Point& point);
+  void UpdateFilter(const mcl::Point& point) noexcept;
   
   /**
    The microphone object is called for every sample, while the position

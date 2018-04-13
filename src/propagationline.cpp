@@ -12,12 +12,10 @@
 #include "salconstants.h"
 #include "delayfilter.h"
 #include "matrixop.h"
-#include "exception.h"
 
 using sal::Length;
 using sal::Time;
 using sal::Sample;
-using mcl::Exception;
 
 namespace sal {
 
@@ -25,7 +23,7 @@ PropagationLine::PropagationLine(const Length distance,
                                  const Time sampling_frequency, 
                                  const Length max_distance,
                                  const InterpolationType interpolation_type,
-                                 const bool air_filters_active) :
+                                 const bool air_filters_active) noexcept :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
         sampling_frequency_(sampling_frequency),
@@ -44,24 +42,28 @@ PropagationLine::PropagationLine(const Length distance,
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
         interpolation_type_(interpolation_type) {
-  if (sampling_frequency < 0) {
-    throw(Exception("The sampling frequency cannot be negative."));
-  }
-  if (max_distance < 0) {
-    throw(Exception("The maximum distance cannot be negative."));
-  }
+  ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
+                      "The sampling frequency cannot be negative.");
+  ASSERT_WITH_MESSAGE(isgreaterequal(max_distance, 0.0),
+                      "The maximum distance cannot be negative.");
           
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
 }
 
-Time PropagationLine::latency() const { return delay_filter_.latency(); }
+Time PropagationLine::latency() const noexcept {
+  return delay_filter_.latency();
+}
 
-Sample PropagationLine::gain() const { return current_gain_; }
+Sample PropagationLine::gain() const noexcept {
+  return current_gain_;
+}
 
-void PropagationLine::set_gain(Sample gain, const sal::Time ramp_time) {
-  if (ramp_time < 0) { throw(Exception("Ramp time cannot be negative.")); }
+void PropagationLine::set_gain(Sample gain,
+                               const sal::Time ramp_time) noexcept {
+  ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
+                      "Ramp time cannot be negative.");
   updating_gain_ = true;
   previous_gain_ = current_gain_;
   target_gain_ = gain;
@@ -70,8 +72,9 @@ void PropagationLine::set_gain(Sample gain, const sal::Time ramp_time) {
 }
 
 void PropagationLine::set_distance(const Length distance,
-                                   const sal::Time ramp_time) {
-  if (ramp_time < 0) { throw(Exception("Ramp time cannot be negative.")); }
+                                   const sal::Time ramp_time) noexcept {
+  ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
+                      "Ramp time cannot be negative.");
   Time target_latency(ComputeLatency(distance, sampling_frequency_));
   if (mcl::IsEqual(target_latency_, target_latency)) { return; }
   updating_latency_ = true;
@@ -88,7 +91,7 @@ void PropagationLine::set_distance(const Length distance,
   }
 }
 
-void PropagationLine::set_air_filters_active(const bool air_filters_active) {
+void PropagationLine::set_air_filters_active(const bool air_filters_active) noexcept {
   air_filters_active_ = air_filters_active;
   if (air_filters_active_ == false) {
     air_filter_.Reset();
@@ -96,11 +99,11 @@ void PropagationLine::set_air_filters_active(const bool air_filters_active) {
 }
   
 /** Resets the state of the filter */
-void PropagationLine::Reset() {
+void PropagationLine::Reset() noexcept {
   delay_filter_.Reset();
 }
   
-void PropagationLine::Update() {
+void PropagationLine::Update() noexcept {
   if (updating_gain_) {
     if (gain_update_counter_ == gain_update_length_) {
       current_gain_ = target_gain_;
@@ -130,21 +133,22 @@ void PropagationLine::Update() {
   }
 }
   
-sal::Time PropagationLine::current_latency() const { return current_latency_; }
+sal::Time PropagationLine::current_latency() const noexcept { return current_latency_; }
   
-void PropagationLine::Tick() {
+void PropagationLine::Tick() noexcept {
   Update();
   delay_filter_.Tick();
 }
   
 Time PropagationLine::ComputeLatency(const Length distance, 
-                                     const Time sampling_frequency) {
-  if (distance < 0) { throw(Exception("Distance cannot be negative.")); }
+                                     const Time sampling_frequency) noexcept {
+  ASSERT_WITH_MESSAGE(isgreaterequal(distance, 0.0),
+                      "Distance cannot be negative.");
   return (Time) (distance / SOUND_SPEED * sampling_frequency);
 }
 
 Sample PropagationLine::ComputeGain(const Length distance, 
-                                    const Time sampling_frequency) {
+                                    const Time sampling_frequency) noexcept {
   // If you do the math looking into ComputeLatency, you'll realise that
   // the result of these operations is (SPEED_OF_SOUND/Fs_) / (distance).
   // Please observe that this gain is actually 1/r rule. In fact, 1/r rule has to be
@@ -153,11 +157,11 @@ Sample PropagationLine::ComputeGain(const Length distance,
   return (Sample) 1.0 / ComputeLatency(distance, sampling_frequency);
 }
   
-sal::Length PropagationLine::distance() const {
+sal::Length PropagationLine::distance() const noexcept {
   return current_latency_/sampling_frequency_*SOUND_SPEED;
 }
   
-void PropagationLine::Write(const sal::Sample &sample) {
+void PropagationLine::Write(const sal::Sample &sample) noexcept {
   if (air_filters_active_) {
     delay_filter_.Write(air_filter_.Filter(sample));
   } else {
@@ -165,7 +169,7 @@ void PropagationLine::Write(const sal::Sample &sample) {
   }
 }
   
-sal::Sample PropagationLine::Read() const {
+sal::Sample PropagationLine::Read() const noexcept {
   switch (interpolation_type_) {
     case rounding: {
       return delay_filter_.Read() * current_gain_;
@@ -186,7 +190,7 @@ sal::Sample PropagationLine::Read() const {
   
 
 std::vector<sal::Sample>
-  PropagationLine::GetAirFilter(sal::Length distance) {
+  PropagationLine::GetAirFilter(sal::Length distance) noexcept {
   
   std::vector<sal::Length> distances = {1,1.2743,1.6238,2.0691,2.6367,3.3598,
                                         4.2813,5.4556,6.9519,8.8587,11.288,
@@ -259,7 +263,7 @@ std::vector<sal::Sample>
       return {0.59941,0.33652,0.064613,0.00092966};
       break;
     default:
-      throw_line("");
+      assert(false);
       return std::vector<sal::Sample>(0, 1);
   }
 }

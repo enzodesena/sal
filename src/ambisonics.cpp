@@ -21,7 +21,7 @@ namespace sal {
 
 void AmbisonicsMic::RecordPlaneWaveRelative(const Signal& signal,
                                             const Point& point,
-                                            const UInt& wave_id) {
+                                            const UInt& wave_id) noexcept {
   // Precompute for performance gain
   const Angle phi = point.phi();
   const Sample sqrt_2 = mcl::Sqrt(2.0);
@@ -320,7 +320,7 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const UInt order,
                                              const Time sampling_frequency,
                                              const Length sound_speed) {
   // TODO: implement for orders higher than 6
-  if (order > 6) { throw_line(""); }
+  if (order > 6) { assert(false); }
   using mcl::Real;
   using mcl::Poly;
   using mcl::Ones;

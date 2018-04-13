@@ -20,7 +20,7 @@ namespace sal {
 
 void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
                                           const Point& point,
-                                          const UInt& wave_id) {
+                                          const UInt& wave_id) noexcept {
   if (!bypass_) {
     CreateInstanceIfNotExist(wave_id);
     
@@ -34,12 +34,12 @@ void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
   }
 }
 
-void BinauralMic::set_bypass(bool bypass) {
+void BinauralMic::set_bypass(bool bypass) noexcept {
   if (bypass_  && !bypass) { this->Reset(); }
   bypass_ = bypass;
 }
 
-void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) {
+void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) noexcept {
   // If there is no instance associated to the given wave_id then create
   if (instances_left_.count(wave_id) == 0) {
     instances_left_.insert(std::make_pair(wave_id,
@@ -51,12 +51,12 @@ void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) {
   }
 }
 
-void BinauralMic::Tick() {
+void BinauralMic::Tick() noexcept {
   stream_.left_stream()->Tick();
   stream_.right_stream()->Tick();
 }
 
-void BinauralMic::Reset() {
+void BinauralMic::Reset() noexcept {
   for(auto iterator = instances_left_.begin();
       iterator != instances_left_.end();
       ++iterator) {
@@ -81,12 +81,12 @@ BinauralMic::BinauralMic(const Point& position,
 
 // Use signals with 44100 sampling frequency!!!
 Signal BinauralMicInstance::RecordPlaneWaveRelative(const Signal& signal,
-                                                    const Point& point) {
+                                                    const Point& point) noexcept {
   UpdateFilter(point);
   return filter_.Filter(signal);
 }
 
-void BinauralMicInstance::UpdateFilter(const Point& point) {
+void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
   if (! IsEqual(point, previous_point_)) {
     // Update cache variables
     previous_point_ = point;

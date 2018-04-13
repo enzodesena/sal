@@ -15,7 +15,6 @@
 #include "iirfilter.h"
 #include "room.h"
 #include "comparisonop.h"
-#include "exception.h"
 #include "salutilities.h"
 
 #ifdef SAL_EXPORTS
@@ -43,7 +42,7 @@ public:
              const std::vector<mcl::IirFilter>& filters,
              const BoundarySetType boundary_set_type = first_order_only) :
           Room(filters, boundary_set_type), dimensions_(Triplet(x, y, z)) {
-    if (filters.size() != num_faces()) { throw_line(""); }
+    if (filters.size() != num_faces()) { assert(false); }
   }
   
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
@@ -57,13 +56,15 @@ public:
           Room(std::vector<mcl::IirFilter>(6, filter)),
           dimensions_(room_dimensions) {}
 
-  virtual std::vector<mcl::Point> CalculateBoundaryPoints(const mcl::Point& source,
-                                                          const mcl::Point& destination);
+  virtual std::vector<mcl::Point>
+  CalculateBoundaryPoints(const mcl::Point& source,
+                          const mcl::Point& destination) noexcept;
   
-  virtual std::vector<mcl::IirFilter> GetBoundaryFilters(const mcl::Point& source_point,
-                                                         const mcl::Point& mic_point);
+  virtual std::vector<mcl::IirFilter>
+  GetBoundaryFilters(const mcl::Point& source_point,
+                     const mcl::Point& mic_point) noexcept;
   
-  virtual mcl::UInt num_boundary_points();
+  virtual mcl::UInt num_boundary_points() noexcept;
   
   mcl::Point ImageSourcePosition(const mcl::Point& source_position,
                                  const mcl::Int mx,
@@ -71,29 +72,29 @@ public:
                                  const mcl::Int mz,
                                  const mcl::Int px,
                                  const mcl::Int py,
-                                 const mcl::Int pz);
+                                 const mcl::Int pz) noexcept;
   
   sal::Time SabineRt60();
   
-  Triplet dimensions() { return dimensions_.value(); }
+  Triplet dimensions() const noexcept { return dimensions_.value(); }
   
-  sal::Length x() { return dimensions_.value().x(); }
+  sal::Length x() const noexcept { return dimensions_.value().x(); }
   
-  sal::Length y() { return dimensions_.value().y(); }
+  sal::Length y() const noexcept { return dimensions_.value().y(); }
   
-  sal::Length z() { return dimensions_.value().z(); }
+  sal::Length z() const noexcept { return dimensions_.value().z(); }
   
-  void set_dimensions(const Triplet& dimensions) {
+  void set_dimensions(const Triplet& dimensions) noexcept {
     dimensions_ = dimensions;
   }
   
-  void set_target_dimensions(const Triplet& target_position);
+  void set_target_dimensions(const Triplet& target_position) noexcept;
   
-  void set_max_speed(const Speed max_speed);
+  void set_max_speed(const Speed max_speed) noexcept;
   
-  void UpdateDimensions(const Time time_elapsed_since_last_update);
+  virtual void UpdateShape(const Time time_elapsed_since_last_update) noexcept;
   
-  bool HasReachedTarget();
+  bool HasReachedTarget() noexcept;
   
   
   //  Reference system:
@@ -119,16 +120,17 @@ public:
                              const mcl::Point& source_pos,
                              const mcl::Point& observation_pos);
   
-  virtual sal::UInt num_faces() const { return 6; }
+  virtual sal::UInt num_faces() const noexcept { return 6; }
   
-  virtual sal::Length max_distance() const {
+  virtual sal::Length max_distance() const noexcept {
     return dimensions_.value().norm();
   }
   
   static bool Test();
   
-  virtual bool IsPointInRoom(const mcl::Point& point,
-                             const sal::Length precision = VERY_SMALL) const;
+  virtual bool
+  IsPointInRoom(const mcl::Point& point,
+                const sal::Length precision = VERY_SMALL) const noexcept;
   
   virtual ~CuboidRoom() {}
 private:

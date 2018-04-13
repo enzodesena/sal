@@ -25,7 +25,7 @@ public:
   MonoMic(mcl::Point position, mcl::Quaternion orientation) :
           Microphone(position, orientation) {}
   
-  virtual void Tick() {
+  virtual void Tick() noexcept {
     stream_.Tick();
   }
   
@@ -49,7 +49,7 @@ public:
 private:
   
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point&,
-                                       const UInt&) {
+                                       const UInt&) noexcept {
     stream_.Add(mcl::Multiply<sal::Sample>(signal, gain_));
   }
   
@@ -94,7 +94,7 @@ private:
   }
   
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt&) {
+                                       const UInt&) noexcept {
     stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
   }
   
@@ -136,7 +136,7 @@ private:
   }
   
   virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt&) {
+                                       const UInt&) noexcept {
     stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
   }
   
