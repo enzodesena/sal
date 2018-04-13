@@ -21,7 +21,7 @@
 namespace mcl {
   
   
-std::vector<Real> LinSpace(Real min, Real max, UInt num_elements) {
+std::vector<Real> LinSpace(Real min, Real max, UInt num_elements) noexcept {
   // This is to mimic Matlab's behaviour.
   if (num_elements <= 1) { return UnaryVector(max); }
   
@@ -36,24 +36,24 @@ std::vector<Real> LinSpace(Real min, Real max, UInt num_elements) {
 }
 
 
-std::vector<Real> Ones(UInt length) {
+std::vector<Real> Ones(UInt length) noexcept {
   return std::vector<Real>(length, (Real) 1.0);
 }
   
-Real Sum(const std::vector<Real>& input) {
+Real Sum(const std::vector<Real>& input) noexcept {
   Real output(0.0);
   for (UInt i=0; i<input.size(); ++i) { output += input[i]; }
   return output;
 }
 
-Real Mean(const std::vector<Real>& input) {
+Real Mean(const std::vector<Real>& input) noexcept {
   return Sum(input) / ((Real) input.size());
 }
   
 Real Mean(const std::vector<Real>& input,
-          const std::vector<Real>& weights) {
-  if (input.size() != weights.size()) { throw_line(""); }
-  if (! IsNonNegative(weights)) { throw_line(""); }
+          const std::vector<Real>& weights) noexcept {
+  if (input.size() != weights.size()) { assert(false); }
+  if (! IsNonNegative(weights)) { assert(false); }
   
   // Normalise the weigths
   std::vector<Real> normalised_weights = Multiply<Real>(weights, 1.0/Sum(weights));
@@ -61,24 +61,25 @@ Real Mean(const std::vector<Real>& input,
   return Sum(Multiply(input, normalised_weights));
 }
 
-Real Geomean(const std::vector<Real>& input) {
+Real Geomean(const std::vector<Real>& input) noexcept {
   // TODO: Throw error for negative entries
   return Pow(Prod(input), 1.0/((Real)input.size()));
 }
 
-Real Std(const std::vector<Real>& input) {
+Real Std(const std::vector<Real>& input) noexcept {
   return sqrt(Var(input));
 }
   
-Real Var(const std::vector<Real>& input) {
+Real Var(const std::vector<Real>& input) noexcept {
   Real mean = Mean(input);
   Real output(0.0);
   for (UInt i=0; i<input.size(); ++i) { output += pow(input[i] - mean,2.0); }
   return output/((Real) (input.size()-1));
 }
   
-Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
-  if(! IsNonNegative(weights)) { throw_line(""); }
+Real Var(const std::vector<Real>& input,
+         const std::vector<Real>& weights) noexcept {
+  if(! IsNonNegative(weights)) { assert(false); }
   
   Real weighted_mean = Mean(input, weights);
   std::vector<Real> temp = Pow(Add(input, -weighted_mean), 2.0);
@@ -87,7 +88,7 @@ Real Var(const std::vector<Real>& input, const std::vector<Real>& weights) {
   return (Sum(Multiply(norm_weights, temp)));
 }
   
-std::vector<std::string> Split(const std::string &s, char delim) {
+std::vector<std::string> Split(const std::string &s, char delim) noexcept {
   std::vector<std::string> elems;
   std::stringstream ss(s);
   std::string item;
@@ -97,7 +98,7 @@ std::vector<std::string> Split(const std::string &s, char delim) {
   return elems;
 }
   
-std::vector<Complex> Poly(const std::vector<Complex> roots) {
+std::vector<Complex> Poly(const std::vector<Complex> roots) noexcept {
   UInt n(Length(roots));
   std::vector<Complex> output = Zeros<Complex>(n+1);
   // c = [1 zeros(1,n,class(x))];
@@ -115,13 +116,13 @@ std::vector<Complex> Poly(const std::vector<Complex> roots) {
   return output;
 }
   
-std::vector<Complex> Poly(const std::vector<Real> roots) {
+std::vector<Complex> Poly(const std::vector<Real> roots) noexcept {
   return Poly(ComplexVector(roots));
 }
   
 std::vector<Real>
-ColonOperator(const Real from, const Real step, const Real to) {
-  if (step <= 0) { throw_line(""); }
+ColonOperator(const Real from, const Real step, const Real to) noexcept {
+  if (step <= 0) { assert(false); }
   std::vector<Real> output;
   output.push_back(from);
   UInt i = 0;
@@ -131,7 +132,7 @@ ColonOperator(const Real from, const Real step, const Real to) {
   return output;
 }
 
-std::vector<Real> TukeyWin(const UInt length, const Real ratio) {
+std::vector<Real> TukeyWin(const UInt length, const Real ratio) noexcept {
   if (length == 1) { return UnaryVector<Real>(1.0); }
   if (ratio <= 0) { return Ones(length); }
   else if (ratio >= 1.0) { return Hann(length); }
@@ -154,7 +155,7 @@ std::vector<Real> TukeyWin(const UInt length, const Real ratio) {
   }
 }
   
-std::vector<Real> Hann(const UInt length) {
+std::vector<Real> Hann(const UInt length) noexcept {
   std::vector<Real> w = Ones(length);
   for (UInt i=0; i<length; ++i) {
     w[i] = (1.0-cos(2.0*PI*((Real)i)/((Real)(length-1))))/2.0;
@@ -162,7 +163,7 @@ std::vector<Real> Hann(const UInt length) {
   return w;
 }
   
-Real Norm(const std::vector<Real>& vector, Real l_norm) {
+Real Norm(const std::vector<Real>& vector, Real l_norm) noexcept {
   const UInt num_elements = vector.size();
   Real output = 0.0;
   for (UInt i=0; i<num_elements; ++i) {
@@ -171,7 +172,7 @@ Real Norm(const std::vector<Real>& vector, Real l_norm) {
   return pow(output, 1.0/l_norm);
 }
   
-bool IsNonNegative(const std::vector<Real>& input) {
+bool IsNonNegative(const std::vector<Real>& input) noexcept {
   const UInt num_elem = input.size();
   for (UInt i=0; i<num_elem; ++i) {
     if (input[i] < 0.0) { return false; }
@@ -179,14 +180,15 @@ bool IsNonNegative(const std::vector<Real>& input) {
   return true;
 }
   
-Matrix<Real> Cov(const std::vector<Real>& x, const std::vector<Real>& y) {
+Matrix<Real> Cov(const std::vector<Real>& x,
+                 const std::vector<Real>& y) noexcept {
   std::vector<std::vector<Real> > input(2);
   input[0] = x;
   input[1] = y;
   return Cov(input);
 }
   
-Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) {
+Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) noexcept {
   const UInt N = input.size();
   Matrix<Real> output(N, N);
   for (UInt i=0; i<N; ++i) {
@@ -197,9 +199,10 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) {
   return output;
 }
   
-Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y) {
+Real CovElement(const std::vector<Real>& x,
+                const std::vector<Real>& y) noexcept {
   const UInt N = x.size();
-  if (N != y.size()) { throw_line(""); }
+  if (N != y.size()) { assert(false); }
   
   Real output = Sum(Multiply(Add(x, -Mean(x)), Add(y, -Mean(y))));
   // In case N>1 use the unbiased estimator of covariance.
@@ -207,7 +210,7 @@ Real CovElement(const std::vector<Real>& x, const std::vector<Real>& y) {
   return output;
 }
   
-std::vector<Real> CumSum(const std::vector<Real>& input) {
+std::vector<Real> CumSum(const std::vector<Real>& input) noexcept {
   const UInt N = input.size();
   std::vector<Real> output(input.size());
   
@@ -217,7 +220,7 @@ std::vector<Real> CumSum(const std::vector<Real>& input) {
   return output;
 }
   
-std::vector<Real> Hamming(const UInt length) {
+std::vector<Real> Hamming(const UInt length) noexcept {
   const Real alpha = 0.54;
   const Real beta = 1.0-alpha;
   std::vector<Real> w = Ones(length);
@@ -229,7 +232,7 @@ std::vector<Real> Hamming(const UInt length) {
 
 std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
                                         const std::vector<Real>& window,
-                                        const UInt frame_increment) {
+                                        const UInt frame_increment) noexcept {
   std::vector<std::vector<Real> > output;
   UInt i = 0;
   while ((i + window.size())<=input.size()) {
@@ -249,12 +252,12 @@ std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
 
 std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
                              const std::vector<Real>& window,
-                             const UInt frame_increment) {
+                             const UInt frame_increment) noexcept {
   const UInt num_frames = frames.size();
   std::vector<Real> output(window.size()+(num_frames-1)*frame_increment);
   for (UInt frame_i=0; frame_i<num_frames; ++frame_i) {
     if (frames[frame_i].size() != window.size()) {
-      throw_line("Frame length different from window length");
+      ASSERT_WITH_MESSAGE(false, "Frame length different from window length");
     }
     for (UInt k=0; k<window.size(); ++k) {
       output[frame_i*frame_increment+k] += window[k] * frames[frame_i][k];
@@ -263,7 +266,7 @@ std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
   return output;
 }
   
-std::vector<Complex> ConvertToComplex(std::vector<Real> input) {
+std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
   std::vector<Complex> output;
   for (UInt i=0; i<input.size(); ++i) {
     output.push_back(Complex(input[i], 0.0));

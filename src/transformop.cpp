@@ -20,7 +20,8 @@ namespace mcl {
 
   
   
-std::vector<Complex> Fft(const std::vector<Complex>& input, UInt n_point) {
+std::vector<Complex> Fft(const std::vector<Complex>& input,
+                         UInt n_point) noexcept {
   std::vector<Complex> padded = ZeroPad(input, n_point);
   kissfft<Real> fft((int) n_point, false);
   std::vector<Complex> outbuf(n_point);
@@ -30,7 +31,8 @@ std::vector<Complex> Fft(const std::vector<Complex>& input, UInt n_point) {
   return outbuf;
 }
 
-std::vector<Complex> Ifft(const std::vector<Complex>& input, UInt n_point) {
+std::vector<Complex> Ifft(const std::vector<Complex>& input,
+                          UInt n_point) noexcept {
   std::vector<Complex> padded = ZeroPad(input, n_point);
   kissfft<Real> fft((int) n_point, true);
   std::vector<Complex> outbuf(n_point);
@@ -42,7 +44,7 @@ std::vector<Complex> Ifft(const std::vector<Complex>& input, UInt n_point) {
 
 
 
-std::vector<Complex> Hilbert(const std::vector<Real>& input) {
+std::vector<Complex> Hilbert(const std::vector<Real>& input) noexcept {
   UInt n = input.size();
   
   std::vector<Complex> x = Fft(ComplexVector(input), n);
@@ -74,7 +76,7 @@ std::vector<Complex> Hilbert(const std::vector<Real>& input) {
 
 // Returns the real cepstrum of the real sequence X.
 // Equivalent to Matlab's rceps(vector)
-std::vector<Real> RCeps(const std::vector<Real>& x) {
+std::vector<Real> RCeps(const std::vector<Real>& x) noexcept {
   UInt n = Length(x);
   std::vector<Real> fftxabs = Abs(Fft(ComplexVector(x), n));
   //  TODO: implement this check.
@@ -88,7 +90,7 @@ std::vector<Real> RCeps(const std::vector<Real>& x) {
 
 // Returns the (unique) minimum-phase sequence that has the same real 
 // cepstrum as vector. Equivalent to Matlab's [~, out] = rceps(vector).
-std::vector<Real> MinPhase(const std::vector<Real>& x) {
+std::vector<Real> MinPhase(const std::vector<Real>& x) noexcept {
   UInt n = Length(x);
   // odd = fix(rem(n,2));
   UInt odd = Fix(Rem((Int) n,2));
@@ -104,7 +106,8 @@ std::vector<Real> MinPhase(const std::vector<Real>& x) {
 }
 
 
-std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point) {
+std::vector<Complex> Rfft(const std::vector<Real>& input,
+                          UInt n_point) noexcept {
   return Elements(Fft(ConvertToComplex(input), n_point), 0,
                   (Int) floor(1.0+((double)n_point)/2.0)-1);
 }
@@ -112,7 +115,7 @@ std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point) {
 
 
 std::vector<std::vector<Complex> >
-Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) {
+Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) noexcept {
   std::vector<std::vector<Complex> > outputs;
   for (UInt i=0; i<input.size(); ++i) {
     outputs.push_back(Rfft(input[i], n_point));
@@ -121,7 +124,8 @@ Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) {
 }
 
 
-std::vector<Real> Irfft(const std::vector<Complex>& input, UInt n_point) {
+std::vector<Real> Irfft(const std::vector<Complex>& input,
+                        UInt n_point) noexcept {
   // If n_point is even, then it includes the Nyquist term (the only
   // non-repeated term, together with DC) and is of dimension M=N/2 + 1
   // whereas if N is odd then there is no Nyquist term
@@ -146,7 +150,7 @@ std::vector<Real> Irfft(const std::vector<Complex>& input, UInt n_point) {
 
 
 std::vector<std::vector<Real> >
-Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) {
+Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) noexcept {
   std::vector<std::vector<Real> > outputs;
   for (UInt i=0; i<input.size(); ++i) {
     outputs.push_back(Irfft(input[i], n_point));
@@ -158,7 +162,7 @@ Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) {
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b) {
   // TODO: implement for different sizes
-  if (vector_a.size() != vector_b.size()) { throw_line(""); }
+  if (vector_a.size() != vector_b.size()) { assert(false); }
   
   UInt M = vector_a.size();
   

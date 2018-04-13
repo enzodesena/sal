@@ -17,12 +17,12 @@
 
 namespace mcl {
 
-std::vector<Real> FirFilter::impulse_response() {
+std::vector<Real> FirFilter::impulse_response() noexcept {
   return std::vector<Real>(impulse_response_.begin(),
                            impulse_response_.end());
 }
   
-FirFilter::FirFilter() :
+FirFilter::FirFilter() noexcept :
         impulse_response_(mcl::UnaryVector<float>(1.0)),
         impulse_response_old_(mcl::UnaryVector<float>(1.0)),
         update_index_(0), update_length_(0), updating_(false),
@@ -31,7 +31,7 @@ FirFilter::FirFilter() :
   delay_line_.assign(1, 0.0);
 }
   
-FirFilter::FirFilter(std::vector<Real> B) :
+FirFilter::FirFilter(std::vector<Real> B) noexcept :
         impulse_response_(std::vector<float>(B.begin(), B.end())),
         impulse_response_old_(std::vector<float>(B.begin(), B.end())),
         update_index_(0), update_length_(0), updating_(false),
@@ -41,7 +41,7 @@ FirFilter::FirFilter(std::vector<Real> B) :
 }
   
 
-Real FirFilter::Filter(Real input_sample) {
+Real FirFilter::Filter(Real input_sample) noexcept {
   if (updating_) { UpdateCoefficients(); }
   
   delay_line_[counter_] = (float) input_sample;
@@ -109,7 +109,7 @@ Real FirFilter::Filter(Real input_sample) {
   return (Real) result;
 }
   
-std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
+std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) noexcept {
   if (updating_) { UpdateCoefficients(); }
 #ifdef OSXIOS
   if (input.size() < length_) { return FilterSequential(input); }
@@ -147,7 +147,8 @@ std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) {
 #endif
 }
   
-std::vector<Real> FirFilter::FilterSequential(const std::vector<Real>& input) {
+std::vector<Real>
+FirFilter::FilterSequential(const std::vector<Real>& input) noexcept {
   std::vector<Real> output(input.size());
   for (UInt i=0; i<input.size(); ++i) {
     output[i] = this->Filter(input[i]);
@@ -156,19 +157,19 @@ std::vector<Real> FirFilter::FilterSequential(const std::vector<Real>& input) {
 }
   
 
-FirFilter FirFilter::GainFilter(Real gain) {
+FirFilter FirFilter::GainFilter(Real gain) noexcept {
   std::vector<Real> B(1);
   B[0] = 1.0*gain;
   
   return FirFilter(B);
 }
   
-void FirFilter::Reset() {
+void FirFilter::Reset() noexcept {
   delay_line_ = Zeros<float>(delay_line_.size());
 }
   
 void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
-                                     const Int update_length) {
+                                     const Int update_length) noexcept {
   if (mcl::IsEqual(std::vector<float>(impulse_response.begin(),
                                       impulse_response.end()),
                    impulse_response_)) {
@@ -198,7 +199,7 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
   assert(impulse_response_.size() == impulse_response_old_.size());
 }
 
-void FirFilter::UpdateCoefficients() {
+void FirFilter::UpdateCoefficients() noexcept {
   assert(update_index_>=0 & update_index_<=update_length_);
   assert(impulse_response_.size() == impulse_response_old_.size());
   float weight_new = ((float)update_index_+1)/((float)update_length_+1);

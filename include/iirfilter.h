@@ -10,7 +10,6 @@
 #define MCL_IIRFILTER_H
 
 #include "digitalfilter.h"
-#include "exception.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)
@@ -109,9 +108,10 @@ private:
   std::vector<IirFilter> filters_;
   
 public:
-  IirFilterBank(const std::vector<IirFilter>& filters) : filters_(filters) {}
+  IirFilterBank(const std::vector<IirFilter>& filters) noexcept :
+        filters_(filters) {}
   
-  virtual UInt num_filters() { return filters_.size(); }
+  virtual UInt num_filters() noexcept { return filters_.size(); }
   
   /** Returns the output of the filter bank for an input equal to `input`. */
   virtual std::vector<Real> Filter(const Real input);
@@ -130,23 +130,22 @@ public:
   /**
    @param[in] decay_samples number of samples after which the value decreases
    to 1/e of the original value. */
-  SmoothingFilter(Real decay_samples) {
-    if (decay_samples<0) {
-      throw(Exception("Decay constant cannot be negative "));
-    }
+  SmoothingFilter(Real decay_samples) noexcept {
+    ASSERT_WITH_MESSAGE(isgreaterequal(decay_samples, 0),
+                        "Decay constant cannot be negative ");
     a1_ = exp(-1.0/decay_samples);
     b0_ = 1.0 - a1_;
     output_ = 0.0;
   }
   
-  virtual Real Filter(const Real input) {
+  virtual Real Filter(const Real input) noexcept {
     output_ = b0_*input + a1_*output_;
     return output_;
   }
   
   using DigitalFilter::Filter;
   
-  virtual void Reset() { output_ = 0.0; }
+  virtual void Reset() noexcept { output_ = 0.0; }
   
 private:
   Real output_;

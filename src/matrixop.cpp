@@ -11,7 +11,7 @@
 
 namespace mcl {
   
-Matrix<Real> RealPart(const Matrix<Complex>& input) {
+Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept {
   Matrix<Real> output(input.num_rows(), input.num_columns());
   for (UInt i=0; i<input.num_rows(); ++i) {
     for (UInt j=0; j<input.num_columns(); ++j) {
@@ -35,7 +35,7 @@ Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input) {
   
   
 EigOutput Eig(const Matrix<Real>& matrix) {
-  if (matrix.num_columns() != matrix.num_rows()) { throw_line(""); }
+  if (matrix.num_columns() != matrix.num_rows()) { assert(false); }
   
   const UInt N = matrix.num_columns();
   EigOutput output;

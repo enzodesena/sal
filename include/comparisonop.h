@@ -44,7 +44,7 @@ MCL_API bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
 template<class T>
 MCL_API bool IsEqual(const std::vector<T>& vector_a,
                      const std::vector<T>& vector_b,
-                     Real precision = VERY_SMALL) {
+                     Real precision = VERY_SMALL) noexcept {
   if (vector_a.size() != vector_b.size())
     return false;
   

@@ -213,6 +213,7 @@ bool PointTest() {
                                        Point(2,0,0), Point(0,0,1)));
   
   
+  
   return true;
 }
 
