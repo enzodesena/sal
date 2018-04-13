@@ -41,6 +41,7 @@ int main(int argc, char * const argv[]) {
     sal::CuboidRoom::Test();
     sal::Ism::Test();
     sal::RirAnalysis::Test();
+    sal::TripletHandler::Test();
     
     std::cout<<"All tests succeded!\n";
     

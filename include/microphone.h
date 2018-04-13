@@ -55,6 +55,14 @@ public:
   /** Set microphone position */
   void set_position(const mcl::Point& position);
   
+  void set_target_position(const mcl::Point& target_position);
+  
+  void set_max_speed(const Speed max_speed);
+  
+  void UpdatePosition(const Time time_elapsed_since_last_tick);
+  
+  bool HasReachedTarget();
+  
   /** Returns current orientation of the microphone */
   mcl::Quaternion orientation() const;
   
@@ -111,11 +119,6 @@ public:
   
   virtual bool IsCoincident() = 0;
   
-  /*
-   This is true when the microphone can handle frames.
-   */
-  virtual bool IsFrameEnabled() { return true; }
-  
   virtual bool IsOmni() { return false; }
   
   /** This method translates `point` in the reference system of the mic. */
@@ -164,7 +167,7 @@ private:
                                        const UInt& wave_id) = 0;
   
 protected:
-  mcl::Point position_;
+  TripletHandler position_;
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;
   

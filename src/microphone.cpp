@@ -21,13 +21,28 @@ Microphone::Microphone(Point position, mcl::Quaternion orientation) :
   handedness_(mcl::right_handed) {}
   
 
-Point Microphone::position() const { return position_; }
+Point Microphone::position() const { return position_.value(); }
 
 void Microphone::set_position(const Point& position) {
-  position_ = position;
+  position_.set_value(position);
   last_point_.clear();
 }
   
+void Microphone::set_target_position(const Point& position) {
+  position_.set_target_value(position);
+}
+
+bool Microphone::HasReachedTarget() {
+  return position_.HasReachedTarget();
+}
+
+void Microphone::set_max_speed(const Speed max_speed) {
+  position_.set_max_speed(max_speed);
+}
+
+void Microphone::UpdatePosition(const Time time_elapsed_since_last_update) {
+  position_.Update(time_elapsed_since_last_update);
+}
   
 /** Returns current orientation of the microphone */
 Quaternion Microphone::orientation() const { return orientation_; }
@@ -75,9 +90,9 @@ void Microphone::RecordPlaneWaveRelative(const Sample& sample,
 
 Point Microphone::GetRelativePoint(const Point& point) const {
   // Centering the reference system around the microphone
-  Point centered(point.x()-position_.x(),
-                 point.y()-position_.y(),
-                 point.z()-position_.z());
+  Point centered(point.x()-position_.value().x(),
+                 point.y()-position_.value().y(),
+                 point.z()-position_.value().z());
   
   // Instead of rotating the head, we are rotating the point in an opposite
   // direction (that's why the QuatInverse).

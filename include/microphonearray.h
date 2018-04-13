@@ -71,9 +71,9 @@ public:
    The relative positions of the different microphones will stay unchanged.
    */
   virtual void set_position(const mcl::Point& position) {
-    mcl::Point position_delta(position.x()-position_.x(),
-                              position.y()-position_.y(),
-                              position.z()-position_.z());
+    mcl::Point position_delta(position.x()-position_.value().x(),
+                              position.y()-position_.value().y(),
+                              position.z()-position_.value().z());
     for (UInt i=0; i<microphones_.size(); ++i) {
       mcl::Point old_mic_position = microphones_[i]->position();
       mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),

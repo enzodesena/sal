@@ -31,9 +31,9 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
   return IsLargerOrEqual(point.x(), 0.0, precision) &&
          IsLargerOrEqual(point.y(), 0.0, precision) &&
          IsLargerOrEqual(point.z(), 0.0, precision) &&
-         IsSmallerOrEqual(point.x(), x_, precision) &&
-         IsSmallerOrEqual(point.y(), y_, precision) &&
-         IsSmallerOrEqual(point.z(), z_, precision);
+         IsSmallerOrEqual(point.x(), dimensions_.value().x(), precision) &&
+         IsSmallerOrEqual(point.y(), dimensions_.value().y(), precision) &&
+         IsSmallerOrEqual(point.z(), dimensions_.value().z(), precision);
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
@@ -170,7 +170,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(1,0,0);
       break;
     case x2: // x_2
-      plane_point = Point(x_,0,0);
+      plane_point = Point(dimensions_.value().x(),0,0);
       plane_normal = Point(1,0,0);
       break;
     case y1: // y_1
@@ -178,7 +178,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(0,1,0);
       break;
     case y2: // y_2
-      plane_point = Point(0,y_,0);
+      plane_point = Point(0,dimensions_.value().y(),0);
       plane_normal = Point(0,1,0);
       break;
     case z1: // z_1
@@ -186,7 +186,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(0,0,1);
       break;
     case z2: // z_2
-      plane_point = Point(0,0,z_);
+      plane_point = Point(0,0,dimensions_.value().z());
       plane_normal = Point(0,0,1);
       break;
     default:
@@ -236,7 +236,7 @@ Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
 
 
 Time CuboidRoom::SabineRt60() {
-  Length volume = x_*y_*z_;
+  Length volume = dimensions_.value().x()*dimensions_.value().y()*dimensions_.value().z();
   Length weighted_area = 0.0;
   
   for (UInt i=0; i<6; ++i) {
@@ -252,17 +252,17 @@ Time CuboidRoom::SabineRt60() {
     switch (i) {
       case 0:   // x_1
       case 1: { // x_2
-        area = y_*z_;
+        area = dimensions_.value().y()*dimensions_.value().z();
         break;
       }
       case 2:   // y_1
       case 3: { // y_2
-        area = x_*z_;
+        area = dimensions_.value().x()*dimensions_.value().z();
         break;
       }
       case 4:   // z_1
       case 5: { // z_2
-        area = x_*y_;
+        area = dimensions_.value().x()*dimensions_.value().y();
         break;
       }
     }
@@ -276,12 +276,28 @@ Time CuboidRoom::SabineRt60() {
 mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
                                            const Int mx, const Int my, const Int mz,
                                            const Int px, const Int py, const Int pz) {
-  Length r2l_x = 2.0*x_*((sal::Length)mx);
-  Length r2l_y = 2.0*y_*((sal::Length)my);
-  Length r2l_z = 2.0*z_*((sal::Length)mz);
+  Length r2l_x = 2.0*dimensions_.value().x()*((sal::Length)mx);
+  Length r2l_y = 2.0*dimensions_.value().y()*((sal::Length)my);
+  Length r2l_z = 2.0*dimensions_.value().z()*((sal::Length)mz);
   return Point((1.0-2.0*((Length)px))*source_position.x()+r2l_x,
                (1.0-2.0*((Length)py))*source_position.y()+r2l_y,
                (1.0-2.0*((Length)pz))*source_position.z()+r2l_z);
+}
+  
+void CuboidRoom::set_target_dimensions(const Triplet& dimensions) {
+  dimensions_.set_target_value(dimensions);
+}
+
+bool CuboidRoom::HasReachedTarget() {
+  return dimensions_.HasReachedTarget();
+}
+
+void CuboidRoom::set_max_speed(const Speed max_speed) {
+  dimensions_.set_max_speed(max_speed);
+}
+
+void CuboidRoom::UpdateDimensions(const Time time_elapsed_since_last_update) {
+  dimensions_.Update(time_elapsed_since_last_update);
 }
   
 } // namespace sal

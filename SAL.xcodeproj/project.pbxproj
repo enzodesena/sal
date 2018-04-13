@@ -46,6 +46,7 @@
 		5778114020600B5B004B9C6F /* cuboidroom_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */; };
 		5778114120600B5B004B9C6F /* tdbem_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113C20600B5A004B9C6F /* tdbem_test.cpp */; };
 		5778114220600B5B004B9C6F /* fdtd_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113D20600B5A004B9C6F /* fdtd_test.cpp */; };
+		5787B4F1208031060068C104 /* salutilities_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5787B4F0208031060068C104 /* salutilities_test.cpp */; };
 		57895F6216304F18002C962B /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		57895F7C16305460002C962B /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		578A62261D89346200233890 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
@@ -274,6 +275,7 @@
 		5778113C20600B5A004B9C6F /* tdbem_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tdbem_test.cpp; path = src/test/tdbem_test.cpp; sourceTree = "<group>"; };
 		5778113D20600B5A004B9C6F /* fdtd_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fdtd_test.cpp; path = src/test/fdtd_test.cpp; sourceTree = "<group>"; };
 		578751E715AE01590008761C /* sphericalmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalmic.cpp; path = src/sphericalmic.cpp; sourceTree = "<group>"; };
+		5787B4F0208031060068C104 /* salutilities_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = salutilities_test.cpp; path = src/test/salutilities_test.cpp; sourceTree = "<group>"; };
 		57895F5B16304F00002C962B /* propagationline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = propagationline.h; path = include/propagationline.h; sourceTree = "<group>"; };
 		57895F5D16304F18002C962B /* propagationline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = propagationline.cpp; path = src/propagationline.cpp; sourceTree = "<group>"; };
 		578A62251D89346200233890 /* source.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = source.cpp; path = src/source.cpp; sourceTree = "<group>"; };
@@ -433,9 +435,9 @@
 				57895F5D16304F18002C962B /* propagationline.cpp */,
 				57A156DC1593460A00AA6445 /* kemarmic.cpp */,
 				578751E715AE01590008761C /* sphericalmic.cpp */,
+				57C94CC6204F853400471213 /* salutilities.cpp */,
 				57A156DF1593460A00AA6445 /* microphone.cpp */,
 				57CE72B91C9583FC00149808 /* pawrapper.cpp */,
-				57C94CC6204F853400471213 /* salutilities.cpp */,
 				578A62251D89346200233890 /* source.cpp */,
 				578E967215D128820094FBBE /* freefieldsimulation.cpp */,
 				5768D6231639CFFB00F557B8 /* wavhandler.cpp */,
@@ -505,6 +507,7 @@
 				57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */,
 				57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */,
 				57B4EF911CD81AB400134991 /* stream_test.cpp */,
+				5787B4F0208031060068C104 /* salutilities_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				5768D6241639CFFB00F557B8 /* wavhandler.cpp in Sources */,
 				578A62261D89346200233890 /* source.cpp in Sources */,
 				5778114020600B5B004B9C6F /* cuboidroom_test.cpp in Sources */,
+				5787B4F1208031060068C104 /* salutilities_test.cpp in Sources */,
 				57B4EF921CD81AB400134991 /* ambisonics_test.cpp in Sources */,
 				5778114120600B5B004B9C6F /* tdbem_test.cpp in Sources */,
 				5778113F20600B5B004B9C6F /* ism_test.cpp in Sources */,
