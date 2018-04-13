@@ -70,6 +70,11 @@ public:
   
   virtual void UpdateShape(const Time time_since_last_update) noexcept = 0;
   
+  /** Returns true if the specified point is inside the room.
+   @param[in] wall_distance This parameter allows to set also a safe distance
+   form the walls. For instance, if wall_distance is set to 1 meter,
+   and the point is less than 1 meter away from a wall,
+   this method will return false. */
   virtual bool
   IsPointInRoom(const mcl::Point& point,
                 const sal::Length wall_distance = 0.0) const noexcept = 0;
