@@ -7,7 +7,6 @@
  */
 
 #include "quaternion.h"
-#include "exception.h"
 #include "elementaryop.h"
 #include "comparisonop.h"
 
@@ -145,7 +144,7 @@ Real Quat2EulX(const Quaternion q, const EulerOrder order) {
                    pow(q.w(),2.0)+pow(q.z(),2.0)-pow(q.y(),2.0)-pow(q.x(),2.0));
       break;
     default:
-      throw_line("");
+      assert(false);
       return NAN;
       break;
   }
@@ -159,7 +158,7 @@ Real Quat2EulZ(const Quaternion q, const EulerOrder order) {
                    -pow(q.y(), 2.0)-pow(q.z(), 2.0));
       break;
     default:
-      throw_line("");
+      assert(false);
       return NAN;
       break;
   }
@@ -171,7 +170,7 @@ Real Quat2EulY(const Quaternion q, const EulerOrder order) {
       return asin(2.0*q.x()*q.z()+2.0*q.w()*q.y());
       break;
     default:
-      throw_line("");
+      assert(false);
       return NAN;
       break;
   }

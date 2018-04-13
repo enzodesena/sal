@@ -10,7 +10,6 @@
 
 #include "butter.h"
 #include "mcltypes.h"
-#include "exception.h"
 #include <vector>
 #include <math.h>
 #include <complex>
@@ -92,7 +91,7 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
                                      double Lcutoff,
                                      double Ucutoff,
                                      std::vector<double> DenC) {
-  if ((Lcutoff < 0.0) | (Ucutoff > 1.0)) { throw_line(""); }
+  if ((Lcutoff < 0.0) | (Ucutoff > 1.0)) { assert(false); }
   
   int i;
   
@@ -144,7 +143,7 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
 std::vector<double> ComputeDenCoeffs(int FilterOrder,
                                      double Lcutoff,
                                      double Ucutoff ) {
-  if ((Lcutoff < 0.0) | (Ucutoff > 1.0)) { throw_line(""); }
+  if ((Lcutoff < 0.0) | (Ucutoff > 1.0)) { assert(false); }
   
   int k;            // loop variables
   double theta;     // PI * (Ucutoff - Lcutoff) / 2.0

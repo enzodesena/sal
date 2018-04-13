@@ -10,7 +10,6 @@
 #define MCL_IIRFILTER_H
 
 #include "digitalfilter.h"
-#include "exception.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)
@@ -164,9 +163,8 @@ public:
    @param[in] decay_samples number of samples after which the value decreases
    to 1/e of the original value. */
   SmoothingFilter(Real decay_samples) {
-    if (decay_samples<0) {
-      throw(Exception("Decay constant cannot be negative "));
-    }
+    ASSERT_WITH_MESSAGE(isgreaterequal(decay_samples, 0),
+                        "Decay constant cannot be negative ");
     a1_ = exp(-1.0/decay_samples);
     b0_ = 1.0 - a1_;
     output_ = 0.0;

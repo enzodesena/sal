@@ -10,7 +10,6 @@
 #include <iostream>
 #include <cmath>
 #include "comparisonop.h"
-#include "exception.h"
 
 namespace mcl {
 
@@ -179,7 +178,7 @@ bool IntersectionPlaneLineExists(const Point& line_point, const Point& line_dire
 Point IntersectionPlaneLine(const Point& line_point, const Point& line_direction,
                             const Point& plane_point, const Point& plane_normal) {
   if (! IntersectionPlaneLineExists(line_point, line_direction,
-                                    plane_point, plane_normal)) { throw_line(""); }
+                                    plane_point, plane_normal)) { assert(false); }
   
   Real d = DotProduct(Subtract(plane_point, line_point),
                       plane_normal) /

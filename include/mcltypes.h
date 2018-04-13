@@ -13,6 +13,8 @@
   #define PI 3.141592653589793238462643383279502884197169399375105820974944
 #endif
 
+#define ASSERT_WITH_MESSAGE(condition, message) assert(condition && message)
+
 #define throw_line(arg) throw(mcl::Exception(std::string("Error at line n. ") + \
       std::string(std::to_string(__LINE__)) + std::string(" of file ") + \
       std::string(__FILE__) + std::string(" ") + arg))

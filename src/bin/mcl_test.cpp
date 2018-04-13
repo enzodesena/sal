@@ -15,7 +15,6 @@
 #include "firfilter.h"
 #include "randomop.h"
 #include "iirfilter.h"
-#include "exception.h"
 
 
 
@@ -37,8 +36,6 @@ int main (int argc, char * const argv[]) {
   FirFilter::SpeedTests();
   FirFilter::Test();
   RandomGenerator::Test();
-  
-  Exception::ExceptionTest();
   
   
   std::cout<<"All tests succeded!\n";

@@ -13,7 +13,6 @@
 #include "mcltypes.h"
 #include <vector>
 #include <limits>
-#include "exception.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)
@@ -30,7 +29,7 @@ namespace mcl {
 template<class T> 
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
                            const std::vector<T>& vector_b) {
-  if (vector_a.size() != vector_b.size()) { throw_line(""); }
+  if (vector_a.size() != vector_b.size()) { assert(false); }
   
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
@@ -74,7 +73,7 @@ MCL_API std::vector<T> Subtract(const std::vector<T>& vector_a,
 template<class T> 
 MCL_API std::vector<T> Multiply(const std::vector<T>& vector_a,
                                 const std::vector<T>& vector_b) {
-  if (vector_a.size() != vector_b.size()) { throw_line(""); }
+  if (vector_a.size() != vector_b.size()) { assert(false); }
   
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
@@ -90,7 +89,7 @@ MCL_API std::vector<T> Multiply(const std::vector<T>& vector_a,
 template<class T>
 MCL_API std::vector<T> Divide(const std::vector<T>& vector_a,
                               const std::vector<T>& vector_b) {
-  if (vector_a.size() != vector_b.size()) { throw_line(""); }
+  if (vector_a.size() != vector_b.size()) { assert(false); }
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]/vector_b[i];
