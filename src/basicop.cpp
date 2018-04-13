@@ -40,7 +40,7 @@ std::vector<UInt> FindPeaksIndexes(const std::vector<Real>& vector,
 }
   
 template<>
-UInt MaxIndex<UInt>(const std::vector<UInt>& input) {
+UInt MaxIndex<UInt>(const std::vector<UInt>& input) noexcept {
   return MinIndex(Opposite(ConvertToInt(input)));
 }
 

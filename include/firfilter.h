@@ -25,10 +25,10 @@ namespace mcl {
 class MCL_API FirFilter : public DigitalFilter {
 public:
   /** Constructs a default FIR filter, i.e. identical filter */
-  FirFilter();
+  FirFilter() noexcept;
   
   /** Constructs an FIR filter with impulse response B. */
-  FirFilter(std::vector<Real> B);
+  FirFilter(std::vector<Real> B) noexcept;
   
   /** 
    Returns the output of the filter for an input equal to `input`.
@@ -37,10 +37,10 @@ public:
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real Filter(const Real input);
+  virtual Real Filter(const Real input) noexcept;
   
   /** Returns the output of the filter for an input signal equal to `input`. */
-  virtual std::vector<Real> Filter(const std::vector<Real>& input);
+  virtual std::vector<Real> Filter(const std::vector<Real>& input) noexcept;
   
   /** 
    Updates the filter coefficients. You can set how long it takes to 
@@ -55,16 +55,16 @@ public:
    is difficult to update a filter when using DSP-enabled batch filtering. 
    */
   void set_impulse_response(const std::vector<Real>& impulse_response,
-                            const Int update_length = 0);
+                            const Int update_length = 0) noexcept;
   
   /** Resets the state of the filter */
-  void Reset();
+  void Reset() noexcept;
   
   /** Returns the impulse response of the filter */
-  std::vector<Real> impulse_response();
+  std::vector<Real> impulse_response() noexcept;
   
   /** Constructs a filter for which output==gain*input always. */
-  static FirFilter GainFilter(const Real gain);
+  static FirFilter GainFilter(const Real gain) noexcept;
   
   /** Tests */
   static bool Test();
@@ -74,12 +74,12 @@ public:
   virtual ~FirFilter() {}
   
 private:
-  std::vector<Real> FilterSequential(const std::vector<Real>& input);
+  std::vector<Real> FilterSequential(const std::vector<Real>& input) noexcept;
   /** Method called to slowly update the filter coefficients. It is called
    every time one of the Filter method is called and is activated only
    if updating_ = true. TODO: uniformise action between sequential and
    batch. */
-  void UpdateCoefficients();
+  void UpdateCoefficients() noexcept;
   
   std::vector<float> impulse_response_;
   std::vector<float> impulse_response_old_;

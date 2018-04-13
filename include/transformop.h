@@ -27,13 +27,14 @@ namespace mcl {
  Equivalent to Matlab's fft(input, n_point)
  */
 MCL_API std::vector<Complex> Fft(const std::vector<Complex>& input,
-                                 UInt n_point);
+                                 UInt n_point) noexcept;
 
 /**
  Performs the fft of the real input signal.
  Equivalent to Voice Box's rfft(input, n_point)
  */
-MCL_API std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point);
+MCL_API std::vector<Complex> Rfft(const std::vector<Real>& input,
+                                  UInt n_point) noexcept;
 
   
 /**
@@ -41,7 +42,7 @@ MCL_API std::vector<Complex> Rfft(const std::vector<Real>& input, UInt n_point);
  Equivalent to Voice Box's rfft(input, n_point)
  */
 MCL_API std::vector<std::vector<Complex> >
-Rfft(const std::vector<std::vector<Real> >& input, UInt n_point);
+Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) noexcept;
   
   
 /**
@@ -49,7 +50,7 @@ Rfft(const std::vector<std::vector<Real> >& input, UInt n_point);
  Equivalent to Voice Box's rfft(input, n_point)
  */
 MCL_API std::vector<Real> Irfft(const std::vector<Complex>& input,
-                                UInt n_point);
+                                UInt n_point) noexcept;
 
 
 /**
@@ -57,32 +58,32 @@ MCL_API std::vector<Real> Irfft(const std::vector<Complex>& input,
  Equivalent to Voice Box's rfft(input, n_point)
  */
 MCL_API std::vector<std::vector<Real> >
-Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point);
+Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) noexcept;
   
 /** 
  Performs the ifft of the input signal.
  Equivalent to Matlab's ifft(input, n_point)
  */
 MCL_API std::vector<Complex> Ifft(const std::vector<Complex>& input,
-                                  UInt n_point);
+                                  UInt n_point) noexcept;
 
 /** 
  Performs the equivalent of Matlab's Hilbert (i.e. computes the so-called
  discrete-time analytic signal).
  */
-MCL_API std::vector<Complex> Hilbert(const std::vector<Real>& input);
+MCL_API std::vector<Complex> Hilbert(const std::vector<Real>& input) noexcept;
 
 /** 
  Returns the real cepstrum of the real sequence X.
  Equivalent to Matlab's rceps(vector)
  */
-MCL_API std::vector<Real> RCeps(const std::vector<Real>& vector);
+MCL_API std::vector<Real> RCeps(const std::vector<Real>& vector) noexcept;
 
 /** 
  Returns the (unique) minimum-phase sequence that has the same real
  cepstrum as vector. Equivalent to Matlab's [~, out] = rceps(vector).
  */
-MCL_API std::vector<Real> MinPhase(const std::vector<Real>& vector);
+MCL_API std::vector<Real> MinPhase(const std::vector<Real>& vector) noexcept;
 
 
 bool TransformOpTest();

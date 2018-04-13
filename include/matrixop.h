@@ -32,19 +32,20 @@
 namespace mcl {
 
 // Forward declaration
-MCL_API std::vector<std::string> Split(const std::string& string, char delim);
+MCL_API std::vector<std::string> Split(const std::string& string,
+                                       char delim) noexcept;
   
 /** Matrix class */
 template<class T>
 class MCL_API Matrix {
 public:
   /** Default constructor with empty (0x0) matrix */
-  Matrix() : num_rows_(0), num_columns_(0) {}
+  Matrix() noexcept : num_rows_(0), num_columns_(0) {}
   
   /** 
    Constructs a matrix with default entries
    */
-  Matrix(UInt num_rows, UInt num_columns) : num_rows_(num_rows), 
+  Matrix(UInt num_rows, UInt num_columns) noexcept : num_rows_(num_rows), 
           num_columns_(num_columns) {
     for (UInt i=0; i<num_rows; ++i) {
       data_.push_back(std::vector<T>(num_columns));
@@ -54,7 +55,7 @@ public:
   /**
    Constructs a matrix from a vector of vectors (outer vector represents rows)
    */
-  Matrix(const std::vector<std::vector<T> > vectors) {
+  Matrix(const std::vector<std::vector<T> > vectors) noexcept {
     num_rows_ = vectors.size();
     if (num_rows_ > 0) {
       num_columns_ = vectors[0].size();
@@ -73,14 +74,14 @@ public:
   
   /** Sets element in given row and column */
   void set_element(const UInt& index_row, const UInt& index_column,
-                   const T& element) {
+                   const T& element) noexcept {
     if (index_row>=num_rows_ || index_column>=num_columns_) {
       ASSERT_WITH_MESSAGE(false, "Out-of-bounds index in setting matrix element");}
     data_[index_row][index_column] = element;
   }
   
   /** Sets an entire column */
-  void set_column(UInt index_column, std::vector<T> column) {
+  void set_column(UInt index_column, std::vector<T> column) noexcept {
     if (column.size() != num_rows_) { assert(false); }
     if (index_column >= num_columns_) { assert(false); }
     for (UInt i=0; i<num_rows_; ++i) {
@@ -89,27 +90,27 @@ public:
   }
   
   /** Sets an entire row */
-  void set_row(UInt index_row, std::vector<T> row) {
+  void set_row(UInt index_row, std::vector<T> row) noexcept {
     if (row.size() != num_columns_) { assert(false); }
     if (index_row >= num_rows_) { assert(false); }
     data_[index_row] = row;
   }
   
   /** Accesses an element in given row and column */
-  T element(const UInt& index_row, const UInt& index_column) const {
+  T element(const UInt& index_row, const UInt& index_column) const noexcept {
     if (index_row >= num_rows_) { assert(false); }
     if (index_column >= num_columns_) { assert(false); }
     return data_[index_row][index_column];
   }
   
   /** Accesses an entire row */
-  std::vector<T> row(UInt index_row) const {
+  std::vector<T> row(UInt index_row) const noexcept {
     if (index_row >= num_rows_) { assert(false); }
     return data_[index_row];
   }
   
   /** Accesses an entire column */
-  std::vector<T> column(UInt index_column) const {
+  std::vector<T> column(UInt index_column) const noexcept {
     if (index_column >= num_columns_) { assert(false); }
     std::vector<T> output(num_rows_);
     for (UInt i=0; i<num_rows_; ++i) { output[i] = data_[i][index_column]; }
@@ -117,7 +118,7 @@ public:
   }
   
   /** Returns the serialised matrix. Equivalent to Matlab's matrix(:) */
-  std::vector<T> Serial() const {
+  std::vector<T> Serial() const noexcept {
     std::vector<T> serial(num_columns()*num_rows());
     
     UInt k=0;
@@ -130,10 +131,10 @@ public:
   }
   
   /** Returns the number of rows */
-  UInt num_rows() const { return num_rows_; }
+  UInt num_rows() const noexcept { return num_rows_; }
   
   /** Returns the number of columns */
-  UInt num_columns() const { return num_columns_; }
+  UInt num_columns() const noexcept { return num_columns_; }
   
   /** Writes the matrix to a file. The optional parameter `precision` sets
    the number of decimal positions in the output file*/
@@ -152,7 +153,7 @@ public:
   }
   
   /** Returns the raw data */
-  std::vector<std::vector<T> > data() { return data_; }
+  std::vector<std::vector<T> > data() noexcept { return data_; }
   
   /**
    Reads a matrix. Elements have to be separated by tabs and there
@@ -198,7 +199,7 @@ public:
   /**
    Constructs a matrix of all ones. Equivalent to Matlab's ones(N,M).
    */
-  static Matrix Ones(UInt number_of_rows, UInt number_of_columns) {
+  static Matrix Ones(UInt number_of_rows, UInt number_of_columns) noexcept {
     Matrix<T> matrix(number_of_rows, number_of_columns);
     for(UInt row=0; row<number_of_rows; ++row) {
       for (UInt column=0; column<number_of_columns; ++column) {
@@ -211,7 +212,7 @@ public:
   /**
    Constructs a matrix of all ones. Equivalent to Matlab's ones(N).
    */
-  static Matrix Ones(UInt matrix_dimension) {
+  static Matrix Ones(UInt matrix_dimension) noexcept {
     return Matrix<T>::Ones(matrix_dimension, matrix_dimension);
   }
   
@@ -223,7 +224,7 @@ private:
 };
   
 template<class T>
-MCL_API void Print(const Matrix<T>& matrix) {
+MCL_API void Print(const Matrix<T>& matrix) noexcept {
   for (UInt i=0; i<matrix.num_rows(); ++i) {
     for (UInt j=0; j<matrix.num_columns(); ++j) {
       std::cout<<matrix.element(i,j)<<"\t";
@@ -234,7 +235,7 @@ MCL_API void Print(const Matrix<T>& matrix) {
 
 /** Transposes the matrix. Equivalent to Matlab's matrix' */
 template<class T>
-MCL_API Matrix<T> Transpose(const Matrix<T>& matrix) {
+MCL_API Matrix<T> Transpose(const Matrix<T>& matrix) noexcept {
   Matrix<T> output(matrix.num_columns(), matrix.num_rows());
   
   for (UInt i=0; i<output.num_rows(); ++i) {
@@ -250,7 +251,7 @@ MCL_API Matrix<T> Transpose(const Matrix<T>& matrix) {
  to Matlabs' matrix.*value
  */
 template<class T>
-MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
+MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
   Matrix<T> output(matrix.num_rows(), matrix.num_columns());
   for (UInt i=0; i<output.num_rows(); ++i) {
     for (UInt j=0; j<output.num_columns(); ++j) {
@@ -264,7 +265,7 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) {
 /** Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b */
 template<class T>
 MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
-                           const Matrix<T>& matrix_b) {
+                           const Matrix<T>& matrix_b) noexcept {
   if (matrix_a.num_columns() != matrix_b.num_rows()) { assert(false); }
   
   Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
@@ -282,7 +283,7 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
   
 template<class T>
 MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
-                                const std::vector<T>& vector) {
+                                const std::vector<T>& vector) noexcept {
   if (matrix_a.num_columns() != vector.size()) { assert(false); }
   Matrix<T> temp_input(vector.size(), 1);
   temp_input.set_column(0, vector);
@@ -299,7 +300,7 @@ MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
  max(max(matrix)) 
  */
 template<class T>
-MCL_API T Max(const Matrix<T>& matrix) {
+MCL_API T Max(const Matrix<T>& matrix) noexcept {
   return Max<T>(matrix.Serial());
 }
   
@@ -310,16 +311,16 @@ struct EigOutput {
   std::vector<std::vector<Complex> > eigen_vectors; /**< Eigenvectors */
 };
   
-MCL_API EigOutput Eig(const Matrix<Real>& matrix);
+MCL_API EigOutput Eig(const Matrix<Real>& matrix) noexcept;
 
-MCL_API Matrix<Real> RealPart(const Matrix<Complex>& input);
+MCL_API Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept;
   
 #if MCL_LOAD_EIGEN
 MCL_API Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
 #endif
   
 template<class T>
-MCL_API bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) {
+MCL_API bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) noexcept {
   if (matrix_a.num_rows() != matrix_b.num_rows() |
       matrix_a.num_columns() != matrix_b.num_columns()) { return false; }
   

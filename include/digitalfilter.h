@@ -29,7 +29,7 @@ public:
   virtual Real Filter(const Real input) = 0;
   
   /** Returns the output of the filter for an input signal equal to `input`. */
-  virtual std::vector<Real> Filter(const std::vector<Real>& input) {
+  virtual std::vector<Real> Filter(const std::vector<Real>& input) noexcept {
     std::vector<Real> output(input.size(), 0.0);
     for (UInt i=0; i<input.size(); ++i) {
       output.at(i) = Filter(input.at(i));

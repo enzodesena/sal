@@ -13,16 +13,16 @@
 
 namespace mcl {
 
-Quaternion QuatConj(const Quaternion& q) {
+Quaternion QuatConj(const Quaternion& q) noexcept {
   return Quaternion(q.w(), -q.x(), -q.y(), -q.z());
 }
 
-Real Norm(const Quaternion& q) {
+Real Norm(const Quaternion& q) noexcept {
   return sqrt(pow(q.w(),2.0)+pow(q.x(),2.0)+pow(q.y(),2.0)+pow(q.z(),2.0));
 }
 
 Point QuatRotate(const Quaternion& q, const Point& r,
-                 const Handedness handedness) {
+                 const Handedness handedness) noexcept {
   Real norm = Norm(q);
   Quaternion q_norm(q.w()/norm, q.x()/norm, q.y()/norm, q.z()/norm);
   
@@ -37,7 +37,7 @@ Point QuatRotate(const Quaternion& q, const Point& r,
   }
 }
   
-Quaternion QuatMultiply(const Quaternion& q, const Quaternion& r) {
+Quaternion QuatMultiply(const Quaternion& q, const Quaternion& r) noexcept {
   return Quaternion(r.w()*q.w()-r.x()*q.x()-r.y()*q.y()-r.z()*q.z(),
                     r.w()*q.x()+r.x()*q.w()-r.y()*q.z()+r.z()*q.y(),
                     r.w()*q.y()+r.x()*q.z()+r.y()*q.w()-r.z()*q.x(),
@@ -45,7 +45,7 @@ Quaternion QuatMultiply(const Quaternion& q, const Quaternion& r) {
 }
 
 Quaternion AxAng2Quat(const Real x, const Real y, const Real z,
-                      const Real angle) {
+                      const Real angle) noexcept {
   Real norm = sqrt(pow(x, 2.0)+pow(y, 2.0)+pow(z, 2.0));
   return Quaternion(cos(angle/2.0),
                     sin(angle/2.0)*x/norm,
@@ -53,7 +53,7 @@ Quaternion AxAng2Quat(const Real x, const Real y, const Real z,
                     sin(angle/2.0)*z/norm);
 }
   
-AxAng Quat2AxAng(const Quaternion& input) {
+AxAng Quat2AxAng(const Quaternion& input) noexcept {
   AxAng output;
   
   Quaternion q = (Norm(input)>1.0) ? Quaternion(input.w()/Norm(input),
@@ -80,7 +80,7 @@ AxAng Quat2AxAng(const Quaternion& input) {
   
   
 Quaternion Eul2Quat(const Real angle_1, const Real angle_2, const Real angle_3,
-                    const EulerOrder order) {
+                    const EulerOrder order) noexcept {
   Quaternion rotation_1 = Quaternion::Identity();
   Quaternion rotation_2 = Quaternion::Identity();
   Quaternion rotation_3 = Quaternion::Identity();
@@ -137,7 +137,7 @@ Quaternion Quaternion::Identity() {
   return Quaternion(1.0, 0.0, 0.0, 0.0);
 }
   
-Real Quat2EulX(const Quaternion q, const EulerOrder order) {
+Real Quat2EulX(const Quaternion q, const EulerOrder order) noexcept {
   switch (order) {
     case zyx:
       return atan2(-2.0*q.y()*q.z()+2.0*q.w()*q.x(),
@@ -150,7 +150,7 @@ Real Quat2EulX(const Quaternion q, const EulerOrder order) {
   }
 }
   
-Real Quat2EulZ(const Quaternion q, const EulerOrder order) {
+Real Quat2EulZ(const Quaternion q, const EulerOrder order) noexcept {
   switch (order) {
     case zyx:
       return atan2(-2.0*q.x()*q.y()+2.0*q.w()*q.z(),
@@ -164,7 +164,7 @@ Real Quat2EulZ(const Quaternion q, const EulerOrder order) {
   }
 }
 
-Real Quat2EulY(const Quaternion q, const EulerOrder order) {
+Real Quat2EulY(const Quaternion q, const EulerOrder order) noexcept {
   switch (order) {
     case zyx:
       return asin(2.0*q.x()*q.z()+2.0*q.w()*q.y());
@@ -176,7 +176,7 @@ Real Quat2EulY(const Quaternion q, const EulerOrder order) {
   }
 }
   
-Quaternion QuatInverse(const Quaternion q) {
+Quaternion QuatInverse(const Quaternion q) noexcept {
   Real norm_sq = pow(Norm(q), 2.0);
   Quaternion conj = QuatConj(q);
   return Quaternion(conj.w()/norm_sq,

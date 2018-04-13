@@ -20,13 +20,13 @@
 namespace mcl {
   
 template<class T>
-MCL_API T Max(const T& scalar_a, const T& scalar_b) {
+MCL_API T Max(const T& scalar_a, const T& scalar_b) noexcept {
   if (scalar_a >= scalar_b) { return scalar_a; }
   else { return scalar_b; }
 }
   
 template<class T>
-MCL_API T Min(const T& scalar_a, const T& scalar_b) {
+MCL_API T Min(const T& scalar_a, const T& scalar_b) noexcept {
   if (scalar_a < scalar_b) { return scalar_a; }
   else { return scalar_b; }
 }

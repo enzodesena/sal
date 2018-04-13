@@ -22,35 +22,35 @@ namespace mcl {
 class MCL_API Point {
 public:
   /** Constructs a `Point` with all coordinates set to zero. */
-  Point();
+  Point() noexcept;
   
   /** Constructor with explicit definition of all coordinates. */
-  Point(Real x, Real y, Real z);
+  Point(Real x, Real y, Real z) noexcept;
   
-  bool Equals(const Point& other_point) const;
+  bool Equals(const Point& other_point) const noexcept;
   
   // Getter methods.
-  Real x() const { return x_; }
-  Real y() const { return y_; }
-  Real z() const { return z_; }
+  Real x() const noexcept { return x_; }
+  Real y() const noexcept { return y_; }
+  Real z() const noexcept { return z_; }
   
-  void set_x(Real x) { x_ = x; }
-  void set_y(Real y) { y_ = y; }
-  void set_z(Real z) { z_ = z; }
+  void set_x(Real x) noexcept { x_ = x; }
+  void set_y(Real y) noexcept { y_ = y; }
+  void set_z(Real z) noexcept { z_ = z; }
   
   /** Returns the norm of the vector, or, in other words, the distance
    of the point from the origin (0,0,0) */
-  Real norm() const;
+  Real norm() const noexcept;
   
   /** Returns the angle formed with the z-axis */
-  Real theta() const;
+  Real theta() const noexcept;
   
   /** Returns the angle formed between the projection on the x-y axis and
    the x-axis */
-  Real phi() const;
+  Real phi() const noexcept;
   
   /** Modifies the point (i.e. vector) such that its norm is equal to 1. */
-  void Normalize();
+  void Normalize() noexcept;
 
 private:
   Real x_;
@@ -62,71 +62,72 @@ private:
  Rotates the reference system about the x-axis with the right-hand rule.
  e.g. RotateAboutX(Point(0.0,1.0,0.0), pi/2) == Point(0.0,0.0,1.0)
  */
-MCL_API Point RotateAboutX(const Point&, Real);
+MCL_API Point RotateAboutX(const Point&, Real) noexcept;
 
 /**
  Rotates the reference system about the y-axis with the right-hand rule.
  e.g. RotateAboutY(Point(1.0,0.0,0.0), pi/2) == Point(0.0,0.0,-1.0)
  */
-MCL_API Point RotateAboutY(const Point&, Real);
+MCL_API Point RotateAboutY(const Point&, Real) noexcept;
 
 /**
  Rotates the reference system about the z-axis with the right-hand rule.
  e.g. RotateAboutZ(Point(0.0,1.0,0.0), pi/2) == Point(-1.0,0.0,0.0)
  */
-MCL_API Point RotateAboutZ(const Point&, Real);
+MCL_API Point RotateAboutZ(const Point&, Real) noexcept;
 
 /**
  Rotates the reference system with euler angles. Convention is ZYX with
  angles phi, theta and psi, respectively.
  */
 MCL_API Point Rotate(const Point&, Real phi,
-                     Real theta, Real psi);
+                     Real theta, Real psi) noexcept;
 
-MCL_API Real DotProduct(Point, Point);
-MCL_API Real Distance(Point, Point);
-MCL_API Real Theta(Point, Point);
-MCL_API Real Phi(Point, Point);
+MCL_API Real DotProduct(Point, Point) noexcept;
+MCL_API Real Distance(Point, Point) noexcept;
+MCL_API Real Theta(Point, Point) noexcept;
+MCL_API Real Phi(Point, Point) noexcept;
 MCL_API Real AngleBetweenDirections(Real theta_a, Real phi_a,
-                                   Real theta_b, Real phi_b);
-MCL_API Real AngleBetweenPoints(Point, Point);
+                                   Real theta_b, Real phi_b) noexcept;
+MCL_API Real AngleBetweenPoints(Point, Point) noexcept;
 
 /**
  This returns the point on the line between `point_a` and `point_b` which
  has a distance of `distance` from `point_a`
  */
 MCL_API Point PointOnLine(const Point point_a, const Point point_b,
-                          const Real distance);
+                          const Real distance) noexcept;
 
 /** Sums the coordinates of `point_a` and `point_b` */
-MCL_API Point Sum(const Point point_a, const Point point_b);
+MCL_API Point Sum(const Point point_a, const Point point_b) noexcept;
 
 /** Subtracts the coordinates of `point_a` from `point_b` (point_a-point_b) */
-MCL_API Point Subtract(const Point point_a, const Point point_b);
+MCL_API Point Subtract(const Point point_a, const Point point_b) noexcept;
 
 /**
  Multiplies all coordinates by given constant. Has the effect of changing
  of changing the length of the vector.
  */
-MCL_API Point Multiply(const Point point, const Real constant);
+MCL_API Point Multiply(const Point point, const Real constant) noexcept;
 
 /**
  Contructs a point from spherical coordinates, with (r, 0, 0) corresponding
  to the z-axis, and (r, pi/2, 0) corresponding to x-axis. Right-hand rule.
  */
-MCL_API Point PointSpherical(Real r, Real theta, Real phi);
+MCL_API Point PointSpherical(Real r, Real theta, Real phi) noexcept;
 
 /**
  Constructs a vector that is the the projection of the input `vector`
  on the plane (passing through the origin) identified by the vector
  normal to the plane `plane_normal_vector`.
  */
-MCL_API Point Projection(const Point& vector, const Point& plane_normal_vector);
+MCL_API Point Projection(const Point& vector,
+                         const Point& plane_normal_vector) noexcept;
 
 /**
  Returns a new point that is a normalized (norm == 1) version of `point`.
  */
-MCL_API Point Normalized(Point point);
+MCL_API Point Normalized(Point point) noexcept;
 
 /**
  Returns the intersection point between a plane and a line. The line is
@@ -144,7 +145,7 @@ MCL_API Point Normalized(Point point);
 MCL_API Point IntersectionPlaneLine(const Point& line_point,
                                     const Point& line_direction,
                                     const Point& plane_point,
-                                    const Point& plane_normal);
+                                    const Point& plane_normal) noexcept;
 
 /**
  Returns whther or not an intersection between a plane and a line exists. 
@@ -159,49 +160,9 @@ MCL_API Point IntersectionPlaneLine(const Point& line_point,
 MCL_API bool IntersectionPlaneLineExists(const Point& line_point,
                                          const Point& line_direction,
                                          const Point& plane_point,
-                                         const Point& plane_normal);
+                                         const Point& plane_normal) noexcept;
   
 bool PointTest();
-  
-/** */
-class PointSpeedLimiter {
-public:
-  PointSpeedLimiter(Point position, Real max_speed) :
-  max_speed_(max_speed),
-  next_position_(position), current_position_(position) {}
-  
-  void SetNextPosition(mcl::Point next_position) {
-    next_position_ = next_position;
-  }
-  
-  void Tick(Real time_elapsed_since_last_tick) {
-    // Detect if the point is moving faster than `max_speed`
-    Real speed = Distance(next_position_, current_position_) /
-          time_elapsed_since_last_tick;
-    
-    if (speed <= max_speed_) {
-      current_position_ = next_position_;
-    } else {
-      current_position_ = PointOnLine(current_position_,
-                                      next_position_,
-                                      max_speed_*time_elapsed_since_last_tick);
-    }
-  }
-  
-  bool HasReachedPosition() {
-    return current_position_.Equals(next_position_);
-  }
-  
-  mcl::Point position() {
-    return current_position_;
-  }
-  
-private:
-  /** This is the (un-throttled position) */
-  Point next_position_;
-  Point current_position_;
-  Real max_speed_;
-};
   
   
 } // namespace mcl
