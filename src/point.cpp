@@ -13,24 +13,24 @@
 
 namespace mcl {
 
-Point::Point() noexcept {}
+Triplet::Triplet() noexcept {}
 
-Point::Point(Real x, Real y, Real z) noexcept :
+Triplet::Triplet(Real x, Real y, Real z) noexcept :
         x_(x), y_(y), z_(z) {}
   
-bool Point::Equals(const Point& other_point) const noexcept {
+bool Triplet::Equals(const Triplet& other_point) const noexcept {
   return IsEqual(*this, other_point);
 }
 
-Real Point::norm() const noexcept {
+Real Triplet::norm() const noexcept {
   return sqrt(pow(x(),2) + pow(y(),2) + pow(z(),2));
 }
 
-Real Point::theta() const noexcept { return (Real) acos(z()/norm()); }
+Real Triplet::theta() const noexcept { return (Real) acos(z()/norm()); }
 
-Real Point::phi() const noexcept { return (Real) atan2(y(), x()); }
+Real Triplet::phi() const noexcept { return (Real) atan2(y(), x()); }
 
-void Point::Normalize() noexcept {
+void Triplet::Normalize() noexcept {
   Real vector_norm = norm();
   x_ = x_/vector_norm;
   y_ = y_/vector_norm;

@@ -19,15 +19,15 @@
 
 namespace mcl {
 
-class MCL_API Point {
+class MCL_API Triplet {
 public:
   /** Constructs a `Point` with all coordinates set to zero. */
-  Point() noexcept;
+  Triplet() noexcept;
   
   /** Constructor with explicit definition of all coordinates. */
-  Point(Real x, Real y, Real z) noexcept;
+  Triplet(Real x, Real y, Real z) noexcept;
   
-  bool Equals(const Point& other_point) const noexcept;
+  bool Equals(const Triplet& other_point) const noexcept;
   
   // Getter methods.
   Real x() const noexcept { return x_; }
@@ -57,6 +57,8 @@ private:
   Real y_;
   Real z_;
 };
+  
+typedef Triplet Point;
   
 /**
  Rotates the reference system about the x-axis with the right-hand rule.
