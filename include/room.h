@@ -72,7 +72,7 @@ public:
   
   virtual bool
   IsPointInRoom(const mcl::Point& point,
-                const sal::Length precision = VERY_SMALL) const noexcept = 0;
+                const sal::Length wall_distance = 0.0) const noexcept = 0;
   
   virtual std::string ShapeDescription() const noexcept = 0;
   
