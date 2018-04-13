@@ -74,7 +74,9 @@ public:
   IsPointInRoom(const mcl::Point& point,
                 const sal::Length precision = VERY_SMALL) const noexcept = 0;
   
-  virtual ~Room() {}
+  virtual std::string ShapeDescription() const noexcept = 0;
+  
+  virtual ~Room() noexcept {}
 protected:
   std::vector<mcl::IirFilter> wall_filters_;
   BoundarySetType boundary_set_type_;

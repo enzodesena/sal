@@ -296,4 +296,11 @@ void CuboidRoom::UpdateShape(const Time time_since_last_update) noexcept {
   dimensions_.Update(time_since_last_update);
 }
   
+std::string CuboidRoom::ShapeDescription() const noexcept {
+  return "The room is rectangular with dimensions (" +
+          std::to_string(dimensions_.value().x()) + ", " +
+          std::to_string(dimensions_.value().y()) + ", " +
+          std::to_string(dimensions_.value().z()) + ") [m].";
+}
+  
 } // namespace sal
