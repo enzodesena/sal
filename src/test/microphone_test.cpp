@@ -94,7 +94,7 @@ bool Microphone::Test() {
   assert(IsEqual(stream_v->Pull(),-0.5));
   mic_v.RecordPlaneWave(-2.0,Point(1.0,3.0,2.0));
   assert(IsEqual(stream_v->Pull(),-1.0));
- 
+  
   return true;
 }
 

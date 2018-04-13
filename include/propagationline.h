@@ -44,23 +44,25 @@ public:
    The value of `distance_update_step` is the length (in meters)
    by which the delay line length changes at each sample.
    A `distance_update_step` of 0 will not change the delay line length.
-   The value of `gain_update_length` is the number of samples it takes 
-   to update the gain. A `gain_update_length` of 0 will immediately change the
-   gain of the delay line.
+   The value of `attenuation_update_length` is the number of samples it takes
+   to update the attenuation. A `attenuation_update_length` of 0 will immediately change the
+   attenuation of the delay line.
    */
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100.0,
                   const InterpolationType = rounding,
-                  const bool air_filters_active = false) noexcept;
+                  const bool air_filters_active = false,
+                  const bool allow_attenuation_larger_than_one = false) noexcept;
   
-  /** Returns the multiplicative gain of the propagation line */
-  sal::Sample gain() const noexcept;
+  /** Returns the multiplicative attenuation of the propagation line */
+  sal::Sample attenuation() const noexcept;
   
   sal::Length distance() const noexcept;
   
-  /** This overwrites the 1/r rule attenuation. */
-  void set_gain(const sal::Sample, const sal::Time ramp_time = 0.0) noexcept;
+  /** This overrides the 1/r rule attenuation. */
+  void set_attenuation(const sal::Sample,
+                       const sal::Time ramp_time = 0.0) noexcept;
   
   sal::Time current_latency() const noexcept;
   
@@ -98,20 +100,20 @@ private:
   static sal::Time ComputeLatency(const sal::Length,
                                   const sal::Time) noexcept;
   
-  static sal::Sample ComputeGain(const sal::Length,
+  static sal::Sample ComputeAttenuation(const sal::Length,
                                  const sal::Time) noexcept;
   
   static std::vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
   
   sal::Time sampling_frequency_;
   
-  sal::Int gain_update_counter_;
-  sal::UInt gain_update_length_;
+  sal::Int attenuation_update_counter_;
+  sal::UInt attenuation_update_length_;
   
-  sal::Sample target_gain_;
-  sal::Sample current_gain_;
-  sal::Sample previous_gain_;
-  bool updating_gain_;
+  sal::Sample target_attenuation_;
+  sal::Sample current_attenuation_;
+  sal::Sample previous_attenuation_;
+  bool updating_attenuation_;
   
   sal::Int latency_update_counter_;
   sal::UInt latency_update_length_;
@@ -124,7 +126,13 @@ private:
   mcl::FirFilter air_filter_;
   
   InterpolationType interpolation_type_;
+  
+  /** This is true if the attenuation coefficients can be larger than 1.0 */
+  bool allow_gain_;
+  
+  static Sample SanitiseAttenuation(const sal::Sample attenuation);
 };
+  
 
 } // namespace sal
   

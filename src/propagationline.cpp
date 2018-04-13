@@ -12,6 +12,7 @@
 #include "salconstants.h"
 #include "delayfilter.h"
 #include "matrixop.h"
+#include "salutilities.h"
 
 using sal::Length;
 using sal::Time;
@@ -23,16 +24,17 @@ PropagationLine::PropagationLine(const Length distance,
                                  const Time sampling_frequency, 
                                  const Length max_distance,
                                  const InterpolationType interpolation_type,
-                                 const bool air_filters_active) noexcept :
+                                 const bool air_filters_active,
+                                 const bool allow_gain) noexcept :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
         sampling_frequency_(sampling_frequency),
-        gain_update_counter_(0),
-        gain_update_length_(0),
-        target_gain_(ComputeGain(distance, sampling_frequency)),
-        current_gain_(ComputeGain(distance, sampling_frequency)),
-        previous_gain_(ComputeGain(distance, sampling_frequency)),
-        updating_gain_(false),
+        attenuation_update_counter_(0),
+        attenuation_update_length_(0),
+        target_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
+        current_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
+        previous_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
+        updating_attenuation_(false),
         latency_update_counter_(0),
         latency_update_length_(0),
         current_latency_(ComputeLatency(distance, sampling_frequency)),
@@ -41,11 +43,19 @@ PropagationLine::PropagationLine(const Length distance,
         updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
-        interpolation_type_(interpolation_type) {
+        interpolation_type_(interpolation_type),
+        allow_gain_(allow_gain) {
   ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
                       "The sampling frequency cannot be negative.");
   ASSERT_WITH_MESSAGE(isgreaterequal(max_distance, 0.0),
                       "The maximum distance cannot be negative.");
+  if ((!allow_gain_)) {
+    Sample attenuation =
+    SanitiseAttenuation(ComputeAttenuation(distance, sampling_frequency));
+    target_attenuation_ = attenuation;
+    current_attenuation_ = attenuation;
+    previous_attenuation_ = attenuation;
+  }
           
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
@@ -56,19 +66,34 @@ Time PropagationLine::latency() const noexcept {
   return delay_filter_.latency();
 }
 
-Sample PropagationLine::gain() const noexcept {
-  return current_gain_;
+Sample PropagationLine::attenuation() const noexcept {
+  return current_attenuation_;
+}
+  
+Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
+  if (isgreater(mcl::Abs(attenuation), 1.0)) {
+    LogError("Attempting to set the attenuation of a propagation line to %f, "
+             "which has modulus larger than 1. Clipping to 1 "
+             "(+-, depending on sign). If you want to "
+             "bypass this check, please enable allow_gain.", attenuation);
+    return (isgreater(attenuation,0.0)) ? 1.0 : -1.0;
+  } else {
+    return attenuation;
+  }
 }
 
-void PropagationLine::set_gain(Sample gain,
-                               const sal::Time ramp_time) noexcept {
+void PropagationLine::set_attenuation(Sample attenuation,
+                                      const sal::Time ramp_time) noexcept {
   ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
                       "Ramp time cannot be negative.");
-  updating_gain_ = true;
-  previous_gain_ = current_gain_;
-  target_gain_ = gain;
-  gain_update_counter_ = 0;
-  gain_update_length_ = (int) round(ramp_time*sampling_frequency_);
+  
+  if ((!allow_gain_)) { attenuation = SanitiseAttenuation(attenuation); }
+  
+  updating_attenuation_ = true;
+  previous_attenuation_ = current_attenuation_;
+  target_attenuation_ = attenuation;
+  attenuation_update_counter_ = 0;
+  attenuation_update_length_ = (int) round(ramp_time*sampling_frequency_);
 }
 
 void PropagationLine::set_distance(const Length distance,
@@ -83,7 +108,7 @@ void PropagationLine::set_distance(const Length distance,
   latency_update_counter_ = 0;
   latency_update_length_ = (int) round(ramp_time*sampling_frequency_);
   
-  set_gain(ComputeGain(distance, sampling_frequency_), ramp_time);
+  set_attenuation(ComputeAttenuation(distance, sampling_frequency_), ramp_time);
   
   if (air_filters_active_) {
     air_filter_.set_impulse_response(GetAirFilter(distance),
@@ -104,16 +129,16 @@ void PropagationLine::Reset() noexcept {
 }
   
 void PropagationLine::Update() noexcept {
-  if (updating_gain_) {
-    if (gain_update_counter_ == gain_update_length_) {
-      current_gain_ = target_gain_;
-      updating_gain_ = false;
+  if (updating_attenuation_) {
+    if (attenuation_update_counter_ == attenuation_update_length_) {
+      current_attenuation_ = target_attenuation_;
+      updating_attenuation_ = false;
     } else {
-      current_gain_ = mcl::LinearInterpolation(0.0, previous_gain_,
-                                               gain_update_length_+1, target_gain_,
-                                               gain_update_counter_+1);
+      current_attenuation_ = mcl::LinearInterpolation(0.0, previous_attenuation_,
+                                               attenuation_update_length_+1, target_attenuation_,
+                                               attenuation_update_counter_+1);
     }
-    gain_update_counter_++;
+    attenuation_update_counter_++;
   }
   
   if (updating_latency_) {
@@ -147,11 +172,11 @@ Time PropagationLine::ComputeLatency(const Length distance,
   return (Time) (distance / SOUND_SPEED * sampling_frequency);
 }
 
-Sample PropagationLine::ComputeGain(const Length distance, 
-                                    const Time sampling_frequency) noexcept {
+Sample PropagationLine::ComputeAttenuation(const Length distance,
+                                           const Time sampling_frequency) noexcept {
   // If you do the math looking into ComputeLatency, you'll realise that
   // the result of these operations is (SPEED_OF_SOUND/Fs_) / (distance).
-  // Please observe that this gain is actually 1/r rule. In fact, 1/r rule has to be
+  // Please observe that this attenuation is actually 1/r rule. In fact, 1/r rule has to be
   // normalized to some value, which in this case we choose to be the
   // minimum possible distance in the software.
   return (Sample) 1.0 / ComputeLatency(distance, sampling_frequency);
@@ -172,15 +197,15 @@ void PropagationLine::Write(const sal::Sample &sample) noexcept {
 sal::Sample PropagationLine::Read() const noexcept {
   switch (interpolation_type_) {
     case rounding: {
-      return delay_filter_.Read() * current_gain_;
+      return delay_filter_.Read() * current_attenuation_;
     }
     case linear: {
-      return delay_filter_.FractionalRead(current_latency_)*current_gain_;
+      return delay_filter_.FractionalRead(current_latency_)*current_attenuation_;
     }
     case linear_dynamic: {
       return (updating_latency_) ?
-          delay_filter_.FractionalRead(current_latency_)*current_gain_ :
-          delay_filter_.Read() * current_gain_;
+          delay_filter_.FractionalRead(current_latency_)*current_attenuation_ :
+          delay_filter_.Read() * current_attenuation_;
     }
     default:
       assert(false);

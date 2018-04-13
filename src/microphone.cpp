@@ -89,6 +89,14 @@ void Microphone::RecordPlaneWaveRelative(const Sample& sample,
 
 
 Point Microphone::GetRelativePoint(const Point& point) const noexcept {
+  if (mcl::IsEqual(point, position_.value())) {
+    LogError("Microphone (%f, %f, %f) and observation point (%f, %f, %f) appear "
+             "to be approximately in the same position. Behaviour undefined.",
+             point.x(), point.y(), point.z(),
+             position_.value().x(),
+             position_.value().y(),
+             position_.value().z());
+  }
   // Centering the reference system around the microphone
   Point centered(point.x()-position_.value().x(),
                  point.y()-position_.value().y(),

@@ -13,6 +13,7 @@
 #include <vector>
 #include "saltypes.h"
 #include "point.h"
+#include <iostream>
 
 
 namespace sal {
@@ -32,6 +33,17 @@ std::vector<V> ConvertToType(std::vector<T> vector) {
 }
   
 typedef mcl::Point Triplet;
+  
+template< typename... argv >
+void LogError(const char* format, argv... args) {
+  const size_t SIZE = std::snprintf( NULL, 0, format, args... );
+  
+  std::string output;
+  output.resize(SIZE+1);
+  std::snprintf( &(output[0]), SIZE+1, format, args... );
+  
+  std::cerr<<output<<std::endl;
+}
   
 /** */
 class TripletHandler {
