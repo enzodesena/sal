@@ -23,44 +23,59 @@ std::vector<Real> FirFilter::impulse_response() noexcept {
 }
   
 FirFilter::FirFilter() noexcept :
-        impulse_response_(mcl::UnaryVector<float>(1.0)),
-        impulse_response_old_(mcl::UnaryVector<float>(1.0)),
+        impulse_response_(mcl::UnaryVector<Real>(1.0)),
+        impulse_response_old_(mcl::UnaryVector<Real>(1.0)),
         update_index_(0), update_length_(0), updating_(false),
-        coefficients_(mcl::UnaryVector<float>(1.0)),
+        coefficients_(mcl::UnaryVector<Real>(1.0)),
         counter_(0), length_(1) {
   delay_line_.assign(1, 0.0);
 }
   
 FirFilter::FirFilter(std::vector<Real> B) noexcept :
-        impulse_response_(std::vector<float>(B.begin(), B.end())),
-        impulse_response_old_(std::vector<float>(B.begin(), B.end())),
+        impulse_response_(B),
+        impulse_response_old_(B),
         update_index_(0), update_length_(0), updating_(false),
-        coefficients_(std::vector<float>(B.begin(), B.end())),
+        coefficients_(B),
         counter_(B.size()-1), length_(B.size()) {
   delay_line_.assign(length_, 0.0);
 }
   
 
+
 Real FirFilter::Filter(Real input_sample) noexcept {
   if (updating_) { UpdateCoefficients(); }
   
-  delay_line_[counter_] = (float) input_sample;
-  float result = 0.0f;
+  delay_line_[counter_] = input_sample;
+  Real result = 0.0f;
   
 #ifdef OSXIOS
-  std::vector<float> result_a(length_-counter_, 0.0);
+  std::vector<Real> result_a(length_-counter_, 0.0);
+  #ifdef MCL_DATA_TYPE_DOUBLE
+  vDSP_vmulD(&coefficients_.at(0), 1,
+            &delay_line_.at(counter_), 1,
+            &result_a.at(0), 1,
+            length_-counter_);
+  #else
   vDSP_vmul(&coefficients_.at(0), 1,
-             &delay_line_.at(counter_), 1,
-             &result_a.at(0), 1,
-             length_-counter_);
+            &delay_line_.at(counter_), 1,
+            &result_a.at(0), 1,
+            length_-counter_);
+  #endif
   for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
   
   if (counter_ > 0) {
-    std::vector<float> result_b(counter_, 0.0);
+    std::vector<Real> result_b(counter_, 0.0);
+  #ifdef MCL_DATA_TYPE_DOUBLE
+    vDSP_vmulD(&coefficients_[length_-counter_], 1,
+              &delay_line_[0], 1,
+              &result_b[0], 1,
+              counter_);
+  #else
     vDSP_vmul(&coefficients_[length_-counter_], 1,
-               &delay_line_[0], 1,
-               &result_b[0], 1,
-               counter_);
+              &delay_line_[0], 1,
+              &result_b[0], 1,
+              counter_);
+  #endif
     for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
   }
 #else
@@ -73,14 +88,14 @@ Real FirFilter::Filter(Real input_sample) noexcept {
     }
   } else {
     // This is easier for the compiler to vectorise
-    float result_a = 0;
-    float result_b = 0;
-    float result_c = 0;
-    float result_d = 0;
-    float result_e = 0;
-    float result_f = 0;
-    float result_g = 0;
-    float result_h = 0;
+    Real result_a = 0;
+    Real result_b = 0;
+    Real result_c = 0;
+    Real result_d = 0;
+    Real result_e = 0;
+    Real result_f = 0;
+    Real result_g = 0;
+    Real result_h = 0;
     Int i = 0;
     while (i < length_) {
       if (index < (length_-8)) {
@@ -100,7 +115,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
       }
     }
     result += result_a + result_b + result_c + result_d + result_e + result_f +
-    result_g + result_h;
+              result_g + result_h;
   }
 #endif
   
@@ -109,41 +124,56 @@ Real FirFilter::Filter(Real input_sample) noexcept {
   return (Real) result;
 }
   
-std::vector<Real> FirFilter::Filter(const std::vector<Real>& input) noexcept {
+  
+void FirFilter::Filter(const Real* input_data, const Int num_samples,
+                       Real* output_data) noexcept {
   if (updating_) { UpdateCoefficients(); }
 #ifdef OSXIOS
-  if (input.size() < length_) { return FilterSequential(input); }
-  
-  std::vector<float> output(input.size(), 0.0);
-  
-  // Construct long input signal
-  std::vector<float> conv_input;
-  conv_input.insert(conv_input.begin(),
-                    delay_line_.begin()+counter_, delay_line_.end());
-  if (counter_ >= 1) {
-    conv_input.insert(conv_input.end(),
-                      delay_line_.begin(), delay_line_.begin()+counter_);
+  if (num_samples < length_) {
+    FilterSerial(input_data, num_samples, output_data);
+    return;
   }
   
-  std::reverse(conv_input.begin(), conv_input.end());
-  conv_input.pop_back();
-  assert(conv_input.size() == length_-1);
+  Real padded_data[num_samples+length_-1];
   
-  conv_input.insert(conv_input.end(), input.begin(), input.end());
-  assert(conv_input.size() == (input.size()+length_-1));
+  // Stage 1
+  for (Int i=0; i<counter_; ++i) {
+    padded_data[i] = delay_line_[counter_-i-1];
+  }
   
-  vDSP_conv(&conv_input[0], 1,
-            &coefficients_[length_-1], -1,
-            &output[0], 1,
-            input.size(), length_);
+  // Stage 2
+  // Starting from counter_ in padded_data
+  // Ending in counter_+(length_-counter_-1)
+  for (Int i=counter_; i<(length_-1); ++i) {
+    padded_data[i] = delay_line_[length_-1-(i-counter_)];
+  }
   
-  assert(output.size() == input.size());
-  delay_line_ = std::vector<float>(input.rbegin(), input.rbegin()+length_);
+  // Stage 3
+  // Append input signal
+  for (Int i=(length_-1); i<(length_-1+num_samples); ++i) {
+    padded_data[i] = input_data[i-(length_-1)];
+  }
+  
+  #ifdef MCL_DATA_TYPE_DOUBLE
+  vDSP_convD(padded_data, 1,
+             coefficients_.data()+length_-1, -1,
+             output_data, 1,
+             num_samples, length_);
+  #else // Type is Real
+  vDSP_conv(padded_data, 1,
+            coefficients_.data()+length_-1, -1,
+            output_data, 1,
+            num_samples, length_);
+  #endif
+  
+  // Reorganise state for the next run
+  for (Int i=0; i<length_; ++i) {
+    delay_line_[i] = input_data[num_samples-1-i];
+  }
+  
   counter_ = length_-1;
-  
-  return std::vector<Real>(output.begin(), output.end());
-#else
-  return FilterSequential(input);
+#else // If not OSXIOS
+  FilterSerial(input_data, num_samples, output_data);
 #endif
 }
   
@@ -165,30 +195,29 @@ FirFilter FirFilter::GainFilter(Real gain) noexcept {
 }
   
 void FirFilter::Reset() noexcept {
-  delay_line_ = Zeros<float>(delay_line_.size());
+  delay_line_ = Zeros<Real>(delay_line_.size());
 }
   
 void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
                                      const Int update_length) noexcept {
-  if (mcl::IsEqual(std::vector<float>(impulse_response.begin(),
+  if (mcl::IsEqual(std::vector<Real>(impulse_response.begin(),
                                       impulse_response.end()),
                    impulse_response_)) {
     return;
   }
   
   if (! updating_) { // If there is no update being carried out
-    impulse_response_old_ = mcl::ZeroPad<float>(impulse_response_,
-                                                impulse_response.size());
+    impulse_response_old_ = mcl::ZeroPad<Real>(impulse_response_,
+                                               impulse_response.size());
   } else {
-    impulse_response_old_ = mcl::ZeroPad<float>(coefficients_,
-                                                impulse_response.size());
+    impulse_response_old_ = mcl::ZeroPad<Real>(coefficients_,
+                                               impulse_response.size());
   }
   
   updating_ = true;
   update_length_ = update_length;
   update_index_ = 0;
-  impulse_response_ = std::vector<float>(impulse_response.begin(),
-                                         impulse_response.end());
+  impulse_response_ = impulse_response;
   
   if (impulse_response.size() != length_) {
     // If the impulse response changes length, then reset everything.
@@ -202,10 +231,10 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
 void FirFilter::UpdateCoefficients() noexcept {
   assert(update_index_>=0 & update_index_<=update_length_);
   assert(impulse_response_.size() == impulse_response_old_.size());
-  float weight_new = ((float)update_index_+1)/((float)update_length_+1);
-  float weight_old = 1.0f-weight_new;
-  coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
-                           mcl::Multiply(impulse_response_old_, weight_old));
+  Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
+  Real weight_old = 1.0f-weight_new;
+  coefficients_ = mcl::Add(mcl::Multiply<Real>(impulse_response_, weight_new),
+                           mcl::Multiply<Real>(impulse_response_old_, weight_old));
   
   if (update_index_ == update_length_) {
     updating_ = false;

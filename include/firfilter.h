@@ -28,7 +28,7 @@ public:
   FirFilter() noexcept;
   
   /** Constructs an FIR filter with impulse response B. */
-  FirFilter(std::vector<Real> B) noexcept;
+  FirFilter(const std::vector<Real> B) noexcept;
   
   /** 
    Returns the output of the filter for an input equal to `input`.
@@ -37,10 +37,12 @@ public:
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real Filter(const Real input) noexcept;
+  virtual Real Filter(const Real input_sample) noexcept;
   
-  /** Returns the output of the filter for an input signal equal to `input`. */
-  virtual std::vector<Real> Filter(const std::vector<Real>& input) noexcept;
+  virtual void Filter(const Real* input_data, const Int num_samples,
+                      Real* output_data) noexcept;
+  
+  using DigitalFilter::Filter;
   
   /** 
    Updates the filter coefficients. You can set how long it takes to 
@@ -81,15 +83,15 @@ private:
    batch. */
   void UpdateCoefficients() noexcept;
   
-  std::vector<float> impulse_response_;
-  std::vector<float> impulse_response_old_;
+  std::vector<Real> impulse_response_;
+  std::vector<Real> impulse_response_old_;
   Int update_index_;
   Int update_length_;
   
   bool updating_;
   
-  std::vector<float> coefficients_;
-  std::vector<float> delay_line_;
+  std::vector<Real> coefficients_;
+  std::vector<Real> delay_line_;
   Int counter_;
   Int length_;
 };

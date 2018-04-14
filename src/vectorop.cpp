@@ -122,12 +122,12 @@ std::vector<Complex> Poly(const std::vector<Real> roots) noexcept {
   
 std::vector<Real>
 ColonOperator(const Real from, const Real step, const Real to) noexcept {
-  if (step <= 0) { assert(false); }
+  if (islessequal(step, 0)) { assert(false); }
   std::vector<Real> output;
   output.push_back(from);
-  UInt i = 0;
-  while (IsSmallerOrEqual(output[i] + step, to)) {
-    output.push_back(output[i++] + step);
+  UInt i = 1;
+  while (islessequal(((Real) i)*step+from, to)) {
+    output.push_back(((Real) i++)*step+from);
   }
   return output;
 }

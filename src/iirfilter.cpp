@@ -87,7 +87,7 @@ void IirFilter::UpdateFilter(std::vector<Real> B,
 }
 
 
-Real IirFilter::Filter(Real input) {
+Real IirFilter::Filter(Real input) noexcept {
   Real v = input; // The temporary value in the recursive branch.
   Real output(0.0);
   

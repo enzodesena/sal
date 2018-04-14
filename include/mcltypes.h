@@ -13,6 +13,7 @@
   #define PI 3.141592653589793238462643383279502884197169399375105820974944
 #endif
 
+#define ASSERT(arg) assert(arg)
 #define ASSERT_WITH_MESSAGE(condition, message) assert(condition && message)
 
 #define throw_line(arg) throw(mcl::Exception(std::string("Error at line n. ") + \
@@ -41,6 +42,7 @@
 
 
 namespace mcl {
+#define MCL_DATA_TYPE_DOUBLE
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
   

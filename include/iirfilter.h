@@ -10,6 +10,7 @@
 #define MCL_IIRFILTER_H
 
 #include "digitalfilter.h"
+#include "vectorop.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)
@@ -50,7 +51,7 @@ public:
   
   /** 
    Constructs an IIR filter (II-type direct implementation). B and A are numerator
-   and denominator of the filter, respectively. HELLO OPTEC!
+   and denominator of the filter, respectively.
    */
   IirFilter(std::vector<Real> B,std::vector<Real> A);
   
@@ -62,7 +63,7 @@ public:
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real Filter(const Real input);
+  virtual Real Filter(const Real input) noexcept;
   
   using DigitalFilter::Filter;
   
@@ -124,34 +125,62 @@ public:
   virtual void Reset();
 };
   
-/** Implements a first-order IIR low-pass filter with a given decay constant. */
-class MCL_API SmoothingFilter : public DigitalFilter {
-public:
-  /**
-   @param[in] decay_samples number of samples after which the value decreases
-   to 1/e of the original value. */
-  SmoothingFilter(Real decay_samples) noexcept {
-    ASSERT_WITH_MESSAGE(isgreaterequal(decay_samples, 0),
-                        "Decay constant cannot be negative ");
-    a1_ = exp(-1.0/decay_samples);
-    b0_ = 1.0 - a1_;
-    output_ = 0.0;
-  }
-  
-  virtual Real Filter(const Real input) noexcept {
-    output_ = b0_*input + a1_*output_;
-    return output_;
-  }
-  
-  using DigitalFilter::Filter;
-  
-  virtual void Reset() noexcept { output_ = 0.0; }
-  
-private:
-  Real output_;
-  Real b0_;
-  Real a1_;
-};
+//
+//  /** Implements a first-order IIR low-pass filter with a given decay constant. */
+//  class MCL_API RampSmoothingFilter : public DigitalFilter {
+//  public:
+//    
+//    /**
+//     @param[in] ramp_samples number of samples after which the value is
+//     to 1/e away from target value. */
+//    RampSmoothingFilter(const Real ramp_samples) noexcept {
+//      ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+//                          "Decay constant cannot be negative ");
+//      
+//      
+//    }
+//    
+//    virtual Real Filter(const Real input) noexcept {
+//      return filter_.Filter(input);
+//    }
+//    
+//    using DigitalFilter::Filter;
+//    
+//    virtual void Reset() noexcept { filter_.Reset(); }
+//    
+//    
+//  private:
+//  };
+//  
+///** Implements a first-order IIR low-pass filter with a given decay constant. */
+//class MCL_API LowPassSmoothingFilter : public DigitalFilter {
+//public:
+//  
+//  /**
+//   @param[in] ramp_samples number of samples after which the value is
+//   to 1/e away from target value. */
+//  LowPassSmoothingFilter(const Real ramp_samples) noexcept {
+//    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+//                        "Decay constant cannot be negative ");
+//    
+//    Real a1 = exp(-1.0/ramp_samples);
+//    Real b0 = 1.0 - a1;
+//    filter_ = IirFilter(mcl::BinaryVector(b0, 0.0),
+//                        mcl::BinaryVector(1.0, -a1));
+//  }
+//  
+//  virtual Real Filter(const Real input) noexcept {
+//    return filter_.Filter(input);
+//  }
+//  
+//  using DigitalFilter::Filter;
+//  
+//  virtual void Reset() noexcept { filter_.Reset(); }
+//  
+//  
+//private:
+//  IirFilter filter_;
+//};
   
 /** Constructs a filter for which output==input always. */
 IirFilter IdenticalFilter();

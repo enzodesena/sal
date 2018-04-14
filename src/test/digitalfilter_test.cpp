@@ -203,12 +203,6 @@ bool IirFilter::Test() {
   assert(IsEqual(octave_bank_b.Filter(5.0)[1], octave_a.Filter(5.0)));
   assert(octave_bank_b.Filter(1.25).size() == 2);
 
-  // Test smoothing filter
-  SmoothingFilter smooth_filter(5);
-  smooth_filter.Filter(mcl::Ones(100));
-  smooth_filter.Filter(mcl::Zeros<Real>(4));
-  assert(IsEqual(smooth_filter.Filter(0), 1.0/exp(1.0)));
-  
   return true;
 }
   
