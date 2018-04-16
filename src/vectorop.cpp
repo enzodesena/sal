@@ -43,6 +43,32 @@ MCL_API void Multiply(const Real* input_data,
 #endif
 }
   
+MCL_API void MultiplyAdd(const Real* input_data_mult,
+                         const Real gain,
+                         const Real* input_data_add,
+                         const Int num_samples,
+                         Real* output_data) noexcept {
+#ifndef OSXIOS
+  #ifdef MCL_DATA_TYPE_DOUBLE
+  vDSP_vmaD(input_data_mult, 1,
+            &gain, 0,
+            input_data_add, 1,
+            output_data, 1,
+            num_samples);
+  #else
+  vDSP_vma(input_data_mult, 1,
+           &gain, 0,
+           input_data_add, 1,
+           output_data, 1,
+           num_samples);
+  #endif
+#else
+  for (UInt i=0; i<num_samples; ++i) {
+    output_data[i] = input_data_mult[i]*gain + input_data_add[i];
+  }
+#endif
+}
+  
 std::vector<Real> LinSpace(Real min, Real max, UInt num_elements) noexcept {
   // This is to mimic Matlab's behaviour.
   if (num_elements <= 1) { return UnaryVector(max); }

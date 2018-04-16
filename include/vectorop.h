@@ -90,6 +90,15 @@ MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& input,
   return output;
 }
   
+/** This calculates the multiplication of a vector (`input_data_mult`)
+ by a constant (`gain`), and then adds the resulting vector to
+ another vector (`input_data_add'). */
+MCL_API void MultiplyAdd(const Real* input_data_mult,
+                         const Real gain,
+                         const Real* input_data_add,
+                         const Int num_samples,
+                         Real* output_data) noexcept;
+  
   
 /** 
  Returns the point by point addition of the two vectors.
