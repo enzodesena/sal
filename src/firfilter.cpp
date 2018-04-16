@@ -46,36 +46,26 @@ Real FirFilter::Filter(Real input_sample) noexcept {
   if (updating_) { UpdateCoefficients(); }
   
   delay_line_[counter_] = input_sample;
-  Real result = 0.0f;
+  Real result = 0.0;
   
 #ifdef OSXIOS
-  std::vector<Real> result_a(length_-counter_, 0.0);
-  #ifdef MCL_DATA_TYPE_DOUBLE
-  vDSP_vmulD(&coefficients_.at(0), 1,
-            &delay_line_.at(counter_), 1,
-            &result_a.at(0), 1,
-            length_-counter_);
-  #else
-  vDSP_vmul(&coefficients_.at(0), 1,
-            &delay_line_.at(counter_), 1,
-            &result_a.at(0), 1,
-            length_-counter_);
-  #endif
+  if (length_-counter_ < MAX_VLA_LENGTH) {
+    
+  }
+  
+  Real result_a[length_-counter_];
+  Multiply(&coefficients_[0],
+           &delay_line_[counter_],
+           length_-counter_, result_a);
+  
   for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
   
   if (counter_ > 0) {
-    std::vector<Real> result_b(counter_, 0.0);
-  #ifdef MCL_DATA_TYPE_DOUBLE
-    vDSP_vmulD(&coefficients_[length_-counter_], 1,
-              &delay_line_[0], 1,
-              &result_b[0], 1,
-              counter_);
-  #else
-    vDSP_vmul(&coefficients_[length_-counter_], 1,
-              &delay_line_[0], 1,
-              &result_b[0], 1,
-              counter_);
-  #endif
+    Real result_b[counter_];
+    Multiply(&coefficients_[length_-counter_],
+             &delay_line_[0],
+             counter_, result_b);
+    
     for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
   }
 #else
@@ -129,7 +119,7 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
                        Real* output_data) noexcept {
   if (updating_) { UpdateCoefficients(); }
 #ifdef OSXIOS
-  if (num_samples < length_) {
+  if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
   }
@@ -233,8 +223,8 @@ void FirFilter::UpdateCoefficients() noexcept {
   assert(impulse_response_.size() == impulse_response_old_.size());
   Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
   Real weight_old = 1.0f-weight_new;
-  coefficients_ = mcl::Add(mcl::Multiply<Real>(impulse_response_, weight_new),
-                           mcl::Multiply<Real>(impulse_response_old_, weight_old));
+  coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
+                           mcl::Multiply(impulse_response_old_, weight_old));
   
   if (update_index_ == update_length_) {
     updating_ = false;

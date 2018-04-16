@@ -42,6 +42,7 @@
 
 
 namespace mcl {
+#define MAX_VLA_LENGTH 5000
 #define MCL_DATA_TYPE_DOUBLE
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */

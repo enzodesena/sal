@@ -11,9 +11,59 @@
 #include "vectorop.h"
 #include <vector>
 
+#ifdef OSXIOS
+#include <Accelerate/Accelerate.h>
+#endif
 
 namespace mcl {
 
+  
+void Multiply(const Real* input_data_a,
+              const Real* input_data_b,
+              Int num_samples,
+              Real* output_data) noexcept {
+#ifdef OSXIOS
+  #ifdef MCL_DATA_TYPE_DOUBLE
+  vDSP_vmulD(input_data_a, 1,
+             input_data_b, 1,
+             output_data, 1,
+             num_samples);
+  #else
+  vDSP_vmul(input_data_a, 1,
+            input_data_b, 1,
+            output_data, 1,
+            num_samples);
+  #endif
+#else
+  for (Int i=0; i<num_samples; ++i) {
+    output_data[i] = input_data_a[i]*input_data_b[i];
+  }
+#endif
+}
+  
+MCL_API void Add(const Real* input_data_a,
+                 const Real* input_data_b,
+                 Int num_samples,
+                 Real* output_data) noexcept {
+#ifdef OSXIOS
+  #ifdef MCL_DATA_TYPE_DOUBLE
+    vDSP_vaddD(input_data_a, 1,
+               input_data_b, 1,
+               output_data, 1,
+               num_samples);
+  #else
+    vDSP_vadd(input_data_a, 1,
+              input_data_b, 1,
+              output_data, 1,
+              num_samples);
+  #endif
+#else
+  for (Int i=0; i<num_samples; ++i) {
+    output_data[i] = input_data_a[i]+input_data_b[i];
+  }
+#endif
+}
+  
 std::vector<Complex> ComplexVector(const std::vector<Real>& input) noexcept {
   std::vector<Complex> output(input.size());
   for (UInt i=0; i<input.size(); ++i) { output[i] = Complex(input[i], 0.0); }

@@ -37,8 +37,24 @@ MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
   }
   return output;
 }
+  
+MCL_API void Add(const Real* input_data_a,
+                 const Real* input_data_b,
+                 Int num_samples,
+                 Real* output_data) noexcept;
 
 
+template<>
+MCL_API inline std::vector<Real> Add(const std::vector<Real>& vector_a,
+                                     const std::vector<Real>& vector_b) noexcept {
+  if (vector_a.size() != vector_b.size()) { assert(false); }
+  
+  std::vector<Real> output(vector_a.size());
+  Add(vector_a.data(), vector_b.data(), vector_a.size(),
+      output.data());
+  return output;
+}
+  
 /** Returns the opposite vector.Equivalent to Matlab's -vector. */
 template<class T> 
 MCL_API std::vector<T> Opposite(const std::vector<T>& vector) noexcept {
@@ -79,6 +95,23 @@ MCL_API std::vector<T> Multiply(const std::vector<T>& vector_a,
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]*vector_b[i];
   }
+  return output;
+}
+
+MCL_API void Multiply(const Real* input_data_a,
+                      const Real* input_data_b,
+                      Int num_samples,
+                      Real* output_data) noexcept;
+  
+  
+template<>
+MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
+                                          const std::vector<Real>& vector_b) noexcept {
+  if (vector_a.size() != vector_b.size()) { assert(false); }
+  
+  std::vector<Real> output(vector_a.size());
+  Multiply(vector_a.data(), vector_b.data(), vector_a.size(),
+           output.data());
   return output;
 }
   

@@ -395,41 +395,45 @@ void FirFilter::SpeedTests() {
   
   std::vector<Real> impulse_response = random_generator.Rand(1024);
   FirFilter fir_filter(impulse_response);
-  std::vector<Real> input = random_generator.Rand(100000);
+  std::vector<Real> input = random_generator.Rand(44100);
   
   clock_t launch=clock();
-  std::vector<Real> output = fir_filter.Filter(input);
+  for (Int i = 0; i<20; i++) {
+    fir_filter.Filter(mcl::GetFrame(input, i, 2205));
+  }
   clock_t done=clock();
   
-  std::cout<<"Fir filter speed (batch; length is power of 2): "<<
-  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  std::cout<<"Fir filter speed (batch; filter length is not power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)*100<<"% \n";
   
   launch=clock();
   for (UInt i=0; i<input.size(); ++i) {
-    output[i] = fir_filter.Filter(input[i]);
+    fir_filter.Filter(input[i]);
   }
   done=clock();
   
-  std::cout<<"Fir filter speed (sequential; length is power of 2): "<<
-  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  std::cout<<"Fir filter speed (sequential; filter length is not power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)*100<<"% \n";
   
   FirFilter fir_filter_b(random_generator.Rand(1024));
   
   launch=clock();
-  output = fir_filter_b.Filter(input);
-  done=clock();
-  
-  std::cout<<"Fir filter speed (batch; length is not power of 2): "<<
-  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
-  
-  launch=clock();
-  for (UInt i=0; i<input.size(); ++i) {
-    output[i] = fir_filter_b.Filter(input[i]);
+  for (Int i = 0; i<20; i++) {
+    fir_filter_b.Filter(mcl::GetFrame(input, i, 2205));
   }
   done=clock();
   
-  std::cout<<"Fir filter speed (sequential; length is not power of 2): "<<
-  (done - launch) / ((Real) CLOCKS_PER_SEC)<<" s\n";
+  std::cout<<"Fir filter speed (batch; filter length is power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)*100<<"% \n";
+  
+  launch=clock();
+  for (UInt i=0; i<input.size(); ++i) {
+    fir_filter_b.Filter(input[i]);
+  }
+  done=clock();
+  
+  std::cout<<"Fir filter speed (sequential; filter length is power of 2): "<<
+  (done - launch) / ((Real) CLOCKS_PER_SEC)*100<<"% \n";
   
 }
 

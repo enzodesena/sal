@@ -68,21 +68,36 @@ MCL_API std::vector<T> ZeroPad(const std::vector<T>& input,
  */
 template<class T> 
 MCL_API std::vector<T> Multiply(const std::vector<T>& vector,
-                        const T& gain) noexcept {
+                                const T gain) noexcept {
   std::vector<T> output(vector.size());
   for (UInt i=0; i<vector.size(); ++i) {
     output[i] = vector[i]*gain;
   }
   return output;
 }
-
+  
+  
+MCL_API void Multiply(const Real* input_data,
+                      const Int num_samples,
+                      const Real gain,
+                      Real* output_data) noexcept;
+  
+template<>
+MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& input,
+                                          const Real gain) noexcept {
+  std::vector<Real> output(input.size());
+  Multiply(input.data(), input.size(), gain, output.data());
+  return output;
+}
+  
+  
 /** 
  Returns the point by point addition of the two vectors.
  Equivalent to Matlab's vector_a+vector_b.
  */
 template<class T>
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
-                   const T scalar) noexcept {
+                    const T scalar) noexcept {
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]+scalar;

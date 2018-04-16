@@ -73,7 +73,7 @@ bool MatrixOpTest() {
   assert(IsEqual(matrix_c.element(0, 2), 0.0));
   assert(IsEqual(matrix_c.element(1, 2), 2));
 
-  Matrix<Real> matrix_d = Multiply<Real>(matrix_c, (Real) 0.1);
+  Matrix<Real> matrix_d = Multiply(matrix_c, (Real) 0.1);
   assert(matrix_d.num_columns() == 3);
   assert(matrix_d.num_rows() == 2);
   assert(IsEqual(matrix_d.element(0, 0), -1.0*0.1));

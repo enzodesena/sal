@@ -16,10 +16,32 @@
 #include <vector>
 #include <cassert>
 
-
+#ifdef OSXIOS
+#include <Accelerate/Accelerate.h>
+#endif
 
 namespace mcl {
   
+MCL_API void Multiply(const Real* input_data,
+                      const Int num_samples,
+                      const Real gain,
+                      Real* output_data) noexcept {
+#ifdef OSXIOS
+  #ifdef MCL_DATA_TYPE_DOUBLE
+  vDSP_vmulD(input_data, 1,
+             &gain, 0,
+             output_data, 1,
+             num_samples);
+  #else
+  vDSP_vmul(input_data, 1,
+            &gain, 0,
+            output_data, 1,
+            num_samples);
+  #endif
+#else
+  for (UInt i=0; i<num_samples; ++i) { output_data[i] = input_data[i]*gain; }
+#endif
+}
   
 std::vector<Real> LinSpace(Real min, Real max, UInt num_elements) noexcept {
   // This is to mimic Matlab's behaviour.
