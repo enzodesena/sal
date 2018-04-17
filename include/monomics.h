@@ -13,8 +13,8 @@
 
 #include "point.h"
 #include "salconstants.h"
-#include "stream.h"
 #include "microphone.h"
+#include "vectorop.h"
 
 
 

@@ -11,6 +11,7 @@
 #include "kemarmic.h"
 #include "microphone.h"
 #include "salconstants.h"
+#include "vectorop.h"
 
 using mcl::Point;
 using mcl::Quaternion;

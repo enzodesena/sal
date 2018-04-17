@@ -13,7 +13,6 @@
 #define SAL_MICROPHONE_H
 
 #include "point.h"
-#include "stream.h"
 #include "source.h"
 #include "quaternion.h"
 #include <assert.h>

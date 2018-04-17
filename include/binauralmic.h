@@ -15,7 +15,6 @@
 #include <vector>
 #include "microphone.h"
 #include "saltypes.h"
-#include "stream.h"
 #include "array.h"
 #include "salconstants.h"
 #include "firfilter.h"

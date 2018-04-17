@@ -43,8 +43,11 @@
 
 #include "cipicmic.h"
 #include "point.h"
+#include "matrixop.h"
 #include "salconstants.h"
+#include "vectorop.h"
 #include <string.h>
+#include <fstream>
 
 #ifndef NO_WAV_HANDLER
 #include "wavhandler.h"

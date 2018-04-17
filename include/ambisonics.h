@@ -44,14 +44,7 @@ public:
           Microphone(position, orientation),
           order_(order), convention_(convention) {}
   
-  virtual void Tick() noexcept {
-    stream_.Tick();
-  }
-  
   virtual bool IsCoincident() { return true; }
-  
-  /** Returns the BFormat stream of the microphone */
-  BFormatStream* stream() { return &stream_; }
   
   static std::vector<mcl::Real> HorizontalEncoding(UInt order, Angle theta);
   
@@ -64,7 +57,6 @@ private:
                                     Buffer& output_buffer) noexcept;
   
   const Int order_;
-  BFormatStream stream_;
   AmbisonicsConvention convention_;
 };
 
@@ -179,7 +171,6 @@ private:
   mcl::Matrix<Sample> max_energy_matrix_;
   
   Time sampling_frequency_;
-  BFormatStream* input_stream_;
 };
   
   

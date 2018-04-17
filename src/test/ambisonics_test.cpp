@@ -10,7 +10,6 @@
 
 #include "ambisonics.h"
 #include "microphone.h"
-#include "stream.h"
 
 using mcl::Point;
 using mcl::Quaternion;

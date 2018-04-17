@@ -10,6 +10,7 @@
 
 #include "sphericalheadmic.h"
 #include "salconstants.h"
+#include "vectorop.h"
 #include <cmath>
 #include "transformop.h"
 

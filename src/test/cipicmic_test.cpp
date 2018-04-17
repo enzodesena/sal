@@ -11,6 +11,7 @@
 #include "salutilities.h"
 #include "cipicmic.h"
 #include "microphone.h"
+#include "vectorop.h"
 #include "salconstants.h"
 
 using mcl::Point;

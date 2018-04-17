@@ -11,6 +11,8 @@
 #include "kemarmic.h"
 #include "point.h"
 #include "salconstants.h"
+#include "vectorop.h"
+#include <fstream>
 
 #ifdef _WIN32
   #define sprintf(...) sprintf_s(__VA_ARGS__)

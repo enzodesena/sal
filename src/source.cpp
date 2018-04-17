@@ -11,7 +11,6 @@
 #include "source.h"
 #include <vector>
 #include "saltypes.h"
-#include "stream.h"
 
 using mcl::Point;
 

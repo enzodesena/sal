@@ -16,7 +16,6 @@
 #include "microphone.h"
 #include "quaternion.h"
 #include "saltypes.h"
-#include "stream.h"
 #include "array.h"
 #include "binauralmic.h"
 #include "salconstants.h"

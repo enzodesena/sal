@@ -14,7 +14,6 @@
 #include "microphone.h"
 #include "saltypes.h"
 #include "kemarmic.h"
-#include "stream.h"
 #include <map>
 #include "salconstants.h"
 

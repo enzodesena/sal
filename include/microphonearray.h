@@ -17,7 +17,6 @@
 #include "source.h"
 #include "microphone.h"
 #include "saltypes.h"
-#include "stream.h"
 #include "salconstants.h"
 #include "monomics.h"
 #include "salconstants.h"
@@ -45,7 +44,6 @@ public:
                   const T& mic_prototype,
                   const mcl::UInt num_microphones) :
           Microphone(position, orientation) {
-    std::vector<MonoStream*> streams;
 
     for (UInt i=0; i<num_microphones; ++i) {
       T* microphone = new T(mic_prototype);
