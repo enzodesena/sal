@@ -57,7 +57,6 @@ public:
   
   virtual ~MemorylessMonoMic() {}
   
-protected:
   virtual void AddPlaneWaveRelative(const Sample* input_data,
                                     const Int num_samples,
                                     const mcl::Point& point,
@@ -73,9 +72,6 @@ protected:
                      num_samples,
                      mono_buffer.GetWritePointer());
   }
-  
-  
-  template<typename T> friend class MicrophoneArray;
   
 private:
   

@@ -50,6 +50,13 @@ public:
   
   virtual ~BinauralMic() {}
   
+  
+  virtual void AddPlaneWaveRelative(const Sample* signal,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept;
+  
 private:
   
   /** Retrieves the BRIR for a source in position `point`.
@@ -73,12 +80,6 @@ private:
   friend class BinauralMicInstance;
   
 protected:
-  
-  virtual void AddPlaneWaveRelative(const Sample* signal,
-                                    const Int num_samples,
-                                    const mcl::Point& point,
-                                    const Int wave_id,
-                                    Buffer& output_buffer) noexcept;
   
   HeadRefOrientation reference_orientation_;
 };

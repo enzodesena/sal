@@ -49,12 +49,12 @@ public:
   static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
   
   static bool Test();
-protected:
   virtual void AddPlaneWaveRelative(const Sample* input_data,
                                     const Int num_samples,
                                     const mcl::Point& point,
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept;
+  
   
 private:
   

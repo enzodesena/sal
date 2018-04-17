@@ -107,7 +107,6 @@ public:
   }
 
 
-protected:
   /**
    Simulates the output of the microphone array to a source in the direction
    of source.position() and with input signal `source.signal()`.
@@ -131,6 +130,7 @@ protected:
                                                 wave_id, referencing_buffer);
     }
   }
+protected:
   
   std::vector<T*> microphones_;
 };
