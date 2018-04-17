@@ -48,7 +48,7 @@ bool Ism::Test() {
                       500.0*SOUND_SPEED/sampling_frequency));
   
   MonoBuffer impulse(9);
-  impulse.set_sample(0, 1.0);
+  impulse.SetSample(0, 1.0);
   
   CuboidRoom room(5.0*SOUND_SPEED/sampling_frequency,
                   5.0*SOUND_SPEED/sampling_frequency,

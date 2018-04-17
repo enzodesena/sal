@@ -14,6 +14,8 @@
 #ifndef SAL_SIMULATION_H
 #define SAL_SIMULATION_H
 
+#define DEFAULT_MAX_BUFFER 10
+
 #include "source.h"
 #include "saltypes.h"
 #include "point.h"
@@ -51,7 +53,12 @@ public:
             const Time sampling_frequency,
             const Length sound_speed);
   
-  void Run();
+  void Run(std::vector<MonoBuffer*> input_buffers,
+           const Int num_output_samples,
+           std::vector<Buffer*> output_buffers);
+  
+  void AllocateTempBuffers(const Int num_samples);
+  void DeallocateTempBuffers();
   
   ~FreeFieldSim();
   
@@ -80,6 +87,8 @@ private:
   
   
   std::vector<std::vector<PropagationLine*> > propagation_lines_;
+  std::vector<std::vector<MonoBuffer*> > temp_buffers_;
+  
   std::vector<Microphone*> microphones_;
   std::vector<Source*> sources_;
   Time sampling_frequency_;

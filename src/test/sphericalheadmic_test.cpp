@@ -49,7 +49,7 @@ bool SphericalHeadMic::Test() {
   Time sampling_frequency(40000);
   
   MonoBuffer impulse(6);
-  impulse.set_sample(0, 1.0);
+  impulse.SetSample(0, 1.0);
   
   Angle ears_angle(100.0/180.0*PI);
   SphericalHeadMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),

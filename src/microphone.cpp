@@ -68,12 +68,26 @@ void Microphone::CalculateRelativePoint(const Point& point,
   }
 }
 
+void Microphone::AddPlaneWave(const Sample input_sample,
+                              const mcl::Point& point,
+                              Buffer& output_buffer) noexcept {
+  AddPlaneWave(&input_sample, 1, point, output_buffer);
+}
+  
 void Microphone::AddPlaneWave(const Sample* input_data,
                               const Int num_samples,
                               const mcl::Point& point,
                               Buffer& output_buffer) noexcept {
   AddPlaneWave(input_data, num_samples, point, 0, output_buffer);
 }
+  
+void Microphone::AddPlaneWave(const Sample input_sample,
+                              const mcl::Point& point,
+                              const Int wave_id,
+                              Buffer& output_buffer) noexcept {
+  AddPlaneWave(&input_sample, 1, point, wave_id, output_buffer);
+}
+  
 
 void Microphone::AddPlaneWave(const Sample* input_data,
                               const Int num_samples,

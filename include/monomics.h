@@ -32,7 +32,7 @@ public:
                          const Int& wave_id = 0) noexcept {
     MonoBuffer output_buffer(1);
     AddPlaneWave(&input_sample, 1, point, wave_id, output_buffer);
-    return output_buffer.sample(0);
+    return output_buffer.GetSample(0);
   }
 
   virtual ~MonoMic() {}

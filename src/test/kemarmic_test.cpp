@@ -26,7 +26,7 @@ bool KemarMic::Test() {
   
   MonoBuffer impulse(impulse_response_length);
   Sample sample = 0.5;
-  impulse.set_sample(0, sample);
+  impulse.SetSample(0, sample);
   
   Sample normalising_value = sample*1.0/NORMALISING_VALUE_KEMAR;
   
