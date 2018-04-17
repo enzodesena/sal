@@ -171,7 +171,7 @@ public:
       std::vector<std::string> elements = Split(line, '\t');
       if (number_of_columns == 0) { number_of_columns = elements.size(); }
       else {
-        if (number_of_columns != elements.size()) { ASSERT(false); }
+        if (number_of_columns != (Int)elements.size()) { ASSERT(false); }
       }
       
       ++number_of_rows; 
@@ -187,7 +187,7 @@ public:
     for(Int row=0; row<number_of_rows; ++row) {
       std::getline(in_file, line);
       std::vector<std::string> elements = Split(line, '\t');
-      for (Int column=0; column<elements.size(); ++column) {
+      for (Int column=0; column<(Int)elements.size(); ++column) {
         matrix.set_element(row, column, (T) StringToDouble(elements[column]));
       }
     }
