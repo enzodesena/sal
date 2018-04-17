@@ -66,6 +66,7 @@
 		578EB0BD2086644F006F06B8 /* fdtd_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113D20600B5A004B9C6F /* fdtd_test.cpp */; };
 		578EB0BE2086646B006F06B8 /* tdbem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112020600683004B9C6F /* tdbem.cpp */; };
 		578EB0BF20866650006F06B8 /* fdtd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112320600683004B9C6F /* fdtd.cpp */; };
+		578EB0C520866F57006F06B8 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
 		57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57AA6152205C9C3A0044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
@@ -790,7 +791,9 @@
 				576C17D320853C7F00EFBACE /* microphone_test.cpp in Sources */,
 				578EB0BE2086646B006F06B8 /* tdbem.cpp in Sources */,
 				57F13C1120853C21002CC480 /* binauralmic.cpp in Sources */,
+				578EB0C520866F57006F06B8 /* pawrapper.cpp in Sources */,
 				578EB0BF20866650006F06B8 /* fdtd.cpp in Sources */,
+				576C17DA2085646B00EFBACE /* wavhandler.cpp in Sources */,
 				578EB0622085BA5A006F06B8 /* ism.cpp in Sources */,
 				578EB0B820863132006F06B8 /* ambisonics_test.cpp in Sources */,
 				576C17D120853C7D00EFBACE /* audiobuffer_test.cpp in Sources */,
@@ -808,7 +811,6 @@
 				578EB0682085BE60006F06B8 /* propagationline_test.cpp in Sources */,
 				578EB0652085BD90006F06B8 /* delayfilter.cpp in Sources */,
 				578EB0662085BE4D006F06B8 /* propagationline.cpp in Sources */,
-				576C17DA2085646B00EFBACE /* wavhandler.cpp in Sources */,
 				578EB0632085BD73006F06B8 /* cuboidroom.cpp in Sources */,
 				578EB0612085BA57006F06B8 /* ism_test.cpp in Sources */,
 				578EB0642085BD82006F06B8 /* source.cpp in Sources */,

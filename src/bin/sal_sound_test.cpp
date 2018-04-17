@@ -21,14 +21,14 @@ Signal GenerateSine(const Time length, const Time sine_frequency,
 int main(int argc, char * const argv[]) {
   
   const Time sampling_frequency = 44100;
-  const Int frames_per_buffer = 1000;
+  const Int samples_per_buffer = 1000;
   
   const Time pulse_frequency = 1000.0;
   const Sample pulse_amplitude = 0.1;
   
   const Time pulse_length = 0.5;
   const Time trailing_length = 0.5;
-  const Time long_sine_length = 5.0;
+  const Time long_sine_length = 0.0;
   
   PaWrapper::PrintDevicesInfo();
   
@@ -49,15 +49,9 @@ int main(int argc, char * const argv[]) {
                                        sampling_frequency,
                                        pulse_amplitude, trailing_length);
   
-  std::vector<MonoStream*> streams(max_num_channels);
-  for (Int i=0; i<max_num_channels; ++i) {
-    MonoStream* stream = new MonoStream;
-    streams[i] = stream;
-  }
+  MultichannelBuffer buffer(max_num_channels, samples_per_buffer);
   
-  IdenticalDecoder decoder(streams);
-  
-  PaWrapper pa(&decoder, sampling_frequency, frames_per_buffer,
+  PaWrapper pa(sampling_frequency,
                dev_id, channel_ids);
   
   pa.StartStream();
@@ -70,13 +64,17 @@ int main(int argc, char * const argv[]) {
     signal = mcl::Concatenate(signal, long_sine_wave);
     signal = mcl::Concatenate(signal, mcl::Zeros<mcl::Real>(sine_wave.size()));
     
-    streams[i]->Push(signal);
-    decoder.Decode();
+    Int segment_id = 0;
+    while (segment_id*samples_per_buffer < signal.size()) {
+      buffer.SetSamples(i, 0, samples_per_buffer, mcl::GetSegment(signal, segment_id++, samples_per_buffer, true).data());
     
-    PaError error = pa.WriteDecoderToStream();
-    if (error) {
-      PaWrapper::PrintError(error);
-      exit(1);
+      PaError error = pa.WriteStream(buffer);
+      if (error) {
+        PaWrapper::PrintError(error);
+        exit(1);
+      }
+      
+      buffer.Reset();
     }
   }
   

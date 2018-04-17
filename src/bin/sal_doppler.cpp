@@ -39,10 +39,12 @@ int main(int argc, char * const argv[]) {
   mcl::Matrix<sal::Time> current_latency(sine.size(), 1);
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
-  PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0, true);
+  PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
+                               PropagationLine::rounding);
   
-  PropagationLine line(current_distance, sampling_frequency, 1000.0, true);
-  line.set_gain(1.0, 0.0);
+  PropagationLine line(current_distance, sampling_frequency, 1000.0,
+                       PropagationLine::rounding);
+  line.set_attenuation(1.0, 0.0);
   
   Int index = 0;
   while (index<ceil(sine_length*sampling_frequency)) {
@@ -51,7 +53,7 @@ int main(int argc, char * const argv[]) {
     current_distance += space_covered;
     line_doppler.set_distance(current_distance, update_period);
     
-    line_doppler.set_gain(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
+    line_doppler.set_attenuation(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
     
     for (Int i=0; i<samples_per_buffer; ++i) {
       if (index>=ceil(sine_length*sampling_frequency)) { continue; }

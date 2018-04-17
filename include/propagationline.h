@@ -19,16 +19,7 @@
 
 namespace sal {
   
-enum InterpolationType {
-  rounding, /** Rounds the latency to the nearest integer. */
-  linear, /** Applies fractional delays with linear interpolation.
-            It reduces audible clicks, but can cause low-pass
-            effect. */
-  linear_dynamic /** Only applies fractional delays with linear
-                   interpolation when the propagation line
-                   is changing length. It reduces audible clicks
-                   while not adding low-pass effects. */
-};
+
   
 /** This describes a simple propagation line. It has one input and one output
  and models the delay between them. It also models attenuation between these
@@ -37,6 +28,18 @@ enum InterpolationType {
  */
 class SAL_API PropagationLine {
 public:
+
+  enum InterpolationType {
+    rounding, /** Rounds the latency to the nearest integer. */
+    linear, /** Applies fractional delays with linear interpolation.
+             It reduces audible clicks, but can cause low-pass
+             effect. */
+    linear_dynamic /** Only applies fractional delays with linear
+                    interpolation when the propagation line
+                    is changing length. It reduces audible clicks
+                    while not adding low-pass effects. */
+  };
+  
   /**
    This constructs a `PropagationLine` object. You need to feed the `distance`
    between the two points (in [m]), the `sampling_frequency` and the maximum
@@ -90,6 +93,7 @@ public:
   
   /** Resets the state of the filter */
   void Reset() noexcept;
+  
   
   static bool Test();
 private:

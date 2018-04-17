@@ -59,12 +59,9 @@ Int PaWrapper::NumOutputChannels(const Int out_dev_id) {
 }
   
 
-PaWrapper::PaWrapper(Decoder* decoder,
-                     Time sampling_frequency,
-                     Int frames_per_buffer,
+PaWrapper::PaWrapper(Time sampling_frequency,
                      Int out_dev_num,
                      std::vector<Int> channel_ids) :
-          decoder_(decoder), frames_per_buffer_(frames_per_buffer),
           channel_ids_(channel_ids) {
   //if (decoder->num_loudspeakers() != channel_ids.size()) { ASSERT(false); }
   
@@ -87,7 +84,7 @@ PaWrapper::PaWrapper(Decoder* decoder,
                 NULL,
                 &output_parameters,
                 sampling_frequency,
-                frames_per_buffer,
+                paFramesPerBufferUnspecified,
                 paNoFlag, //flags that can be used to define dither, clip settings and more
                 NULL, //your callback function
                 NULL); //data to be passed to callback. In C++, it is frequently (void *)this
@@ -95,23 +92,9 @@ PaWrapper::PaWrapper(Decoder* decoder,
   
 PaError PaWrapper::StartStream() { return Pa_StartStream(stream_); }
 
-PaError PaWrapper::WriteDecoderToStream() {
-  PaError error = WriteDecoderToStream(decoder_->size());
-  return error;
-}
-
-PaError PaWrapper::WriteDecoderToStream(const Int tot_num_samples) {
-  Int i = 0;
-  while (i+frames_per_buffer_ <= tot_num_samples) {
-    PaError error = WriteStream(frames_per_buffer_);
-    if (error) { return error; }
-    i += frames_per_buffer_;
-  }
   
-  return paNoError;
-}
-  
-PaError PaWrapper::WriteStream(const Int num_samples) {
+PaError PaWrapper::WriteStream(const MultichannelBuffer& output_buffer) {
+  const Int num_samples = output_buffer.num_samples();
   sal::Int max_num_channels = channel_ids_.size();
   const Int block_length = num_samples*max_num_channels;
   float sample_block[block_length];
@@ -120,10 +103,10 @@ PaError PaWrapper::WriteStream(const Int num_samples) {
     for (Int j=0; j<max_num_channels; ++j) {
       float sample;
       if (channel_ids_[j] == -1 ||
-          decoder_->stream(channel_ids_[j])->IsEmpty()) {
+          i >= output_buffer.num_samples()) {
         sample = 0.0;
       } else {
-        sample = (float) decoder_->stream(channel_ids_[j])->Pull();
+        sample = (float) output_buffer.GetSample(channel_ids_[j], i);
       }
       ASSERT(i*max_num_channels+j<block_length);
       sample_block[i*max_num_channels+j] = sample;

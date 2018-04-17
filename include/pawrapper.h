@@ -17,22 +17,19 @@
 #include "decoder.h"
 #include <strings.h>
 #include "salconstants.h"
+#include "audiobuffer.h"
 
 namespace sal {
   
 /** A wrapper for portaudio */
 class SAL_API PaWrapper {
 public:
-  PaWrapper(Decoder* decoder, Time sampling_frequency, Int frames_per_buffer,
-            Int out_dev_num, std::vector<Int> channel_ids);
+  PaWrapper(Time sampling_frequency, Int out_dev_num,
+            std::vector<Int> channel_ids);
   
   PaError StartStream();
   
-  PaError WriteDecoderToStream();
-  
-  PaError WriteDecoderToStream(const Int num_samples);
-  
-  PaError WriteStream(const Int num_samples);
+  PaError WriteStream(const MultichannelBuffer& output_buffer);
   
   PaError StopStream();
   
@@ -51,9 +48,7 @@ private:
   static PaError Terminate();
   
   PaStream* stream_;
-  Decoder* decoder_;
   std::vector<Int> channel_ids_;
-  Int frames_per_buffer_;
 };
   
   
