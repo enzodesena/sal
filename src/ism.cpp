@@ -56,16 +56,6 @@ void Ism::Run(const Sample* input_data, const Int num_samples,
     microphone_->AddPlaneWave(temp, num_samples, mcl::Point(0,0,0), output_buffer);
   } else {
     assert(false);
-//    std::vector<sal::Sample> input_signal = source_->stream()->PullAll();
-//    for (UInt i=0; i<num_samples; ++i) {
-//      std::vector<sal::Sample> integer_delayed_signal =
-//      images_int_delay_filter_[i].DigitalFilter::Filter(input_signal);
-//
-//      std::vector<sal::Sample> signal =
-//      images_frac_delay_filter_[i].Filter(integer_delayed_signal);
-//
-//      microphone_->AddPlaneWave(signal, images_position_[i], i);
-//    }
   }
 }
   

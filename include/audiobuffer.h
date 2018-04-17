@@ -272,6 +272,19 @@ public:
   explicit MonoBuffer(const Int num_samples) noexcept :
         MultichannelBuffer(1, num_samples) {}
   
+  /** Constructs a multichannel buffer as a reference to another data
+   structure. If constructed in this way, this object will not own the data.
+   
+   @param[in] data_referenced the data structure which we are referencing to.
+   @param[in] num_channels the number of channels for the data structure
+   we are referencing to.
+   @param[in] num_samples the number of samples for the data structure
+   we are referencing to.
+   */
+  MonoBuffer(MultichannelBuffer& referenced_buffer, const Int channel_id) noexcept :
+    MultichannelBuffer(&(referenced_buffer.GetWritePointers()[channel_id]), 1,
+                       referenced_buffer.num_samples()) {}
+                     
   inline void SetSample(const Int sample_id,
                          const Sample sample_value) noexcept {
     MultichannelBuffer::SetSample(mono_channel, sample_id, sample_value);

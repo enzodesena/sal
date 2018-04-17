@@ -60,6 +60,7 @@
 		578EB06A2085BE6C006F06B8 /* cuboidroom_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */; };
 		578EB0B420860210006F06B8 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		578EB0B520861631006F06B8 /* freefieldsimulation_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF891CD81AB400134991 /* freefieldsimulation_test.cpp */; };
+		578EB0B6208625E4006F06B8 /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */; };
 		57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
 		57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57AA6152205C9C3A0044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
@@ -795,6 +796,7 @@
 				576C17D92085636700EFBACE /* cipicmic.cpp in Sources */,
 				578EB0692085BE63006F06B8 /* stream_test.cpp in Sources */,
 				578EB0B420860210006F06B8 /* freefieldsimulation.cpp in Sources */,
+				578EB0B6208625E4006F06B8 /* microphonearray_test.cpp in Sources */,
 				57F13C1220853C26002CC480 /* salutilities.cpp in Sources */,
 				578EB06A2085BE6C006F06B8 /* cuboidroom_test.cpp in Sources */,
 				578EB0602085BA56006F06B8 /* riranalysis_test.cpp in Sources */,
