@@ -165,7 +165,7 @@ public:
                                                      angles_);
 
     mcl::AxAng axang = mcl::Quat2AxAng(orientation);
-    for (mcl::Int i=0; i<angles_.size(); ++i) {
+    for (mcl::Int i=0; i<(Int)angles_.size(); ++i) {
       mcl::Quaternion q = mcl::AxAng2Quat(axang.x, axang.y, axang.z,
                                           axang.angle + angles_[i]);
 
@@ -185,7 +185,7 @@ private:
                                               const Length radius,
                                               const std::vector<Angle>& angles) {
     std::vector<mcl::Point> positions(angles.size());
-    for (Int i=0; i<angles.size(); ++i) {
+    for (Int i=0; i<(Int)angles.size(); ++i) {
       positions[i] = mcl::Point(radius*cos(angles[i])+position.x(),
                                 radius*sin(angles[i])+position.y(),
                                 position.z());

@@ -202,7 +202,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
     Int num_delay_tap = (UInt) round(distance/sound_speed*sampling_frequency);
     h = mcl::Concatenate(Zeros<Sample>(num_delay_tap),
                          mcl::Subset(h, 0, num_samples-num_delay_tap-1));
-    ASSERT(h.size() == num_samples);
+    ASSERT((Int)h.size() == num_samples);
   }
   
   return h;

@@ -77,7 +77,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
                                                  const std::vector<sal::Angle>& azimuths) {
   std::vector<std::vector<Signal> > hrtf_database;
 
-  for (Int j=0; j<azimuths.size(); ++j) {
+  for (Int j=0; j<(Int)azimuths.size(); ++j) {
     Int azimuth = (Int) azimuths[j];
 
     std::string sign_text = (azimuth < 0) ? "neg" : "";
@@ -165,7 +165,7 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
     elevation_index = (Int) round((elevation + 45.0) * 64.0 / 360.0);
   }
   
-  ASSERT((azimuth_index >= 0) & (azimuth_index < azimuths_.size()));
+  ASSERT((azimuth_index >= 0) & (azimuth_index < (Int)azimuths_.size()));
   ASSERT((elevation_index >= 0) & (elevation_index <= 49));
   
   return (ear == left_ear) ?

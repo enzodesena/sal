@@ -311,6 +311,15 @@ public:
     return output;
   }
   
+  using MultichannelBuffer::AddSamples;
+  
+  void AddSamples(const Int from_sample_id,
+                  const Int num_samples,
+                  const Sample* samples) noexcept {
+    MultichannelBuffer::AddSamples(mono_channel, from_sample_id, num_samples,
+                                   samples);
+  }
+  
   virtual ~MonoBuffer() {}
 };
   
@@ -382,10 +391,7 @@ public:
                                   sample_id, sample_value);
   }
   
-  inline void AddSample(const Int degree, const Int order, const Int sample_id,
-                        const Sample& sample_value) noexcept {
-    
-  }
+  using MultichannelBuffer::AddSamples;
   
   void AddSamples(const Int degree, const Int order,
                   const Int from_sample_id,

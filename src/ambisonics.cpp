@@ -137,7 +137,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        sampling_frequency_,
                                        sound_speed));
     }
-    ASSERT(nfc_filters_.size() == 2*order+1);
+    ASSERT((Int)nfc_filters_.size() == 2*order+1);
   }
   
   if (energy_decoding_) {
