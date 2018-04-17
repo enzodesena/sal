@@ -15,7 +15,6 @@
 #include "saltypes.h"
 #include "salutilities.h"
 #include "point.h"
-#include "stream.h"
 #include <vector>
 #include "salconstants.h"
 
@@ -24,8 +23,6 @@ namespace sal {
 class SAL_API Source {
 public:
   Source(const mcl::Point&) noexcept;
-  
-  Source(const mcl::Point&, const Signal& signal) noexcept;
   
   mcl::Point position() const noexcept;
   
@@ -39,10 +36,7 @@ public:
   
   bool HasReachedTarget() noexcept;
   
-  MonoStream* stream() noexcept { return &stream_; }
-  
 private:
-  MonoStream stream_;
   TripletHandler position_;
 };
 

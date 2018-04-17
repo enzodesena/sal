@@ -44,7 +44,7 @@ sal::Signal Fdtd::RunFdtd(UInt Nx, UInt Ny, UInt Nz,
                           UInt Nt,
                           std::vector<std::vector<std::vector<sal::Int> > > G,
                           Sample xi,
-                          std::vector<sal::Sample> s,
+                          const Sample* signal,
                           Sample lmb,
                           UInt pos_s_x, UInt pos_s_y, UInt pos_s_z,
                           UInt pos_m_x, UInt pos_m_y, UInt pos_m_z) {
@@ -79,7 +79,7 @@ sal::Signal Fdtd::RunFdtd(UInt Nx, UInt Ny, UInt Nz,
                                           +(lmb*beta-1.0)*p_0[l-1][m-1][i-1]);
             
             if (pos_s_x == l && pos_s_y == m && pos_s_z == i) {
-              p_2[l-1][m-1][i-1] += s[n-2]; // Soft source
+              p_2[l-1][m-1][i-1] += signal[n-2]; // Soft source
             }
           }
         }
@@ -96,11 +96,10 @@ sal::Signal Fdtd::RunFdtd(UInt Nx, UInt Ny, UInt Nz,
 }
 
 
-void Fdtd::Run() {
+void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
+  assert(input_buffer.num_samples() == output_buffer.num_samples());
   
   double curant_number = 1.0/sqrt(3.0);
-  
-  sal::Signal s = source_->stream()->PullAll();
   
   double spatial_frequency = SOUND_SPEED/(curant_number*sampling_frequency_);
   
@@ -117,10 +116,10 @@ void Fdtd::Run() {
   UInt pos_m_z = (UInt) round(microphone_->position().z()/spatial_frequency)+1;
   
   rir_ = Fdtd::RunFdtd(Nx, Ny, Nz,
-                       s.size(),
+                       input_buffer.num_samples(),
                        CreateGeometry(Nx, Ny, Nz),
                        xi_,
-                       s,
+                       input_buffer.GetReadPointer(),
                        lmb_,
                        pos_s_x, pos_s_y, pos_s_z,
                        pos_m_x, pos_m_y, pos_m_z);

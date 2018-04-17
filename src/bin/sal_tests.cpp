@@ -49,9 +49,9 @@ int main(int argc, char * const argv[]) {
   
   std::cout<<"All tests succeded!\n";
   
-//  sal::Fdtd::Test();
-//  sal::TdBem::Test();
-//  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
+  sal::Fdtd::Test();
+  sal::TdBem::Test();
+  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
   
     
   return 0;

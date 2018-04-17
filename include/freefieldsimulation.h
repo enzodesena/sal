@@ -80,10 +80,6 @@ private:
   AllDistances(const std::vector<Microphone*>& microphones,
                const std::vector<Source*>& sources);
   
-  /** Returns true if all sources' streams are depleted. */
-  static bool AllSourcesEmpty(const std::vector<Source*>& sources);
-  
-  
   
   
   std::vector<std::vector<PropagationLine*> > propagation_lines_;

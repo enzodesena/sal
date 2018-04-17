@@ -325,7 +325,7 @@ bool AmbisonicsHorizDec::Test() {
   assert(IsEqual(output_b.GetReadPointer(2), output_2_cmp));
   assert(IsEqual(output_b.GetReadPointer(3), output_3_cmp));
   assert(IsEqual(output_b.GetReadPointer(4), output_4_cmp));
-  assert(false);
+  
   return true;
 }
   

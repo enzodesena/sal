@@ -14,8 +14,8 @@ namespace sal {
 bool Fdtd::Test() {
   
   unsigned int Nt=20;
-  std::vector<sal::Sample> s=mcl::Zeros<sal::Sample>(Nt);
-  s[1]=1.0;
+  MonoBuffer s(Nt);
+  s.SetSample(1, 1.0);
   
   unsigned int Nx=4;
   unsigned int Ny=4;
@@ -25,7 +25,7 @@ bool Fdtd::Test() {
                                 Nt,
                                 Fdtd::CreateGeometry(Nx, Ny, Nz),
                                 10,
-                                s,
+                                s.GetReadPointer(),
                                 1.0/sqrt(3.0),
                                 3, 3, 3, // source
                                 4, 4, 4); // microphone
@@ -65,8 +65,8 @@ sal::Time Fdtd::SimulationTime() {
 
   //  clock_t launch=clock();
   unsigned int Nt=1000;
-  std::vector<sal::Sample> s=mcl::Zeros<sal::Sample>(Nt);
-  s[1]=1.0;
+  MonoBuffer s(Nt);
+  s.SetSample(1, 1.0);
   
   unsigned int Nx=50;
   unsigned int Ny=50;
@@ -78,7 +78,7 @@ sal::Time Fdtd::SimulationTime() {
              Nt,
              Fdtd::CreateGeometry(Nx, Ny, Nz),
              10,
-             s,
+             s.GetReadPointer(),
              1.0/sqrt(3.0),
              3, 3, 3, // source
              4, 4, 4); // microphone

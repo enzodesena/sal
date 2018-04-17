@@ -8,12 +8,10 @@
 
 #include "tdbem.h"
 #include "monomics.h"
-#include "stream.h"
 
 
 namespace sal {
   
-using mcl::IsEqual;
 using sal::Time;
 using sal::Length;
 using sal::Sample;
@@ -31,14 +29,14 @@ bool TdBem::Test() {
   
   Time sampling_frequency = 4000;
   
+  const Int num_samples = 10;
   
-  sal::Signal input = mcl::Zeros<sal::Sample>(10);
-  input[1]=1.0;
+  MonoBuffer input(num_samples);
+  input.SetSample(0, 1.0);
   
   OmniMic mic(Point(1.23, 2.556, 0.456));
   
-  Source source(Point(1.23, 2.556, 0.856),
-                input);
+  Source source(Point(1.23, 2.556, 0.856));
   
   CuboidRoom room(5.23, 4.86, 2.1, mcl::GainFilter(1));
   
@@ -49,8 +47,9 @@ bool TdBem::Test() {
   
   std::cout<<"TDBEM Load: "<<(done - launch) / ((sal::Time) CLOCKS_PER_SEC)<<" s\n";
   
+  MonoBuffer output_buffer(num_samples);
   launch=clock();
-  tdbem.Run();
+  tdbem.Run(input, output_buffer);
   done=clock();
   
   std::cout<<"TDBEM Run: "<<(done - launch) / ((sal::Time) CLOCKS_PER_SEC)<<" s\n";

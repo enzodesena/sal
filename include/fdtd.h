@@ -42,7 +42,7 @@ private:
                       sal::UInt Nt,
                       std::vector<std::vector<std::vector<sal::Int> > > G,
                       sal::Sample xi,
-                      std::vector<sal::Sample> s,
+                      const Sample* signal,
                       sal::Sample lmb,
                       sal::UInt position_x,
                       sal::UInt position_y,
@@ -74,7 +74,7 @@ public:
        sal::Sample lmb);
   
   
-  void Run();
+  void Run(const MonoBuffer& input_buffer, Buffer& output_buffer);
   
   sal::Signal rir() const { return rir_; }
   

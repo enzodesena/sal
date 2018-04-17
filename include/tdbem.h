@@ -92,7 +92,7 @@ public:
   
   void WriteOutPoints(const std::string file_name);
   
-  void Run();
+  void Run(const MonoBuffer& input_buffer, Buffer& output_buffer);
   
   sal::Signal rir() const { return rir_; }
   

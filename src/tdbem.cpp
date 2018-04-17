@@ -214,17 +214,20 @@ void TdBem::CalculatePoints() {
 }
   
   
-void TdBem::Run() {
+void TdBem::Run(const MonoBuffer& input_buffer,
+                Buffer& output_buffer) {
+  assert(input_buffer.num_samples() == output_buffer.num_samples());
+  MonoBuffer& mono_output_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
   mcl::Matrix<sal::Sample> boundary_pressure(0,0);
   if (log_) {
     boundary_pressure = mcl::Matrix<sal::Sample>(num_elements_,
-                                                 source_->stream()->size());
+                                                 input_buffer.num_samples());
   }
   
   UInt k=0;
-  while (! source_->stream()->IsEmpty()) {
+  for (Int sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
     if (log_) { std::cout<<"Running TDBEM sample n. "<<k<<std::endl; }
-    source_delay_line_.Write(source_->stream()->Pull());
+    source_delay_line_.Write(input_buffer.GetSample(sample_id));
     
     
     for (UInt i = 0; i<num_elements_; ++i) {
@@ -256,19 +259,14 @@ void TdBem::Run() {
                 weights_mic_previous_[i] * pressures_[i].FractionalRead(delay+1.0))
                 / (4.0*PI);
       
-      microphone_->AddPlaneWave(pressure,
-                                   points_[i], i);
+      microphone_->AddPlaneWave(MonoBuffer::Unary(pressure), points_[i], i, mono_output_buffer);
     }
     
     Time los_delay = distance_los_ * sampling_frequency_ / SOUND_SPEED;
-    microphone_->AddPlaneWave(source_delay_line_.FractionalRead(los_delay)
-                                 / (4.0*PI*distance_los_),
-                                 source_->position(),
-                                 num_elements_);
+    microphone_->AddPlaneWave(MonoBuffer::Unary(source_delay_line_.FractionalRead(los_delay)/ (4.0*PI*distance_los_)), source_->position(), num_elements_, mono_output_buffer);
     
     // Next time tick
     source_delay_line_.Tick();
-    microphone_->Tick();
     for (UInt i = 0; i<num_elements_; ++i) {
       pressures_[i].Tick();
     }

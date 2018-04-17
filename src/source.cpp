@@ -22,11 +22,6 @@ namespace sal {
 Source::Source(const Point& position) noexcept :
         position_(TripletHandler(position)) {}
 
-Source::Source(const Point& position, const Signal& signal) noexcept :
-        position_(TripletHandler(position)) {
-  stream_.Push(signal);
-}
-
 Point Source::position() const noexcept { return position_.value(); }
 
 void Source::set_position(const Point& position) noexcept {

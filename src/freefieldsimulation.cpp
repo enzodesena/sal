@@ -166,16 +166,6 @@ void FreeFieldSim::Tick() {
   }
 }
   
-bool FreeFieldSim::AllSourcesEmpty(const std::vector<Source*>& sources) {
-  const Int num_sources = sources.size();
-  for (UInt i=0; i<num_sources; ++i) {
-    if (! sources[i]->stream()->IsEmpty()) {
-      return false;
-    }
-  }
-  return true;
-}
-  
 std::vector<Length>
 FreeFieldSim::AllDistances(const std::vector<Microphone*>& microphones,
                            const std::vector<Source*>& sources) {
