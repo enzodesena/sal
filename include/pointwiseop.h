@@ -29,7 +29,7 @@ namespace mcl {
 template<class T> 
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
                            const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
@@ -47,7 +47,7 @@ MCL_API void Add(const Real* input_data_a,
 template<>
 MCL_API inline std::vector<Real> Add(const std::vector<Real>& vector_a,
                                      const std::vector<Real>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<Real> output(vector_a.size());
   Add(vector_a.data(), vector_b.data(), vector_a.size(),
@@ -60,7 +60,7 @@ template<class T>
 MCL_API std::vector<T> Opposite(const std::vector<T>& vector) noexcept {
   // Checking we are not dealing with unsigned types.
   // The assert below responds false to complex. TODO: fix this
-  //assert(std::numeric_limits<T>::is_signed);
+  //ASSERT(std::numeric_limits<T>::is_signed);
   
   std::vector<T> output(vector.size());
   for (UInt i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
@@ -89,7 +89,7 @@ MCL_API std::vector<T> Subtract(const std::vector<T>& vector_a,
 template<class T> 
 MCL_API std::vector<T> Multiply(const std::vector<T>& vector_a,
                                 const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
@@ -107,7 +107,7 @@ MCL_API void Multiply(const Real* input_data_a,
 template<>
 MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
                                           const std::vector<Real>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<Real> output(vector_a.size());
   Multiply(vector_a.data(), vector_b.data(), vector_a.size(),
@@ -122,7 +122,7 @@ MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
 template<class T>
 MCL_API std::vector<T> Divide(const std::vector<T>& vector_a,
                               const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   std::vector<T> output(vector_a.size());
   for (UInt i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]/vector_b[i];

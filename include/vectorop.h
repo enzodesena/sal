@@ -123,9 +123,9 @@ MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
 template<class T> 
 MCL_API std::vector<T> Subset(const std::vector<T>& vector,
                       const UInt from_index, const UInt to_index) noexcept {
-  if (from_index >= vector.size()) { assert(false); }
-  if (to_index >= vector.size()) { assert(false); }
-  if (from_index > to_index) { assert(false); }
+  if (from_index >= vector.size()) { ASSERT(false); }
+  if (to_index >= vector.size()) { ASSERT(false); }
+  if (from_index > to_index) { ASSERT(false); }
   
   // Allocate output vector with appropriate length.
   std::vector<T> output(to_index-from_index+1);
@@ -268,7 +268,7 @@ MCL_API std::vector<T> AddVectors(const std::vector<T>& vector_a,
 template<class T>
 MCL_API std::vector<T> Interleave(const std::vector<T>& vector_a,
                           const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output;
   for (UInt i=0; i<vector_a.size(); ++i) {
@@ -346,7 +346,7 @@ template<class T>
 MCL_API T Dot(const std::vector<T>& vector_a,
               const std::vector<T>& vector_b) noexcept {
   const UInt num_elements = vector_a.size();
-  if (num_elements != vector_b.size()) { assert(false); }
+  if (num_elements != vector_b.size()) { ASSERT(false); }
   
   T output = (T) 0.0;
   for (UInt i=0; i<num_elements; ++i) {

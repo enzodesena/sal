@@ -96,7 +96,7 @@ Quaternion Eul2Quat(const Real angle_1, const Real angle_2, const Real angle_3,
       rotation_1 = Quaternion(cos(angle_1/2.0), 0.0, 0.0, sin(angle_1/2.0));
       break;
     default:
-      assert(false);
+      ASSERT(false);
       break;
   }
   
@@ -111,7 +111,7 @@ Quaternion Eul2Quat(const Real angle_1, const Real angle_2, const Real angle_3,
       rotation_2 = Quaternion(cos(angle_2/2.0), 0.0, 0.0, sin(angle_2/2.0));
       break;
     default:
-      assert(false);
+      ASSERT(false);
       break;
   }
   
@@ -126,7 +126,7 @@ Quaternion Eul2Quat(const Real angle_1, const Real angle_2, const Real angle_3,
       rotation_3 = Quaternion(cos(angle_3/2.0), 0.0, 0.0, sin(angle_3/2.0));
       break;
     default:
-      assert(false);
+      ASSERT(false);
       break;
   }
   
@@ -144,7 +144,7 @@ Real Quat2EulX(const Quaternion q, const EulerOrder order) noexcept {
                    pow(q.w(),2.0)+pow(q.z(),2.0)-pow(q.y(),2.0)-pow(q.x(),2.0));
       break;
     default:
-      assert(false);
+      ASSERT(false);
       return NAN;
       break;
   }
@@ -158,7 +158,7 @@ Real Quat2EulZ(const Quaternion q, const EulerOrder order) noexcept {
                    -pow(q.y(), 2.0)-pow(q.z(), 2.0));
       break;
     default:
-      assert(false);
+      ASSERT(false);
       return NAN;
       break;
   }
@@ -170,7 +170,7 @@ Real Quat2EulY(const Quaternion q, const EulerOrder order) noexcept {
       return asin(2.0*q.x()*q.z()+2.0*q.w()*q.y());
       break;
     default:
-      assert(false);
+      ASSERT(false);
       return NAN;
       break;
   }

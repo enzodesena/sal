@@ -215,12 +215,12 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
     delay_line_.assign(length_, 0.0);
     counter_ = impulse_response.size()-1;
   }
-  assert(impulse_response_.size() == impulse_response_old_.size());
+  ASSERT(impulse_response_.size() == impulse_response_old_.size());
 }
 
 void FirFilter::UpdateCoefficients() noexcept {
-  assert(update_index_>=0 & update_index_<=update_length_);
-  assert(impulse_response_.size() == impulse_response_old_.size());
+  ASSERT(update_index_>=0 & update_index_<=update_length_);
+  ASSERT(impulse_response_.size() == impulse_response_old_.size());
   Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
   Real weight_old = 1.0f-weight_new;
   coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),

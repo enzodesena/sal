@@ -14,7 +14,7 @@
 #endif
 
 #define ASSERT(arg) assert(arg)
-#define ASSERT_WITH_MESSAGE(condition, message) assert(condition && message)
+#define ASSERT_WITH_MESSAGE(condition, message) ASSERT(condition && message)
 
 #define throw_line(arg) throw(mcl::Exception(std::string("Error at line n. ") + \
       std::string(std::to_string(__LINE__)) + std::string(" of file ") + \

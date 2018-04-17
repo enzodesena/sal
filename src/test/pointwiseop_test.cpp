@@ -23,7 +23,7 @@ bool PointWiseOpTest() {
   vector_a[2] = Complex(1.0, 0.5);
   
   
-  assert(! IsReal(vector_a));
+  ASSERT(! IsReal(vector_a));
   
   std::vector<Real> abs_vector_a = Abs(vector_a);
   std::vector<Real> abs_vector_a_cmp(3);
@@ -31,7 +31,7 @@ bool PointWiseOpTest() {
   abs_vector_a_cmp[1] = 1.0;
   abs_vector_a_cmp[2] = 1.118033988749895;
   
-  assert(IsEqual(abs_vector_a, abs_vector_a_cmp));
+  ASSERT(IsEqual(abs_vector_a, abs_vector_a_cmp));
   
   
   std::vector<Complex> vector_b(3);
@@ -46,7 +46,7 @@ bool PointWiseOpTest() {
   mult_vector_cmp[1] = Complex(1.0, 0.2);
   mult_vector_cmp[2] = Complex(-0.75, -1.0);
   
-  assert(IsEqual(mult_vector, mult_vector_cmp));
+  ASSERT(IsEqual(mult_vector, mult_vector_cmp));
   
   std::vector<Complex> add_vector = Add(vector_a, vector_b);
   std::vector<Complex> add_vector_cmp(3);
@@ -54,7 +54,7 @@ bool PointWiseOpTest() {
   add_vector_cmp[1] = Complex(0.2, 0.0);
   add_vector_cmp[2] = Complex(0.0, 0.0);
   
-  assert(IsEqual(add_vector, add_vector_cmp));
+  ASSERT(IsEqual(add_vector, add_vector_cmp));
   
   std::vector<Complex> sub_vector = Subtract(vector_a, vector_b);
   std::vector<Complex> sub_vector_cmp(3);
@@ -62,7 +62,7 @@ bool PointWiseOpTest() {
   sub_vector_cmp[1] = Complex(-0.2, +2.0);
   sub_vector_cmp[2] = Complex(2.0, 1.0);
   
-  assert(IsEqual(sub_vector, sub_vector_cmp));
+  ASSERT(IsEqual(sub_vector, sub_vector_cmp));
 
   
   
@@ -76,7 +76,7 @@ bool PointWiseOpTest() {
   vector_c_inv_cmp[0] = 1.0/(-0.3);
   vector_c_inv_cmp[1] = 1.0/(0.3);
   vector_c_inv_cmp[2] = 1.0/(2.4);
-  assert(IsEqual(vector_c_inv, vector_c_inv_cmp));
+  ASSERT(IsEqual(vector_c_inv, vector_c_inv_cmp));
   
   
   std::vector<Complex> vector_cc = ComplexVector(vector_c);
@@ -85,9 +85,9 @@ bool PointWiseOpTest() {
   vector_cc_cmp[1] = Complex(0.3, 0.0);
   vector_cc_cmp[2] = Complex(2.4, 0.0);
   
-  assert(IsReal(vector_cc));
+  ASSERT(IsReal(vector_cc));
   
-  assert(IsEqual(vector_cc, vector_cc_cmp));
+  ASSERT(IsEqual(vector_cc, vector_cc_cmp));
 
   
   
@@ -107,7 +107,7 @@ bool PointWiseOpTest() {
   pow_vector_e_cmp[2] = pow(vector_e[2], 3.0);
   pow_vector_e_cmp[3] = pow(vector_e[3], 3.0);
   
-  assert(IsEqual(pow_vector_e, pow_vector_e_cmp));
+  ASSERT(IsEqual(pow_vector_e, pow_vector_e_cmp));
   
   
   
@@ -118,7 +118,7 @@ bool PointWiseOpTest() {
   abs_vector_e_cmp[2] = 2.4;
   abs_vector_e_cmp[3] = 12.4;
   
-  assert(IsEqual(abs_vector_e, abs_vector_e_cmp));
+  ASSERT(IsEqual(abs_vector_e, abs_vector_e_cmp));
   
   std::vector<Real> abs_pow_vector_e = Pow(abs_vector_e, -1.0/3.0);
   
@@ -128,7 +128,7 @@ bool PointWiseOpTest() {
   abs_pow_vector_e_cmp[2] = pow(abs_vector_e[2], -1.0/3.0);
   abs_pow_vector_e_cmp[3] = pow(abs_vector_e[3], -1.0/3.0);
   
-  assert(IsEqual(abs_pow_vector_e, abs_pow_vector_e_cmp));
+  ASSERT(IsEqual(abs_pow_vector_e, abs_pow_vector_e_cmp));
   
   std::vector<Real> hw_vector_e = HalfWave(vector_e);
   std::vector<Real> hw_vector_e_cmp(4);
@@ -137,7 +137,7 @@ bool PointWiseOpTest() {
   hw_vector_e_cmp[2] = 2.4;
   hw_vector_e_cmp[3] = 12.4;
   
-  assert(IsEqual(hw_vector_e, hw_vector_e_cmp));
+  ASSERT(IsEqual(hw_vector_e, hw_vector_e_cmp));
   
   
   
@@ -152,21 +152,21 @@ bool PointWiseOpTest() {
   log_vector_o_cmp[0] = 0.0;
   log_vector_o_cmp[1] = 0.916290731874155;
   log_vector_o_cmp[2] = 1.435084525289323;
-  assert(IsEqual(log_vector_o_cmp, log_vector_o));
+  ASSERT(IsEqual(log_vector_o_cmp, log_vector_o));
   
   std::vector<Real> log10_vector_o = Log10(vector_o);
   std::vector<Real> log10_vector_o_cmp(3);
   log10_vector_o_cmp[0] = 0.0;
   log10_vector_o_cmp[1] = 0.397940008672038;
   log10_vector_o_cmp[2] = 0.623249290397900;
-  assert(IsEqual(log10_vector_o_cmp, log10_vector_o));
+  ASSERT(IsEqual(log10_vector_o_cmp, log10_vector_o));
   
   std::vector<Complex> exp_vector_a = Exp(vector_a);
   std::vector<Complex> exp_vector_a_cmp(3);
   exp_vector_a_cmp[0] = Complex(2.718281828459046, 0.0);
   exp_vector_a_cmp[1] = Complex(0.5403023058681398, 0.8414709848078965);
   exp_vector_a_cmp[2] = Complex(2.385516730959136, 1.303213729686996);
-  assert(IsEqual(exp_vector_a_cmp, exp_vector_a));
+  ASSERT(IsEqual(exp_vector_a_cmp, exp_vector_a));
 
   std::vector<Real> colonop_a = ColonOperator<Real>(2, 4);
   std::vector<Real> colonop_a_cmp = Zeros<Real>(3);
@@ -179,14 +179,14 @@ bool PointWiseOpTest() {
   cosvector_cmp[0] = cos(2.0);
   cosvector_cmp[1] = cos(3.0);
   cosvector_cmp[2] = cos(4.0);
-  assert(IsEqual(cosvector_cmp, cosvector));
+  ASSERT(IsEqual(cosvector_cmp, cosvector));
 
   std::vector<Real> sinvector = Sin(colonop_a_cmp);
   std::vector<Real> sinvector_cmp(3);
   sinvector_cmp[0] = sin(2.0);
   sinvector_cmp[1] = sin(3.0);
   sinvector_cmp[2] = sin(4.0);
-  assert(IsEqual(sinvector_cmp, sinvector));
+  ASSERT(IsEqual(sinvector_cmp, sinvector));
   
   // Testing Divide
 //  std::vector<Real> vector_o = Zeros<Real>(3);
@@ -202,7 +202,7 @@ bool PointWiseOpTest() {
   division_o_p_cmp[0] = 1.0/(-1.4);
   division_o_p_cmp[1] = 2.5/2.3;
   division_o_p_cmp[2] = 4.2/4.2;
-  assert(IsEqual(division_o_p_cmp, division_o_p));
+  ASSERT(IsEqual(division_o_p_cmp, division_o_p));
   
   return true;
 }

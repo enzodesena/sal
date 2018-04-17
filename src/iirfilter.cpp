@@ -35,8 +35,8 @@ IirFilter::IirFilter() :
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
           B_(B), A_(A) {
   // TODO: implement also for B.size != A.size
-  if (B.size() != A.size()) { assert(false); }
-  if (B.size() < 1) { assert(false); }
+  if (B.size() != A.size()) { ASSERT(false); }
+  if (B.size() < 1) { ASSERT(false); }
   
   A0_ = A[0];
   if (! IsEqual(A[0], 1.0, std::numeric_limits<Real>::epsilon())) {
@@ -79,8 +79,8 @@ IirFilter::~IirFilter() { delete [] state_; }
 void IirFilter::UpdateFilter(std::vector<Real> B,
                              std::vector<Real> A) {
   // TODO: implement case where length changes.
-  if (B_.size() != B.size()) { assert(false); }
-  if (A_.size() != A.size()) { assert(false); }
+  if (B_.size() != B.size()) { ASSERT(false); }
+  if (A_.size() != A.size()) { ASSERT(false); }
   
   B_ = B;
   A_ = A;
@@ -135,7 +135,7 @@ IirFilter IdenticalFilter() { return GainFilter(1.0); }
 
 IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
   // TODO: implement for frequencies other than 44100
-  if (! IsEqual(sampling_frequency, 44100)) { assert(false); }
+  if (! IsEqual(sampling_frequency, 44100)) { ASSERT(false); }
   
   std::vector<Real> B;
   std::vector<Real> A;

@@ -35,7 +35,7 @@ Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input) {
   
   
 EigOutput Eig(const Matrix<Real>& matrix) {
-  if (matrix.num_columns() != matrix.num_rows()) { assert(false); }
+  if (matrix.num_columns() != matrix.num_rows()) { ASSERT(false); }
   
   const UInt N = matrix.num_columns();
   EigOutput output;

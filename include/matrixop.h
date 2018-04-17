@@ -82,8 +82,8 @@ public:
   
   /** Sets an entire column */
   void set_column(UInt index_column, std::vector<T> column) noexcept {
-    if (column.size() != num_rows_) { assert(false); }
-    if (index_column >= num_columns_) { assert(false); }
+    if (column.size() != num_rows_) { ASSERT(false); }
+    if (index_column >= num_columns_) { ASSERT(false); }
     for (UInt i=0; i<num_rows_; ++i) {
       set_element(i, index_column, column[i]);
     }
@@ -91,27 +91,27 @@ public:
   
   /** Sets an entire row */
   void set_row(UInt index_row, std::vector<T> row) noexcept {
-    if (row.size() != num_columns_) { assert(false); }
-    if (index_row >= num_rows_) { assert(false); }
+    if (row.size() != num_columns_) { ASSERT(false); }
+    if (index_row >= num_rows_) { ASSERT(false); }
     data_[index_row] = row;
   }
   
   /** Accesses an element in given row and column */
   T element(const UInt& index_row, const UInt& index_column) const noexcept {
-    if (index_row >= num_rows_) { assert(false); }
-    if (index_column >= num_columns_) { assert(false); }
+    if (index_row >= num_rows_) { ASSERT(false); }
+    if (index_column >= num_columns_) { ASSERT(false); }
     return data_[index_row][index_column];
   }
   
   /** Accesses an entire row */
   std::vector<T> row(UInt index_row) const noexcept {
-    if (index_row >= num_rows_) { assert(false); }
+    if (index_row >= num_rows_) { ASSERT(false); }
     return data_[index_row];
   }
   
   /** Accesses an entire column */
   std::vector<T> column(UInt index_column) const noexcept {
-    if (index_column >= num_columns_) { assert(false); }
+    if (index_column >= num_columns_) { ASSERT(false); }
     std::vector<T> output(num_rows_);
     for (UInt i=0; i<num_rows_; ++i) { output[i] = data_[i][index_column]; }
     return output;
@@ -162,7 +162,7 @@ public:
   static Matrix Load(std::string file_name) {
     std::string line;
     std::ifstream in_file (file_name.c_str());
-    if (! in_file.is_open()) { assert(false); }
+    if (! in_file.is_open()) { ASSERT(false); }
     
     // First: lets count the number of rows
     UInt number_of_rows = 0;
@@ -171,7 +171,7 @@ public:
       std::vector<std::string> elements = Split(line, '\t');
       if (number_of_columns == 0) { number_of_columns = elements.size(); }
       else {
-        if (number_of_columns != elements.size()) { assert(false); }
+        if (number_of_columns != elements.size()) { ASSERT(false); }
       }
       
       ++number_of_rows; 
@@ -266,7 +266,7 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
 template<class T>
 MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
                            const Matrix<T>& matrix_b) noexcept {
-  if (matrix_a.num_columns() != matrix_b.num_rows()) { assert(false); }
+  if (matrix_a.num_columns() != matrix_b.num_rows()) { ASSERT(false); }
   
   Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
   for (UInt i=0; i<output.num_rows(); ++i) {
@@ -284,12 +284,12 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
 template<class T>
 MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
                                 const std::vector<T>& vector) noexcept {
-  if (matrix_a.num_columns() != vector.size()) { assert(false); }
+  if (matrix_a.num_columns() != vector.size()) { ASSERT(false); }
   Matrix<T> temp_input(vector.size(), 1);
   temp_input.set_column(0, vector);
   Matrix<T> temp_output = Multiply(matrix_a, temp_input);
-  if (temp_output.num_columns() != 1) { assert(false); }
-  if (temp_output.num_rows() != vector.size()) { assert(false); }
+  if (temp_output.num_columns() != 1) { ASSERT(false); }
+  if (temp_output.num_rows() != vector.size()) { ASSERT(false); }
   
   return temp_output.column(0);
 }

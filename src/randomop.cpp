@@ -50,8 +50,8 @@ Int RandomGenerator::RandInt(const Int& minimum, const Int& maximum) {
   const Int num_outcomes = maximum - minimum + 1;
   Int output = (Int) floor((double) (distribution_uniform_(generator_)*((double) num_outcomes))) + minimum;
   
-  assert(output >= minimum);
-  assert(output <= maximum);
+  ASSERT(output >= minimum);
+  ASSERT(output <= maximum);
   return output;
 }
 

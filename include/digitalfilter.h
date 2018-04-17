@@ -32,9 +32,9 @@ public:
   
   void FilterSerial(const Real* input_data, const Int num_samples,
                     Real* output_data) noexcept {
-    assert(num_samples>0);
-    assert(input_data);
-    assert(output_data);
+    ASSERT(num_samples>0);
+    ASSERT(input_data);
+    ASSERT(output_data);
     for (Int i=0; i<num_samples; ++i) {
       output_data[i] = Filter(input_data[i]);
     }

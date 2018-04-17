@@ -21,27 +21,27 @@ bool RandomGenerator::Test() {
   RandomGenerator rand_gen;
 
   std::vector<Real> rand_vector_a = rand_gen.Randn(5);
-  assert(rand_vector_a.size() == 5);
+  ASSERT(rand_vector_a.size() == 5);
   // Check whether seeds are different:
   std::vector<Real> rand_vector_b = rand_gen.Randn(5);
-  assert(!IsEqual(rand_vector_a, rand_vector_b));
+  ASSERT(!IsEqual(rand_vector_a, rand_vector_b));
   
-  assert(Abs(Mean(rand_gen.Randn(100000))) < 0.1);
-  assert(Abs(Std(rand_gen.Randn(100000))-1.0) < 0.1);
+  ASSERT(Abs(Mean(rand_gen.Randn(100000))) < 0.1);
+  ASSERT(Abs(Std(rand_gen.Randn(100000))-1.0) < 0.1);
   
   // Testing uniform distribution
-  assert(! IsEqual(rand_gen.Rand(1), rand_gen.Rand(1)));
-  assert(! IsEqual(rand_gen.Rand(1), rand_gen.Rand(1)));
+  ASSERT(! IsEqual(rand_gen.Rand(1), rand_gen.Rand(1)));
+  ASSERT(! IsEqual(rand_gen.Rand(1), rand_gen.Rand(1)));
   
   // Test that output is between 0 and 1
-  assert(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
-  assert(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
-  assert(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
-  assert(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
-  assert(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
+  ASSERT(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
+  ASSERT(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
+  ASSERT(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
+  ASSERT(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
+  ASSERT(Abs(rand_gen.Rand(1)[0]-0.5) < 0.5);
   
-  assert(rand_gen.Rand(5).size() == 5);
-  assert(Abs(Mean(rand_gen.Rand(100000))-0.5)<0.05);
+  ASSERT(rand_gen.Rand(5).size() == 5);
+  ASSERT(Abs(Mean(rand_gen.Rand(100000))-0.5)<0.05);
   
   // Test integer generator
   std::vector<Int> rand_int_vector;
@@ -54,9 +54,9 @@ bool RandomGenerator::Test() {
     rand_int_vector.push_back(output);
     num_occurrances.at(output-min_value)++;
   }
-  assert(mcl::Min(rand_int_vector) >= min_value);
-  assert(mcl::Max(rand_int_vector) <= max_value);
-  assert(mcl::IsEqual(((Real) mcl::Min(num_occurrances)) / ((Real) num_samples),
+  ASSERT(mcl::Min(rand_int_vector) >= min_value);
+  ASSERT(mcl::Max(rand_int_vector) <= max_value);
+  ASSERT(mcl::IsEqual(((Real) mcl::Min(num_occurrances)) / ((Real) num_samples),
                       ((Real) mcl::Max(num_occurrances)) / ((Real) num_samples),
                       1.0E-2));
   
@@ -71,9 +71,9 @@ bool RandomGenerator::Test() {
     rand_int_vector_b.push_back(output);
     num_occurrances_b.at(output-min_value_b)++;
   }
-  assert(mcl::Min(rand_int_vector_b) >= min_value_b);
-  assert(mcl::Max(rand_int_vector_b) <= max_value_b);
-  assert(mcl::IsEqual(((Real) mcl::Min(num_occurrances_b)) / ((Real) num_samples_b),
+  ASSERT(mcl::Min(rand_int_vector_b) >= min_value_b);
+  ASSERT(mcl::Max(rand_int_vector_b) <= max_value_b);
+  ASSERT(mcl::IsEqual(((Real) mcl::Min(num_occurrances_b)) / ((Real) num_samples_b),
                       ((Real) mcl::Max(num_occurrances_b)) / ((Real) num_samples_b),
                       1.0E-2));
   

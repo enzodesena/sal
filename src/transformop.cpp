@@ -142,9 +142,9 @@ std::vector<Real> Irfft(const std::vector<Complex>& input,
                                                            1,
                                                            (n_point+1)/2-1))));
   }
-  assert(spectrum.size() == n_point);
+  ASSERT(spectrum.size() == n_point);
   std::vector<Complex> output = Ifft(spectrum, n_point);
-  assert(IsReal(output));
+  ASSERT(IsReal(output));
   return RealPart(output);
 }
 
@@ -162,7 +162,7 @@ Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) noexcept {
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b) {
   // TODO: implement for different sizes
-  if (vector_a.size() != vector_b.size()) { assert(false); }
+  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   UInt M = vector_a.size();
   

@@ -184,7 +184,7 @@ Point IntersectionPlaneLine(const Point& line_point,
                             const Point& plane_point,
                             const Point& plane_normal) noexcept {
   if (! IntersectionPlaneLineExists(line_point, line_direction,
-                                    plane_point, plane_normal)) { assert(false); }
+                                    plane_point, plane_normal)) { ASSERT(false); }
   
   Real d = DotProduct(Subtract(plane_point, line_point),
                       plane_normal) /

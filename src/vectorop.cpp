@@ -100,12 +100,12 @@ Real Mean(const std::vector<Real>& input) noexcept {
   
 Real Mean(const std::vector<Real>& input,
           const std::vector<Real>& weights) noexcept {
-  if (input.size() != weights.size()) { assert(false); }
-  if (! IsNonNegative(weights)) { assert(false); }
+  if (input.size() != weights.size()) { ASSERT(false); }
+  if (! IsNonNegative(weights)) { ASSERT(false); }
   
   // Normalise the weigths
   std::vector<Real> normalised_weights = Multiply<Real>(weights, 1.0/Sum(weights));
-  assert(IsEqual(Sum(normalised_weights), 1.0));
+  ASSERT(IsEqual(Sum(normalised_weights), 1.0));
   return Sum(Multiply(input, normalised_weights));
 }
 
@@ -127,7 +127,7 @@ Real Var(const std::vector<Real>& input) noexcept {
   
 Real Var(const std::vector<Real>& input,
          const std::vector<Real>& weights) noexcept {
-  if(! IsNonNegative(weights)) { assert(false); }
+  if(! IsNonNegative(weights)) { ASSERT(false); }
   
   Real weighted_mean = Mean(input, weights);
   std::vector<Real> temp = Pow(Add(input, -weighted_mean), 2.0);
@@ -170,7 +170,7 @@ std::vector<Complex> Poly(const std::vector<Real> roots) noexcept {
   
 std::vector<Real>
 ColonOperator(const Real from, const Real step, const Real to) noexcept {
-  if (islessequal(step, 0)) { assert(false); }
+  if (islessequal(step, 0)) { ASSERT(false); }
   std::vector<Real> output;
   output.push_back(from);
   UInt i = 1;
@@ -250,7 +250,7 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) noexcept {
 Real CovElement(const std::vector<Real>& x,
                 const std::vector<Real>& y) noexcept {
   const UInt N = x.size();
-  if (N != y.size()) { assert(false); }
+  if (N != y.size()) { ASSERT(false); }
   
   Real output = Sum(Multiply(Add(x, -Mean(x)), Add(y, -Mean(y))));
   // In case N>1 use the unbiased estimator of covariance.
@@ -287,8 +287,8 @@ std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
     UInt from_sample = i;
     UInt to_sample = i + window.size()-1;
     
-    assert(from_sample>=0 && from_sample<input.size());
-    assert(to_sample>=0 && to_sample<input.size());
+    ASSERT(from_sample>=0 && from_sample<input.size());
+    ASSERT(to_sample>=0 && to_sample<input.size());
     
     output.push_back(Multiply(Elements(input, from_sample, to_sample),
                               window));
