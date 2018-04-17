@@ -231,9 +231,9 @@ template<class T>
 MCL_API std::vector<T>
 AddVectors(const std::vector<std::vector<T> >& vectors) noexcept {
   // Get maximum length
-  std::vector<UInt> vector_lengths(vectors.size());
+  std::vector<Int> vector_lengths(vectors.size());
   for (Int i=0; i<(Int)vectors.size(); ++i) {
-    vector_lengths[i] = vectors[i].size();
+    vector_lengths[i] = (Int)vectors[i].size();
   }
   Int max_length(Max(vector_lengths));
   

@@ -61,7 +61,7 @@ public:
       num_columns_ = vectors[0].size();
       for (Int i=1; i<num_rows_; ++i) {
         // Check that all rows have the same number of columns
-        if (vectors[i].size() != num_columns_) {
+        if ((Int)vectors[i].size() != num_columns_) {
           ASSERT_WITH_MESSAGE(false, "One or more rows do not have the same number of columns");
         }
       }

@@ -49,7 +49,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
   Real result = 0.0;
   
 #ifdef OSXIOS
-  if (length_-counter_ < MAX_VLA_LENGTH) {
+  if (length_-counter_ > MAX_VLA_LENGTH) {
     assert(false);
   }
   
