@@ -71,13 +71,16 @@ MCL_API bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b);
 
 bool IsEqual(const Real* input_data_a,
              const Real* input_data_b,
-             const Int num_samples);
+             const Int num_samples,
+             Real precision = VERY_SMALL);
 
 bool IsEqual(const Real* input_data_a,
-             const std::vector<Real> input_data_b);
+             const std::vector<Real> input_data_b,
+             Real precision = VERY_SMALL);
 
 bool IsEqual(const std::vector<Real> input_data_b,
-             const Real* input_data_a);
+             const Real* input_data_a,
+             Real precision = VERY_SMALL);
   
 /** Returns true if num is nan */
 MCL_API bool IsNan(Real num);
