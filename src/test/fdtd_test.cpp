@@ -54,7 +54,7 @@ bool Fdtd::Test() {
   rir_cmp.push_back(0.1049);
   rir_cmp.push_back(-0.0675);
 
-  assert(mcl::IsEqual(rir_cmp, p_out, 0.001));
+  ASSERT(mcl::IsEqual(rir_cmp, p_out, 0.001));
 
   
   return true;

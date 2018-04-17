@@ -21,16 +21,16 @@ bool SphericalHeadMic::Test() {
   using mcl::Complex;
   using mcl::IsEqual;
   
-  assert(IsEqual(Sphere(0.09, 2.5, PI/2, 500, 343, 0.0001),
+  ASSERT(IsEqual(Sphere(0.09, 2.5, PI/2, 500, 343, 0.0001),
                  Complex(0.948745443360044, -0.077722752497006)));
   
-  assert(IsEqual(Sphere(0.19, 2.25, PI/3.0, 550.0, 340.0, 0.00001),
+  ASSERT(IsEqual(Sphere(0.19, 2.25, PI/3.0, 550.0, 340.0, 0.00001),
                  Complex(0.605269803039302, - 1.296402786840865)));
   
-  assert(IsEqual(Sphere(0.20, 10.0, PI, 13000.0, 341.0, 0.00002),
+  ASSERT(IsEqual(Sphere(0.20, 10.0, PI, 13000.0, 341.0, 0.00002),
                  Complex(-0.109475723791322, 0.458127257654756)));
   
-  assert(IsEqual(Sphere(0.15, 100.0, PI, 130.0, 330.0, 0.00012),
+  ASSERT(IsEqual(Sphere(0.15, 100.0, PI, 130.0, 330.0, 0.00012),
                  Complex(0.855026629580043, 0.533944979396686)));
   
   std::vector<mcl::Real> hrir_a = GenerateImpulseResponse(0.09, 2, PI/4.0, 343,
@@ -44,7 +44,7 @@ bool SphericalHeadMic::Test() {
   hrir_a_cmp[3] = -0.25262339189358;
   hrir_a_cmp[4] = 0.14831782205568;
   hrir_a_cmp[5] = -0.836932928085671;
-  assert(IsEqual(hrir_a_cmp, hrir_a));
+  ASSERT(IsEqual(hrir_a_cmp, hrir_a));
   
   Time sampling_frequency(40000);
   
@@ -80,7 +80,7 @@ bool SphericalHeadMic::Test() {
   output_ipsilateral[3] = 0.0952699695904199;
   output_ipsilateral[4] = 0.0210966838072453;
   output_ipsilateral[5] = 1.2271276500375;
-  assert(IsEqual(stream_a.GetLeftReadPointer(), output_ipsilateral));
+  ASSERT(IsEqual(stream_a.GetLeftReadPointer(), output_ipsilateral));
   
   
   // Trying now contralateral case (right ear output due to the
@@ -92,9 +92,9 @@ bool SphericalHeadMic::Test() {
   output_contralateral[3] = -0.17029879934648;
   output_contralateral[4] = 0.019246147618618;
   output_contralateral[5] = 0.091776572646393;
-  assert(IsEqual(stream_a.GetRightReadPointer(), output_contralateral));
+  ASSERT(IsEqual(stream_a.GetRightReadPointer(), output_contralateral));
   
-  // assert(IsEqual(mic_a_left.ImpulseResponse(point_line_left), output_a_cmp));
+  // ASSERT(IsEqual(mic_a_left.ImpulseResponse(point_line_left), output_a_cmp));
   
   // Generate a point on the line passing through the centre
   // of the head and the right ear.
@@ -105,8 +105,8 @@ bool SphericalHeadMic::Test() {
   // this test.
   stream_a.Reset();
   mic_a.AddPlaneWave(impulse, point_line_right, stream_a);
-  assert(IsEqual(stream_a.GetRightReadPointer(), output_ipsilateral));
-  assert(IsEqual(stream_a.GetLeftReadPointer(), output_contralateral));
+  ASSERT(IsEqual(stream_a.GetRightReadPointer(), output_ipsilateral));
+  ASSERT(IsEqual(stream_a.GetLeftReadPointer(), output_contralateral));
   
   
   SphericalHeadMic mic_b(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
@@ -120,7 +120,7 @@ bool SphericalHeadMic::Test() {
   Point point_front(distance, 0.0, 0.0);
   
   mic_b.AddPlaneWave(impulse, point_front, stream_b);
-  assert(IsEqual(stream_b.GetLeftReadPointer(),
+  ASSERT(IsEqual(stream_b.GetLeftReadPointer(),
                  stream_b.GetRightReadPointer(), impulse.num_samples()));
   
   
@@ -132,24 +132,24 @@ bool SphericalHeadMic::Test() {
   output_frontal[4] = 0.093428452743537;
   output_frontal[5] = -0.12911852945215;
   
-  assert(IsEqual(stream_b.GetLeftReadPointer(), output_frontal));
+  ASSERT(IsEqual(stream_b.GetLeftReadPointer(), output_frontal));
   
   // Testing reset
   stream_b.Reset();
   mic_b.AddPlaneWave(MonoBuffer::Unary(1.0), Point(0.0,0.0,-1.0), stream_b);
-  assert(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
-  assert(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
   
   stream_b.Reset();
   mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_b);
-  assert(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
-  assert(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
   
   stream_b.Reset();
   mic_b.Reset();
   mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_b);
-  assert(IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
-  assert(IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  ASSERT(IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
+  ASSERT(IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
   
   return true;
 }

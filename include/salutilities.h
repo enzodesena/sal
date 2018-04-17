@@ -63,8 +63,8 @@ public:
         current_triplet_(initial_triplet),
         max_speed_(std::numeric_limits<Speed>::infinity()),
         has_reached_target_(true) {
-    assert(std::numeric_limits<Speed>::has_infinity);
-    assert(std::numeric_limits<Speed>::infinity() ==
+    ASSERT(std::numeric_limits<Speed>::has_infinity);
+    ASSERT(std::numeric_limits<Speed>::infinity() ==
            std::numeric_limits<Speed>::infinity());
   }
   

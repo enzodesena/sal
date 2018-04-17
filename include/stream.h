@@ -49,14 +49,14 @@ public:
   merge_streams_(streams) {}
   
   inline void Push(const Sample& sample) noexcept {
-    if (merge_streams_.size() > 0) { assert(false); }
-    if (num_temp_samples_ > 0) { assert(false); }
+    if (merge_streams_.size() > 0) { ASSERT(false); }
+    if (num_temp_samples_ > 0) { ASSERT(false); }
     queue_.push_back(sample);
   }
   
   
   void Push(const Signal& signal) noexcept {
-    if (merge_streams_.size() > 0) { assert(false); }
+    if (merge_streams_.size() > 0) { ASSERT(false); }
     const Int num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(signal.at(i));
@@ -65,8 +65,8 @@ public:
   
   
   void PushAll(MonoStream* stream) noexcept {
-    if (merge_streams_.size() > 0) { assert(false); }
-    if (num_temp_samples_ > 0) { assert(false); }
+    if (merge_streams_.size() > 0) { ASSERT(false); }
+    if (num_temp_samples_ > 0) { ASSERT(false); }
     while (! stream->IsEmpty()) {
       Push(stream->Pull());
     }
@@ -79,12 +79,12 @@ public:
   
   
   void Add(const Signal& signal) noexcept {
-    if (merge_streams_.size() > 0) { assert(false); }
+    if (merge_streams_.size() > 0) { ASSERT(false); }
     if (num_temp_samples_ == 0) {
       queue_.insert(queue_.end(), signal.begin(), signal.end());
       num_temp_samples_ = signal.size();
     } else {
-      if (num_temp_samples_ != signal.size()) { assert(false); }
+      if (num_temp_samples_ != signal.size()) { ASSERT(false); }
       
       const Int offset = queue_.size()-signal.size();
       for (UInt i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
@@ -93,14 +93,14 @@ public:
   
   
   inline void Tick() noexcept {
-    if (merge_streams_.size() > 0) { assert(false); }
+    if (merge_streams_.size() > 0) { ASSERT(false); }
     num_temp_samples_ = 0;
   }
   
   
   Sample Pull() noexcept {
     if (merge_streams_.size() == 0) {
-      if (size() == 0) { assert(false); }
+      if (size() == 0) { ASSERT(false); }
       const Sample output = queue_.front();
       queue_.pop_front();
       return output;
@@ -116,7 +116,7 @@ public:
   
   
   Signal Pull(const Int num_samples) noexcept {
-    if (num_samples > size()) { assert(false); }
+    if (num_samples > size()) { ASSERT(false); }
     
     if (merge_streams_.size() == 0) {
       Signal output(queue_.begin(), queue_.begin() + (long)num_samples);
@@ -148,7 +148,7 @@ public:
   inline UInt size() const noexcept {
     if (merge_streams_.size() == 0) {
       Int size = (Int)queue_.size()-(Int)num_temp_samples_;
-      assert(size>=0);
+      ASSERT(size>=0);
       return (UInt) size;
     } else {
       std::vector<UInt> sizes;
@@ -284,7 +284,7 @@ public:
   }
   
   Sample Pull(UInt degree, Int order) noexcept {
-    assert(IsDefined(degree, order));
+    ASSERT(IsDefined(degree, order));
     return streams_[degree][order].Pull();
   }
   
@@ -293,13 +293,13 @@ public:
    Asserts if that stream is not defined.
    */
   inline bool IsEmpty(UInt degree, Int order) const noexcept {
-    assert(IsDefined(degree, order));
+    ASSERT(IsDefined(degree, order));
     return streams_.at(degree).at(order).IsEmpty();
   }
   
   bool IsEmpty() const noexcept {
     // TODO: think this through
-    assert(IsDefined(0, 0));
+    ASSERT(IsDefined(0, 0));
     // The order 0 and degree 0 always has to be defined.
     return streams_.at(0).at(0).IsEmpty();
   }
@@ -318,7 +318,7 @@ private:
    it already existed.
    */
   bool InitOrderDegree(UInt degree, Int order) noexcept {
-    if((order<-((Int)degree)) || order>((Int)degree)) { assert(false); }
+    if((order<-((Int)degree)) || order>((Int)degree)) { ASSERT(false); }
     // Check whether the stream already exists
     if (IsDefined(degree, order)) { return false; }
     

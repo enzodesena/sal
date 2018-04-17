@@ -80,7 +80,7 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
 #endif
       
     default: {
-      assert(false);
+      ASSERT(false);
       break;
     }
   }
@@ -137,7 +137,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        sampling_frequency_,
                                        sound_speed));
     }
-    assert(nfc_filters_.size() == 2*order+1);
+    ASSERT(nfc_filters_.size() == 2*order+1);
   }
   
   if (energy_decoding_) {
@@ -195,8 +195,8 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(UInt order,
 std::vector<Sample>
 AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
                              const BFormatBuffer& buffer) {
-  assert(order>=0);
-  assert(sample_id>=0 & sample_id<buffer.num_samples());
+  ASSERT(order>=0);
+  ASSERT(sample_id>=0 & sample_id<buffer.num_samples());
   
   std::vector<Sample> output;
   output.reserve(2*order+1);
@@ -223,7 +223,7 @@ AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
  */
 void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
                                 Buffer& output_buffer) {
-  assert(input_buffer.num_samples() == output_buffer.num_samples());
+  ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
   const BFormatBuffer& input_bformat_buffer =
       dynamic_cast<const BFormatBuffer&>(input_buffer);
   MultichannelBuffer& output_multi_buffer =
@@ -334,7 +334,7 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
                                              const Time sampling_frequency,
                                              const Length sound_speed) {
   // TODO: implement for orders higher than 6
-  if (order > 6) { assert(false); }
+  if (order > 6) { ASSERT(false); }
   using mcl::Real;
   using mcl::Poly;
   using mcl::Ones;

@@ -23,7 +23,7 @@ public:
   T elems[N];
   
   T& operator[] (std::size_t i) { 
-    assert(i < N); 
+    ASSERT(i < N); 
     return elems[i];
   }
 };

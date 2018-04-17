@@ -33,7 +33,7 @@ bool RirAnalysis::Test() {
   vector_a_edc_cmp[2] = -8.296827418895298;
   vector_a_edc_cmp[3] = -8.456545125326402;
   
-  assert(mcl::IsEqual(vector_a_edc, vector_a_edc_cmp));
+  ASSERT(mcl::IsEqual(vector_a_edc, vector_a_edc_cmp));
   
   
   std::vector<sal::Sample> vector_b(6);
@@ -44,8 +44,8 @@ bool RirAnalysis::Test() {
   vector_b[4] = 0.0;
   vector_b[5] = 0.0;
   
-  assert(RirAnalysis::Rs60(vector_b) == 4);
-  assert(mcl::IsEqual(RirAnalysis::Rt60(vector_b, 110.0), 4.0/110.0));
+  ASSERT(RirAnalysis::Rs60(vector_b) == 4);
+  ASSERT(mcl::IsEqual(RirAnalysis::Rt60(vector_b, 110.0), 4.0/110.0));
   
   
   

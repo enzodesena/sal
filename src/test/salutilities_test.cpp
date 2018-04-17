@@ -21,34 +21,34 @@ bool TripletHandler::Test() {
   speed_limiter.set_max_speed(1.0);
   speed_limiter.set_target_value(Point(1,0,0));
   speed_limiter.Update(1.0);
-  assert(IsEqual(speed_limiter.value(), Point(1,0,0)));
-  assert(speed_limiter.HasReachedTarget());
+  ASSERT(IsEqual(speed_limiter.value(), Point(1,0,0)));
+  ASSERT(speed_limiter.HasReachedTarget());
 
   speed_limiter.set_target_value(Point(2,0,0));
   speed_limiter.Update(1.0);
-  assert(IsEqual(speed_limiter.value(), Point(2,0,0)));
-  assert(speed_limiter.HasReachedTarget());
+  ASSERT(IsEqual(speed_limiter.value(), Point(2,0,0)));
+  ASSERT(speed_limiter.HasReachedTarget());
 
   speed_limiter.set_target_value(Point(0,0,0));
   speed_limiter.Update(2.0);
-  assert(IsEqual(speed_limiter.value(), Point(0,0,0)));
-  assert(speed_limiter.HasReachedTarget());
+  ASSERT(IsEqual(speed_limiter.value(), Point(0,0,0)));
+  ASSERT(speed_limiter.HasReachedTarget());
 
   speed_limiter.set_target_value(Point(2,0,0));
   speed_limiter.Update(1.0);
-  assert(IsEqual(speed_limiter.value(), Point(1,0,0)));
-  assert(!speed_limiter.HasReachedTarget());
+  ASSERT(IsEqual(speed_limiter.value(), Point(1,0,0)));
+  ASSERT(!speed_limiter.HasReachedTarget());
   speed_limiter.Update(1.0);
-  assert(IsEqual(speed_limiter.value(), Point(2,0,0)));
-  assert(speed_limiter.HasReachedTarget());
+  ASSERT(IsEqual(speed_limiter.value(), Point(2,0,0)));
+  ASSERT(speed_limiter.HasReachedTarget());
   
   speed_limiter.set_max_speed(std::numeric_limits<Speed>::infinity());
   speed_limiter.set_target_value(Point(0,0,0));
-  assert(!speed_limiter.HasReachedTarget());
-  assert(!IsEqual(speed_limiter.value(), Point(0,0,0)));
+  ASSERT(!speed_limiter.HasReachedTarget());
+  ASSERT(!IsEqual(speed_limiter.value(), Point(0,0,0)));
   speed_limiter.Update(0); // Even after 0 seconds,
-  assert(IsEqual(speed_limiter.value(), Point(0,0,0)));
-  assert(speed_limiter.HasReachedTarget());
+  ASSERT(IsEqual(speed_limiter.value(), Point(0,0,0)));
+  ASSERT(speed_limiter.HasReachedTarget());
   
   
   

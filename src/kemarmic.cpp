@@ -73,7 +73,7 @@ std::vector<std::vector<Signal> >
       file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
       if (! file.good()) { throw("Kemar lib not found."); }
       long size = (long) file.tellg();
-      assert(sizeof(short) == 2);
+      ASSERT(sizeof(short) == 2);
       short* data = new short[size/2];
       
       for (int k=0; k<size; k+=sizeof(short)) {
@@ -88,8 +88,8 @@ std::vector<std::vector<Signal> >
       file.close();
       
       size = size / 2; // Length in number of samples
-      assert(size%2 == 0);
-      assert((size/2)%2 == 0);
+      ASSERT(size%2 == 0);
+      ASSERT((size/2)%2 == 0);
       
       if (num_samples > 0) {
         size = num_samples;
@@ -174,15 +174,15 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
       if (norm_point.y() < 0.0) { azimuth += 180.0; }
       break;
     default:
-      assert(false);
+      ASSERT(false);
       break;
   }
   
   
   azimuth = mcl::Mod(azimuth, 360.0);
   
-  assert((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
-  assert((azimuth >= (0.0-VERY_SMALL)) & (azimuth <= (360.0+VERY_SMALL)));
+  ASSERT((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
+  ASSERT((azimuth >= (0.0-VERY_SMALL)) & (azimuth <= (360.0+VERY_SMALL)));
   
   UInt elevation_index = FindElevationIndex(elevation);
   UInt azimuth_index = FindAzimuthIndex(azimuth, elevation_index);

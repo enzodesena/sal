@@ -44,7 +44,7 @@ public:
   MultichannelBuffer(const Int num_channels, const Int num_samples) :
       num_channels_(num_channels), num_samples_(num_samples),
       owns_data_(true) {
-    assert(num_channels >= 0 & num_samples >= 0);
+    ASSERT(num_channels >= 0 & num_samples >= 0);
     AllocateMemory();
   }
   
@@ -66,7 +66,7 @@ public:
 //  MultichannelBuffer(const std::vector<MonoBuffer>& input_buffers) noexcept :
 //      MultichannelBuffer(input_buffers.size(), input_buffers.at(0).num_samples()) {
 //    for (Int chan_id = 0; chan_id<input_buffers.size(); ++chan_id) {
-//      assert(input_buffers[0].num_samples() == input_buffers[chan_id].num_samples());
+//      ASSERT(input_buffers[0].num_samples() == input_buffers[chan_id].num_samples());
 //      for (Int sample_id = 0;
 //    }
 //  }
@@ -76,8 +76,8 @@ public:
   virtual Int num_samples() const noexcept { return num_samples_; }
   
   inline Sample GetSample(Int channel_id, Int sample_id) const noexcept {
-    assert(channel_id >= 0 && channel_id < num_channels());
-    assert(sample_id >= 0 && sample_id < num_samples());
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(sample_id >= 0 && sample_id < num_samples());
     
     return data_[channel_id][sample_id];
   }
@@ -86,8 +86,8 @@ public:
   
   inline void SetSample(const Int channel_id, const Int sample_id,
                         const Sample sample) noexcept {
-    assert(channel_id >= 0 && channel_id < num_channels());
-    assert(sample_id >= 0 && sample_id < num_samples());
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(sample_id >= 0 && sample_id < num_samples());
     
     data_[channel_id][sample_id] = sample;
   }
@@ -101,11 +101,11 @@ public:
    */
   void SetSamples(const Int channel_id, const Int from_sample_id,
                   const Int num_samples, const Sample* samples) noexcept {
-    assert(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
     
-    assert(from_sample_id >= 0);
-    assert(num_samples >= 0);
-    assert((from_sample_id+num_samples) <= this->num_samples());
+    ASSERT(from_sample_id >= 0);
+    ASSERT(num_samples >= 0);
+    ASSERT((from_sample_id+num_samples) <= this->num_samples());
 
     for (Int sample_id=from_sample_id;
          sample_id<(from_sample_id+num_samples);
@@ -116,8 +116,8 @@ public:
   
   void SetSamples(const Buffer& other) noexcept {
     const MultichannelBuffer& multi_other = dynamic_cast<const MultichannelBuffer&>(other);
-    assert(num_samples_ == multi_other.num_samples_);
-    assert(num_channels_ == multi_other.num_channels_);
+    ASSERT(num_samples_ == multi_other.num_samples_);
+    ASSERT(num_channels_ == multi_other.num_channels_);
     for (int chan_id=0; chan_id<num_channels_; ++chan_id) {
       for (int sample_id=0; sample_id<num_samples_; ++sample_id) {
         data_[chan_id][sample_id] = multi_other.data_[chan_id][sample_id];
@@ -136,10 +136,10 @@ public:
                   const Int from_sample_id,
                   const Int num_samples,
                   const Sample* samples) noexcept {
-    assert(channel_id >= 0 && channel_id < num_channels());
-    assert(from_sample_id >= 0);
-    assert(num_samples >= 0);
-    assert((from_sample_id+num_samples) <= num_samples_);
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(from_sample_id >= 0);
+    ASSERT(num_samples >= 0);
+    ASSERT((from_sample_id+num_samples) <= num_samples_);
     
     for (Int sample_id=from_sample_id; sample_id<(from_sample_id+num_samples);
          ++sample_id) {
@@ -148,12 +148,12 @@ public:
   }
   
   const Sample* GetReadPointer(const Int channel_id) const noexcept {
-    assert(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
     return data_[channel_id];
   }
   
   Sample* GetWritePointer(const Int channel_id) noexcept {
-    assert(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
     return data_[channel_id];
   }
   
@@ -167,8 +167,8 @@ public:
     const MultichannelBuffer& multi_buffer =
           dynamic_cast<const MultichannelBuffer&>(buffer);
     
-    assert(num_channels() == multi_buffer.num_channels());
-    assert(num_samples() == buffer.num_samples());
+    ASSERT(num_channels() == multi_buffer.num_channels());
+    ASSERT(num_samples() == buffer.num_samples());
     
     for (Int chan_id = 0; chan_id<num_channels(); ++chan_id) {
       mcl::Add(GetReadPointer(chan_id),
@@ -404,13 +404,13 @@ public:
   
 private:
   Int NumChannels(const Int max_degree) const {
-    assert(max_degree > 0);
+    ASSERT(max_degree > 0);
     return (max_degree+1)*(max_degree+1); // (N+1)^2
   }
   
   Int CalculateChannelId(const Int degree, const Int order) const {
-    assert(degree >= 0);
-    assert(order <= abs(degree));
+    ASSERT(degree >= 0);
+    ASSERT(order <= abs(degree));
     Int centre_index = 0;
     for (Int degree_id = 0; degree_id <= degree; ++degree_id) {
       centre_index = centre_index + 2*degree_id;
@@ -419,7 +419,7 @@ private:
     // 0 + 2*1 = 2 OK
     // 2 + 2*2 = 6 OK
     // 6 + 2*3 = 12 OK
-    assert(centre_index + order >= 0);
+    ASSERT(centre_index + order >= 0);
     return centre_index + order;
   }
 };

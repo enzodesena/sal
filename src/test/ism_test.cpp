@@ -99,7 +99,7 @@ bool Ism::Test() {
 //  0
 //  0.3675
 //  0.1118
-  assert(mcl::IsEqual(cmp, test_rir.GetReadPointer()));
+  ASSERT(mcl::IsEqual(cmp, test_rir.GetReadPointer()));
   
   
   
@@ -170,7 +170,7 @@ bool Ism::Test() {
 //  0.1085
 //  0.0289
   
-  assert(mcl::IsEqual(cmpa, test_rir.GetReadPointer()));
+  ASSERT(mcl::IsEqual(cmpa, test_rir.GetReadPointer()));
   
   // Testing peterson
   // TODO: complete this test.

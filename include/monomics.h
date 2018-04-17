@@ -61,8 +61,8 @@ public:
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept {
     MonoBuffer& mono_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
-    assert(mono_buffer.num_channels() == 1);
-    assert(num_samples <= mono_buffer.num_samples());
+    ASSERT(mono_buffer.num_channels() == 1);
+    ASSERT(num_samples <= mono_buffer.num_samples());
     
     mcl::MultiplyAdd(input_data,
                      GetDirectivity(point),

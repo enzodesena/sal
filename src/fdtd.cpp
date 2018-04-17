@@ -97,7 +97,7 @@ sal::Signal Fdtd::RunFdtd(UInt Nx, UInt Ny, UInt Nz,
 
 
 void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
-  assert(input_buffer.num_samples() == output_buffer.num_samples());
+  ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
   
   double curant_number = 1.0/sqrt(3.0);
   

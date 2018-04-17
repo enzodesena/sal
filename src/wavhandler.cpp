@@ -28,7 +28,7 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
     throw("Error : could not open file.");
   }
   
-  assert(input_file_info.frames > 0);
+  ASSERT(input_file_info.frames > 0);
   
   int file_length = (int) input_file_info.frames;
   int num_channels = input_file_info.channels;
@@ -88,7 +88,7 @@ void WavHandler::Write(const std::vector<Signal>& signals,
                   const Time sampling_frequency,
                   std::string file_name) {
   // TODO: add support for more than 2 channels (wave_format_extensible)
-  assert(signals.size() <= 2);
+  ASSERT(signals.size() <= 2);
   
   UInt num_channels = signals.size();
   UInt file_length = signals[0].size();
@@ -100,7 +100,7 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   output_file_info.samplerate = (int) sampling_frequency;
   output_file_info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
   
-  assert(sf_format_check (&output_file_info));
+  ASSERT(sf_format_check (&output_file_info));
   
   if (! (output_file = sf_open (file_name.c_str(), SFM_WRITE, &output_file_info))) {
     std::cout<<"Error: could not open file : "<<file_name<<"\n";

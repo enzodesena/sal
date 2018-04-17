@@ -50,40 +50,40 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
     Point a_x2 = IntersectionPoint(x2, mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
     Point a_y1 = IntersectionPoint(y1, mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
     if (IsPointInRoom(a_x2, EPSILON)) {
-      assert(!IsPointInRoom(a_y1, EPSILON));
+      ASSERT(!IsPointInRoom(a_y1, EPSILON));
       reflection_points.push_back(a_x2);
     } else {
-      assert(!IsPointInRoom(a_x2, EPSILON));
+      ASSERT(!IsPointInRoom(a_x2, EPSILON));
       reflection_points.push_back(a_y1);
     }
     
     Point b_x2 = IntersectionPoint(x2, mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
     Point b_y2 = IntersectionPoint(y2, mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
     if (IsPointInRoom(b_x2, EPSILON)) {
-      assert(!IsPointInRoom(b_y2, EPSILON));
+      ASSERT(!IsPointInRoom(b_y2, EPSILON));
       reflection_points.push_back(b_x2);
     } else {
-      assert(!IsPointInRoom(b_x2, EPSILON));
+      ASSERT(!IsPointInRoom(b_x2, EPSILON));
       reflection_points.push_back(b_y2);
     }
     
     Point c_x1 = IntersectionPoint(x1, mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
     Point c_y2 = IntersectionPoint(y2, mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
     if (IsPointInRoom(c_x1, EPSILON)) {
-      assert(!IsPointInRoom(c_y2, EPSILON));
+      ASSERT(!IsPointInRoom(c_y2, EPSILON));
       reflection_points.push_back(c_x1);
     } else {
-      assert(!IsPointInRoom(c_x1, EPSILON));
+      ASSERT(!IsPointInRoom(c_x1, EPSILON));
       reflection_points.push_back(c_y2);
     }
     
     Point d_x1 = IntersectionPoint(x1, mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
     Point d_y1 = IntersectionPoint(y1, mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
     if (IsPointInRoom(d_x1, EPSILON)) {
-      assert(!IsPointInRoom(d_y1, EPSILON));
+      ASSERT(!IsPointInRoom(d_y1, EPSILON));
       reflection_points.push_back(d_x1);
     } else {
-      assert(!IsPointInRoom(d_x1, EPSILON));
+      ASSERT(!IsPointInRoom(d_x1, EPSILON));
       reflection_points.push_back(d_y1);
     }
   }
@@ -141,8 +141,8 @@ mcl::UInt CuboidRoom::num_boundary_points() noexcept {
       return 10;
       break;
     default:
-      assert(false);
-      assert(false);
+      ASSERT(false);
+      ASSERT(false);
       return (mcl::UInt) NAN;
       break;
   }
@@ -182,7 +182,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(0,0,1);
       break;
     default:
-      assert(false);
+      ASSERT(false);
   }
   
   return mcl::IntersectionPlaneLine(observation_pos,
@@ -220,8 +220,8 @@ Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
       image_position = ImageSourcePosition(source_pos, 0,0,1, 0,0,1);
       break;
     default:
-      assert(false);
-      assert(false);
+      ASSERT(false);
+      ASSERT(false);
   }
   return IntersectionPoint(wall_id, observation_pos, image_position);
 }
@@ -234,9 +234,9 @@ Time CuboidRoom::SabineRt60() {
   for (UInt i=0; i<6; ++i) {
     // Assert that all of them are simple gain filters
     // TODO: Implement for frequency dependent ones
-    assert(wall_filters()[i].B().size() == 1);
-    assert(wall_filters()[i].A().size() == 1);
-    assert(mcl::IsEqual(wall_filters()[i].A()[0], 1.0));
+    ASSERT(wall_filters()[i].B().size() == 1);
+    ASSERT(wall_filters()[i].A().size() == 1);
+    ASSERT(mcl::IsEqual(wall_filters()[i].A()[0], 1.0));
     Sample beta = wall_filters()[i].B()[0];
     Sample alpha = 1.0-pow(beta, 2.0);
     

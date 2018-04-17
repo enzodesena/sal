@@ -154,7 +154,7 @@ Sample TdBem::CalculateDrDn(Point point_x, Point point_y, Point normal_y) {
 
 void TdBem::CalculatePoints() {
   // TODO: implement for other types of room
-  assert(dynamic_cast<CuboidRoom*>(room_) != 0);
+  ASSERT(dynamic_cast<CuboidRoom*>(room_) != 0);
   Length room_x = ((CuboidRoom*) room_)->x();
   Length room_y = ((CuboidRoom*) room_)->y();
   Length room_z = ((CuboidRoom*) room_)->z();
@@ -216,7 +216,7 @@ void TdBem::CalculatePoints() {
   
 void TdBem::Run(const MonoBuffer& input_buffer,
                 Buffer& output_buffer) {
-  assert(input_buffer.num_samples() == output_buffer.num_samples());
+  ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
   MonoBuffer& mono_output_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
   mcl::Matrix<sal::Sample> boundary_pressure(0,0);
   if (log_) {

@@ -208,7 +208,7 @@ sal::Sample PropagationLine::Read() const noexcept {
           delay_filter_.Read() * current_attenuation_;
     }
     default:
-      assert(false);
+      ASSERT(false);
       exit(1);
   }
 }
@@ -288,7 +288,7 @@ std::vector<sal::Sample>
       return {0.59941,0.33652,0.064613,0.00092966};
       break;
     default:
-      assert(false);
+      ASSERT(false);
       return std::vector<sal::Sample>(0, 1);
   }
 }

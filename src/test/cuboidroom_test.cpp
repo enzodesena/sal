@@ -22,8 +22,8 @@ bool CuboidRoom::Test() {
   IirFilter filter = IdenticalFilter();
   CuboidRoom room(1.0, 1.0, 1.0, filter);
   
-  assert(IsEqual(room.max_distance(), sqrt(3.0)));
-  assert(IsEqual(room.max_distance(), sqrt(3.0)));
+  ASSERT(IsEqual(room.max_distance(), sqrt(3.0)));
+  ASSERT(IsEqual(room.max_distance(), sqrt(3.0)));
   Point source_point,observ_point,res;
   
   source_point = Point(0,0,0);
@@ -37,19 +37,19 @@ bool CuboidRoom::Test() {
   //  5 z_2 (old 4)
   
   res = room.ReflectionPoint(x2,source_point,observ_point);
-  assert(res.Equals(Point(1,0,1)));
+  ASSERT(res.Equals(Point(1,0,1)));
   
   res = room.ReflectionPoint(y2,source_point,observ_point);
-  assert(res.Equals(Point(0.5,1,0.5)));
+  ASSERT(res.Equals(Point(0.5,1,0.5)));
   
   res = room.ReflectionPoint(x1,source_point,observ_point);
-  assert(res.Equals(Point(0,0,0)));
+  ASSERT(res.Equals(Point(0,0,0)));
   
   res = room.ReflectionPoint(z2,source_point,observ_point);
-  assert(res.Equals(Point(1,0,1)));
+  ASSERT(res.Equals(Point(1,0,1)));
   
   res = room.ReflectionPoint(z1,source_point,observ_point);
-  assert(res.Equals(Point(0,0,0)));
+  ASSERT(res.Equals(Point(0,0,0)));
   
   
   source_point = Point(0.2,0.2,0.2);
@@ -63,22 +63,22 @@ bool CuboidRoom::Test() {
   //  5 z_2 (old 4)
   
   res = room.ReflectionPoint(x1,source_point,observ_point);
-  assert(res.Equals(Point(0,0.32,0.32)));
+  ASSERT(res.Equals(Point(0,0.32,0.32)));
   
   res = room.ReflectionPoint(x2,source_point,observ_point);
-  assert(res.Equals(Point(1,1-0.32,1-0.32)));
+  ASSERT(res.Equals(Point(1,1-0.32,1-0.32)));
   
   res = room.ReflectionPoint(y1,source_point,observ_point);
-  assert(res.Equals(Point(0.32,0,0.32)));
+  ASSERT(res.Equals(Point(0.32,0,0.32)));
   
   res = room.ReflectionPoint(y2,source_point,observ_point);
-  assert(res.Equals(Point(1-0.32,1,1-0.32)));
+  ASSERT(res.Equals(Point(1-0.32,1,1-0.32)));
   
   res = room.ReflectionPoint(z1,source_point,observ_point);
-  assert(res.Equals(Point(0.32,0.32,0)));
+  ASSERT(res.Equals(Point(0.32,0.32,0)));
   
   res = room.ReflectionPoint(z2,source_point,observ_point);
-  assert(res.Equals(Point(1-0.32,1-0.32,1)));
+  ASSERT(res.Equals(Point(1-0.32,1-0.32,1)));
   
   // Testing Sabine formula calculation
   
@@ -88,7 +88,7 @@ bool CuboidRoom::Test() {
   CuboidRoom room_sabine(edge, edge, edge, GainFilter(beta));
   
   Time rt60 = 0.161*edge/(6.0*alpha);
-  assert(mcl::IsEqual(room_sabine.SabineRt60(), rt60));
+  ASSERT(mcl::IsEqual(room_sabine.SabineRt60(), rt60));
   
   // Testing Sabine formula with more complicated room
   
@@ -123,7 +123,7 @@ bool CuboidRoom::Test() {
        room_x*room_z*(alpha_y1+alpha_y2)+
        room_x*room_y*(alpha_z1+alpha_z2));
   
-  assert(mcl::IsEqual(room_sabine_2.SabineRt60(), rt60_2));
+  ASSERT(mcl::IsEqual(room_sabine_2.SabineRt60(), rt60_2));
   
   return true;
 }

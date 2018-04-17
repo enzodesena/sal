@@ -128,7 +128,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
                                                  Time sampling_frequency,
                                                  bool minimum_phase) {
   // TODO: implement for the odd case.
-  assert(num_samples % 2 == 0);
+  ASSERT(num_samples % 2 == 0);
   
   using mcl::LinSpace;
   using mcl::Zeros;
@@ -176,7 +176,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   // The output should already be real, but I still extract the real value to
   // account for round-off errors.
   std::vector<Complex> inverse = Ifft(Conj(H), N);
-  assert(IsReal(inverse));
+  ASSERT(IsReal(inverse));
   std::vector<Real> h = RealPart(inverse);
   
   h = CircShift(h, -((Int)N)/2);
@@ -197,11 +197,11 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
     }
     // Subract the distance between sphere and source
     distance = distance - (source_distance-sphere_radius);
-    assert(distance > 0.0);
+    ASSERT(distance > 0.0);
     UInt num_delay_tap = (UInt) round(distance/sound_speed*sampling_frequency);
     h = mcl::Concatenate(Zeros<Sample>(num_delay_tap),
                          mcl::Subset(h, 0, num_samples-num_delay_tap-1));
-    assert(h.size() == num_samples);
+    ASSERT(h.size() == num_samples);
   }
   
   return h;

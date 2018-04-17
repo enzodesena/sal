@@ -55,7 +55,7 @@ void Ism::Run(const Sample* input_data, const Int num_samples,
     filter.Filter(input_data, num_samples, temp);
     microphone_->AddPlaneWave(temp, num_samples, mcl::Point(0,0,0), output_buffer);
   } else {
-    assert(false);
+    ASSERT(false);
   }
 }
   

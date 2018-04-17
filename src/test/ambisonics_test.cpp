@@ -33,18 +33,18 @@ bool AmbisonicsMic::Test() {
   mic_a.AddPlaneWave(MonoBuffer::Unary(sample),
                      Point(1.0, 0.0, 0.0), stream_a);
   
-  assert(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
-  assert(IsEqual(stream_a.GetSample(1, 1, 0), sample*1.414213562373095));
-  assert(IsEqual(stream_a.GetSample(1, -1, 0), sample*0.0));
-  assert(IsEqual(stream_a.GetSample(2, 1, 0), sample*1.414213562373095));
-  assert(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
+  ASSERT(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(stream_a.GetSample(1, 1, 0), sample*1.414213562373095));
+  ASSERT(IsEqual(stream_a.GetSample(1, -1, 0), sample*0.0));
+  ASSERT(IsEqual(stream_a.GetSample(2, 1, 0), sample*1.414213562373095));
+  ASSERT(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
   
   mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0), stream_a);
-  assert(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
-  assert(IsEqual(stream_a.GetSample(1, -1, 0), sample*1.414213562373095));
-  assert(IsEqual(stream_a.GetSample(1, 1, 0), sample*0.0));
-  assert(IsEqual(stream_a.GetSample(2, 1, 0), sample*(-1.414213562373095)));
-  assert(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
+  ASSERT(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(stream_a.GetSample(1, -1, 0), sample*1.414213562373095));
+  ASSERT(IsEqual(stream_a.GetSample(1, 1, 0), sample*0.0));
+  ASSERT(IsEqual(stream_a.GetSample(2, 1, 0), sample*(-1.414213562373095)));
+  ASSERT(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
   
   
 #ifdef MCL_LOAD_BOOST
@@ -64,20 +64,20 @@ bool AmbisonicsMic::Test() {
   Angle theta = 0;
   Angle phi = 0;
   
-  assert(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
-  assert(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
-  assert(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
-  assert(IsEqual(stream_b->Pull(1, -1), sample*cos(phi)*sin(theta)));
+  ASSERT(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
+  ASSERT(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
+  ASSERT(IsEqual(stream_b->Pull(1, -1), sample*cos(phi)*sin(theta)));
          
-  assert(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
-  assert(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
-  assert(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
-  assert(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
-  assert(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
+  ASSERT(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
   
-  assert(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
-  assert(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*(5*pow(sin(phi),2.0)-1.0)*cos(phi)));
-  assert(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*(5*pow(sin(phi),2.0)-1.0)*cos(phi)));
+  ASSERT(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
   
   sample = 0.2;
   mic_b.AddPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)));
@@ -85,20 +85,20 @@ bool AmbisonicsMic::Test() {
   theta = PI/4.0;
   phi = PI/4.0;
   
-  assert(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
-  assert(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
-  assert(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
-  assert(IsEqual(stream_b->Pull(1, -1), sample*sqrt(3.0)*cos(phi)*sin(theta)));
+  ASSERT(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
+  ASSERT(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
+  ASSERT(IsEqual(stream_b->Pull(1, -1), sample*sqrt(3.0)*cos(phi)*sin(theta)));
   
-  assert(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
-  assert(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
-  assert(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
-  assert(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
-  assert(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
+  ASSERT(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
+  ASSERT(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
   
-  assert(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
-  assert(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*cos(phi)*(5.0*pow(sin(phi),2.0)-1.0)*cos(theta)));
-  assert(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
+  ASSERT(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*cos(phi)*(5.0*pow(sin(phi),2.0)-1.0)*cos(theta)));
+  ASSERT(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
 #endif  
 
   return true;
@@ -119,24 +119,24 @@ bool AmbisonicsHorizDec::Test() {
   num_lf_cmp[0] = 0.000589143208472;
   num_lf_cmp[1] = 0.001178286416944;
   num_lf_cmp[2] = 0.000589143208472;
-  assert(IsEqual(filter_low.B(), num_lf_cmp));
+  ASSERT(IsEqual(filter_low.B(), num_lf_cmp));
   std::vector<Sample> den_lf_cmp(3);
   den_lf_cmp[0] = 1.000000000000000;
   den_lf_cmp[1] = -1.902910910316590;
   den_lf_cmp[2] = 0.905267483150478;
-  assert(IsEqual(filter_low.A(), den_lf_cmp));
+  ASSERT(IsEqual(filter_low.A(), den_lf_cmp));
   
   IirFilter filter_high(CrossoverFilterHigh(380, 48000));
   std::vector<Sample> num_hf_cmp(3);
   num_hf_cmp[0] = -0.952044598366767;
   num_hf_cmp[1] = 1.904089196733534;
   num_hf_cmp[2] = -0.952044598366767;
-  assert(IsEqual(filter_high.B(), num_hf_cmp));
+  ASSERT(IsEqual(filter_high.B(), num_hf_cmp));
   std::vector<Sample> den_hf_cmp(3);
   den_hf_cmp[0] = 1.000000000000000;
   den_hf_cmp[1] = -1.902910910316590;
   den_hf_cmp[2] = 0.905267483150478;
-  assert(IsEqual(filter_high.A(), den_hf_cmp));
+  ASSERT(IsEqual(filter_high.A(), den_hf_cmp));
   
   
   // Testing near field correction filter by J. Daniel
@@ -157,26 +157,26 @@ bool AmbisonicsHorizDec::Test() {
   AA[1] = RealPart(-(one-x1/a)*(one+x2/a)-(one+x1/a)*(one-x2/a));
   AA[2] = RealPart((one+x1/a)*(one+x2/a));
   // Checking straight from a tested Matlab implementation:
-  assert(IsEqual(AA[0], 1.011712037681334));
-  assert(IsEqual(AA[1], -1.999909257970665));
-  assert(IsEqual(AA[2], 0.988378704348000));
+  ASSERT(IsEqual(AA[0], 1.011712037681334));
+  ASSERT(IsEqual(AA[1], -1.999909257970665));
+  ASSERT(IsEqual(AA[2], 0.988378704348000));
   
   IirFilter filter_a = NFCFilter(2, R, Fs, c);
   
-  assert(IsEqual(filter_a.B(), BB, 1.0E-3));
-  assert(IsEqual(filter_a.A(), AA, 1.0E-3));
+  ASSERT(IsEqual(filter_a.B(), BB, 1.0E-3));
+  ASSERT(IsEqual(filter_a.A(), AA, 1.0E-3));
   
   IirFilter filter_b = NFCFilter(1, R, Fs, c);
   // TODO: I copied this values from my Matlab implementation,
   // but I am not sure whether that implementation was tested for first-order.
-  assert(IsEqual(filter_b.B()[0], 1.0));
-  assert(IsEqual(filter_b.B()[1], -1.0));
-  assert(IsEqual(filter_b.A()[0], 1.003888888888889));
-  assert(IsEqual(filter_b.A()[1], -0.996111111111111));
+  ASSERT(IsEqual(filter_b.B()[0], 1.0));
+  ASSERT(IsEqual(filter_b.B()[1], -1.0));
+  ASSERT(IsEqual(filter_b.A()[0], 1.003888888888889));
+  ASSERT(IsEqual(filter_b.A()[1], -0.996111111111111));
 
   IirFilter filter_c = NFCFilter(0, R, Fs, c);
-  assert(IsEqual(filter_c.B(), mcl::UnaryVector<Sample>(1.0)));
-  assert(IsEqual(filter_c.A(), mcl::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.B(), mcl::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.A(), mcl::UnaryVector<Sample>(1.0)));
     
   
   // Testing loudspeaker placement
@@ -185,26 +185,26 @@ bool AmbisonicsHorizDec::Test() {
   const Angle phi0 = 2.0*PI/((Angle) M);
   std::vector<Angle> loudspeaker_angles =
           mcl::Multiply(mcl::ColonOperator<Angle>(0, M-1), phi0);
-  assert(IsEqual(loudspeaker_angles[0], 0.0));
-  assert(IsEqual(loudspeaker_angles[1], 1.256637061435917));
-  assert(IsEqual(loudspeaker_angles[4], 4.0*1.256637061435917));
+  ASSERT(IsEqual(loudspeaker_angles[0], 0.0));
+  ASSERT(IsEqual(loudspeaker_angles[1], 1.256637061435917));
+  ASSERT(IsEqual(loudspeaker_angles[4], 4.0*1.256637061435917));
   
   
   // Testing decoding matrix
   
   mcl::Matrix<Sample> decoding_matrix =
           AmbisonicsHorizDec::ModeMatchingDec(2, loudspeaker_angles);
-  assert(decoding_matrix.num_columns() == 5);
-  assert(decoding_matrix.num_rows() == 5);
-  assert(IsEqual(decoding_matrix.element(0, 0), 0.200000000000000));
-  assert(IsEqual(decoding_matrix.element(1, 0), 0.200000000000000));
-  assert(IsEqual(decoding_matrix.element(4, 0), 0.200000000000000));
-  assert(IsEqual(decoding_matrix.element(0, 1), 0.282842712474619));
-  assert(IsEqual(decoding_matrix.element(3, 1), -0.228824561127074));
-  assert(IsEqual(decoding_matrix.element(0, 2), 0.0));
-  assert(IsEqual(decoding_matrix.element(3, 2), -0.166250775110981));
-  assert(IsEqual(decoding_matrix.element(2, 3), 0.087403204889764));
-  assert(IsEqual(decoding_matrix.element(4, 4), -0.166250775110981));
+  ASSERT(decoding_matrix.num_columns() == 5);
+  ASSERT(decoding_matrix.num_rows() == 5);
+  ASSERT(IsEqual(decoding_matrix.element(0, 0), 0.200000000000000));
+  ASSERT(IsEqual(decoding_matrix.element(1, 0), 0.200000000000000));
+  ASSERT(IsEqual(decoding_matrix.element(4, 0), 0.200000000000000));
+  ASSERT(IsEqual(decoding_matrix.element(0, 1), 0.282842712474619));
+  ASSERT(IsEqual(decoding_matrix.element(3, 1), -0.228824561127074));
+  ASSERT(IsEqual(decoding_matrix.element(0, 2), 0.0));
+  ASSERT(IsEqual(decoding_matrix.element(3, 2), -0.166250775110981));
+  ASSERT(IsEqual(decoding_matrix.element(2, 3), 0.087403204889764));
+  ASSERT(IsEqual(decoding_matrix.element(4, 4), -0.166250775110981));
   
   
   // Testing Ambisonics mode-matching decoding
@@ -244,15 +244,15 @@ bool AmbisonicsHorizDec::Test() {
     // poletti_pan = 1.0/M*(1.0+2.0*sum(cos((1:N)*theta)));
     Sample poletti_pan = 1.0/MM*(1.0+2.0*
             Sum(Cos(Multiply(ColonOperator<Angle>(1, order), (Angle) theta))));
-    assert(IsEqual(output, poletti_pan));
+    ASSERT(IsEqual(output, poletti_pan));
   }
   
   
   // Testing ambisonics maximum energy vector weights
   
-  assert(IsEqual(MaxEnergyDecWeight(0,2), 1.0));
-  assert(IsEqual(MaxEnergyDecWeight(1,2), cos(PI/(6.0))));
-  assert(IsEqual(MaxEnergyDecWeight(2,2), cos(2.0*PI/(6.0))));
+  ASSERT(IsEqual(MaxEnergyDecWeight(0,2), 1.0));
+  ASSERT(IsEqual(MaxEnergyDecWeight(1,2), cos(PI/(6.0))));
+  ASSERT(IsEqual(MaxEnergyDecWeight(2,2), cos(2.0*PI/(6.0))));
   
   
   // Testing ambisonics maximum energy vector decoding matrix
@@ -265,7 +265,7 @@ bool AmbisonicsHorizDec::Test() {
   max_re_dec_cmp.set_element(2, 2, cos(PI/(6.0)));
   max_re_dec_cmp.set_element(3, 3, cos(2.0*PI/(6.0)));
   max_re_dec_cmp.set_element(4, 4, cos(2.0*PI/(6.0)));
-  assert(IsEqual(max_re_dec, max_re_dec_cmp));
+  ASSERT(IsEqual(max_re_dec, max_re_dec_cmp));
   
   
   // A complete test comparing with Matlab's tested implementation
@@ -320,11 +320,11 @@ bool AmbisonicsHorizDec::Test() {
   output_4_cmp[2] =  -0.017379369470917;
   output_4_cmp[3] =  -0.016125504574487;
   
-  assert(IsEqual(output_b.GetReadPointer(0), output_0_cmp));
-  assert(IsEqual(output_b.GetReadPointer(1), output_1_cmp));
-  assert(IsEqual(output_b.GetReadPointer(2), output_2_cmp));
-  assert(IsEqual(output_b.GetReadPointer(3), output_3_cmp));
-  assert(IsEqual(output_b.GetReadPointer(4), output_4_cmp));
+  ASSERT(IsEqual(output_b.GetReadPointer(0), output_0_cmp));
+  ASSERT(IsEqual(output_b.GetReadPointer(1), output_1_cmp));
+  ASSERT(IsEqual(output_b.GetReadPointer(2), output_2_cmp));
+  ASSERT(IsEqual(output_b.GetReadPointer(3), output_3_cmp));
+  ASSERT(IsEqual(output_b.GetReadPointer(4), output_4_cmp));
   
   return true;
 }

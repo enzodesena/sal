@@ -63,8 +63,8 @@ bool FreeFieldSim::Test() {
   std::vector<Sample> output_mic_1_cmp = mcl::Zeros<Sample>(4);
   output_mic_1_cmp[2] = 0.5/2.0+0.5/2.0;
   
-  assert(mcl::IsEqual(output_mic_0_cmp, output_stream_a.GetReadPointer()));
-  assert(mcl::IsEqual(output_mic_1_cmp, output_stream_b.GetReadPointer()));
+  ASSERT(mcl::IsEqual(output_mic_0_cmp, output_stream_a.GetReadPointer()));
+  ASSERT(mcl::IsEqual(output_mic_1_cmp, output_stream_b.GetReadPointer()));
   
   return true;
 }

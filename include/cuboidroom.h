@@ -42,7 +42,7 @@ public:
              const std::vector<mcl::IirFilter>& filters,
              const BoundarySetType boundary_set_type = first_order_only) :
           Room(filters, boundary_set_type), dimensions_(Triplet(x, y, z)) {
-    if (filters.size() != num_faces()) { assert(false); }
+    if (filters.size() != num_faces()) { ASSERT(false); }
   }
   
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,

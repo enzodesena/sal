@@ -66,7 +66,7 @@ PaWrapper::PaWrapper(Decoder* decoder,
                      std::vector<Int> channel_ids) :
           decoder_(decoder), frames_per_buffer_(frames_per_buffer),
           channel_ids_(channel_ids) {
-  //if (decoder->num_loudspeakers() != channel_ids.size()) { assert(false); }
+  //if (decoder->num_loudspeakers() != channel_ids.size()) { ASSERT(false); }
   
   Init();
   
@@ -125,7 +125,7 @@ PaError PaWrapper::WriteStream(const Int num_samples) {
       } else {
         sample = (float) decoder_->stream(channel_ids_[j])->Pull();
       }
-      assert(i*max_num_channels+j<block_length);
+      ASSERT(i*max_num_channels+j<block_length);
       sample_block[i*max_num_channels+j] = sample;
     }
   }

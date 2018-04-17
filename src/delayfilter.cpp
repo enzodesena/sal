@@ -72,7 +72,7 @@ void DelayFilter::set_latency(const Int latency) noexcept {
   
   if (read_index_ < start_) { read_index_ += max_latency_ + 1; }
   
-  assert((read_index_ >= start_) & (read_index_ <= end_));
+  ASSERT((read_index_ >= start_) & (read_index_ <= end_));
 }
 
 UInt DelayFilter::latency() const noexcept { return latency_; }
@@ -83,8 +83,8 @@ Sample DelayFilter::Read(const Int& delay_tap) const noexcept {
   ASSERT_WITH_MESSAGE(delay_tap < max_latency_, "Tried to access a delay tap larger than delay filter"
                       "length.");
                                 
-  assert(write_index_>=start_);
-  assert(write_index_<=end_);
+  ASSERT(write_index_>=start_);
+  ASSERT(write_index_<=end_);
   return (write_index_ - delay_tap >= start_) ?
       *(write_index_ - delay_tap) :
       *(write_index_ - delay_tap + max_latency_ + 1);

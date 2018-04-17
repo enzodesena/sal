@@ -53,10 +53,10 @@ bool KemarMic::Test() {
                             imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
   
-  assert(IsEqual(stream_i.GetLeftReadPointer(),
+  ASSERT(IsEqual(stream_i.GetLeftReadPointer(),
                  stream_i.GetRightReadPointer(),
                  impulse_response_length));
-  assert(IsEqual(cmp_imp_front_left, stream_i.GetLeftReadPointer()));
+  ASSERT(IsEqual(cmp_imp_front_left, stream_i.GetLeftReadPointer()));
   
   
   KemarMic mic_o(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0),
@@ -64,7 +64,7 @@ bool KemarMic::Test() {
   StereoBuffer stream_o(impulse_response_length);
   
   mic_o.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_o);
-  assert(mcl::IsEqual(cmp_imp_front_left, stream_o.GetLeftReadPointer()));
+  ASSERT(mcl::IsEqual(cmp_imp_front_left, stream_o.GetLeftReadPointer()));
   
   // Testing frontal direction for reference point at y-axis
   KemarMic mic_ia(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
@@ -72,7 +72,7 @@ bool KemarMic::Test() {
   StereoBuffer stream_ia(impulse_response_length);
   mic_ia.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_ia);
   
-  assert(mcl::IsEqual(cmp_imp_front_left,
+  ASSERT(mcl::IsEqual(cmp_imp_front_left,
                       stream_ia.GetLeftReadPointer()));
   
   // Testing upward direction
@@ -95,7 +95,7 @@ bool KemarMic::Test() {
   StereoBuffer stream_m(impulse_response_length);
   
   mic_m.AddPlaneWave(impulse, Point(-1.0,0.0,0.0), stream_m);
-  assert(IsEqual(stream_m.GetLeftReadPointer(), cmp_imp_up_left));
+  ASSERT(IsEqual(stream_m.GetLeftReadPointer(), cmp_imp_up_left));
   
   
   // Case for a source to the right (90deg) of the kemar.
@@ -133,17 +133,17 @@ bool KemarMic::Test() {
   
   mic_p.AddPlaneWave(impulse, Point(0.0,-1.0,0.0), stream_p);
   
-  assert(mcl::IsEqual(stream_p.GetLeftReadPointer(), cmp_imp_right_left));
-  assert(mcl::IsEqual(stream_p.GetRightReadPointer(), cmp_imp_right_right));
+  ASSERT(mcl::IsEqual(stream_p.GetLeftReadPointer(), cmp_imp_right_left));
+  ASSERT(mcl::IsEqual(stream_p.GetRightReadPointer(), cmp_imp_right_right));
   
   // Case for a source to the right (90deg) of the kemar with reference on the y axis
   KemarMic mic_pa(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  kemar_path, 0, 0, y_z);
   StereoBuffer stream_pa(impulse_response_length);
   mic_pa.AddPlaneWave(impulse, Point(1.0,0.0,0.0), stream_pa);
-  assert(mcl::IsEqual(cmp_imp_right_left,
+  ASSERT(mcl::IsEqual(cmp_imp_right_left,
                       stream_pa.GetLeftReadPointer()));
-  assert(mcl::IsEqual(cmp_imp_right_right,
+  ASSERT(mcl::IsEqual(cmp_imp_right_right,
                       stream_pa.GetRightReadPointer()));
   
   // Case for a source to the left (-90deg) of the kemar.
@@ -162,8 +162,8 @@ bool KemarMic::Test() {
   
   mic_r.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_r);
   
-  assert(mcl::IsEqual(stream_r.GetLeftReadPointer(), cmp_imp_left_left));
-  assert(mcl::IsEqual(stream_r.GetRightReadPointer(), cmp_imp_left_right));
+  ASSERT(mcl::IsEqual(stream_r.GetLeftReadPointer(), cmp_imp_left_left));
+  ASSERT(mcl::IsEqual(stream_r.GetRightReadPointer(), cmp_imp_left_right));
   
   // Case for a source in the back
   const Sample imp_back[] = {-3,-4,3,-4,6,-9,16,-25,19,-31,34,-46,60,-8,
@@ -186,26 +186,26 @@ bool KemarMic::Test() {
   
   mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
   
-  assert(mcl::IsEqual(stream_t.GetLeftReadPointer(), cmp_imp_back));
-  assert(mcl::IsEqual(stream_t.GetRightReadPointer(), cmp_imp_back));
+  ASSERT(mcl::IsEqual(stream_t.GetLeftReadPointer(), cmp_imp_back));
+  ASSERT(mcl::IsEqual(stream_t.GetRightReadPointer(), cmp_imp_back));
   
   // Testing reset
   stream_t.Reset();
   
   mic_t.AddPlaneWave(MonoBuffer::Unary(1.0), Point(0.0,0.0,-1.0), stream_t);
-  assert(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0, 1.0E-10));
-  assert(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0, 1.0E-10));
+  ASSERT(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0, 1.0E-10));
+  ASSERT(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0, 1.0E-10));
   
   stream_t.Reset();
   mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_t);
-  assert(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0, 1.0E-10));
-  assert(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0, 1.0E-10));
+  ASSERT(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0, 1.0E-10));
+  ASSERT(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0, 1.0E-10));
   
   stream_t.Reset();
   mic_t.Reset();
   mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_t);
-  assert(IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
-  assert(IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
+  ASSERT(IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
+  ASSERT(IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
   
   
   
@@ -223,8 +223,8 @@ bool KemarMic::Test() {
   Signal output_u_right(stream_u.GetRightReadPointer(),
                         stream_u.GetRightReadPointer()+impulse_response_length);
   
-  assert(IsEqual(cmp_imp_front_left, output_u_left));
-  assert(IsEqual(cmp_imp_front_left, output_u_right));
+  ASSERT(IsEqual(cmp_imp_front_left, output_u_left));
+  ASSERT(IsEqual(cmp_imp_front_left, output_u_right));
   
   mic_u.AddPlaneWave(impulse, Point(0.0,-1.0,0.0), 1, stream_u);
   
@@ -236,8 +236,8 @@ bool KemarMic::Test() {
   Signal cmp_u_left = mcl::Add(cmp_imp_front_left, cmp_imp_right_left);
   Signal cmp_u_right = mcl::Add(cmp_imp_front_left, cmp_imp_right_right);
   
-  assert(IsEqual(cmp_u_left, output_u_left));
-  assert(IsEqual(cmp_u_right, output_u_right));
+  ASSERT(IsEqual(cmp_u_left, output_u_left));
+  ASSERT(IsEqual(cmp_u_right, output_u_right));
   
   
   stream_u.Reset();
@@ -252,8 +252,8 @@ bool KemarMic::Test() {
   Signal cmp_u_left_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_left);
   Signal cmp_u_right_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_right);
   
-  assert(IsEqual(cmp_u_left_b, output_u_b_left));
-  assert(IsEqual(cmp_u_right_b, output_u_b_right));
+  ASSERT(IsEqual(cmp_u_left_b, output_u_b_left));
+  ASSERT(IsEqual(cmp_u_right_b, output_u_b_right));
   
   return true;
 }

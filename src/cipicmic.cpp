@@ -111,12 +111,12 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
         brirs = mcl::Matrix<sal::Sample>::Load(file_path).data();
         break;
       default:
-        assert(false);
+        ASSERT(false);
         break;
     }
 
-    assert(brirs.size() == NUM_ELEVATIONS_CIPIC);
-    assert(brirs[0].size() == LENGTH_BRIR_CIPIC);
+    ASSERT(brirs.size() == NUM_ELEVATIONS_CIPIC);
+    ASSERT(brirs[0].size() == LENGTH_BRIR_CIPIC);
     hrtf_database.push_back(brirs);
   }
 
@@ -145,9 +145,9 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
   if (isnan(elevation)) { elevation = 0.0; }
   if (isnan(azimuth)) { azimuth = 0.0; }
   
-  assert((elevation >= (-90.0-VERY_SMALL)) &
+  ASSERT((elevation >= (-90.0-VERY_SMALL)) &
          (elevation <= (270.0+VERY_SMALL)));
-  assert((azimuth >= (-90.0-VERY_SMALL)) &
+  ASSERT((azimuth >= (-90.0-VERY_SMALL)) &
          (azimuth <= (90.0+VERY_SMALL)));
   
   UInt azimuth_index = mcl::MinIndex(mcl::Abs(mcl::Add(azimuths_,
@@ -162,8 +162,8 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
     elevation_index = (Int) round((elevation + 45.0) * 64.0 / 360.0);
   }
   
-  assert((azimuth_index >= 0) & (azimuth_index < azimuths_.size()));
-  assert((elevation_index >= 0) & (elevation_index <= 49));
+  ASSERT((azimuth_index >= 0) & (azimuth_index < azimuths_.size()));
+  ASSERT((elevation_index >= 0) & (elevation_index <= 49));
   
   return (ear == left_ear) ?
           hrtf_database_left_[azimuth_index][elevation_index] :
