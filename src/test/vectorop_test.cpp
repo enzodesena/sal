@@ -336,22 +336,25 @@ bool VectorOpTest() {
   vector_v_restr_2_cmp[0] = 0.1;
   ASSERT(IsEqual(vector_v_restr_2, vector_v_restr_2_cmp));
   
-  // Testing GetFrame
+  // Testing GetSegment
   
   //  std::vector<Real> vector_g(3);
   //  vector_g[0] = 2.5;
   //  vector_g[1] = 0.0;
   //  vector_g[2] = -2.4;
   
-  ASSERT(IsEqual(GetFrame(vector_g, 0, 1), UnaryVector((Real) 2.5)));
-  ASSERT(IsEqual(GetFrame(vector_g, 1, 1), UnaryVector((Real) 0.0)));
-  ASSERT(IsEqual(GetFrame(vector_g, 2, 1), UnaryVector((Real) -2.4)));
+  ASSERT(IsEqual(GetSegment(vector_g, 0, 1), UnaryVector((Real) 2.5)));
+  ASSERT(IsEqual(GetSegment(vector_g, 1, 1), UnaryVector((Real) 0.0)));
+  ASSERT(IsEqual(GetSegment(vector_g, 2, 1), UnaryVector((Real) -2.4)));
   
   std::vector<Real> vector_g_frame_0(2);
   vector_g_frame_0[0] = 2.5;
   vector_g_frame_0[1] = 0.0;
-  ASSERT(IsEqual(GetFrame(vector_g, 0, 2), vector_g_frame_0));
-  ASSERT(IsEqual(GetFrame(vector_g, 1, 2), UnaryVector((Real) -2.4)));
+  ASSERT(IsEqual(GetSegment(vector_g, 0, 2), vector_g_frame_0));
+  ASSERT(IsEqual(GetSegment(vector_g, 1, 2), UnaryVector((Real) -2.4)));
+  ASSERT(IsEqual(GetSegment(vector_g, 1, 2, true), BinaryVector(-2.4, 0.0)));
+  ASSERT(IsEqual(GetSegment(vector_g, 2, 2, false), std::vector<Real>()));
+  ASSERT(IsEqual(GetSegment(vector_g, 2, 2, true), BinaryVector(0.0, 0.0)));
   
   // Testing prod()
   ASSERT(IsEqual(Prod(vector_g_frame_0), 0.0));

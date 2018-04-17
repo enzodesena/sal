@@ -316,17 +316,30 @@ MCL_API std::vector<T> Elements(const std::vector<T>& vector,
 
   
 template<class T>
-MCL_API std::vector<T> GetFrame(const std::vector<T>& vector,
-                                const Int frame_id,
-                                const Int frame_length) noexcept {
-  Int size(vector.size());
+MCL_API std::vector<T> GetSegment(const std::vector<T>& vector,
+                                  const Int subset_id,
+                                  const Int subset_length,
+                                  bool zeropad_if_shorter = false) noexcept {
+  const Int size = vector.size();
   
-  Int from_sample(frame_id * frame_length);
-  Int to_sample = Min(from_sample + frame_length - 1,
-                       size - 1);
-  if (to_sample > (size - 1)) { to_sample = size - 1; }
-  // TODO: modify here (23/6/13: I am not sure what I meant here)
-  return Elements(vector, from_sample, to_sample);
+  const Int from_sample = subset_id * subset_length;
+  if (from_sample >= size) {
+    if (zeropad_if_shorter) {
+      return Zeros<T>(subset_length);
+    } else {
+      return std::vector<T>(); // Return empty vector
+    }
+  }
+  
+  const Int to_sample = Min(from_sample + subset_length - 1,
+                      size - 1);
+  
+  const Int actual_length = to_sample - from_sample + 1;
+  if (zeropad_if_shorter && actual_length < subset_length) {
+    return ZeroPad(Elements(vector, from_sample, to_sample), subset_length);
+  } else {
+    return Elements(vector, from_sample, to_sample);
+  }
 }
 
 /** 

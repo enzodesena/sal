@@ -399,7 +399,7 @@ void FirFilter::SpeedTests() {
   
   clock_t launch=clock();
   for (Int i = 0; i<20; i++) {
-    fir_filter.Filter(mcl::GetFrame(input, i, 2205));
+    fir_filter.Filter(mcl::GetSegment(input, i, 2205));
   }
   clock_t done=clock();
   
@@ -419,7 +419,7 @@ void FirFilter::SpeedTests() {
   
   launch=clock();
   for (Int i = 0; i<20; i++) {
-    fir_filter_b.Filter(mcl::GetFrame(input, i, 2205));
+    fir_filter_b.Filter(mcl::GetSegment(input, i, 2205));
   }
   done=clock();
   
