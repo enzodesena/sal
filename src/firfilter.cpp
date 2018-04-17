@@ -170,7 +170,7 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
 std::vector<Real>
 FirFilter::FilterSequential(const std::vector<Real>& input) noexcept {
   std::vector<Real> output(input.size());
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     output[i] = this->Filter(input[i]);
   }
   return output;
@@ -209,7 +209,7 @@ void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
   update_index_ = 0;
   impulse_response_ = impulse_response;
   
-  if (impulse_response.size() != length_) {
+  if ((Int)impulse_response.size() != length_) {
     // If the impulse response changes length, then reset everything.
     length_ = impulse_response.size();
     delay_line_.assign(length_, 0.0);

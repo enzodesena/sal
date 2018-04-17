@@ -73,7 +73,7 @@ public:
   }
   
   /** Sets element in given row and column */
-  void set_element(const UInt& index_row, const UInt& index_column,
+  void set_element(const Int& index_row, const Int& index_column,
                    const T& element) noexcept {
     if (index_row>=num_rows_ || index_column>=num_columns_) {
       ASSERT_WITH_MESSAGE(false, "Out-of-bounds index in setting matrix element");}
@@ -82,7 +82,7 @@ public:
   
   /** Sets an entire column */
   void set_column(Int index_column, std::vector<T> column) noexcept {
-    if (column.size() != num_rows_) { ASSERT(false); }
+    if ((Int)column.size() != num_rows_) { ASSERT(false); }
     if (index_column >= num_columns_) { ASSERT(false); }
     for (Int i=0; i<num_rows_; ++i) {
       set_element(i, index_column, column[i]);
@@ -91,13 +91,13 @@ public:
   
   /** Sets an entire row */
   void set_row(Int index_row, std::vector<T> row) noexcept {
-    if (row.size() != num_columns_) { ASSERT(false); }
+    if ((Int)row.size() != num_columns_) { ASSERT(false); }
     if (index_row >= num_rows_) { ASSERT(false); }
     data_[index_row] = row;
   }
   
   /** Accesses an element in given row and column */
-  T element(const UInt& index_row, const UInt& index_column) const noexcept {
+  T element(const Int& index_row, const Int& index_column) const noexcept {
     if (index_row >= num_rows_) { ASSERT(false); }
     if (index_column >= num_columns_) { ASSERT(false); }
     return data_[index_row][index_column];
@@ -284,12 +284,12 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
 template<class T>
 MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
                                 const std::vector<T>& vector) noexcept {
-  if (matrix_a.num_columns() != vector.size()) { ASSERT(false); }
+  if (matrix_a.num_columns() != (Int)vector.size()) { ASSERT(false); }
   Matrix<T> temp_input(vector.size(), 1);
   temp_input.set_column(0, vector);
   Matrix<T> temp_output = Multiply(matrix_a, temp_input);
   if (temp_output.num_columns() != 1) { ASSERT(false); }
-  if (temp_output.num_rows() != vector.size()) { ASSERT(false); }
+  if (temp_output.num_rows() != (Int)vector.size()) { ASSERT(false); }
   
   return temp_output.column(0);
 }

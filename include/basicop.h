@@ -34,7 +34,7 @@ template<class T>
 MCL_API Int MinIndex(const std::vector<T>& input) noexcept {
   T min_value = std::numeric_limits<T>::max();
   Int min_index = 0;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     if (input[i] < min_value) {
       min_value = input[i];
       min_index = i;

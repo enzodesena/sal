@@ -90,7 +90,7 @@ std::vector<Real> Ones(Int length) noexcept {
   
 Real Sum(const std::vector<Real>& input) noexcept {
   Real output(0.0);
-  for (Int i=0; i<input.size(); ++i) { output += input[i]; }
+  for (Int i=0; i<(Int)input.size(); ++i) { output += input[i]; }
   return output;
 }
 
@@ -121,7 +121,7 @@ Real Std(const std::vector<Real>& input) noexcept {
 Real Var(const std::vector<Real>& input) noexcept {
   Real mean = Mean(input);
   Real output(0.0);
-  for (Int i=0; i<input.size(); ++i) { output += pow(input[i] - mean,2.0); }
+  for (Int i=0; i<(Int)input.size(); ++i) { output += pow(input[i] - mean,2.0); }
   return output/((Real) (input.size()-1));
 }
   
@@ -250,7 +250,7 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) noexcept {
 Real CovElement(const std::vector<Real>& x,
                 const std::vector<Real>& y) noexcept {
   const Int N = x.size();
-  if (N != y.size()) { ASSERT(false); }
+  if (N != (Int)y.size()) { ASSERT(false); }
   
   Real output = Sum(Multiply(Add(x, -Mean(x)), Add(y, -Mean(y))));
   // In case N>1 use the unbiased estimator of covariance.
@@ -287,8 +287,8 @@ std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
     Int from_sample = i;
     Int to_sample = i + window.size()-1;
     
-    ASSERT(from_sample>=0 && from_sample<input.size());
-    ASSERT(to_sample>=0 && to_sample<input.size());
+    ASSERT(from_sample>=0 && from_sample<(Int)input.size());
+    ASSERT(to_sample>=0 && to_sample<(Int)input.size());
     
     output.push_back(Multiply(Elements(input, from_sample, to_sample),
                               window));
@@ -307,7 +307,7 @@ std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
     if (frames[frame_i].size() != window.size()) {
       ASSERT_WITH_MESSAGE(false, "Frame length different from window length");
     }
-    for (Int k=0; k<window.size(); ++k) {
+    for (Int k=0; k<(Int)window.size(); ++k) {
       output[frame_i*frame_increment+k] += window[k] * frames[frame_i][k];
     }
   }
@@ -316,7 +316,7 @@ std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
   
 std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
   std::vector<Complex> output;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     output.push_back(Complex(input[i], 0.0));
   }
   return output;

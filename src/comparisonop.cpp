@@ -38,7 +38,7 @@ bool IsNan(Real num) {
 
 std::vector<bool> IsNan(std::vector<Real> input) {
   std::vector<bool> output;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     output.push_back(IsNan(input[i]));
   }
   return output;
@@ -50,7 +50,7 @@ bool IsInf(Real num) {
 
 std::vector<bool> IsInf(std::vector<Real> input) {
   std::vector<bool> output;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     output.push_back(IsInf(input[i]));
   }
   return output;
@@ -58,14 +58,14 @@ std::vector<bool> IsInf(std::vector<Real> input) {
 
 std::vector<bool> Not(std::vector<bool> input) {
   std::vector<bool> output;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     output.push_back(!input[i]);
   }
   return output;
 }
 
 bool All(std::vector<bool> input) {
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     if (input[i] == false) {
       return false;
     }
@@ -78,7 +78,7 @@ bool None(std::vector<bool> input) {
 }
 
 bool Any(std::vector<bool> input) {
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     if (input[i] == true) {
       return true;
     }
@@ -96,10 +96,10 @@ bool IsLargerOrEqual(const Real num_a, const Real num_b, const Real precision) {
 
 bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
                           const std::vector<Real>& vector_b) {
-  if (vector_a.size() != vector_b.size())
+  if ((Int)vector_a.size() != (Int)vector_b.size())
     return false;
   
-  for (Int i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<(Int)(Int)vector_a.size(); ++i) {
     if (! IsSmallerOrEqual(vector_a[i], vector_b[i])) { return false; }
   }
   
@@ -120,10 +120,10 @@ bool IsEqual(const Quaternion& q_a, const Quaternion& q_b) {
 
 bool IsEqual(const std::vector<Int>& vector_a,
              const std::vector<Int>& vector_b) {
-  if (vector_a.size() != vector_b.size())
+  if ((Int)vector_a.size() != (Int)vector_b.size())
     return false;
   
-  for (Int i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<(Int)vector_a.size(); ++i) {
     if (vector_a[i] != vector_b[i]) { return false; }
   }
   return true;
@@ -140,8 +140,8 @@ bool IsReal(const std::vector<Complex>& input) {
 
 
 bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b) {
-  const Int num_points = points_a.size();
-  if (num_points != points_b.size()) { return false; }
+  const Int num_points = (Int)points_a.size();
+  if (num_points != (Int)points_b.size()) { return false; }
   for (Int i=0; i<num_points; ++i) {
     if (! IsEqual(points_a[i], points_b[i])) { return false; }
   }

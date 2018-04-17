@@ -117,7 +117,7 @@ std::vector<Complex> Rfft(const std::vector<Real>& input,
 std::vector<std::vector<Complex> >
 Rfft(const std::vector<std::vector<Real> >& input, Int n_point) noexcept {
   std::vector<std::vector<Complex> > outputs;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     outputs.push_back(Rfft(input[i], n_point));
   }
   return outputs;
@@ -142,7 +142,7 @@ std::vector<Real> Irfft(const std::vector<Complex>& input,
                                                            1,
                                                            (n_point+1)/2-1))));
   }
-  ASSERT(spectrum.size() == n_point);
+  ASSERT((Int)spectrum.size() == n_point);
   std::vector<Complex> output = Ifft(spectrum, n_point);
   ASSERT(IsReal(output));
   return RealPart(output);
@@ -152,7 +152,7 @@ std::vector<Real> Irfft(const std::vector<Complex>& input,
 std::vector<std::vector<Real> >
 Irfft(const std::vector<std::vector<Complex> >& input, Int n_point) noexcept {
   std::vector<std::vector<Real> > outputs;
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     outputs.push_back(Irfft(input[i], n_point));
   }
   return outputs;
@@ -162,9 +162,9 @@ Irfft(const std::vector<std::vector<Complex> >& input, Int n_point) noexcept {
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b) {
   // TODO: implement for different sizes
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
   
-  Int M = vector_a.size();
+  Int M = (Int)vector_a.size();
   
   Int n_fft = (UInt) pow(2.0, NextPow2(2*M-1));
   

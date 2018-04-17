@@ -66,33 +66,33 @@ MCL_API void Add(const Real* input_data_a,
   
 std::vector<Complex> ComplexVector(const std::vector<Real>& input) noexcept {
   std::vector<Complex> output(input.size());
-  for (Int i=0; i<input.size(); ++i) { output[i] = Complex(input[i], 0.0); }
+  for (Int i=0; i<(Int)input.size(); ++i) { output[i] = Complex(input[i], 0.0); }
   return output;
 }
 
 std::vector<Real> RealPart(const std::vector<Complex>& input) noexcept {
   std::vector<Real> output(input.size());
-  for (Int i=0; i<input.size(); ++i) { output[i] = input[i].real(); }
+  for (Int i=0; i<(Int)input.size(); ++i) { output[i] = input[i].real(); }
   return output;
 }
 
 std::vector<Real> Imag(const std::vector<Complex>& input) noexcept {
   std::vector<Real> output(input.size());
-  for (Int i=0; i<input.size(); ++i) { output[i] = input[i].imag(); }
+  for (Int i=0; i<(Int)input.size(); ++i) { output[i] = input[i].imag(); }
   return output;
 }
 
 
 std::vector<Real> Inverse(const std::vector<Real>& vector) noexcept {
   std::vector<Real> output(vector.size());
-  for (Int i=0; i<vector.size(); ++i) { output[i] = 1.0/vector[i]; }
+  for (Int i=0; i<(Int)vector.size(); ++i) { output[i] = 1.0/vector[i]; }
   return output;
 }
 
 
 std::vector<Complex> Conj(const std::vector<Complex>& vector) noexcept {
   std::vector<Complex> output(vector.size());
-  for (Int i=0; i<vector.size(); ++i) { 
+  for (Int i=0; i<(Int)vector.size(); ++i) { 
     output[i] = Conj(vector[i]); 
   }
   return output;
@@ -102,7 +102,7 @@ std::vector<Complex> Conj(const std::vector<Complex>& vector) noexcept {
 
 std::vector<Real> Pow(const std::vector<Real>& vector, Real exponent) noexcept {
   std::vector<Real> output(vector.size());
-  for (Int i=0; i<vector.size(); ++i) { 
+  for (Int i=0; i<(Int)vector.size(); ++i) { 
     output[i] = Pow(vector[i], exponent);
   }
   return output;
@@ -111,7 +111,7 @@ std::vector<Real> Pow(const std::vector<Real>& vector, Real exponent) noexcept {
 
 std::vector<Real> HalfWave(const std::vector<Real>& input) noexcept {
   std::vector<Real> output = Zeros<Real>(input.size());
-  for (Int i=0; i<input.size(); ++i) {
+  for (Int i=0; i<(Int)input.size(); ++i) {
     if (input[i] > 0.0)
       output[i] = input[i];
   }
@@ -121,7 +121,7 @@ std::vector<Real> HalfWave(const std::vector<Real>& input) noexcept {
 
 std::vector<Real> Abs(const std::vector<Real>& input) noexcept {
   std::vector<Real> output(input.size());
-  for (Int i=0; i<input.size(); ++i) { 
+  for (Int i=0; i<(Int)input.size(); ++i) { 
     output[i] = fabs(input[i]);
   }
   return output;
@@ -130,7 +130,7 @@ std::vector<Real> Abs(const std::vector<Real>& input) noexcept {
 
 std::vector<Real> Abs(const std::vector<Complex>& input) noexcept {
   std::vector<Real> output(input.size());
-  for (Int i=0; i<input.size(); ++i) { 
+  for (Int i=0; i<(Int)input.size(); ++i) { 
     output[i] = abs(input[i]);
   }
   return output;

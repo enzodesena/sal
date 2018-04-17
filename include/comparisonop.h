@@ -45,10 +45,10 @@ template<class T>
 MCL_API bool IsEqual(const std::vector<T>& vector_a,
                      const std::vector<T>& vector_b,
                      Real precision = VERY_SMALL) noexcept {
-  if (vector_a.size() != vector_b.size())
+  if ((Int)vector_a.size() != (Int)vector_b.size())
     return false;
   
-  for (Int i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<(Int)(Int)vector_a.size(); ++i) {
     if (! IsEqual(vector_a[i], vector_b[i], precision))
       return false;
   }

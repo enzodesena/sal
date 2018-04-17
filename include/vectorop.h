@@ -55,7 +55,7 @@ template<class T>
 MCL_API std::vector<T> ZeroPad(const std::vector<T>& input,
                                Int total_length) noexcept {
   std::vector<T> output = Zeros<T>(total_length);
-  Int M = (input.size() < total_length) ? input.size() : total_length;
+  Int M = ((Int)input.size() < total_length) ? input.size() : total_length;
   for (Int i=0; i<M; ++i) { output[i] = input[i]; }
   return output;
 }
@@ -70,7 +70,7 @@ template<class T>
 MCL_API std::vector<T> Multiply(const std::vector<T>& vector,
                                 const T gain) noexcept {
   std::vector<T> output(vector.size());
-  for (Int i=0; i<vector.size(); ++i) {
+  for (Int i=0; i<(Int)vector.size(); ++i) {
     output[i] = vector[i]*gain;
   }
   return output;
@@ -107,8 +107,8 @@ MCL_API void MultiplyAdd(const Real* input_data_mult,
 template<class T>
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
                     const T scalar) noexcept {
-  std::vector<T> output(vector_a.size());
-  for (Int i=0; i<vector_a.size(); ++i) {
+  std::vector<T> output((Int)vector_a.size());
+  for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output[i] = vector_a[i]+scalar;
   }
   return output;
@@ -123,8 +123,8 @@ MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
 template<class T> 
 MCL_API std::vector<T> Subset(const std::vector<T>& vector,
                       const Int from_index, const Int to_index) noexcept {
-  if (from_index >= vector.size()) { ASSERT(false); }
-  if (to_index >= vector.size()) { ASSERT(false); }
+  if (from_index >= (Int)vector.size()) { ASSERT(false); }
+  if (to_index >= (Int)vector.size()) { ASSERT(false); }
   if (from_index > to_index) { ASSERT(false); }
   
   // Allocate output vector with appropriate length.
@@ -144,7 +144,7 @@ MCL_API std::vector<T> Subset(const std::vector<T>& vector,
 template<class T>
 MCL_API std::vector<T> Concatenate(std::vector<T> vector_a,
                            const std::vector<T>& vector_b) noexcept {
-  std::vector<T> output = Zeros<T>(vector_a.size()+vector_b.size());
+  std::vector<T> output = Zeros<T>((Int)vector_a.size()+(Int)vector_b.size());
   vector_a.insert(vector_a.end(), vector_b.begin(), vector_b.end());
   return vector_a;
 }
@@ -175,7 +175,7 @@ template<class T>
 MCL_API std::vector<T> Flip(std::vector<T> vector) noexcept {
   if (vector.size() <= 1) { return vector; }
   Int N(Length(vector));
-  for (Int i=0; i<=((UInt) (floor(N/2)-1)); ++i) {
+  for (Int i=0; i<=((Int) (floor(N/2)-1)); ++i) {
     T temp_value = vector[i];
     vector[i] = vector[N-i-1];
     vector[N-i-1] = temp_value;
@@ -204,8 +204,8 @@ MCL_API std::vector<T> CircShift(const std::vector<T>& vector,
 template<class T>
 MCL_API std::vector<T> Conv(const std::vector<T>& vector_a,
                     const std::vector<T>& vector_b) noexcept {
-  Int N_a = vector_a.size();
-  Int N_b = vector_b.size();
+  Int N_a = (Int)vector_a.size();
+  Int N_b = (Int)vector_b.size();
   Int out_length = N_a+N_b-1;
   
   std::vector<T> moving_vector_temp = Concatenate(Zeros<T>(N_b-1), 
@@ -232,13 +232,13 @@ MCL_API std::vector<T>
 AddVectors(const std::vector<std::vector<T> >& vectors) noexcept {
   // Get maximum length
   std::vector<UInt> vector_lengths(vectors.size());
-  for (Int i=0; i<vectors.size(); ++i) {
+  for (Int i=0; i<(Int)vectors.size(); ++i) {
     vector_lengths[i] = vectors[i].size();
   }
   Int max_length(Max(vector_lengths));
   
   std::vector<T> output = Zeros<T>(max_length);
-  for (Int i=0; i<vectors.size(); ++i) {
+  for (Int i=0; i<(Int)vectors.size(); ++i) {
     output = Add(output, ZeroPad(vectors[i], max_length));
   }
   
@@ -253,7 +253,7 @@ template<class T>
 MCL_API std::vector<T> AddVectors(const std::vector<T>& vector_a,
                                   const std::vector<T>& vector_b) noexcept {
   // Get maximum length
-  Int max_length(Max(vector_a.size(), vector_b.size()));
+  Int max_length(Max((Int)vector_a.size(), (Int)vector_b.size()));
   
   std::vector<T> output = Zeros<T>(max_length);
   output = Add(output, ZeroPad(vector_a, max_length));
@@ -268,10 +268,10 @@ MCL_API std::vector<T> AddVectors(const std::vector<T>& vector_a,
 template<class T>
 MCL_API std::vector<T> Interleave(const std::vector<T>& vector_a,
                           const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output;
-  for (Int i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output.push_back(vector_a[i]);
     output.push_back(vector_b[i]);
   }
@@ -358,8 +358,8 @@ MCL_API T Prod(const std::vector<T>& vector) noexcept {
 template<class T>
 MCL_API T Dot(const std::vector<T>& vector_a,
               const std::vector<T>& vector_b) noexcept {
-  const Int num_elements = vector_a.size();
-  if (num_elements != vector_b.size()) { ASSERT(false); }
+  const Int num_elements = (Int)vector_a.size();
+  if (num_elements != (Int)vector_b.size()) { ASSERT(false); }
   
   T output = (T) 0.0;
   for (Int i=0; i<num_elements; ++i) {

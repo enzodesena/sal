@@ -29,10 +29,10 @@ namespace mcl {
 template<class T> 
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
                            const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
   
-  std::vector<T> output(vector_a.size());
-  for (Int i=0; i<vector_a.size(); ++i) {
+  std::vector<T> output((Int)vector_a.size());
+  for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output[i] = vector_a[i]+vector_b[i];
   }
   return output;
@@ -47,10 +47,10 @@ MCL_API void Add(const Real* input_data_a,
 template<>
 MCL_API inline std::vector<Real> Add(const std::vector<Real>& vector_a,
                                      const std::vector<Real>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
   
-  std::vector<Real> output(vector_a.size());
-  Add(vector_a.data(), vector_b.data(), vector_a.size(),
+  std::vector<Real> output((Int)vector_a.size());
+  Add(vector_a.data(), vector_b.data(), (Int)vector_a.size(),
       output.data());
   return output;
 }
@@ -63,7 +63,7 @@ MCL_API std::vector<T> Opposite(const std::vector<T>& vector) noexcept {
   //ASSERT(std::numeric_limits<T>::is_signed);
   
   std::vector<T> output(vector.size());
-  for (Int i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
+  for (Int i=0; i<(Int)vector.size(); ++i) { output[i] = -vector[i]; }
   return output;
 }
   
@@ -89,10 +89,10 @@ MCL_API std::vector<T> Subtract(const std::vector<T>& vector_a,
 template<class T> 
 MCL_API std::vector<T> Multiply(const std::vector<T>& vector_a,
                                 const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
   
-  std::vector<T> output(vector_a.size());
-  for (Int i=0; i<vector_a.size(); ++i) {
+  std::vector<T> output((Int)vector_a.size());
+  for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output[i] = vector_a[i]*vector_b[i];
   }
   return output;
@@ -107,10 +107,10 @@ MCL_API void Multiply(const Real* input_data_a,
 template<>
 MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
                                           const std::vector<Real>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
   
-  std::vector<Real> output(vector_a.size());
-  Multiply(vector_a.data(), vector_b.data(), vector_a.size(),
+  std::vector<Real> output((Int)vector_a.size());
+  Multiply(vector_a.data(), vector_b.data(), (Int)vector_a.size(),
            output.data());
   return output;
 }
@@ -122,9 +122,9 @@ MCL_API inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
 template<class T>
 MCL_API std::vector<T> Divide(const std::vector<T>& vector_a,
                               const std::vector<T>& vector_b) noexcept {
-  if (vector_a.size() != vector_b.size()) { ASSERT(false); }
-  std::vector<T> output(vector_a.size());
-  for (Int i=0; i<vector_a.size(); ++i) {
+  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+  std::vector<T> output((Int)vector_a.size());
+  for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output[i] = vector_a[i]/vector_b[i];
   }
   return output;
