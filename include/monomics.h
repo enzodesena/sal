@@ -20,37 +20,78 @@
 
 namespace sal {
   
-class SAL_API MonoMic : public Microphone {
+class SAL_API MonoMic : virtual public Microphone {
 public:
   MonoMic(mcl::Point position, mcl::Quaternion orientation) :
           Microphone(position, orientation) {}
   
-  virtual void Tick() noexcept {
-    stream_.Tick();
+  /** This method is used mostly for testing, as it is very slow.
+   You should use AddPlaneWave instead. */
+  Sample RecordPlaneWave(const Sample input_sample,
+                         const mcl::Point& point,
+                         const Int& wave_id = 0) noexcept {
+    MonoBuffer output_buffer(1);
+    AddPlaneWave(&input_sample, 1, point, wave_id, output_buffer);
+    return output_buffer.sample(0);
   }
-  
-  virtual bool IsOmni() { return true; }
-  
-  MonoStream* stream() { return &stream_; }
-  
-protected:
-  MonoStream stream_;
+
+  virtual ~MonoMic() {}
 };
   
-class SAL_API GainMic : public MonoMic {
+  
+class SAL_API MemorylessMic : virtual public Microphone {
+public:
+  MemorylessMic(mcl::Point position, mcl::Quaternion orientation) :
+      Microphone(position, orientation) {}
+  
+  virtual ~MemorylessMic() {}
+private:
+  virtual Sample GetDirectivity(const mcl::Point& point) = 0;
+};
+  
+  
+class SAL_API MemorylessMonoMic : public MemorylessMic, public MonoMic {
+public:
+  MemorylessMonoMic(mcl::Point position, mcl::Quaternion orientation) :
+  MemorylessMic(position, orientation), MonoMic(position, orientation)  {}
+  
+  virtual void AddPlaneWaveRelative(const Sample* input_data,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept {
+    MonoBuffer& mono_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
+    assert(mono_buffer.num_channels() == 1);
+    assert(num_samples <= mono_buffer.num_samples());
+    
+    mcl::MultiplyAdd(input_data,
+                     GetDirectivity(point),
+                     mono_buffer.GetReadPointer(),
+                     num_samples,
+                     mono_buffer.GetWritePointer());
+  }
+  
+  virtual ~MemorylessMonoMic() {}
+  
+private:
+  virtual Sample GetDirectivity(const mcl::Point& point) = 0;
+};
+  
+  
+class SAL_API GainMic : public MemorylessMonoMic {
 public:
   GainMic(mcl::Point position, Sample gain) :
-          MonoMic(position, mcl::Quaternion::Identity()),
+          MemorylessMonoMic(position, mcl::Quaternion::Identity()),
+          Microphone(position, mcl::Quaternion::Identity()),
           gain_(gain) {}
   
   virtual bool IsCoincident() { return true; }
   
   virtual ~GainMic() {}
-private:
   
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point&,
-                                       const UInt&) noexcept {
-    stream_.Add(mcl::Multiply<sal::Sample>(signal, gain_));
+private:
+  virtual Sample GetDirectivity(const mcl::Point& /* point */) {
+    return gain_;
   }
   
   Sample gain_;
@@ -60,9 +101,12 @@ private:
 class SAL_API OmniMic : public GainMic {
 public:
   OmniMic(mcl::Point position) :
-        GainMic(position, (Sample) 1.0) {}
+        GainMic(position, (Sample) 1.0),
+        Microphone(position, mcl::Quaternion::Identity()) {}
   
   virtual bool IsCoincident() { return true; }
+  
+  virtual ~OmniMic() {}
 };
   
 
@@ -71,31 +115,26 @@ public:
  a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
  Note that such an expression is axisimmetric.
  */
-class SAL_API TrigMic : public MonoMic {
+class SAL_API TrigMic : public MemorylessMonoMic {
 public:
   TrigMic(mcl::Point position, mcl::Quaternion orientation,
           std::vector<Sample> coefficients) :
-          MonoMic(position, orientation),
+          MemorylessMonoMic(position, orientation),
+          Microphone(position, orientation),
           coefficients_(coefficients) {}
   
   virtual bool IsCoincident() { return true; }
   
   virtual ~TrigMic() {}
-  
 private:
-  Sample GetDirectivity(const mcl::Point& point) {
+  virtual Sample GetDirectivity(const mcl::Point& point) {
     Angle phi = AngleBetweenPoints(point,
                                                mcl::Point(1.0, 0.0, 0.0));
     
-    const UInt N = coefficients_.size();
+    const Int N = coefficients_.size();
     Sample directivity(coefficients_[0]);
     for (UInt i=1; i<N; ++i) { directivity += coefficients_[i]*pow(cos(phi),i); }
     return directivity;
-  }
-  
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt&) noexcept {
-    stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
   }
   
   std::vector<Sample> coefficients_;
@@ -107,19 +146,19 @@ private:
  a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
  Note that such an expression is axisimmetric.
  */
-class SAL_API TanMic : public MonoMic {
+class SAL_API TanMic : public MemorylessMonoMic {
 public:
   TanMic(mcl::Point position, mcl::Quaternion orientation,
          sal::Sample base_angle) :
-  MonoMic(position, orientation),
-  base_angle_(base_angle) {}
+      MemorylessMonoMic(position, orientation),
+      Microphone(position, orientation),
+      base_angle_(base_angle) {}
   
   virtual bool IsCoincident() { return true; }
   
   virtual ~TanMic() {}
-  
 private:
-  Sample GetDirectivity(const mcl::Point& point) {
+  virtual Sample GetDirectivity(const mcl::Point& point) {
     Angle phi = AngleBetweenPoints(point,
                                                mcl::Point(1.0, 0.0, 0.0));
     
@@ -133,11 +172,6 @@ private:
     } else { directivity = 0.0; }
     
     return directivity;
-  }
-  
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt&) noexcept {
-    stream_.Add(mcl::Multiply<sal::Sample>(signal, GetDirectivity(point)));
   }
   
   sal::Sample base_angle_;

@@ -23,14 +23,14 @@ bool AmbisonicsMic::Test() {
   // TODO: Only testing for 2nd order
   
   // Testing Ambisonics encoding
-  const UInt N = 2; // Ambisonics order
+  const Int N = 2; // Ambisonics order
   
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
                       N);
   BFormatStream* stream_a = mic_a.stream();
   
   Sample sample = 0.3;
-  mic_a.RecordPlaneWave(sample, Point(1.0, 0.0, 0.0));
+  mic_a.AddPlaneWave(sample, Point(1.0, 0.0, 0.0));
   
   assert(IsEqual(stream_a->Pull(0, 0), sample*1.000000000000000));
   assert(IsEqual(stream_a->Pull(1, 1), sample*1.414213562373095));
@@ -38,7 +38,7 @@ bool AmbisonicsMic::Test() {
   assert(IsEqual(stream_a->Pull(2, 1), sample*1.414213562373095));
   assert(IsEqual(stream_a->Pull(2, -1), sample*0.0));
   
-  mic_a.RecordPlaneWave(sample, Point(0.0, 1.0, 0.0));
+  mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0));
   assert(IsEqual(stream_a->Pull(0, 0), sample*1.000000000000000));
   assert(IsEqual(stream_a->Pull(1, -1), sample*1.414213562373095));
   assert(IsEqual(stream_a->Pull(1, 1), sample*0.0));
@@ -48,13 +48,13 @@ bool AmbisonicsMic::Test() {
   
 #ifdef MCL_LOAD_BOOST
   // Testing Ambisonics encoding
-  const UInt N_b = 3; // Ambisonics order
+  const Int N_b = 3; // Ambisonics order
   AmbisonicsMic mic_b(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), N_b, N3D);
   BFormatStream* stream_b = mic_b.stream();
   
   
   sample = 0.5;
-  mic_b.RecordPlaneWave(sample, Point(1.0, 0.0, 0.0));
+  mic_b.AddPlaneWave(sample, Point(1.0, 0.0, 0.0));
   
   // theta and phi are the spherical coordinates in the reference system of:
   // http://ambisonics.ch/standards/channels/
@@ -79,7 +79,7 @@ bool AmbisonicsMic::Test() {
   assert(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
   
   sample = 0.2;
-  mic_b.RecordPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)));
+  mic_b.AddPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)));
   
   theta = PI/4.0;
   phi = PI/4.0;
@@ -180,7 +180,7 @@ bool AmbisonicsHorizDec::Test() {
   
   // Testing loudspeaker placement
   
-  const UInt M = 5; // num loudspeakers
+  const Int M = 5; // num loudspeakers
   const Angle phi0 = 2.0*PI/((Angle) M);
   std::vector<Angle> loudspeaker_angles =
           mcl::Multiply(mcl::ColonOperator<Angle>(0, M-1), phi0);
@@ -213,9 +213,9 @@ bool AmbisonicsHorizDec::Test() {
   using mcl::ColonOperator;
   using mcl::Multiply;
   
-  const UInt order = 2;
-  const UInt MM = 5; // num loudspeakers
-  const UInt num_theta(100);
+  const Int order = 2;
+  const Int MM = 5; // num loudspeakers
+  const Int num_theta(100);
   std::vector<Angle> thetas = mcl::LinSpace(0.0, 2.0*PI, num_theta);
   
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), Quaternion::Identity(), order);
@@ -235,7 +235,7 @@ bool AmbisonicsHorizDec::Test() {
   for (UInt theta_index=0; theta_index<num_theta; ++theta_index) {
     Angle theta(thetas[theta_index]);
     
-    mic_a.RecordPlaneWave(1.0, Point(cos(theta), sin(theta), 0.0));
+    mic_a.AddPlaneWave(1.0, Point(cos(theta), sin(theta), 0.0));
     decoder_a.Decode();
     
     Sample output = loudspeaker_0_stream->Pull();
@@ -284,7 +284,7 @@ bool AmbisonicsHorizDec::Test() {
   const Angle theta_b = PI/4.0;
   Signal impulse = mcl::Zeros<Sample>(4);
   impulse[0] = 0.7;
-  mic_b.RecordPlaneWave(impulse, Point(cos(theta_b), sin(theta_b), 0.0));
+  mic_b.AddPlaneWave(impulse, Point(cos(theta_b), sin(theta_b), 0.0));
   decoder_b.Decode();
   
   Signal output_0 = decoder_b.stream(0)->Pull(impulse.size());

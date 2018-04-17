@@ -35,7 +35,7 @@ std::vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
   Init();
   
   const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int) out_dev_id));
-  const UInt max_num_channels(deviceInfo->maxOutputChannels);
+  const Int max_num_channels(deviceInfo->maxOutputChannels);
   std::vector<mcl::Int> channel_ids = std::vector<Int>(max_num_channels, -1);
   for (int i=0; i<num_loudspeakers; ++i) {
     UInt channel_id;
@@ -53,7 +53,7 @@ std::vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
 Int PaWrapper::NumOutputChannels(const Int out_dev_id) {
   Init();
   const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int) out_dev_id));
-  const UInt max_num_channels(deviceInfo->maxOutputChannels);
+  const Int max_num_channels(deviceInfo->maxOutputChannels);
   Terminate();
   return max_num_channels;
 }
@@ -100,7 +100,7 @@ PaError PaWrapper::WriteDecoderToStream() {
   return error;
 }
 
-PaError PaWrapper::WriteDecoderToStream(const UInt tot_num_samples) {
+PaError PaWrapper::WriteDecoderToStream(const Int tot_num_samples) {
   UInt i = 0;
   while (i+frames_per_buffer_ <= tot_num_samples) {
     PaError error = WriteStream(frames_per_buffer_);
@@ -111,9 +111,9 @@ PaError PaWrapper::WriteDecoderToStream(const UInt tot_num_samples) {
   return paNoError;
 }
   
-PaError PaWrapper::WriteStream(const UInt num_samples) {
+PaError PaWrapper::WriteStream(const Int num_samples) {
   sal::UInt max_num_channels = channel_ids_.size();
-  const UInt block_length = num_samples*max_num_channels;
+  const Int block_length = num_samples*max_num_channels;
   float sample_block[block_length];
    
   for (UInt i=0; i<num_samples; ++i) {

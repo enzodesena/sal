@@ -23,30 +23,35 @@
 #include "cuboidroom.h"
 #include "fdtd.h"
 #include "riranalysis.h"
+#include "monomics.h"
 #include "tdbem.h"
+#include "audiobuffer.h"
+#include <vector>
 
 int main(int argc, char * const argv[]) {
+  
   sal::Microphone::Test();
   sal::KemarMic::Test();
   sal::CipicMic::Test();
-  sal::Stream::Test();
-  sal::SphericalHeadMic::Test();
-  sal::MicrophoneArrayTest();
-  sal::AmbisonicsMic::Test();
-  sal::AmbisonicsHorizDec::Test();
-  sal::DelayFilter::Test();
-  sal::PropagationLine::Test();
-  sal::FreeFieldSim::Test();
-  sal::CuboidRoom::Test();
-  sal::Ism::Test();
-  sal::RirAnalysis::Test();
-  sal::TripletHandler::Test();
+//  sal::Stream::Test();
+//  sal::SphericalHeadMic::Test();
+//  sal::MicrophoneArrayTest();
+//  sal::AmbisonicsMic::Test();
+//  sal::AmbisonicsHorizDec::Test();
+//  sal::DelayFilter::Test();
+//  sal::PropagationLine::Test();
+//  sal::FreeFieldSim::Test();
+//  sal::CuboidRoom::Test();
+//  sal::Ism::Test();
+//  sal::RirAnalysis::Test();
+//  sal::TripletHandler::Test();
+  sal::Buffer::Test();
   
   std::cout<<"All tests succeded!\n";
   
-  sal::Fdtd::Test();
-  sal::TdBem::Test();
-  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
+//  sal::Fdtd::Test();
+//  sal::TdBem::Test();
+//  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
   
     
   return 0;

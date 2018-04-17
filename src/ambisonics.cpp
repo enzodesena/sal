@@ -19,9 +19,9 @@ using mcl::Multiply;
 
 namespace sal {
 
-void AmbisonicsMic::RecordPlaneWaveRelative(const Signal& signal,
+void AmbisonicsMic::AddPlaneWaveRelative(const Signal& signal,
                                             const Point& point,
-                                            const UInt& wave_id) noexcept {
+                                            const Int wave_id) noexcept {
   // Precompute for performance gain
   const Angle phi = point.phi();
   const Sample sqrt_2 = mcl::Sqrt(2.0);
@@ -91,7 +91,7 @@ std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(UInt order,
   return output;
 }
   
-AmbisonicsHorizDec::AmbisonicsHorizDec(const UInt order,
+AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        const bool energy_decoding,
                                        const Time cut_off_frequency,
                                        const std::vector<Angle>& loudspeaker_angles,
@@ -157,7 +157,7 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(UInt order,
                 const std::vector<Angle>& loudspeaker_angles) {
   using mcl::Matrix;
   using mcl::Multiply;
-  const UInt num_loudspeakers = loudspeaker_angles.size();
+  const Int num_loudspeakers = loudspeaker_angles.size();
   
   Matrix<Sample> temp(2*order+1, num_loudspeakers);
   
@@ -315,7 +315,7 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
 // "Spatial Sound Encoding Including Near Field Effect: Introducing
 // Length Coding Filters and a Viable, New Ambisonic Format" by
 // J. Daniel, AES 23rd, Int. Conf., 2003.
-mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const UInt order,
+mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
                                              const Length loudspeaker_distance,
                                              const Time sampling_frequency,
                                              const Length sound_speed) {
@@ -379,7 +379,7 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const UInt order,
   Real a = 4.0*sampling_frequency*loudspeaker_distance/sound_speed;
   
   // I need to implement A(poly((1+X_mq/a)./(1-X_mq/a))*prod(1-X_mq./a);
-  const UInt num_samples = X_Mq.size();
+  const Int num_samples = X_Mq.size();
   std::vector<Complex> temp_1(num_samples); // (1+X_mq/a)./(1-X_mq/a))
   std::vector<Complex> temp_2(num_samples); // 1-X_mq./a
   for (UInt i=0; i<num_samples; ++i) {

@@ -47,7 +47,7 @@ public:
    */
   inline sal::Sample Read() const noexcept { return *read_index_; }
   
-  sal::Sample Read(const UInt& delay_tap) const noexcept;
+  sal::Sample Read(const Int& delay_tap) const noexcept;
   
   sal::Sample FractionalRead(const Time fractional_delay_tap) const noexcept;
   

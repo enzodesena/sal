@@ -79,7 +79,7 @@ UInt DelayFilter::latency() const noexcept { return latency_; }
 
 UInt DelayFilter::max_latency() const noexcept { return max_latency_; }
 
-Sample DelayFilter::Read(const UInt& delay_tap) const noexcept {
+Sample DelayFilter::Read(const Int& delay_tap) const noexcept {
   ASSERT_WITH_MESSAGE(delay_tap < max_latency_, "Tried to access a delay tap larger than delay filter"
                       "length.");
                                 

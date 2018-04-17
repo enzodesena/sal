@@ -30,9 +30,9 @@ public:
   
   PaError WriteDecoderToStream();
   
-  PaError WriteDecoderToStream(const UInt num_samples);
+  PaError WriteDecoderToStream(const Int num_samples);
   
-  PaError WriteStream(const UInt num_samples);
+  PaError WriteStream(const Int num_samples);
   
   PaError StopStream();
   

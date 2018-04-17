@@ -256,12 +256,12 @@ void TdBem::Run() {
                 weights_mic_previous_[i] * pressures_[i].FractionalRead(delay+1.0))
                 / (4.0*PI);
       
-      microphone_->RecordPlaneWave(pressure,
+      microphone_->AddPlaneWave(pressure,
                                    points_[i], i);
     }
     
     Time los_delay = distance_los_ * sampling_frequency_ / SOUND_SPEED;
-    microphone_->RecordPlaneWave(source_delay_line_.FractionalRead(los_delay)
+    microphone_->AddPlaneWave(source_delay_line_.FractionalRead(los_delay)
                                  / (4.0*PI*distance_los_),
                                  source_->position(),
                                  num_elements_);

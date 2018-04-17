@@ -22,9 +22,9 @@ SphericalHeadMic::SphericalHeadMic(const Point position,
                                    const Quaternion orientation,
                                    const Angle ears_angle,
                                    const Length sphere_radius,
-                                   const UInt ir_length,
+                                   const Int ir_length,
                                    const Time sampling_frequency,
-                                   const UInt update_length) :
+                                   const Int update_length) :
           BinauralMic(position, orientation, update_length),
           ears_angle_(ears_angle), sphere_radius_(sphere_radius),
           sampling_frequency_(sampling_frequency),

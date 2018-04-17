@@ -55,27 +55,28 @@ using mcl::Quaternion;
 
 namespace sal {
 
-CipicMic::CipicMic(Point position, Quaternion orientation,
-                   const std::string directory, const CipicDataType data_type,
-                   const UInt update_length) :
+CipicMic::CipicMic(const Point& position, const Quaternion& orientation,
+                   const std::string& directory, const DataType data_type,
+                   const Int update_length) :
         DatabaseBinauralMic(position, orientation, update_length) {
   
   azimuths_ = std::vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
     -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
     30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0});
-  
-  hrtf_database_right_ = Load(right_ear, directory, data_type);
-  hrtf_database_left_ = Load(left_ear, directory, data_type);
+
+  hrtf_database_right_ = Load(right_ear, directory, data_type, azimuths_);
+  hrtf_database_left_ = Load(left_ear, directory, data_type, azimuths_);
 }
 
 std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
-                                                 const std::string directory,
-                                                 const CipicDataType data_type) {
+                                                 const std::string& directory,
+                                                 const DataType data_type,
+                                                 const std::vector<sal::Angle>& azimuths) {
   std::vector<std::vector<Signal> > hrtf_database;
-  
-  for (UInt j=0; j<azimuths_.size(); ++j) {
-    Int azimuth = (Int) azimuths_[j];
-    
+
+  for (UInt j=0; j<azimuths.size(); ++j) {
+    Int azimuth = (Int) azimuths[j];
+
     std::string sign_text = (azimuth < 0) ? "neg" : "";
     std::string azimuth_text = std::to_string((azimuth > 0) ? azimuth:-azimuth);
     std::string ear_text = (ear == left_ear) ? "left" : "right";
@@ -83,12 +84,12 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
     std::string file_name =
     sign_text + azimuth_text + "az" + ear_text + data_type_text;
     std::string file_path = directory + "/" + file_name;
-    
+
     std::ifstream file;
     file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
     if (! file.good()) { throw("Cipic lib not found."); }
     file.close();
-  
+
     std::vector<std::vector<sal::Sample> > brirs;
     switch (data_type) {
 
@@ -105,7 +106,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
 #endif
 #endif
 #endif
-        
+
       case txt:
         brirs = mcl::Matrix<sal::Sample>::Load(file_path).data();
         break;
@@ -113,13 +114,13 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
         assert(false);
         break;
     }
-    
+
     assert(brirs.size() == NUM_ELEVATIONS_CIPIC);
     assert(brirs[0].size() == LENGTH_BRIR_CIPIC);
     hrtf_database.push_back(brirs);
   }
-  
-  
+
+
   return hrtf_database;
 }
 

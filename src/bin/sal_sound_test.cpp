@@ -21,7 +21,7 @@ Signal GenerateSine(const Time length, const Time sine_frequency,
 int main(int argc, char * const argv[]) {
   
   const Time sampling_frequency = 44100;
-  const UInt frames_per_buffer = 1000;
+  const Int frames_per_buffer = 1000;
   
   const Time pulse_frequency = 1000.0;
   const Sample pulse_amplitude = 0.1;
@@ -36,8 +36,7 @@ int main(int argc, char * const argv[]) {
   Int dev_id;
   std::cin>>dev_id;
   
-  
-  const UInt max_num_channels = PaWrapper::NumOutputChannels(dev_id);
+  const Int max_num_channels = PaWrapper::NumOutputChannels(dev_id);
   std::vector<Int> channel_ids =
   mcl::ColonOperator<mcl::Int>(0, max_num_channels-1);
   

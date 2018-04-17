@@ -61,7 +61,7 @@ public:
           input_streams_(streams) {}
   
   virtual void Decode() {
-    const UInt num_streams = output_streams_.size();
+    const Int num_streams = output_streams_.size();
     assert(num_streams == input_streams_.size());
     
     for (UInt i=0; i<num_streams; ++i) {

@@ -29,9 +29,9 @@ public:
   SphericalHeadMic(const mcl::Point position, const mcl::Quaternion orientation, 
                    const Angle ears_angle,
                    const Length sphere_radius,
-                   const UInt ir_length,
+                   const Int ir_length,
                    const Time sampling_frequency,
-                   const UInt update_length = 0);
+                   const Int update_length = 0);
   
   static bool Test();
   

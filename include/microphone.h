@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <map>
 #include "salconstants.h"
+#include "audiobuffer.h"
 
 namespace sal {
 
@@ -79,21 +80,9 @@ public:
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void RecordPlaneWave(const Sample& sample, const mcl::Point& point) noexcept;
-  
-  /**
-   This method should only be called in case of a single plane wave
-   impinging on the microphone. For multiple plane waves, you need to
-   explicitly specify the wave_id.
-   */
-  void RecordPlaneWave(const Signal& signal, const mcl::Point& point) noexcept;
-  
-  /**
-   This method should only be called in case of a single plane wave
-   impinging on the microphone. For multiple plane waves, you need to
-   explicitly specify the wave_id.
-   */
-  void RecordPlaneWave(Source source) noexcept;
+  void AddPlaneWave(const MonoBuffer& signal,
+                    const mcl::Point& point,
+                    Buffer& output_buffer) noexcept;
   
   /**
    We need to
@@ -104,18 +93,16 @@ public:
    the first time it sees a new wave_id, it will allocate a new filter
    for it.
    */
-  void RecordPlaneWave(const Sample& sample, const mcl::Point& point,
-                       const UInt& wave_id) noexcept;
+  void AddPlaneWave(const MonoBuffer& input_buffer,
+                    const mcl::Point& point,
+                    const Int wave_id,
+                    Buffer& output_buffer) noexcept;
   
-  void RecordPlaneWave(const Signal& signal, const mcl::Point& point,
-                       const UInt& wave_id) noexcept;
-  
-  /**
-   This function tells the microphone to advance by one `tick` in time.
-   This is meant to inform the microphone that we are working on a
-   new sample in time. Only need to use this when calling wave_ids explicitly.
-   */
-  virtual void Tick() noexcept = 0;
+  void AddPlaneWave(const Sample* input_data,
+                    const Int num_samples,
+                    const mcl::Point& point,
+                    const Int wave_id,
+                    Buffer& output_buffer) noexcept;
   
   virtual bool IsCoincident() = 0;
   
@@ -129,7 +116,8 @@ public:
   
   static bool Test();
   
-  virtual ~Microphone();
+  virtual ~Microphone() {}
+  
 private:
   /**
    Cache variables to speed up. Since most of the times two consecutive calls
@@ -143,7 +131,7 @@ private:
    */
   std::map<UInt,mcl::Point> last_relative_point_;
   
-  void CalculateRelativePoint(const mcl::Point& point, const UInt& wave_id);
+  void CalculateRelativePoint(const mcl::Point& point, const Int wave_id);
   
   /**
    This is implemented by the specific type of microphones. `mcl::Point` in this
@@ -158,13 +146,16 @@ private:
    Other choices could be made, as long as the conventions are kept at
    higher levels.
    */
-  virtual void RecordPlaneWaveRelative(const Sample& sample,
-                                       const mcl::Point& point,
-                                       const UInt& wave_id) noexcept;
+  virtual void AddPlaneWaveRelative(const Sample* input_data,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept = 0;
   
-  virtual void RecordPlaneWaveRelative(const Signal& signal,
-                                       const mcl::Point& point,
-                                       const UInt& wave_id) noexcept = 0;
+  virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept;
   
 protected:
   TripletHandler position_;
@@ -178,11 +169,9 @@ protected:
 class SAL_API StereoMicrophone : public Microphone {
 public:
   StereoMicrophone(mcl::Point position, mcl::Quaternion orientation) :
-  Microphone(position, orientation) {}
+      Microphone(position, orientation) {}
   
-  StereoStream* stream() { return &stream_; }
-protected:
-  StereoStream stream_;
+  virtual ~StereoMicrophone() {}
 };
   
 } // namespace sal

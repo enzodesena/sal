@@ -50,7 +50,7 @@ void Ism::Run() {
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni()) {
     mcl::FirFilter filter(rir_);
-    microphone_->RecordPlaneWave(filter.Filter(source_->stream()->PullAll()),
+    microphone_->AddPlaneWave(filter.Filter(source_->stream()->PullAll()),
                                  mcl::Point(0,0,0));
   } else {
     std::vector<sal::Sample> input_signal = source_->stream()->PullAll();
@@ -61,7 +61,7 @@ void Ism::Run() {
       std::vector<sal::Sample> signal =
       images_frac_delay_filter_[i].Filter(integer_delayed_signal);
       
-      microphone_->RecordPlaneWave(signal, images_position_[i], i);
+      microphone_->AddPlaneWave(signal, images_position_[i], i);
     }
     
     microphone_->Tick();

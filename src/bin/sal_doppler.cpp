@@ -23,7 +23,7 @@ Signal GenerateSine(const Time length, const Time sine_frequency,
 int main(int argc, char * const argv[]) {
   
   const Time sampling_frequency = 44100;
-  const UInt samples_per_buffer = 1000;
+  const Int samples_per_buffer = 1000;
   
   const Time sine_frequency = 1000.0;
   const Sample sine_amplitude = 0.1;

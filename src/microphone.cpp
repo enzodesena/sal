@@ -60,7 +60,7 @@ void Microphone::set_handedness(const mcl::Handedness handedness) noexcept {
   
 
 void Microphone::CalculateRelativePoint(const Point& point,
-                                        const UInt& wave_id) {
+                                        const Int wave_id) {
   if (last_point_.count(wave_id) == 0 ||
       ! IsEqual(last_point_[wave_id], point)) {
     last_point_[wave_id] = point;
@@ -68,24 +68,43 @@ void Microphone::CalculateRelativePoint(const Point& point,
   }
 }
 
-void Microphone::RecordPlaneWave(const Sample& sample, const Point& point,
-                                 const UInt& wave_id) noexcept {
+
+void Microphone::AddPlaneWave(const Sample* input_data,
+                              const Int num_samples,
+                              const Point& point,
+                              const Int wave_id,
+                              Buffer& output_buffer) noexcept {
   CalculateRelativePoint(point, wave_id);
-  this->RecordPlaneWaveRelative(sample, last_relative_point_[wave_id], wave_id);
+  this->AddPlaneWaveRelative(input_data,
+                             num_samples,
+                             last_relative_point_[wave_id],
+                             wave_id,
+                             output_buffer);
 }
 
-void Microphone::RecordPlaneWave(const Signal& signal, const Point& point,
-                                 const UInt& wave_id) noexcept {
-  CalculateRelativePoint(point, wave_id);
-  this->RecordPlaneWaveRelative(signal, last_relative_point_[wave_id], wave_id);
+void Microphone::AddPlaneWave(const MonoBuffer& input_buffer,
+                              const mcl::Point& point,
+                              Buffer& output_buffer) noexcept {
+  AddPlaneWave(input_buffer, point, 0, output_buffer);
+}
+  
+void Microphone::AddPlaneWave(const MonoBuffer& input_buffer,
+                              const Point& point,
+                              const Int wave_id,
+                              Buffer& output_buffer) noexcept {
+  AddPlaneWave(input_buffer.GetReadPointer(),
+               input_buffer.num_samples(),
+               point, wave_id, output_buffer);
 }
 
-
-void Microphone::RecordPlaneWaveRelative(const Sample& sample,
-                                         const Point& point,
-                                         const UInt& wave_id) noexcept {
-  RecordPlaneWaveRelative(mcl::UnaryVector(sample), point, wave_id);
+void Microphone::AddPlaneWaveRelative(const MonoBuffer& signal,
+                                      const mcl::Point& point,
+                                      const Int wave_id,
+                                      Buffer& output_buffer) noexcept {
+  AddPlaneWaveRelative(signal.GetReadPointer(), signal.num_samples(),
+                       point, wave_id, output_buffer);
 }
+
 
 
 Point Microphone::GetRelativePoint(const Point& point) const noexcept {
@@ -110,29 +129,7 @@ Point Microphone::GetRelativePoint(const Point& point) const noexcept {
 }
   
   
-void Microphone::RecordPlaneWave(const Sample& sample,
-                                 const Point& point) noexcept {
-  RecordPlaneWave(sample, point, 0);
-  Tick();
-}
-
   
-void Microphone::RecordPlaneWave(const Signal& signal,
-                                 const Point& point) noexcept {
-  for (UInt i=0; i<signal.size(); ++i) {
-    RecordPlaneWave(signal[i], point);
-  }
-}
-
-  
-void Microphone::RecordPlaneWave(Source source) noexcept {
-  if (! source.stream()->IsEmpty()) {
-    RecordPlaneWave(source.stream()->PullAll(), source.position());
-  }
-}
-  
-  
-Microphone::~Microphone() {}
   
   
 } // namespace sal

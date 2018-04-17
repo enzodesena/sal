@@ -58,10 +58,10 @@ public:
   
   static bool Test();
 private:
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt& wave_id) noexcept;
+  virtual void AddPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
+                                       const Int wave_id) noexcept;
   
-  const UInt order_;
+  const Int order_;
   BFormatStream stream_;
   AmbisonicsConvention convention_;
 };
@@ -89,7 +89,7 @@ public:
    If `near_field_correction` is true, the signals will be processed using
    J. Daniel's near-field correction.
    */
-  AmbisonicsHorizDec(const UInt order,
+  AmbisonicsHorizDec(const Int order,
                      const bool energy_decoding,
                      const Time cut_off_frequency,
                      const std::vector<Angle>& loudspeaker_angles,
@@ -139,7 +139,7 @@ private:
    `sampling_frequency` is the sampling frequency (in Hz) and `sound_speed`
    the speed of sound (in m/s).
    */
-  static mcl::IirFilter NFCFilter(const UInt order,
+  static mcl::IirFilter NFCFilter(const Int order,
                                   const Length loudspeaker_distance,
                                   const Time sampling_frequency,
                                   const Length sound_speed);

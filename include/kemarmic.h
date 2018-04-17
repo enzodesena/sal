@@ -37,20 +37,18 @@ public:
    */
   KemarMic(const mcl::Point& position,
            const mcl::Quaternion orientation,
-           const std::string directory, const UInt num_samples = 0,
-           const UInt update_length = 0,
+           const std::string directory, const Int num_samples = 0,
+           const Int update_length = 0,
            const HeadRefOrientation reference_orientation = standard);
   
   static bool Test();
-  
-  virtual ~KemarMic() {}
 private:
   
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   std::vector<std::vector<Signal> > Load(const Ear ear,
                                          const std::string directory,
-                                         const UInt num_samples);
+                                         const Int num_samples);
   
   /**
    Returns the elevation index for kemar database for elevation in azimuth.

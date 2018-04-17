@@ -57,7 +57,7 @@ public:
   
   void Push(const Signal& signal) noexcept {
     if (merge_streams_.size() > 0) { assert(false); }
-    const UInt num_samples = signal.size();
+    const Int num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(signal.at(i));
     }
@@ -86,7 +86,7 @@ public:
     } else {
       if (num_temp_samples_ != signal.size()) { assert(false); }
       
-      const UInt offset = queue_.size()-signal.size();
+      const Int offset = queue_.size()-signal.size();
       for (UInt i=0; i<signal.size(); ++i) { queue_[offset+i] += signal[i]; }
     }
   }
@@ -115,7 +115,7 @@ public:
   }
   
   
-  Signal Pull(const UInt num_samples) noexcept {
+  Signal Pull(const Int num_samples) noexcept {
     if (num_samples > size()) { assert(false); }
     
     if (merge_streams_.size() == 0) {
@@ -206,14 +206,14 @@ public:
       streams_(streams) {}
   
   std::vector<Sample> Pull() noexcept {
-    const UInt num_streams = streams_.size();
+    const Int num_streams = streams_.size();
     std::vector<Sample> output(num_streams);
     for (UInt i=0; i<num_streams; ++i) { output[i] = streams_[i]->Pull(); }
     return output;
   }
   
-  std::vector<Signal> Pull(const UInt num_samples) noexcept {
-    const UInt num_streams = streams_.size();
+  std::vector<Signal> Pull(const Int num_samples) noexcept {
+    const Int num_streams = streams_.size();
     std::vector<Signal> output(num_streams);
     for (UInt i=0; i<num_streams; ++i) {
       output[i] = streams_[i]->Pull(num_samples);
@@ -243,7 +243,7 @@ public:
   
   void Push(UInt degree, Int order, const Signal& signal) noexcept {
     InitOrderDegree(degree, order);
-    const UInt num_samples = signal.size();
+    const Int num_samples = signal.size();
     for (UInt i=0; i < num_samples; ++i) {
       Push(degree, order, signal[i]);
     }

@@ -67,7 +67,7 @@ bool SphericalHeadMic::Test() {
                         distance*cos(ears_angle-PI/2.0),
                         -distance*sin(ears_angle-PI/2.0));
   
-  mic_a.RecordPlaneWave(impulse, point_line_left);
+  mic_a.AddPlaneWave(impulse, point_line_left);
   
   Signal output_a_left = stream_a->left_stream()->Pull(6);
   Signal output_a_right = stream_a->right_stream()->Pull(6);
@@ -106,7 +106,7 @@ bool SphericalHeadMic::Test() {
                          -distance*sin(ears_angle-PI/2.0));
   // Since the impulse response has 6 bins, I can reuse the same microphone for
   // this test.
-  mic_a.RecordPlaneWave(impulse, point_line_right);
+  mic_a.AddPlaneWave(impulse, point_line_right);
   Signal output_b_left = stream_a->left_stream()->Pull(6);
   Signal output_b_right = stream_a->right_stream()->Pull(6);
   assert(IsEqual(output_b_right, output_ipsilateral));
@@ -123,7 +123,7 @@ bool SphericalHeadMic::Test() {
   // Point in front of face.
   Point point_front(distance, 0.0, 0.0);
   
-  mic_b.RecordPlaneWave(impulse, point_front);
+  mic_b.AddPlaneWave(impulse, point_front);
   
   Signal output_e_left = stream_b->left_stream()->Pull(6);
   Signal output_e_right = stream_b->right_stream()->Pull(6);
@@ -144,18 +144,18 @@ bool SphericalHeadMic::Test() {
   // Testing reset
   assert(stream_b->right_stream()->IsEmpty());
   assert(stream_b->left_stream()->IsEmpty());
-  mic_b.RecordPlaneWave(1.0, Point(0.0,0.0,-1.0));
+  mic_b.AddPlaneWave(1.0, Point(0.0,0.0,-1.0));
   assert(! IsEqual(stream_b->left_stream()->Pull(), 0.0));
   assert(! IsEqual(stream_b->right_stream()->Pull(), 0.0));
   assert(stream_b->right_stream()->IsEmpty());
   assert(stream_b->left_stream()->IsEmpty());
-  mic_b.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));
+  mic_b.AddPlaneWave(0.0, Point(0.0,0.0,-1.0));
   assert(! IsEqual(stream_b->left_stream()->Pull(), 0.0));
   assert(! IsEqual(stream_b->right_stream()->Pull(), 0.0));
   assert(stream_b->right_stream()->IsEmpty());
   assert(stream_b->left_stream()->IsEmpty());
   mic_b.Reset();
-  mic_b.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));
+  mic_b.AddPlaneWave(0.0, Point(0.0,0.0,-1.0));
   assert(IsEqual(stream_b->left_stream()->Pull(), 0.0));
   assert(IsEqual(stream_b->right_stream()->Pull(), 0.0));
   

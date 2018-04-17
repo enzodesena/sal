@@ -27,8 +27,8 @@ namespace sal {
 KemarMic::KemarMic(const Point& position,
                    const Quaternion orientation,
                    const std::string directory,
-                   const UInt num_samples,
-                   const UInt update_length,
+                   const Int num_samples,
+                   const Int update_length,
                    const HeadRefOrientation reference_orientation) :
           DatabaseBinauralMic(position, orientation, update_length,
                               reference_orientation) {
@@ -43,7 +43,7 @@ KemarMic::KemarMic(const Point& position,
 
 std::vector<std::vector<Signal> >
   KemarMic::Load(const Ear ear, const std::string directory,
-                 const UInt num_samples) {
+                 const Int num_samples) {
   std::vector<std::vector<Signal> > hrtf_database;
           
   for (UInt i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
@@ -142,7 +142,7 @@ UInt KemarMic::FindElevationIndex(Angle elevation) {
 }
 
 UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
-  const UInt num_measurements[] =
+  const Int num_measurements[] =
           {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   
   Angle angular_resolution = 360.0 /

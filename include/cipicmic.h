@@ -27,31 +27,35 @@
 
 namespace sal {
   
-enum CipicDataType {
-  txt,
-  wav
-};
+
   
 class SAL_API CipicMic : public DatabaseBinauralMic {
 public:
+  
+  enum DataType {
+    txt,
+    wav
+  };
+  
   /**
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  CipicMic(mcl::Point position, mcl::Quaternion orientation,
-           const std::string directory, const CipicDataType data_type,
-           const UInt update_length = 0);
+  CipicMic(const mcl::Point& position, const mcl::Quaternion& orientation,
+           const std::string& directory, const DataType data_type,
+           const Int update_length = 0);
   
   static bool Test();
   
-  virtual ~CipicMic() {}
+  ~CipicMic() {}
+  
+  
 private:
-  
-  
-  std::vector<std::vector<Signal> > Load(const Ear ear,
-                                         const std::string directory,
-                                         const CipicDataType data_type);
-  
+  static std::vector<std::vector<Signal> > Load(const Ear ear,
+                                                const std::string& directory,
+                                                const DataType data_type,
+                                                const std::vector<sal::Angle>& azimuths);
+
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   std::vector<sal::Angle> azimuths_;

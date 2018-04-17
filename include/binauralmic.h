@@ -37,22 +37,19 @@ public:
    */
   BinauralMic(const mcl::Point& position,
               const mcl::Quaternion orientation,
-              const UInt update_length,
+              const Int update_length,
               const HeadRefOrientation reference_orientation = standard);
   
   void set_update_length(UInt update_length) noexcept { update_length_ = update_length; }
   
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
   void set_bypass(bool bypass) noexcept;
-    
-  virtual void Tick() noexcept;
   
   virtual void Reset() noexcept;
   
   virtual bool IsCoincident() noexcept { return true; }
-  virtual bool IsFrameEnabled() noexcept { return true; }
   
-  virtual ~BinauralMic() noexcept {}
+  virtual ~BinauralMic() {}
   
 private:
   
@@ -62,10 +59,13 @@ private:
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept = 0;
   
-  virtual void RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const UInt& wave_id) noexcept;
+  virtual void AddPlaneWaveRelative(const Sample* signal,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept;
   
-  void CreateInstanceIfNotExist(const UInt& wave_id) noexcept;
+  void CreateInstanceIfNotExist(const Int wave_id) noexcept;
   
   std::map<UInt, BinauralMicInstance> instances_left_;
   std::map<UInt, BinauralMicInstance> instances_right_;
@@ -84,6 +84,27 @@ protected:
 
 
   
+class SAL_API DatabaseBinauralMic : public BinauralMic {
+public:
+  DatabaseBinauralMic(const mcl::Point& position,
+                      const mcl::Quaternion orientation,
+                      const Int update_length,
+                      const HeadRefOrientation reference_orientation = standard);
+  
+  /**
+   Filters all responses by `filter`. Useful for instance for including
+   an inverse headphone filter
+   */
+  void FilterAll(mcl::DigitalFilter* filter);
+  
+  virtual ~DatabaseBinauralMic() {}
+protected:
+  // Database
+  std::vector<std::vector<Signal> > hrtf_database_right_;
+  std::vector<std::vector<Signal> > hrtf_database_left_;
+};
+  
+  
   
   
 class BinauralMicInstance {
@@ -97,7 +118,10 @@ private:
   update_length_(update_length),
   reference_orientation_(reference_orientation) {}
   
-  Signal RecordPlaneWaveRelative(const Signal& signal, const mcl::Point& point) noexcept;
+  void AddPlaneWaveRelative(const Sample* input_data,
+                            const Int num_samples,
+                            const mcl::Point& point,
+                            Sample* output_data) noexcept;
   
   void UpdateFilter(const mcl::Point& point) noexcept;
   
@@ -119,26 +143,6 @@ private:
 };
   
   
-  
-  
-class SAL_API DatabaseBinauralMic : public BinauralMic {
-public:
-  DatabaseBinauralMic(const mcl::Point& position,
-                      const mcl::Quaternion orientation,
-                      const UInt update_length,
-                      const HeadRefOrientation reference_orientation = standard);
-  
-  /**
-   Filters all responses by `filter`. Useful for instance for including
-   an inverse headphone filter
-   */
-  void FilterAll(mcl::DigitalFilter* filter);
-  
-protected:
-  // Database
-  std::vector<std::vector<Signal> > hrtf_database_right_;
-  std::vector<std::vector<Signal> > hrtf_database_left_;
-};
 } // namespace sal
 
 #endif

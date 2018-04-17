@@ -18,28 +18,34 @@ using mcl::Quaternion;
 
 namespace sal {
 
-void BinauralMic::RecordPlaneWaveRelative(const Signal& signal,
-                                          const Point& point,
-                                          const UInt& wave_id) noexcept {
+void BinauralMic::AddPlaneWaveRelative(const Sample* input_data,
+                                       const Int num_samples,
+                                       const mcl::Point& point,
+                                       const Int wave_id,
+                                       Buffer& output_buffer) noexcept {
+  StereoBuffer& stereo_buffer =
+          dynamic_cast<StereoBuffer&>(output_buffer);
   if (!bypass_) {
     CreateInstanceIfNotExist(wave_id);
-    
-    stream_.left_stream()->Add(instances_left_.at(wave_id).
-                               RecordPlaneWaveRelative(signal, point));
-    stream_.right_stream()->Add(instances_right_.at(wave_id).
-                                RecordPlaneWaveRelative(signal, point));
+    instances_left_.at(wave_id).
+        AddPlaneWaveRelative(input_data, num_samples, point,
+                             stereo_buffer.GetLeftWritePointer());
+    instances_right_.at(wave_id).
+        AddPlaneWaveRelative(input_data, num_samples, point,
+                             stereo_buffer.GetRightWritePointer());
   } else {
-    stream_.left_stream()->Add(signal);
-    stream_.right_stream()->Add(signal);
+    stereo_buffer.AddSamplesLeft(input_data, 0, num_samples);
+    stereo_buffer.AddSamplesRight(input_data, 0, num_samples);
   }
 }
+  
 
 void BinauralMic::set_bypass(bool bypass) noexcept {
   if (bypass_  && !bypass) { this->Reset(); }
   bypass_ = bypass;
 }
 
-void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) noexcept {
+void BinauralMic::CreateInstanceIfNotExist(const Int wave_id) noexcept {
   // If there is no instance associated to the given wave_id then create
   if (instances_left_.count(wave_id) == 0) {
     instances_left_.insert(std::make_pair(wave_id,
@@ -51,10 +57,6 @@ void BinauralMic::CreateInstanceIfNotExist(const UInt& wave_id) noexcept {
   }
 }
 
-void BinauralMic::Tick() noexcept {
-  stream_.left_stream()->Tick();
-  stream_.right_stream()->Tick();
-}
 
 void BinauralMic::Reset() noexcept {
   for(auto iterator = instances_left_.begin();
@@ -72,7 +74,7 @@ void BinauralMic::Reset() noexcept {
 
 BinauralMic::BinauralMic(const Point& position,
                          const Quaternion orientation,
-                         const UInt update_length,
+                         const Int update_length,
                          const HeadRefOrientation reference_orientation) :
         StereoMicrophone(position, orientation), update_length_(update_length),
         bypass_(false), reference_orientation_(reference_orientation) {}
@@ -80,10 +82,14 @@ BinauralMic::BinauralMic(const Point& position,
 
 
 // Use signals with 44100 sampling frequency!!!
-Signal BinauralMicInstance::RecordPlaneWaveRelative(const Signal& signal,
-                                                    const Point& point) noexcept {
+void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_buffer,
+                                               const Int num_samples,
+                                               const mcl::Point& point,
+                                               Sample* output_data) noexcept {
   UpdateFilter(point);
-  return filter_.Filter(signal);
+  Sample temp_data[num_samples];
+  filter_.Filter(input_buffer, num_samples, temp_data);
+  mcl::Add(temp_data, output_data, num_samples, output_data);
 }
 
 void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
@@ -98,7 +104,7 @@ void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
 
 DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
                                          const Quaternion orientation,
-                                         const UInt update_length,
+                                         const Int update_length,
                                          const HeadRefOrientation reference_orientation) :
 BinauralMic(position, orientation, update_length, reference_orientation) {}
 

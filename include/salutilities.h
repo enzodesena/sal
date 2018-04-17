@@ -12,15 +12,25 @@
 
 #include <vector>
 #include "saltypes.h"
+#include "comparisonop.h"
 #include "point.h"
 #include <iostream>
 
 
 namespace sal {
 
-std::vector<Angle> UniformAngles(const UInt num_microphones,
+std::vector<Angle> UniformAngles(const Int num_microphones,
                                  const Angle first_element_heading);
 
+bool IsEqual(const Sample* input_data_a,
+             const Sample* input_data_b,
+             const Int num_samples);
+  
+bool IsEqual(const Sample* input_data_a,
+             const std::vector<Sample> input_data_b);
+
+bool IsEqual(const std::vector<Sample> input_data_b,
+             const Sample* input_data_a);
 
   
 template<class T, class V>

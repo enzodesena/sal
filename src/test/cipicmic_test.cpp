@@ -8,6 +8,7 @@
  
  */
 
+#include "salutilities.h"
 #include "cipicmic.h"
 #include "microphone.h"
 #include "salconstants.h"
@@ -17,26 +18,29 @@ using mcl::Quaternion;
 
 namespace sal {
   
+
+  
+  
 bool CipicMic::Test() {
   using mcl::IsEqual;
   
   const std::string cipic_path = std::string("hrtfs/cipic/subject21");
   
-  const UInt impulse_response_length = 34;
+  const Int impulse_response_length = 34;
   
-  Signal impulse = mcl::Zeros<Sample>(impulse_response_length);
-  impulse[0] = 1.0;
+  MonoBuffer impulse(impulse_response_length);
+  Sample sample = 0.5;
+  impulse.set_sample(0, sample);
   
-  Sample normalising_value = 1.0/NORMALISING_VALUE_CIPIC;
+  Sample normalising_value = sample*1.0/NORMALISING_VALUE_CIPIC;
   
   
   // Testing frontal direction
   CipicMic mic_i(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  cipic_path, wav);
-  StereoStream* stream_i = mic_i.stream();
+  StereoBuffer stream_i(impulse_response_length);
   
-  Sample sample = 0.5;
-  mic_i.RecordPlaneWave(mcl::Multiply(impulse, sample), Point(1.0,0.0,0.0));
+  mic_i.AddPlaneWave(impulse, Point(1.0,0.0,0.0), stream_i);
   
   const Sample imp_front_left[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, -0.000030517578125, -0.000030517578125, -0.000091552734375,
@@ -49,19 +53,14 @@ bool CipicMic::Test() {
   Signal cmp_imp_front_left(imp_front_left,
                             imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
-  cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, sample);
-  Signal akdk = stream_i->left_stream()->PullAll();
-  assert(IsEqual(cmp_imp_front_left, akdk));
+  assert(IsEqual(stream_i.GetLeftReadPointer(), cmp_imp_front_left));
   
   
   CipicMic mic_o(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0),
                  cipic_path, wav);
-  StereoStream* stream_o = mic_o.stream();
-  
-  mic_o.RecordPlaneWave(mcl::Multiply(impulse, (Sample) 0.5),
-                        Point(0.0,1.0,0.0));
-  
-  assert(mcl::IsEqual(stream_o->left_stream()->PullAll(), cmp_imp_front_left));
+  StereoBuffer output_buffer_b(impulse_response_length);
+  mic_o.AddPlaneWave(impulse, Point(0.0,1.0,0.0), output_buffer_b);
+  assert(IsEqual(output_buffer_b.GetLeftReadPointer(), cmp_imp_front_left));
   
   
   // Testing upward direction
@@ -79,13 +78,10 @@ bool CipicMic::Test() {
   
   
   CipicMic mic_m(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), cipic_path, wav);
-  StereoStream* stream_m = mic_m.stream();
+  StereoBuffer stream_m(impulse_response_length);
   
-  mic_m.RecordPlaneWave(impulse, Point(-1.0,0.0,0.0));
-  Signal output_up_left = stream_m->left_stream()->Pull(impulse_response_length);
-  Signal output_up_right = stream_m->right_stream()->Pull(impulse_response_length);
-  
-  assert(IsEqual(cmp_imp_up_left, output_up_left));
+  mic_m.AddPlaneWave(impulse, Point(-1.0,0.0,0.0), stream_m);
+  assert(IsEqual(stream_m.GetLeftReadPointer(), cmp_imp_up_left));
   
   
   
@@ -165,20 +161,15 @@ bool CipicMic::Test() {
   
   CipicMic mic_p(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  cipic_path, wav);
-  StereoStream* stream_p = mic_p.stream();
+  StereoBuffer stream_p(impulse_response_length);
   
   // The cipic database has no entry at 90deg. All sources at 80deg azimuth
   // are equally distant.
   // I put the source slightly forward (in x direction) so that I know
   // that the one with 0 elevation will be selected.
-  mic_p.RecordPlaneWave(impulse, Point(0.001,-1.0,0.0));
-  Signal output_right_left = stream_p->left_stream()->Pull(impulse_response_length);
-  Signal output_right_right = stream_p->right_stream()->Pull(impulse_response_length);
-  
-  assert(mcl::IsEqual(output_right_left, cmp_imp_right_left));
-  assert(mcl::IsEqual(output_right_right, cmp_imp_right_right));
-  
-  
+  mic_p.AddPlaneWave(impulse, Point(0.001,-1.0,0.0), stream_p);
+  assert(IsEqual(stream_p.GetLeftReadPointer(), cmp_imp_right_left));
+  assert(IsEqual(stream_p.GetRightReadPointer(), cmp_imp_right_right));
   
   
   // Case for a source to the left (-90deg) of the kemar.
@@ -264,14 +255,11 @@ bool CipicMic::Test() {
   
   CipicMic mic_r(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
                  cipic_path, wav);
-  StereoStream* stream_r = mic_r.stream();
+  StereoBuffer stream_r(impulse_response_length);
   
-  mic_r.RecordPlaneWave(impulse, Point(0.0,1.0,0.0));
-  Signal output_left_left = stream_r->left_stream()->Pull(impulse_response_length);
-  Signal output_left_right = stream_r->right_stream()->Pull(impulse_response_length);
-  
-  assert(mcl::IsEqual(output_left_left, cmp_imp_left_left));
-  assert(mcl::IsEqual(output_left_right, cmp_imp_left_right));
+  mic_r.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_r);
+  assert(mcl::IsEqual(stream_r.GetLeftReadPointer(), cmp_imp_left_left));
+  assert(mcl::IsEqual(stream_r.GetRightReadPointer(), cmp_imp_left_right));
   
   
   
@@ -329,42 +317,43 @@ bool CipicMic::Test() {
   cmp_imp_back_right = mcl::Multiply(cmp_imp_back_right, normalising_value);
   
   CipicMic mic_t(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), cipic_path, wav);
-  StereoStream* stream_t = mic_t.stream();
+  StereoBuffer stream_t(impulse_response_length);
   
-  mic_t.RecordPlaneWave(impulse, Point(0.0,0.0,-1.0));
+  mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
   
-  assert(mcl::IsEqual(stream_t->left_stream()->PullAll(), cmp_imp_back_left));
-  assert(mcl::IsEqual(stream_t->right_stream()->PullAll(), cmp_imp_back_right));
-  
-  
+  assert(mcl::IsEqual(cmp_imp_back_left, stream_t.GetLeftReadPointer()));
+  assert(mcl::IsEqual(cmp_imp_back_right, stream_t.GetRightReadPointer()));
   
   // Testing reset
-  assert(stream_t->left_stream()->IsEmpty());
-  assert(stream_t->right_stream()->IsEmpty());
-  mic_t.RecordPlaneWave(1.0, Point(0.0,0.0,-1.0));
-  assert(! IsEqual(stream_t->left_stream()->Pull(), 0.0));
-  assert(! IsEqual(stream_t->right_stream()->Pull(), 0.0));
-  assert(stream_t->left_stream()->IsEmpty());
-  mic_t.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));
-  assert(! IsEqual(stream_t->left_stream()->Pull(), 0.0));
-  assert(! IsEqual(stream_t->right_stream()->Pull(), 0.0));
-  assert(stream_t->left_stream()->IsEmpty());
+  stream_t.Reset();
+  mic_t.AddPlaneWave(MonoBuffer::Unary(1.0), Point(0.0,0.0,-1.0), stream_t);
+  assert(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
+  assert(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
+  
+  stream_t.Reset();
+  mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_t);
+  assert(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
+  assert(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
+  
+  stream_t.Reset();
   mic_t.Reset();
-  mic_t.RecordPlaneWave(0.0, Point(0.0,0.0,-1.0));
-  assert(IsEqual(stream_t->left_stream()->Pull(), 0.0));
-  assert(IsEqual(stream_t->right_stream()->Pull(), 0.0));
+  mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_t);
+  assert(IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
+  assert(IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
   
   // Testing bypass
+  stream_t.Reset();
   mic_t.set_bypass(false);
   mic_t.set_bypass(true);
-  mic_t.RecordPlaneWave(1.2, Point(0.0,0.0,-1.0));
-  assert(IsEqual(stream_t->left_stream()->Pull(), 1.2));
-  assert(IsEqual(stream_t->right_stream()->Pull(), 1.2));
+  mic_t.AddPlaneWave(MonoBuffer::Unary(1.2), Point(0.0,0.0,-1.0), stream_t);
+  assert(IsEqual(stream_t.GetLeftReadPointer()[0], 1.2));
+  assert(IsEqual(stream_t.GetRightReadPointer()[0], 1.2));
   
+  stream_t.Reset();
   mic_t.set_bypass(false);
-  mic_t.RecordPlaneWave(impulse, Point(0.0,0.0,-1.0));
-  assert(mcl::IsEqual(stream_t->left_stream()->PullAll(), cmp_imp_back_left));
-  assert(mcl::IsEqual(stream_t->right_stream()->PullAll(), cmp_imp_back_right));
+  mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
+  assert(mcl::IsEqual(stream_t.GetLeftReadPointer(), cmp_imp_back_left));
+  assert(mcl::IsEqual(stream_t.GetRightReadPointer(), cmp_imp_back_right));
   
   
   return true;
