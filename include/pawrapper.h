@@ -23,7 +23,7 @@ namespace sal {
 /** A wrapper for portaudio */
 class SAL_API PaWrapper {
 public:
-  PaWrapper(Decoder* decoder, Time sampling_frequency, UInt frames_per_buffer,
+  PaWrapper(Decoder* decoder, Time sampling_frequency, Int frames_per_buffer,
             Int out_dev_num, std::vector<Int> channel_ids);
   
   PaError StartStream();
@@ -53,7 +53,7 @@ private:
   PaStream* stream_;
   Decoder* decoder_;
   std::vector<Int> channel_ids_;
-  UInt frames_per_buffer_;
+  Int frames_per_buffer_;
 };
   
   

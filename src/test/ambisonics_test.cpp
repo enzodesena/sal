@@ -231,7 +231,7 @@ bool AmbisonicsHorizDec::Test() {
   BFormatBuffer bformat_buffer(order, 1);
   MultichannelBuffer output_buffer(loudspeaker_angles.size(), 1);
   
-  for (UInt theta_index=0; theta_index<num_theta; ++theta_index) {
+  for (Int theta_index=0; theta_index<num_theta; ++theta_index) {
     Angle theta(thetas[theta_index]);
     
     mic_a.AddPlaneWave(MonoBuffer::Unary(1.0),

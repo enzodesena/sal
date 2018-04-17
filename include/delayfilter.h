@@ -65,10 +65,10 @@ public:
   void set_latency(const sal::Int) noexcept;
   
   /** Returns the current latency of the delay filter */
-  sal::UInt latency() const noexcept;
+  sal::Int latency() const noexcept;
   
   /** Returns the maximum latency of the delay filter */
-  sal::UInt max_latency() const noexcept;
+  sal::Int max_latency() const noexcept;
   
   DelayFilter& operator= (const DelayFilter&);
   DelayFilter (const DelayFilter&);

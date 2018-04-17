@@ -53,14 +53,14 @@ private:
    Returns the elevation index for kemar database for elevation in azimuth.
    The index departs from 0.
    */
-  UInt FindElevationIndex(Angle elevation);
+  Int FindElevationIndex(Angle elevation);
   
   
   /** 
    Returns the azimuthal index for kemar database for azimuth in grad.
    The index departs from 0.
    */
-  UInt FindAzimuthIndex(Angle azimuth, UInt elevation_index);
+  Int FindAzimuthIndex(Angle azimuth, Int elevation_index);
   
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;

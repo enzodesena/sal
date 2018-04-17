@@ -39,7 +39,7 @@ public:
               const Int update_length,
               const HeadRefOrientation reference_orientation = standard);
   
-  void set_update_length(UInt update_length) noexcept { update_length_ = update_length; }
+  void set_update_length(Int update_length) noexcept { update_length_ = update_length; }
   
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
   void set_bypass(bool bypass) noexcept;
@@ -70,7 +70,7 @@ private:
   std::map<UInt, BinauralMicInstance> instances_right_;
   
   /** How long it takes to update the underlying HRTF filter */
-  UInt update_length_;
+  Int update_length_;
   
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
   bool bypass_;
@@ -108,7 +108,7 @@ protected:
   
 class BinauralMicInstance {
 private:
-  BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::UInt update_length,
+  BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::Int update_length,
                       const HeadRefOrientation reference_orientation = standard) :
   previous_point_(mcl::Point(NAN, NAN, NAN)),
   base_mic_(base_mic),
@@ -135,7 +135,7 @@ private:
   BinauralMic* base_mic_;
   mcl::FirFilter filter_;
   Ear ear_;
-  sal::UInt update_length_;
+  sal::Int update_length_;
   HeadRefOrientation reference_orientation_;
   
   friend class BinauralMic;

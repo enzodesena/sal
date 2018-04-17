@@ -50,7 +50,7 @@ int main(int argc, char * const argv[]) {
                                        pulse_amplitude, trailing_length);
   
   std::vector<MonoStream*> streams(max_num_channels);
-  for (UInt i=0; i<max_num_channels; ++i) {
+  for (Int i=0; i<max_num_channels; ++i) {
     MonoStream* stream = new MonoStream;
     streams[i] = stream;
   }
@@ -62,9 +62,9 @@ int main(int argc, char * const argv[]) {
   
   pa.StartStream();
   
-  for (UInt i=0; i<max_num_channels; ++i) {
+  for (Int i=0; i<max_num_channels; ++i) {
     Signal signal;
-    for (UInt j=1; j<=i+1; ++j) { signal = mcl::Concatenate(signal, sine_wave); }
+    for (Int j=1; j<=i+1; ++j) { signal = mcl::Concatenate(signal, sine_wave); }
     
     signal = mcl::Concatenate(signal, mcl::Zeros<mcl::Real>(sine_wave.size()));
     signal = mcl::Concatenate(signal, long_sine_wave);

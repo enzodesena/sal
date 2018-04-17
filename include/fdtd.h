@@ -38,28 +38,28 @@ private:
   std::vector<sal::Sample> rir_;
   
   static
-  sal::Signal RunFdtd(sal::UInt Nx, sal::UInt Ny, sal::UInt Nz,
-                      sal::UInt Nt,
+  sal::Signal RunFdtd(sal::Int Nx, sal::Int Ny, sal::Int Nz,
+                      sal::Int Nt,
                       std::vector<std::vector<std::vector<sal::Int> > > G,
                       sal::Sample xi,
                       const Sample* signal,
                       sal::Sample lmb,
-                      sal::UInt position_x,
-                      sal::UInt position_y,
-                      sal::UInt position_z,
-                      sal::UInt position_m_x,
-                      sal::UInt position_m_y,
-                      sal::UInt position_m_z);
+                      sal::Int position_x,
+                      sal::Int position_y,
+                      sal::Int position_z,
+                      sal::Int position_m_x,
+                      sal::Int position_m_y,
+                      sal::Int position_m_z);
   
   template<class T>
   static
   void
   Initialise3DArray(std::vector<std::vector<std::vector<T> > >& array,
-                    sal::UInt size_x, sal::UInt size_y, sal::UInt size_z) {
+                    sal::Int size_x, sal::Int size_y, sal::Int size_z) {
     array.resize(size_x);
-    for (sal::UInt i = 0; i < size_x; ++i) {
+    for (sal::Int i = 0; i < size_x; ++i) {
       array[i].resize(size_y);
-      for (sal::UInt j = 0; j < size_y; ++j) {
+      for (sal::Int j = 0; j < size_y; ++j) {
         array[i][j].resize(size_z);
       }
     }
@@ -80,7 +80,7 @@ public:
   
   static
   std::vector<std::vector<std::vector<sal::Int> > >
-  CreateGeometry(sal::UInt Nx, sal::UInt Ny, sal::UInt Nz);
+  CreateGeometry(sal::Int Nx, sal::Int Ny, sal::Int Nz);
   
   static bool Test();
   static sal::Time SimulationTime();

@@ -37,7 +37,7 @@ private:
   
   
   std::vector<mcl::Point> points_; // Stores points on the bounduary
-  sal::UInt num_elements_;
+  sal::Int num_elements_;
   std::vector<mcl::Point> normal_vectors_;
   std::vector<std::vector<sal::Length> > distances_;
   std::vector<std::vector<sal::Sample> > weights_current_;

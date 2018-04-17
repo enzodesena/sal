@@ -132,7 +132,7 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
   return boundary_filters;
 }
 
-mcl::UInt CuboidRoom::num_boundary_points() noexcept {
+mcl::Int CuboidRoom::num_boundary_points() noexcept {
   switch (boundary_set_type_) {
     case first_order_only:
       return 6;
@@ -231,7 +231,7 @@ Time CuboidRoom::SabineRt60() {
   Length volume = dimensions_.value().x()*dimensions_.value().y()*dimensions_.value().z();
   Length weighted_area = 0.0;
   
-  for (UInt i=0; i<6; ++i) {
+  for (Int i=0; i<6; ++i) {
     // Assert that all of them are simple gain filters
     // TODO: Implement for frequency dependent ones
     ASSERT(wall_filters()[i].B().size() == 1);

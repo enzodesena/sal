@@ -48,15 +48,15 @@ std::vector<std::vector<Signal> >
                  const Int num_samples) {
   std::vector<std::vector<Signal> > hrtf_database;
           
-  for (UInt i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+  for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
     hrtf_database.push_back(std::vector<Signal>(num_measurements_[i]));
     
     Angle resolution = 360.0 / num_measurements_[i];
     Angle elevation = elevations_[i];
-    UInt num_measurement = (UInt) floor(((Angle) num_measurements_[i])/2.0)+1;
+    Int num_measurement = (UInt) floor(((Angle) num_measurements_[i])/2.0)+1;
     
-    for (UInt j=0; j<num_measurement; ++j) {
+    for (Int j=0; j<num_measurement; ++j) {
       Angle angle = (Int) round(j * resolution);
       
       char file_name[1000];
@@ -98,8 +98,8 @@ std::vector<std::vector<Signal> >
       }
       
       for (Int k=0; k<size; k+=2) {
-        UInt ipsilateral_index = j;
-        UInt contralateral_index = (UInt)
+        Int ipsilateral_index = j;
+        Int contralateral_index = (UInt)
                 ((((Int) num_measurements_[i]) -
                   ((Int) j)) % (Int) num_measurements_[i]);
         
@@ -132,7 +132,7 @@ std::vector<std::vector<Signal> >
 
 
   
-UInt KemarMic::FindElevationIndex(Angle elevation) {
+Int KemarMic::FindElevationIndex(Angle elevation) {
   Int elevation_index = (Int) round(elevation/10.0) + 4;
   if (elevation_index < 0) {
     return 0;
@@ -143,13 +143,13 @@ UInt KemarMic::FindElevationIndex(Angle elevation) {
   }
 }
 
-UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
+Int KemarMic::FindAzimuthIndex(Angle azimuth, Int elevation_index) {
   const Int num_measurements[] =
           {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   
   Angle angular_resolution = 360.0 /
           ((Angle) num_measurements[elevation_index]);
-  UInt azimuth_index = (UInt) round(azimuth/angular_resolution);
+  Int azimuth_index = (UInt) round(azimuth/angular_resolution);
   
   if (azimuth_index == num_measurements[elevation_index]) { azimuth_index = 0; }
   
@@ -186,8 +186,8 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
   ASSERT((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
   ASSERT((azimuth >= (0.0-VERY_SMALL)) & (azimuth <= (360.0+VERY_SMALL)));
   
-  UInt elevation_index = FindElevationIndex(elevation);
-  UInt azimuth_index = FindAzimuthIndex(azimuth, elevation_index);
+  Int elevation_index = FindElevationIndex(elevation);
+  Int azimuth_index = FindAzimuthIndex(azimuth, elevation_index);
   
   if (ear == left_ear) {
     return hrtf_database_left_[elevation_index][azimuth_index];

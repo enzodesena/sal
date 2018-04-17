@@ -135,7 +135,7 @@ private:
     
     const Int N = coefficients_.size();
     Sample directivity(coefficients_[0]);
-    for (UInt i=1; i<N; ++i) { directivity += coefficients_[i]*pow(cos(phi),i); }
+    for (Int i=1; i<N; ++i) { directivity += coefficients_[i]*pow(cos(phi),i); }
     return directivity;
   }
   

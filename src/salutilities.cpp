@@ -15,7 +15,7 @@ namespace sal {
 std::vector<Angle> UniformAngles(const Int num_elements,
                                  const Angle first_element_heading) {
   std::vector<Angle> angles(num_elements);
-  for (UInt i=0; i<num_elements; ++i) {
+  for (Int i=0; i<num_elements; ++i) {
     angles[i] = first_element_heading +
     2.0*PI/((Angle) num_elements)*((Angle) i);
   }
@@ -25,7 +25,7 @@ std::vector<Angle> UniformAngles(const Int num_elements,
 bool IsEqual(const Sample* input_data_a,
              const Sample* input_data_b,
              const Int num_samples) {
-  for (UInt i=0; i<num_samples; ++i) {
+  for (Int i=0; i<num_samples; ++i) {
     if (! mcl::IsEqual(input_data_a[i], input_data_b[i])) { return false; }
   }
   return true;

@@ -43,8 +43,8 @@ sal::Time RirAnalysis::Rs60FromEdc(std::vector<sal::Sample> edc) {
   
 sal::Time RirAnalysis::RsFromEdc(std::vector<sal::Sample> edc,
                                  sal::Sample decay_value) {
-  const sal::UInt N = edc.size();
-  for (sal::UInt i=0; i<N; ++i) {
+  const sal::Int N = edc.size();
+  for (sal::Int i=0; i<N; ++i) {
     if (edc[i] < decay_value) {
       return i;
     }

@@ -36,7 +36,7 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
       // Zero-th component
       bformat_buffer.AddSamples(0, 0, 0, num_samples, input_data);
       
-      for (UInt i=1; i<=order_; ++i) {
+      for (Int i=1; i<=order_; ++i) {
         // TODO: add 3D components
         Sample temp_data_sin[num_samples];
         mcl::Multiply(input_data, num_samples, sqrt_2*sin(((Angle) i)*phi), temp_data_sin);
@@ -58,8 +58,8 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
       // Zero-th component
       stream_.Add(0, 0, 1.0*sample);
       
-      for (UInt degree_n=1; degree_n<=order_; ++degree_n) {
-        for (UInt order_m=0; order_m<=degree_n; ++order_m) {
+      for (Int degree_n=1; degree_n<=order_; ++degree_n) {
+        for (Int order_m=0; order_m<=degree_n; ++order_m) {
           mcl::Complex spherical_harmonic =
               mcl::Pow(-1.0, (mcl::Real) order_m) *
               (order_m==0 ? 1.0 : sqrt_2) *
@@ -86,12 +86,12 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
   }
 }
 
-std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(UInt order,
+std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(Int order,
                                                          Angle theta) {
   std::vector<mcl::Real> output;
   output.reserve(2*order+1);
   output.push_back(1.0);
-  for (UInt i=1; i<=order; ++i) {
+  for (Int i=1; i<=order; ++i) {
     output.push_back(sqrt(2.0)*cos(((Angle) i)*theta));
     output.push_back(sqrt(2.0)*sin(((Angle) i)*theta));
   }
@@ -127,7 +127,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
     nfc_filters_.push_back(NFCFilter(0, loudspeakers_distance_,
                                      sampling_frequency_,
                                      sound_speed));
-    for (UInt i=1; i<=order; ++i) {
+    for (Int i=1; i<=order; ++i) {
       // Instanciating two filters because order higher than two have
       // both degrees +1 and -1
       nfc_filters_.push_back(NFCFilter(i, loudspeakers_distance_,
@@ -157,7 +157,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
 }
   
   
-mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(UInt order,
+mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(Int order,
                 const std::vector<Angle>& loudspeaker_angles) {
   using mcl::Matrix;
   using mcl::Multiply;
@@ -165,7 +165,7 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(UInt order,
   
   Matrix<Sample> temp(2*order+1, num_loudspeakers);
   
-  for (UInt i=0; i<num_loudspeakers; ++i) {
+  for (Int i=0; i<num_loudspeakers; ++i) {
     temp.set_column(i, AmbisonicsMic::HorizontalEncoding(order,
                                                          loudspeaker_angles[i]));
   }
@@ -177,13 +177,13 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(UInt order,
   return Multiply(Transpose(temp), (Sample) 1.0/((Sample) 2*order+1));
 }
   
-mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(UInt order,
+mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(Int order,
                  const std::vector<Angle>& loudspeaker_angles) {
   // TODO: Implement for non-regular loudspeaker arrays.
   mcl::Matrix<Sample> decoding_matrix(2*order+1, 2*order+1);
   decoding_matrix.set_element(0, 0, MaxEnergyDecWeight(0, order));
-  UInt k=1;
-  for (UInt i=1; i<=order; ++i) {
+  Int k=1;
+  for (Int i=1; i<=order; ++i) {
     decoding_matrix.set_element(k, k, MaxEnergyDecWeight(i, order));
     k++;
     decoding_matrix.set_element(k, k, MaxEnergyDecWeight(i, order));
@@ -201,7 +201,7 @@ AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
   std::vector<Sample> output;
   output.reserve(2*order+1);
   output.push_back(buffer.GetSample(0, 0, sample_id));
-  for (UInt i=1; i<=order; ++i) {
+  for (Int i=1; i<=order; ++i) {
     output.push_back(buffer.GetSample(i, +1, sample_id));
     output.push_back(buffer.GetSample(i, -1, sample_id));
   }
@@ -236,7 +236,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
     
     // Near-field correcting
     if (near_field_correction_) {
-      for (UInt i=0; i<(2*order_+1); ++i) {
+      for (Int i=0; i<(2*order_+1); ++i) {
         bformat_frame[i] = nfc_filters_[i].Filter(bformat_frame[i]);
       }
     }
@@ -264,14 +264,14 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
       //  out_low = filter(B_LF, A_LF, G_format_low, [], 2);
       //  out_high = filter(B_HF, A_HF, G_format_high, [], 2);
       //  out_nfc = out_low + out_high;
-      for (UInt i=0; i<num_loudspeakers_; ++i) {
+      for (Int i=0; i<num_loudspeakers_; ++i) {
         output[i] = crossover_filters_low_[i].Filter(output[i]) +
                     crossover_filters_high_[i].Filter(output_high[i]);
       }
     }
     
     // Push into each loudspeaker stream
-    for (UInt i=0; i<num_loudspeakers_; ++i) {
+    for (Int i=0; i<num_loudspeakers_; ++i) {
       output_multi_buffer.SetSample(i, sample_id, output[i]);
     }
   }
@@ -396,7 +396,7 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
   const Int num_samples = X_Mq.size();
   std::vector<Complex> temp_1(num_samples); // (1+X_mq/a)./(1-X_mq/a))
   std::vector<Complex> temp_2(num_samples); // 1-X_mq./a
-  for (UInt i=0; i<num_samples; ++i) {
+  for (Int i=0; i<num_samples; ++i) {
     temp_1[i] = (Complex(1.0, 0.0)+X_Mq[i]/Complex(a, 0.0))/
                 (Complex(1.0,0.0)-X_Mq[i]/Complex(a, 0.0));
     temp_2[i] = (Complex(1.0,0.0)-X_Mq[i]/Complex(a, 0.0));

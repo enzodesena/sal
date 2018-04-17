@@ -40,14 +40,14 @@ Fdtd::Fdtd(Room* const room,
   
 
   
-sal::Signal Fdtd::RunFdtd(UInt Nx, UInt Ny, UInt Nz,
-                          UInt Nt,
+sal::Signal Fdtd::RunFdtd(Int Nx, Int Ny, Int Nz,
+                          Int Nt,
                           std::vector<std::vector<std::vector<sal::Int> > > G,
                           Sample xi,
                           const Sample* signal,
                           Sample lmb,
-                          UInt pos_s_x, UInt pos_s_y, UInt pos_s_z,
-                          UInt pos_m_x, UInt pos_m_y, UInt pos_m_z) {
+                          Int pos_s_x, Int pos_s_y, Int pos_s_z,
+                          Int pos_m_x, Int pos_m_y, Int pos_m_z) {
   
     
   std::vector<sal::Sample> p_out(Nt, 0);
@@ -61,11 +61,11 @@ sal::Signal Fdtd::RunFdtd(UInt Nx, UInt Ny, UInt Nz,
   
   double lmb_2 = pow(lmb,2.0);
   
-  for (UInt n=2; n<=Nt; n++) {
+  for (Int n=2; n<=Nt; n++) {
     //std::cout<<"Running FDTD sample n."<<n<<std::endl;
-    for (UInt l=2; l<=(Nx+1); l++) {
-      for (UInt m=2; m<=(Ny+1); m++) {
-        for (UInt i=2; i<=(Nz+1); i++) {
+    for (Int l=2; l<=(Nx+1); l++) {
+      for (Int m=2; m<=(Ny+1); m++) {
+        for (Int i=2; i<=(Nz+1); i++) {
           Int K = G[l-1][m-1][i-1];
           
           if (K != 0) {
@@ -103,17 +103,17 @@ void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
   
   double spatial_frequency = SOUND_SPEED/(curant_number*sampling_frequency_);
   
-  UInt Nx = (UInt) round(((CuboidRoom*)room_)->x()/spatial_frequency);
-  UInt Ny = (UInt) round(((CuboidRoom*)room_)->y()/spatial_frequency);
-  UInt Nz = (UInt) round(((CuboidRoom*)room_)->z()/spatial_frequency);
+  Int Nx = (UInt) round(((CuboidRoom*)room_)->x()/spatial_frequency);
+  Int Ny = (UInt) round(((CuboidRoom*)room_)->y()/spatial_frequency);
+  Int Nz = (UInt) round(((CuboidRoom*)room_)->z()/spatial_frequency);
   
-  UInt pos_s_x = (UInt) round(source_->position().x()/spatial_frequency)+1;
-  UInt pos_s_y = (UInt) round(source_->position().y()/spatial_frequency)+1;
-  UInt pos_s_z = (UInt) round(source_->position().z()/spatial_frequency)+1;
+  Int pos_s_x = (UInt) round(source_->position().x()/spatial_frequency)+1;
+  Int pos_s_y = (UInt) round(source_->position().y()/spatial_frequency)+1;
+  Int pos_s_z = (UInt) round(source_->position().z()/spatial_frequency)+1;
   
-  UInt pos_m_x = (UInt) round(microphone_->position().x()/spatial_frequency)+1;
-  UInt pos_m_y = (UInt) round(microphone_->position().y()/spatial_frequency)+1;
-  UInt pos_m_z = (UInt) round(microphone_->position().z()/spatial_frequency)+1;
+  Int pos_m_x = (UInt) round(microphone_->position().x()/spatial_frequency)+1;
+  Int pos_m_y = (UInt) round(microphone_->position().y()/spatial_frequency)+1;
+  Int pos_m_z = (UInt) round(microphone_->position().z()/spatial_frequency)+1;
   
   rir_ = Fdtd::RunFdtd(Nx, Ny, Nz,
                        input_buffer.num_samples(),
@@ -127,7 +127,7 @@ void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
   
   
 std::vector<std::vector<std::vector<sal::Int> > >
-Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
+Fdtd::CreateGeometry(Int Nx, Int Ny, Int Nz) {
   // K = 6 air, K = 5 face, K = 4 edge, K = 3 corner
   std::vector<std::vector<std::vector<sal::Int> > > G;
   
@@ -140,9 +140,9 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   
   
   // G = 6.*ones(Nx,Ny,Nz); %K = 6 air
-  for (UInt i = 0; i < Nx; ++i) {
-    for (UInt j = 0; j < Ny; ++j) {
-      for (UInt k = 0; k < Nz; ++k) {
+  for (Int i = 0; i < Nx; ++i) {
+    for (Int j = 0; j < Ny; ++j) {
+      for (Int k = 0; k < Nz; ++k) {
         G[i][j][k] = 6;
       }
     }
@@ -152,8 +152,8 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   //    %K = 5
   //    G(2,:,:) = 5;
   //    G(Nx-1,:,:) = 5;
-  for (UInt j = 0; j < Ny; ++j) {
-    for (UInt k = 0; k < Nz; ++k) {
+  for (Int j = 0; j < Ny; ++j) {
+    for (Int k = 0; k < Nz; ++k) {
       G[1][j][k] = 5;
       G[Nx-2][j][k] = 5;
     }
@@ -162,8 +162,8 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   
   //    G(:,2,:) = 5;
   //    G(:,Ny-1,:) = 5;
-  for (UInt i = 0; i < Nx; ++i) {
-    for (UInt k = 0; k < Nz; ++k) {
+  for (Int i = 0; i < Nx; ++i) {
+    for (Int k = 0; k < Nz; ++k) {
       G[i][1][k] = 5;
       G[i][Ny-2][k] = 5;
     }
@@ -172,8 +172,8 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   
   //    G(:,:,2) = 5;
   //    G(:,:,Nz-1) = 5;
-  for (UInt i = 0; i < Nx; ++i) {
-    for (UInt j = 0; j < Ny; ++j) {
+  for (Int i = 0; i < Nx; ++i) {
+    for (Int j = 0; j < Ny; ++j) {
       G[i][j][1] = 5;
       G[i][j][Nz-2] = 5;
     }
@@ -186,7 +186,7 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   //    G(2,Ny-1,:) = 4;
   //    G(Nx-1,Ny-1,:) = 4;
   //    G(Nx-1,2,:) = 4;
-  for (UInt k = 0; k < Nz; ++k) {
+  for (Int k = 0; k < Nz; ++k) {
     G[1][1][k] = 4;
     G[1][Ny-2][k] = 4;
     G[Nx-2][Ny-2][k] = 4;
@@ -198,7 +198,7 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   //    G(:,2,Nz-1) = 4;
   //    G(:,Ny-1,Nz-1) = 4;
   //    G(:,Ny-1,2) = 4;
-  for (UInt i = 0; i < Nx; ++i) {
+  for (Int i = 0; i < Nx; ++i) {
     G[i][1][1] = 4;
     G[i][1][Nz-2] = 4;
     G[i][Ny-2][Nz-2] = 4;
@@ -209,7 +209,7 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   //    G(2,:,Nz-1) = 4;
   //    G(Nx-1,:,Nz-1) = 4;
   //    G(Nx-1,:,2) = 4;
-  for (UInt j = 0; j < Ny; ++j) {
+  for (Int j = 0; j < Ny; ++j) {
     G[1][j][1] = 4;
     G[1][j][Nz-2] = 4;
     G[Nx-2][j][1] = 4;
@@ -242,8 +242,8 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   
   //    G(1,:,:) = 0;
   //    G(Nx,:,:) = 0;
-  for (UInt j = 0; j < Ny; ++j) {
-    for (UInt k = 0; k < Nz; ++k) {
+  for (Int j = 0; j < Ny; ++j) {
+    for (Int k = 0; k < Nz; ++k) {
       G[0][j][k] = 0;
       G[Nx-1][j][k] = 0;
     }
@@ -252,8 +252,8 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   //
   //    G(:,1,:) = 0;
   //    G(:,Ny,:) = 0;
-  for (UInt i = 0; i < Nx; ++i) {
-    for (UInt k = 0; k < Nz; ++k) {
+  for (Int i = 0; i < Nx; ++i) {
+    for (Int k = 0; k < Nz; ++k) {
       G[i][0][k] = 0;
       G[i][Ny-1][k] = 0;
     }
@@ -263,17 +263,17 @@ Fdtd::CreateGeometry(UInt Nx, UInt Ny, UInt Nz) {
   //
   //    G(:,:,1) = 0;
   //    G(:,:,Nz) = 0;
-  for (UInt i = 0; i < Nx; ++i) {
-    for (UInt j = 0; j < Ny; ++j) {
+  for (Int i = 0; i < Nx; ++i) {
+    for (Int j = 0; j < Ny; ++j) {
       G[i][j][0] = 0;
       G[i][j][Nz-1] = 0;
     }
   }
   
   // Print out
-  //    for (UInt k=0; k<Nz; k++) {
-  //      for (UInt i = 0; i < Nx; ++i) {
-  //        for (UInt j = 0; j < Ny; ++j) {
+  //    for (Int k=0; k<Nz; k++) {
+  //      for (Int i = 0; i < Nx; ++i) {
+  //        for (Int j = 0; j < Ny; ++j) {
   //          std::cout<<G[i][j][k]<<" ";
   //        }
   //        std::cout<<std::endl;

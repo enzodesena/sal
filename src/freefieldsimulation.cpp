@@ -74,11 +74,11 @@ void FreeFieldSim::Init(std::vector<Microphone*> microphones,
   propagation_lines_ = std::vector<std::vector<PropagationLine*> >(num_sources);
   
   // Define the propagation lines
-  for (UInt source_i=0; source_i<num_sources; ++source_i) {
+  for (Int source_i=0; source_i<num_sources; ++source_i) {
     Source* source = sources_[source_i];
     propagation_lines_[source_i] = std::vector<PropagationLine*>(num_microphones);
     
-    for (UInt mic_i=0; mic_i<num_microphones; ++mic_i) {
+    for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
       Microphone* microphone = microphones_[mic_i];
       
       Length distance = Distance(source->position(), microphone->position());
@@ -93,17 +93,17 @@ void FreeFieldSim::Init(std::vector<Microphone*> microphones,
   
 void FreeFieldSim::AllocateTempBuffers(const Int num_samples) {
   temp_buffers_ = std::vector<std::vector<MonoBuffer*> >(sources_.size());
-  for (UInt source_i=0; source_i<sources_.size(); ++source_i) {
+  for (Int source_i=0; source_i<sources_.size(); ++source_i) {
     temp_buffers_[source_i] = std::vector<MonoBuffer*>(microphones_.size());
-    for (UInt mic_i=0; mic_i<microphones_.size(); ++mic_i) {
+    for (Int mic_i=0; mic_i<microphones_.size(); ++mic_i) {
       temp_buffers_[source_i][mic_i] = new MonoBuffer(num_samples);
     }
   }
 }
 
 void FreeFieldSim::DeallocateTempBuffers() {
-  for (UInt source_i=0; source_i<sources_.size(); ++source_i) {
-  for (UInt mic_i=0; mic_i<microphones_.size(); ++mic_i) {
+  for (Int source_i=0; source_i<sources_.size(); ++source_i) {
+  for (Int mic_i=0; mic_i<microphones_.size(); ++mic_i) {
       delete temp_buffers_[source_i][mic_i];
     }
   }
@@ -111,8 +111,8 @@ void FreeFieldSim::DeallocateTempBuffers() {
 }
 
 FreeFieldSim::~FreeFieldSim() {
-  for (UInt mic_i=0; mic_i<microphones_.size(); ++mic_i) {
-    for (UInt source_i=0; source_i<sources_.size(); ++source_i) {
+  for (Int mic_i=0; mic_i<microphones_.size(); ++mic_i) {
+    for (Int source_i=0; source_i<sources_.size(); ++source_i) {
       delete propagation_lines_[source_i][mic_i];
     }
   }
@@ -131,8 +131,8 @@ void FreeFieldSim::Run(std::vector<MonoBuffer*> input_buffers,
   }
   
   for (Int sample_id=0; sample_id<num_output_samples; ++sample_id) {
-    for (UInt source_i=0; source_i<sources_.size(); ++source_i) {
-      for (UInt mic_i=0; mic_i<microphones_.size(); ++mic_i) {
+    for (Int source_i=0; source_i<sources_.size(); ++source_i) {
+      for (Int mic_i=0; mic_i<microphones_.size(); ++mic_i) {
         Sample next_input_sample =
             (sample_id < input_buffers[source_i]->num_samples()) ?
             input_buffers[source_i]->GetSample(sample_id) : 0.0;
@@ -147,8 +147,8 @@ void FreeFieldSim::Run(std::vector<MonoBuffer*> input_buffers,
   }
   
   // Write to microphones
-  for (UInt source_i=0; source_i<sources_.size(); ++source_i) {
-    for (UInt mic_i=0; mic_i<microphones_.size(); ++mic_i) {
+  for (Int source_i=0; source_i<sources_.size(); ++source_i) {
+    for (Int mic_i=0; mic_i<microphones_.size(); ++mic_i) {
       microphones_[mic_i]->AddPlaneWave(temp_buffers_[source_i][mic_i]->GetReadPointer(),
                                         num_output_samples,
                                         sources_[source_i]->position(), source_i,
@@ -159,8 +159,8 @@ void FreeFieldSim::Run(std::vector<MonoBuffer*> input_buffers,
 
   
 void FreeFieldSim::Tick() {
-  for (UInt mic_i=0; mic_i<microphones_.size(); ++mic_i) {
-    for (UInt source_i=0; source_i<sources_.size(); ++source_i) {
+  for (Int mic_i=0; mic_i<microphones_.size(); ++mic_i) {
+    for (Int source_i=0; source_i<sources_.size(); ++source_i) {
       propagation_lines_[source_i][mic_i]->Tick();
     }
   }
@@ -173,8 +173,8 @@ FreeFieldSim::AllDistances(const std::vector<Microphone*>& microphones,
   const Int num_sources = sources.size();
   
   std::vector<Length> distances;
-  for (UInt mic_index=0; mic_index<num_microphones; ++mic_index) {
-    for (UInt source_index=0; source_index<num_sources; ++source_index) {
+  for (Int mic_index=0; mic_index<num_microphones; ++mic_index) {
+    for (Int source_index=0; source_index<num_sources; ++source_index) {
       distances.push_back(Distance(microphones[mic_index]->position(),
                                           sources[source_index]->position()));
     }

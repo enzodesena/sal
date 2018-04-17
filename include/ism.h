@@ -34,7 +34,7 @@ private:
   sal::Source* const source_;
   sal::Microphone* const microphone_;
   
-  sal::UInt rir_length_;
+  sal::Int rir_length_;
   IsmInterpolation interpolation_;
   sal::Time sampling_frequency_;
   sal::Length random_distance_;
@@ -59,7 +59,7 @@ public:
       sal::Source* const source,
       sal::Microphone* const microphone,
       IsmInterpolation interpolation,
-      sal::UInt rir_length,
+      sal::Int rir_length,
       const sal::Time sampling_frequency);
   
   void Run(const Sample* input_data, const Int num_samples,

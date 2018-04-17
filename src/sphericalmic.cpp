@@ -125,7 +125,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
                                                  Angle theta,
                                                  Time sound_speed,
                                                  mcl::Real threshold,
-                                                 UInt num_samples,
+                                                 Int num_samples,
                                                  Time sampling_frequency,
                                                  bool minimum_phase) {
   // TODO: implement for the odd case.
@@ -142,7 +142,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   using mcl::CircShift;
   using mcl::IsReal;
   
-  UInt N = num_samples;
+  Int N = num_samples;
   
   theta = mcl::Mod(theta,2.0*PI);
   
@@ -154,7 +154,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   
   std::vector<Complex> H = Zeros<Complex>(N);
   
-  for (UInt i=0; i<N/2-1; ++i) {
+  for (Int i=0; i<N/2-1; ++i) {
     H[i+1] = SphericalHeadMic::Sphere(sphere_radius, source_distance, theta, 
                                       frequencies[i], sound_speed, threshold);
   }
@@ -168,7 +168,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   H[N/2] = Complex(RealPart(H[1]), 0.0);
   
   // H(N/2+1:end) = flipud(conj(H(1:N/2-1)));
-  for (UInt i=(N/2+1); i<N; ++i) {
+  for (Int i=(N/2+1); i<N; ++i) {
     H[i] = Conj(H[N - i]);
   }
   
@@ -199,7 +199,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
     // Subract the distance between sphere and source
     distance = distance - (source_distance-sphere_radius);
     ASSERT(distance > 0.0);
-    UInt num_delay_tap = (UInt) round(distance/sound_speed*sampling_frequency);
+    Int num_delay_tap = (UInt) round(distance/sound_speed*sampling_frequency);
     h = mcl::Concatenate(Zeros<Sample>(num_delay_tap),
                          mcl::Subset(h, 0, num_samples-num_delay_tap-1));
     ASSERT(h.size() == num_samples);

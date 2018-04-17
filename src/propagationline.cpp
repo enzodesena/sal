@@ -222,7 +222,7 @@ std::vector<sal::Sample>
                                         14.384,18.33,23.357,29.764,37.927,
                                         48.329,61.585,78.476,100};
   
-  UInt filter_index =
+  Int filter_index =
   mcl::MinIndex(mcl::Abs(mcl::Subtract(distances,
                                        std::vector<sal::Length>(distances.size(),
                                                                 distance))));

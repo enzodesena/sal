@@ -24,7 +24,7 @@ typedef mcl::Real Time;
 typedef mcl::Real Speed;
 typedef mcl::Real Length;
 typedef mcl::Real Angle;
-typedef mcl::UInt UInt;
+typedef mcl::Int UInt;
 typedef mcl::Int Int;
 
   

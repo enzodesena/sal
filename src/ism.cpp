@@ -30,7 +30,7 @@ Ism::Ism(Room* const room,
          Source* const source,
          Microphone* const microphone,
          IsmInterpolation interpolation,
-         UInt rir_length,
+         Int rir_length,
          const Time sampling_frequency) :
         rir_length_(rir_length),
         interpolation_(interpolation),
@@ -83,7 +83,7 @@ void Ism::CalculateRir() {
   Int n2 = (Int) floor(rir_time/(((Length)room_y)*2.0))+1;
   Int n3 = (Int) floor(rir_time/(((Length)room_z)*2.0))+1;
   
-  UInt max_num_images = 8*(2*n1+1)*(2*n2+1)*(2*n3+1);
+  Int max_num_images = 8*(2*n1+1)*(2*n2+1)*(2*n3+1);
   
   images_delay_.reserve(max_num_images);
   images_position_.reserve(max_num_images);
@@ -93,7 +93,7 @@ void Ism::CalculateRir() {
   mcl::RandomGenerator randn_gen;
   std::vector<sal::Length> rand_delays;
   
-  UInt k;
+  Int k;
   bool randomisation = (mcl::IsEqual(random_distance_, 0.0)) ? false : true;
   if (randomisation) {
     sal::Time top_limit = random_distance_;
@@ -149,8 +149,8 @@ void Ism::CalculateRir() {
 void Ism::WriteSample(const sal::Time& delay,
                       const sal::Sample& attenuation) {
   sal::Time delay_norm = delay*sampling_frequency_;
-  UInt id_round = (UInt) round(delay_norm);
-  UInt rir_length = rir_.size();
+  Int id_round = (UInt) round(delay_norm);
+  Int rir_length = rir_.size();
   
   switch (interpolation_) {
     case none: {
@@ -186,7 +186,7 @@ void Ism::WriteSample(const sal::Time& delay,
         rir_.at(n) += attenuation*low_pass;
       }
       
-      sal::UInt nneg_integer_delay = (integer_delay<0) ? 0 : integer_delay;
+      sal::Int nneg_integer_delay = (integer_delay<0) ? 0 : integer_delay;
       images_int_delay_filter_.push_back(sal::DelayFilter(nneg_integer_delay,
                                                       nneg_integer_delay));
       images_frac_delay_filter_.push_back(mcl::FirFilter(filter_coefficients));

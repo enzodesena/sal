@@ -38,7 +38,7 @@ std::vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
   const Int max_num_channels(deviceInfo->maxOutputChannels);
   std::vector<mcl::Int> channel_ids = std::vector<Int>(max_num_channels, -1);
   for (int i=0; i<num_loudspeakers; ++i) {
-    UInt channel_id;
+    Int channel_id;
     std::cout<<"Select channel id for mic n.: "<<i<<" (from 0 to "<<
     (max_num_channels-1)<<"): ";
     std::cin >> channel_id;
@@ -61,7 +61,7 @@ Int PaWrapper::NumOutputChannels(const Int out_dev_id) {
 
 PaWrapper::PaWrapper(Decoder* decoder,
                      Time sampling_frequency,
-                     UInt frames_per_buffer,
+                     Int frames_per_buffer,
                      Int out_dev_num,
                      std::vector<Int> channel_ids) :
           decoder_(decoder), frames_per_buffer_(frames_per_buffer),
@@ -101,7 +101,7 @@ PaError PaWrapper::WriteDecoderToStream() {
 }
 
 PaError PaWrapper::WriteDecoderToStream(const Int tot_num_samples) {
-  UInt i = 0;
+  Int i = 0;
   while (i+frames_per_buffer_ <= tot_num_samples) {
     PaError error = WriteStream(frames_per_buffer_);
     if (error) { return error; }
@@ -112,12 +112,12 @@ PaError PaWrapper::WriteDecoderToStream(const Int tot_num_samples) {
 }
   
 PaError PaWrapper::WriteStream(const Int num_samples) {
-  sal::UInt max_num_channels = channel_ids_.size();
+  sal::Int max_num_channels = channel_ids_.size();
   const Int block_length = num_samples*max_num_channels;
   float sample_block[block_length];
    
-  for (UInt i=0; i<num_samples; ++i) {
-    for (UInt j=0; j<max_num_channels; ++j) {
+  for (Int i=0; i<num_samples; ++i) {
+    for (Int j=0; j<max_num_channels; ++j) {
       float sample;
       if (channel_ids_[j] == -1 ||
           decoder_->stream(channel_ids_[j])->IsEmpty()) {

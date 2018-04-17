@@ -60,10 +60,10 @@ public:
   GetBoundaryFilters(const mcl::Point& source_point,
                      const mcl::Point& mic_point) noexcept = 0;
   
-  virtual sal::UInt num_boundary_points() noexcept = 0;
+  virtual sal::Int num_boundary_points() noexcept = 0;
   
   // Returns the shape's number of faces.
-  virtual sal::UInt num_faces() const noexcept = 0;
+  virtual sal::Int num_faces() const noexcept = 0;
   
   // Returns the maximum distance between two points inside the shape.
   virtual sal::Length max_distance() const noexcept = 0;

@@ -42,10 +42,10 @@ public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
                   const T& mic_prototype,
-                  const mcl::UInt num_microphones) :
+                  const mcl::Int num_microphones) :
           Microphone(position, orientation) {
 
-    for (UInt i=0; i<num_microphones; ++i) {
+    for (Int i=0; i<num_microphones; ++i) {
       T* microphone = new T(mic_prototype);
       microphone->set_position(position);
       microphones_.push_back(microphone);
@@ -60,7 +60,7 @@ public:
     mcl::Point position_delta(position.x()-position_.value().x(),
                               position.y()-position_.value().y(),
                               position.z()-position_.value().z());
-    for (UInt i=0; i<microphones_.size(); ++i) {
+    for (Int i=0; i<microphones_.size(); ++i) {
       mcl::Point old_mic_position = microphones_[i]->position();
       mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
                                   old_mic_position.y()+position_delta.y(),
@@ -71,7 +71,7 @@ public:
   }
 
   virtual void set_orientation(const mcl::Quaternion& orientation) {
-    for (UInt i=0; i<microphones_.size(); ++i) {
+    for (Int i=0; i<microphones_.size(); ++i) {
       microphones_[i]->set_orientation(orientation);
     }
     orientation_ = orientation;
@@ -87,7 +87,7 @@ public:
     if (num_microphones == 0 || num_microphones == 1) { return true; }
 
     mcl::Point position(microphones_[0]->position());
-    for (UInt i=1; i<num_microphones; ++i) {
+    for (Int i=1; i<num_microphones; ++i) {
       if (! IsEqual(microphones_[i]->position(), position)) {
         return false;
       }
@@ -100,7 +100,7 @@ public:
   static bool Test();
 
   ~MicrophoneArray() {
-    for (UInt i=0; i<microphones_.size();++i) {
+    for (Int i=0; i<microphones_.size();++i) {
       delete microphones_[i];
     }
     microphones_.clear();
@@ -122,8 +122,8 @@ private:
     MultichannelBuffer& multi_buffer =
           dynamic_cast<MultichannelBuffer&>(output_buffer);
     
-    UInt num_microphones(microphones_.size());
-    for (UInt mic_i=0; mic_i<num_microphones; ++mic_i) {
+    Int num_microphones(microphones_.size());
+    for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
       MonoBuffer referencing_buffer(multi_buffer, mic_i);
       // Each microphone will push in his own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
@@ -166,7 +166,7 @@ public:
                                                      angles_);
 
     mcl::AxAng axang = mcl::Quat2AxAng(orientation);
-    for (mcl::UInt i=0; i<angles_.size(); ++i) {
+    for (mcl::Int i=0; i<angles_.size(); ++i) {
       mcl::Quaternion q = mcl::AxAng2Quat(axang.x, axang.y, axang.z,
                                           axang.angle + angles_[i]);
 
@@ -186,7 +186,7 @@ private:
                                               const Length radius,
                                               const std::vector<Angle>& angles) {
     std::vector<mcl::Point> positions(angles.size());
-    for (UInt i=0; i<angles.size(); ++i) {
+    for (Int i=0; i<angles.size(); ++i) {
       positions[i] = mcl::Point(radius*cos(angles[i])+position.x(),
                                 radius*sin(angles[i])+position.y(),
                                 position.z());

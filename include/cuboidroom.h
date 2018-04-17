@@ -64,7 +64,7 @@ public:
   GetBoundaryFilters(const mcl::Point& source_point,
                      const mcl::Point& mic_point) noexcept;
   
-  virtual mcl::UInt num_boundary_points() noexcept;
+  virtual mcl::Int num_boundary_points() noexcept;
   
   mcl::Point ImageSourcePosition(const mcl::Point& source_position,
                                  const mcl::Int mx,
@@ -120,7 +120,7 @@ public:
                              const mcl::Point& source_pos,
                              const mcl::Point& observation_pos);
   
-  virtual sal::UInt num_faces() const noexcept { return 6; }
+  virtual sal::Int num_faces() const noexcept { return 6; }
   
   virtual sal::Length max_distance() const noexcept {
     return dimensions_.value().norm();

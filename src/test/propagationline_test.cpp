@@ -95,7 +95,7 @@ bool PropagationLine::Test() {
   
   prop_line_b.Tick();
   prop_line_b.Write(1.0);
-  for (UInt i=0; i<5; ++i) {
+  for (Int i=0; i<5; ++i) {
     prop_line_b.Tick();
     prop_line_b.Write(0.0);
   }
@@ -104,13 +104,13 @@ bool PropagationLine::Test() {
   
   prop_line_b.set_distance((Length) 2.0 * SOUND_SPEED/FS);
   attenuation = 1.0 / 2.0;
-  for (UInt i=0; i<20; ++i) {
+  for (Int i=0; i<20; ++i) {
     prop_line_b.Tick();
     prop_line_b.Write(0.0);
   }
   prop_line_b.Tick();
   prop_line_b.Write(1.0);
-  for (UInt i=0; i<2; ++i) {
+  for (Int i=0; i<2; ++i) {
     prop_line_b.Tick();
     prop_line_b.Write(0.0);
   }

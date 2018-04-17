@@ -27,7 +27,7 @@ DelayFilter::DelayFilter(Int latency, Int max_latency) noexcept : latency_(-1) {
   
   write_index_ = start_;
   this->set_latency(latency);
-  for (UInt i=0; i<(max_latency+1); ++i) { start_[i] = 0.0; }
+  for (Int i=0; i<(max_latency+1); ++i) { start_[i] = 0.0; }
 }
 
 DelayFilter::DelayFilter(const DelayFilter& copy) {
@@ -40,7 +40,7 @@ DelayFilter::DelayFilter(const DelayFilter& copy) {
   write_index_ = start_+(copy.write_index_-copy.start_);
   read_index_ = start_+(copy.read_index_-copy.start_);
   
-  for (UInt i=0; i<(max_latency_+1); ++i) { start_[i] = copy.start_[i]; }
+  for (Int i=0; i<(max_latency_+1); ++i) { start_[i] = copy.start_[i]; }
 }
 
 DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
@@ -56,7 +56,7 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
     write_index_ = start_+(other.write_index_-other.start_);
     read_index_ = start_+(other.read_index_-other.start_);
     
-    for (UInt i=0; i<(max_latency_+1); ++i) { start_[i] = other.start_[i]; }
+    for (Int i=0; i<(max_latency_+1); ++i) { start_[i] = other.start_[i]; }
   }
   return *this;
 }
@@ -75,9 +75,9 @@ void DelayFilter::set_latency(const Int latency) noexcept {
   ASSERT((read_index_ >= start_) & (read_index_ <= end_));
 }
 
-UInt DelayFilter::latency() const noexcept { return latency_; }
+Int DelayFilter::latency() const noexcept { return latency_; }
 
-UInt DelayFilter::max_latency() const noexcept { return max_latency_; }
+Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
 Sample DelayFilter::Read(const Int& delay_tap) const noexcept {
   ASSERT_WITH_MESSAGE(delay_tap < max_latency_, "Tried to access a delay tap larger than delay filter"
@@ -96,15 +96,15 @@ Sample DelayFilter::FractionalRead(const Time fractional_delay_tap)
                       "Tried to access a delay tap larger than delay filter"
                       "length.");
   
-  UInt x_a = (UInt) floor(fractional_delay_tap);
-  UInt x_b = x_a+1;
+  Int x_a = (UInt) floor(fractional_delay_tap);
+  Int x_b = x_a+1;
   Sample f_x_a = Read(x_a);
   Sample f_x_b = Read(x_b);
   return (f_x_b-f_x_a)/(x_b-x_a)*(fractional_delay_tap-x_a)+f_x_a;
 }
   
 void DelayFilter::Reset() noexcept {
-  for (UInt i=0; i<(max_latency_+1); ++i) { start_[i] = 0.0; }
+  for (Int i=0; i<(max_latency_+1); ++i) { start_[i] = 0.0; }
 }
   
 mcl::Real DelayFilter::Filter(const mcl::Real input) noexcept {

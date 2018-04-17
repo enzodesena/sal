@@ -44,7 +44,7 @@ int main(int argc, char * const argv[]) {
   PropagationLine line(current_distance, sampling_frequency, 1000.0, true);
   line.set_gain(1.0, 0.0);
   
-  UInt index = 0;
+  Int index = 0;
   while (index<ceil(sine_length*sampling_frequency)) {
     Time update_period = (Time) samples_per_buffer / sampling_frequency; // In seconds
     Length space_covered = update_period * speed;
@@ -53,7 +53,7 @@ int main(int argc, char * const argv[]) {
     
     line_doppler.set_gain(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
     
-    for (UInt i=0; i<samples_per_buffer; ++i) {
+    for (Int i=0; i<samples_per_buffer; ++i) {
       if (index>=ceil(sine_length*sampling_frequency)) { continue; }
       
       line_doppler.Tick();

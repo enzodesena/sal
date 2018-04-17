@@ -40,13 +40,13 @@ public:
    upwards.
    */
   AmbisonicsMic(const mcl::Point& position, mcl::Quaternion orientation,
-                UInt order, AmbisonicsConvention convention = sqrt2) :
+                Int order, AmbisonicsConvention convention = sqrt2) :
           Microphone(position, orientation),
           order_(order), convention_(convention) {}
   
   virtual bool IsCoincident() { return true; }
   
-  static std::vector<mcl::Real> HorizontalEncoding(UInt order, Angle theta);
+  static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
   
   static bool Test();
 private:
@@ -103,21 +103,21 @@ public:
 private:
   
   static mcl::Matrix<Sample>
-  ModeMatchingDec(UInt order, const std::vector<Angle>& loudspeaker_angles);
+  ModeMatchingDec(Int order, const std::vector<Angle>& loudspeaker_angles);
   
   /**
    amb_re_weights_matrix produces the diagonal matrix of weights for energy
    vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
    */
   static mcl::Matrix<Sample>
-  MaxEnergyDec(UInt order, const std::vector<Angle>& loudspeaker_angles);
+  MaxEnergyDec(Int order, const std::vector<Angle>& loudspeaker_angles);
   
   /**
    Produces the weights for maximum energy vector for a regular polygon.
    N is ambisonics order. The function outputs g(0) = 1 which means that
    normalisation is such that pressure is preserved.
    */
-  static Sample MaxEnergyDecWeight(UInt index, UInt order) {
+  static Sample MaxEnergyDecWeight(Int index, Int order) {
     return (Sample) cos(((Angle) index)*PI/(2.0*((Angle) order)+2.0));
   }
   
@@ -151,12 +151,12 @@ private:
                                             const Time sampling_frequency);
   
   std::vector<Angle> loudspeaker_angles_;
-  UInt num_loudspeakers_;
+  Int num_loudspeakers_;
   bool near_field_correction_;
   Length loudspeakers_distance_;
   bool energy_decoding_;
   // Ambisonics order
-  UInt order_;
+  Int order_;
   
   // One filter per component
   std::vector<mcl::IirFilter> nfc_filters_;

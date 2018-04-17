@@ -90,8 +90,8 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   // TODO: add support for more than 2 channels (wave_format_extensible)
   ASSERT(signals.size() <= 2);
   
-  UInt num_channels = signals.size();
-  UInt file_length = signals[0].size();
+  Int num_channels = signals.size();
+  Int file_length = signals[0].size();
   
   SNDFILE* output_file;
   SF_INFO output_file_info;
@@ -108,9 +108,9 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   }
   
   double* samples = new double[num_channels*file_length];
-  UInt k = 0;
-  for (UInt i=0; i<(num_channels*file_length); i += num_channels) {
-    for (UInt j=0; j<num_channels; ++j) {
+  Int k = 0;
+  for (Int i=0; i<(num_channels*file_length); i += num_channels) {
+    for (Int j=0; j<num_channels; ++j) {
       if (fabs(signals[j][k]) > 1.0) {
         std::cout<<"Warning: wav writer clipped (value: "<<
                 fabs(signals[j][k])<<")"<<std::endl;

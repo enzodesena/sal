@@ -55,7 +55,7 @@ private:
                                         Angle theta,
                                         Time sound_speed,
                                         mcl::Real threshold,
-                                        UInt num_samples,
+                                        Int num_samples,
                                         Time sampling_frequency,
                                         bool minimum_phase = false);
   
@@ -84,7 +84,7 @@ private:
    frequency 44100 is 512. Since there are ffts involved here, it is a 
    good idea to use a power of 2.
    */
-  UInt impulse_response_length_;
+  Int impulse_response_length_;
   
   Time sound_speed_;
   

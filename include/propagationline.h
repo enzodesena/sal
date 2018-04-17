@@ -108,7 +108,7 @@ private:
   sal::Time sampling_frequency_;
   
   sal::Int attenuation_update_counter_;
-  sal::UInt attenuation_update_length_;
+  sal::Int attenuation_update_length_;
   
   sal::Sample target_attenuation_;
   sal::Sample current_attenuation_;
@@ -116,7 +116,7 @@ private:
   bool updating_attenuation_;
   
   sal::Int latency_update_counter_;
-  sal::UInt latency_update_length_;
+  sal::Int latency_update_length_;
   sal::Time current_latency_;
   sal::Time previous_latency_;
   sal::Time target_latency_;

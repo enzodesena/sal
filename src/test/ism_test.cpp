@@ -64,29 +64,29 @@ bool Ism::Test() {
   cmp[2] = 1.0/2.0;
 
   Length cmp_1l = sqrt(pow(2.0,2.0)+pow(2.0,2.0));
-  UInt cmp_1l_tap = (UInt) round(cmp_1l);
+  Int cmp_1l_tap = (UInt) round(cmp_1l);
   cmp[cmp_1l_tap] += 1.0/cmp_1l;
   
   cmp[4] += 1.0/4.0; // I-order bottom
   cmp[6] += 1.0/6.0; // I-order top
 
   Length cmp_1r = sqrt(pow(2.0,2.0)+pow(8.0,2.0));
-  UInt cmp_1r_tap = (UInt) round(cmp_1r); // 8
+  Int cmp_1r_tap = (UInt) round(cmp_1r); // 8
   cmp[cmp_1r_tap] += 1.0/cmp_1r;
   
   Length cmp_2lb = sqrt(pow(2.0,2.0)+pow(4.0,2.0));
-  UInt cmp_2lb_tap = (UInt) round(cmp_2lb); // 4
+  Int cmp_2lb_tap = (UInt) round(cmp_2lb); // 4
   cmp[cmp_2lb_tap] += 1.0/cmp_2lb;
   
   Length cmp_2lt = sqrt(pow(2.0,2.0)+pow(6.0,2.0));
-  UInt cmp_2lt_tap = (UInt) round(cmp_2lt); // 6
+  Int cmp_2lt_tap = (UInt) round(cmp_2lt); // 6
   cmp[cmp_2lt_tap] += 1.0/cmp_2lt;
   
   cmp[8] += 1.0/8.0; // II-order bottom
   
   
   Length cmp_3lb = sqrt(pow(8.0,2.0)+pow(2.0,2.0));
-  UInt cmp_3lb_tap = (UInt) round(cmp_3lb); // 4
+  Int cmp_3lb_tap = (UInt) round(cmp_3lb); // 4
   cmp[cmp_3lb_tap] += 1.0/cmp_3lb;
   
 
@@ -135,29 +135,29 @@ bool Ism::Test() {
   cmpa[2] = 1.0/2.0; // LOS
   
   Length cmpa_1l = sqrt(pow(2.0,2.0)+pow(2.0,2.0));
-  UInt cmpa_1l_tap = (UInt) round(cmpa_1l);
+  Int cmpa_1l_tap = (UInt) round(cmpa_1l);
   cmpa[cmpa_1l_tap] += 1.0/cmpa_1l*beta_x1;
   
   cmpa[4] += 1.0/4.0*beta_y1; // I-order bottom
   cmpa[6] += 1.0/6.0*beta_y2; // I-order top
   
   Length cmpa_1r = sqrt(pow(2.0,2.0)+pow(8.0,2.0));
-  UInt cmpa_1r_tap = (UInt) round(cmpa_1r); // 8
+  Int cmpa_1r_tap = (UInt) round(cmpa_1r); // 8
   cmpa[cmpa_1r_tap] += 1.0/cmpa_1r*beta_x2;
   
   Length cmpa_2lb = sqrt(pow(2.0,2.0)+pow(4.0,2.0));
-  UInt cmpa_2lb_tap = (UInt) round(cmpa_2lb); // 4
+  Int cmpa_2lb_tap = (UInt) round(cmpa_2lb); // 4
   cmpa[cmpa_2lb_tap] += 1.0/cmpa_2lb*beta_x1*beta_y1;
   
   Length cmpa_2lt = sqrt(pow(2.0,2.0)+pow(6.0,2.0));
-  UInt cmpa_2lt_tap = (UInt) round(cmpa_2lt); // 6
+  Int cmpa_2lt_tap = (UInt) round(cmpa_2lt); // 6
   cmpa[cmpa_2lt_tap] += 1.0/cmpa_2lt*beta_x1*beta_y2;
   
   cmpa[8] += 1.0/8.0*beta_y1*beta_y2; // II-order bottom
   
   
   Length cmpa_3lb = sqrt(pow(8.0,2.0)+pow(2.0,2.0));
-  UInt cmpa_3lb_tap = (UInt) round(cmpa_3lb); // 4
+  Int cmpa_3lb_tap = (UInt) round(cmpa_3lb); // 4
   cmpa[cmpa_3lb_tap] += 1.0/cmpa_3lb*beta_y1*beta_x1*beta_y2;
   
 //  0

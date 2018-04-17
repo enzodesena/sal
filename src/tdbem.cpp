@@ -44,7 +44,7 @@ TdBem::TdBem(Room* const room,
   // Precalculate distances
   distance_los_ = Distance(microphone_->position(),
                                   source_->position());
-  for (UInt i = 0; i<num_elements_; ++i) {
+  for (Int i = 0; i<num_elements_; ++i) {
     distances_source_.push_back(mcl::Distance(points_[i],
                                                      source_->position()));
     all_distances.push_back(distances_source_[i]);
@@ -54,7 +54,7 @@ TdBem::TdBem(Room* const room,
     
     // Precalculate distances between points
     distances_.push_back(std::vector<sal::Length>(num_elements_, 0.0));
-    for (UInt j = 0; j<num_elements_; ++j) {
+    for (Int j = 0; j<num_elements_; ++j) {
       if (i == j) { continue; }
       Length distance = mcl::Distance(points_[i], points_[j]);
       distances_[i][j] = distance;
@@ -65,10 +65,10 @@ TdBem::TdBem(Room* const room,
           
   std::vector<sal::Sample> all_weights;
   
-  for (UInt i = 0; i<num_elements_; ++i) {
+  for (Int i = 0; i<num_elements_; ++i) {
     weights_current_.push_back(std::vector<sal::Sample>(num_elements_, 0.0));
     weights_previous_.push_back(std::vector<sal::Sample>(num_elements_, 0.0));
-    for (UInt j = 0; j<num_elements_; ++j) {
+    for (Int j = 0; j<num_elements_; ++j) {
       if (i == j) { continue; }
       sal::Sample dr_dn = CalculateDrDn(points_[i], points_[j], normal_vectors_[j]);
       
@@ -111,7 +111,7 @@ TdBem::TdBem(Room* const room,
           
           
   // Initialise delay lines
-  for (UInt i = 0; i<num_elements_; ++i) {
+  for (Int i = 0; i<num_elements_; ++i) {
     pressures_.push_back(sal::DelayFilter((UInt) ceil(room->max_distance()*sampling_frequency),
                                           (UInt) ceil(room->max_distance()*sampling_frequency)));
   }
@@ -163,8 +163,8 @@ void TdBem::CalculatePoints() {
   sal::Length sp = spatial_sampling_period_;
   
   // Points on surface parallel to xy plane
-  for (UInt i=0; i<(floor(room_x/spatial_sampling_period_)-1); ++i) {
-    for (UInt j=0; j<(floor(room_y/spatial_sampling_period_)-1); ++j) {
+  for (Int i=0; i<(floor(room_x/spatial_sampling_period_)-1); ++i) {
+    for (Int j=0; j<(floor(room_y/spatial_sampling_period_)-1); ++j) {
       // Points on z1 plane
       points_.push_back(Point((sal::Length)i * sp + sp,
                               (sal::Length)j * sp + sp,
@@ -180,8 +180,8 @@ void TdBem::CalculatePoints() {
   }
   
   // Points on surface parallel to xz plane
-  for (UInt i=0; i<(floor(room_x/spatial_sampling_period_)-1); ++i) {
-    for (UInt k=0; k<(floor(room_z/spatial_sampling_period_)-1); ++k) {
+  for (Int i=0; i<(floor(room_x/spatial_sampling_period_)-1); ++i) {
+    for (Int k=0; k<(floor(room_z/spatial_sampling_period_)-1); ++k) {
       // Points on y1 plane
       points_.push_back(Point((sal::Length)i * sp + sp,
                               0.0,
@@ -196,8 +196,8 @@ void TdBem::CalculatePoints() {
     }
   }
   // Points on surface parallel to yz plane
-  for (UInt j=0; j<(floor(room_y/spatial_sampling_period_)-1); ++j) {
-    for (UInt k=0; k<(floor(room_z/spatial_sampling_period_)-1); ++k) {
+  for (Int j=0; j<(floor(room_y/spatial_sampling_period_)-1); ++j) {
+    for (Int k=0; k<(floor(room_z/spatial_sampling_period_)-1); ++k) {
       // Points on x1 plane
       points_.push_back(Point(0.0,
                               (sal::Length)j * sp + sp,
@@ -224,13 +224,13 @@ void TdBem::Run(const MonoBuffer& input_buffer,
                                                  input_buffer.num_samples());
   }
   
-  UInt k=0;
+  Int k=0;
   for (Int sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
     if (log_) { std::cout<<"Running TDBEM sample n. "<<k<<std::endl; }
     source_delay_line_.Write(input_buffer.GetSample(sample_id));
     
     
-    for (UInt i = 0; i<num_elements_; ++i) {
+    for (Int i = 0; i<num_elements_; ++i) {
       sal::Sample pressure = 0.0;
       // Line of sight to boundary point
       pressure += source_delay_line_.FractionalRead(distances_source_[i]*
@@ -238,7 +238,7 @@ void TdBem::Run(const MonoBuffer& input_buffer,
                                                     SOUND_SPEED)
                   * weights_source_[i];
       
-      for (UInt j = 0; j<num_elements_; ++j) {
+      for (Int j = 0; j<num_elements_; ++j) {
         if (i == j) { continue; }
         Time delay = distances_[i][j] * sampling_frequency_ / SOUND_SPEED;
         pressure += (pressures_[j].FractionalRead(delay) * weights_current_[i][j] +
@@ -253,7 +253,7 @@ void TdBem::Run(const MonoBuffer& input_buffer,
     }
     
     // Extract pressure
-    for (UInt i = 0; i<num_elements_; ++i) {
+    for (Int i = 0; i<num_elements_; ++i) {
       Time delay = distances_mic_[i] * sampling_frequency_ / SOUND_SPEED;
       Sample pressure = (weights_mic_current_[i] * pressures_[i].FractionalRead(delay) +
                 weights_mic_previous_[i] * pressures_[i].FractionalRead(delay+1.0))
@@ -267,7 +267,7 @@ void TdBem::Run(const MonoBuffer& input_buffer,
     
     // Next time tick
     source_delay_line_.Tick();
-    for (UInt i = 0; i<num_elements_; ++i) {
+    for (Int i = 0; i<num_elements_; ++i) {
       pressures_[i].Tick();
     }
     k++;
@@ -278,7 +278,7 @@ void TdBem::Run(const MonoBuffer& input_buffer,
   
 void TdBem::WriteOutPoints(const std::string file_name) {
   mcl::Matrix<sal::Length> output(num_elements_, 6);
-  for (UInt i=0; i<num_elements_; ++i) {
+  for (Int i=0; i<num_elements_; ++i) {
     output.set_element(i, 0, points_[i].x());
     output.set_element(i, 1, points_[i].y());
     output.set_element(i, 2, points_[i].z());
