@@ -69,6 +69,16 @@ MCL_API bool IsEqual(const Point& point_a, const Point& point_b,
 
 MCL_API bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b);
 
+bool IsEqual(const Real* input_data_a,
+             const Real* input_data_b,
+             const Int num_samples);
+
+bool IsEqual(const Real* input_data_a,
+             const std::vector<Real> input_data_b);
+
+bool IsEqual(const std::vector<Real> input_data_b,
+             const Real* input_data_a);
+  
 /** Returns true if num is nan */
 MCL_API bool IsNan(Real num);
 
@@ -94,6 +104,8 @@ MCL_API bool IsInf(Real num);
 MCL_API std::vector<bool> IsInf(std::vector<Real> input);
 
 MCL_API bool ComparisonOpTest();
+  
+  
   
 } // namespace mcl
 

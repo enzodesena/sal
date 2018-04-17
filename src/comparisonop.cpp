@@ -157,4 +157,25 @@ bool IsEqual(const Point& point_a, const Point& point_b,
 }
 
   
+bool IsEqual(const Real* input_data_a,
+             const Real* input_data_b,
+             const Int num_samples) {
+  for (UInt i=0; i<num_samples; ++i) {
+    if (! mcl::IsEqual(input_data_a[i], input_data_b[i])) { return false; }
+  }
+  return true;
+}
+  
+
+bool IsEqual(const Real* input_data_a,
+             const std::vector<Real> input_data_b) {
+  return IsEqual(input_data_a, input_data_b.data(), input_data_b.size());
+}
+
+  
+bool IsEqual(const std::vector<Real> input_data_b,
+             const Real* input_data_a) {
+  return IsEqual(input_data_a, input_data_b.data(), input_data_b.size());
+}
+  
 } // namespace mcl
