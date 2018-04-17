@@ -25,6 +25,8 @@ public:
   
   virtual void AddSamples(const Buffer& buffer) noexcept = 0;
   
+  virtual void SetSamples(const Buffer& buffer) noexcept = 0;
+  
   virtual void Reset() noexcept = 0;
   
   virtual ~Buffer() {}
@@ -112,6 +114,17 @@ public:
     }
   }
   
+  void SetSamples(const Buffer& other) noexcept {
+    const MultichannelBuffer& multi_other = dynamic_cast<const MultichannelBuffer&>(other);
+    assert(num_samples_ == multi_other.num_samples_);
+    assert(num_channels_ == multi_other.num_channels_);
+    for (int chan_id=0; chan_id<num_channels_; ++chan_id) {
+      for (int sample_id=0; sample_id<num_samples_; ++sample_id) {
+        data_[chan_id][sample_id] = multi_other.data_[chan_id][sample_id];
+      }
+    }
+  }
+  
   /** Adds samples to current sample values in the buffer.
    
    @param[in] channel_id The ID of the channel.
@@ -196,7 +209,7 @@ public:
   owns_data_(other.owns_data_) {
     if (owns_data_) {
       AllocateMemory();
-      CopyDataFrom(other);
+      SetSamples(other);
     } else {
       data_ = other.data_;
     }
@@ -221,7 +234,7 @@ public:
       
       if (owns_data_) {
         AllocateMemory();
-        CopyDataFrom(other);
+        SetSamples(other);
       } else {
         data_ = other.data_;
       }
@@ -239,16 +252,6 @@ private:
   Int num_channels_;
   Int num_samples_;
   bool owns_data_;
-  
-  void CopyDataFrom(const MultichannelBuffer& other) {
-    assert(num_samples_ == other.num_samples_);
-    assert(num_channels_ == other.num_channels_);
-    for (int chan_id=0; chan_id<num_channels_; ++chan_id) {
-      for (int sample_id=0; sample_id<num_samples_; ++sample_id) {
-        data_[chan_id][sample_id] = other.data_[chan_id][sample_id];
-      }
-    }
-  }
   
   void AllocateMemory() {
     data_ = new double*[num_channels_];
@@ -284,7 +287,7 @@ public:
   MonoBuffer(MultichannelBuffer& referenced_buffer, const Int channel_id) noexcept :
     MultichannelBuffer(&(referenced_buffer.GetWritePointers()[channel_id]), 1,
                        referenced_buffer.num_samples()) {}
-                     
+  
   inline void SetSample(const Int sample_id,
                          const Sample sample_value) noexcept {
     MultichannelBuffer::SetSample(mono_channel, sample_id, sample_value);
@@ -365,6 +368,60 @@ public:
   }
   
   virtual ~StereoBuffer() {}
+};
+  
+  
+class BFormatBuffer : public MultichannelBuffer {
+public:
+  BFormatBuffer(const Int max_degree, const Int num_samples) :
+      MultichannelBuffer(NumChannels(max_degree), num_samples) {}
+  
+  inline void SetSample(const Int degree, const Int order, const Int sample_id,
+                        const Sample& sample_value) noexcept {
+    MultichannelBuffer::SetSample(CalculateChannelId(degree, order),
+                                  sample_id, sample_value);
+  }
+  
+  inline void AddSample(const Int degree, const Int order, const Int sample_id,
+                        const Sample& sample_value) noexcept {
+    
+  }
+  
+  void AddSamples(const Int degree, const Int order,
+                  const Int from_sample_id,
+                  const Int num_samples,
+                  const Sample* samples) {
+    MultichannelBuffer::AddSamples(CalculateChannelId(degree, order),
+                                   from_sample_id, num_samples, samples);
+  }
+  
+  inline Sample GetSample(const Int degree, const Int order,
+                          const Int sample_id) const noexcept {
+    return MultichannelBuffer::GetSample(CalculateChannelId(degree, order),
+                                         sample_id);
+  }
+  
+  
+private:
+  Int NumChannels(const Int max_degree) const {
+    assert(max_degree > 0);
+    return (max_degree+1)*(max_degree+1); // (N+1)^2
+  }
+  
+  Int CalculateChannelId(const Int degree, const Int order) const {
+    assert(degree >= 0);
+    assert(order <= abs(degree));
+    Int centre_index = 0;
+    for (Int degree_id = 0; degree_id <= degree; ++degree_id) {
+      centre_index = centre_index + 2*degree_id;
+    }
+    // 0 + 2*0 = 0 OK
+    // 0 + 2*1 = 2 OK
+    // 2 + 2*2 = 6 OK
+    // 6 + 2*3 = 12 OK
+    assert(centre_index + order >= 0);
+    return centre_index + order;
+  }
 };
   
 } // End namespace

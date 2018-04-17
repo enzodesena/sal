@@ -17,7 +17,6 @@
 
 #include "microphone.h"
 #include "point.h"
-#include "stream.h"
 #include "decoder.h"
 #include "microphonearray.h"
 #include "salconstants.h"
@@ -58,8 +57,11 @@ public:
   
   static bool Test();
 private:
-  virtual void AddPlaneWaveRelative(const Signal& signal, const mcl::Point& point,
-                                       const Int wave_id) noexcept;
+  virtual void AddPlaneWaveRelative(const Sample* input_data,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept;
   
   const Int order_;
   BFormatStream stream_;
@@ -96,10 +98,10 @@ public:
                      const bool near_field_correction,
                      const Length loudspeakers_distance,
                      const Time sampling_frequency,
-                     const Speed sound_speed,
-                     BFormatStream* input_stream);
+                     const Speed sound_speed);
   
-  virtual void Decode();
+  virtual void Decode(const Buffer& input_buffer,
+                      Buffer& output_buffer);
   
   
   static bool Test();
@@ -127,7 +129,8 @@ private:
     return (Sample) cos(((Angle) index)*PI/(2.0*((Angle) order)+2.0));
   }
   
-  static std::vector<Sample> PullFrame(UInt order, BFormatStream* stream);
+  static std::vector<Sample> GetFrame(const Int order, const Int sample_id,
+                                      const BFormatBuffer& buffer);
   
   /**
    Produces the near field correction

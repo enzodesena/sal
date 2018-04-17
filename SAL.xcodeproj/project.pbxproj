@@ -61,6 +61,8 @@
 		578EB0B420860210006F06B8 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		578EB0B520861631006F06B8 /* freefieldsimulation_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF891CD81AB400134991 /* freefieldsimulation_test.cpp */; };
 		578EB0B6208625E4006F06B8 /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */; };
+		578EB0B720863130006F06B8 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
+		578EB0B820863132006F06B8 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF861CD81AB400134991 /* ambisonics_test.cpp */; };
 		57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
 		57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57AA6152205C9C3A0044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
@@ -419,12 +421,12 @@
 			isa = PBXGroup;
 			children = (
 				57A156E41593460E00AA6445 /* bin */,
+				57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */,
 				5778112120600683004B9C6F /* cuboidroom.cpp */,
 				5778112320600683004B9C6F /* fdtd.cpp */,
 				5778111E20600683004B9C6F /* ism.cpp */,
 				5778112220600683004B9C6F /* riranalysis.cpp */,
 				5778112020600683004B9C6F /* tdbem.cpp */,
-				57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */,
 				5722E2401C9ECB49007FCF59 /* delayfilter.cpp */,
 				57444D281B1776A400EC31F4 /* cipicmic.cpp */,
 				57895F5D16304F18002C962B /* propagationline.cpp */,
@@ -784,12 +786,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				578EB0B720863130006F06B8 /* ambisonics.cpp in Sources */,
 				576C17DD20856F5F00EFBACE /* kemarmic_test.cpp in Sources */,
 				57F13C1320853C2A002CC480 /* microphone.cpp in Sources */,
 				57F13C0E20853C0B002CC480 /* sal_tests.cpp in Sources */,
 				576C17D320853C7F00EFBACE /* microphone_test.cpp in Sources */,
 				57F13C1120853C21002CC480 /* binauralmic.cpp in Sources */,
 				578EB0622085BA5A006F06B8 /* ism.cpp in Sources */,
+				578EB0B820863132006F06B8 /* ambisonics_test.cpp in Sources */,
 				576C17D120853C7D00EFBACE /* audiobuffer_test.cpp in Sources */,
 				578EB0B520861631006F06B8 /* freefieldsimulation_test.cpp in Sources */,
 				576C17D520853C8A00EFBACE /* salutilities_test.cpp in Sources */,

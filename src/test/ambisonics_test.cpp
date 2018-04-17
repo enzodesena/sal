@@ -27,23 +27,24 @@ bool AmbisonicsMic::Test() {
   
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
                       N);
-  BFormatStream* stream_a = mic_a.stream();
+  BFormatBuffer stream_a(N, 1);
   
   Sample sample = 0.3;
-  mic_a.AddPlaneWave(sample, Point(1.0, 0.0, 0.0));
+  mic_a.AddPlaneWave(MonoBuffer::Unary(sample),
+                     Point(1.0, 0.0, 0.0), stream_a);
   
-  assert(IsEqual(stream_a->Pull(0, 0), sample*1.000000000000000));
-  assert(IsEqual(stream_a->Pull(1, 1), sample*1.414213562373095));
-  assert(IsEqual(stream_a->Pull(1, -1), sample*0.0));
-  assert(IsEqual(stream_a->Pull(2, 1), sample*1.414213562373095));
-  assert(IsEqual(stream_a->Pull(2, -1), sample*0.0));
+  assert(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
+  assert(IsEqual(stream_a.GetSample(1, 1, 0), sample*1.414213562373095));
+  assert(IsEqual(stream_a.GetSample(1, -1, 0), sample*0.0));
+  assert(IsEqual(stream_a.GetSample(2, 1, 0), sample*1.414213562373095));
+  assert(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
   
-  mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0));
-  assert(IsEqual(stream_a->Pull(0, 0), sample*1.000000000000000));
-  assert(IsEqual(stream_a->Pull(1, -1), sample*1.414213562373095));
-  assert(IsEqual(stream_a->Pull(1, 1), sample*0.0));
-  assert(IsEqual(stream_a->Pull(2, 1), sample*(-1.414213562373095)));
-  assert(IsEqual(stream_a->Pull(2, -1), sample*0.0));
+  mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0), stream_a);
+  assert(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
+  assert(IsEqual(stream_a.GetSample(1, -1, 0), sample*1.414213562373095));
+  assert(IsEqual(stream_a.GetSample(1, 1, 0), sample*0.0));
+  assert(IsEqual(stream_a.GetSample(2, 1, 0), sample*(-1.414213562373095)));
+  assert(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
   
   
 #ifdef MCL_LOAD_BOOST
@@ -219,7 +220,6 @@ bool AmbisonicsHorizDec::Test() {
   std::vector<Angle> thetas = mcl::LinSpace(0.0, 2.0*PI, num_theta);
   
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), Quaternion::Identity(), order);
-  BFormatStream* stream_a = mic_a.stream();
   
   AmbisonicsHorizDec decoder_a(order,
                                false, // energy_decoding,
@@ -228,17 +228,19 @@ bool AmbisonicsHorizDec::Test() {
                                false, //near_field_correction,
                                1.0, //loudspeakers_distance,
                                1.0, // sampling_frequency,
-                               SOUND_SPEED,
-                               stream_a);
-  MonoStream* loudspeaker_0_stream = decoder_a.stream(0);
+                               SOUND_SPEED);
+  BFormatBuffer bformat_buffer(order, 1);
+  MultichannelBuffer output_buffer(loudspeaker_angles.size(), 1);
   
   for (UInt theta_index=0; theta_index<num_theta; ++theta_index) {
     Angle theta(thetas[theta_index]);
     
-    mic_a.AddPlaneWave(1.0, Point(cos(theta), sin(theta), 0.0));
-    decoder_a.Decode();
+    mic_a.AddPlaneWave(MonoBuffer::Unary(1.0),
+                       Point(cos(theta), sin(theta), 0.0),
+                       bformat_buffer);
+    decoder_a.Decode(bformat_buffer, output_buffer);
     
-    Sample output = loudspeaker_0_stream->Pull();
+    Sample output = output_buffer.GetSample(0, 0);
     // poletti_pan = 1.0/M*(1.0+2.0*sum(cos((1:N)*theta)));
     Sample poletti_pan = 1.0/MM*(1.0+2.0*
             Sum(Cos(Multiply(ColonOperator<Angle>(1, order), (Angle) theta))));
@@ -268,9 +270,10 @@ bool AmbisonicsHorizDec::Test() {
   
   // A complete test comparing with Matlab's tested implementation
   
-  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), Quaternion::Identity()
-                      , 2);
-  BFormatStream* stream_b = mic_b.stream();
+  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), Quaternion::Identity(), 2);
+  const Int num_samples = 4;
+  BFormatBuffer stream_b(order, num_samples);
+  MultichannelBuffer output_b(loudspeaker_angles.size(), num_samples);
   
   AmbisonicsHorizDec decoder_b(order,
                                true, // energy_decoding,
@@ -279,19 +282,12 @@ bool AmbisonicsHorizDec::Test() {
                                true, //near_field_correction,
                                2.0, //loudspeakers_distance,
                                44100, // sampling_frequency,
-                               SOUND_SPEED,
-                               stream_b);
+                               SOUND_SPEED);
   const Angle theta_b = PI/4.0;
-  Signal impulse = mcl::Zeros<Sample>(4);
-  impulse[0] = 0.7;
-  mic_b.AddPlaneWave(impulse, Point(cos(theta_b), sin(theta_b), 0.0));
-  decoder_b.Decode();
-  
-  Signal output_0 = decoder_b.stream(0)->Pull(impulse.size());
-  Signal output_1 = decoder_b.stream(1)->Pull(impulse.size());
-  Signal output_2 = decoder_b.stream(2)->Pull(impulse.size());
-  Signal output_3 = decoder_b.stream(3)->Pull(impulse.size());
-  Signal output_4 = decoder_b.stream(4)->Pull(impulse.size());
+  MonoBuffer impulse(num_samples);
+  impulse.SetSample(0, 0.7);
+  mic_b.AddPlaneWave(impulse, Point(cos(theta_b), sin(theta_b), 0.0), stream_b);
+  decoder_b.Decode(stream_b, output_b);
   
   
   std::vector<Sample> output_0_cmp(4);
@@ -324,12 +320,12 @@ bool AmbisonicsHorizDec::Test() {
   output_4_cmp[2] =  -0.017379369470917;
   output_4_cmp[3] =  -0.016125504574487;
   
-  assert(IsEqual(output_0, output_0_cmp));
-  assert(IsEqual(output_1, output_1_cmp));
-  assert(IsEqual(output_2, output_2_cmp));
-  assert(IsEqual(output_3, output_3_cmp));
-  assert(IsEqual(output_4, output_4_cmp));
-  
+  assert(IsEqual(output_b.GetReadPointer(0), output_0_cmp));
+  assert(IsEqual(output_b.GetReadPointer(1), output_1_cmp));
+  assert(IsEqual(output_b.GetReadPointer(2), output_2_cmp));
+  assert(IsEqual(output_b.GetReadPointer(3), output_3_cmp));
+  assert(IsEqual(output_b.GetReadPointer(4), output_4_cmp));
+  assert(false);
   return true;
 }
   

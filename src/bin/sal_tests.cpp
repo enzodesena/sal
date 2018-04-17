@@ -30,14 +30,14 @@
 
 int main(int argc, char * const argv[]) {
   
+  sal::AmbisonicsMic::Test();
+  sal::AmbisonicsHorizDec::Test();
   sal::Microphone::Test();
   sal::KemarMic::Test();
   sal::CipicMic::Test();
   sal::Stream::Test();
   sal::SphericalHeadMic::Test();
   sal::MicrophoneArrayTest();
-//  sal::AmbisonicsMic::Test();
-//  sal::AmbisonicsHorizDec::Test();
   sal::DelayFilter::Test();
   sal::PropagationLine::Test();
   sal::FreeFieldSim::Test();

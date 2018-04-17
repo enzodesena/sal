@@ -19,9 +19,13 @@ using mcl::Multiply;
 
 namespace sal {
 
-void AmbisonicsMic::AddPlaneWaveRelative(const Signal& signal,
-                                            const Point& point,
-                                            const Int wave_id) noexcept {
+void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
+                                         const Int num_samples,
+                                         const mcl::Point& point,
+                                         const Int wave_id,
+                                         Buffer& output_buffer) noexcept {
+  BFormatBuffer& bformat_buffer = dynamic_cast<BFormatBuffer&>(output_buffer);
+  
   // Precompute for performance gain
   const Angle phi = point.phi();
   const Sample sqrt_2 = mcl::Sqrt(2.0);
@@ -30,14 +34,15 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Signal& signal,
     case sqrt2: {
       
       // Zero-th component
-      stream_.Add(0, 0, signal);
+      bformat_buffer.AddSamples(0, 0, 0, num_samples, input_data);
       
       for (UInt i=1; i<=order_; ++i) {
         // TODO: add 3D components
-        stream_.Add(i, 1,
-                    Multiply<sal::Sample>(signal, sqrt_2*cos(((Angle) i)*phi)));
-        stream_.Add(i, -1,
-                    Multiply<sal::Sample>(signal, sqrt_2*sin(((Angle) i)*phi)));
+        Sample temp_data[num_samples];
+        mcl::Multiply(input_data, num_samples, sqrt_2*sin(((Angle) i)*phi), temp_data);
+        std::cout<<input_data[0]<<" "<<sqrt_2*sin(((Angle) i)*phi)<<" "<<temp_data[0]<<std::endl;
+        bformat_buffer.AddSamples(i, 1, 0, num_samples, temp_data);
+        bformat_buffer.AddSamples(i, -1, 0, num_samples, temp_data);
       }
       break;
     }
@@ -98,9 +103,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        const bool near_field_correction,
                                        const Length loudspeakers_distance,
                                        const Time sampling_frequency,
-                                       const Speed sound_speed,
-                                       BFormatStream* input_stream) :
-          Decoder(loudspeaker_angles.size()),
+                                       const Speed sound_speed) :
           energy_decoding_(energy_decoding),
           loudspeaker_angles_(loudspeaker_angles),
           num_loudspeakers_(loudspeaker_angles.size()),
@@ -111,8 +114,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
           mode_matching_matrix_(mcl::Matrix<Sample>(2*order+1,
                                                     loudspeaker_angles.size())),
           max_energy_matrix_(mcl::Matrix<Sample>(2*order+1,
-                                                 loudspeaker_angles.size())),
-          input_stream_(input_stream) {
+                                                 loudspeaker_angles.size())) {
   
   using mcl::IirFilter;
             
@@ -189,13 +191,17 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(UInt order,
 }
   
 std::vector<Sample>
-AmbisonicsHorizDec::PullFrame(UInt order, BFormatStream* stream) {
+AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
+                             const BFormatBuffer& buffer) {
+  assert(order>=0);
+  assert(sample_id>=0 & sample_id<buffer.num_samples());
+  
   std::vector<Sample> output;
   output.reserve(2*order+1);
-  output.push_back(stream->Pull(0,0));
+  output.push_back(buffer.GetSample(0, 0, sample_id));
   for (UInt i=1; i<=order; ++i) {
-    output.push_back(stream->Pull(i,+1));
-    output.push_back(stream->Pull(i,-1));
+    output.push_back(buffer.GetSample(i, +1, sample_id));
+    output.push_back(buffer.GetSample(i, -1, sample_id));
   }
   return output;
 }
@@ -213,12 +219,18 @@ AmbisonicsHorizDec::PullFrame(UInt order, BFormatStream* stream) {
  loudspeakers_distance is the distance of the loudspeakers from the
  centre.
  */
-void AmbisonicsHorizDec::Decode() {
+void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
+                                Buffer& output_buffer) {
+  assert(input_buffer.num_samples() == output_buffer.num_samples());
+  const BFormatBuffer& input_bformat_buffer =
+      dynamic_cast<const BFormatBuffer&>(input_buffer);
+  MultichannelBuffer& output_multi_buffer =
+      dynamic_cast<MultichannelBuffer&>(output_buffer);
   
   // Cache for speed
-  
-  while (! input_stream_->IsEmpty()) {
-    std::vector<Sample> bformat_frame = PullFrame(order_, input_stream_);
+  for (Int sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
+    std::vector<Sample> bformat_frame = GetFrame(order_, sample_id,
+                                                 input_bformat_buffer);
     
     // Near-field correcting
     if (near_field_correction_) {
@@ -258,7 +270,7 @@ void AmbisonicsHorizDec::Decode() {
     
     // Push into each loudspeaker stream
     for (UInt i=0; i<num_loudspeakers_; ++i) {
-      output_streams_[i].Push(output[i]);
+      output_multi_buffer.SetSample(i, sample_id, output[i]);
     }
   }
 }
