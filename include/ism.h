@@ -62,7 +62,8 @@ public:
       sal::UInt rir_length,
       const sal::Time sampling_frequency);
   
-  void Run();
+  void Run(const Sample* input_data, const Int num_samples,
+           Buffer& output_buffer);
   
   // Triggers a self-update of the network. Has to be called after microphone,
   // room or source (not including stream push) is updated.

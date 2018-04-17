@@ -84,6 +84,11 @@ public:
                     const mcl::Point& point,
                     Buffer& output_buffer) noexcept;
   
+  void AddPlaneWave(const Sample* input_data,
+                    const Int num_samples,
+                    const mcl::Point& point,
+                    Buffer& output_buffer) noexcept;
+  
   /**
    We need to
    keep track of the wave_id because some microphones (e.g. kemar) need

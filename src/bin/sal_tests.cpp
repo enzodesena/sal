@@ -34,7 +34,7 @@ int main(int argc, char * const argv[]) {
   sal::KemarMic::Test();
   sal::CipicMic::Test();
 //  sal::Stream::Test();
-//  sal::SphericalHeadMic::Test();
+  sal::SphericalHeadMic::Test();
 //  sal::MicrophoneArrayTest();
 //  sal::AmbisonicsMic::Test();
 //  sal::AmbisonicsHorizDec::Test();
@@ -42,9 +42,9 @@ int main(int argc, char * const argv[]) {
 //  sal::PropagationLine::Test();
 //  sal::FreeFieldSim::Test();
 //  sal::CuboidRoom::Test();
-//  sal::Ism::Test();
-//  sal::RirAnalysis::Test();
-//  sal::TripletHandler::Test();
+  sal::Ism::Test();
+  sal::RirAnalysis::Test();
+  sal::TripletHandler::Test();
   sal::Buffer::Test();
   
   std::cout<<"All tests succeded!\n";

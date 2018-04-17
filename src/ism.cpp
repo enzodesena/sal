@@ -44,27 +44,28 @@ Ism::Ism(Room* const room,
   
   
   
-void Ism::Run() {
+void Ism::Run(const Sample* input_data, const Int num_samples,
+              Buffer& output_buffer) {
   if (modified_) { Ism::CalculateRir(); }
   
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni()) {
     mcl::FirFilter filter(rir_);
-    microphone_->AddPlaneWave(filter.Filter(source_->stream()->PullAll()),
-                                 mcl::Point(0,0,0));
+    Sample temp[num_samples];
+    filter.Filter(input_data, num_samples, temp);
+    microphone_->AddPlaneWave(temp, num_samples, mcl::Point(0,0,0), output_buffer);
   } else {
-    std::vector<sal::Sample> input_signal = source_->stream()->PullAll();
-    for (UInt i=0; i<images_position_.size(); ++i) {
-      std::vector<sal::Sample> integer_delayed_signal =
-      images_int_delay_filter_[i].DigitalFilter::Filter(input_signal);
-      
-      std::vector<sal::Sample> signal =
-      images_frac_delay_filter_[i].Filter(integer_delayed_signal);
-      
-      microphone_->AddPlaneWave(signal, images_position_[i], i);
-    }
-    
-    microphone_->Tick();
+    assert(false);
+//    std::vector<sal::Sample> input_signal = source_->stream()->PullAll();
+//    for (UInt i=0; i<num_samples; ++i) {
+//      std::vector<sal::Sample> integer_delayed_signal =
+//      images_int_delay_filter_[i].DigitalFilter::Filter(input_signal);
+//
+//      std::vector<sal::Sample> signal =
+//      images_frac_delay_filter_[i].Filter(integer_delayed_signal);
+//
+//      microphone_->AddPlaneWave(signal, images_position_[i], i);
+//    }
   }
 }
   

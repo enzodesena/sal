@@ -87,6 +87,8 @@ public:
   
   virtual bool IsCoincident() { return true; }
   
+  virtual bool IsOmni() { return true; }
+  
   virtual ~GainMic() {}
   
 private:

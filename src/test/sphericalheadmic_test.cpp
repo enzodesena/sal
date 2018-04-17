@@ -48,6 +48,8 @@ bool SphericalHeadMic::Test() {
   
   Time sampling_frequency(40000);
   
+  MonoBuffer impulse(6);
+  impulse.set_sample(0, 1.0);
   
   Angle ears_angle(100.0/180.0*PI);
   SphericalHeadMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
@@ -55,10 +57,7 @@ bool SphericalHeadMic::Test() {
                          0.09, // sphere radius
                          6, // impulse response length
                          sampling_frequency);
-  StereoStream* stream_a = mic_a.stream();
-  
-  std::vector<Sample> impulse = mcl::Zeros<Sample>(6);
-  impulse[0] = 1.0;
+  StereoBuffer stream_a(impulse.num_samples());
   
   Length distance(2.0);
   
@@ -67,10 +66,8 @@ bool SphericalHeadMic::Test() {
                         distance*cos(ears_angle-PI/2.0),
                         -distance*sin(ears_angle-PI/2.0));
   
-  mic_a.AddPlaneWave(impulse, point_line_left);
+  mic_a.AddPlaneWave(impulse, point_line_left, stream_a);
   
-  Signal output_a_left = stream_a->left_stream()->Pull(6);
-  Signal output_a_right = stream_a->right_stream()->Pull(6);
   
   // The output of the left ear should be the sphere response from angle
   // theta=0 (reference system of Duda's paper).
@@ -83,7 +80,7 @@ bool SphericalHeadMic::Test() {
   output_ipsilateral[3] = 0.0952699695904199;
   output_ipsilateral[4] = 0.0210966838072453;
   output_ipsilateral[5] = 1.2271276500375;
-  assert(IsEqual(output_a_left, output_ipsilateral));
+  assert(IsEqual(stream_a.GetLeftReadPointer(), output_ipsilateral));
   
   
   // Trying now contralateral case (right ear output due to the
@@ -95,7 +92,7 @@ bool SphericalHeadMic::Test() {
   output_contralateral[3] = -0.17029879934648;
   output_contralateral[4] = 0.019246147618618;
   output_contralateral[5] = 0.091776572646393;
-  assert(IsEqual(output_a_right, output_contralateral));
+  assert(IsEqual(stream_a.GetRightReadPointer(), output_contralateral));
   
   // assert(IsEqual(mic_a_left.ImpulseResponse(point_line_left), output_a_cmp));
   
@@ -106,11 +103,10 @@ bool SphericalHeadMic::Test() {
                          -distance*sin(ears_angle-PI/2.0));
   // Since the impulse response has 6 bins, I can reuse the same microphone for
   // this test.
-  mic_a.AddPlaneWave(impulse, point_line_right);
-  Signal output_b_left = stream_a->left_stream()->Pull(6);
-  Signal output_b_right = stream_a->right_stream()->Pull(6);
-  assert(IsEqual(output_b_right, output_ipsilateral));
-  assert(IsEqual(output_b_left, output_contralateral));
+  stream_a.Reset();
+  mic_a.AddPlaneWave(impulse, point_line_right, stream_a);
+  assert(IsEqual(stream_a.GetRightReadPointer(), output_ipsilateral));
+  assert(IsEqual(stream_a.GetLeftReadPointer(), output_contralateral));
   
   
   SphericalHeadMic mic_b(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
@@ -118,17 +114,14 @@ bool SphericalHeadMic::Test() {
                          0.09, // sphere radius
                          6, // impulse response length
                          sampling_frequency);
-  StereoStream* stream_b = mic_b.stream();
+  StereoBuffer stream_b(impulse.num_samples());
   
   // Point in front of face.
   Point point_front(distance, 0.0, 0.0);
   
-  mic_b.AddPlaneWave(impulse, point_front);
-  
-  Signal output_e_left = stream_b->left_stream()->Pull(6);
-  Signal output_e_right = stream_b->right_stream()->Pull(6);
-  
-  assert(IsEqual(output_e_left, output_e_right));
+  mic_b.AddPlaneWave(impulse, point_front, stream_b);
+  assert(IsEqual(stream_b.GetLeftReadPointer(),
+                 stream_b.GetRightReadPointer(), impulse.num_samples()));
   
   
   std::vector<Sample> output_frontal(6);
@@ -139,25 +132,24 @@ bool SphericalHeadMic::Test() {
   output_frontal[4] = 0.093428452743537;
   output_frontal[5] = -0.12911852945215;
   
-  assert(IsEqual(output_e_left, output_frontal));
+  assert(IsEqual(stream_b.GetLeftReadPointer(), output_frontal));
   
   // Testing reset
-  assert(stream_b->right_stream()->IsEmpty());
-  assert(stream_b->left_stream()->IsEmpty());
-  mic_b.AddPlaneWave(1.0, Point(0.0,0.0,-1.0));
-  assert(! IsEqual(stream_b->left_stream()->Pull(), 0.0));
-  assert(! IsEqual(stream_b->right_stream()->Pull(), 0.0));
-  assert(stream_b->right_stream()->IsEmpty());
-  assert(stream_b->left_stream()->IsEmpty());
-  mic_b.AddPlaneWave(0.0, Point(0.0,0.0,-1.0));
-  assert(! IsEqual(stream_b->left_stream()->Pull(), 0.0));
-  assert(! IsEqual(stream_b->right_stream()->Pull(), 0.0));
-  assert(stream_b->right_stream()->IsEmpty());
-  assert(stream_b->left_stream()->IsEmpty());
+  stream_b.Reset();
+  mic_b.AddPlaneWave(MonoBuffer::Unary(1.0), Point(0.0,0.0,-1.0), stream_b);
+  assert(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
+  assert(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  
+  stream_b.Reset();
+  mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_b);
+  assert(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
+  assert(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  
+  stream_b.Reset();
   mic_b.Reset();
-  mic_b.AddPlaneWave(0.0, Point(0.0,0.0,-1.0));
-  assert(IsEqual(stream_b->left_stream()->Pull(), 0.0));
-  assert(IsEqual(stream_b->right_stream()->Pull(), 0.0));
+  mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_b);
+  assert(IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
+  assert(IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
   
   return true;
 }
