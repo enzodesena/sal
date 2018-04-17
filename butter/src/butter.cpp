@@ -20,7 +20,7 @@ namespace mcl {
 #define N 10 //The number of images which construct a time series for each pixel
   
   
-IirFilter Butter(const UInt order, const Real w_low, const Real w_high) {
+IirFilter Butter(const Int order, const Real w_low, const Real w_high) {
   std::vector<double> DenC = ComputeDenCoeffs((int) order, w_low, w_high);
   std::vector<double> NumC = ComputeNumCoeffs((int) order, w_low, w_high, DenC);
   std::vector<Real> denominator(DenC.begin(), DenC.end());
@@ -29,7 +29,7 @@ IirFilter Butter(const UInt order, const Real w_low, const Real w_high) {
   return IirFilter(numerator, denominator);
 }
 
-IirFilter OctaveFilter(const UInt order, const Real center_frequency,
+IirFilter OctaveFilter(const Int order, const Real center_frequency,
                        const Real sampling_frequency) {
   // beta = pi/2/N/sin(pi/2/N);
   Real beta = PI/2.0/((Real) order)/sin(PI/2.0/((Real) order));
@@ -47,13 +47,13 @@ IirFilter OctaveFilter(const UInt order, const Real center_frequency,
   return Butter(order, W1, W2);
 }
   
-IirFilterBank OctaveFilterBank(const UInt order,
-                               const UInt num_bands,
+IirFilterBank OctaveFilterBank(const Int order,
+                               const Int num_bands,
                                const Real starting_frequency,
                                const Real sampling_frequency) {
   Real current_frequency = starting_frequency;
   std::vector<IirFilter> filters;
-  for (UInt i=0; i<num_bands; ++i) {
+  for (Int i=0; i<num_bands; ++i) {
     
     mcl::IirFilter
     octave_filter = mcl::OctaveFilter(order, current_frequency,

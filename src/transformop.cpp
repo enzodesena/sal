@@ -21,7 +21,7 @@ namespace mcl {
   
   
 std::vector<Complex> Fft(const std::vector<Complex>& input,
-                         UInt n_point) noexcept {
+                         Int n_point) noexcept {
   std::vector<Complex> padded = ZeroPad(input, n_point);
   kissfft<Real> fft((int) n_point, false);
   std::vector<Complex> outbuf(n_point);
@@ -32,7 +32,7 @@ std::vector<Complex> Fft(const std::vector<Complex>& input,
 }
 
 std::vector<Complex> Ifft(const std::vector<Complex>& input,
-                          UInt n_point) noexcept {
+                          Int n_point) noexcept {
   std::vector<Complex> padded = ZeroPad(input, n_point);
   kissfft<Real> fft((int) n_point, true);
   std::vector<Complex> outbuf(n_point);
@@ -45,7 +45,7 @@ std::vector<Complex> Ifft(const std::vector<Complex>& input,
 
 
 std::vector<Complex> Hilbert(const std::vector<Real>& input) noexcept {
-  UInt n = input.size();
+  Int n = input.size();
   
   std::vector<Complex> x = Fft(ComplexVector(input), n);
   
@@ -56,14 +56,14 @@ std::vector<Complex> Hilbert(const std::vector<Real>& input) noexcept {
     // even and nonempty
     h[0] = 1.0;     // h([1 n/2+1]) = 1;
     h[n/2] = 1.0;
-    for (UInt i=1; i<(n/2); ++i) {
+    for (Int i=1; i<(n/2); ++i) {
       h[i] = 2.0;   // h(2:n/2) = 2;
     }
   }
   else if (n>0) {
     // odd and nonempty
     h[0] = 1.0;     // h(1) = 1;
-    for (UInt i=1; i<((n+1)/2); ++i) {
+    for (Int i=1; i<((n+1)/2); ++i) {
       h[i] = 2.0;   // h(2:(n+1)/2) = 2;
     }
   }
@@ -77,7 +77,7 @@ std::vector<Complex> Hilbert(const std::vector<Real>& input) noexcept {
 // Returns the real cepstrum of the real sequence X.
 // Equivalent to Matlab's rceps(vector)
 std::vector<Real> RCeps(const std::vector<Real>& x) noexcept {
-  UInt n = Length(x);
+  Int n = Length(x);
   std::vector<Real> fftxabs = Abs(Fft(ComplexVector(x), n));
   //  TODO: implement this check.
   //  if any(fftxabs == 0)
@@ -91,9 +91,9 @@ std::vector<Real> RCeps(const std::vector<Real>& x) noexcept {
 // Returns the (unique) minimum-phase sequence that has the same real 
 // cepstrum as vector. Equivalent to Matlab's [~, out] = rceps(vector).
 std::vector<Real> MinPhase(const std::vector<Real>& x) noexcept {
-  UInt n = Length(x);
+  Int n = Length(x);
   // odd = fix(rem(n,2));
-  UInt odd = Fix(Rem((Int) n,2));
+  Int odd = Fix(Rem((Int) n,2));
   
   //  wn = [1; 2*ones((n+odd)/2-1,1) ; ones(1-rem(n,2),1); zeros((n+odd)/2-1,1)];
   std::vector<Real> wn_1 = Concatenate(UnaryVector((Real) 1.0), 
@@ -107,7 +107,7 @@ std::vector<Real> MinPhase(const std::vector<Real>& x) noexcept {
 
 
 std::vector<Complex> Rfft(const std::vector<Real>& input,
-                          UInt n_point) noexcept {
+                          Int n_point) noexcept {
   return Elements(Fft(ConvertToComplex(input), n_point), 0,
                   (Int) floor(1.0+((double)n_point)/2.0)-1);
 }
@@ -115,9 +115,9 @@ std::vector<Complex> Rfft(const std::vector<Real>& input,
 
 
 std::vector<std::vector<Complex> >
-Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) noexcept {
+Rfft(const std::vector<std::vector<Real> >& input, Int n_point) noexcept {
   std::vector<std::vector<Complex> > outputs;
-  for (UInt i=0; i<input.size(); ++i) {
+  for (Int i=0; i<input.size(); ++i) {
     outputs.push_back(Rfft(input[i], n_point));
   }
   return outputs;
@@ -125,12 +125,12 @@ Rfft(const std::vector<std::vector<Real> >& input, UInt n_point) noexcept {
 
 
 std::vector<Real> Irfft(const std::vector<Complex>& input,
-                        UInt n_point) noexcept {
+                        Int n_point) noexcept {
   // If n_point is even, then it includes the Nyquist term (the only
   // non-repeated term, together with DC) and is of dimension M=N/2 + 1
   // whereas if N is odd then there is no Nyquist term
   // and the input is of dimension M=(N+1)/2.
-  UInt M = (Rem(n_point, 2) == 0) ? (n_point/2 + 1) : (n_point+1)/2;
+  Int M = (Rem(n_point, 2) == 0) ? (n_point/2 + 1) : (n_point+1)/2;
   const std::vector<Complex> zero_padded = ZeroPad(input, M);
   std::vector<Complex> spectrum;
   if (Rem(n_point, 2) == 0) { // If n_point is even
@@ -150,9 +150,9 @@ std::vector<Real> Irfft(const std::vector<Complex>& input,
 
 
 std::vector<std::vector<Real> >
-Irfft(const std::vector<std::vector<Complex> >& input, UInt n_point) noexcept {
+Irfft(const std::vector<std::vector<Complex> >& input, Int n_point) noexcept {
   std::vector<std::vector<Real> > outputs;
-  for (UInt i=0; i<input.size(); ++i) {
+  for (Int i=0; i<input.size(); ++i) {
     outputs.push_back(Irfft(input[i], n_point));
   }
   return outputs;
@@ -164,9 +164,9 @@ std::vector<Real> XCorr(const std::vector<Real>& vector_a,
   // TODO: implement for different sizes
   if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
-  UInt M = vector_a.size();
+  Int M = vector_a.size();
   
-  UInt n_fft = (UInt) pow(2.0, NextPow2(2*M-1));
+  Int n_fft = (UInt) pow(2.0, NextPow2(2*M-1));
   
   std::vector<Complex> x = Fft(ComplexVector(vector_a), n_fft);
   std::vector<Complex> y = Fft(ComplexVector(vector_b), n_fft);
@@ -176,12 +176,12 @@ std::vector<Real> XCorr(const std::vector<Real>& vector_a,
   // Ignore residual imaginary part
   std::vector<Real> c_real = RealPart(c);
   std::vector<Real> output = Zeros<Real>(2*M-1);
-  UInt end = c_real.size(); // Matlab's index of the last element of c
-  UInt maxlag = M-1;
+  Int end = c_real.size(); // Matlab's index of the last element of c
+  Int maxlag = M-1;
   // c = [c(end-maxlag+1:end,:);c(1:maxlag+1,:)];
-  UInt k = 0; // running index
-  for (UInt i=end-maxlag+1-1; i<=(end-1); ++i) { output[k++] = c_real[i]; }
-  for (UInt i=1-1; i<=(maxlag+1-1); ++i) { output[k++] = c_real[i]; }
+  Int k = 0; // running index
+  for (Int i=end-maxlag+1-1; i<=(end-1); ++i) { output[k++] = c_real[i]; }
+  for (Int i=1-1; i<=(maxlag+1-1); ++i) { output[k++] = c_real[i]; }
   
   return output;
 }

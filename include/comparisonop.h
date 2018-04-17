@@ -48,7 +48,7 @@ MCL_API bool IsEqual(const std::vector<T>& vector_a,
   if (vector_a.size() != vector_b.size())
     return false;
   
-  for (UInt i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<vector_a.size(); ++i) {
     if (! IsEqual(vector_a[i], vector_b[i], precision))
       return false;
   }

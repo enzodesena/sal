@@ -73,16 +73,16 @@ MCL_API Real RealPart(Complex scalar);
 MCL_API Real ImagPart(Complex scalar);
   
 /** Equivalent to Matlab's nextpow2(input) */
-MCL_API UInt NextPow2(Real input);
+MCL_API Int NextPow2(Real input);
   
 /** This returns the next power of 2. For instance 5=>8, 12=>16, 16=>16. */
-MCL_API UInt Next2(UInt input);
+MCL_API Int Next2(Int input);
   
 /** Converts a string to a double */
 MCL_API double StringToDouble(const std::string& s);
   
 /** Equivalent to Matlab's factorial(input) */
-MCL_API UInt Factorial(const UInt input);
+MCL_API Int Factorial(const Int input);
   
 /** Linear interpolation between two values */
 MCL_API Real LinearInterpolation(Real x1, Real y1, Real x2, Real y2, Real x);

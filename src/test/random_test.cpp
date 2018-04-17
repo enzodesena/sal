@@ -45,11 +45,11 @@ bool RandomGenerator::Test() {
   
   // Test integer generator
   std::vector<Int> rand_int_vector;
-  const UInt num_samples = 1000000;
+  const Int num_samples = 1000000;
   const Int min_value = -2;
   const Int max_value = 3;
   std::vector<Int> num_occurrances(max_value-min_value+1, 0);
-  for (UInt i=0; i<num_samples; ++i) {
+  for (Int i=0; i<num_samples; ++i) {
     Int output = rand_gen.RandInt(min_value, max_value);
     rand_int_vector.push_back(output);
     num_occurrances.at(output-min_value)++;
@@ -62,11 +62,11 @@ bool RandomGenerator::Test() {
   
   // Test integer generator
   std::vector<Int> rand_int_vector_b;
-  const UInt num_samples_b = 1000000;
+  const Int num_samples_b = 1000000;
   const Int min_value_b = 0;
   const Int max_value_b = 1;
   std::vector<Int> num_occurrances_b(max_value_b-min_value_b+1, 0);
-  for (UInt i=0; i<num_samples_b; ++i) {
+  for (Int i=0; i<num_samples_b; ++i) {
     Int output = rand_gen.RandInt(min_value_b, max_value_b);
     rand_int_vector_b.push_back(output);
     num_occurrances_b.at(output-min_value_b)++;

@@ -78,7 +78,7 @@ Real ImagPart(Complex scalar) {
   return scalar.imag();
 }
   
-UInt NextPow2(Real input) { return (UInt) ceil(log2(fabs((double) input))); }
+Int NextPow2(Real input) { return (UInt) ceil(log2(fabs((double) input))); }
 
   
 double StringToDouble(const std::string& s) {
@@ -97,7 +97,7 @@ Real Abs(Complex input) {
   return (Real) abs(input);
 }
   
-UInt Next2(UInt input) {
+Int Next2(Int input) {
   return (UInt) pow(2, NextPow2(input));
 }
   
@@ -107,10 +107,10 @@ Real Entropy(std::vector<Real> pdf, Real base) {
 }
   
   
-UInt Factorial(const UInt input) {
+Int Factorial(const Int input) {
   if(input <= 1) return 1;
   
-  UInt temp;
+  Int temp;
   temp = input * Factorial(input - 1);
   return temp;
 }

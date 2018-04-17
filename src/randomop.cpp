@@ -28,17 +28,17 @@ RandomGenerator::RandomGenerator() :
 }
 
   
-std::vector<Real> RandomGenerator::Randn(const UInt size) {
+std::vector<Real> RandomGenerator::Randn(const Int size) {
   std::vector<Real> output(size);
-  for (UInt i = 0; i < size; i++) {
+  for (Int i = 0; i < size; i++) {
     output[i] = distribution_norm_(generator_);
   }
   return output;
 }
   
-std::vector<Real> RandomGenerator::Rand(const UInt size) {
+std::vector<Real> RandomGenerator::Rand(const Int size) {
   std::vector<Real> output(size);
-  for (UInt i = 0; i < size; i++) {
+  for (Int i = 0; i < size; i++) {
     output[i] = distribution_uniform_(generator_);
   }
   return output;

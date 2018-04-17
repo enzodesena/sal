@@ -24,7 +24,7 @@ namespace mcl {
 /** Writes the vector to a file. The separator is endline. */
 MCL_API void Save(const std::vector<Real>& vector,
                   const std::string& file_name,
-                  const mcl::UInt precision = 5);
+                  const mcl::Int precision = 5);
 
 } // namespace mcl
 

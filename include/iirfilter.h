@@ -112,7 +112,7 @@ public:
   IirFilterBank(const std::vector<IirFilter>& filters) noexcept :
         filters_(filters) {}
   
-  virtual UInt num_filters() noexcept { return filters_.size(); }
+  virtual Int num_filters() noexcept { return filters_.size(); }
   
   /** Returns the output of the filter bank for an input equal to `input`. */
   virtual std::vector<Real> Filter(const Real input);

@@ -27,9 +27,9 @@ std::vector<Real> IirFilter::A() const {
 // Constructor
 IirFilter::IirFilter() :
   B_(mcl::UnaryVector<Real>(1.0)), A_(mcl::UnaryVector<Real>(1.0)) {
-  UInt size = B_.size();
+  Int size = B_.size();
   state_ = new Real[size];
-  for (UInt i=0; i<size; ++i) { state_[i] = 0.0; }
+  for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
 }
   
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
@@ -45,17 +45,17 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) :
   }
             
             
-  UInt size = B.size();
+  Int size = B.size();
   state_ = new Real[size];
-  for (UInt i=0; i<size; ++i) { state_[i] = 0.0; }
+  for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
 }
 
 // Copy constructor
 IirFilter::IirFilter(const IirFilter& copy) :
           B_(copy.B_), A_(copy.A_), A0_(copy.A0_) {
-  UInt size = B_.size();
+  Int size = B_.size();
   state_ = new Real[size];
-  for (UInt i=0; i<size; ++i) {
+  for (Int i=0; i<size; ++i) {
     state_[i] = copy.state_[i];
   }
 }
@@ -63,10 +63,10 @@ IirFilter::IirFilter(const IirFilter& copy) :
 // Assignment constructor
 IirFilter& IirFilter::operator= (const IirFilter& other) {
   if (this != &other) {
-    UInt size = other.B_.size();
+    Int size = other.B_.size();
     delete [] state_;
     state_ = new Real[size];
-    for (UInt i=0; i<size; ++i) { state_[i] = other.state_[i]; }
+    for (Int i=0; i<size; ++i) { state_[i] = other.state_[i]; }
     B_ = other.B_;
     A_ = other.A_;
     A0_ = other.A0_;
@@ -91,7 +91,7 @@ Real IirFilter::Filter(Real input) noexcept {
   Real v = input; // The temporary value in the recursive branch.
   Real output(0.0);
   
-  UInt size = B_.size();
+  Int size = B_.size();
   
   // Speed up return for simple gain filters
   if (size == 1) { return v*B_[0]; }
@@ -99,7 +99,7 @@ Real IirFilter::Filter(Real input) noexcept {
   // The index i in both loops refers to the branch in the classic plot of a 
   // direct form II, with the highest branch (the one multiplied by b(0) only)
   // being i=0.
-  for (UInt i=1; i<size; ++i) { 
+  for (Int i=1; i<size; ++i) { 
     v += state_[i-1]*(-A_[i]);
     output += state_[i-1]*B_[i];
   }
@@ -116,8 +116,8 @@ Real IirFilter::Filter(Real input) noexcept {
 }
   
 void IirFilter::Reset() {
-  const UInt size = B_.size();
-  for (UInt i=0; i<size; ++i) { state_[i] = 0.0; }
+  const Int size = B_.size();
+  for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
 }
 
 
@@ -213,9 +213,9 @@ IirFilter PinkifierFilter() {
 
   
 std::vector<Real> IirFilterBank::Filter(const Real input) {
-  const UInt N = filters_.size();
+  const Int N = filters_.size();
   std::vector<Real> outputs(N);
-  for (UInt i=0; i<N; ++i) {
+  for (Int i=0; i<N; ++i) {
     outputs[i] = filters_[i].Filter(input);
   }
   return outputs;
@@ -224,9 +224,9 @@ std::vector<Real> IirFilterBank::Filter(const Real input) {
   
 std::vector<std::vector<Real> >
 IirFilterBank::Filter(const std::vector<Real>& input) {
-  const UInt N = filters_.size();
+  const Int N = filters_.size();
   std::vector<std::vector<Real> > outputs(N);
-  for (UInt i=0; i<N; ++i) {
+  for (Int i=0; i<N; ++i) {
     outputs[i] = filters_[i].Filter(input);
   }
   return outputs;
@@ -234,8 +234,8 @@ IirFilterBank::Filter(const std::vector<Real>& input) {
 
   
 void IirFilterBank::Reset() {
-  const UInt N = filters_.size();
-  for (UInt i=0; i<N; ++i) {
+  const Int N = filters_.size();
+  for (Int i=0; i<N; ++i) {
     filters_[i].Reset();
   }
 }

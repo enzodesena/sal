@@ -58,7 +58,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
            &delay_line_[counter_],
            length_-counter_, result_a);
   
-  for (UInt i=0; i<length_-counter_; i++) { result += result_a[i]; }
+  for (Int i=0; i<length_-counter_; i++) { result += result_a[i]; }
   
   if (counter_ > 0) {
     Real result_b[counter_];
@@ -66,7 +66,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
              &delay_line_[0],
              counter_, result_b);
     
-    for (UInt i=0; i<counter_; i++) { result += result_b[i]; }
+    for (Int i=0; i<counter_; i++) { result += result_b[i]; }
   }
 #else
   Int index = (Int) counter_;
@@ -170,7 +170,7 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
 std::vector<Real>
 FirFilter::FilterSequential(const std::vector<Real>& input) noexcept {
   std::vector<Real> output(input.size());
-  for (UInt i=0; i<input.size(); ++i) {
+  for (Int i=0; i<input.size(); ++i) {
     output[i] = this->Filter(input[i]);
   }
   return output;

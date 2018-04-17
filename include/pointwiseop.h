@@ -32,7 +32,7 @@ MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
   if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output(vector_a.size());
-  for (UInt i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]+vector_b[i];
   }
   return output;
@@ -63,7 +63,7 @@ MCL_API std::vector<T> Opposite(const std::vector<T>& vector) noexcept {
   //ASSERT(std::numeric_limits<T>::is_signed);
   
   std::vector<T> output(vector.size());
-  for (UInt i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
+  for (Int i=0; i<vector.size(); ++i) { output[i] = -vector[i]; }
   return output;
 }
   
@@ -92,7 +92,7 @@ MCL_API std::vector<T> Multiply(const std::vector<T>& vector_a,
   if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output(vector_a.size());
-  for (UInt i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]*vector_b[i];
   }
   return output;
@@ -124,7 +124,7 @@ MCL_API std::vector<T> Divide(const std::vector<T>& vector_a,
                               const std::vector<T>& vector_b) noexcept {
   if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   std::vector<T> output(vector_a.size());
-  for (UInt i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]/vector_b[i];
   }
   return output;
@@ -134,9 +134,9 @@ MCL_API std::vector<T> Divide(const std::vector<T>& vector_a,
 /** Equivalent to Matlab's exp(vector). */
 template<class T>
 MCL_API std::vector<T> Exp(const std::vector<T>& vector) noexcept {
-  UInt n(vector.size());
+  Int n(vector.size());
   std::vector<T> output(vector.size());
-  for (UInt i=0; i<n; ++i) { output[i] = exp(vector[i]); }
+  for (Int i=0; i<n; ++i) { output[i] = exp(vector[i]); }
   return output;
 }
   

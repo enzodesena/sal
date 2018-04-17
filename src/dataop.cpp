@@ -18,7 +18,7 @@ namespace mcl {
   
 void Save(const std::vector<Real>& vector,
           const std::string& file_name,
-          const mcl::UInt precision) {
+          const mcl::Int precision) {
   mcl::Matrix<Real> matrix(vector.size(), 1);
   matrix.set_column(0, vector);
   matrix.Save(file_name, precision);

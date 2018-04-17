@@ -20,18 +20,18 @@ namespace mcl {
  Construncts a bandpass butterworth filter. Equivalent to Matlab's
  butter(order, [w_low, w_high])
  */
-IirFilter Butter(const UInt order,
+IirFilter Butter(const Int order,
                  const Real w_low, const Real w_high);
 
 /** Constructs a digital octave filter with given center frequency
  and sampling frequency.
  */
-IirFilter OctaveFilter(const UInt order,
+IirFilter OctaveFilter(const Int order,
                        const Real center_frequency,
                        const Real sampling_frequency);
   
-IirFilterBank OctaveFilterBank(const UInt order,
-                               const UInt num_bands,
+IirFilterBank OctaveFilterBank(const Int order,
+                               const Int num_bands,
                                const Real starting_frequency,
                                const Real sampling_frequency);
   

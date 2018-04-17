@@ -29,14 +29,14 @@ namespace mcl {
   
 /** Equivalent to Matlab's length(input). */
 template<class T>
-MCL_API UInt Length(const std::vector<T>& input) noexcept {
+MCL_API Int Length(const std::vector<T>& input) noexcept {
   return (UInt) input.size();
 }
 
 
 /** Returns a vector of zeros */
 template <class T> 
-MCL_API std::vector<T> Zeros(UInt length) noexcept {
+MCL_API std::vector<T> Zeros(Int length) noexcept {
   //TODO: check if this returns zeros for all types
   return std::vector<T>(length);
 }
@@ -53,10 +53,10 @@ MCL_API std::vector<T> EmptyVector() noexcept {
  */
 template<class T> 
 MCL_API std::vector<T> ZeroPad(const std::vector<T>& input,
-                               UInt total_length) noexcept {
+                               Int total_length) noexcept {
   std::vector<T> output = Zeros<T>(total_length);
-  UInt M = (input.size() < total_length) ? input.size() : total_length;
-  for (UInt i=0; i<M; ++i) { output[i] = input[i]; }
+  Int M = (input.size() < total_length) ? input.size() : total_length;
+  for (Int i=0; i<M; ++i) { output[i] = input[i]; }
   return output;
 }
 
@@ -70,7 +70,7 @@ template<class T>
 MCL_API std::vector<T> Multiply(const std::vector<T>& vector,
                                 const T gain) noexcept {
   std::vector<T> output(vector.size());
-  for (UInt i=0; i<vector.size(); ++i) {
+  for (Int i=0; i<vector.size(); ++i) {
     output[i] = vector[i]*gain;
   }
   return output;
@@ -108,7 +108,7 @@ template<class T>
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
                     const T scalar) noexcept {
   std::vector<T> output(vector_a.size());
-  for (UInt i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<vector_a.size(); ++i) {
     output[i] = vector_a[i]+scalar;
   }
   return output;
@@ -122,15 +122,15 @@ MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
  */
 template<class T> 
 MCL_API std::vector<T> Subset(const std::vector<T>& vector,
-                      const UInt from_index, const UInt to_index) noexcept {
+                      const Int from_index, const Int to_index) noexcept {
   if (from_index >= vector.size()) { ASSERT(false); }
   if (to_index >= vector.size()) { ASSERT(false); }
   if (from_index > to_index) { ASSERT(false); }
   
   // Allocate output vector with appropriate length.
   std::vector<T> output(to_index-from_index+1);
-  UInt k = 0; // running index into new vector;
-  for (UInt i=from_index; i<=to_index; ++i) {
+  Int k = 0; // running index into new vector;
+  for (Int i=from_index; i<=to_index; ++i) {
     output[k++] = vector[i];
   }
   return output;
@@ -174,8 +174,8 @@ MCL_API std::vector<T> BinaryVector(const T& element_a,
 template<class T>
 MCL_API std::vector<T> Flip(std::vector<T> vector) noexcept {
   if (vector.size() <= 1) { return vector; }
-  UInt N(Length(vector));
-  for (UInt i=0; i<=((UInt) (floor(N/2)-1)); ++i) {
+  Int N(Length(vector));
+  for (Int i=0; i<=((UInt) (floor(N/2)-1)); ++i) {
     T temp_value = vector[i];
     vector[i] = vector[N-i-1];
     vector[N-i-1] = temp_value;
@@ -190,10 +190,10 @@ MCL_API std::vector<T> Flip(std::vector<T> vector) noexcept {
 template<class T>
 MCL_API std::vector<T> CircShift(const std::vector<T>& vector,
                                  Int num_positions) noexcept {
-  UInt N = vector.size();
+  Int N = vector.size();
   std::vector<T> output(N);
-  for (UInt i=0; i<N; ++i) {
-    UInt index = (UInt) Mod(((Int) i) - num_positions, (Int) N);
+  for (Int i=0; i<N; ++i) {
+    Int index = (UInt) Mod(((Int) i) - num_positions, (Int) N);
     output[i] = vector[index];
   }
   
@@ -204,9 +204,9 @@ MCL_API std::vector<T> CircShift(const std::vector<T>& vector,
 template<class T>
 MCL_API std::vector<T> Conv(const std::vector<T>& vector_a,
                     const std::vector<T>& vector_b) noexcept {
-  UInt N_a = vector_a.size();
-  UInt N_b = vector_b.size();
-  UInt out_length = N_a+N_b-1;
+  Int N_a = vector_a.size();
+  Int N_b = vector_b.size();
+  Int out_length = N_a+N_b-1;
   
   std::vector<T> moving_vector_temp = Concatenate(Zeros<T>(N_b-1), 
                                                   Flip(vector_a));
@@ -214,8 +214,8 @@ MCL_API std::vector<T> Conv(const std::vector<T>& vector_a,
                                                Zeros<T>(N_b-1));
   
   std::vector<T> output = Zeros<T>(out_length);
-  for (UInt n=0; n<out_length; ++n) {
-    for (UInt m=0; m<N_b; ++m) {
+  for (Int n=0; n<out_length; ++n) {
+    for (Int m=0; m<N_b; ++m) {
       output[out_length-n-1] += moving_vector_a[n+m]*vector_b[m];
     }
   }
@@ -232,13 +232,13 @@ MCL_API std::vector<T>
 AddVectors(const std::vector<std::vector<T> >& vectors) noexcept {
   // Get maximum length
   std::vector<UInt> vector_lengths(vectors.size());
-  for (UInt i=0; i<vectors.size(); ++i) {
+  for (Int i=0; i<vectors.size(); ++i) {
     vector_lengths[i] = vectors[i].size();
   }
-  UInt max_length(Max(vector_lengths));
+  Int max_length(Max(vector_lengths));
   
   std::vector<T> output = Zeros<T>(max_length);
-  for (UInt i=0; i<vectors.size(); ++i) {
+  for (Int i=0; i<vectors.size(); ++i) {
     output = Add(output, ZeroPad(vectors[i], max_length));
   }
   
@@ -253,7 +253,7 @@ template<class T>
 MCL_API std::vector<T> AddVectors(const std::vector<T>& vector_a,
                                   const std::vector<T>& vector_b) noexcept {
   // Get maximum length
-  UInt max_length(Max(vector_a.size(), vector_b.size()));
+  Int max_length(Max(vector_a.size(), vector_b.size()));
   
   std::vector<T> output = Zeros<T>(max_length);
   output = Add(output, ZeroPad(vector_a, max_length));
@@ -271,7 +271,7 @@ MCL_API std::vector<T> Interleave(const std::vector<T>& vector_a,
   if (vector_a.size() != vector_b.size()) { ASSERT(false); }
   
   std::vector<T> output;
-  for (UInt i=0; i<vector_a.size(); ++i) {
+  for (Int i=0; i<vector_a.size(); ++i) {
     output.push_back(vector_a[i]);
     output.push_back(vector_b[i]);
   }
@@ -285,9 +285,9 @@ MCL_API std::vector<T> Interleave(const std::vector<T>& vector_a,
 template<class T>
 MCL_API std::vector<T> ColonOperator(const Int from, const Int to) noexcept {
   if ((to-from) < 0) { return EmptyVector<T>(); }
-  const UInt vector_length = (UInt) (to-from+1);
+  const Int vector_length = (UInt) (to-from+1);
   std::vector<T> output(vector_length);
-  for (UInt i=0; i<vector_length; ++i) {
+  for (Int i=0; i<vector_length; ++i) {
     output[i] = ((T) i) + ((T) from);
   }
   return output;
@@ -308,8 +308,8 @@ ColonOperator(const Real from, const Real step, const Real to) noexcept;
  */
 template<class T>
 MCL_API std::vector<T> Elements(const std::vector<T>& vector,
-                                const UInt from_id,
-                                const UInt to_id) noexcept {
+                                const Int from_id,
+                                const Int to_id) noexcept {
   return std::vector<T>(vector.begin() + ((Int)from_id),
                         vector.begin() + ((Int)to_id)+1);
 }
@@ -317,12 +317,12 @@ MCL_API std::vector<T> Elements(const std::vector<T>& vector,
   
 template<class T>
 MCL_API std::vector<T> GetFrame(const std::vector<T>& vector,
-                                const UInt frame_id,
-                                const UInt frame_length) noexcept {
-  UInt size(vector.size());
+                                const Int frame_id,
+                                const Int frame_length) noexcept {
+  Int size(vector.size());
   
-  UInt from_sample(frame_id * frame_length);
-  UInt to_sample = Min(from_sample + frame_length - 1,
+  Int from_sample(frame_id * frame_length);
+  Int to_sample = Min(from_sample + frame_length - 1,
                        size - 1);
   if (to_sample > (size - 1)) { to_sample = size - 1; }
   // TODO: modify here (23/6/13: I am not sure what I meant here)
@@ -335,9 +335,9 @@ MCL_API std::vector<T> GetFrame(const std::vector<T>& vector,
  */
 template<class T>
 MCL_API T Prod(const std::vector<T>& vector) noexcept {
-  const UInt num_elements = vector.size();
+  const Int num_elements = vector.size();
   T output = (T) 1.0;
-  for (UInt i=0; i<num_elements; ++i) { output *= vector[i]; }
+  for (Int i=0; i<num_elements; ++i) { output *= vector[i]; }
   return output;
 }
   
@@ -345,11 +345,11 @@ MCL_API T Prod(const std::vector<T>& vector) noexcept {
 template<class T>
 MCL_API T Dot(const std::vector<T>& vector_a,
               const std::vector<T>& vector_b) noexcept {
-  const UInt num_elements = vector_a.size();
+  const Int num_elements = vector_a.size();
   if (num_elements != vector_b.size()) { ASSERT(false); }
   
   T output = (T) 0.0;
-  for (UInt i=0; i<num_elements; ++i) {
+  for (Int i=0; i<num_elements; ++i) {
     output += vector_a[i]*vector_b[i];
   }
   return output;
@@ -360,30 +360,30 @@ MCL_API Real Norm(const std::vector<Real>& vector,
   
 template<class T>
 MCL_API void Print(const std::vector<T>& vector) noexcept {
-  const UInt num_elements = vector.size();
+  const Int num_elements = vector.size();
   std::cout<<"\n------------\n";
-  for (UInt i=0; i<num_elements; ++i) {
+  for (Int i=0; i<num_elements; ++i) {
     std::cout<<vector[i]<<std::endl;
   }
   std::cout<<"------------\n";
 }
 
 /** Returns a real vector of `length` ones. */
-MCL_API std::vector<Real> Ones(UInt length) noexcept;
+MCL_API std::vector<Real> Ones(Int length) noexcept;
   
   
-MCL_API std::vector<Real> Hann(const UInt length) noexcept;
+MCL_API std::vector<Real> Hann(const Int length) noexcept;
   
 /** Returns a Hamming window of length `length' */
-MCL_API std::vector<Real> Hamming(const UInt length) noexcept;
+MCL_API std::vector<Real> Hamming(const Int length) noexcept;
   
-MCL_API std::vector<Real> TukeyWin(const UInt length,
+MCL_API std::vector<Real> TukeyWin(const Int length,
                                    const Real ratio) noexcept;
 
 
 /** Equivalent to Matlab's linspace(min, max, num_elements); */
 MCL_API std::vector<Real> LinSpace(Real min, Real max,
-                                   UInt num_elements) noexcept;
+                                   Int num_elements) noexcept;
   
   
 MCL_API Real Sum(const std::vector<Real>& input) noexcept;
@@ -449,11 +449,11 @@ MCL_API std::vector<Real> CumSum(const std::vector<Real>& input) noexcept;
 /** Splits signal up into (overlapping) frames */
 MCL_API std::vector<std::vector<Real> > Enframe(const std::vector<Real>& input,
                                                 const std::vector<Real>& window,
-                                                const UInt frame_increment) noexcept;
+                                                const Int frame_increment) noexcept;
   
 MCL_API std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
                                      const std::vector<Real>& window,
-                                     const UInt frame_increment) noexcept;
+                                     const Int frame_increment) noexcept;
   
 MCL_API std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept;
   

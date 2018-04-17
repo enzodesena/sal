@@ -266,7 +266,7 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(output_b_cmp, output_b));
   
   filter_l.Reset();
-  for (UInt i=0; i<input_b.size(); ++i) {
+  for (Int i=0; i<input_b.size(); ++i) {
     ASSERT(mcl::IsEqual(filter_l.Filter(input_b[i]), output_b_cmp[i]));
   }
   
@@ -312,7 +312,7 @@ bool FirFilter::Test() {
   
   //
   filter_k.Reset();
-  for (UInt i=0; i<input_c.size()-1; ++i) {
+  for (Int i=0; i<input_c.size()-1; ++i) {
     ASSERT(IsEqual(filter_k.Filter(input_k[i]), output_k_cmp[i]));
   }
   
@@ -407,7 +407,7 @@ void FirFilter::SpeedTests() {
   (done - launch) / ((Real) CLOCKS_PER_SEC)*100<<"% \n";
   
   launch=clock();
-  for (UInt i=0; i<input.size(); ++i) {
+  for (Int i=0; i<input.size(); ++i) {
     fir_filter.Filter(input[i]);
   }
   done=clock();
@@ -427,7 +427,7 @@ void FirFilter::SpeedTests() {
   (done - launch) / ((Real) CLOCKS_PER_SEC)*100<<"% \n";
   
   launch=clock();
-  for (UInt i=0; i<input.size(); ++i) {
+  for (Int i=0; i<input.size(); ++i) {
     fir_filter_b.Filter(input[i]);
   }
   done=clock();

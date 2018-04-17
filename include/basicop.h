@@ -31,10 +31,10 @@ namespace mcl {
  the index of the first one is returned.
  */
 template<class T>
-MCL_API UInt MinIndex(const std::vector<T>& input) noexcept {
+MCL_API Int MinIndex(const std::vector<T>& input) noexcept {
   T min_value = std::numeric_limits<T>::max();
-  UInt min_index = 0;
-  for (UInt i=0; i<input.size(); ++i) {
+  Int min_index = 0;
+  for (Int i=0; i<input.size(); ++i) {
     if (input[i] < min_value) {
       min_value = input[i];
       min_index = i;
@@ -56,12 +56,12 @@ MCL_API T Min(const std::vector<T>& input) {
  the index of the first one is returned.
  */
 template<class T>
-MCL_API UInt MaxIndex(const std::vector<T>& input) noexcept {
+MCL_API Int MaxIndex(const std::vector<T>& input) noexcept {
   return MinIndex(Opposite(input));
 }
   
 template<>
-MCL_API UInt MaxIndex<UInt>(const std::vector<UInt>& input) noexcept;
+MCL_API Int MaxIndex<UInt>(const std::vector<UInt>& input) noexcept;
 
   
 /** Returns the maximum value of the vector. */
