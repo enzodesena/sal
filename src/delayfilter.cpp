@@ -12,7 +12,7 @@
 #include <cassert>
 
 using sal::Sample;
-using sal::UInt;
+using sal::Int;
 
 namespace sal {
 

@@ -17,7 +17,7 @@ using sal::Microphone;
 using sal::Time;
 using sal::Length;
 using sal::Sample;
-using sal::UInt;
+using sal::Int;
 using mcl::Point;
 using sal::Int;
   

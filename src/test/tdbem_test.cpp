@@ -16,7 +16,7 @@ using sal::Time;
 using sal::Length;
 using sal::Sample;
 using mcl::IirFilter;
-using sal::UInt;
+using sal::Int;
 using sal::Source;
 using sal::Microphone;
 using mcl::Point;

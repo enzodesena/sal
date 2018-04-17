@@ -13,6 +13,9 @@
 #include <vector>
 #include "saltypes.h"
 #include "comparisonop.h"
+#include "digitalfilter.h"
+#include "iirfilter.h"
+#include "vectorop.h"
 #include "point.h"
 #include <iostream>
 
@@ -122,6 +125,62 @@ private:
   bool has_reached_target_;
 };
   
+  
+//
+//  /** Implements a first-order IIR low-pass filter with a given decay constant. */
+//  class SAL_API RampSmoothingFilter : public DigitalFilter {
+//  public:
+//
+//    /**
+//     @param[in] ramp_samples number of samples after which the value is
+//     to 1/e away from target value. */
+//    RampSmoothingFilter(const Real ramp_samples) noexcept {
+//      ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+//                          "Decay constant cannot be negative ");
+//
+//
+//    }
+//
+//    virtual Real Filter(const Real input) noexcept {
+//      return filter_.Filter(input);
+//    }
+//
+//    using DigitalFilter::Filter;
+//
+//    virtual void Reset() noexcept { filter_.Reset(); }
+//
+//
+//  private:
+//  };
+//
+  
+/** Implements a first-order IIR low-pass filter with a given decay constant. */
+class LowPassSmoothingFilter : public mcl::DigitalFilter {
+public:
+  /**
+   @param[in] ramp_samples number of samples after which the value is
+   to 1/e away from target value. */
+  LowPassSmoothingFilter(const mcl::Real ramp_samples) noexcept {
+    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+                        "Decay constant cannot be negative.");
+    
+    mcl::Real a1 = exp(-1.0/ramp_samples);
+    mcl::Real b0 = 1.0 - a1;
+    filter_ = mcl::IirFilter(mcl::BinaryVector(b0, 0.0),
+                             mcl::BinaryVector(1.0, -a1));
+  }
+  
+  virtual mcl::Real Filter(const mcl::Real input) noexcept {
+    return filter_.Filter(input);
+  }
+  
+  using mcl::DigitalFilter::Filter;
+  
+  virtual void Reset() noexcept { filter_.Reset(); }
+  
+private:
+  mcl::IirFilter filter_;
+};
 
 } // namespace sal
 

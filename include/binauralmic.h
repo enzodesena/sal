@@ -58,11 +58,6 @@ private:
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept = 0;
   
-  virtual void AddPlaneWaveRelative(const Sample* signal,
-                                    const Int num_samples,
-                                    const mcl::Point& point,
-                                    const Int wave_id,
-                                    Buffer& output_buffer) noexcept;
   
   void CreateInstanceIfNotExist(const Int wave_id) noexcept;
   
@@ -78,6 +73,13 @@ private:
   friend class BinauralMicInstance;
   
 protected:
+  
+  virtual void AddPlaneWaveRelative(const Sample* signal,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept;
+  
   HeadRefOrientation reference_orientation_;
 };
 

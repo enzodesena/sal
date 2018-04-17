@@ -17,7 +17,7 @@ namespace sal {
 using sal::Length;
 using mcl::Point;
 using mcl::Int;
-using sal::UInt;
+using sal::Int;
 using sal::Time;
 using sal::Sample;
 using mcl::IsLargerOrEqual;

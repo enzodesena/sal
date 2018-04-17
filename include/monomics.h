@@ -55,6 +55,9 @@ public:
   MemorylessMonoMic(mcl::Point position, mcl::Quaternion orientation) :
   MemorylessMic(position, orientation), MonoMic(position, orientation)  {}
   
+  virtual ~MemorylessMonoMic() {}
+  
+protected:
   virtual void AddPlaneWaveRelative(const Sample* input_data,
                                     const Int num_samples,
                                     const mcl::Point& point,
@@ -71,9 +74,11 @@ public:
                      mono_buffer.GetWritePointer());
   }
   
-  virtual ~MemorylessMonoMic() {}
+  
+  template<typename T> friend class MicrophoneArray;
   
 private:
+  
   virtual Sample GetDirectivity(const mcl::Point& point) = 0;
 };
   

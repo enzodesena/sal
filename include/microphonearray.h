@@ -60,7 +60,7 @@ public:
     mcl::Point position_delta(position.x()-position_.value().x(),
                               position.y()-position_.value().y(),
                               position.z()-position_.value().z());
-    for (Int i=0; i<microphones_.size(); ++i) {
+    for (Int i=0; i<(Int)microphones_.size(); ++i) {
       mcl::Point old_mic_position = microphones_[i]->position();
       mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
                                   old_mic_position.y()+position_delta.y(),
@@ -71,7 +71,7 @@ public:
   }
 
   virtual void set_orientation(const mcl::Quaternion& orientation) {
-    for (Int i=0; i<microphones_.size(); ++i) {
+    for (Int i=0; i<(Int)microphones_.size(); ++i) {
       microphones_[i]->set_orientation(orientation);
     }
     orientation_ = orientation;
@@ -82,7 +82,7 @@ public:
    the array is considered coincident.
    */
   virtual bool IsCoincident() {
-    const Int num_microphones = microphones_.size();
+    const Int num_microphones = (Int)microphones_.size();
 
     if (num_microphones == 0 || num_microphones == 1) { return true; }
 
@@ -100,14 +100,14 @@ public:
   static bool Test();
 
   ~MicrophoneArray() {
-    for (Int i=0; i<microphones_.size();++i) {
+    for (Int i=0; i<(Int)microphones_.size();++i) {
       delete microphones_[i];
     }
     microphones_.clear();
   }
 
-private:
 
+protected:
   /**
    Simulates the output of the microphone array to a source in the direction
    of source.position() and with input signal `source.signal()`.
@@ -120,19 +120,18 @@ private:
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept {
     MultichannelBuffer& multi_buffer =
-          dynamic_cast<MultichannelBuffer&>(output_buffer);
+    dynamic_cast<MultichannelBuffer&>(output_buffer);
     
-    Int num_microphones(microphones_.size());
+    Int num_microphones((Int)microphones_.size());
     for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
       MonoBuffer referencing_buffer(multi_buffer, mic_i);
       // Each microphone will push in his own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
       microphones_[mic_i]->AddPlaneWaveRelative(input_data, num_samples, point,
-                                            wave_id, referencing_buffer);
+                                                wave_id, referencing_buffer);
     }
   }
-
-protected:
+  
   std::vector<T*> microphones_;
 };
 

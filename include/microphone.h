@@ -147,6 +147,14 @@ private:
   
   void CalculateRelativePoint(const mcl::Point& point, const Int wave_id);
   
+  
+  
+  virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept;
+  
+protected:
   /**
    This is implemented by the specific type of microphones. `mcl::Point` in this
    case is relative to the microphone reference system.
@@ -166,18 +174,11 @@ private:
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept = 0;
   
-  virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
-                                    const mcl::Point& point,
-                                    const Int wave_id,
-                                    Buffer& output_buffer) noexcept;
-  
-protected:
   TripletHandler position_;
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;
   
-  template<typename T>
-  friend class MicrophoneArray;
+  template<typename T> friend class MicrophoneArray;
 };
 
 class SAL_API StereoMicrophone : public Microphone {
