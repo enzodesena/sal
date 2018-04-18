@@ -158,23 +158,6 @@ public:
                                     Buffer& output_buffer) noexcept = 0;
   
 private:
-  /**
-   Cache variables to speed up. Since most of the times two consecutive calls
-   to `Filter()` are for the same `mcl::Point` in space, we save the result of the
-   geometrical calculations.
-   */
-  std::map<UInt,mcl::Point> last_point_;
-  
-  /**
-   This point is the most up-to-date point in the reference system of the mic.
-   */
-  std::map<UInt,mcl::Point> last_relative_point_;
-  
-  void CalculateRelativePoint(const mcl::Point& point, const Int wave_id);
-  
-  
-  
-  
   TripletHandler position_;
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;

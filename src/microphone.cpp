@@ -25,7 +25,6 @@ Point Microphone::position() const noexcept { return position_.value(); }
 
 void Microphone::set_position(const Point& position) noexcept {
   position_.set_value(position);
-  last_point_.clear();
 }
   
 void Microphone::set_target_position(const Point& position) noexcept {
@@ -50,7 +49,6 @@ Quaternion Microphone::orientation() const noexcept { return orientation_; }
 /** Set microphone orientation */
 void Microphone::set_orientation(const mcl::Quaternion& orientation) noexcept {
   orientation_ = orientation;
-  last_point_.clear();
 }
   
   
@@ -59,14 +57,6 @@ void Microphone::set_handedness(const mcl::Handedness handedness) noexcept {
 }
   
 
-void Microphone::CalculateRelativePoint(const Point& point,
-                                        const Int wave_id) {
-  if (last_point_.count(wave_id) == 0 ||
-      ! IsEqual(last_point_[wave_id], point)) {
-    last_point_[wave_id] = point;
-    last_relative_point_[wave_id] = GetRelativePoint(point);
-  }
-}
 
 void Microphone::AddPlaneWave(const Sample input_sample,
                               const mcl::Point& point,
@@ -94,10 +84,9 @@ void Microphone::AddPlaneWave(const Sample* input_data,
                               const Point& point,
                               const Int wave_id,
                               Buffer& output_buffer) noexcept {
-  CalculateRelativePoint(point, wave_id);
   this->AddPlaneWaveRelative(input_data,
                              num_samples,
-                             last_relative_point_[wave_id],
+                             GetRelativePoint(point),
                              wave_id,
                              output_buffer);
 }
