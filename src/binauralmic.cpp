@@ -87,6 +87,7 @@ void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_buffer,
                                                const mcl::Point& point,
                                                Sample* output_data) noexcept {
   UpdateFilter(point);
+  assert(num_samples<MAX_VLA_LENGTH);
   Sample temp_data[num_samples];
   filter_.Filter(input_buffer, num_samples, temp_data);
   mcl::Add(temp_data, output_data, num_samples, output_data);

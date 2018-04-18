@@ -38,13 +38,10 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
       
       for (Int i=1; i<=order_; ++i) {
         // TODO: add 3D components
-        Sample temp_data_sin[num_samples];
-        mcl::Multiply(input_data, num_samples, sqrt_2*sin(((Angle) i)*phi), temp_data_sin);
-        
-        Sample temp_data_cos[num_samples];
-        mcl::Multiply(input_data, num_samples, sqrt_2*cos(((Angle) i)*phi), temp_data_cos);
-        bformat_buffer.AddSamples(i, 1, 0, num_samples, temp_data_cos);
-        bformat_buffer.AddSamples(i, -1, 0, num_samples, temp_data_sin);
+        bformat_buffer.MultiplyAddSamples(i, 1, 0, num_samples, input_data,
+                                          sqrt_2*cos(((Angle) i)*phi));
+        bformat_buffer.MultiplyAddSamples(i, -1, 0, num_samples, input_data,
+                                          sqrt_2*sin(((Angle) i)*phi));
       }
       break;
     }

@@ -12,6 +12,8 @@
 
 #include "saltypes.h"
 #include "pointwiseop.h"
+#include "vectorop.h"
+#include "digitalfilter.h"
 #include <iostream>
 
 namespace sal {
@@ -43,7 +45,7 @@ public:
   /** Constructs a multichannel buffer. */
   MultichannelBuffer(const Int num_channels, const Int num_samples) :
       num_channels_(num_channels), num_samples_(num_samples),
-      owns_data_(true) {
+      owns_data_(true), temporary_vector_(std::vector<Sample>(num_samples, 0.0)) {
     ASSERT(num_channels >= 0 & num_samples >= 0);
     AllocateMemory();
   }
@@ -59,7 +61,8 @@ public:
    */
   MultichannelBuffer(Sample** data_referenced,
                      const Int num_channels, const Int num_samples) noexcept :
-  num_channels_(num_channels), num_samples_(num_samples), owns_data_(false) {
+      num_channels_(num_channels), num_samples_(num_samples), owns_data_(false),
+      temporary_vector_(std::vector<Sample>(num_samples, 0.0)) {
     data_ = data_referenced;
   }
 
@@ -141,11 +144,41 @@ public:
     ASSERT(num_samples >= 0);
     ASSERT((from_sample_id+num_samples) <= num_samples_);
     
-    for (Int sample_id=from_sample_id; sample_id<(from_sample_id+num_samples);
-         ++sample_id) {
-      data_[channel_id][sample_id] = samples[sample_id-from_sample_id];
-    }
+    mcl::Add(samples,
+             &(data_[channel_id][from_sample_id]), num_samples,
+             &(data_[channel_id][from_sample_id]));
   }
+  
+  /** This method first multiplies all the input samples by a certain constant
+   and then adds the result to the samples in the buffer. */
+  void MultiplyAddSamples(const Int channel_id,
+                          const Int from_sample_id,
+                          const Int num_samples,
+                          const Sample* samples,
+                          const Sample constant) noexcept {
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(from_sample_id >= 0);
+    ASSERT(num_samples >= 0);
+    ASSERT((from_sample_id+num_samples) <= num_samples_);
+    mcl::MultiplyAdd(samples, constant, &(data_[channel_id][from_sample_id]),
+                     num_samples, &(data_[channel_id][from_sample_id]));
+  }
+  
+  void FilterAddSamples(const Int channel_id,
+                        const Int from_sample_id,
+                        const Int num_samples,
+                        const Sample* samples,
+                        mcl::DigitalFilter& filter) noexcept {
+    ASSERT(channel_id >= 0 && channel_id < num_channels());
+    ASSERT(from_sample_id >= 0);
+    ASSERT(num_samples >= 0);
+    ASSERT((from_sample_id+num_samples) <= num_samples_);
+    filter.Filter(samples, num_samples, temporary_vector_.data());
+    mcl::Add(temporary_vector_.data(),
+             &(data_[channel_id][from_sample_id]), num_samples,
+             &(data_[channel_id][from_sample_id]));
+  }
+
   
   const Sample* GetReadPointer(const Int channel_id) const noexcept {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
@@ -203,10 +236,11 @@ public:
     right_channel = 1
   };
   
-    
+  
   MultichannelBuffer(const MultichannelBuffer& other) :
-  num_channels_(other.num_channels_), num_samples_(other.num_samples_),
-  owns_data_(other.owns_data_) {
+      num_channels_(other.num_channels_), num_samples_(other.num_samples_),
+      owns_data_(other.owns_data_),
+      temporary_vector_(std::vector<Sample>(other.num_samples(), 0.0)) {
     if (owns_data_) {
       AllocateMemory();
       SetSamples(other);
@@ -222,15 +256,14 @@ public:
    refers to A's data, then the assignment A = B has no effect. */
   MultichannelBuffer& operator=(const MultichannelBuffer& other) {
     if (this != &other) {
-      if (owns_data_ && other.data_ == data_) {
-        return *this;
-      }
+      if (owns_data_ && other.data_ == data_) { return *this; }
       
       if (owns_data_) { DeallocateMemory(); }
       
       num_channels_ = other.num_channels_;
       num_samples_ = other.num_samples_;
       owns_data_ = other.owns_data_;
+      temporary_vector_ = std::vector<Sample>(other.num_samples(), 0.0);
       
       if (owns_data_) {
         AllocateMemory();
@@ -248,10 +281,12 @@ public:
     
   static bool Test();
 private:
+  
   Sample** data_;
   Int num_channels_;
   Int num_samples_;
   bool owns_data_;
+  std::vector<Sample> temporary_vector_; // Support vector for filter operation
   
   void AllocateMemory() {
     data_ = new double*[num_channels_];
@@ -287,6 +322,17 @@ public:
   MonoBuffer(MultichannelBuffer& referenced_buffer, const Int channel_id) noexcept :
     MultichannelBuffer(&(referenced_buffer.GetWritePointers()[channel_id]), 1,
                        referenced_buffer.num_samples()) {}
+  
+  /** This first multiplies all the input samples by a certain constant
+   and then adds the result to the samples in the buffer. */
+  void MultiplyAddSamples(const Int from_sample_id,
+                          const Int num_samples,
+                          const Sample* samples,
+                          const Sample constant) noexcept {
+    MultichannelBuffer::MultiplyAddSamples(mono_channel,
+                                           from_sample_id, num_samples,
+                                           samples, constant);
+  }
   
   inline void SetSample(const Int sample_id,
                          const Sample sample_value) noexcept {
@@ -399,6 +445,18 @@ public:
                   const Sample* samples) {
     MultichannelBuffer::AddSamples(CalculateChannelId(degree, order),
                                    from_sample_id, num_samples, samples);
+  }
+  
+  /** This first multiplies all the input samples by a certain constant
+   and then adds the result to the samples in the buffer. */
+  void MultiplyAddSamples(const Int degree, const Int order,
+                          const Int from_sample_id,
+                          const Int num_samples,
+                          const Sample* samples,
+                          const Sample constant) noexcept {
+    MultichannelBuffer::MultiplyAddSamples(CalculateChannelId(degree, order),
+                                           from_sample_id, num_samples,
+                                           samples, constant);
   }
   
   inline Sample GetSample(const Int degree, const Int order,

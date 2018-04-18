@@ -99,6 +99,19 @@ bool Buffer::Test() {
   ASSERT(buf.num_samples() == 3);
   ASSERT(IsEqual(buf3.GetSample(0, 1), 0.3));
   
+  ASSERT(IsEqual(buf.GetSample(0, 0), 0));
+  ASSERT(IsEqual(buf.GetSample(0, 1), 0.3));
+  ASSERT(IsEqual(buf.GetSample(0, 2), 0.0));
+  Sample new_samples[2];
+  new_samples[0] = 1.0;
+  new_samples[1] = 0.0;
+  Sample constant = 2.0;
+  buf.MultiplyAddSamples(0, 1, 2, new_samples, constant);
+  
+  ASSERT(IsEqual(buf.GetSample(0, 0), 0.0));
+  ASSERT(IsEqual(buf.GetSample(0, 1), 0.3+1.0*2.0));
+  ASSERT(IsEqual(buf.GetSample(0, 2), 0.0+0.0*2.0));
+  
   return true;
 }
   

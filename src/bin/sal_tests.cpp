@@ -30,6 +30,7 @@
 
 int main(int argc, char * const argv[]) {
   
+  sal::Buffer::Test();
   sal::AmbisonicsMic::Test();
   sal::AmbisonicsHorizDec::Test();
   sal::Microphone::Test();
@@ -44,7 +45,6 @@ int main(int argc, char * const argv[]) {
   sal::Ism::Test();
   sal::RirAnalysis::Test();
   sal::TripletHandler::Test();
-  sal::Buffer::Test();
   
   std::cout<<"All tests succeded!\n";
   

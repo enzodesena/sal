@@ -51,6 +51,7 @@ void Ism::Run(const Sample* input_data, const Int num_samples,
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni()) {
     mcl::FirFilter filter(rir_);
+    assert(num_samples<MAX_VLA_LENGTH);
     Sample temp[num_samples];
     filter.Filter(input_data, num_samples, temp);
     microphone_->AddPlaneWave(temp, num_samples, mcl::Point(0,0,0), output_buffer);
