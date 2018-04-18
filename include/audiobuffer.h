@@ -415,6 +415,22 @@ public:
                                    num_samples_to_add, samples);
   }
   
+  void FilterAddSamplesLeft(const Int from_sample_id,
+                            const Int num_samples,
+                            const Sample* samples,
+                            mcl::DigitalFilter& filter) noexcept {
+    MultichannelBuffer::FilterAddSamples(left_channel, from_sample_id,
+                                         num_samples, samples, filter);
+  }
+  
+  void FilterAddSamplesRight(const Int from_sample_id,
+                             const Int num_samples,
+                             const Sample* samples,
+                             mcl::DigitalFilter& filter) noexcept {
+    MultichannelBuffer::FilterAddSamples(right_channel, from_sample_id,
+                                         num_samples, samples, filter);
+  }
+  
   void AddSamplesRight(const Sample* samples,
                        const Int from_sample_id,
                        const Int num_samples_to_add) noexcept {

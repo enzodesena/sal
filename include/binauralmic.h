@@ -65,11 +65,9 @@ private:
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept = 0;
   
-  
   void CreateInstanceIfNotExist(const Int wave_id) noexcept;
   
-  std::map<UInt, BinauralMicInstance> instances_left_;
-  std::map<UInt, BinauralMicInstance> instances_right_;
+  std::map<UInt, BinauralMicInstance> instances_;
   
   /** How long it takes to update the underlying HRTF filter */
   Int update_length_;
@@ -111,19 +109,19 @@ protected:
   
 class BinauralMicInstance {
 private:
-  BinauralMicInstance(BinauralMic* base_mic, Ear ear, sal::Int update_length,
+  BinauralMicInstance(BinauralMic* base_mic, sal::Int update_length,
                       const HeadRefOrientation reference_orientation = standard) :
   previous_point_(mcl::Point(NAN, NAN, NAN)),
   base_mic_(base_mic),
-  filter_(mcl::FirFilter::GainFilter(1.0)),
-  ear_(ear),
+  filter_left_(mcl::FirFilter::GainFilter(1.0)),
+  filter_right_(mcl::FirFilter::GainFilter(1.0)),
   update_length_(update_length),
   reference_orientation_(reference_orientation) {}
   
   void AddPlaneWaveRelative(const Sample* input_data,
                             const Int num_samples,
                             const mcl::Point& point,
-                            Sample* output_data) noexcept;
+                            StereoBuffer& output_buffer) noexcept;
   
   void UpdateFilter(const mcl::Point& point) noexcept;
   
@@ -136,8 +134,8 @@ private:
   mcl::Point previous_point_;
   
   BinauralMic* base_mic_;
-  mcl::FirFilter filter_;
-  Ear ear_;
+  mcl::FirFilter filter_left_;
+  mcl::FirFilter filter_right_;
   sal::Int update_length_;
   HeadRefOrientation reference_orientation_;
   

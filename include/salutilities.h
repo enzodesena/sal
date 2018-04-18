@@ -39,7 +39,7 @@ bool IsEqual(const std::vector<Sample> input_data_b,
 template<class T, class V>
 std::vector<V> ConvertToType(std::vector<T> vector) {
   std::vector<V> new_vector(vector.size());
-  for (mcl::Int i=0; i<vector.size(); ++i) {
+  for (mcl::Int i=0; i<(Int)vector.size(); ++i) {
     new_vector[i] = (V) vector[i];
   }
   return new_vector;

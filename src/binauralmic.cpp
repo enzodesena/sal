@@ -27,12 +27,8 @@ void BinauralMic::AddPlaneWaveRelative(const Sample* input_data,
           dynamic_cast<StereoBuffer&>(output_buffer);
   if (!bypass_) {
     CreateInstanceIfNotExist(wave_id);
-    instances_left_.at(wave_id).
-        AddPlaneWaveRelative(input_data, num_samples, point,
-                             stereo_buffer.GetLeftWritePointer());
-    instances_right_.at(wave_id).
-        AddPlaneWaveRelative(input_data, num_samples, point,
-                             stereo_buffer.GetRightWritePointer());
+    instances_.at(wave_id).AddPlaneWaveRelative(input_data, num_samples, point,
+                                                stereo_buffer);
   } else {
     stereo_buffer.AddSamplesLeft(input_data, 0, num_samples);
     stereo_buffer.AddSamplesRight(input_data, 0, num_samples);
@@ -47,28 +43,20 @@ void BinauralMic::set_bypass(bool bypass) noexcept {
 
 void BinauralMic::CreateInstanceIfNotExist(const Int wave_id) noexcept {
   // If there is no instance associated to the given wave_id then create
-  if (instances_left_.count(wave_id) == 0) {
-    instances_left_.insert(std::make_pair(wave_id,
-                                          BinauralMicInstance(this, left_ear,
+  if (instances_.count(wave_id) == 0) {
+    instances_.insert(std::make_pair(wave_id,
+                                          BinauralMicInstance(this,
                                                               update_length_)));
-    instances_right_.insert(std::make_pair(wave_id,
-                                           BinauralMicInstance(this, right_ear,
-                                                               update_length_)));
   }
 }
 
 
 void BinauralMic::Reset() noexcept {
-  for(auto iterator = instances_left_.begin();
-      iterator != instances_left_.end();
+  for(auto iterator = instances_.begin();
+      iterator != instances_.end();
       ++iterator) {
-    iterator->second.filter_.Reset();
-  }
-  
-  for(auto iterator = instances_right_.begin();
-      iterator != instances_right_.end();
-      ++iterator) {
-    iterator->second.filter_.Reset();
+    iterator->second.filter_left_.Reset();
+    iterator->second.filter_right_.Reset();
   }
 }
 
@@ -82,15 +70,13 @@ BinauralMic::BinauralMic(const Point& position,
 
 
 // Use signals with 44100 sampling frequency!!!
-void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_buffer,
+void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_data,
                                                const Int num_samples,
                                                const mcl::Point& point,
-                                               Sample* output_data) noexcept {
+                                               StereoBuffer& output_buffer) noexcept {
   UpdateFilter(point);
-  assert(num_samples<MAX_VLA_LENGTH);
-  Sample temp_data[num_samples];
-  filter_.Filter(input_buffer, num_samples, temp_data);
-  mcl::Add(temp_data, output_data, num_samples, output_data);
+  output_buffer.FilterAddSamplesLeft(0, num_samples, input_data, filter_left_);
+  output_buffer.FilterAddSamplesRight(0, num_samples, input_data, filter_right_);
 }
 
 void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
@@ -98,8 +84,10 @@ void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
     // Update cache variables
     previous_point_ = point;
     
-    filter_.set_impulse_response(base_mic_->GetBrir(ear_, point),
-                                 update_length_);
+    filter_left_.set_impulse_response(base_mic_->GetBrir(left_ear, point),
+                                      update_length_);
+    filter_right_.set_impulse_response(base_mic_->GetBrir(right_ear, point),
+                                      update_length_);
   }
 }
 
