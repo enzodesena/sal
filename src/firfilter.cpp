@@ -40,35 +40,31 @@ FirFilter::FirFilter(std::vector<Real> B) noexcept :
   delay_line_.assign(length_, 0.0);
 }
   
-
-
+  
+  
 Real FirFilter::Filter(Real input_sample) noexcept {
   if (updating_) { UpdateCoefficients(); }
+#ifdef OSXIOS
+  return FilterAppleDsp(input_sample);
+#else
+  return FilterStraight(input_sample);
+#endif
+}
+
+void FirFilter::Filter(const Real* input_data, const Int num_samples,
+                       Real* output_data) noexcept {
+  if (updating_) { UpdateCoefficients(); }
+#ifdef OSXIOS
+  FilterAppleDsp(input_data, num_samples, output_data);
+#else // If not OSXIOS
+  FilterSerial(input_data, num_samples, output_data);
+#endif
+}
   
+
+Real FirFilter::FilterStraight(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
   Real result = 0.0;
-  
-#ifdef OSXIOS
-  if (length_-counter_ > MAX_VLA_LENGTH) {
-    assert(false);
-  }
-  
-  Real result_a[length_-counter_];
-  Multiply(&coefficients_[0],
-           &delay_line_[counter_],
-           length_-counter_, result_a);
-  
-  for (Int i=0; i<length_-counter_; i++) { result += result_a[i]; }
-  
-  if (counter_ > 0) {
-    Real result_b[counter_];
-    Multiply(&coefficients_[length_-counter_],
-             &delay_line_[0],
-             counter_, result_b);
-    
-    for (Int i=0; i<counter_; i++) { result += result_b[i]; }
-  }
-#else
   Int index = (Int) counter_;
   
   if (length_%8 != 0) {
@@ -104,21 +100,47 @@ Real FirFilter::Filter(Real input_sample) noexcept {
         }
       }
     }
-    result += result_a + result_b + result_c + result_d + result_e + result_f +
-              result_g + result_h;
+    result += result_a + result_b + result_c + result_d + result_e + result_f + result_g + result_h;
   }
-#endif
   
   if (--counter_ < 0) { counter_ = length_-1; }
   
-  return (Real) result;
+  return result;
 }
   
   
-void FirFilter::Filter(const Real* input_data, const Int num_samples,
-                       Real* output_data) noexcept {
-  if (updating_) { UpdateCoefficients(); }
 #ifdef OSXIOS
+Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
+  if (length_-counter_ > MAX_VLA_LENGTH) {
+    return FilterStraight(input_sample);
+  }
+  
+  delay_line_[counter_] = input_sample;
+  Real result = 0.0;
+  
+  Real result_a[length_-counter_];
+  Multiply(&coefficients_[0],
+           &delay_line_[counter_],
+           length_-counter_, result_a);
+  
+  for (Int i=0; i<length_-counter_; i++) { result += result_a[i]; }
+  
+  if (counter_ > 0) {
+    Real result_b[counter_];
+    Multiply(&coefficients_[length_-counter_],
+             &delay_line_[0],
+             counter_, result_b);
+    
+    for (Int i=0; i<counter_; i++) { result += result_b[i]; }
+  }
+  
+  if (--counter_ < 0) { counter_ = length_-1; }
+  
+  return result;
+}
+  
+void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
+                               Real* output_data) noexcept {
   if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
@@ -144,17 +166,17 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     padded_data[i] = input_data[i-(length_-1)];
   }
   
-  #ifdef MCL_DATA_TYPE_DOUBLE
+#ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_convD(padded_data, 1,
              coefficients_.data()+length_-1, -1,
              output_data, 1,
              num_samples, length_);
-  #else // Type is Real
+#else // Type is float
   vDSP_conv(padded_data, 1,
             coefficients_.data()+length_-1, -1,
             output_data, 1,
             num_samples, length_);
-  #endif
+#endif
   
   // Reorganise state for the next run
   for (Int i=0; i<length_; ++i) {
@@ -162,10 +184,9 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   }
   
   counter_ = length_-1;
-#else // If not OSXIOS
-  FilterSerial(input_data, num_samples, output_data);
-#endif
 }
+#endif
+  
   
 std::vector<Real>
 FirFilter::FilterSequential(const std::vector<Real>& input) noexcept {

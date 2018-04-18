@@ -76,7 +76,16 @@ public:
   virtual ~FirFilter() {}
   
 private:
+#ifdef OSXIOS
+  Real FilterAppleDsp(Real input_sample) noexcept;
+  void FilterAppleDsp(const Real* input_data, const Int num_samples,
+                      Real* output_data) noexcept;
+#endif
+  
+  Real FilterStraight(Real input_sample) noexcept;
+  
   std::vector<Real> FilterSequential(const std::vector<Real>& input) noexcept;
+  
   /** Method called to slowly update the filter coefficients. It is called
    every time one of the Filter method is called and is activated only
    if updating_ = true. TODO: uniformise action between sequential and
