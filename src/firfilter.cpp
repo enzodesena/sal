@@ -39,11 +39,13 @@ FirFilter::FirFilter(std::vector<Real> B) noexcept :
         counter_(B.size()-1), length_(B.size()) {
   delay_line_.assign(length_, 0.0);
 }
-  
-  
-  
+
 Real FirFilter::Filter(Real input_sample) noexcept {
   if (updating_) { UpdateCoefficients(); }
+  if (length_ == 1) {
+    delay_line_[0] = input_sample;
+    return input_sample*coefficients_[0];
+  }
 #ifdef OSXIOS
   return FilterAppleDsp(input_sample);
 #else
@@ -54,6 +56,11 @@ Real FirFilter::Filter(Real input_sample) noexcept {
 void FirFilter::Filter(const Real* input_data, const Int num_samples,
                        Real* output_data) noexcept {
   if (updating_) { UpdateCoefficients(); }
+  if (length_ == 1) {
+    delay_line_[0] = input_data[num_samples-1];
+    mcl::Multiply(input_data, num_samples, coefficients_[0], output_data);
+    return;
+  }
 #ifdef OSXIOS
   FilterAppleDsp(input_data, num_samples, output_data);
 #else // If not OSXIOS
@@ -187,15 +194,7 @@ void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
 }
 #endif
   
-  
-std::vector<Real>
-FirFilter::FilterSequential(const std::vector<Real>& input) noexcept {
-  std::vector<Real> output(input.size());
-  for (Int i=0; i<(Int)input.size(); ++i) {
-    output[i] = this->Filter(input[i]);
-  }
-  return output;
-}
+
   
 
 FirFilter FirFilter::GainFilter(Real gain) noexcept {

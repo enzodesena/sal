@@ -41,19 +41,10 @@ public:
   }
   
   /** Returns the output of the filter for an input equal to `input` . */
-  virtual Real Filter(const Real input) noexcept {
-    Real output(0.0);
-    Filter(&input, 1, &output);
-    return output;
-  }
+  virtual Real Filter(const Real input) noexcept = 0;
   
   /** Returns the output of the filter for an input signal equal to `input`. */
   std::vector<Real> Filter(const std::vector<Real>& input) noexcept {
-    return FilterVector(input);
-  }
-  
-  /** Returns the output of the filter for an input signal equal to `input`. */
-  std::vector<Real> FilterVector(const std::vector<Real>& input) noexcept {
     std::vector<Real> output(input.size(), 0.0);
     Filter(input.data(), input.size(), output.data());
     return output;

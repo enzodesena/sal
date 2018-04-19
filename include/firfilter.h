@@ -13,6 +13,7 @@
 
 #include "mcltypes.h"
 #include "digitalfilter.h"
+#include "vectorop.h"
 
 #ifdef MCL_EXPORTS
   #define MCL_API __declspec(dllexport)
@@ -103,6 +104,43 @@ private:
   std::vector<Real> delay_line_;
   Int counter_;
   Int length_;
+};
+  
+  
+class GainFilter : public DigitalFilter {
+public:
+  GainFilter(const Real gain) : gain_(gain) {}
+  
+  virtual Real Filter(const Real input) noexcept {
+    return input*gain_;
+  }
+  
+  virtual void Filter(const Real* input_data, const Int num_samples,
+                      Real* output_data) noexcept {
+    Multiply(input_data, num_samples, gain_, output_data);
+  }
+  
+  virtual void Reset() {}
+private:
+  Real gain_;
+};
+
+class IdenticalFilter : public DigitalFilter {
+public:
+  IdenticalFilter() {}
+  
+  virtual Real Filter(const Real input) noexcept {
+    return input;
+  }
+  
+  virtual void Filter(const Real* input_data, const Int num_samples,
+                      Real* output_data) noexcept {
+    for (Int i=0; i<num_samples; ++i) {
+      output_data[i] = input_data[i];
+    }
+  }
+  
+  virtual void Reset() {}
 };
   
 } // namespace mcl

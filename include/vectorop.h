@@ -106,13 +106,16 @@ MCL_API void MultiplyAdd(const Real* input_data_mult,
  */
 template<class T>
 MCL_API std::vector<T> Add(const std::vector<T>& vector_a,
-                    const T scalar) noexcept {
+                           const T scalar) noexcept {
   std::vector<T> output((Int)vector_a.size());
   for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output[i] = vector_a[i]+scalar;
   }
   return output;
 }
+  
+
+MCL_API Real Add(const Real* input_data, const Int num_samples) noexcept;
 
   
 /** 
