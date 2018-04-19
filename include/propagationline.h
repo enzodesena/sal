@@ -68,7 +68,11 @@ public:
   void set_attenuation(const sal::Sample,
                        const sal::Time ramp_time = 0.0) noexcept;
   
-  sal::Time current_latency() const noexcept;
+  inline sal::Time current_latency() const noexcept { return current_latency_; }
+  
+  inline sal::Time target_latency() const noexcept {
+    return latency_smoother_.target_value();
+  }
   
   void set_air_filters_active(const bool) noexcept;
   
@@ -97,9 +101,6 @@ public:
    */
   void set_distance(const sal::Length distance,
                     const sal::Time ramp_time = 0.0) noexcept;
-  
-  /** Returns the latency of the propagation line */
-  sal::Time latency() const noexcept;
   
   /** Resets the state of the filter */
   void Reset() noexcept;

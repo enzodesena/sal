@@ -50,14 +50,6 @@ PropagationLine::PropagationLine(const Length distance,
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
 }
-
-Time PropagationLine::latency() const noexcept {
-  return delay_filter_.latency();
-}
-
-Sample PropagationLine::attenuation() const noexcept {
-  return current_attenuation_;
-}
   
 Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
   if (isgreater(mcl::Abs(attenuation), 1.0)) {
@@ -81,8 +73,7 @@ void PropagationLine::set_attenuation(const Sample attenuation,
 
 void PropagationLine::set_distance(const Length distance,
                                    const sal::Time ramp_time) noexcept {
-  latency_smoother_.set_target_value(ComputeLatency(distance,
-                                                    sampling_frequency_),
+  latency_smoother_.set_target_value(ComputeLatency(distance, sampling_frequency_),
                                      ramp_time);
   set_attenuation(ComputeAttenuation(distance, sampling_frequency_), ramp_time);
   
@@ -104,11 +95,11 @@ void PropagationLine::Reset() noexcept {
   delay_filter_.Reset();
 }
   
-sal::Time PropagationLine::current_latency() const noexcept { return current_latency_; }
   
 void PropagationLine::Tick() noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue();
-  delay_filter_.set_latency((int) round(latency_smoother_.GetNextValue()));
+  current_latency_ = (int) round(latency_smoother_.GetNextValue());
+  delay_filter_.set_latency(current_latency_);
   delay_filter_.Tick();
 }
   
