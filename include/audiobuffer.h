@@ -339,6 +339,14 @@ public:
     MultichannelBuffer::SetSample(mono_channel, sample_id, sample_value);
   }
   
+  using Buffer::SetSamples;
+  
+  void SetSamples(const Int from_sample_id, const Int num_samples,
+                  const Sample* samples) noexcept {
+    MultichannelBuffer::SetSamples(mono_channel, from_sample_id, num_samples,
+                                   samples);
+  }
+  
   inline Sample GetSample(const Int sample_id) const noexcept {
     return MultichannelBuffer::GetSample(mono_channel, sample_id);
   }

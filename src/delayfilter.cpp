@@ -93,7 +93,7 @@ void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
     LogError("Writing more samples (%d) than max_latency-latency+1 (%d)."
              "This operation will go ahead, but some samples will be "
              "overwritten. ",
-             num_samples, max_latency_);
+             num_samples, max_latency_-latency_+1);
   }
   
   Int k = 0;
