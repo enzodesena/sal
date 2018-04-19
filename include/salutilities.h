@@ -183,7 +183,7 @@ public:
     }
   }
   
-  bool IsUpdating() { return countdown_ > 0; }
+  bool IsUpdating() const noexcept { return countdown_ > 0; }
   
 
 private:

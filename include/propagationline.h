@@ -16,6 +16,7 @@
 #include "point.h"
 #include "firfilter.h"
 #include "salconstants.h"
+#include "salutilities.h"
 
 namespace sal {
   
@@ -109,22 +110,13 @@ private:
   
   static std::vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
   
+  static Sample SanitiseAttenuation(const sal::Sample attenuation);
+  
   sal::Time sampling_frequency_;
   
-  sal::Int attenuation_update_counter_;
-  sal::Int attenuation_update_length_;
-  
-  sal::Sample target_attenuation_;
   sal::Sample current_attenuation_;
-  sal::Sample previous_attenuation_;
-  bool updating_attenuation_;
   
-  sal::Int latency_update_counter_;
-  sal::Int latency_update_length_;
-  sal::Time current_latency_;
-  sal::Time previous_latency_;
-  sal::Time target_latency_;
-  bool updating_latency_;
+  sal::Time current_latency_; /** Target latency [in samples]. */
   
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
@@ -134,7 +126,8 @@ private:
   /** This is true if the attenuation coefficients can be larger than 1.0 */
   bool allow_gain_;
   
-  static Sample SanitiseAttenuation(const sal::Sample attenuation);
+  RampSmoother attenuation_smoother_;
+  RampSmoother latency_smoother_;
 };
   
 

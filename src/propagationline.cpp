@@ -29,32 +29,21 @@ PropagationLine::PropagationLine(const Length distance,
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
                                   (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
         sampling_frequency_(sampling_frequency),
-        attenuation_update_counter_(0),
-        attenuation_update_length_(0),
-        target_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
         current_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
-        previous_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
-        updating_attenuation_(false),
-        latency_update_counter_(0),
-        latency_update_length_(0),
         current_latency_(ComputeLatency(distance, sampling_frequency)),
-        previous_latency_(ComputeLatency(distance, sampling_frequency)),
-        target_latency_(ComputeLatency(distance, sampling_frequency)),
-        updating_latency_(false),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
         interpolation_type_(interpolation_type),
-        allow_gain_(allow_gain) {
+        allow_gain_(allow_gain),
+        attenuation_smoother_(RampSmoother(current_attenuation_, sampling_frequency)),
+        latency_smoother_(RampSmoother(current_latency_, sampling_frequency)) {
   ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
                       "The sampling frequency cannot be negative.");
   ASSERT_WITH_MESSAGE(isgreaterequal(max_distance, 0.0),
                       "The maximum distance cannot be negative.");
   if ((!allow_gain_)) {
-    Sample attenuation =
-    SanitiseAttenuation(ComputeAttenuation(distance, sampling_frequency));
-    target_attenuation_ = attenuation;
-    current_attenuation_ = attenuation;
-    previous_attenuation_ = attenuation;
+    current_attenuation_ = SanitiseAttenuation(ComputeAttenuation(distance,
+                                                          sampling_frequency));
   }
           
   if (air_filters_active_) {
@@ -82,32 +71,19 @@ Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
   }
 }
 
-void PropagationLine::set_attenuation(Sample attenuation,
+void PropagationLine::set_attenuation(const Sample attenuation,
                                       const sal::Time ramp_time) noexcept {
-  ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
-                      "Ramp time cannot be negative.");
+  Sample attenuation_value = (allow_gain_) ? attenuation :
+                                             SanitiseAttenuation(attenuation);
   
-  if ((!allow_gain_)) { attenuation = SanitiseAttenuation(attenuation); }
-  
-  updating_attenuation_ = true;
-  previous_attenuation_ = current_attenuation_;
-  target_attenuation_ = attenuation;
-  attenuation_update_counter_ = 0;
-  attenuation_update_length_ = (int) round(ramp_time*sampling_frequency_);
+  attenuation_smoother_.set_target_value(attenuation_value, ramp_time);
 }
 
 void PropagationLine::set_distance(const Length distance,
                                    const sal::Time ramp_time) noexcept {
-  ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
-                      "Ramp time cannot be negative.");
-  Time target_latency(ComputeLatency(distance, sampling_frequency_));
-  if (mcl::IsEqual(target_latency_, target_latency)) { return; }
-  updating_latency_ = true;
-  previous_latency_ = current_latency_;
-  target_latency_ = target_latency;
-  latency_update_counter_ = 0;
-  latency_update_length_ = (int) round(ramp_time*sampling_frequency_);
-  
+  latency_smoother_.set_target_value(ComputeLatency(distance,
+                                                    sampling_frequency_),
+                                     ramp_time);
   set_attenuation(ComputeAttenuation(distance, sampling_frequency_), ramp_time);
   
   if (air_filters_active_) {
@@ -128,40 +104,11 @@ void PropagationLine::Reset() noexcept {
   delay_filter_.Reset();
 }
   
-void PropagationLine::Update() noexcept {
-  if (updating_attenuation_) {
-    if (attenuation_update_counter_ == attenuation_update_length_) {
-      current_attenuation_ = target_attenuation_;
-      updating_attenuation_ = false;
-    } else {
-      current_attenuation_ = mcl::LinearInterpolation(0.0, previous_attenuation_,
-                                               attenuation_update_length_+1, target_attenuation_,
-                                               attenuation_update_counter_+1);
-    }
-    attenuation_update_counter_++;
-  }
-  
-  if (updating_latency_) {
-    if (latency_update_counter_ == latency_update_length_) {
-      current_latency_ = target_latency_;
-      updating_latency_ = false;
-    } else {
-      // To understand the +1 below, think of the example where latency_update_length_ is 2
-      // Indeed, by adding 1, you ensure that the update starts from the first sample.
-      current_latency_ = mcl::LinearInterpolation(0.0, previous_latency_,
-                                                  latency_update_length_+1, target_latency_,
-                                                  latency_update_counter_+1);
-    }
-    
-    latency_update_counter_ ++;
-    delay_filter_.set_latency((int) round(current_latency_));
-  }
-}
-  
 sal::Time PropagationLine::current_latency() const noexcept { return current_latency_; }
   
 void PropagationLine::Tick() noexcept {
-  Update();
+  current_attenuation_ = attenuation_smoother_.GetNextValue();
+  delay_filter_.set_latency((int) round(latency_smoother_.GetNextValue()));
   delay_filter_.Tick();
 }
   
@@ -203,7 +150,7 @@ sal::Sample PropagationLine::Read() const noexcept {
       return delay_filter_.FractionalRead(current_latency_)*current_attenuation_;
     }
     case linear_dynamic: {
-      return (updating_latency_) ?
+      return (latency_smoother_.IsUpdating()) ?
           delay_filter_.FractionalRead(current_latency_)*current_attenuation_ :
           delay_filter_.Read() * current_attenuation_;
     }
