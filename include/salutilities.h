@@ -123,13 +123,11 @@ public:
    @param[in] ramp_samples number of samples after which the value is
    to 1/e away from target value. */
   RampSmoother(const Sample initial_value,
-               const Time ramp_time,
                const Time sampling_frequency) noexcept :
       current_value_(initial_value), target_value_(initial_value),
-      num_update_samples_((Int) round(ramp_time*sampling_frequency)),
-      step_(0.0), countdown_(0) {
-    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
-                        "Ramp time cannot be negative ");
+      step_(0.0), countdown_(0), sampling_frequency_(sampling_frequency) {
+    ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
+                        "Sampling frequency cannot be negative ");
   }
   
   Sample GetNextValue() noexcept {
@@ -161,9 +159,10 @@ public:
   Sample target_value() const noexcept { return target_value_; }
   
   void set_target_value(const Sample target_value,
-                        bool force_to_current = false) noexcept {
-    
-    if (force_to_current) {
+                        const Time ramp_time) noexcept {
+    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
+                        "Ramp time cannot be negative ");
+    if (((Int) round(ramp_time)) == 0) {
       target_value_ = target_value;
       current_value_ = target_value;
       countdown_ = 0;
@@ -171,14 +170,15 @@ public:
     }
     
     if (islessgreater(target_value, target_value_)) {
-      countdown_ = num_update_samples_;
+      const Int num_update_samples = (Int) round(ramp_time*sampling_frequency_);
+      countdown_ = num_update_samples;
       target_value_ = target_value;
       
-      if (num_update_samples_ == 0) {
+      if (num_update_samples == 0) {
         current_value_ = target_value;
       } else {
         step_ = (target_value_ - current_value_) /
-                ((Sample) num_update_samples_);
+            ((Sample) num_update_samples);
       }
     }
   }
@@ -189,9 +189,10 @@ public:
 private:
   Sample current_value_;
   Sample target_value_;
-  Int num_update_samples_;
   Sample step_;
   Int countdown_;
+  
+  Time sampling_frequency_;
 };
 
   

@@ -53,7 +53,6 @@ bool TripletHandler::Test() {
   
   // Test ramp smoother
   RampSmoother smoother(1.0,  // Initial value
-                        2.0,  // ramp time
                         1.0); // Sampling frequency
   assert(!smoother.IsUpdating());
   assert(IsEqual(smoother.GetNextValue(), 1.0));
@@ -61,7 +60,8 @@ bool TripletHandler::Test() {
   assert(IsEqual(smoother.GetNextValue(), 1.0));
   assert(!smoother.IsUpdating());
   
-  smoother.set_target_value(3.0);
+  smoother.set_target_value(3.0,
+                            2.0);  // ramp time
   assert(smoother.IsUpdating());
   assert(IsEqual(smoother.GetNextValue(), 2.0));
   assert(smoother.IsUpdating());
@@ -69,13 +69,14 @@ bool TripletHandler::Test() {
   assert(!smoother.IsUpdating());
   assert(IsEqual(smoother.GetNextValue(), 3.0));
   
-  smoother.set_target_value(1.0, true); // Force to value
+  smoother.set_target_value(1.0, 0.0); // Force to value
   assert(!smoother.IsUpdating());
   assert(IsEqual(smoother.GetNextValue(), 1.0));
   assert(!smoother.IsUpdating());
   
   Sample input_samples[4] = { 1.0, 1.0, 1.0, 1.0 };
-  smoother.set_target_value(2.0);
+  smoother.set_target_value(2.0,
+                            2.0);  // ramp time
   Sample output_samples[5];
   Sample output_samples_cmp[5] = { 1.5, 2.0, 2.0, 2.0, };
   smoother.GetNextValuesAndMultiply(input_samples, 4, output_samples);
