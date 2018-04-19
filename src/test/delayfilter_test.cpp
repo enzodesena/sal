@@ -10,6 +10,7 @@
 
 #include "delayfilter.h"
 #include "comparisonop.h"
+#include "vectorop.h"
 
 
 namespace sal {
@@ -263,6 +264,66 @@ bool DelayFilter::Test() {
   delay_filter_e.Reset();
   ASSERT(IsEqual(delay_filter_e.Filter(1.0), 0.0));
   ASSERT(IsEqual(delay_filter_e.Filter(0.0), 1.0));
+  
+  DelayFilter delay_filter_f(1, 4);
+  delay_filter_f.Write(1.0);
+  ASSERT(IsEqual(delay_filter_f.Read(), 0.0));
+  delay_filter_f.Tick(1);
+  ASSERT(IsEqual(delay_filter_f.Read(), 1.0));
+  Sample samples[4];
+  samples[0] = 0.0;
+  samples[1] = 1.0;
+  samples[2] = 2.0;
+  samples[3] = 3.0;
+  delay_filter_f.Write(samples, 4);
+  delay_filter_f.Tick(1);
+  ASSERT(IsEqual(delay_filter_f.Read(), 0.0));
+  delay_filter_f.Tick(1);
+  ASSERT(IsEqual(delay_filter_f.Read(), 1.0));
+  delay_filter_f.Tick(1);
+  ASSERT(IsEqual(delay_filter_f.Read(), 2.0));
+  delay_filter_f.Tick(1); 
+  ASSERT(IsEqual(delay_filter_f.Read(), 3.0));
+  
+  const Int num_samples = 10;
+  const Int latency = 3;
+  std::vector<Sample> input_samples = mcl::ColonOperator(1.0, 1.0, (Sample) num_samples+1);
+  std::vector<Sample> output_samples = mcl::Concatenate(mcl::Zeros<Sample>(latency),
+                                                        mcl::Elements(input_samples, 0,
+                                                                      num_samples-latency));
+  assert(input_samples.size() == output_samples.size());
+  
+  DelayFilter delay_filter_g(latency, 4);
+  
+  for (Int i=0; i<num_samples; ++i) {
+    delay_filter_g.Write(input_samples[i]);
+    ASSERT(IsEqual(delay_filter_g.Read(), output_samples[i]));
+    delay_filter_g.Tick();
+  }
+  
+  delay_filter_g.Reset();
+  Int stride = 2;
+  for (Int i=0; i<num_samples; i+=stride) {
+    delay_filter_g.Write(&input_samples[i], stride);
+    Sample cmp_samples[stride];
+    delay_filter_g.Read(stride, cmp_samples);
+    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    delay_filter_g.Tick(stride);
+  }
+  
+  delay_filter_g.Reset();
+  DelayFilter delay_filter_h(latency, 5);
+  stride = 3;
+  for (Int i=0; (i+stride)<num_samples; i+=stride) {
+    delay_filter_h.Write(&input_samples[i], stride);
+    Sample cmp_samples[stride];
+    delay_filter_h.Read(stride, cmp_samples);
+    
+    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    delay_filter_h.Tick(stride);
+  }
+  
+  
   
   return true;
 }

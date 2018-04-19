@@ -9,6 +9,7 @@
  */
 
 #include "delayfilter.h"
+#include "salutilities.h"
 #include <cassert>
 
 using sal::Sample;
@@ -60,7 +61,54 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
   }
   return *this;
 }
-
+  
+void DelayFilter::Tick(const Int num_samples) noexcept {
+  ASSERT(num_samples >= 0);
+  if (num_samples > latency_) {
+    LogError("Ticking by more samples (%d) than the latency of the delay "
+             "line (%d). The operation will go ahead, but this implies that "
+             "some samples may never be read.",
+             num_samples, latency_);
+  }
+  
+  Int wrapped_num_samples = num_samples % max_latency_;
+  ASSERT(wrapped_num_samples >= 0 && wrapped_num_samples < max_latency_);
+  if (write_index_+wrapped_num_samples <= end_) {
+    write_index_ += wrapped_num_samples;
+  } else {
+    write_index_ = start_ + (wrapped_num_samples-(end_-write_index_)-1);
+  }
+  if (read_index_+wrapped_num_samples <= end_) {
+    read_index_ += wrapped_num_samples;
+  } else {
+    read_index_ = start_ + (wrapped_num_samples-(end_-read_index_)-1);
+  }
+  ASSERT(write_index_ >= start_ && write_index_ <= end_);
+  ASSERT(read_index_ >= start_ && read_index_ <= end_);
+}
+  
+void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
+  ASSERT(num_samples >= 0);
+  if (num_samples > (max_latency_-latency_+1)) {
+    LogError("Writing more samples (%d) than max_latency-latency+1 (%d)."
+             "This operation will go ahead, but some samples will be "
+             "overwritten. ",
+             num_samples, max_latency_);
+  }
+  
+  Int k = 0;
+  for (Int i=0; i<num_samples; ++i) {
+    ASSERT((write_index_+k) >= start_ && (write_index_+k) <= end_);
+    *(write_index_+k++) = samples[i];
+    if (write_index_+k > end_) {
+      // Make it such that for the next loop, write_index_+k == start_, i.e.
+      // k becomes negative
+      k = start_-write_index_;
+    }
+  }
+}
+  
+  
 void DelayFilter::set_latency(const Int latency) noexcept {
   if (latency_ == latency) { return; }
   latency_ = latency;
@@ -79,19 +127,40 @@ Int DelayFilter::latency() const noexcept { return latency_; }
 
 Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
-Sample DelayFilter::Read(const Int& delay_tap) const noexcept {
-  ASSERT_WITH_MESSAGE(delay_tap < max_latency_, "Tried to access a delay tap larger than delay filter"
+Sample DelayFilter::Read(const Int delay_tap) const noexcept {
+  ASSERT_WITH_MESSAGE(delay_tap < max_latency_,
+                      "Tried to access a delay tap larger than delay filter "
                       "length.");
-                                
+  
   ASSERT(write_index_>=start_);
   ASSERT(write_index_<=end_);
-  return (write_index_ - delay_tap >= start_) ?
-      *(write_index_ - delay_tap) :
-      *(write_index_ - delay_tap + max_latency_ + 1);
+  Sample* read_index = write_index_ - delay_tap;
+  return (read_index >= start_) ? *read_index : *(read_index + max_latency_ + 1);
+}
+  
+void DelayFilter::Read(const Int num_samples,
+                       Sample* output_data) const noexcept {
+  if (num_samples > latency_) {
+    LogError("Trying to read a number of samples (%d) larger than the latency "
+             "of the delay line (%d). This operation will go ahead, but it "
+             "means you will be reading samples that haven't been written yet.",
+             num_samples, latency_);
+  }
+  
+  Int k = 0;
+  for (Int i=0; i<num_samples; ++i) {
+    ASSERT((read_index_+k) >= start_ && (read_index_+k) <= end_);
+    output_data[i] = *(read_index_+k++);
+    if (read_index_+k > end_) {
+      // Make it such that for the next loop, read_index_+k == start_, i.e.
+      // k becomes negative
+      k = start_-read_index_;
+    }
+  }
 }
 
 Sample DelayFilter::FractionalRead(const Time fractional_delay_tap)
-  const noexcept {
+      const noexcept {
   ASSERT_WITH_MESSAGE(fractional_delay_tap<max_latency_,
                       "Tried to access a delay tap larger than delay filter"
                       "length.");
