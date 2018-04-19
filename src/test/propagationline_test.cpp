@@ -116,6 +116,47 @@ bool PropagationLine::Test() {
   }
   ASSERT(IsEqual(prop_line_b.Read(), 1.0*attenuation));
   
+  
+  // Testing batch processing
+  const Int latency_samples = 3;
+  const Int num_samples = 10;
+  std::vector<Sample> input_samples = mcl::ColonOperator(1.0, 1.0, (Sample) num_samples+1);
+  std::vector<Sample> output_samples = mcl::Concatenate(mcl::Zeros<Sample>(latency_samples),
+                                                        mcl::Elements(input_samples, 0,
+                                                                      num_samples-latency_samples));
+  output_samples = mcl::Multiply(output_samples, 1.0/3.0);
+  assert(input_samples.size() == output_samples.size());
+  
+  PropagationLine prop_line_c = PropagationLine(((Length) latency_samples) * SOUND_SPEED/FS,
+                                                FS, 1.0, rounding);
+  
+  for (Int i=0; i<num_samples; ++i) {
+    prop_line_c.Write(input_samples[i]);
+    ASSERT(IsEqual(prop_line_c.Read(), output_samples[i]));
+    prop_line_c.Tick();
+  }
+  
+  prop_line_c.Reset();
+  Int stride = 2;
+  for (Int i=0; i<num_samples; i+=stride) {
+    prop_line_c.Write(&input_samples[i], stride);
+    Sample cmp_samples[stride];
+    prop_line_c.Read(stride, cmp_samples);
+    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    prop_line_c.Tick(stride);
+  }
+  
+  prop_line_c.Reset();
+  stride = 3;
+  for (Int i=0; (i+stride)<num_samples; i+=stride) {
+    prop_line_c.Write(&input_samples[i], stride);
+    Sample cmp_samples[stride];
+    prop_line_c.Read(stride, cmp_samples);
+    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    prop_line_c.Tick(stride);
+  }
+  
+  
   return true;
 }
   

@@ -74,11 +74,20 @@ public:
   
   void Write(const sal::Sample &sample) noexcept;
   
+  void Write(const Sample* samples, const Int num_samples) noexcept;
+  
   /** Returns the current read sample */
   sal::Sample Read() const noexcept;
   
-  /** Ticks time to next sample */
+  /** Returns a set of `num_samples` samples and writes them into `output_data`.
+   @param[in] num_samples
+   @param[out] output_data */
+  void Read(const Int num_samples, Sample* output_data) const noexcept;
+  
   void Tick() noexcept;
+  
+  /** Ticks time to next sample */
+  void Tick(const Int num_samples) noexcept;
   
   /**
    This resets the propagation line's length. It updates also the attenuation

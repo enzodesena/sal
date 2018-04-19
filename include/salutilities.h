@@ -145,7 +145,7 @@ public:
    @param[out] output_data */
   void GetNextValuesAndMultiply(const Sample* input_data,
                                 const Int num_samples,
-                                Sample* output_data) {
+                                Sample* output_data) noexcept {
     if (IsUpdating()) {
       for (Int i=0; i<num_samples; ++i) {
         output_data[i] = input_data[i]*GetNextValue();
@@ -153,7 +153,21 @@ public:
     } else {
       mcl::Multiply(input_data, num_samples, target_value_, output_data);
     }
-
+  }
+  
+  /** Does the same as GetNextValuesAndMultiply, but without modifying the
+   object. */
+  void PredictNextValuesAndMultiply(const Sample* input_data,
+                                    const Int num_samples,
+                                    Sample* output_data) const noexcept {
+    if (IsUpdating()) {
+      RampSmoother temp(*this); // Create a copy of itself that we will discard.
+      for (Int i=0; i<num_samples; ++i) {
+        output_data[i] = input_data[i]*temp.GetNextValue();
+      }
+    } else {
+      mcl::Multiply(input_data, num_samples, target_value_, output_data);
+    }
   }
   
   Sample target_value() const noexcept { return target_value_; }

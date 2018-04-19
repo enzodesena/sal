@@ -112,6 +112,10 @@ void PropagationLine::Tick() noexcept {
   delay_filter_.Tick();
 }
   
+void PropagationLine::Tick(const Int num_samples) noexcept {
+  for (Int i=0; i<num_samples; ++i) { Tick(); }
+}
+  
 Time PropagationLine::ComputeLatency(const Length distance, 
                                      const Time sampling_frequency) noexcept {
   ASSERT_WITH_MESSAGE(isgreaterequal(distance, 0.0),
@@ -141,6 +145,29 @@ void PropagationLine::Write(const sal::Sample &sample) noexcept {
   }
 }
   
+void PropagationLine::Write(const Sample* samples,
+                            const Int num_samples) noexcept {
+  if (air_filters_active_) {
+    assert(num_samples < MAX_VLA_LENGTH);
+    Sample temp_samples[num_samples];
+    air_filter_.Filter(samples, num_samples, temp_samples);
+    delay_filter_.Write(temp_samples, num_samples);
+  } else {
+    delay_filter_.Write(samples, num_samples);
+  }
+}
+
+void PropagationLine::Read(const Int num_samples,
+                           Sample* output_data) const noexcept {
+  // TODO: implement for linear interpolation
+  // TODO: the current implementation does not update smoothly the latency of
+  //       the delay filter.
+  delay_filter_.Read(num_samples, output_data);
+  attenuation_smoother_.PredictNextValuesAndMultiply(output_data, num_samples,
+                                                     output_data);
+}
+  
+  
 sal::Sample PropagationLine::Read() const noexcept {
   switch (interpolation_type_) {
     case rounding: {
@@ -148,11 +175,6 @@ sal::Sample PropagationLine::Read() const noexcept {
     }
     case linear: {
       return delay_filter_.FractionalRead(current_latency_)*current_attenuation_;
-    }
-    case linear_dynamic: {
-      return (latency_smoother_.IsUpdating()) ?
-          delay_filter_.FractionalRead(current_latency_)*current_attenuation_ :
-          delay_filter_.Read() * current_attenuation_;
     }
     default:
       ASSERT(false);
