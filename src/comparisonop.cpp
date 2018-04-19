@@ -31,6 +31,7 @@ bool IsEqual(Real num_a, Real num_b, Real precision) {
   if (isnan(num_a) || isnan(num_b)) { return false; }
   return ((Real) fabs(((double) num_a) - ((double) num_b))) < precision;
 }
+  
 
 bool IsNan(Real num) {
   return isnan(num);

@@ -65,7 +65,7 @@ MCL_API bool IsEqual(const Quaternion& quaternion_a,
 
 
 MCL_API bool IsEqual(const Point& point_a, const Point& point_b,
-             MCL_API const Real precision = VERY_SMALL);
+                     const Real precision = VERY_SMALL);
 
 MCL_API bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b);
 
