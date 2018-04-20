@@ -98,15 +98,15 @@ void PropagationLine::Reset() noexcept {
   
 void PropagationLine::Tick() noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue();
-  current_latency_ = (int) round(latency_smoother_.GetNextValue());
-  delay_filter_.set_latency(current_latency_);
+  current_latency_ = latency_smoother_.GetNextValue();
+  delay_filter_.set_latency((int) round(current_latency_));
   delay_filter_.Tick();
 }
   
 void PropagationLine::Tick(const Int num_samples) noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue(num_samples);
-  current_latency_ = (int) round(latency_smoother_.GetNextValue(num_samples));
-  delay_filter_.set_latency(current_latency_);
+  current_latency_ = latency_smoother_.GetNextValue(num_samples);
+  delay_filter_.set_latency((Int) round(current_latency_));
   delay_filter_.Tick(num_samples);
 }
   
@@ -153,12 +153,16 @@ void PropagationLine::Write(const Sample* samples,
 
 void PropagationLine::Read(const Int num_samples,
                            Sample* output_data) const noexcept {
-  // TODO: implement for linear interpolation
-  // TODO: the current implementation does not update smoothly the latency of
-  //       the delay filter.
-  delay_filter_.Read(num_samples, output_data);
-  attenuation_smoother_.PredictNextValuesAndMultiply(output_data, num_samples,
-                                                     output_data);
+  if (num_samples == 1) {
+    output_data[0] = PropagationLine::Read();
+  } else {
+    // TODO: implement for linear interpolation
+    // TODO: the current implementation does not update smoothly the latency of
+    //       the delay filter.
+    delay_filter_.Read(num_samples, output_data);
+    attenuation_smoother_.PredictNextValuesAndMultiply(output_data, num_samples,
+                                                       output_data);
+  }
 }
   
   

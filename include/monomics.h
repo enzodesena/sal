@@ -82,8 +82,8 @@ private:
 class SAL_API GainMic : public MemorylessMonoMic {
 public:
   GainMic(mcl::Point position, Sample gain) :
-          MemorylessMonoMic(position, mcl::Quaternion::Identity()),
           Microphone(position, mcl::Quaternion::Identity()),
+          MemorylessMonoMic(position, mcl::Quaternion::Identity()),
           gain_(gain) {}
   
   virtual bool IsCoincident() { return true; }
@@ -104,8 +104,8 @@ private:
 class SAL_API OmniMic : public GainMic {
 public:
   OmniMic(mcl::Point position) :
-        GainMic(position, (Sample) 1.0),
-        Microphone(position, mcl::Quaternion::Identity()) {}
+        Microphone(position, mcl::Quaternion::Identity()),
+        GainMic(position, (Sample) 1.0) {}
   
   virtual bool IsCoincident() { return true; }
   
@@ -122,9 +122,8 @@ class SAL_API TrigMic : public MemorylessMonoMic {
 public:
   TrigMic(mcl::Point position, mcl::Quaternion orientation,
           std::vector<Sample> coefficients) :
-          MemorylessMonoMic(position, orientation),
           Microphone(position, orientation),
-          coefficients_(coefficients) {}
+          MemorylessMonoMic(position, orientation),          coefficients_(coefficients) {}
   
   virtual bool IsCoincident() { return true; }
   
@@ -153,8 +152,8 @@ class SAL_API TanMic : public MemorylessMonoMic {
 public:
   TanMic(mcl::Point position, mcl::Quaternion orientation,
          sal::Sample base_angle) :
-      MemorylessMonoMic(position, orientation),
       Microphone(position, orientation),
+      MemorylessMonoMic(position, orientation),
       base_angle_(base_angle) {}
   
   virtual bool IsCoincident() { return true; }
