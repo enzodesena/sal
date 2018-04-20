@@ -104,7 +104,10 @@ void PropagationLine::Tick() noexcept {
 }
   
 void PropagationLine::Tick(const Int num_samples) noexcept {
-  for (Int i=0; i<num_samples; ++i) { Tick(); }
+  current_attenuation_ = attenuation_smoother_.GetNextValue(num_samples);
+  current_latency_ = (int) round(latency_smoother_.GetNextValue(num_samples));
+  delay_filter_.set_latency(current_latency_);
+  delay_filter_.Tick(num_samples);
 }
   
 Time PropagationLine::ComputeLatency(const Length distance, 

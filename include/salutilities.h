@@ -137,6 +137,17 @@ public:
     return current_value_;
   }
   
+  Sample GetNextValue(const Int num_jumps) noexcept {
+    countdown_ -= num_jumps;
+    if (countdown_ <= 0) {
+      current_value_ = target_value_;
+      countdown_ = 0;
+    } else {
+      current_value_ += step_*((Sample)num_jumps);
+    }
+    return current_value_;
+  }
+  
   /** Takes an array of values (`input_data`), multiplies them by the
    next values coming out of the smoother, and writes the result into
    an output array (`output_data`).
