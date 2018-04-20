@@ -32,7 +32,7 @@ public:
   
   void FilterSerial(const Real* input_data, const Int num_samples,
                     Real* output_data) noexcept {
-    ASSERT(num_samples>0);
+    ASSERT(num_samples>=0);
     ASSERT(input_data);
     ASSERT(output_data);
     for (Int i=0; i<num_samples; ++i) {
