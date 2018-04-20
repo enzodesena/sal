@@ -187,7 +187,7 @@ public:
                         const Time ramp_time) noexcept {
     ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
                         "Ramp time cannot be negative ");
-    if (((Int) round(ramp_time)) == 0) {
+    if (((Int) round(ramp_time*sampling_frequency_)) == 0) {
       target_value_ = target_value;
       current_value_ = target_value;
       countdown_ = 0;
