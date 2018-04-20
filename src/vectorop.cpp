@@ -48,7 +48,7 @@ MCL_API void MultiplyAdd(const Real* input_data_mult,
                          const Real* input_data_add,
                          const Int num_samples,
                          Real* output_data) noexcept {
-#ifndef OSXIOS
+#ifdef OSXIOS
   #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_vmaD(input_data_mult, 1,
             &gain, 0,
