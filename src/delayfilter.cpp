@@ -127,7 +127,7 @@ Int DelayFilter::latency() const noexcept { return latency_; }
 
 Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
-Sample DelayFilter::Read(const Int delay_tap) const noexcept {
+Sample DelayFilter::ReadAt(const Int delay_tap) const noexcept {
   ASSERT_WITH_MESSAGE(delay_tap < max_latency_,
                       "Tried to access a delay tap larger than delay filter "
                       "length.");
@@ -159,7 +159,7 @@ void DelayFilter::Read(const Int num_samples,
   }
 }
 
-Sample DelayFilter::FractionalRead(const Time fractional_delay_tap)
+Sample DelayFilter::FractionalReadAt(const Time fractional_delay_tap)
       const noexcept {
   ASSERT_WITH_MESSAGE(fractional_delay_tap<max_latency_,
                       "Tried to access a delay tap larger than delay filter"
@@ -167,8 +167,8 @@ Sample DelayFilter::FractionalRead(const Time fractional_delay_tap)
   
   Int x_a = (UInt) floor(fractional_delay_tap);
   Int x_b = x_a+1;
-  Sample f_x_a = Read(x_a);
-  Sample f_x_b = Read(x_b);
+  Sample f_x_a = ReadAt(x_a);
+  Sample f_x_b = ReadAt(x_b);
   return (f_x_b-f_x_a)/(x_b-x_a)*(fractional_delay_tap-x_a)+f_x_a;
 }
   

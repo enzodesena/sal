@@ -153,15 +153,35 @@ void PropagationLine::Write(const Sample* samples,
 
 void PropagationLine::Read(const Int num_samples,
                            Sample* output_data) const noexcept {
-  if (num_samples == 1) {
-    output_data[0] = PropagationLine::Read();
-  } else {
-    // TODO: implement for linear interpolation
-    // TODO: the current implementation does not update smoothly the latency of
-    //       the delay filter.
-    delay_filter_.Read(num_samples, output_data);
-    attenuation_smoother_.PredictNextValuesAndMultiply(output_data, num_samples,
-                                                       output_data);
+  ASSERT(num_samples >= 0);
+  if (num_samples == 0) { return; }
+  
+  output_data[0] = Read();
+  
+  if (num_samples > 1) {
+    // Create a temporary we can discard
+    RampSmoother temp_attenuation(attenuation_smoother_);
+    RampSmoother temp_latency(latency_smoother_);
+    
+    switch (interpolation_type_) {
+      case rounding: {
+        for (Int i=1; i<num_samples; ++i) {
+          output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i)
+                           * temp_attenuation.GetNextValue();
+        }
+        return;
+      }
+      case linear: {
+        for (Int i=1; i<num_samples; ++i) {
+          output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
+                           * temp_attenuation.GetNextValue();
+        }
+        return;
+      }
+      default:
+        ASSERT(false);
+        exit(1);
+    }
   }
 }
   
@@ -169,10 +189,10 @@ void PropagationLine::Read(const Int num_samples,
 sal::Sample PropagationLine::Read() const noexcept {
   switch (interpolation_type_) {
     case rounding: {
-      return delay_filter_.Read() * current_attenuation_;
+      return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
     }
     case linear: {
-      return delay_filter_.FractionalRead(current_latency_)*current_attenuation_;
+      return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
     }
     default:
       ASSERT(false);

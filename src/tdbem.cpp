@@ -233,7 +233,7 @@ void TdBem::Run(const MonoBuffer& input_buffer,
     for (Int i = 0; i<num_elements_; ++i) {
       sal::Sample pressure = 0.0;
       // Line of sight to boundary point
-      pressure += source_delay_line_.FractionalRead(distances_source_[i]*
+      pressure += source_delay_line_.FractionalReadAt(distances_source_[i]*
                                                     sampling_frequency_/
                                                     SOUND_SPEED)
                   * weights_source_[i];
@@ -241,8 +241,8 @@ void TdBem::Run(const MonoBuffer& input_buffer,
       for (Int j = 0; j<num_elements_; ++j) {
         if (i == j) { continue; }
         Time delay = distances_[i][j] * sampling_frequency_ / SOUND_SPEED;
-        pressure += (pressures_[j].FractionalRead(delay) * weights_current_[i][j] +
-                     pressures_[j].FractionalRead(delay + 1.0) * weights_previous_[i][j])
+        pressure += (pressures_[j].FractionalReadAt(delay) * weights_current_[i][j] +
+                     pressures_[j].FractionalReadAt(delay + 1.0) * weights_previous_[i][j])
                     / (2.0*PI);
       }
       pressures_[i].Write(pressure);
@@ -255,15 +255,15 @@ void TdBem::Run(const MonoBuffer& input_buffer,
     // Extract pressure
     for (Int i = 0; i<num_elements_; ++i) {
       Time delay = distances_mic_[i] * sampling_frequency_ / SOUND_SPEED;
-      Sample pressure = (weights_mic_current_[i] * pressures_[i].FractionalRead(delay) +
-                weights_mic_previous_[i] * pressures_[i].FractionalRead(delay+1.0))
+      Sample pressure = (weights_mic_current_[i] * pressures_[i].FractionalReadAt(delay) +
+                weights_mic_previous_[i] * pressures_[i].FractionalReadAt(delay+1.0))
                 / (4.0*PI);
       
       microphone_->AddPlaneWave(MonoBuffer::Unary(pressure), points_[i], i, mono_output_buffer);
     }
     
     Time los_delay = distance_los_ * sampling_frequency_ / SOUND_SPEED;
-    microphone_->AddPlaneWave(MonoBuffer::Unary(source_delay_line_.FractionalRead(los_delay)/ (4.0*PI*distance_los_)), source_->position(), num_elements_, mono_output_buffer);
+    microphone_->AddPlaneWave(MonoBuffer::Unary(source_delay_line_.FractionalReadAt(los_delay)/ (4.0*PI*distance_los_)), source_->position(), num_elements_, mono_output_buffer);
     
     // Next time tick
     source_delay_line_.Tick();

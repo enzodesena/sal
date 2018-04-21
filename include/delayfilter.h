@@ -49,14 +49,14 @@ public:
   inline Sample Read() const noexcept { return *read_index_; }
   
   /** This allows to read at a different location from the read pointer. */
-  Sample Read(const Int delay_tap) const noexcept;
+  Sample ReadAt(const Int delay_tap) const noexcept;
   
   /** Read the next `num_samples` samples.
    @param[in] num_samples the number of samples to be read.
    @param[out] output_data the array where to write these samples. */
   void Read(const Int num_samples, Sample* output_data) const noexcept;
   
-  Sample FractionalRead(const Time fractional_delay_tap) const noexcept;
+  Sample FractionalReadAt(const Time fractional_delay_tap) const noexcept;
   
   /** This causes time to tick by one sample. */
   inline void Tick() noexcept {
