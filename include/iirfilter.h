@@ -84,7 +84,10 @@ public:
   inline Real denominator_coefficient(const Int coeff_id) const noexcept;
   
   inline void set_numerator_coefficient(const Int coeff_id,
-                                        const Real value) noexcept;
+                                        const Real value) noexcept {
+    ASSERT(coeff_id >= 0 && coeff_id<(Int)B_.size());
+    B_[coeff_id] = value;
+  }
   
   inline void set_denominator_coefficient(const Int coeff_id,
                                           const Real value) noexcept;

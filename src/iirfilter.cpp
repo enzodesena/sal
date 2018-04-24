@@ -14,6 +14,8 @@
 
 namespace mcl {
   
+
+  
 std::vector<Real> IirFilter::B() const {
   // Return the non-normalised version
   return Multiply(B_, A0_);
@@ -109,11 +111,6 @@ void IirFilter::set_coefficients(const IirFilter& other_filter) noexcept {
   }
 }
   
-void IirFilter::set_numerator_coefficient(const Int coeff_id,
-                                          const Real value) noexcept {
-  ASSERT(coeff_id >= 0 && coeff_id<(Int)B_.size());
-  B_[coeff_id] = value;
-}
   
 void IirFilter::set_denominator_coefficient(const Int coeff_id,
                                             const Real value) noexcept {
