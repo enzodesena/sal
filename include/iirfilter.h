@@ -59,7 +59,7 @@ public:
   /** 
    Returns the output of the filter for an input equal to `input`.
    For example, if B=1, A=1, output will be equal to input. 
-   As a second example, if B=[0,1], A=[1], you will have 
+   As a second example, if B=[0,1], A=[1, 0], you will have
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
@@ -67,15 +67,27 @@ public:
   
   using DigitalFilter::Filter;
   
+  /** Returns the order of the filter. */
+  Int order() const noexcept;
+  
   /** 
    Updates the filter coefficients. May cause articafts if the coefficients are
    updated too rapidly.
    */
-  void UpdateFilter(std::vector<Real> B, std::vector<Real> A);
+  void set_coefficients(const std::vector<Real>& B, const std::vector<Real>& A) noexcept;
   
-  void SetNumeratorCoefficient(const Int coeff_id, const Real value) noexcept;
+  /** Sets the coefficients as identical to those of another filter. */
+  void set_coefficients(const IirFilter& filter) noexcept;
   
-  void SetDenominatorCoefficient(const Int coeff_id, const Real value) noexcept;
+  inline Real numerator_coefficient(const Int coeff_id) const noexcept;
+  
+  inline Real denominator_coefficient(const Int coeff_id) const noexcept;
+  
+  inline void set_numerator_coefficient(const Int coeff_id,
+                                        const Real value) noexcept;
+  
+  inline void set_denominator_coefficient(const Int coeff_id,
+                                          const Real value) noexcept;
   
   /** Returns the forward coefficients */
   std::vector<Real> B() const;

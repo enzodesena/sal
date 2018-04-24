@@ -43,7 +43,7 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) :
     B_ = Multiply(B, (Real) 1.0 / A[0]);
     A_ = Multiply(A, (Real) 1.0 / A[0]);
   }
-            
+  
             
   Int size = B.size();
   state_ = new Real[size];
@@ -76,26 +76,50 @@ IirFilter& IirFilter::operator= (const IirFilter& other) {
 
 IirFilter::~IirFilter() { delete [] state_; }
 
-void IirFilter::UpdateFilter(std::vector<Real> B,
-                             std::vector<Real> A) {
+Int IirFilter::order() const noexcept {
+  return Max(B_.size(), A_.size())-1;
+}
+  
+Real IirFilter::numerator_coefficient(const Int coeff_id) const noexcept {
+  return B_.at(coeff_id);
+}
+
+Real IirFilter::denominator_coefficient(const Int coeff_id) const noexcept {
+  return A_.at(coeff_id);
+}
+  
+void IirFilter::set_coefficients(const std::vector<Real>& B,
+                                const std::vector<Real>& A) noexcept {
   // TODO: implement case where length changes.
-  if (B_.size() != B.size()) { ASSERT(false); }
-  if (A_.size() != A.size()) { ASSERT(false); }
+  ASSERT(B_.size() == B.size());
+  ASSERT(A_.size() == A.size());
   
   B_ = B;
   A_ = A;
+  A0_ = A[0];
 }
   
-void IirFilter::SetNumeratorCoefficient(const Int coeff_id,
-                                        const Real value) noexcept {
-  ASSERT(coeff_id<(Int)B_.size());
-  B_.at(coeff_id) = value;
+void IirFilter::set_coefficients(const IirFilter& other_filter) noexcept {
+  const Int filter_order = order();
+  assert(filter_order == other_filter.order());
+  
+  for (Int i=0; i<=filter_order; ++i) {
+    set_numerator_coefficient(i, other_filter.numerator_coefficient(i));
+    set_denominator_coefficient(i, other_filter.denominator_coefficient(i));
+  }
 }
   
-void IirFilter::SetDenominatorCoefficient(const Int coeff_id,
+void IirFilter::set_numerator_coefficient(const Int coeff_id,
                                           const Real value) noexcept {
-  ASSERT(coeff_id<(Int)A_.size());
-  A_.at(coeff_id) = value;
+  ASSERT(coeff_id >= 0 && coeff_id<(Int)B_.size());
+  B_[coeff_id] = value;
+}
+  
+void IirFilter::set_denominator_coefficient(const Int coeff_id,
+                                            const Real value) noexcept {
+  ASSERT(coeff_id >= 0 &&coeff_id<(Int)A_.size());
+  A_[coeff_id] = value;
+  if (coeff_id == 0) { A0_ = value; }
 }
 
 
