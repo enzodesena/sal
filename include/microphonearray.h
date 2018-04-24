@@ -23,34 +23,18 @@
 
 namespace sal {
 
-/** This object creates a microphone array based on a microphone prototype.
- So, for instance, you can take an omnimic, and create an array of N omni mics.
- This class is a parent for more specific classes, e.g. a circular array etc.
- This class simply creates N copies of the mic_prototype and repositions them
- in the set `position`, with given `orientation` and `handedness`. A call
+/** This is a microhone array, containing pointers to other microphones. A call
  to AddPlaneWave will call the AddPlaneWave of each microphone.
  You can then access the streams of each microphone by first extracting
  pointers to the microphone with the microphones() method and then accessing
  each one's stream. Alternatively, the object also has a multichannel stream
  object, which contains pointers to the individual streams. */
-template<class T>
 class SAL_API MicrophoneArray : public Microphone {
-static_assert(std::is_base_of<MonoMic, T>::value,
-              "You can only create microphone arrays of MonoMics");
-
 public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
-                  const T& mic_prototype,
-                  const mcl::Int num_microphones) :
-          Microphone(position, orientation) {
-
-    for (Int i=0; i<num_microphones; ++i) {
-      T* microphone = new T(mic_prototype);
-      microphone->set_position(position);
-      microphones_.push_back(microphone);
-    }
-  }
+                  const std::vector<Microphone*>& microphones) :
+      Microphone(position, orientation), microphones_(microphones) {}
 
   /**
    This method will move all the internal microphones to a new position.
@@ -95,31 +79,28 @@ public:
     return true;
   }
 
-  std::vector<T*> microphones() { return microphones_; }
+  std::vector<Microphone*> microphones() { return microphones_; }
 
   static bool Test();
 
-  ~MicrophoneArray() {
-    for (Int i=0; i<(Int)microphones_.size();++i) {
-      delete microphones_[i];
-    }
-    microphones_.clear();
-  }
+  virtual ~MicrophoneArray() {}
 
 
   /**
    Simulates the output of the microphone array to a source in the direction
    of source.position() and with input signal `source.signal()`.
-   This does not include attenuation nor delay due to propagation. These
-   are in fact included in the `FreeFieldSimulation` in SAL.
+   This does not include attenuation nor delay due to propagation.
+   If you wish to use this method, the buffer has to be a multichannel buffer,
+   and all the underlying microphones need to be monophonic. If that is not
+   the case, then you need to use the AddPlaneWave of the underlying microphone
+   objects directly.
    */
   virtual void AddPlaneWaveRelative(const Sample* input_data,
                                     const Int num_samples,
                                     const mcl::Point& point,
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept {
-    MultichannelBuffer& multi_buffer =
-    dynamic_cast<MultichannelBuffer&>(output_buffer);
+    MultichannelBuffer& multi_buffer = dynamic_cast<MultichannelBuffer&>(output_buffer);
     
     Int num_microphones((Int)microphones_.size());
     for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
@@ -131,10 +112,39 @@ public:
     }
   }
 protected:
-  
-  std::vector<T*> microphones_;
+  std::vector<Microphone*> microphones_;
 };
 
+  
+/** This object creates a microphone array based on a microphone prototype.
+ So, for instance, you can take an omnimic, and create an array of N omni mics.
+ This class is a parent for more specific classes, e.g. a circular array etc.
+ This class simply creates N copies of the mic_prototype and repositions them
+ in the set `position`, with given `orientation` and `handedness`. */
+template<class T>
+class SAL_API UniformArray : public MicrophoneArray {
+public:
+  UniformArray(const mcl::Point& position,
+               const mcl::Quaternion& orientation,
+               const T& mic_prototype,
+               const mcl::Int num_microphones) :
+  MicrophoneArray(position, orientation,
+                  MicrophoneFactory(mic_prototype, num_microphones)) {}
+  
+  virtual ~UniformArray() {
+    for (Int i=0; i<(Int) microphones_.size(); ++i) { delete microphones_[i]; }
+  }
+  
+private:
+  std::vector<Microphone*>
+  MicrophoneFactory(const T& mic_prototype, const Int num_microphones) {
+    std::vector<Microphone*> output(num_microphones);
+    for (Int i=0; i<num_microphones; ++i) {
+      output[i] = new T(mic_prototype);
+    }
+    return output;
+  }
+};
 
 /**
  This generates a microphone array centered in position, with radius
@@ -142,27 +152,23 @@ protected:
  first_element_heading is the heading of first microphone - e.g.
  first_element_heading=0, means that the first microphone is
  at (position.x() + radius, position.y(), position.z()).
- A span_angle == 0 will position the microphones uniformly around 2PI
  */
 template<class T>
-class SAL_API CircularArray : public MicrophoneArray<T> {
+class SAL_API CircularArray : public UniformArray<T> {
 public:
   CircularArray(const mcl::Point& position,
                 const mcl::Quaternion& orientation,
                 const T& mic_prototype,
                 const Length radius,
                 const std::vector<Angle>& angles) :
-        MicrophoneArray<T>(position, orientation,
-                           mic_prototype, angles.size()),
+        UniformArray<T>(position, orientation, mic_prototype, angles.size()),
       radius_(radius), angles_(angles) {
     set_orientation(orientation);
   }
 
   virtual void set_orientation(const mcl::Quaternion& orientation) {
     mcl::Point position(this->position());
-    std::vector<mcl::Point> positions = GetPositions(position,
-                                                     radius_,
-                                                     angles_);
+    std::vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
 
     mcl::AxAng axang = mcl::Quat2AxAng(orientation);
     for (mcl::Int i=0; i<(Int)angles_.size(); ++i) {

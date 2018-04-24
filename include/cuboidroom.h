@@ -58,13 +58,13 @@ public:
 
   virtual std::vector<mcl::Point>
   CalculateBoundaryPoints(const mcl::Point& source,
-                          const mcl::Point& destination) noexcept;
+                          const mcl::Point& destination) const noexcept;
   
   virtual std::vector<mcl::IirFilter>
   GetBoundaryFilters(const mcl::Point& source_point,
-                     const mcl::Point& mic_point) noexcept;
+                     const mcl::Point& mic_point) const noexcept;
   
-  virtual mcl::Int num_boundary_points() noexcept;
+  virtual mcl::Int num_boundary_points() const noexcept;
   
   mcl::Point ImageSourcePosition(const mcl::Point& source_position,
                                  const mcl::Int mx,
@@ -72,9 +72,9 @@ public:
                                  const mcl::Int mz,
                                  const mcl::Int px,
                                  const mcl::Int py,
-                                 const mcl::Int pz) noexcept;
+                                 const mcl::Int pz) const noexcept;
   
-  sal::Time SabineRt60();
+  sal::Time SabineRt60() const;
   
   Triplet dimensions() const noexcept { return dimensions_.value(); }
   
@@ -94,7 +94,7 @@ public:
   
   virtual void UpdateShape(const Time time_elapsed_since_last_update) noexcept;
   
-  bool HasReachedTarget() noexcept;
+  bool HasReachedTarget() const noexcept;
   
   
   //  Reference system:
@@ -118,7 +118,7 @@ public:
   // 5: ceiling
   mcl::Point ReflectionPoint(const CuboidWallId face_index,
                              const mcl::Point& source_pos,
-                             const mcl::Point& observation_pos);
+                             const mcl::Point& observation_pos) const;
   
   virtual sal::Int num_faces() const noexcept { return 6; }
   
@@ -141,9 +141,10 @@ private:
   TripletHandler dimensions_;
   
   
-  mcl::Point IntersectionPoint(const CuboidWallId wall_id,
-                               const mcl::Point& observation_pos,
-                               const mcl::Point& image_pos);
+  static mcl::Point IntersectionPoint(const CuboidWallId wall_id,
+                                      const Triplet dimensions,
+                                      const mcl::Point& observation_pos,
+                                      const mcl::Point& image_pos) noexcept;
 };
 
 } // namespace sal

@@ -35,7 +35,7 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
-                                                       const Point& mic_point) noexcept {
+                                                       const Point& mic_point) const noexcept {
   
   std::vector<Point> reflection_points;
   
@@ -47,8 +47,10 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   reflection_points.push_back(ReflectionPoint(z2, source_point, mic_point));
   
   if (boundary_set_type_ == first_and_second_cross_horiz) {
-    Point a_x2 = IntersectionPoint(x2, mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
-    Point a_y1 = IntersectionPoint(y1, mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
+    Point a_x2 = IntersectionPoint(x2, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
+    Point a_y1 = IntersectionPoint(y1, dimensions_.value(), mic_point,
+                                   ImageSourcePosition(source_point, 1,0,0, 1,1,0));
     if (IsPointInRoom(a_x2, EPSILON)) {
       ASSERT(!IsPointInRoom(a_y1, EPSILON));
       reflection_points.push_back(a_x2);
@@ -57,8 +59,10 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
       reflection_points.push_back(a_y1);
     }
     
-    Point b_x2 = IntersectionPoint(x2, mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
-    Point b_y2 = IntersectionPoint(y2, mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
+    Point b_x2 = IntersectionPoint(x2, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
+    Point b_y2 = IntersectionPoint(y2, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
     if (IsPointInRoom(b_x2, EPSILON)) {
       ASSERT(!IsPointInRoom(b_y2, EPSILON));
       reflection_points.push_back(b_x2);
@@ -67,8 +71,10 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
       reflection_points.push_back(b_y2);
     }
     
-    Point c_x1 = IntersectionPoint(x1, mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
-    Point c_y2 = IntersectionPoint(y2, mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
+    Point c_x1 = IntersectionPoint(x1, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
+    Point c_y2 = IntersectionPoint(y2, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
     if (IsPointInRoom(c_x1, EPSILON)) {
       ASSERT(!IsPointInRoom(c_y2, EPSILON));
       reflection_points.push_back(c_x1);
@@ -77,8 +83,10 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
       reflection_points.push_back(c_y2);
     }
     
-    Point d_x1 = IntersectionPoint(x1, mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
-    Point d_y1 = IntersectionPoint(y1, mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
+    Point d_x1 = IntersectionPoint(x1, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
+    Point d_y1 = IntersectionPoint(y1, dimensions_.value(),
+                                   mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
     if (IsPointInRoom(d_x1, EPSILON)) {
       ASSERT(!IsPointInRoom(d_y1, EPSILON));
       reflection_points.push_back(d_x1);
@@ -93,11 +101,11 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
 
 std::vector<mcl::IirFilter>
 CuboidRoom::GetBoundaryFilters(const Point& source_point,
-                               const Point& mic_point) noexcept {
+                               const Point& mic_point) const noexcept {
   std::vector<mcl::IirFilter> boundary_filters(wall_filters_);
   
   if (boundary_set_type_ == first_and_second_cross_horiz) {
-    Point a_x2 = IntersectionPoint(x2, mic_point,
+    Point a_x2 = IntersectionPoint(x2, dimensions_.value(), mic_point,
                                    ImageSourcePosition(source_point, 1,0,0, 1,1,0));
     if (IsPointInRoom(a_x2, EPSILON)) {
       boundary_filters.push_back(boundary_filters[x2]);
@@ -105,7 +113,7 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
       boundary_filters.push_back(boundary_filters[y1]);
     }
     
-    Point b_x2 = IntersectionPoint(x2, mic_point,
+    Point b_x2 = IntersectionPoint(x2, mic_point, dimensions_.value(),
                                    ImageSourcePosition(source_point, 1,1,0, 1,1,0));
     if (IsPointInRoom(b_x2, EPSILON)) {
       boundary_filters.push_back(boundary_filters[x2]);
@@ -113,7 +121,7 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
       boundary_filters.push_back(boundary_filters[y2]);
     }
     
-    Point c_x1 = IntersectionPoint(x2, mic_point,
+    Point c_x1 = IntersectionPoint(x2, mic_point, dimensions_.value(),
                                    ImageSourcePosition(source_point, 0,1,0, 1,1,0));
     if (IsPointInRoom(c_x1, EPSILON)) {
       boundary_filters.push_back(boundary_filters[x1]);
@@ -121,7 +129,7 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
       boundary_filters.push_back(boundary_filters[y2]);
     }
     
-    Point d_x1 = IntersectionPoint(x1, mic_point,
+    Point d_x1 = IntersectionPoint(x1, mic_point, dimensions_.value(),
                                    ImageSourcePosition(source_point, 0,0,0, 1,1,0));
     if (IsPointInRoom(d_x1, EPSILON)) {
       boundary_filters.push_back(boundary_filters[x1]);
@@ -132,7 +140,7 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
   return boundary_filters;
 }
 
-mcl::Int CuboidRoom::num_boundary_points() noexcept {
+mcl::Int CuboidRoom::num_boundary_points() const noexcept {
   switch (boundary_set_type_) {
     case first_order_only:
       return 6;
@@ -150,8 +158,9 @@ mcl::Int CuboidRoom::num_boundary_points() noexcept {
 
 
 Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
+                                    const Triplet dimensions,
                                     const Point& observation_pos,
-                                    const Point& image_pos) {
+                                    const Point& image_pos) noexcept {
   Point image_position;
   Point plane_point;
   Point plane_normal;
@@ -162,7 +171,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(1,0,0);
       break;
     case x2: // x_2
-      plane_point = Point(dimensions_.value().x(),0,0);
+      plane_point = Point(dimensions.x(),0,0);
       plane_normal = Point(1,0,0);
       break;
     case y1: // y_1
@@ -170,7 +179,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(0,1,0);
       break;
     case y2: // y_2
-      plane_point = Point(0,dimensions_.value().y(),0);
+      plane_point = Point(0,dimensions.y(),0);
       plane_normal = Point(0,1,0);
       break;
     case z1: // z_1
@@ -178,7 +187,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       plane_normal = Point(0,0,1);
       break;
     case z2: // z_2
-      plane_point = Point(0,0,dimensions_.value().z());
+      plane_point = Point(0,0,dimensions.z());
       plane_normal = Point(0,0,1);
       break;
     default:
@@ -194,7 +203,7 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
 
 Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
                                   const Point& source_pos,
-                                  const Point& observation_pos) {
+                                  const Point& observation_pos) const {
   Point image_position;
   Point plane_point;
   Point plane_normal;
@@ -221,13 +230,13 @@ Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
       break;
     default:
       ASSERT(false);
-      ASSERT(false);
   }
-  return IntersectionPoint(wall_id, observation_pos, image_position);
+  return IntersectionPoint(wall_id, dimensions_.value(), observation_pos,
+                           image_position);
 }
 
 
-Time CuboidRoom::SabineRt60() {
+Time CuboidRoom::SabineRt60() const {
   Length volume = dimensions_.value().x()*dimensions_.value().y()*dimensions_.value().z();
   Length weighted_area = 0.0;
   
@@ -271,7 +280,7 @@ mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
                                            const Int mz,
                                            const Int px,
                                            const Int py,
-                                           const Int pz) noexcept {
+                                           const Int pz) const noexcept {
   Length r2l_x = 2.0*dimensions_.value().x()*((sal::Length)mx);
   Length r2l_y = 2.0*dimensions_.value().y()*((sal::Length)my);
   Length r2l_z = 2.0*dimensions_.value().z()*((sal::Length)mz);
@@ -284,7 +293,7 @@ void CuboidRoom::set_target_dimensions(const Triplet& dimensions) noexcept {
   dimensions_.set_target_value(dimensions);
 }
 
-bool CuboidRoom::HasReachedTarget() noexcept {
+bool CuboidRoom::HasReachedTarget() const noexcept {
   return dimensions_.HasReachedTarget();
 }
 

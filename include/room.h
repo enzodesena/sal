@@ -38,7 +38,9 @@ public:
        const BoundarySetType boundary_set_type = first_order_only) noexcept :
           wall_filters_(wall_filters), boundary_set_type_(boundary_set_type) {}
   
-  std::vector<mcl::IirFilter> wall_filters() noexcept { return wall_filters_; }
+  std::vector<mcl::IirFilter> wall_filters() const noexcept {
+    return wall_filters_;
+  }
   
   // Resets the wall filters. Warning! It may cancel the state of the old ones,
   // with probable audible artifacts.
@@ -54,13 +56,13 @@ public:
   // relative to source and destinatin points.
   virtual std::vector<mcl::Point>
   CalculateBoundaryPoints(const mcl::Point& source,
-                          const mcl::Point& destination) noexcept = 0;
+                          const mcl::Point& destination) const noexcept = 0;
   
   virtual std::vector<mcl::IirFilter>
   GetBoundaryFilters(const mcl::Point& source_point,
-                     const mcl::Point& mic_point) noexcept = 0;
+                     const mcl::Point& mic_point) const noexcept = 0;
   
-  virtual sal::Int num_boundary_points() noexcept = 0;
+  virtual sal::Int num_boundary_points() const noexcept = 0;
   
   // Returns the shape's number of faces.
   virtual sal::Int num_faces() const noexcept = 0;

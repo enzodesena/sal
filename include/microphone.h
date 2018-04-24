@@ -162,7 +162,7 @@ private:
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;
   
-  template<typename T> friend class MicrophoneArray;
+  friend class MicrophoneArray;
 };
 
 class SAL_API StereoMicrophone : public Microphone {
