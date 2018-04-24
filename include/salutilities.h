@@ -154,15 +154,35 @@ public:
    @param[in] input_data
    @param[in] num_samples
    @param[out] output_data */
-  void GetNextValuesAndMultiply(const Sample* input_data,
-                                const Int num_samples,
-                                Sample* output_data) noexcept {
+  void GetNextValuesMultiply(const Sample* input_data,
+                             const Int num_samples,
+                             Sample* output_data) noexcept {
     if (IsUpdating()) {
       for (Int i=0; i<num_samples; ++i) {
         output_data[i] = input_data[i]*GetNextValue();
       }
     } else {
       mcl::Multiply(input_data, num_samples, target_value_, output_data);
+    }
+  }
+  
+  /** Takes an array of values (`input_data`), multiplies them by the
+   next values coming out of the smoother, and adds the result to
+   an input-output array (`input_output_data`).
+   @param[in] input_data
+   @param[in] num_samples
+   @param[in,out] input_output_data */
+  void GetNextValuesMultiplyAdd(const Sample* input_data,
+                                const Int num_samples,
+                                Sample* input_output_data) noexcept {
+    if (IsUpdating()) {
+      for (Int i=0; i<num_samples; ++i) {
+        input_output_data[i] += input_data[i]*GetNextValue();
+      }
+    } else {
+      for (Int i=0; i<num_samples; ++i) {
+        input_output_data[i] += input_data[i]*target_value_;
+      }
     }
   }
   
