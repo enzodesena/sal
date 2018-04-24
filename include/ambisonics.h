@@ -44,7 +44,7 @@ public:
           Microphone(position, orientation),
           order_(order), convention_(convention) {}
   
-  virtual bool IsCoincident() { return true; }
+  virtual bool IsCoincident() const noexcept { return true; }
   
   static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
   

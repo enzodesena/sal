@@ -118,9 +118,9 @@ public:
                     const Int wave_id,
                     Buffer& output_buffer) noexcept;
   
-  virtual bool IsCoincident() = 0;
+  virtual bool IsCoincident() const noexcept = 0;
   
-  virtual bool IsOmni() { return false; }
+  virtual bool IsOmni() const noexcept { return false; }
   
   /** This method translates `point` in the reference system of the mic. */
   mcl::Point GetRelativePoint(const mcl::Point& point) const noexcept;

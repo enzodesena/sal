@@ -66,13 +66,6 @@ public:
     data_ = data_referenced;
   }
 
-//  MultichannelBuffer(const std::vector<MonoBuffer>& input_buffers) noexcept :
-//      MultichannelBuffer(input_buffers.size(), input_buffers.at(0).num_samples()) {
-//    for (Int chan_id = 0; chan_id<input_buffers.size(); ++chan_id) {
-//      ASSERT(input_buffers[0].num_samples() == input_buffers[chan_id].num_samples());
-//      for (Int sample_id = 0;
-//    }
-//  }
 
   virtual Int num_channels() const noexcept { return num_channels_; }
   

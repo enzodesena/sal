@@ -86,9 +86,9 @@ public:
           MemorylessMonoMic(position, mcl::Quaternion::Identity()),
           gain_(gain) {}
   
-  virtual bool IsCoincident() { return true; }
+  virtual bool IsCoincident() const noexcept { return true; }
   
-  virtual bool IsOmni() { return true; }
+  virtual bool IsOmni() const noexcept { return true; }
   
   virtual ~GainMic() {}
   
@@ -107,7 +107,7 @@ public:
         Microphone(position, mcl::Quaternion::Identity()),
         GainMic(position, (Sample) 1.0) {}
   
-  virtual bool IsCoincident() { return true; }
+  virtual bool IsCoincident() const noexcept { return true; }
   
   virtual ~OmniMic() {}
 };
@@ -125,7 +125,7 @@ public:
           Microphone(position, orientation),
           MemorylessMonoMic(position, orientation),          coefficients_(coefficients) {}
   
-  virtual bool IsCoincident() { return true; }
+  virtual bool IsCoincident() const noexcept { return true; }
   
   virtual ~TrigMic() {}
 private:
@@ -156,13 +156,12 @@ public:
       MemorylessMonoMic(position, orientation),
       base_angle_(base_angle) {}
   
-  virtual bool IsCoincident() { return true; }
+  virtual bool IsCoincident() const noexcept { return true; }
   
   virtual ~TanMic() {}
 private:
   virtual Sample GetDirectivity(const mcl::Point& point) {
-    Angle phi = AngleBetweenPoints(point,
-                                               mcl::Point(1.0, 0.0, 0.0));
+    Angle phi = AngleBetweenPoints(point, mcl::Point(1.0, 0.0, 0.0));
     
     sal::Angle phi_l = 0;
     sal::Angle phi_lp1 = base_angle_; //PI/3.0;

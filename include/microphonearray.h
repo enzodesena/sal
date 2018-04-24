@@ -65,7 +65,7 @@ public:
    Returns true if the array is coincident. If there are 0 or 1 microphones
    the array is considered coincident.
    */
-  virtual bool IsCoincident() {
+  virtual bool IsCoincident() const noexcept {
     const Int num_microphones = (Int)microphones_.size();
 
     if (num_microphones == 0 || num_microphones == 1) { return true; }
@@ -79,8 +79,22 @@ public:
     return true;
   }
 
-  std::vector<Microphone*> microphones() { return microphones_; }
+  const Microphone* GetConstMicrophonePointer(const Int microphone_id) const noexcept {
+    return microphones_.at(microphone_id);
+  }
+  
+  Microphone* GetMicrophonePointer(const Int microphone_id) noexcept {
+    return microphones_.at(microphone_id);
+  }
+  
+  std::vector<Microphone*> GetMicrophonePointers() const noexcept {
+    return microphones_;
+  }
 
+  Int num_microphones() const noexcept {
+    return microphones_.size();
+  }
+  
   static bool Test();
 
   virtual ~MicrophoneArray() {}

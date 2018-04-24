@@ -46,7 +46,7 @@ public:
   
   virtual void Reset() noexcept;
   
-  virtual bool IsCoincident() noexcept { return true; }
+  virtual bool IsCoincident() const noexcept { return true; }
   
   virtual ~BinauralMic() {}
   
