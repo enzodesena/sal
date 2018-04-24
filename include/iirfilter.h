@@ -71,7 +71,11 @@ public:
    Updates the filter coefficients. May cause articafts if the coefficients are
    updated too rapidly.
    */
-  void UpdateFilter(std::vector<Real> B,std::vector<Real> A);
+  void UpdateFilter(std::vector<Real> B, std::vector<Real> A);
+  
+  void SetNumeratorCoefficient(const Int coeff_id, const Real value) noexcept;
+  
+  void SetDenominatorCoefficient(const Int coeff_id, const Real value) noexcept;
   
   /** Returns the forward coefficients */
   std::vector<Real> B() const;

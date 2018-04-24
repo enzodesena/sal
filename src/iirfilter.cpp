@@ -85,6 +85,18 @@ void IirFilter::UpdateFilter(std::vector<Real> B,
   B_ = B;
   A_ = A;
 }
+  
+void IirFilter::SetNumeratorCoefficient(const Int coeff_id,
+                                        const Real value) noexcept {
+  ASSERT(coeff_id<(Int)B_.size());
+  B_.at(coeff_id) = value;
+}
+  
+void IirFilter::SetDenominatorCoefficient(const Int coeff_id,
+                                          const Real value) noexcept {
+  ASSERT(coeff_id<(Int)A_.size());
+  A_.at(coeff_id) = value;
+}
 
 
 Real IirFilter::Filter(Real input) noexcept {
