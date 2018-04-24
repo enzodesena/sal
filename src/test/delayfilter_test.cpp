@@ -180,81 +180,81 @@ bool DelayFilter::Test() {
   DelayFilter delay_line_a(5,5);
   
   delay_line_a.Write(1.5);
-  ASSERT(IsEqual(delay_line_a.Read(0), 1.5));
-  ASSERT(IsEqual(delay_line_a.Read(1), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 1.5));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 0.0));
   delay_line_a.Tick();
   
   delay_line_a.Write(-1.2);
   ASSERT(IsEqual(delay_line_a.FractionalReadAt(0), -1.2));
-  ASSERT(IsEqual(delay_line_a.Read(0), -1.2));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), -1.2));
   ASSERT(IsEqual(delay_line_a.FractionalReadAt(1), 1.5));
-  ASSERT(IsEqual(delay_line_a.Read(1), 1.5));
-  ASSERT(IsEqual(delay_line_a.Read(2), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 1.5));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 0.0));
   delay_line_a.Tick();
   
   delay_line_a.Write(0.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), -1.2));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), -1.2));
   ASSERT(IsEqual(delay_line_a.FractionalReadAt(1.01), -1.173));
   ASSERT(IsEqual(delay_line_a.FractionalReadAt(1.5), 0.15));
   ASSERT(IsEqual(delay_line_a.FractionalReadAt(1.7), 0.69));
   ASSERT(IsEqual(delay_line_a.FractionalReadAt(1.99), 1.473));
-  ASSERT(IsEqual(delay_line_a.Read(2), 1.5));
-  ASSERT(IsEqual(delay_line_a.Read(3), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 1.5));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 0.0));
   delay_line_a.Tick();
   
   delay_line_a.Write(-1.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), -1.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), -1.2));
-  ASSERT(IsEqual(delay_line_a.Read(3), 1.5));
-  ASSERT(IsEqual(delay_line_a.Read(4), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), -1.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), -1.2));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 1.5));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 0.0));
   delay_line_a.Tick();
   
   delay_line_a.Write(0.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), -1.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), -1.2));
-  ASSERT(IsEqual(delay_line_a.Read(4), 1.5));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), -1.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), -1.2));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 1.5));
   delay_line_a.Tick();
   
   delay_line_a.Write(0.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), -1.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), -1.2));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), -1.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), -1.2));
   delay_line_a.Tick();
   
   delay_line_a.Write(0.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), -1.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), -1.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 0.0));
   delay_line_a.Tick();
   
   delay_line_a.Write(0.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), -1.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), -1.0));
   delay_line_a.Tick();
   
   delay_line_a.Write(0.0);
-  ASSERT(IsEqual(delay_line_a.Read(0), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(1), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(2), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(3), 0.0));
-  ASSERT(IsEqual(delay_line_a.Read(4), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(0), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(1), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(2), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(3), 0.0));
+  ASSERT(IsEqual(delay_line_a.ReadAt(4), 0.0));
   
   // Testing DelayLine with Filter
   DelayFilter delay_filter_e = DelayFilter(0, 100);
