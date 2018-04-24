@@ -38,7 +38,7 @@ public:
        const BoundarySetType boundary_set_type = first_order_only) noexcept :
           wall_filters_(wall_filters), boundary_set_type_(boundary_set_type) {}
   
-  std::vector<mcl::IirFilter> wall_filters() const noexcept {
+  const std::vector<mcl::IirFilter>& wall_filters() const noexcept {
     return wall_filters_;
   }
   
@@ -50,6 +50,12 @@ public:
   
   void set_wall_filters(const mcl::IirFilter& filter) noexcept {
     wall_filters_.assign(num_faces(), filter);
+  }
+  
+  void SetFiltersNumeratorCoefficient(const Int coeff_id, const Sample value) {
+    for (Int i=0; i < (Int) wall_filters_.size(); ++i) {
+      wall_filters_[i].set_numerator_coefficient(coeff_id, value);
+    }
   }
   
   // Returns a vector of points located at geometrical reflections,
