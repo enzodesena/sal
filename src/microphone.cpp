@@ -17,7 +17,7 @@ using mcl::Quaternion;
 namespace sal {
   
 Microphone::Microphone(Point position, mcl::Quaternion orientation) :
-  position_(position), orientation_(orientation),
+  position_(TripletHandler(position)), orientation_(orientation),
   handedness_(mcl::right_handed) {}
   
 
@@ -31,7 +31,7 @@ void Microphone::set_target_position(const Point& position) noexcept {
   position_.set_target_value(position);
 }
 
-bool Microphone::HasReachedTarget() noexcept {
+bool Microphone::HasReachedTarget() const noexcept {
   return position_.HasReachedTarget();
 }
 

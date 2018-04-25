@@ -19,6 +19,8 @@ namespace sal {
 bool TripletHandler::Test() {
 
   TripletHandler speed_limiter(Point(0,0,0));
+  speed_limiter = Triplet(0,0,0);
+  
   speed_limiter.set_max_speed(1.0);
   speed_limiter.set_target_value(Point(1,0,0));
   speed_limiter.Update(1.0);

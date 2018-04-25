@@ -78,6 +78,10 @@ public:
     has_reached_target_ = false;
   }
   
+  Triplet target_value() const noexcept {
+    return target_triplet_;
+  }
+  
   void Update(const Time time_elapsed_since_last_tick) {
     if (max_speed_ == std::numeric_limits<Speed>::infinity()) {
       current_triplet_ = target_triplet_;

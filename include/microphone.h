@@ -52,16 +52,20 @@ public:
   /** Returns current position of the microphone */
   mcl::Point position() const noexcept;
   
+  mcl::Point target_position() const noexcept {
+    return position_.target_value();
+  }
+  
   /** Set microphone position */
   virtual void set_position(const mcl::Point& position) noexcept;
   
   virtual void set_target_position(const mcl::Point& target_position) noexcept;
   
-  void set_max_speed(const Speed max_speed) noexcept;
+  virtual void set_max_speed(const Speed max_speed) noexcept;
   
   virtual void UpdatePosition(const Time time_elapsed_since_last_tick) noexcept;
   
-  bool HasReachedTarget() noexcept;
+  virtual bool HasReachedTarget() const noexcept;
   
   /** Returns current orientation of the microphone */
   mcl::Quaternion orientation() const noexcept;
