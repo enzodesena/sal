@@ -120,8 +120,7 @@ private:
 class RampSmoother {
 public:
   /**
-   @param[in] ramp_samples number of samples after which the value is
-   to 1/e away from target value. */
+   @param[in] initial_value The initial assigned value. */
   RampSmoother(const Sample initial_value,
                const Time sampling_frequency) noexcept :
       current_value_(initial_value), target_value_(initial_value),
@@ -151,9 +150,10 @@ public:
   /** Takes an array of values (`input_data`), multiplies them by the
    next values coming out of the smoother, and writes the result into
    an output array (`output_data`).
-   @param[in] input_data
-   @param[in] num_samples
-   @param[out] output_data */
+   @param[in] input_data The input data.
+   @param[in] num_samples The number of samples.
+   @param[out] output_data The output array (data already there will be
+   overwritten. */
   void GetNextValuesMultiply(const Sample* input_data,
                              const Int num_samples,
                              Sample* output_data) noexcept {
@@ -169,9 +169,10 @@ public:
   /** Takes an array of values (`input_data`), multiplies them by the
    next values coming out of the smoother, and adds the result to
    an input-output array (`input_output_data`).
-   @param[in] input_data
-   @param[in] num_samples
-   @param[in,out] input_output_data */
+   @param[in] input_data The input data to multiply by.
+   @param[in] num_samples The number of samples to be handled.
+   @param[in,out] input_output_data The data onto which we will add the result
+   of the multiplication. */
   void GetNextValuesMultiplyAdd(const Sample* input_data,
                                 const Int num_samples,
                                 Sample* input_output_data) noexcept {

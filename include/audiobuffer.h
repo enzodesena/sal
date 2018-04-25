@@ -303,14 +303,11 @@ public:
   explicit MonoBuffer(const Int num_samples) noexcept :
         MultichannelBuffer(1, num_samples) {}
   
-  /** Constructs a multichannel buffer as a reference to another data
-   structure. If constructed in this way, this object will not own the data.
+  /** Constructs a mono buffer as a reference to a multichannel buffer.
+   If constructed in this way, this object will not own the data.
    
-   @param[in] data_referenced the data structure which we are referencing to.
-   @param[in] num_channels the number of channels for the data structure
-   we are referencing to.
-   @param[in] num_samples the number of samples for the data structure
-   we are referencing to.
+   @param[in] referenced_buffer the buffer structure which we are referencing to.
+   @param[in] channel_id the channel id to be referenced.
    */
   MonoBuffer(MultichannelBuffer& referenced_buffer, const Int channel_id) noexcept :
     MultichannelBuffer(&(referenced_buffer.GetWritePointers()[channel_id]), 1,
