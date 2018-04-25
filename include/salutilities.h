@@ -40,6 +40,7 @@ typedef mcl::Point Triplet;
   
 template< typename... argv >
 void LogError(const char* format, argv... args) {
+#ifndef DO_NOT_CERR_LOG
   const size_t SIZE = std::snprintf( NULL, 0, format, args... );
   
   std::string output;
@@ -47,6 +48,7 @@ void LogError(const char* format, argv... args) {
   std::snprintf( &(output[0]), SIZE+1, format, args... );
   
   std::cerr<<output<<std::endl;
+#endif
 }
   
 /** */
