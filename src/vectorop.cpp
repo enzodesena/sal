@@ -22,7 +22,7 @@
 
 namespace mcl {
   
-MCL_API void Multiply(const Real* input_data,
+void Multiply(const Real* input_data,
                       const Int num_samples,
                       const Real gain,
                       Real* output_data) noexcept {
@@ -43,7 +43,7 @@ MCL_API void Multiply(const Real* input_data,
 #endif
 }
   
-MCL_API void MultiplyAdd(const Real* input_data_mult,
+void MultiplyAdd(const Real* input_data_mult,
                          const Real gain,
                          const Real* input_data_add,
                          const Int num_samples,

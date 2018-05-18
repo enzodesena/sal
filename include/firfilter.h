@@ -15,15 +15,9 @@
 #include "digitalfilter.h"
 #include "vectorop.h"
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
 /** FIR Filter */
-class MCL_API FirFilter : public DigitalFilter {
+class FirFilter : public DigitalFilter {
 public:
   /** Constructs a default FIR filter, i.e. identical filter */
   FirFilter() noexcept;

@@ -15,12 +15,6 @@
 #include "point.h"
 #include <cassert>
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
   
 /** Enum describing whether we are using a right handed or left handed
@@ -44,7 +38,7 @@ struct AxAng {
 };
   
 /** Quaternion class */
-class MCL_API Quaternion {
+class Quaternion {
 public:
   /** Constructs a quaternion, with the first element being the scalar
    component and the following three forming the vector component */
@@ -71,22 +65,22 @@ private:
 };
   
 /** Returns a Quaternion using a given axis-angle representation */
-MCL_API Quaternion AxAng2Quat(const Real x, const Real y, const Real z,
+Quaternion AxAng2Quat(const Real x, const Real y, const Real z,
                               const Real angle) noexcept;
   
-MCL_API AxAng Quat2AxAng(const Quaternion& q) noexcept;
+AxAng Quat2AxAng(const Quaternion& q) noexcept;
   
-MCL_API Quaternion QuatConj(const Quaternion& q) noexcept;
+Quaternion QuatConj(const Quaternion& q) noexcept;
 
 /** Returns the norm of a quaternion (defined the same as the Eucledian 
  norm in R^4) */
-MCL_API Real Norm(const Quaternion& q) noexcept;
+Real Norm(const Quaternion& q) noexcept;
   
-MCL_API Point QuatRotate(const Quaternion& q, const Point& r,
+Point QuatRotate(const Quaternion& q, const Point& r,
                          const Handedness handedness = right_handed) noexcept;
 
 /** Implements the (Hamilton) quaternion multiplication **/
-MCL_API Quaternion QuatMultiply(const Quaternion& q,
+Quaternion QuatMultiply(const Quaternion& q,
                                 const Quaternion& r) noexcept;
   
 /** Converts Euler angles with a given convention to a Quaternion. 
@@ -94,27 +88,27 @@ MCL_API Quaternion QuatMultiply(const Quaternion& q,
  E.g. for zyx convention (which is the default), the first angle is for a
  rotation around the z axis, second for y, etc.
  */
-MCL_API Quaternion Eul2Quat(const Real angle_1,
+Quaternion Eul2Quat(const Real angle_1,
                             const Real angle_2,
                             const Real angle_3,
                             const EulerOrder order = zyx) noexcept;
   
 /** Returns the Euler angle around the x-axis associated to a given quaternion
  and for a given Euler rotation convention */
-MCL_API Real Quat2EulX(const Quaternion q,
+Real Quat2EulX(const Quaternion q,
                        const EulerOrder order = zyx) noexcept;
   
 /** Returns the Euler angle around the y-axis associated to a given quaternion
  and for a given Euler rotation convention */
-MCL_API Real Quat2EulY(const Quaternion q,
+Real Quat2EulY(const Quaternion q,
                        const EulerOrder order = zyx) noexcept;
   
 /** Returns the Euler angle around the z-axis associated to a given quaternion
  and for a given Euler rotation convention */
-MCL_API Real Quat2EulZ(const Quaternion q,
+Real Quat2EulZ(const Quaternion q,
                        const EulerOrder order = zyx) noexcept;
   
-MCL_API Quaternion QuatInverse(const Quaternion q) noexcept;
+Quaternion QuatInverse(const Quaternion q) noexcept;
   
 } // namespace mcl
 

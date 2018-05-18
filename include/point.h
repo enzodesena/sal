@@ -11,15 +11,9 @@
 
 #include "mcltypes.h"
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
 
-class MCL_API Triplet {
+class Triplet {
 public:
   /** Constructs a `Point` with all coordinates set to zero. */
   Triplet() noexcept;
@@ -64,72 +58,72 @@ typedef Triplet Point;
  Rotates the reference system about the x-axis with the right-hand rule.
  e.g. RotateAboutX(Point(0.0,1.0,0.0), pi/2) == Point(0.0,0.0,1.0)
  */
-MCL_API Point RotateAboutX(const Point&, Real) noexcept;
+Point RotateAboutX(const Point&, Real) noexcept;
 
 /**
  Rotates the reference system about the y-axis with the right-hand rule.
  e.g. RotateAboutY(Point(1.0,0.0,0.0), pi/2) == Point(0.0,0.0,-1.0)
  */
-MCL_API Point RotateAboutY(const Point&, Real) noexcept;
+Point RotateAboutY(const Point&, Real) noexcept;
 
 /**
  Rotates the reference system about the z-axis with the right-hand rule.
  e.g. RotateAboutZ(Point(0.0,1.0,0.0), pi/2) == Point(-1.0,0.0,0.0)
  */
-MCL_API Point RotateAboutZ(const Point&, Real) noexcept;
+Point RotateAboutZ(const Point&, Real) noexcept;
 
 /**
  Rotates the reference system with euler angles. Convention is ZYX with
  angles phi, theta and psi, respectively.
  */
-MCL_API Point Rotate(const Point&, Real phi,
+Point Rotate(const Point&, Real phi,
                      Real theta, Real psi) noexcept;
 
-MCL_API Real DotProduct(Point, Point) noexcept;
-MCL_API Real Distance(Point, Point) noexcept;
-MCL_API Real Theta(Point, Point) noexcept;
-MCL_API Real Phi(Point, Point) noexcept;
-MCL_API Real AngleBetweenDirections(Real theta_a, Real phi_a,
+Real DotProduct(Point, Point) noexcept;
+Real Distance(Point, Point) noexcept;
+Real Theta(Point, Point) noexcept;
+Real Phi(Point, Point) noexcept;
+Real AngleBetweenDirections(Real theta_a, Real phi_a,
                                    Real theta_b, Real phi_b) noexcept;
-MCL_API Real AngleBetweenPoints(Point, Point) noexcept;
+Real AngleBetweenPoints(Point, Point) noexcept;
 
 /**
  This returns the point on the line between `point_a` and `point_b` which
  has a distance of `distance` from `point_a`
  */
-MCL_API Point PointOnLine(const Point point_a, const Point point_b,
+Point PointOnLine(const Point point_a, const Point point_b,
                           const Real distance) noexcept;
 
 /** Sums the coordinates of `point_a` and `point_b` */
-MCL_API Point Sum(const Point point_a, const Point point_b) noexcept;
+Point Sum(const Point point_a, const Point point_b) noexcept;
 
 /** Subtracts the coordinates of `point_a` from `point_b` (point_a-point_b) */
-MCL_API Point Subtract(const Point point_a, const Point point_b) noexcept;
+Point Subtract(const Point point_a, const Point point_b) noexcept;
 
 /**
  Multiplies all coordinates by given constant. Has the effect of changing
  of changing the length of the vector.
  */
-MCL_API Point Multiply(const Point point, const Real constant) noexcept;
+Point Multiply(const Point point, const Real constant) noexcept;
 
 /**
  Contructs a point from spherical coordinates, with (r, 0, 0) corresponding
  to the z-axis, and (r, pi/2, 0) corresponding to x-axis. Right-hand rule.
  */
-MCL_API Point PointSpherical(Real r, Real theta, Real phi) noexcept;
+Point PointSpherical(Real r, Real theta, Real phi) noexcept;
 
 /**
  Constructs a vector that is the the projection of the input `vector`
  on the plane (passing through the origin) identified by the vector
  normal to the plane `plane_normal_vector`.
  */
-MCL_API Point Projection(const Point& vector,
+Point Projection(const Point& vector,
                          const Point& plane_normal_vector) noexcept;
 
 /**
  Returns a new point that is a normalized (norm == 1) version of `point`.
  */
-MCL_API Point Normalized(Point point) noexcept;
+Point Normalized(Point point) noexcept;
 
 /**
  Returns the intersection point between a plane and a line. The line is
@@ -144,7 +138,7 @@ MCL_API Point Normalized(Point point) noexcept;
  The user should first check whether an intersection exists using
  IntersectionPlaneLineExists.
  */
-MCL_API Point IntersectionPlaneLine(const Point& line_point,
+Point IntersectionPlaneLine(const Point& line_point,
                                     const Point& line_direction,
                                     const Point& plane_point,
                                     const Point& plane_normal) noexcept;
@@ -159,7 +153,7 @@ MCL_API Point IntersectionPlaneLine(const Point& line_point,
  the normal to the plane, plane_normal (every point on the plane can be
  expressed as (p-plane_point, plane_normal)=0 where (x,y) is scalar product).
  */
-MCL_API bool IntersectionPlaneLineExists(const Point& line_point,
+bool IntersectionPlaneLineExists(const Point& line_point,
                                          const Point& line_direction,
                                          const Point& plane_point,
                                          const Point& plane_normal) noexcept;

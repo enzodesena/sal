@@ -13,16 +13,10 @@
 
 #include "mcltypes.h"
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
   
 /** Digital filter abstract class */
-class MCL_API DigitalFilter {
+class DigitalFilter {
 public:
   
   virtual void Filter(const Real* input_data, const Int num_samples,
@@ -57,7 +51,7 @@ public:
 };
   
 /** Filter bank abstract class */
-class MCL_API FilterBank {
+class FilterBank {
 public:
   /** Returns the output of the filter bank for an input equal to `input`. Hello world! */
   virtual std::vector<Real> Filter(const Real input) = 0;

@@ -15,12 +15,6 @@
 #include <vector>
 #include <limits>
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 using std::vector;
 
 namespace mcl {
@@ -31,7 +25,7 @@ namespace mcl {
  the index of the first one is returned.
  */
 template<class T>
-MCL_API Int MinIndex(const std::vector<T>& input) noexcept {
+Int MinIndex(const std::vector<T>& input) noexcept {
   T min_value = std::numeric_limits<T>::max();
   Int min_index = 0;
   for (Int i=0; i<(Int)input.size(); ++i) {
@@ -45,7 +39,7 @@ MCL_API Int MinIndex(const std::vector<T>& input) noexcept {
   
 /** Returns the maximum value of the vector. */
 template<class T>  
-MCL_API T Min(const std::vector<T>& input) {
+T Min(const std::vector<T>& input) {
   return input[MinIndex(input)];
 }
 
@@ -56,17 +50,17 @@ MCL_API T Min(const std::vector<T>& input) {
  the index of the first one is returned.
  */
 template<class T>
-MCL_API Int MaxIndex(const std::vector<T>& input) noexcept {
+Int MaxIndex(const std::vector<T>& input) noexcept {
   return MinIndex(Opposite(input));
 }
   
 template<>
-MCL_API Int MaxIndex<UInt>(const std::vector<UInt>& input) noexcept;
+Int MaxIndex<UInt>(const std::vector<UInt>& input) noexcept;
 
   
 /** Returns the maximum value of the vector. */
 template<class T>
-MCL_API T Max(const std::vector<T>& input) noexcept {
+T Max(const std::vector<T>& input) noexcept {
   return input[MaxIndex(input)];
 }
 
@@ -78,7 +72,7 @@ MCL_API T Max(const std::vector<T>& input) noexcept {
  Equivalent to Matlab's findpeaks.
  */
 std::vector<UInt>
-MCL_API FindPeaksIndexes(const std::vector<Real>& vector,
+FindPeaksIndexes(const std::vector<Real>& vector,
                          const Real min_peak_height = std::numeric_limits<Real>::min());
 
 /** 
@@ -86,7 +80,7 @@ MCL_API FindPeaksIndexes(const std::vector<Real>& vector,
  Equivalent to Matlab's findpeaks.
  */
 std::vector<Real>
-MCL_API FindPeaks(const std::vector<Real>& vector,
+FindPeaks(const std::vector<Real>& vector,
                   const Real min_peak_height = std::numeric_limits<Real>::min());
 
   

@@ -41,7 +41,7 @@ void Multiply(const Real* input_data_a,
 #endif
 }
   
-MCL_API void Add(const Real* input_data_a,
+void Add(const Real* input_data_a,
                  const Real* input_data_b,
                  Int num_samples,
                  Real* output_data) noexcept {

@@ -23,21 +23,15 @@
   #include <Eigen/Dense>
 #endif
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
 
 // Forward declaration
-MCL_API std::vector<std::string> Split(const std::string& string,
+std::vector<std::string> Split(const std::string& string,
                                        char delim) noexcept;
   
 /** Matrix class */
 template<class T>
-class MCL_API Matrix {
+class Matrix {
 public:
   /** Default constructor with empty (0x0) matrix */
   Matrix() noexcept : num_rows_(0), num_columns_(0) {}
@@ -224,7 +218,7 @@ private:
 };
   
 template<class T>
-MCL_API void Print(const Matrix<T>& matrix) noexcept {
+void Print(const Matrix<T>& matrix) noexcept {
   for (Int i=0; i<matrix.num_rows(); ++i) {
     for (Int j=0; j<matrix.num_columns(); ++j) {
       std::cout<<matrix.element(i,j)<<"\t";
@@ -235,7 +229,7 @@ MCL_API void Print(const Matrix<T>& matrix) noexcept {
 
 /** Transposes the matrix. Equivalent to Matlab's matrix' */
 template<class T>
-MCL_API Matrix<T> Transpose(const Matrix<T>& matrix) noexcept {
+Matrix<T> Transpose(const Matrix<T>& matrix) noexcept {
   Matrix<T> output(matrix.num_columns(), matrix.num_rows());
   
   for (Int i=0; i<output.num_rows(); ++i) {
@@ -251,7 +245,7 @@ MCL_API Matrix<T> Transpose(const Matrix<T>& matrix) noexcept {
  to Matlabs' matrix.*value
  */
 template<class T>
-MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
+Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
   Matrix<T> output(matrix.num_rows(), matrix.num_columns());
   for (Int i=0; i<output.num_rows(); ++i) {
     for (Int j=0; j<output.num_columns(); ++j) {
@@ -264,7 +258,7 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
   
 /** Matrix multiplication. Equivalent to Matlabs' matrix_a*matrix_b */
 template<class T>
-MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
+Matrix<T> Multiply(const Matrix<T>& matrix_a,
                            const Matrix<T>& matrix_b) noexcept {
   if (matrix_a.num_columns() != matrix_b.num_rows()) { ASSERT(false); }
   
@@ -282,7 +276,7 @@ MCL_API Matrix<T> Multiply(const Matrix<T>& matrix_a,
 }
   
 template<class T>
-MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
+std::vector<T> Multiply(const Matrix<T>& matrix_a,
                                 const std::vector<T>& vector) noexcept {
   if (matrix_a.num_columns() != (Int)vector.size()) { ASSERT(false); }
   Matrix<T> temp_input(vector.size(), 1);
@@ -300,7 +294,7 @@ MCL_API std::vector<T> Multiply(const Matrix<T>& matrix_a,
  max(max(matrix)) 
  */
 template<class T>
-MCL_API T Max(const Matrix<T>& matrix) noexcept {
+T Max(const Matrix<T>& matrix) noexcept {
   return Max<T>(matrix.Serial());
 }
   
@@ -311,16 +305,16 @@ struct EigOutput {
   std::vector<std::vector<Complex> > eigen_vectors; /**< Eigenvectors */
 };
   
-MCL_API EigOutput Eig(const Matrix<Real>& matrix) noexcept;
+EigOutput Eig(const Matrix<Real>& matrix) noexcept;
 
-MCL_API Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept;
+Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept;
   
 #if MCL_LOAD_EIGEN
-MCL_API Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
+Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input);
 #endif
   
 template<class T>
-MCL_API bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) noexcept {
+bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) noexcept {
   if (matrix_a.num_rows() != matrix_b.num_rows() |
       matrix_a.num_columns() != matrix_b.num_columns()) { return false; }
   

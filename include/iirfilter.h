@@ -12,12 +12,6 @@
 #include "digitalfilter.h"
 #include "vectorop.h"
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
 
 enum WallType {
@@ -44,7 +38,7 @@ enum WallType {
 
   
 /** IIR Filter */
-class MCL_API IirFilter : public DigitalFilter {
+class IirFilter : public DigitalFilter {
 public:
   /** Constructs a default filter, i.e. identical filter*/
   IirFilter();
@@ -123,7 +117,7 @@ private:
 };
   
 /** Filter bank abstract class */
-class MCL_API IirFilterBank : public FilterBank {
+class IirFilterBank : public FilterBank {
 private:
   std::vector<IirFilter> filters_;
   
@@ -146,7 +140,7 @@ public:
   
 //
 //  /** Implements a first-order IIR low-pass filter with a given decay constant. */
-//  class MCL_API RampSmoothingFilter : public DigitalFilter {
+//  class RampSmoothingFilter : public DigitalFilter {
 //  public:
 //    
 //    /**
@@ -172,7 +166,7 @@ public:
 //  };
 //  
 ///** Implements a first-order IIR low-pass filter with a given decay constant. */
-//class MCL_API LowPassSmoothingFilter : public DigitalFilter {
+//class LowPassSmoothingFilter : public DigitalFilter {
 //public:
 //  
 //  /**

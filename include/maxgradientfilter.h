@@ -13,15 +13,9 @@
 #include "elementaryop.h"
 #include "digitalfilter.h"
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
   
-class MCL_API MaxGradientFilter : public DigitalFilter {
+class MaxGradientFilter : public DigitalFilter {
 public:
   MaxGradientFilter(Real max_gradient) :
   max_gradient_(max_gradient), previous_output_(0.0) {}

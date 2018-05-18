@@ -13,18 +13,12 @@
 #include "pointwiseop.h"
 #include <vector>
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 using std::vector;
 
 namespace mcl {
   
 /** Returns the Pearson linear correlation between `vector_a` and `vector_b` */
-MCL_API Real Corr(const std::vector<Real>& vector_a,
+Real Corr(const std::vector<Real>& vector_a,
                   const std::vector<Real>& vector_b);
 
   

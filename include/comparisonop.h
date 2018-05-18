@@ -18,31 +18,25 @@
 #include "quaternion.h"
 #include <vector>
 
-#ifdef MCL_EXPORTS
-  #define MCL_API __declspec(dllexport)
-#else
-  #define MCL_API
-#endif
-
 namespace mcl {
 
 
-MCL_API bool IsEqual(Real num_a, Real num_b, Real precision = VERY_SMALL);
+bool IsEqual(Real num_a, Real num_b, Real precision = VERY_SMALL);
 
-MCL_API bool IsEqual(Complex num_a, Complex num_b,
+bool IsEqual(Complex num_a, Complex num_b,
                      Real precision = VERY_SMALL);
 
-MCL_API bool IsSmallerOrEqual(const Real num_a, const Real num_b,
+bool IsSmallerOrEqual(const Real num_a, const Real num_b,
                               const Real precision = VERY_SMALL);
 
-MCL_API bool IsLargerOrEqual(const Real num_a, const Real num_b,
+bool IsLargerOrEqual(const Real num_a, const Real num_b,
                              const Real precision = VERY_SMALL);
 
-MCL_API bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
+bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
                           const std::vector<Real>& vector_b);
 
 template<class T>
-MCL_API bool IsEqual(const std::vector<T>& vector_a,
+bool IsEqual(const std::vector<T>& vector_a,
                      const std::vector<T>& vector_b,
                      Real precision = VERY_SMALL) noexcept {
   if ((Int)vector_a.size() != (Int)vector_b.size())
@@ -56,18 +50,18 @@ MCL_API bool IsEqual(const std::vector<T>& vector_a,
 }
 
 
-MCL_API bool IsEqual(const std::vector<Int>& vector_a,
+bool IsEqual(const std::vector<Int>& vector_a,
                      const std::vector<Int>& vector_b);
 
-MCL_API bool IsEqual(const Quaternion& quaternion_a,
+bool IsEqual(const Quaternion& quaternion_a,
                      const Quaternion& quaternion_b);
 
 
 
-MCL_API bool IsEqual(const Point& point_a, const Point& point_b,
+bool IsEqual(const Point& point_a, const Point& point_b,
                      const Real precision = VERY_SMALL);
 
-MCL_API bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b);
+bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b);
 
 bool IsEqual(const Real* input_data_a,
              const Real* input_data_b,
@@ -83,30 +77,30 @@ bool IsEqual(const std::vector<Real> input_data_b,
              Real precision = VERY_SMALL);
   
 /** Returns true if num is nan */
-MCL_API bool IsNan(Real num);
+bool IsNan(Real num);
 
 /** Returns true if num is nan */
-MCL_API std::vector<bool> IsNan(std::vector<Real> input);
+std::vector<bool> IsNan(std::vector<Real> input);
 
 /** Returns opposite bool as input */
-MCL_API std::vector<bool> Not(std::vector<bool> input);
+std::vector<bool> Not(std::vector<bool> input);
 
 /** Returns true if all bools are true */
-MCL_API bool All(std::vector<bool> input);
+bool All(std::vector<bool> input);
 
 /** Returns true if any one of the bools is true */
-MCL_API bool Any(std::vector<bool> input);
+bool Any(std::vector<bool> input);
 
 /** Opposite of All: returns true if none of the inputs are true */
-MCL_API bool None(std::vector<bool> input);
+bool None(std::vector<bool> input);
 
 /** Returns true if num is +inf or -inf */
-MCL_API bool IsInf(Real num);
+bool IsInf(Real num);
 
 /** Returns true if num is +inf or -inf */
-MCL_API std::vector<bool> IsInf(std::vector<Real> input);
+std::vector<bool> IsInf(std::vector<Real> input);
 
-MCL_API bool ComparisonOpTest();
+bool ComparisonOpTest();
   
   
   
