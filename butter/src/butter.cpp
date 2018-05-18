@@ -3,7 +3,7 @@
  MCL
  
  Authors: user261002 @ stackoverflow.com
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  
  Adapted from "http://stackoverflow.com/questions/10373184/bandpass-butterworth-filter-implementation-in-c"
  */
