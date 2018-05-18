@@ -4,7 +4,7 @@
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
  
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  
  This file contains several types, macros and supporting classes definitions.
  

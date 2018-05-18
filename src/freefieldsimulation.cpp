@@ -7,7 +7,7 @@
  This class calculates the signals recorded by N microphones due to M acoustic
  sources in free-field.
  
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  
  */
 

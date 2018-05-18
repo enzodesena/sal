@@ -7,7 +7,7 @@
  This include contains definition of classes and functions
  related to higer-order ambisonics.
  
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  
  */
 

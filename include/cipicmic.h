@@ -4,7 +4,7 @@
  Copyright (c) 2015, Enzo De Sena
  All rights reserved.
  
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  
  */
 

@@ -3,7 +3,7 @@
  Copyright (c) 2013-2018, Enzo De Sena
  All rights reserved.
  
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
 #ifndef SAL_AUDIOBUFFER_H
