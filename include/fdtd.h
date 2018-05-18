@@ -17,15 +17,9 @@
 #include "source.h"
 #include "microphone.h"
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 namespace sal {
   
-class SAL_API Fdtd {
+class Fdtd {
 private:
   Room* const room_;
   sal::Source* const source_;

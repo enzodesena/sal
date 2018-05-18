@@ -15,15 +15,9 @@
 #include "microphone.h"
 #include "delayfilter.h"
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 namespace sal {
   
-class SAL_API TdBem {
+class TdBem {
 private:
   Room* const room_;
   sal::Source* const source_;

@@ -23,10 +23,4 @@
 
 #define SOUND_SPEED 343.0 // Speed of sound-
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 #endif

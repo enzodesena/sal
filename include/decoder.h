@@ -17,7 +17,7 @@
 
 namespace sal {
 
-class SAL_API Decoder {
+class Decoder {
 public:
   Decoder() {}
   
@@ -33,7 +33,7 @@ public:
 };
   
   
-class SAL_API IdenticalDecoder : public Decoder {
+class IdenticalDecoder : public Decoder {
 public:
   IdenticalDecoder() {}
   

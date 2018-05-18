@@ -19,7 +19,7 @@
 
 namespace sal {
 
-class SAL_API WavHandler {
+class WavHandler {
 public:
 static std::vector<Signal> Read(const std::string file_name);
   

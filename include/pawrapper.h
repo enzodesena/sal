@@ -22,7 +22,7 @@
 namespace sal {
   
 /** A wrapper for portaudio */
-class SAL_API PaWrapper {
+class PaWrapper {
 public:
   PaWrapper(Time sampling_frequency, Int out_dev_num,
             std::vector<Int> channel_ids);

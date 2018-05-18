@@ -26,7 +26,7 @@
 
 namespace sal {
   
-class SAL_API FreeFieldSim {
+class FreeFieldSim {
 public:
   FreeFieldSim(std::vector<Microphone*> microphones,
                std::vector<Source*> sources,

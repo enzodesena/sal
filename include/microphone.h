@@ -22,7 +22,7 @@
 
 namespace sal {
 
-class SAL_API Microphone {
+class Microphone {
 public:
   /**
    `position` is the position of the microphone, and orientation 
@@ -169,7 +169,7 @@ private:
   friend class MicrophoneArray;
 };
 
-class SAL_API StereoMicrophone : public Microphone {
+class StereoMicrophone : public Microphone {
 public:
   StereoMicrophone(mcl::Point position, mcl::Quaternion orientation) :
       Microphone(position, orientation) {}

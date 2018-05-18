@@ -20,7 +20,7 @@
 
 namespace sal {
   
-class SAL_API MonoMic : virtual public Microphone {
+class MonoMic : virtual public Microphone {
 public:
   MonoMic(mcl::Point position, mcl::Quaternion orientation) :
           Microphone(position, orientation) {}
@@ -39,7 +39,7 @@ public:
 };
   
   
-class SAL_API MemorylessMic : virtual public Microphone {
+class MemorylessMic : virtual public Microphone {
 public:
   MemorylessMic(mcl::Point position, mcl::Quaternion orientation) :
       Microphone(position, orientation) {}
@@ -50,7 +50,7 @@ private:
 };
   
   
-class SAL_API MemorylessMonoMic : public MemorylessMic, public MonoMic {
+class MemorylessMonoMic : public MemorylessMic, public MonoMic {
 public:
   MemorylessMonoMic(mcl::Point position, mcl::Quaternion orientation) :
   MemorylessMic(position, orientation), MonoMic(position, orientation)  {}
@@ -79,7 +79,7 @@ private:
 };
   
   
-class SAL_API GainMic : public MemorylessMonoMic {
+class GainMic : public MemorylessMonoMic {
 public:
   GainMic(mcl::Point position, Sample gain) :
           Microphone(position, mcl::Quaternion::Identity()),
@@ -101,7 +101,7 @@ private:
 };
   
 
-class SAL_API OmniMic : public GainMic {
+class OmniMic : public GainMic {
 public:
   OmniMic(mcl::Point position) :
         Microphone(position, mcl::Quaternion::Identity()),
@@ -118,7 +118,7 @@ public:
  a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
  Note that such an expression is axisimmetric.
  */
-class SAL_API TrigMic : public MemorylessMonoMic {
+class TrigMic : public MemorylessMonoMic {
 public:
   TrigMic(mcl::Point position, mcl::Quaternion orientation,
           std::vector<Sample> coefficients) :
@@ -148,7 +148,7 @@ private:
  a[0]+a[1]cos(theta)+a[2]cos^2(theta)+...
  Note that such an expression is axisimmetric.
  */
-class SAL_API TanMic : public MemorylessMonoMic {
+class TanMic : public MemorylessMonoMic {
 public:
   TanMic(mcl::Point position, mcl::Quaternion orientation,
          sal::Sample base_angle) :

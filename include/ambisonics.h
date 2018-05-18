@@ -29,7 +29,7 @@ enum AmbisonicsConvention {
   N3D
 };
 
-class SAL_API AmbisonicsMic : public Microphone {
+class AmbisonicsMic : public Microphone {
 public:
   /**
    Constructs an Ambisonics microphone.
@@ -67,7 +67,7 @@ private:
  Implements horizontal higher order ambisonics with regular loudspeakers
  configuration (e.g. pentagon for II-order etc..).
  */
-class SAL_API AmbisonicsHorizDec : public Decoder {
+class AmbisonicsHorizDec : public Decoder {
 public:
   /**
    `position` is the position of the microphone in the recording space.

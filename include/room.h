@@ -14,12 +14,6 @@
 #include "iirfilter.h"
 #include "comparisonop.h"
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 namespace sal {
 
   
@@ -29,7 +23,7 @@ enum BoundarySetType {
 };
   
   
-class SAL_API Room {
+class Room {
 public:
   // This is the standard constructor where you feed the room `shape` and for
   // each face of the shape you also provide a filter. The order in the 

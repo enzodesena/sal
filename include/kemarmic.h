@@ -26,7 +26,7 @@ namespace sal {
   
 
   
-class SAL_API KemarMic : public DatabaseBinauralMic {
+class KemarMic : public DatabaseBinauralMic {
 public:
   /** 
    Constructs a Kemar microphone opject. 

@@ -28,7 +28,7 @@ enum HeadRefOrientation {
   
 class BinauralMicInstance;
 
-class SAL_API BinauralMic : public StereoMicrophone {
+class BinauralMic : public StereoMicrophone {
 public:
   /**
    Constructs a Kemar microphone opject.
@@ -84,7 +84,7 @@ protected:
 
 
   
-class SAL_API DatabaseBinauralMic : public BinauralMic {
+class DatabaseBinauralMic : public BinauralMic {
 public:
   DatabaseBinauralMic(const mcl::Point& position,
                       const mcl::Quaternion orientation,

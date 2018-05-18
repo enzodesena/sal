@@ -27,7 +27,7 @@ namespace sal {
  two points, following 1/r rule. This object can also handle changes in the
  propagation line length.
  */
-class SAL_API PropagationLine {
+class PropagationLine {
 public:
 
   enum InterpolationType {

@@ -20,7 +20,7 @@
 
 namespace sal {
 
-class SAL_API Source {
+class Source {
 public:
   Source(const mcl::Point&) noexcept;
   

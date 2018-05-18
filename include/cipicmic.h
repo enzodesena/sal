@@ -28,7 +28,7 @@ namespace sal {
   
 
   
-class SAL_API CipicMic : public DatabaseBinauralMic {
+class CipicMic : public DatabaseBinauralMic {
 public:
   
   enum DataType {

@@ -29,7 +29,7 @@ namespace sal {
  pointers to the microphone with the microphones() method and then accessing
  each one's stream. Alternatively, the object also has a multichannel stream
  object, which contains pointers to the individual streams. */
-class SAL_API MicrophoneArray : public Microphone {
+class MicrophoneArray : public Microphone {
 public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
@@ -170,7 +170,7 @@ protected:
  This class simply creates N copies of the mic_prototype and repositions them
  in the set `position`, with given `orientation` and `handedness`. */
 template<class T>
-class SAL_API UniformArray : public MicrophoneArray {
+class UniformArray : public MicrophoneArray {
 public:
   UniformArray(const mcl::Point& position,
                const mcl::Quaternion& orientation,
@@ -202,7 +202,7 @@ private:
  at (position.x() + radius, position.y(), position.z()).
  */
 template<class T>
-class SAL_API CircularArray : public UniformArray<T> {
+class CircularArray : public UniformArray<T> {
 public:
   CircularArray(const mcl::Point& position,
                 const mcl::Quaternion& orientation,
@@ -257,7 +257,7 @@ private:
  at (position.x() + radius, position.y(), position.z()).
  */
 template<class T>
-class SAL_API StereoMic : public CircularArray<T> {
+class StereoMic : public CircularArray<T> {
 public:
   StereoMic(const mcl::Point& position,
             const mcl::Quaternion& orientation,

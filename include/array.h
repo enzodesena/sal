@@ -18,7 +18,7 @@
 namespace sal {
 
 template<typename T, std::size_t N> 
-class SAL_API Array {
+class Array {
 public:
   T elems[N];
   

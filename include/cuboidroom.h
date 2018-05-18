@@ -17,12 +17,6 @@
 #include "comparisonop.h"
 #include "salutilities.h"
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 namespace sal {
 
 enum CuboidWallId {
@@ -34,7 +28,7 @@ enum CuboidWallId {
   z2
 };
   
-class SAL_API CuboidRoom : public Room {
+class CuboidRoom : public Room {
 public:
   // The room filter is *not* an injected dependency. The software will do lots
   // of copies of the object.

@@ -12,15 +12,9 @@
 #include <vector>
 #include "saltypes.h"
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 namespace sal {
   
-class SAL_API RirAnalysis {
+class RirAnalysis {
   
 public:
   static std::vector<sal::Sample>

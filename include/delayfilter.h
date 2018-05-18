@@ -19,7 +19,7 @@
 
 namespace sal {
   
-class SAL_API DelayFilter : public mcl::DigitalFilter {
+class DelayFilter : public mcl::DigitalFilter {
   
 public:
   /**

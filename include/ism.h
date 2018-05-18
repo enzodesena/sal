@@ -15,12 +15,6 @@
 #include "microphone.h"
 #include "firfilter.h"
 
-#ifdef SAL_EXPORTS
-  #define SAL_API __declspec(dllexport)
-#else
-  #define SAL_API
-#endif
-
 namespace sal {
   
 enum IsmInterpolation {
@@ -28,7 +22,7 @@ enum IsmInterpolation {
   peterson
 };
   
-class SAL_API Ism {
+class Ism {
 private:
   Room* const room_;
   sal::Source* const source_;
