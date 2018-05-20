@@ -155,9 +155,10 @@ Sample TdBem::CalculateDrDn(Point point_x, Point point_y, Point normal_y) {
 void TdBem::CalculatePoints() {
   // TODO: implement for other types of room
   ASSERT(dynamic_cast<CuboidRoom*>(room_) != 0);
-  Length room_x = ((CuboidRoom*) room_)->x();
-  Length room_y = ((CuboidRoom*) room_)->y();
-  Length room_z = ((CuboidRoom*) room_)->z();
+  Triplet dimensions = ((CuboidRoom*) room_)->dimensions();
+  Length room_x = dimensions.x();
+  Length room_y = dimensions.y();
+  Length room_z = dimensions.z();
   
   std::vector<mcl::Point> boundary_points;
   sal::Length sp = spatial_sampling_period_;

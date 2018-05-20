@@ -26,18 +26,10 @@ public:
   
   mcl::Point position() const noexcept;
   
-  void set_position(const mcl::Point& target_position) noexcept;
-  
-  void set_target_position(const mcl::Point& target_position) noexcept;
-  
-  void set_max_speed(const Speed max_speed) noexcept;
-  
-  void UpdatePosition(const Time time_elapsed_since_last_update) noexcept;
-  
-  bool HasReachedTarget() noexcept;
+  void set_position(const mcl::Point& position) noexcept;
   
 private:
-  TripletHandler position_;
+  Triplet position_;
 };
 
 } // namespace sal

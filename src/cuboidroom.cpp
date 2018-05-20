@@ -29,9 +29,9 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
   return isgreaterequal(point.x(), 0.0 + wall_distance) &&
          isgreaterequal(point.y(), 0.0 + wall_distance) &&
          isgreaterequal(point.z(), 0.0 + wall_distance) &&
-         islessequal(point.x(), dimensions_.value().x() - wall_distance) &&
-         islessequal(point.y(), dimensions_.value().y() - wall_distance) &&
-         islessequal(point.z(), dimensions_.value().z() - wall_distance);
+         islessequal(point.x(), dimensions_.x() - wall_distance) &&
+         islessequal(point.y(), dimensions_.y() - wall_distance) &&
+         islessequal(point.z(), dimensions_.z() - wall_distance);
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
@@ -39,61 +39,65 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   
   std::vector<Point> reflection_points;
   
-  reflection_points.push_back(ReflectionPoint(x1, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(x2, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(y1, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(y2, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(z1, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(z2, source_point, mic_point));
+  reflection_points.push_back(ReflectionPoint(kX1, source_point, mic_point));
+  reflection_points.push_back(ReflectionPoint(kX2, source_point, mic_point));
+  reflection_points.push_back(ReflectionPoint(kY1, source_point, mic_point));
+  reflection_points.push_back(ReflectionPoint(kY2, source_point, mic_point));
+  reflection_points.push_back(ReflectionPoint(kZ1, source_point, mic_point));
+  reflection_points.push_back(ReflectionPoint(kZ2, source_point, mic_point));
   
-  if (boundary_set_type_ == first_and_second_cross_horiz) {
-    Point a_x2 = IntersectionPoint(x2, dimensions_.value(),
+  if (boundary_set_type_ == kFirstAndSecondOrder) {
+    Point a_kX2 = IntersectionPoint(kX2, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
-    Point a_y1 = IntersectionPoint(y1, dimensions_.value(), mic_point,
+    Point a_kY1 = IntersectionPoint(kY1, dimensions_, mic_point,
                                    ImageSourcePosition(source_point, 1,0,0, 1,1,0));
-    if (IsPointInRoom(a_x2, EPSILON)) {
-      ASSERT(!IsPointInRoom(a_y1, EPSILON));
-      reflection_points.push_back(a_x2);
+    if (IsPointInRoom(a_kX2, EPSILON)) {
+      ASSERT(!IsPointInRoom(a_kY1, EPSILON));
+      reflection_points.push_back(a_kX2);
     } else {
-      ASSERT(!IsPointInRoom(a_x2, EPSILON));
-      reflection_points.push_back(a_y1);
+      ASSERT(!IsPointInRoom(a_kX2, EPSILON));
+      reflection_points.push_back(a_kY1);
     }
     
-    Point b_x2 = IntersectionPoint(x2, dimensions_.value(),
+    Point b_kX2 = IntersectionPoint(kX2, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
-    Point b_y2 = IntersectionPoint(y2, dimensions_.value(),
+    Point b_kY2 = IntersectionPoint(kY2, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
-    if (IsPointInRoom(b_x2, EPSILON)) {
-      ASSERT(!IsPointInRoom(b_y2, EPSILON));
-      reflection_points.push_back(b_x2);
+    if (IsPointInRoom(b_kX2, EPSILON)) {
+      ASSERT(!IsPointInRoom(b_kY2, EPSILON));
+      reflection_points.push_back(b_kX2);
     } else {
-      ASSERT(!IsPointInRoom(b_x2, EPSILON));
-      reflection_points.push_back(b_y2);
+      ASSERT(!IsPointInRoom(b_kX2, EPSILON));
+      reflection_points.push_back(b_kY2);
     }
     
-    Point c_x1 = IntersectionPoint(x1, dimensions_.value(),
+    Point c_kX1 = IntersectionPoint(kX1, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
-    Point c_y2 = IntersectionPoint(y2, dimensions_.value(),
+    Point c_kY2 = IntersectionPoint(kY2, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
-    if (IsPointInRoom(c_x1, EPSILON)) {
-      ASSERT(!IsPointInRoom(c_y2, EPSILON));
-      reflection_points.push_back(c_x1);
+    if (IsPointInRoom(c_kX1, EPSILON)) {
+      ASSERT(!IsPointInRoom(c_kY2, EPSILON));
+      reflection_points.push_back(c_kX1);
     } else {
-      ASSERT(!IsPointInRoom(c_x1, EPSILON));
-      reflection_points.push_back(c_y2);
+      ASSERT(!IsPointInRoom(c_kX1, EPSILON));
+      reflection_points.push_back(c_kY2);
     }
     
-    Point d_x1 = IntersectionPoint(x1, dimensions_.value(),
+    Point d_kX1 = IntersectionPoint(kX1, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
-    Point d_y1 = IntersectionPoint(y1, dimensions_.value(),
+    Point d_kY1 = IntersectionPoint(kY1, dimensions_,
                                    mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
-    if (IsPointInRoom(d_x1, EPSILON)) {
-      ASSERT(!IsPointInRoom(d_y1, EPSILON));
-      reflection_points.push_back(d_x1);
+    if (IsPointInRoom(d_kX1, EPSILON)) {
+      ASSERT(!IsPointInRoom(d_kY1, EPSILON));
+      reflection_points.push_back(d_kX1);
     } else {
-      ASSERT(!IsPointInRoom(d_x1, EPSILON));
-      reflection_points.push_back(d_y1);
+      ASSERT(!IsPointInRoom(d_kX1, EPSILON));
+      reflection_points.push_back(d_kY1);
     }
+  }
+  
+  for (Int i=0; i<(Int) reflection_points.size(); ++i) {
+    reflection_points[i] = mcl::Subtract(reflection_points[i], origin_position_);
   }
   
   return reflection_points;
@@ -104,37 +108,37 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
                                const Point& mic_point) const noexcept {
   std::vector<mcl::IirFilter> boundary_filters(wall_filters_);
   
-  if (boundary_set_type_ == first_and_second_cross_horiz) {
-    Point a_x2 = IntersectionPoint(x2, dimensions_.value(), mic_point,
+  if (boundary_set_type_ == kFirstAndSecondOrder) {
+    Point a_kX2 = IntersectionPoint(kX2, dimensions_, mic_point,
                                    ImageSourcePosition(source_point, 1,0,0, 1,1,0));
-    if (IsPointInRoom(a_x2, EPSILON)) {
-      boundary_filters.push_back(boundary_filters[x2]);
+    if (IsPointInRoom(a_kX2, EPSILON)) {
+      boundary_filters.push_back(boundary_filters[kX2]);
     } else {
-      boundary_filters.push_back(boundary_filters[y1]);
+      boundary_filters.push_back(boundary_filters[kY1]);
     }
     
-    Point b_x2 = IntersectionPoint(x2, mic_point, dimensions_.value(),
+    Point b_kX2 = IntersectionPoint(kX2, mic_point, dimensions_,
                                    ImageSourcePosition(source_point, 1,1,0, 1,1,0));
-    if (IsPointInRoom(b_x2, EPSILON)) {
-      boundary_filters.push_back(boundary_filters[x2]);
+    if (IsPointInRoom(b_kX2, EPSILON)) {
+      boundary_filters.push_back(boundary_filters[kX2]);
     } else {
-      boundary_filters.push_back(boundary_filters[y2]);
+      boundary_filters.push_back(boundary_filters[kY2]);
     }
     
-    Point c_x1 = IntersectionPoint(x2, mic_point, dimensions_.value(),
+    Point c_kX1 = IntersectionPoint(kX2, mic_point, dimensions_,
                                    ImageSourcePosition(source_point, 0,1,0, 1,1,0));
-    if (IsPointInRoom(c_x1, EPSILON)) {
-      boundary_filters.push_back(boundary_filters[x1]);
+    if (IsPointInRoom(c_kX1, EPSILON)) {
+      boundary_filters.push_back(boundary_filters[kX1]);
     } else {
-      boundary_filters.push_back(boundary_filters[y2]);
+      boundary_filters.push_back(boundary_filters[kY2]);
     }
     
-    Point d_x1 = IntersectionPoint(x1, mic_point, dimensions_.value(),
+    Point d_kX1 = IntersectionPoint(kX1, mic_point, dimensions_,
                                    ImageSourcePosition(source_point, 0,0,0, 1,1,0));
-    if (IsPointInRoom(d_x1, EPSILON)) {
-      boundary_filters.push_back(boundary_filters[x1]);
+    if (IsPointInRoom(d_kX1, EPSILON)) {
+      boundary_filters.push_back(boundary_filters[kX1]);
     } else {
-      boundary_filters.push_back(boundary_filters[y1]);
+      boundary_filters.push_back(boundary_filters[kY1]);
     }
   }
   return boundary_filters;
@@ -142,10 +146,10 @@ CuboidRoom::GetBoundaryFilters(const Point& source_point,
 
 mcl::Int CuboidRoom::num_boundary_points() const noexcept {
   switch (boundary_set_type_) {
-    case first_order_only:
+    case kFirstOrder:
       return 6;
       break;
-    case first_and_second_cross_horiz:
+    case kFirstAndSecondOrder:
       return 10;
       break;
     default:
@@ -166,27 +170,27 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
   Point plane_normal;
   
   switch (wall_id) {
-    case x1: // x_1
+    case kX1: // x_1
       plane_point = Point(0,0,0);
       plane_normal = Point(1,0,0);
       break;
-    case x2: // x_2
+    case kX2: // x_2
       plane_point = Point(dimensions.x(),0,0);
       plane_normal = Point(1,0,0);
       break;
-    case y1: // y_1
+    case kY1: // y_1
       plane_point = Point(0,0,0);
       plane_normal = Point(0,1,0);
       break;
-    case y2: // y_2
+    case kY2: // y_2
       plane_point = Point(0,dimensions.y(),0);
       plane_normal = Point(0,1,0);
       break;
-    case z1: // z_1
+    case kZ1: // z_1
       plane_point = Point(0,0,0);
       plane_normal = Point(0,0,1);
       break;
-    case z2: // z_2
+    case kZ2: // z_2
       plane_point = Point(0,0,dimensions.z());
       plane_normal = Point(0,0,1);
       break;
@@ -210,34 +214,34 @@ Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
   
   // For the following conversions, see Enzo's notes.
   switch (wall_id) {
-    case x1:
+    case kX1:
       image_position = ImageSourcePosition(source_pos, 0,0,0, 1,0,0);
       break;
-    case x2:
+    case kX2:
       image_position = ImageSourcePosition(source_pos, 1,0,0, 1,0,0);
       break;
-    case y1:
+    case kY1:
       image_position = ImageSourcePosition(source_pos, 0,0,0, 0,1,0);
       break;
-    case y2:
+    case kY2:
       image_position = ImageSourcePosition(source_pos, 0,1,0, 0,1,0);
       break;
-    case z1:
+    case kZ1:
       image_position = ImageSourcePosition(source_pos, 0,0,0, 0,0,1);
       break;
-    case z2:
+    case kZ2:
       image_position = ImageSourcePosition(source_pos, 0,0,1, 0,0,1);
       break;
     default:
       ASSERT(false);
   }
-  return IntersectionPoint(wall_id, dimensions_.value(), observation_pos,
+  return IntersectionPoint(wall_id, dimensions_, observation_pos,
                            image_position);
 }
 
 
 Time CuboidRoom::SabineRt60() const {
-  Length volume = dimensions_.value().x()*dimensions_.value().y()*dimensions_.value().z();
+  Length volume = dimensions_.x()*dimensions_.y()*dimensions_.z();
   Length weighted_area = 0.0;
   
   for (Int i=0; i<6; ++i) {
@@ -253,17 +257,17 @@ Time CuboidRoom::SabineRt60() const {
     switch (i) {
       case 0:   // x_1
       case 1: { // x_2
-        area = dimensions_.value().y()*dimensions_.value().z();
+        area = dimensions_.y()*dimensions_.z();
         break;
       }
       case 2:   // y_1
       case 3: { // y_2
-        area = dimensions_.value().x()*dimensions_.value().z();
+        area = dimensions_.x()*dimensions_.z();
         break;
       }
       case 4:   // z_1
       case 5: { // z_2
-        area = dimensions_.value().x()*dimensions_.value().y();
+        area = dimensions_.x()*dimensions_.y();
         break;
       }
     }
@@ -281,35 +285,20 @@ mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
                                            const Int px,
                                            const Int py,
                                            const Int pz) const noexcept {
-  Length r2l_x = 2.0*dimensions_.value().x()*((sal::Length)mx);
-  Length r2l_y = 2.0*dimensions_.value().y()*((sal::Length)my);
-  Length r2l_z = 2.0*dimensions_.value().z()*((sal::Length)mz);
+  Length r2l_x = 2.0*dimensions_.x()*((sal::Length)mx);
+  Length r2l_y = 2.0*dimensions_.y()*((sal::Length)my);
+  Length r2l_z = 2.0*dimensions_.z()*((sal::Length)mz);
   return Point((1.0-2.0*((Length)px))*source_position.x()+r2l_x,
                (1.0-2.0*((Length)py))*source_position.y()+r2l_y,
                (1.0-2.0*((Length)pz))*source_position.z()+r2l_z);
 }
   
-void CuboidRoom::set_target_dimensions(const Triplet& dimensions) noexcept {
-  dimensions_.set_target_value(dimensions);
-}
-
-bool CuboidRoom::HasReachedTarget() const noexcept {
-  return dimensions_.HasReachedTarget();
-}
-
-void CuboidRoom::set_max_speed(const Speed max_speed) noexcept {
-  dimensions_.set_max_speed(max_speed);
-}
-
-void CuboidRoom::UpdateShape(const Time time_since_last_update) noexcept {
-  dimensions_.Update(time_since_last_update);
-}
   
 std::string CuboidRoom::ShapeDescription() const noexcept {
   return "The room is rectangular with dimensions (" +
-          std::to_string(dimensions_.value().x()) + ", " +
-          std::to_string(dimensions_.value().y()) + ", " +
-          std::to_string(dimensions_.value().z()) + ") [m].";
+          std::to_string(dimensions_.x()) + ", " +
+          std::to_string(dimensions_.y()) + ", " +
+          std::to_string(dimensions_.z()) + ") [m].";
 }
   
 } // namespace sal

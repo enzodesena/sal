@@ -98,14 +98,15 @@ sal::Signal Fdtd::RunFdtd(Int Nx, Int Ny, Int Nz,
 
 void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
   ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
+  Triplet dimensions = ((CuboidRoom*)room_)->dimensions();
   
   double curant_number = 1.0/sqrt(3.0);
   
   double spatial_frequency = SOUND_SPEED/(curant_number*sampling_frequency_);
   
-  Int Nx = (UInt) round(((CuboidRoom*)room_)->x()/spatial_frequency);
-  Int Ny = (UInt) round(((CuboidRoom*)room_)->y()/spatial_frequency);
-  Int Nz = (UInt) round(((CuboidRoom*)room_)->z()/spatial_frequency);
+  Int Nx = (UInt) round(dimensions.x()/spatial_frequency);
+  Int Ny = (UInt) round(dimensions.y()/spatial_frequency);
+  Int Nz = (UInt) round(dimensions.z()/spatial_frequency);
   
   Int pos_s_x = (UInt) round(source_->position().x()/spatial_frequency)+1;
   Int pos_s_y = (UInt) round(source_->position().y()/spatial_frequency)+1;

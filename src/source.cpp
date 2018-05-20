@@ -19,28 +19,13 @@ namespace sal {
 // located in a given position.
 // TODO: Add source directivity.
 Source::Source(const Point& position) noexcept :
-        position_(TripletHandler(position)) {}
+        position_(position) {}
 
-Point Source::position() const noexcept { return position_.value(); }
+Point Source::position() const noexcept { return position_; }
 
 void Source::set_position(const Point& position) noexcept {
-  position_.set_value(position);
+  position_ = position;
 }
 
-void Source::set_target_position(const Point& position) noexcept {
-  position_.set_target_value(position);
-}
-  
-bool Source::HasReachedTarget() noexcept {
-  return position_.HasReachedTarget();
-}
-  
-void Source::set_max_speed(const Speed max_speed) noexcept {
-  position_.set_max_speed(max_speed);
-}
-
-void Source::UpdatePosition(const Time time_since_last_update) noexcept {
-  position_.Update(time_since_last_update);
-}
   
 } // namespace sal

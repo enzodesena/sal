@@ -37,46 +37,16 @@ public:
       Microphone(position, orientation), microphones_(microphones) {}
 
   
-  
-  virtual void set_max_speed(const Speed max_speed) noexcept {
-    for (Int i=0; i<num_microphones(); ++i) {
-      microphones_[i]->set_max_speed(max_speed);
-    }
-    Microphone::set_max_speed(max_speed);
-  }
-  
-  virtual void UpdatePosition(const Time time_elapsed_since_last_tick) noexcept {
-    for (Int i=0; i<num_microphones(); ++i) {
-      microphones_[i]->UpdatePosition(time_elapsed_since_last_tick);
-    }
-    Microphone::UpdatePosition(time_elapsed_since_last_tick);
-  }
-  
-  virtual void set_target_position(const mcl::Point& position) noexcept {
-    mcl::Point position_delta(position.x()-target_position().x(),
-                              position.y()-target_position().y(),
-                              position.z()-target_position().z());
-    for (Int i=0; i<(Int)microphones_.size(); ++i) {
-      mcl::Point old_mic_position = microphones_[i]->target_position();
-      mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
-                                  old_mic_position.y()+position_delta.y(),
-                                  old_mic_position.z()+position_delta.z());
-      microphones_[i]->set_target_position(new_mic_position);
-    }
-    
-    Microphone::set_target_position(position);
-  }
-  
   /**
    This method will move all the internal microphones to a new position.
    The relative positions of the different microphones will stay unchanged.
    */
   virtual void set_position(const mcl::Point& position) noexcept {
-    mcl::Point position_delta(position.x()-target_position().x(),
-                              position.y()-target_position().y(),
-                              position.z()-target_position().z());
+    mcl::Point position_delta(position.x()-this->position().x(),
+                              position.y()-this->position().y(),
+                              position.z()-this->position().z());
     for (Int i=0; i<(Int)microphones_.size(); ++i) {
-      mcl::Point old_mic_position = microphones_[i]->target_position();
+      mcl::Point old_mic_position = microphones_[i]->position();
       mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
                                   old_mic_position.y()+position_delta.y(),
                                   old_mic_position.z()+position_delta.z());

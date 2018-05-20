@@ -20,12 +20,12 @@
 namespace sal {
 
 enum CuboidWallId {
-  x1,
-  x2,
-  y1,
-  y2,
-  z1,
-  z2
+  kX1,
+  kX2,
+  kY1,
+  kY2,
+  kZ1,
+  kZ2
 };
   
 class CuboidRoom : public Room {
@@ -33,22 +33,28 @@ public:
   // The room filter is *not* an injected dependency. The software will do lots
   // of copies of the object.
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const std::vector<mcl::IirFilter>& filters,
-             const BoundarySetType boundary_set_type = first_order_only) :
-          Room(filters, boundary_set_type), dimensions_(Triplet(x, y, z)) {
-    if ((Int)filters.size() != num_faces()) { ASSERT(false); }
+             const std::vector<mcl::IirFilter>& filter_prototypes) :
+          Room(filter_prototypes),
+          dimensions_(Triplet(x, y, z)), origin_position_(Triplet(0,0,0)) {
+    if ((Int)filter_prototypes.size() != num_faces()) { ASSERT(false); }
   }
   
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const mcl::IirFilter& filter,
-             const BoundarySetType boundary_set_type = first_order_only) :
-          Room(std::vector<mcl::IirFilter>(6, filter),
-               boundary_set_type), dimensions_(Triplet(x, y, z)) {}
+             const mcl::IirFilter& filter_prototype) :
+          Room(std::vector<mcl::IirFilter>(6, filter_prototype)),
+          dimensions_(Triplet(x, y, z)), origin_position_(Triplet(0,0,0)) {}
   
-  CuboidRoom(const Triplet& room_dimensions,
-             const mcl::IirFilter& filter) :
-          Room(std::vector<mcl::IirFilter>(6, filter)),
-          dimensions_(room_dimensions) {}
+  /**
+   Constructrs a cuboid room.
+   @param[in] room_dimensions A triplet containing the 3 dimensions of the room
+   @param[in] origin_position A triplet containing the origin of the room,
+   i.e. the smallest
+   @param[in] filter_prototypes
+   */
+  CuboidRoom(const Triplet& room_dimensions, const Triplet& origin_position,
+             const mcl::IirFilter& filter_prototype) :
+          Room(std::vector<mcl::IirFilter>(6, filter_prototype)),
+          dimensions_(room_dimensions), origin_position_(origin_position) {}
 
   virtual std::vector<mcl::Point>
   CalculateBoundaryPoints(const mcl::Point& source,
@@ -70,26 +76,32 @@ public:
   
   sal::Time SabineRt60() const;
   
-  Triplet dimensions() const noexcept { return dimensions_.value(); }
-  
-  sal::Length x() const noexcept { return dimensions_.value().x(); }
-  
-  sal::Length y() const noexcept { return dimensions_.value().y(); }
-  
-  sal::Length z() const noexcept { return dimensions_.value().z(); }
+  Triplet dimensions() const noexcept { return dimensions_; }
   
   void set_dimensions(const Triplet& dimensions) noexcept {
     dimensions_ = dimensions;
   }
   
-  void set_target_dimensions(const Triplet& target_position) noexcept;
+  void set_origin_position(const Triplet& position) {
+    origin_position_ = position;
+  }
   
-  void set_max_speed(const Speed max_speed) noexcept;
+  virtual sal::Int num_faces() const noexcept { return 6; }
   
-  virtual void UpdateShape(const Time time_elapsed_since_last_update) noexcept;
+  virtual sal::Length max_distance() const noexcept {
+    return dimensions_.norm();
+  }
   
-  bool HasReachedTarget() const noexcept;
+  static bool Test();
   
+  virtual bool
+  IsPointInRoom(const mcl::Point& point,
+                const sal::Length precision = VERY_SMALL) const noexcept;
+  
+  virtual std::string ShapeDescription() const noexcept;
+  
+  virtual ~CuboidRoom() {}
+private:
   
   //  Reference system:
   //
@@ -114,26 +126,10 @@ public:
                              const mcl::Point& source_pos,
                              const mcl::Point& observation_pos) const;
   
-  virtual sal::Int num_faces() const noexcept { return 6; }
-  
-  virtual sal::Length max_distance() const noexcept {
-    return dimensions_.value().norm();
-  }
-  
-  static bool Test();
-  
-  virtual bool
-  IsPointInRoom(const mcl::Point& point,
-                const sal::Length precision = VERY_SMALL) const noexcept;
-  
-  virtual std::string ShapeDescription() const noexcept;
-  
-  virtual ~CuboidRoom() {}
-private:
-  
   // Dimensions of the cuboid
-  TripletHandler dimensions_;
+  Triplet dimensions_;
   
+  Triplet origin_position_;
   
   static mcl::Point IntersectionPoint(const CuboidWallId wall_id,
                                       const Triplet dimensions,

@@ -18,8 +18,8 @@ namespace sal {
 
   
 enum BoundarySetType {
-  first_order_only,
-  first_and_second_cross_horiz
+  kFirstOrder,
+  kFirstAndSecondOrder
 };
   
   
@@ -28,9 +28,8 @@ public:
   // This is the standard constructor where you feed the room `shape` and for
   // each face of the shape you also provide a filter. The order in the 
   // `filters` vector follows that of the employed shape.
-  Room(const std::vector<mcl::IirFilter>& wall_filters,
-       const BoundarySetType boundary_set_type = first_order_only) noexcept :
-          wall_filters_(wall_filters), boundary_set_type_(boundary_set_type) {}
+  Room(const std::vector<mcl::IirFilter>& wall_filters) noexcept :
+          wall_filters_(wall_filters), boundary_set_type_(kFirstOrder) {}
   
   const std::vector<mcl::IirFilter>& wall_filters() const noexcept {
     return wall_filters_;
@@ -69,8 +68,6 @@ public:
   
   // Returns the maximum distance between two points inside the shape.
   virtual sal::Length max_distance() const noexcept = 0;
-  
-  virtual void UpdateShape(const Time time_since_last_update) noexcept = 0;
   
   /** Returns true if the specified point is inside the room.
    @param[in] wall_distance This parameter allows to set also a safe distance

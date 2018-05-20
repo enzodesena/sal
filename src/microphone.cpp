@@ -17,30 +17,14 @@ using mcl::Quaternion;
 namespace sal {
   
 Microphone::Microphone(Point position, mcl::Quaternion orientation) :
-  position_(TripletHandler(position)), orientation_(orientation),
+  position_(position), orientation_(orientation),
   handedness_(mcl::right_handed) {}
   
 
-Point Microphone::position() const noexcept { return position_.value(); }
+Point Microphone::position() const noexcept { return position_; }
 
 void Microphone::set_position(const Point& position) noexcept {
-  position_.set_value(position);
-}
-  
-void Microphone::set_target_position(const Point& position) noexcept {
-  position_.set_target_value(position);
-}
-
-bool Microphone::HasReachedTarget() const noexcept {
-  return position_.HasReachedTarget();
-}
-
-void Microphone::set_max_speed(const Speed max_speed) noexcept {
-  position_.set_max_speed(max_speed);
-}
-
-void Microphone::UpdatePosition(const Time time_since_last_update) noexcept {
-  position_.Update(time_since_last_update);
+  position_ = position;
 }
   
 /** Returns current orientation of the microphone */
@@ -117,18 +101,18 @@ void Microphone::AddPlaneWaveRelative(const MonoBuffer& signal,
 
 
 Point Microphone::GetRelativePoint(const Point& point) const noexcept {
-  if (mcl::IsEqual(point, position_.value())) {
+  if (mcl::IsEqual(point, position_)) {
     LogError("Microphone (%f, %f, %f) and observation point (%f, %f, %f) appear "
              "to be approximately in the same position. Behaviour undefined.",
              point.x(), point.y(), point.z(),
-             position_.value().x(),
-             position_.value().y(),
-             position_.value().z());
+             position_.x(),
+             position_.y(),
+             position_.z());
   }
   // Centering the reference system around the microphone
-  Point centered(point.x()-position_.value().x(),
-                 point.y()-position_.value().y(),
-                 point.z()-position_.value().z());
+  Point centered(point.x()-position_.x(),
+                 point.y()-position_.y(),
+                 point.z()-position_.z());
   
   // Instead of rotating the head, we are rotating the point in an opposite
   // direction (that's why the QuatInverse).

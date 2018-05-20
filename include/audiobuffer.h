@@ -303,6 +303,10 @@ public:
   explicit MonoBuffer(const Int num_samples) noexcept :
         MultichannelBuffer(1, num_samples) {}
   
+  MonoBuffer(Sample* data_referenced, const Int num_samples) noexcept :
+        data_referenced_(data_referenced),
+        MultichannelBuffer(&data_referenced_, 1, num_samples) {}
+  
   /** Constructs a mono buffer as a reference to a multichannel buffer.
    If constructed in this way, this object will not own the data.
    
@@ -325,7 +329,7 @@ public:
   }
   
   inline void SetSample(const Int sample_id,
-                         const Sample sample_value) noexcept {
+                        const Sample sample_value) noexcept {
     MultichannelBuffer::SetSample(mono_channel, sample_id, sample_value);
   }
   
@@ -365,6 +369,11 @@ public:
   }
   
   virtual ~MonoBuffer() {}
+private:
+  // We use in case of the MonoBuffer(Sample* data_referenced, const Int num_samples)
+  // constructor. We need this because taking &data_referenced as the Sample**
+  // would be taking the address of a temporary.
+  Sample* data_referenced_;
 };
   
 class StereoBuffer : public MultichannelBuffer {

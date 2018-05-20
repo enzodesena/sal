@@ -36,19 +36,19 @@ bool CuboidRoom::Test() {
   //  4 z_1 (old 5)
   //  5 z_2 (old 4)
   
-  res = room.ReflectionPoint(x2,source_point,observ_point);
+  res = room.ReflectionPoint(kX2,source_point,observ_point);
   ASSERT(res.Equals(Point(1,0,1)));
   
-  res = room.ReflectionPoint(y2,source_point,observ_point);
+  res = room.ReflectionPoint(kY2,source_point,observ_point);
   ASSERT(res.Equals(Point(0.5,1,0.5)));
   
-  res = room.ReflectionPoint(x1,source_point,observ_point);
+  res = room.ReflectionPoint(kX1,source_point,observ_point);
   ASSERT(res.Equals(Point(0,0,0)));
   
-  res = room.ReflectionPoint(z2,source_point,observ_point);
+  res = room.ReflectionPoint(kZ2,source_point,observ_point);
   ASSERT(res.Equals(Point(1,0,1)));
   
-  res = room.ReflectionPoint(z1,source_point,observ_point);
+  res = room.ReflectionPoint(kZ1,source_point,observ_point);
   ASSERT(res.Equals(Point(0,0,0)));
   
   
@@ -62,22 +62,22 @@ bool CuboidRoom::Test() {
   //  4 z_1 (old 5)
   //  5 z_2 (old 4)
   
-  res = room.ReflectionPoint(x1,source_point,observ_point);
+  res = room.ReflectionPoint(kX1,source_point,observ_point);
   ASSERT(res.Equals(Point(0,0.32,0.32)));
   
-  res = room.ReflectionPoint(x2,source_point,observ_point);
+  res = room.ReflectionPoint(kX2,source_point,observ_point);
   ASSERT(res.Equals(Point(1,1-0.32,1-0.32)));
   
-  res = room.ReflectionPoint(y1,source_point,observ_point);
+  res = room.ReflectionPoint(kY1,source_point,observ_point);
   ASSERT(res.Equals(Point(0.32,0,0.32)));
   
-  res = room.ReflectionPoint(y2,source_point,observ_point);
+  res = room.ReflectionPoint(kY2,source_point,observ_point);
   ASSERT(res.Equals(Point(1-0.32,1,1-0.32)));
   
-  res = room.ReflectionPoint(z1,source_point,observ_point);
+  res = room.ReflectionPoint(kZ1,source_point,observ_point);
   ASSERT(res.Equals(Point(0.32,0.32,0)));
   
-  res = room.ReflectionPoint(z2,source_point,observ_point);
+  res = room.ReflectionPoint(kZ2,source_point,observ_point);
   ASSERT(res.Equals(Point(1-0.32,1-0.32,1)));
   
   // Testing Sabine formula calculation

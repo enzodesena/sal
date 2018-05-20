@@ -73,9 +73,9 @@ void Ism::CalculateRir() {
   beta.set_element(1, 1, filters[3].B()[0]); // beta_{y2}
   beta.set_element(1, 2, filters[5].B()[0]); // beta_{z2}
   
-  Length room_x = ((CuboidRoom*)room_)->x();
-  Length room_y = ((CuboidRoom*)room_)->y();
-  Length room_z = ((CuboidRoom*)room_)->z();
+  Length room_x = ((CuboidRoom*)room_)->dimensions().x();
+  Length room_y = ((CuboidRoom*)room_)->dimensions().y();
+  Length room_z = ((CuboidRoom*)room_)->dimensions().z();
   
   rir_ = mcl::Zeros<sal::Sample>(rir_length_);
   
