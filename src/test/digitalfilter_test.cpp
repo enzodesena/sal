@@ -45,19 +45,19 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(filter_c.Filter(0.0), 7.226124799999999999999999999999));
   ASSERT(IsEqual(filter_c.Filter(0.0), 2.251659199999999999999999999999));
   
-  IirFilter filter_d = WallFilter(carpet_pile, 44100);
+  IirFilter filter_d = WallFilter(kCarpetPile, 44100);
   ASSERT(IsEqual(filter_d.Filter(1.0), 0.562666833756030));
   ASSERT(IsEqual(filter_d.Filter(0.5), 0.315580130841020));
   
-  IirFilter filter_e = WallFilter(carpet_cotton, 44100);
+  IirFilter filter_e = WallFilter(kCarpetCotton, 44100);
   ASSERT(IsEqual(filter_e.Filter(1.0), 0.687580695329600));
   ASSERT(IsEqual(filter_e.Filter(0.5), 0.322032066558733));
   
-  IirFilter filter_f = WallFilter(wall_bricks, 44100);
+  IirFilter filter_f = WallFilter(kWallBricks, 44100);
   ASSERT(IsEqual(filter_f.Filter(1.0), 0.978495798553620));
   ASSERT(IsEqual(filter_f.Filter(0.5), 0.490594444043047));
   
-  IirFilter filter_g = WallFilter(ceiling_tile, 44100);
+  IirFilter filter_g = WallFilter(kCeilingTile, 44100);
   ASSERT(IsEqual(filter_g.Filter(1.0), 0.168413736374283));
   ASSERT(IsEqual(filter_g.Filter(0.5), 0.151668254946940));
   
