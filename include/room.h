@@ -41,6 +41,11 @@ public:
     wall_filters_ = wall_filters;
   }
   
+  void set_wall_filter(const Int wall_id, const mcl::IirFilter& filter) noexcept {
+    ASSERT(wall_id>=0 && wall_id<num_boundary_points());
+    wall_filters_[wall_id] = filter;
+  }
+  
   void set_wall_filters(const mcl::IirFilter& filter) noexcept {
     wall_filters_.assign(num_faces(), filter);
   }
