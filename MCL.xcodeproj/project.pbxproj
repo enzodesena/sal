@@ -90,6 +90,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		571D455020B867B50009A84D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = constants.h; path = include/constants.h; sourceTree = "<group>"; };
 		571F9A5717955B160059A90D /* statisticsop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = statisticsop.h; path = include/statisticsop.h; sourceTree = "<group>"; };
 		571F9A5917955BD60059A90D /* statisticsop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop.cpp; path = src/statisticsop.cpp; sourceTree = "<group>"; };
 		572A877E19C070ED00F62F8F /* libMCLiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMCLiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,6 +247,7 @@
 				571F9A5717955B160059A90D /* statisticsop.h */,
 				57BA701615B490C4002F077F /* transformop.h */,
 				57BA700315B4274D002F077F /* vectorop.h */,
+				571D455020B867B50009A84D /* constants.h */,
 			);
 			name = include;
 			sourceTree = "<group>";

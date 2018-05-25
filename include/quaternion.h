@@ -13,16 +13,11 @@
 
 #include "mcltypes.h"
 #include "point.h"
+#include "constants.h"
 #include <cassert>
 
 namespace mcl {
   
-/** Enum describing whether we are using a right handed or left handed
- reference system*/
-enum Handedness {
-  right_handed,
-  left_handed
-};
   
 /** Enum describing the angles ordering convention for Euler angles */
 enum EulerOrder {
@@ -77,7 +72,7 @@ Quaternion QuatConj(const Quaternion& q) noexcept;
 Real Norm(const Quaternion& q) noexcept;
   
 Point QuatRotate(const Quaternion& q, const Point& r,
-                 const Handedness handedness = right_handed) noexcept;
+                 const Handedness handedness = kRightHanded) noexcept;
 
 /** Implements the (Hamilton) quaternion multiplication **/
 Quaternion QuatMultiply(const Quaternion& q, const Quaternion& r) noexcept;

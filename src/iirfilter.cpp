@@ -14,7 +14,16 @@
 
 namespace mcl {
   
-
+Real IirFilter::numerator_coefficient(const Int coeff_id) const noexcept {
+  ASSERT(coeff_id>=0 & coeff_id<=order());
+  return B_[coeff_id]*A0_;
+}
+  
+void IirFilter::set_numerator_coefficient(const Int coeff_id,
+                                          const Real value) noexcept {
+  ASSERT(coeff_id >= 0 && coeff_id<=order());
+  B_[coeff_id] = value/A0_;
+}
   
 std::vector<Real> IirFilter::B() const {
   // Return the non-normalised version
@@ -46,7 +55,7 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) :
     A_ = Multiply(A, (Real) 1.0 / A[0]);
   }
   
-            
+  
   Int size = B.size();
   state_ = new Real[size];
   for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
@@ -81,17 +90,13 @@ IirFilter::~IirFilter() { delete [] state_; }
 Int IirFilter::order() const noexcept {
   return Max(B_.size(), A_.size())-1;
 }
-  
-Real IirFilter::numerator_coefficient(const Int coeff_id) const noexcept {
-  return B_.at(coeff_id);
-}
 
 Real IirFilter::denominator_coefficient(const Int coeff_id) const noexcept {
   return A_.at(coeff_id);
 }
   
 void IirFilter::set_coefficients(const std::vector<Real>& B,
-                                const std::vector<Real>& A) noexcept {
+                                 const std::vector<Real>& A) noexcept {
   // TODO: implement case where length changes.
   ASSERT(B_.size() == B.size());
   ASSERT(A_.size() == A.size());
@@ -174,6 +179,11 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
   std::vector<Real> A;
   
   switch (wall_type) {
+    case kRigid:
+      B.push_back(1.0);
+      A.push_back(1.0);
+      break;
+      
     case kCarpetPile:
       // B_carpet_pile=[0.562666833756030  -1.032627191365576   0.469961155406544];
       // A_carpet_pile=[1.000000000000000  -1.896102349247713   0.896352947528892];

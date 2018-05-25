@@ -9,6 +9,7 @@
 #include "quaternion.h"
 #include "elementaryop.h"
 #include "comparisonop.h"
+#include "constants.h"
 
 
 namespace mcl {
@@ -28,7 +29,7 @@ Point QuatRotate(const Quaternion& q, const Point& r,
   
   Quaternion p(0.0, r.x(), r.y(), r.z());
   
-  if (handedness == right_handed) {
+  if (handedness == kRightHanded) {
     Quaternion result = QuatMultiply(QuatMultiply(q_norm, p), QuatConj(q_norm));
     return Point(result.x(), result.y(), result.z());
   } else {
