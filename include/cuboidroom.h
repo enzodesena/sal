@@ -49,7 +49,7 @@ public:
    @param[in] room_dimensions A triplet containing the 3 dimensions of the room
    @param[in] origin_position A triplet containing the origin of the room,
    i.e. the smallest
-   @param[in] filter_prototypes
+   @param[in] filter_prototype Prototype of the wall filter.
    */
   CuboidRoom(const Triplet& room_dimensions, const Triplet& origin_position,
              const mcl::IirFilter& filter_prototype) :

@@ -60,17 +60,16 @@ public:
   virtual void AddPlaneWaveRelative(const Sample* input_data,
                                     const Int num_samples,
                                     const mcl::Point& point,
-                                    const Int wave_id,
+                                    const Int /* wave_id */, 
                                     Buffer& output_buffer) noexcept {
-    MonoBuffer& mono_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
-    ASSERT(mono_buffer.num_channels() == 1);
-    ASSERT(num_samples <= mono_buffer.num_samples());
+    ASSERT(output_buffer.num_channels() >= 1);
+    ASSERT(num_samples <= output_buffer.num_samples());
     
     mcl::MultiplyAdd(input_data,
                      GetDirectivity(point),
-                     mono_buffer.GetReadPointer(),
+                     output_buffer.GetReadPointer(Buffer::kMonoChannel),
                      num_samples,
-                     mono_buffer.GetWritePointer());
+                     output_buffer.GetWritePointer(Buffer::kMonoChannel));
   }
   
 private:
@@ -123,7 +122,8 @@ public:
   TrigMic(mcl::Point position, mcl::Quaternion orientation,
           std::vector<Sample> coefficients) :
           Microphone(position, orientation),
-          MemorylessMonoMic(position, orientation),          coefficients_(coefficients) {}
+          MemorylessMonoMic(position, orientation),
+          coefficients_(coefficients) {}
   
   virtual bool IsCoincident() const noexcept { return true; }
   

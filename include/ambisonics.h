@@ -124,7 +124,7 @@ private:
   }
   
   static std::vector<Sample> GetFrame(const Int order, const Int sample_id,
-                                      const BFormatBuffer& buffer);
+                                      const Buffer& buffer);
   
   /**
    Produces the near field correction

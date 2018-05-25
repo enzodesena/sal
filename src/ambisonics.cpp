@@ -24,24 +24,24 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
                                          const mcl::Point& point,
                                          const Int wave_id,
                                          Buffer& output_buffer) noexcept {
-  BFormatBuffer& bformat_buffer = dynamic_cast<BFormatBuffer&>(output_buffer);
-  
   // Precompute for performance gain
   const Angle phi = point.phi();
   const Sample sqrt_2 = mcl::Sqrt(2.0);
   
   switch (convention_) {
     case sqrt2: {
-      
       // Zero-th component
-      bformat_buffer.AddSamples(0, 0, 0, num_samples, input_data);
+      output_buffer.AddSamples(BFormatBuffer::GetChannelId(0, 0),
+                               0, num_samples, input_data);
       
       for (Int i=1; i<=order_; ++i) {
         // TODO: add 3D components
-        bformat_buffer.MultiplyAddSamples(i, 1, 0, num_samples, input_data,
-                                          sqrt_2*cos(((Angle) i)*phi));
-        bformat_buffer.MultiplyAddSamples(i, -1, 0, num_samples, input_data,
-                                          sqrt_2*sin(((Angle) i)*phi));
+        output_buffer.MultiplyAddSamples(BFormatBuffer::GetChannelId(i, 1),
+                                         0, num_samples, input_data,
+                                         sqrt_2*cos(((Angle) i)*phi));
+        output_buffer.MultiplyAddSamples(BFormatBuffer::GetChannelId(i, -1),
+                                         0, num_samples, input_data,
+                                         sqrt_2*sin(((Angle) i)*phi));
       }
       break;
     }
@@ -191,16 +191,19 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(Int order,
   
 std::vector<Sample>
 AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
-                             const BFormatBuffer& buffer) {
+                             const Buffer& buffer) {
   ASSERT(order>=0);
   ASSERT(sample_id>=0 & sample_id<buffer.num_samples());
   
   std::vector<Sample> output;
   output.reserve(2*order+1);
-  output.push_back(buffer.GetSample(0, 0, sample_id));
+  output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(0, 0),
+                                    sample_id));
   for (Int i=1; i<=order; ++i) {
-    output.push_back(buffer.GetSample(i, +1, sample_id));
-    output.push_back(buffer.GetSample(i, -1, sample_id));
+    output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(i, 1),
+                                      sample_id));
+    output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(i, -1),
+                                      sample_id));
   }
   return output;
 }
@@ -221,15 +224,11 @@ AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
 void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
                                 Buffer& output_buffer) {
   ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
-  const BFormatBuffer& input_bformat_buffer =
-      dynamic_cast<const BFormatBuffer&>(input_buffer);
-  MultichannelBuffer& output_multi_buffer =
-      dynamic_cast<MultichannelBuffer&>(output_buffer);
   
   // Cache for speed
   for (Int sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
     std::vector<Sample> bformat_frame = GetFrame(order_, sample_id,
-                                                 input_bformat_buffer);
+                                                 input_buffer);
     
     // Near-field correcting
     if (near_field_correction_) {
@@ -269,7 +268,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
     
     // Push into each loudspeaker stream
     for (Int i=0; i<num_loudspeakers_; ++i) {
-      output_multi_buffer.SetSample(i, sample_id, output[i]);
+      output_buffer.SetSample(i, sample_id, output[i]);
     }
   }
 }

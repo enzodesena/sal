@@ -121,7 +121,7 @@ private:
   void AddPlaneWaveRelative(const Sample* input_data,
                             const Int num_samples,
                             const mcl::Point& point,
-                            StereoBuffer& output_buffer) noexcept;
+                            Buffer& output_buffer) noexcept;
   
   void UpdateFilter(const mcl::Point& point) noexcept;
   

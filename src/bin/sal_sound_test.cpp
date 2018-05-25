@@ -49,7 +49,7 @@ int main(int argc, char * const argv[]) {
                                        sampling_frequency,
                                        pulse_amplitude, trailing_length);
   
-  MultichannelBuffer buffer(max_num_channels, samples_per_buffer);
+  Buffer buffer(max_num_channels, samples_per_buffer);
   
   PaWrapper pa(sampling_frequency,
                dev_id, channel_ids);

@@ -18,7 +18,7 @@ namespace sal {
   
 Microphone::Microphone(Point position, mcl::Quaternion orientation) :
   position_(position), orientation_(orientation),
-  handedness_(mcl::right_handed) {}
+  handedness_(kRightHanded) {}
   
 
 Point Microphone::position() const noexcept { return position_; }
@@ -36,7 +36,7 @@ void Microphone::set_orientation(const mcl::Quaternion& orientation) noexcept {
 }
   
   
-void Microphone::set_handedness(const mcl::Handedness handedness) noexcept {
+void Microphone::set_handedness(const Handedness handedness) noexcept {
   handedness_ = handedness;
 }
   
@@ -68,6 +68,7 @@ void Microphone::AddPlaneWave(const Sample* input_data,
                               const Point& point,
                               const Int wave_id,
                               Buffer& output_buffer) noexcept {
+  ASSERT(output_buffer.num_samples() >= num_samples);
   this->AddPlaneWaveRelative(input_data,
                              num_samples,
                              GetRelativePoint(point),

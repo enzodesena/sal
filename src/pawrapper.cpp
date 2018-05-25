@@ -93,7 +93,7 @@ PaWrapper::PaWrapper(Time sampling_frequency,
 PaError PaWrapper::StartStream() { return Pa_StartStream(stream_); }
 
   
-PaError PaWrapper::WriteStream(const MultichannelBuffer& output_buffer) {
+PaError PaWrapper::WriteStream(const Buffer& output_buffer) {
   const Int num_samples = output_buffer.num_samples();
   sal::Int max_num_channels = channel_ids_.size();
   const Int block_length = num_samples*max_num_channels;

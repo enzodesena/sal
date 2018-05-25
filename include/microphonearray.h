@@ -118,11 +118,9 @@ public:
                                     const mcl::Point& point,
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept {
-    MultichannelBuffer& multi_buffer = dynamic_cast<MultichannelBuffer&>(output_buffer);
-    
     Int num_microphones((Int)microphones_.size());
     for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
-      MonoBuffer referencing_buffer(multi_buffer, mic_i);
+      MonoBuffer referencing_buffer(output_buffer, mic_i);
       // Each microphone will push in his own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
       microphones_[mic_i]->AddPlaneWaveRelative(input_data, num_samples, point,

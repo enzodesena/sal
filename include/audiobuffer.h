@@ -21,29 +21,13 @@ namespace sal {
 using mcl::Int;
   
   
-class Buffer {
-public:
-  virtual Int num_samples() const noexcept = 0;
-  
-  virtual void AddSamples(const Buffer& buffer) noexcept = 0;
-  
-  virtual void SetSamples(const Buffer& buffer) noexcept = 0;
-  
-  virtual void Reset() noexcept = 0;
-  
-  virtual ~Buffer() {}
-  
-  static bool Test();
-};
-  
-  
 class MonoBuffer;
   
-class MultichannelBuffer : public Buffer {
+class Buffer {
 public:
   
   /** Constructs a multichannel buffer. */
-  MultichannelBuffer(const Int num_channels, const Int num_samples) :
+  Buffer(const Int num_channels, const Int num_samples) :
       num_channels_(num_channels), num_samples_(num_samples),
       owns_data_(true), temporary_vector_(std::vector<Sample>(num_samples, 0.0)) {
     ASSERT(num_channels >= 0 & num_samples >= 0);
@@ -59,8 +43,8 @@ public:
    @param[in] num_samples the number of samples for the data structure
    we are referencing to.
    */
-  MultichannelBuffer(Sample** data_referenced,
-                     const Int num_channels, const Int num_samples) noexcept :
+  Buffer(Sample** data_referenced,
+         const Int num_channels, const Int num_samples) noexcept :
       num_channels_(num_channels), num_samples_(num_samples), owns_data_(false),
       temporary_vector_(std::vector<Sample>(num_samples, 0.0)) {
     data_ = data_referenced;
@@ -111,12 +95,11 @@ public:
   }
   
   void SetSamples(const Buffer& other) noexcept {
-    const MultichannelBuffer& multi_other = dynamic_cast<const MultichannelBuffer&>(other);
-    ASSERT(num_samples_ == multi_other.num_samples_);
-    ASSERT(num_channels_ == multi_other.num_channels_);
+    ASSERT(num_samples_ == other.num_samples_);
+    ASSERT(num_channels_ == other.num_channels_);
     for (int chan_id=0; chan_id<num_channels_; ++chan_id) {
       for (int sample_id=0; sample_id<num_samples_; ++sample_id) {
-        data_[chan_id][sample_id] = multi_other.data_[chan_id][sample_id];
+        data_[chan_id][sample_id] = other.data_[chan_id][sample_id];
       }
     }
   }
@@ -186,19 +169,16 @@ public:
   Sample** GetWritePointers() noexcept { return data_; }
   
   /** Adds all the samples from another buffer. The buffer has to be of the
-   same type (checked by dynamic_cast) and have the same number of channels
+   same type and have the same number of channels
    and samples (checked only through debugging asserts).
    */
   virtual void AddSamples(const Buffer& buffer) noexcept {
-    const MultichannelBuffer& multi_buffer =
-          dynamic_cast<const MultichannelBuffer&>(buffer);
-    
-    ASSERT(num_channels() == multi_buffer.num_channels());
+    ASSERT(num_channels() == buffer.num_channels());
     ASSERT(num_samples() == buffer.num_samples());
     
     for (Int chan_id = 0; chan_id<num_channels(); ++chan_id) {
       mcl::Add(GetReadPointer(chan_id),
-               multi_buffer.GetReadPointer(chan_id),
+               buffer.GetReadPointer(chan_id),
                num_samples(),
                GetWritePointer(chan_id));
     }
@@ -224,13 +204,13 @@ public:
   }
   
   enum ChannelLabels {
-    mono_channel = 0,
-    left_channel = 0,
-    right_channel = 1
+    kMonoChannel = 0,
+    kLeftChannel = 0,
+    kRightChannel = 1
   };
   
   
-  MultichannelBuffer(const MultichannelBuffer& other) :
+  Buffer(const Buffer& other) :
       num_channels_(other.num_channels_), num_samples_(other.num_samples_),
       owns_data_(other.owns_data_),
       temporary_vector_(std::vector<Sample>(other.num_samples(), 0.0)) {
@@ -247,7 +227,7 @@ public:
    to assign a buffer that is referencing itself. For
    instance, if A is a buffer that owns the data, and B is a buffer that
    refers to A's data, then the assignment A = B has no effect. */
-  MultichannelBuffer& operator=(const MultichannelBuffer& other) {
+  Buffer& operator=(const Buffer& other) {
     if (this != &other) {
       if (owns_data_ && other.data_ == data_) { return *this; }
       
@@ -268,13 +248,13 @@ public:
     return *this;
   }
   
-  virtual ~MultichannelBuffer() {
+  virtual ~Buffer() {
     if (owns_data_) { DeallocateMemory(); }
   }
     
   static bool Test();
-private:
   
+private:
   Sample** data_;
   Int num_channels_;
   Int num_samples_;
@@ -298,14 +278,14 @@ private:
 };
   
   
-class MonoBuffer : public MultichannelBuffer {
+class MonoBuffer : public Buffer {
 public:
   explicit MonoBuffer(const Int num_samples) noexcept :
-        MultichannelBuffer(1, num_samples) {}
+        Buffer(1, num_samples) {}
   
   MonoBuffer(Sample* data_referenced, const Int num_samples) noexcept :
         data_referenced_(data_referenced),
-        MultichannelBuffer(&data_referenced_, 1, num_samples) {}
+        Buffer(&data_referenced_, 1, num_samples) {}
   
   /** Constructs a mono buffer as a reference to a multichannel buffer.
    If constructed in this way, this object will not own the data.
@@ -313,8 +293,8 @@ public:
    @param[in] referenced_buffer the buffer structure which we are referencing to.
    @param[in] channel_id the channel id to be referenced.
    */
-  MonoBuffer(MultichannelBuffer& referenced_buffer, const Int channel_id) noexcept :
-    MultichannelBuffer(&(referenced_buffer.GetWritePointers()[channel_id]), 1,
+  MonoBuffer(Buffer& referenced_buffer, const Int channel_id) noexcept :
+    Buffer(&(referenced_buffer.GetWritePointers()[channel_id]), 1,
                        referenced_buffer.num_samples()) {}
   
   /** This first multiplies all the input samples by a certain constant
@@ -323,34 +303,33 @@ public:
                           const Int num_samples,
                           const Sample* samples,
                           const Sample constant) noexcept {
-    MultichannelBuffer::MultiplyAddSamples(mono_channel,
-                                           from_sample_id, num_samples,
-                                           samples, constant);
+    Buffer::MultiplyAddSamples(kMonoChannel, from_sample_id, num_samples,
+                               samples, constant);
   }
   
   inline void SetSample(const Int sample_id,
                         const Sample sample_value) noexcept {
-    MultichannelBuffer::SetSample(mono_channel, sample_id, sample_value);
+    Buffer::SetSample(kMonoChannel, sample_id, sample_value);
   }
   
   using Buffer::SetSamples;
   
   void SetSamples(const Int from_sample_id, const Int num_samples,
                   const Sample* samples) noexcept {
-    MultichannelBuffer::SetSamples(mono_channel, from_sample_id, num_samples,
+    Buffer::SetSamples(kMonoChannel, from_sample_id, num_samples,
                                    samples);
   }
   
   inline Sample GetSample(const Int sample_id) const noexcept {
-    return MultichannelBuffer::GetSample(mono_channel, sample_id);
+    return Buffer::GetSample(kMonoChannel, sample_id);
   }
   
   const Sample* GetReadPointer() const noexcept {
-    return MultichannelBuffer::GetReadPointer(mono_channel);
+    return Buffer::GetReadPointer(kMonoChannel);
   }
   
   Sample* GetWritePointer() noexcept {
-    return MultichannelBuffer::GetWritePointer(mono_channel);
+    return Buffer::GetWritePointer(kMonoChannel);
   }
   
   static MonoBuffer Unary(const Sample sample) noexcept  {
@@ -359,12 +338,12 @@ public:
     return output;
   }
   
-  using MultichannelBuffer::AddSamples;
+  using Buffer::AddSamples;
   
   void AddSamples(const Int from_sample_id,
                   const Int num_samples,
                   const Sample* samples) noexcept {
-    MultichannelBuffer::AddSamples(mono_channel, from_sample_id, num_samples,
+    Buffer::AddSamples(kMonoChannel, from_sample_id, num_samples,
                                    samples);
   }
   
@@ -376,49 +355,49 @@ private:
   Sample* data_referenced_;
 };
   
-class StereoBuffer : public MultichannelBuffer {
+class StereoBuffer : public Buffer {
 public:
   StereoBuffer(const Int num_samples) noexcept :
-        MultichannelBuffer(2, num_samples) {}
+        Buffer(2, num_samples) {}
   
   inline void SetLeftSample(const Int sample_id,
                               const Sample sample_value) noexcept {
-    MultichannelBuffer::SetSample(left_channel, sample_id, sample_value);
+    Buffer::SetSample(kLeftChannel, sample_id, sample_value);
   }
   
   inline void SetRightSample(const Int sample_id,
                                const Sample sample_value) noexcept {
-    MultichannelBuffer::SetSample(right_channel, sample_id, sample_value);
+    Buffer::SetSample(kRightChannel, sample_id, sample_value);
   }
   
   inline Sample GetLeftSample(const Int sample_id) const noexcept {
-    return MultichannelBuffer::GetSample(left_channel, sample_id);
+    return Buffer::GetSample(kLeftChannel, sample_id);
   }
   
   inline Sample GetRightSample(const Int sample_id) const noexcept {
-    return MultichannelBuffer::GetSample(right_channel, sample_id);
+    return Buffer::GetSample(kRightChannel, sample_id);
   }
   
   const Sample* GetLeftReadPointer() const noexcept {
-    return MultichannelBuffer::GetReadPointer(left_channel);
+    return Buffer::GetReadPointer(kLeftChannel);
   }
   
   const Sample* GetRightReadPointer() const noexcept {
-    return MultichannelBuffer::GetReadPointer(right_channel);
+    return Buffer::GetReadPointer(kRightChannel);
   }
   
   Sample* GetLeftWritePointer() noexcept {
-    return MultichannelBuffer::GetWritePointer(left_channel);
+    return Buffer::GetWritePointer(kLeftChannel);
   }
   
   Sample* GetRightWritePointer() noexcept {
-    return MultichannelBuffer::GetWritePointer(right_channel);
+    return Buffer::GetWritePointer(kRightChannel);
   }
   
   void AddSamplesLeft(const Sample* samples,
                       const Int from_sample_id,
                       const Int num_samples_to_add) noexcept {
-    MultichannelBuffer::AddSamples(left_channel, from_sample_id,
+    Buffer::AddSamples(kLeftChannel, from_sample_id,
                                    num_samples_to_add, samples);
   }
   
@@ -426,7 +405,7 @@ public:
                             const Int num_samples,
                             const Sample* samples,
                             mcl::DigitalFilter& filter) noexcept {
-    MultichannelBuffer::FilterAddSamples(left_channel, from_sample_id,
+    Buffer::FilterAddSamples(kLeftChannel, from_sample_id,
                                          num_samples, samples, filter);
   }
   
@@ -434,14 +413,14 @@ public:
                              const Int num_samples,
                              const Sample* samples,
                              mcl::DigitalFilter& filter) noexcept {
-    MultichannelBuffer::FilterAddSamples(right_channel, from_sample_id,
+    Buffer::FilterAddSamples(kRightChannel, from_sample_id,
                                          num_samples, samples, filter);
   }
   
   void AddSamplesRight(const Sample* samples,
                        const Int from_sample_id,
                        const Int num_samples_to_add) noexcept {
-    MultichannelBuffer::AddSamples(right_channel, from_sample_id,
+    Buffer::AddSamples(kRightChannel, from_sample_id,
                                    num_samples_to_add, samples);
   }
   
@@ -449,24 +428,24 @@ public:
 };
   
   
-class BFormatBuffer : public MultichannelBuffer {
+class BFormatBuffer : public Buffer {
 public:
   BFormatBuffer(const Int max_degree, const Int num_samples) :
-      MultichannelBuffer(NumChannels(max_degree), num_samples) {}
+      Buffer(NumChannels(max_degree), num_samples) {}
   
   inline void SetSample(const Int degree, const Int order, const Int sample_id,
                         const Sample& sample_value) noexcept {
-    MultichannelBuffer::SetSample(CalculateChannelId(degree, order),
+    Buffer::SetSample(GetChannelId(degree, order),
                                   sample_id, sample_value);
   }
   
-  using MultichannelBuffer::AddSamples;
+  using Buffer::AddSamples;
   
   void AddSamples(const Int degree, const Int order,
                   const Int from_sample_id,
                   const Int num_samples,
                   const Sample* samples) {
-    MultichannelBuffer::AddSamples(CalculateChannelId(degree, order),
+    Buffer::AddSamples(GetChannelId(degree, order),
                                    from_sample_id, num_samples, samples);
   }
   
@@ -477,25 +456,17 @@ public:
                           const Int num_samples,
                           const Sample* samples,
                           const Sample constant) noexcept {
-    MultichannelBuffer::MultiplyAddSamples(CalculateChannelId(degree, order),
-                                           from_sample_id, num_samples,
-                                           samples, constant);
+    Buffer::MultiplyAddSamples(GetChannelId(degree, order),
+                               from_sample_id, num_samples,
+                               samples, constant);
   }
   
   inline Sample GetSample(const Int degree, const Int order,
                           const Int sample_id) const noexcept {
-    return MultichannelBuffer::GetSample(CalculateChannelId(degree, order),
-                                         sample_id);
+    return Buffer::GetSample(GetChannelId(degree, order), sample_id);
   }
   
-  
-private:
-  Int NumChannels(const Int max_degree) const {
-    ASSERT(max_degree > 0);
-    return (max_degree+1)*(max_degree+1); // (N+1)^2
-  }
-  
-  Int CalculateChannelId(const Int degree, const Int order) const {
+  static Int GetChannelId(const Int degree, const Int order) {
     ASSERT(degree >= 0);
     ASSERT(order <= abs(degree));
     Int centre_index = 0;
@@ -508,6 +479,12 @@ private:
     // 6 + 2*3 = 12 OK
     ASSERT(centre_index + order >= 0);
     return centre_index + order;
+  }
+  
+private:
+  Int NumChannels(const Int max_degree) const {
+    ASSERT(max_degree > 0);
+    return (max_degree+1)*(max_degree+1); // (N+1)^2
   }
 };
   

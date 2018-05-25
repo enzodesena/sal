@@ -17,7 +17,7 @@ namespace sal {
 bool Buffer::Test() {
   using mcl::IsEqual;
   
-  MultichannelBuffer buffer(2, 3);
+  Buffer buffer(2, 3);
   ASSERT(buffer.num_samples() == 3);
   ASSERT(buffer.num_channels() == 2);
   for (Int i=0; i<2; ++i) {
@@ -31,19 +31,19 @@ bool Buffer::Test() {
   buffer.SetSample(0, 2, 0.7);
   ASSERT(mcl::IsEqual(buffer.GetSample(0, 2), 0.7));
   
-  MultichannelBuffer buffer_b(2, 3);
+  Buffer buffer_b(2, 3);
   buffer_b.AddSamples(buffer);
   
   ASSERT(mcl::IsEqual(buffer_b.GetSample(0, 0), 0.5));
   ASSERT(mcl::IsEqual(buffer_b.GetSample(0, 2), 0.7));
   
   
-  MultichannelBuffer buf(2,3);
+  Buffer buf(2,3);
   
   buf.SetSample(0,1,1.0);
   buf.SetSample(1,2,-0.5);
   
-  MultichannelBuffer buf2(buf);
+  Buffer buf2(buf);
   ASSERT(IsEqual(buf2.GetSample(0,0), 0.0));
   ASSERT(IsEqual(buf2.GetSample(0,1), 1.0));
   ASSERT(IsEqual(buf2.GetSample(1,2), -0.5));
@@ -63,7 +63,7 @@ bool Buffer::Test() {
   ASSERT(IsEqual(buf2.GetSample(0,1), 2.0)); // Checking no references
   ASSERT(IsEqual(buf.GetSample(0,1), -1.0));  // Checking no references
   
-  MultichannelBuffer buf3(buf.GetWritePointers(),
+  Buffer buf3(buf.GetWritePointers(),
                           buf.num_channels(), buf.num_samples());
   
   ASSERT(IsEqual(buf3.GetSample(0,0), 0.0));
@@ -76,7 +76,7 @@ bool Buffer::Test() {
   ASSERT(IsEqual(buf.GetSample(0,1), -1.0)); // Checking yes referencing
   ASSERT(IsEqual(buf2.GetSample(0,1), 2.0)); // Checking no references
   
-  MultichannelBuffer buf4(3,2);
+  Buffer buf4(3,2);
   ASSERT(IsEqual(buf4.GetSample(0, 1), 0.0));
   
   buf4 = buf;

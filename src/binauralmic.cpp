@@ -23,15 +23,13 @@ void BinauralMic::AddPlaneWaveRelative(const Sample* input_data,
                                        const mcl::Point& point,
                                        const Int wave_id,
                                        Buffer& output_buffer) noexcept {
-  StereoBuffer& stereo_buffer =
-          dynamic_cast<StereoBuffer&>(output_buffer);
   if (!bypass_) {
     CreateInstanceIfNotExist(wave_id);
     instances_.at(wave_id).AddPlaneWaveRelative(input_data, num_samples, point,
-                                                stereo_buffer);
+                                                output_buffer);
   } else {
-    stereo_buffer.AddSamplesLeft(input_data, 0, num_samples);
-    stereo_buffer.AddSamplesRight(input_data, 0, num_samples);
+    output_buffer.AddSamples(Buffer::kLeftChannel, 0, num_samples, input_data);
+    output_buffer.AddSamples(Buffer::kRightChannel, 0, num_samples, input_data);
   }
 }
   
@@ -73,10 +71,12 @@ BinauralMic::BinauralMic(const Point& position,
 void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_data,
                                                const Int num_samples,
                                                const mcl::Point& point,
-                                               StereoBuffer& output_buffer) noexcept {
+                                               Buffer& output_buffer) noexcept {
   UpdateFilter(point);
-  output_buffer.FilterAddSamplesLeft(0, num_samples, input_data, filter_left_);
-  output_buffer.FilterAddSamplesRight(0, num_samples, input_data, filter_right_);
+  output_buffer.FilterAddSamples(Buffer::kLeftChannel, 0, num_samples,
+                                 input_data, filter_left_);
+  output_buffer.FilterAddSamples(Buffer::kRightChannel, 0, num_samples,
+                                 input_data, filter_right_);
 }
 
 void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {

@@ -29,7 +29,7 @@ public:
   
   PaError StartStream();
   
-  PaError WriteStream(const MultichannelBuffer& output_buffer);
+  PaError WriteStream(const Buffer& output_buffer);
   
   PaError StopStream();
   

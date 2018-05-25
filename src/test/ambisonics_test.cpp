@@ -230,7 +230,7 @@ bool AmbisonicsHorizDec::Test() {
                                1.0, // sampling_frequency,
                                SOUND_SPEED);
   BFormatBuffer bformat_buffer(order, 1);
-  MultichannelBuffer output_buffer(loudspeaker_angles.size(), 1);
+  Buffer output_buffer(loudspeaker_angles.size(), 1);
   
   for (Int theta_index=0; theta_index<num_theta; ++theta_index) {
     output_buffer.Reset();
@@ -277,7 +277,7 @@ bool AmbisonicsHorizDec::Test() {
   AmbisonicsMic mic_b(Point(0.0,0.0,0.0), Quaternion::Identity(), 2);
   const Int num_samples = 4;
   BFormatBuffer stream_b(order, num_samples);
-  MultichannelBuffer output_b(loudspeaker_angles.size(), num_samples);
+  Buffer output_b(loudspeaker_angles.size(), num_samples);
   
   AmbisonicsHorizDec decoder_b(order,
                                true, // energy_decoding,
