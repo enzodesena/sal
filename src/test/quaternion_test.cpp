@@ -36,7 +36,7 @@ bool Quaternion::Test() {
   // Quaternion multiplication is distributive but not commutative
   ASSERT(IsEqual(QuatMultiply(QuatMultiply(q, p), r), QuatMultiply(q, QuatMultiply(p, r))));
   
-  ASSERT(IsEqual(QuatRotate(Quaternion(0.5,0.5,0.5,0.5), Point(1.0, 2.0, 3.0), kRightHandeded),
+  ASSERT(IsEqual(QuatRotate(Quaternion(0.5,0.5,0.5,0.5), Point(1.0, 2.0, 3.0), kRightHanded),
                  Point(3.0, 1.0, 2.0)));
   ASSERT(IsEqual(QuatRotate(p, Point(1.0,1.0,1.0), kLeftHanded), Point(-1.0,1.0,1.0)));
   ASSERT(IsEqual(QuatRotate(p, Point(2.0,3.0,4.0), kLeftHanded), Point(-4.0,3.0,2.0)));
@@ -46,13 +46,13 @@ bool Quaternion::Test() {
   ASSERT(IsEqual(AxAng2Quat(1,0,0,PI/2.0),
                  Quaternion(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.0,0.0)));
   
-  ASSERT(IsEqual(QuatRotate(AxAng2Quat(0,1,0,-PI/2.0), Point(1.0,0.0,0.0), kRightHandeded),
+  ASSERT(IsEqual(QuatRotate(AxAng2Quat(0,1,0,-PI/2.0), Point(1.0,0.0,0.0), kRightHanded),
                  Point(0,0,1)));
-  ASSERT(IsEqual(QuatRotate(QuatConj(AxAng2Quat(0,1,0,PI/2.0)), Point(1.0,0.0,0.0), kRightHandeded),
+  ASSERT(IsEqual(QuatRotate(QuatConj(AxAng2Quat(0,1,0,PI/2.0)), Point(1.0,0.0,0.0), kRightHanded),
                  Point(0,0,1)));
   ASSERT(IsEqual(QuatRotate(AxAng2Quat(0,1,0,PI/2.0), Point(1.0,0.0,0.0), kLeftHanded),
                  Point(0,0,1)));
-  ASSERT(IsEqual(QuatRotate(AxAng2Quat(0,1,0,PI/2.0), Point(-1.0,0.0,0.0), kRightHandeded),
+  ASSERT(IsEqual(QuatRotate(AxAng2Quat(0,1,0,PI/2.0), Point(-1.0,0.0,0.0), kRightHanded),
                  Point(0,0,1)));
   ASSERT(IsEqual(QuatRotate(AxAng2Quat(0,1,0,-PI/2.0), Point(-1.0,0.0,0.0), kLeftHanded),
                  Point(0,0,1)));
