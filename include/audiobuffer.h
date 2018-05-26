@@ -25,7 +25,6 @@ class MonoBuffer;
   
 class Buffer {
 public:
-  
   /** Constructs a multichannel buffer. */
   Buffer(const Int num_channels, const Int num_samples) :
       num_channels_(num_channels), num_samples_(num_samples),
@@ -33,6 +32,8 @@ public:
     ASSERT(num_channels >= 0 & num_samples >= 0);
     AllocateMemory();
   }
+  
+  Buffer() : Buffer(0,0) {}
   
   /** Constructs a multichannel buffer as a reference to another data
    structure. If constructed in this way, this object will not own the data.
