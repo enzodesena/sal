@@ -34,6 +34,10 @@ public:
     AddPlaneWave(&input_sample, 1, point, wave_id, output_buffer);
     return output_buffer.GetSample(0);
   }
+  
+  bool IsCoincident() const noexcept { return true; }
+  
+  Int num_channels() const noexcept { return 1; }
 
   virtual ~MonoMic() {}
 };
@@ -85,8 +89,6 @@ public:
           MemorylessMonoMic(position, mcl::Quaternion::Identity()),
           gain_(gain) {}
   
-  virtual bool IsCoincident() const noexcept { return true; }
-  
   virtual bool IsOmni() const noexcept { return true; }
   
   virtual ~GainMic() {}
@@ -106,8 +108,6 @@ public:
         Microphone(position, mcl::Quaternion::Identity()),
         GainMic(position, (Sample) 1.0) {}
   
-  virtual bool IsCoincident() const noexcept { return true; }
-  
   virtual ~OmniMic() {}
 };
   
@@ -124,8 +124,6 @@ public:
           Microphone(position, orientation),
           MemorylessMonoMic(position, orientation),
           coefficients_(coefficients) {}
-  
-  virtual bool IsCoincident() const noexcept { return true; }
   
   virtual ~TrigMic() {}
 private:
@@ -155,8 +153,6 @@ public:
       Microphone(position, orientation),
       MemorylessMonoMic(position, orientation),
       base_angle_(base_angle) {}
-  
-  virtual bool IsCoincident() const noexcept { return true; }
   
   virtual ~TanMic() {}
 private:

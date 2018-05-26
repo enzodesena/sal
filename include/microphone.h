@@ -112,6 +112,8 @@ public:
   
   virtual bool IsCoincident() const noexcept = 0;
   
+  virtual Int num_channels() const noexcept = 0;
+  
   virtual bool IsOmni() const noexcept { return false; }
   
   /** This method translates `point` in the reference system of the mic. */

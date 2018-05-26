@@ -42,7 +42,6 @@ public:
   
   static bool Test();
 private:
-  
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   std::vector<std::vector<Signal> > Load(const Ear ear,

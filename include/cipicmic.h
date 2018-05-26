@@ -44,6 +44,9 @@ public:
            const std::string& directory, const DataType data_type,
            const Int update_length = 0);
   
+  using BinauralMic::IsCoincident;
+  using BinauralMic::num_channels;
+  
   static bool Test();
   
   ~CipicMic() {}

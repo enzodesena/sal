@@ -432,7 +432,7 @@ public:
 class BFormatBuffer : public Buffer {
 public:
   BFormatBuffer(const Int max_degree, const Int num_samples) :
-      Buffer(NumChannels(max_degree), num_samples) {}
+      Buffer(GetNumChannels(max_degree), num_samples) {}
   
   inline void SetSample(const Int degree, const Int order, const Int sample_id,
                         const Sample& sample_value) noexcept {
@@ -482,8 +482,7 @@ public:
     return centre_index + order;
   }
   
-private:
-  Int NumChannels(const Int max_degree) const {
+  static Int GetNumChannels(const Int max_degree) {
     ASSERT(max_degree > 0);
     return (max_degree+1)*(max_degree+1); // (N+1)^2
   }

@@ -46,7 +46,9 @@ public:
   
   virtual void Reset() noexcept;
   
-  virtual bool IsCoincident() const noexcept { return true; }
+  bool IsCoincident() const noexcept { return true; }
+  
+  Int num_channels() const noexcept { return 2; }
   
   virtual ~BinauralMic() {}
   

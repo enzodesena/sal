@@ -69,7 +69,7 @@ public:
    Returns true if the array is coincident. If there are 0 or 1 microphones
    the array is considered coincident.
    */
-  virtual bool IsCoincident() const noexcept {
+  bool IsCoincident() const noexcept {
     const Int num_microphones = (Int)microphones_.size();
 
     if (num_microphones == 0 || num_microphones == 1) { return true; }
@@ -81,6 +81,10 @@ public:
       }
     }
     return true;
+  }
+  
+  Int num_channels() const noexcept {
+    return microphones_.size();
   }
 
   const Microphone* GetConstMicrophonePointer(const Int microphone_id) const noexcept {

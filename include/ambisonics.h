@@ -44,7 +44,11 @@ public:
           Microphone(position, orientation),
           order_(order), convention_(convention) {}
   
-  virtual bool IsCoincident() const noexcept { return true; }
+  bool IsCoincident() const noexcept { return true; }
+  
+  Int num_channels() const noexcept {
+    return BFormatBuffer::GetNumChannels(order_);
+  }
   
   static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
   
