@@ -28,8 +28,10 @@
 #endif
 
 enum DLL_PUBLIC InterpolationType {
-  kLinear,
-  kRounding
+  kRounding, /** Rounds the latency to the nearest integer. */
+  kLinear, /** Applies fractional delays with linear interpolation.
+           It reduces audible clicks, but can cause low-pass
+           effect. */
 };
 
 
