@@ -29,17 +29,6 @@ namespace sal {
  */
 class PropagationLine {
 public:
-
-  enum InterpolationType {
-    rounding, /** Rounds the latency to the nearest integer. */
-    linear, /** Applies fractional delays with linear interpolation.
-             It reduces audible clicks, but can cause low-pass
-             effect. */
-    linear_dynamic /** Only applies fractional delays with linear
-                    interpolation when the propagation line
-                    is changing length. It reduces audible clicks
-                    while not adding low-pass effects. */
-  };
   
   /**
    This constructs a `PropagationLine` object. You need to feed the `distance`
@@ -55,7 +44,7 @@ public:
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100.0,
-                  const InterpolationType = rounding,
+                  const InterpolationType = kRounding,
                   const bool air_filters_active = false,
                   const bool allow_attenuation_larger_than_one = false) noexcept;
   
