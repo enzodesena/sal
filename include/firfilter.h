@@ -51,7 +51,7 @@ public:
    Filter(const std::vector<Real>& input). This is due to the fact that it
    is difficult to update a filter when using DSP-enabled batch filtering. 
    */
-  void set_impulse_response(const std::vector<Real>& impulse_response,
+  void SetImpulseResponse(const std::vector<Real>& impulse_response,
                             const Int update_length = 0) noexcept;
   
   /** Resets the state of the filter */

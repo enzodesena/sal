@@ -14,12 +14,12 @@
 
 namespace mcl {
   
-Real IirFilter::numerator_coefficient(const Int coeff_id) const noexcept {
+Real IirFilter::GetNumeratorCoefficient(const Int coeff_id) const noexcept {
   ASSERT(coeff_id>=0 & coeff_id<=order());
   return B_[coeff_id]*A0_;
 }
   
-void IirFilter::set_numerator_coefficient(const Int coeff_id,
+void IirFilter::SetNumeratorCoefficient(const Int coeff_id,
                                           const Real value) noexcept {
   ASSERT(coeff_id >= 0 && coeff_id<=order());
   B_[coeff_id] = value/A0_;
@@ -91,11 +91,11 @@ Int IirFilter::order() const noexcept {
   return Max(B_.size(), A_.size())-1;
 }
 
-Real IirFilter::denominator_coefficient(const Int coeff_id) const noexcept {
+Real IirFilter::GetDenominatorCoefficient(const Int coeff_id) const noexcept {
   return A_.at(coeff_id);
 }
   
-void IirFilter::set_coefficients(const std::vector<Real>& B,
+void IirFilter::SetCoefficients(const std::vector<Real>& B,
                                  const std::vector<Real>& A) noexcept {
   // TODO: implement case where length changes.
   ASSERT(B_.size() == B.size());
@@ -106,18 +106,18 @@ void IirFilter::set_coefficients(const std::vector<Real>& B,
   A0_ = A[0];
 }
   
-void IirFilter::set_coefficients(const IirFilter& other_filter) noexcept {
+void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
   const Int filter_order = order();
   assert(filter_order == other_filter.order());
   
   for (Int i=0; i<=filter_order; ++i) {
-    set_numerator_coefficient(i, other_filter.numerator_coefficient(i));
-    set_denominator_coefficient(i, other_filter.denominator_coefficient(i));
+    SetNumeratorCoefficient(i, other_filter.GetNumeratorCoefficient(i));
+    SetDenominatorCoefficient(i, other_filter.GetDenominatorCoefficient(i));
   }
 }
   
   
-void IirFilter::set_denominator_coefficient(const Int coeff_id,
+void IirFilter::SetDenominatorCoefficient(const Int coeff_id,
                                             const Real value) noexcept {
   ASSERT(coeff_id >= 0 &&coeff_id<(Int)A_.size());
   A_[coeff_id] = value;

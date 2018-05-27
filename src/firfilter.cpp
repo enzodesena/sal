@@ -208,7 +208,7 @@ void FirFilter::Reset() noexcept {
   delay_line_ = Zeros<Real>(delay_line_.size());
 }
   
-void FirFilter::set_impulse_response(const std::vector<Real>& impulse_response,
+void FirFilter::SetImpulseResponse(const std::vector<Real>& impulse_response,
                                      const Int update_length) noexcept {
   if (mcl::IsEqual(std::vector<Real>(impulse_response.begin(),
                                       impulse_response.end()),

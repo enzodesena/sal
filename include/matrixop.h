@@ -67,7 +67,7 @@ public:
   }
   
   /** Sets element in given row and column */
-  void set_element(const Int& index_row, const Int& index_column,
+  void SetElement(const Int& index_row, const Int& index_column,
                    const T& element) noexcept {
     if (index_row>=num_rows_ || index_column>=num_columns_) {
       ASSERT_WITH_MESSAGE(false, "Out-of-bounds index in setting matrix element");}
@@ -75,36 +75,36 @@ public:
   }
   
   /** Sets an entire column */
-  void set_column(Int index_column, std::vector<T> column) noexcept {
+  void SetColumn(Int index_column, std::vector<T> column) noexcept {
     if ((Int)column.size() != num_rows_) { ASSERT(false); }
     if (index_column >= num_columns_) { ASSERT(false); }
     for (Int i=0; i<num_rows_; ++i) {
-      set_element(i, index_column, column[i]);
+      SetElement(i, index_column, column[i]);
     }
   }
   
   /** Sets an entire row */
-  void set_row(Int index_row, std::vector<T> row) noexcept {
+  void SetRow(Int index_row, std::vector<T> row) noexcept {
     if ((Int)row.size() != num_columns_) { ASSERT(false); }
     if (index_row >= num_rows_) { ASSERT(false); }
     data_[index_row] = row;
   }
   
   /** Accesses an element in given row and column */
-  T element(const Int& index_row, const Int& index_column) const noexcept {
+  T GetElement(const Int& index_row, const Int& index_column) const noexcept {
     if (index_row >= num_rows_) { ASSERT(false); }
     if (index_column >= num_columns_) { ASSERT(false); }
     return data_[index_row][index_column];
   }
   
   /** Accesses an entire row */
-  std::vector<T> row(Int index_row) const noexcept {
+  std::vector<T> GetRow(Int index_row) const noexcept {
     if (index_row >= num_rows_) { ASSERT(false); }
     return data_[index_row];
   }
   
   /** Accesses an entire column */
-  std::vector<T> column(Int index_column) const noexcept {
+  std::vector<T> GetColumn(Int index_column) const noexcept {
     if (index_column >= num_columns_) { ASSERT(false); }
     std::vector<T> output(num_rows_);
     for (Int i=0; i<num_rows_; ++i) { output[i] = data_[i][index_column]; }
@@ -118,7 +118,7 @@ public:
     Int k=0;
     for (Int j=0; j<num_columns(); ++j) {
       for (Int i=0; i<num_rows(); ++i) {
-        serial[k++] = element(i, j);
+        serial[k++] = GetElement(i, j);
       }
     }
     return serial;
@@ -182,7 +182,7 @@ public:
       std::getline(in_file, line);
       std::vector<std::string> elements = Split(line, '\t');
       for (Int column=0; column<(Int)elements.size(); ++column) {
-        matrix.set_element(row, column, (T) StringToDouble(elements[column]));
+        matrix.SetElement(row, column, (T) StringToDouble(elements[column]));
       }
     }
     
@@ -197,7 +197,7 @@ public:
     Matrix<T> matrix(number_of_rows, number_of_columns);
     for(Int row=0; row<number_of_rows; ++row) {
       for (Int column=0; column<number_of_columns; ++column) {
-        matrix.set_element(row, column, (T) 1.0);
+        matrix.SetElement(row, column, (T) 1.0);
       }
     }
     return matrix;
@@ -221,7 +221,7 @@ template<class T>
 void Print(const Matrix<T>& matrix) noexcept {
   for (Int i=0; i<matrix.num_rows(); ++i) {
     for (Int j=0; j<matrix.num_columns(); ++j) {
-      std::cout<<matrix.element(i,j)<<"\t";
+      std::cout<<matrix.GetElement(i,j)<<"\t";
     }
     std::cout<<std::endl;
   }
@@ -234,7 +234,7 @@ Matrix<T> Transpose(const Matrix<T>& matrix) noexcept {
   
   for (Int i=0; i<output.num_rows(); ++i) {
     for (Int j=0; j<output.num_columns(); ++j) {
-      output.set_element(i, j, matrix.element(j, i));
+      output.SetElement(i, j, matrix.GetElement(j, i));
     }
   }
   return output;
@@ -249,7 +249,7 @@ Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
   Matrix<T> output(matrix.num_rows(), matrix.num_columns());
   for (Int i=0; i<output.num_rows(); ++i) {
     for (Int j=0; j<output.num_columns(); ++j) {
-      output.set_element(i, j, matrix.element(i, j)*value);
+      output.SetElement(i, j, matrix.GetElement(i, j)*value);
     }
   }
   return output;
@@ -267,9 +267,9 @@ Matrix<T> Multiply(const Matrix<T>& matrix_a,
     for (Int j=0; j<output.num_columns(); ++j) {
       T output_value = (T) 0.0;
       for (Int k=0; k<matrix_a.num_columns(); ++k) {
-        output_value += matrix_a.element(i, k) * matrix_b.element(k, j);
+        output_value += matrix_a.GetElement(i, k) * matrix_b.GetElement(k, j);
       }
-      output.set_element(i, j, output_value);
+      output.SetElement(i, j, output_value);
     }
   }
   return output;
@@ -280,12 +280,12 @@ std::vector<T> Multiply(const Matrix<T>& matrix_a,
                                 const std::vector<T>& vector) noexcept {
   if (matrix_a.num_columns() != (Int)vector.size()) { ASSERT(false); }
   Matrix<T> temp_input(vector.size(), 1);
-  temp_input.set_column(0, vector);
+  temp_input.SetColumn(0, vector);
   Matrix<T> temp_output = Multiply(matrix_a, temp_input);
   if (temp_output.num_columns() != 1) { ASSERT(false); }
   if (temp_output.num_rows() != (Int)vector.size()) { ASSERT(false); }
   
-  return temp_output.column(0);
+  return temp_output.GetColumn(0);
 }
   
   
@@ -320,7 +320,7 @@ bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) noexcept {
   
   for (Int i=0; i<matrix_a.num_rows(); ++i) {
     for (Int j=0; j<matrix_a.num_columns(); ++j) {
-      if (!IsEqual(matrix_a.element(i, j), matrix_b.element(i, j))) {
+      if (!IsEqual(matrix_a.GetElement(i, j), matrix_b.GetElement(i, j))) {
         return  false;
       }
     }

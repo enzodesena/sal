@@ -571,13 +571,13 @@ bool VectorOpTest() {
 //  vector_f[3] = -1.0;
   ASSERT(! IsEqual(Cov(vector_e, vector_f), Cov(vector_f, vector_e)));
   Matrix<Real> cov_e_f = Cov(vector_e, vector_f);
-  ASSERT(IsEqual(cov_e_f.element(0,0), Var(vector_e)));
-  ASSERT(IsEqual(cov_e_f.element(0,0), 191.9800000000000));
-  ASSERT(IsEqual(cov_e_f.element(1,1), 4.886666666666667));
-  ASSERT(IsEqual(cov_e_f.element(1,1), Var(vector_f)));
-  ASSERT(IsEqual(cov_e_f.element(0,0), Var(vector_e)));
-  ASSERT(IsEqual(cov_e_f.element(0,1), cov_e_f.element(1,0)));
-  ASSERT(IsEqual(cov_e_f.element(0,1), 5.333333333333333));
+  ASSERT(IsEqual(cov_e_f.GetElement(0,0), Var(vector_e)));
+  ASSERT(IsEqual(cov_e_f.GetElement(0,0), 191.9800000000000));
+  ASSERT(IsEqual(cov_e_f.GetElement(1,1), 4.886666666666667));
+  ASSERT(IsEqual(cov_e_f.GetElement(1,1), Var(vector_f)));
+  ASSERT(IsEqual(cov_e_f.GetElement(0,0), Var(vector_e)));
+  ASSERT(IsEqual(cov_e_f.GetElement(0,1), cov_e_f.GetElement(1,0)));
+  ASSERT(IsEqual(cov_e_f.GetElement(0,1), 5.333333333333333));
   
   // Cumsum
   //  std::vector<Real> vector_e(4);

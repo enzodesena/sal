@@ -239,7 +239,7 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) noexcept {
   Matrix<Real> output(N, N);
   for (Int i=0; i<N; ++i) {
     for (Int j=0; j<N; ++j) {
-      output.set_element(i, j, CovElement(input[i], input[j]));
+      output.SetElement(i, j, CovElement(input[i], input[j]));
     }
   }
   return output;

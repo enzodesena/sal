@@ -15,7 +15,7 @@ Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept {
   Matrix<Real> output(input.num_rows(), input.num_columns());
   for (Int i=0; i<input.num_rows(); ++i) {
     for (Int j=0; j<input.num_columns(); ++j) {
-      output.set_element(i, j, input.element(i, j).real());
+      output.SetElement(i, j, input.GetElement(i, j).real());
     }
   }
   return output;

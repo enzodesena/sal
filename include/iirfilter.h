@@ -47,20 +47,20 @@ public:
    Updates the filter coefficients. May cause articafts if the coefficients are
    updated too rapidly.
    */
-  void set_coefficients(const std::vector<Real>& B,
+  void SetCoefficients(const std::vector<Real>& B,
                         const std::vector<Real>& A) noexcept;
   
   /** Sets the coefficients as identical to those of another filter. */
-  void set_coefficients(const IirFilter& filter) noexcept;
+  void SetCoefficients(const IirFilter& filter) noexcept;
   
-  Real numerator_coefficient(const Int coeff_id) const noexcept;
+  Real GetNumeratorCoefficient(const Int coeff_id) const noexcept;
   
-  Real denominator_coefficient(const Int coeff_id) const noexcept;
+  Real GetDenominatorCoefficient(const Int coeff_id) const noexcept;
   
-  void set_numerator_coefficient(const Int coeff_id,
+  void SetNumeratorCoefficient(const Int coeff_id,
                                  const Real value) noexcept;
   
-  inline void set_denominator_coefficient(const Int coeff_id,
+  inline void SetDenominatorCoefficient(const Int coeff_id,
                                           const Real value) noexcept;
   
   /** Returns the forward coefficients */

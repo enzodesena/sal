@@ -221,7 +221,7 @@ bool FirFilter::Test() {
   impulse[2] = 0.0;
   
   FirFilter filter_a;
-  filter_a.set_impulse_response(impulse_resp);
+  filter_a.SetImpulseResponse(impulse_resp);
   std::vector<Real> output_aa_cmp = filter_a.Filter(impulse);
   ASSERT(IsEqual(output_aa_cmp, impulse_resp));
   
@@ -387,7 +387,7 @@ bool FirFilter::Test() {
   FirFilter filter_t(mcl::UnaryVector<Real>(1.0));
   ASSERT(IsEqual(filter_t.Filter(0.76), 0.76));
   ASSERT(IsEqual(filter_t.Filter(1.0), 1.0));
-  filter_t.set_impulse_response(mcl::UnaryVector<Real>(0.3), 1);
+  filter_t.SetImpulseResponse(mcl::UnaryVector<Real>(0.3), 1);
   ASSERT(IsEqual(filter_t.Filter(1.0), 0.5*1.0+0.5*0.3));
   ASSERT(IsEqual(filter_t.Filter(1.0), 0.3));
 

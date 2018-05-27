@@ -28,10 +28,6 @@ public:
   Real y() const noexcept { return y_; }
   Real z() const noexcept { return z_; }
   
-  void set_x(Real x) noexcept { x_ = x; }
-  void set_y(Real y) noexcept { y_ = y; }
-  void set_z(Real z) noexcept { z_ = z; }
-  
   /** Returns the norm of the vector, or, in other words, the distance
    of the point from the origin (0,0,0) */
   Real norm() const noexcept;
@@ -51,6 +47,8 @@ private:
   Real y_;
   Real z_;
 };
+  
+  
   
 typedef Triplet Point;
   
