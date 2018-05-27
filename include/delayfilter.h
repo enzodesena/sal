@@ -72,7 +72,7 @@ public:
    Resets the latency of the filter. This can introduce artifacts if the
    latency is updated too fast.
    */
-  void set_latency(const Int) noexcept;
+  void SetLatency(const Int) noexcept;
   
   /** Returns the current latency of the delay filter */
   Int latency() const noexcept;

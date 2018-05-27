@@ -27,7 +27,7 @@ DelayFilter::DelayFilter(Int latency, Int max_latency) noexcept : latency_(-1) {
   end_ = start_+max_latency;
   
   write_index_ = start_;
-  this->set_latency(latency);
+  this->SetLatency(latency);
   for (Int i=0; i<(max_latency+1); ++i) { start_[i] = 0.0; }
 }
 
@@ -109,7 +109,7 @@ void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
 }
   
   
-void DelayFilter::set_latency(const Int latency) noexcept {
+void DelayFilter::SetLatency(const Int latency) noexcept {
   if (latency_ == latency) { return; }
   latency_ = latency;
   if (latency > max_latency_) {

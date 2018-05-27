@@ -196,15 +196,15 @@ bool AmbisonicsHorizDec::Test() {
           AmbisonicsHorizDec::ModeMatchingDec(2, loudspeaker_angles);
   ASSERT(decoding_matrix.num_columns() == 5);
   ASSERT(decoding_matrix.num_rows() == 5);
-  ASSERT(IsEqual(decoding_matrix.element(0, 0), 0.200000000000000));
-  ASSERT(IsEqual(decoding_matrix.element(1, 0), 0.200000000000000));
-  ASSERT(IsEqual(decoding_matrix.element(4, 0), 0.200000000000000));
-  ASSERT(IsEqual(decoding_matrix.element(0, 1), 0.282842712474619));
-  ASSERT(IsEqual(decoding_matrix.element(3, 1), -0.228824561127074));
-  ASSERT(IsEqual(decoding_matrix.element(0, 2), 0.0));
-  ASSERT(IsEqual(decoding_matrix.element(3, 2), -0.166250775110981));
-  ASSERT(IsEqual(decoding_matrix.element(2, 3), 0.087403204889764));
-  ASSERT(IsEqual(decoding_matrix.element(4, 4), -0.166250775110981));
+  ASSERT(IsEqual(decoding_matrix.GetElement(0, 0), 0.200000000000000));
+  ASSERT(IsEqual(decoding_matrix.GetElement(1, 0), 0.200000000000000));
+  ASSERT(IsEqual(decoding_matrix.GetElement(4, 0), 0.200000000000000));
+  ASSERT(IsEqual(decoding_matrix.GetElement(0, 1), 0.282842712474619));
+  ASSERT(IsEqual(decoding_matrix.GetElement(3, 1), -0.228824561127074));
+  ASSERT(IsEqual(decoding_matrix.GetElement(0, 2), 0.0));
+  ASSERT(IsEqual(decoding_matrix.GetElement(3, 2), -0.166250775110981));
+  ASSERT(IsEqual(decoding_matrix.GetElement(2, 3), 0.087403204889764));
+  ASSERT(IsEqual(decoding_matrix.GetElement(4, 4), -0.166250775110981));
   
   
   // Testing Ambisonics mode-matching decoding
@@ -264,11 +264,11 @@ bool AmbisonicsHorizDec::Test() {
   mcl::Matrix<Sample> max_re_dec =
           AmbisonicsHorizDec::MaxEnergyDec(2, loudspeaker_angles);
   mcl::Matrix<Sample> max_re_dec_cmp(5,5);
-  max_re_dec_cmp.set_element(0, 0, 1.0);
-  max_re_dec_cmp.set_element(1, 1, cos(PI/(6.0)));
-  max_re_dec_cmp.set_element(2, 2, cos(PI/(6.0)));
-  max_re_dec_cmp.set_element(3, 3, cos(2.0*PI/(6.0)));
-  max_re_dec_cmp.set_element(4, 4, cos(2.0*PI/(6.0)));
+  max_re_dec_cmp.SetElement(0, 0, 1.0);
+  max_re_dec_cmp.SetElement(1, 1, cos(PI/(6.0)));
+  max_re_dec_cmp.SetElement(2, 2, cos(PI/(6.0)));
+  max_re_dec_cmp.SetElement(3, 3, cos(2.0*PI/(6.0)));
+  max_re_dec_cmp.SetElement(4, 4, cos(2.0*PI/(6.0)));
   ASSERT(IsEqual(max_re_dec, max_re_dec_cmp));
   
   

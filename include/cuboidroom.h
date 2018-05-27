@@ -78,11 +78,11 @@ public:
   
   Triplet dimensions() const noexcept { return dimensions_; }
   
-  void set_dimensions(const Triplet& dimensions) noexcept {
+  void SetDimensions(const Triplet& dimensions) noexcept {
     dimensions_ = dimensions;
   }
   
-  void set_origin_position(const Triplet& position) {
+  void SetOriginPosition(const Triplet& position) {
     origin_position_ = position;
   }
   

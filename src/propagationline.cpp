@@ -63,27 +63,27 @@ Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
   }
 }
 
-void PropagationLine::set_attenuation(const Sample attenuation,
+void PropagationLine::SetAttenuation(const Sample attenuation,
                                       const sal::Time ramp_time) noexcept {
   Sample attenuation_value = (allow_gain_) ? attenuation :
                                              SanitiseAttenuation(attenuation);
   
-  attenuation_smoother_.set_target_value(attenuation_value, ramp_time);
+  attenuation_smoother_.SetTargetValue(attenuation_value, ramp_time);
 }
 
-void PropagationLine::set_distance(const Length distance,
+void PropagationLine::SetDistance(const Length distance,
                                    const sal::Time ramp_time) noexcept {
-  latency_smoother_.set_target_value(ComputeLatency(distance, sampling_frequency_),
+  latency_smoother_.SetTargetValue(ComputeLatency(distance, sampling_frequency_),
                                      ramp_time);
-  set_attenuation(ComputeAttenuation(distance, sampling_frequency_), ramp_time);
+  SetAttenuation(ComputeAttenuation(distance, sampling_frequency_), ramp_time);
   
   if (air_filters_active_) {
-    air_filter_.set_impulse_response(GetAirFilter(distance),
+    air_filter_.SetImpulseResponse(GetAirFilter(distance),
                                      (int) round(ramp_time*sampling_frequency_));
   }
 }
 
-void PropagationLine::set_air_filters_active(const bool air_filters_active) noexcept {
+void PropagationLine::SetAirFiltersActive(const bool air_filters_active) noexcept {
   air_filters_active_ = air_filters_active;
   if (air_filters_active_ == false) {
     air_filter_.Reset();
@@ -99,14 +99,14 @@ void PropagationLine::Reset() noexcept {
 void PropagationLine::Tick() noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue();
   current_latency_ = latency_smoother_.GetNextValue();
-  delay_filter_.set_latency((int) round(current_latency_));
+  delay_filter_.SetLatency((int) round(current_latency_));
   delay_filter_.Tick();
 }
   
 void PropagationLine::Tick(const Int num_samples) noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue(num_samples);
   current_latency_ = latency_smoother_.GetNextValue(num_samples);
-  delay_filter_.set_latency((Int) round(current_latency_));
+  delay_filter_.SetLatency((Int) round(current_latency_));
   delay_filter_.Tick(num_samples);
 }
   

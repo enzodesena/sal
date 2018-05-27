@@ -85,7 +85,7 @@ bool DelayFilter::Test() {
   delay_filter_c.Write(0.0);
   ASSERT(IsEqual(delay_filter_c.Read(),1.0));
   
-  delay_filter_c.set_latency(3);
+  delay_filter_c.SetLatency(3);
   
   delay_filter_c.Tick();
   delay_filter_c.Write(2.0);
@@ -105,7 +105,7 @@ bool DelayFilter::Test() {
   delay_filter_c.Write(0.0);
   ASSERT(IsEqual(delay_filter_c.Read(),2.0));
   
-  delay_filter_c.set_latency(2);
+  delay_filter_c.SetLatency(2);
   
   delay_filter_c.Tick();
   delay_filter_c.Write(3.0);
@@ -138,7 +138,7 @@ bool DelayFilter::Test() {
   delay_filter_d.Write(1.0);
   ASSERT(IsEqual(delay_filter_d.Read(),1.0));
   
-  delay_filter_d.set_latency(2);
+  delay_filter_d.SetLatency(2);
   
   delay_filter_d.Tick();
   delay_filter_d.Write(1.0);
@@ -148,7 +148,7 @@ bool DelayFilter::Test() {
   delay_filter_d.Write(1.0);
   ASSERT(IsEqual(delay_filter_d.Read(),1.0));
   
-  delay_filter_d.set_latency(4);
+  delay_filter_d.SetLatency(4);
   
   delay_filter_d.Tick();
   delay_filter_d.Write(1.0);
@@ -162,7 +162,7 @@ bool DelayFilter::Test() {
   delay_filter_d.Write(1.0);
   ASSERT(IsEqual(delay_filter_d.Read(),1.0));
   
-  delay_filter_d.set_latency(3);
+  delay_filter_d.SetLatency(3);
   
   delay_filter_d.Tick();
   delay_filter_d.Write(1.0);
@@ -260,7 +260,7 @@ bool DelayFilter::Test() {
   DelayFilter delay_filter_e = DelayFilter(0, 100);
   ASSERT(IsEqual(delay_filter_e.Filter(0.0), 0.0));
   ASSERT(IsEqual(delay_filter_e.Filter(0.2), 0.2));
-  delay_filter_e.set_latency(1);
+  delay_filter_e.SetLatency(1);
   delay_filter_e.Reset();
   ASSERT(IsEqual(delay_filter_e.Filter(1.0), 0.0));
   ASSERT(IsEqual(delay_filter_e.Filter(0.0), 1.0));

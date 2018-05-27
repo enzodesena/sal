@@ -69,7 +69,7 @@ bool Microphone::Test() {
   
   TrigMic mic_p(Point(2.0,1.2,0.5), mcl::AxAng2Quat(0,0,1,0), coefficients);
   Sample sample = mic_p.RecordPlaneWave(0.5, Point(2.0+cos(0),1.2+sin(0),0.5+0.4));
-  mic_p.set_orientation(mcl::AxAng2Quat(0,0,1,PI/10.0));
+  mic_p.SetOrientation(mcl::AxAng2Quat(0,0,1,PI/10.0));
   ASSERT(IsEqual(mic_p.RecordPlaneWave(0.5, Point(2.0+cos(PI/10.0),1.2+sin(PI/10.0),0.5+0.4)),
                  sample));
   

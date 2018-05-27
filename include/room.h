@@ -37,22 +37,22 @@ public:
   
   // Resets the wall filters. Warning! It may cancel the state of the old ones,
   // with probable audible artifacts.
-  void set_wall_filters(const std::vector<mcl::IirFilter>& wall_filters) noexcept {
+  void SetWallFilters(const std::vector<mcl::IirFilter>& wall_filters) noexcept {
     wall_filters_ = wall_filters;
   }
   
-  void set_wall_filter(const Int wall_id, const mcl::IirFilter& filter) noexcept {
+  void SetWallFilter(const Int wall_id, const mcl::IirFilter& filter) noexcept {
     ASSERT(wall_id>=0 && wall_id<num_boundary_points());
     wall_filters_[wall_id] = filter;
   }
   
-  void set_wall_filters(const mcl::IirFilter& filter) noexcept {
+  void SetWallFilters(const mcl::IirFilter& filter) noexcept {
     wall_filters_.assign(num_faces(), filter);
   }
   
   void SetFiltersNumeratorCoefficient(const Int coeff_id, const Sample value) {
     for (Int i=0; i < (Int) wall_filters_.size(); ++i) {
-      wall_filters_[i].set_numerator_coefficient(coeff_id, value);
+      wall_filters_[i].SetNumeratorCoefficient(coeff_id, value);
     }
   }
   

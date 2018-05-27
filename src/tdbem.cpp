@@ -249,7 +249,7 @@ void TdBem::Run(const MonoBuffer& input_buffer,
       pressures_[i].Write(pressure);
       
       if (log_) {
-        boundary_pressure.set_element(i, k, pressure);
+        boundary_pressure.SetElement(i, k, pressure);
       }
     }
     
@@ -280,12 +280,12 @@ void TdBem::Run(const MonoBuffer& input_buffer,
 void TdBem::WriteOutPoints(const std::string file_name) {
   mcl::Matrix<sal::Length> output(num_elements_, 6);
   for (Int i=0; i<num_elements_; ++i) {
-    output.set_element(i, 0, points_[i].x());
-    output.set_element(i, 1, points_[i].y());
-    output.set_element(i, 2, points_[i].z());
-    output.set_element(i, 3, normal_vectors_[i].x());
-    output.set_element(i, 4, normal_vectors_[i].y());
-    output.set_element(i, 5, normal_vectors_[i].z());
+    output.SetElement(i, 0, points_[i].x());
+    output.SetElement(i, 1, points_[i].y());
+    output.SetElement(i, 2, points_[i].z());
+    output.SetElement(i, 3, normal_vectors_[i].x());
+    output.SetElement(i, 4, normal_vectors_[i].y());
+    output.SetElement(i, 5, normal_vectors_[i].z());
   }
   output.Save(file_name);
 }

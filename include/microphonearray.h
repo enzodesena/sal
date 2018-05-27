@@ -41,7 +41,7 @@ public:
    This method will move all the internal microphones to a new position.
    The relative positions of the different microphones will stay unchanged.
    */
-  virtual void set_position(const mcl::Point& position) noexcept {
+  virtual void SetPosition(const mcl::Point& position) noexcept {
     mcl::Point position_delta(position.x()-this->position().x(),
                               position.y()-this->position().y(),
                               position.z()-this->position().z());
@@ -50,17 +50,17 @@ public:
       mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
                                   old_mic_position.y()+position_delta.y(),
                                   old_mic_position.z()+position_delta.z());
-      microphones_[i]->set_position(new_mic_position);
+      microphones_[i]->SetPosition(new_mic_position);
     }
     
-    Microphone::set_position(position);
+    Microphone::SetPosition(position);
   }
   
   
 
-  virtual void set_orientation(const mcl::Quaternion& orientation) {
+  virtual void SetOrientation(const mcl::Quaternion& orientation) {
     for (Int i=0; i<(Int)microphones_.size(); ++i) {
-      microphones_[i]->set_orientation(orientation);
+      microphones_[i]->SetOrientation(orientation);
     }
     orientation_ = orientation;
   }
@@ -191,10 +191,10 @@ public:
                 const std::vector<Angle>& angles) :
         UniformArray<T>(position, orientation, mic_prototype, angles.size()),
       radius_(radius), angles_(angles) {
-    set_orientation(orientation);
+    SetOrientation(orientation);
   }
 
-  virtual void set_orientation(const mcl::Quaternion& orientation) {
+  virtual void SetOrientation(const mcl::Quaternion& orientation) {
     mcl::Point position(this->position());
     std::vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
 
@@ -206,8 +206,8 @@ public:
       mcl::Point relative_position = mcl::QuatRotate(orientation,
                                                      mcl::Subtract(positions[i],
                                                                    position));
-      this->microphones_[i]->set_position(mcl::Sum(relative_position, position));
-      this->microphones_[i]->set_orientation(q);
+      this->microphones_[i]->SetPosition(mcl::Sum(relative_position, position));
+      this->microphones_[i]->SetOrientation(q);
     }
   }
 

@@ -53,16 +53,16 @@ public:
   mcl::Point position() const noexcept;
   
   /** Set microphone position */
-  virtual void set_position(const mcl::Point& position) noexcept;
+  virtual void SetPosition(const mcl::Point& position) noexcept;
   
   /** Returns current orientation of the microphone */
   mcl::Quaternion orientation() const noexcept;
   
   /** Set microphone orientation */
-  void set_orientation(const mcl::Quaternion& orientation) noexcept;
+  void SetOrientation(const mcl::Quaternion& orientation) noexcept;
   
   /** Set handedness of reference system */
-  void set_handedness(const Handedness handedness) noexcept;
+  void SetHandedness(const Handedness handedness) noexcept;
   
   /**
    We do not implement directly the case of a single plane wave because in

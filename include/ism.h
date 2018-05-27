@@ -66,9 +66,9 @@ public:
   std::vector<sal::Sample> rir() { return rir_; }
   std::vector<sal::Time> images_delay() { return images_delay_; }
   
-  void set_peterson_window(sal::Time duration) { peterson_window_ = duration; }
+  void SetPetersonWindow(sal::Time duration) { peterson_window_ = duration; }
   
-  void set_random_distance(sal::Length distance) { random_distance_ = distance; }
+  void SetRandomDistance(sal::Length distance) { random_distance_ = distance; }
   
   static bool Test();
 };

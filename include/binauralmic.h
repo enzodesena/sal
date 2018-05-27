@@ -39,10 +39,10 @@ public:
               const Int update_length,
               const HeadRefOrientation reference_orientation = standard);
   
-  void set_update_length(Int update_length) noexcept { update_length_ = update_length; }
+  void SetUpdateLength(Int update_length) noexcept { update_length_ = update_length; }
   
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
-  void set_bypass(bool bypass) noexcept;
+  void SetBypass(bool bypass) noexcept;
   
   virtual void Reset() noexcept;
   

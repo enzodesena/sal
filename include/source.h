@@ -26,7 +26,7 @@ public:
   
   mcl::Point position() const noexcept;
   
-  void set_position(const mcl::Point& position) noexcept;
+  void SetPosition(const mcl::Point& position) noexcept;
   
 private:
   Triplet position_;

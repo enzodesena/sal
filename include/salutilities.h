@@ -64,18 +64,18 @@ public:
            std::numeric_limits<Speed>::infinity());
   }
   
-  void set_max_speed(const sal::Length& max_speed) {
+  void SetMaxSpeed(const sal::Length& max_speed) {
     max_speed_ = max_speed;
   }
   
   /** This sets the triplet regardless of the maximum speed. */
-  void set_value(const Triplet& triplet) noexcept {
+  void SetValue(const Triplet& triplet) noexcept {
     target_triplet_ = triplet;
     current_triplet_ = triplet;
     has_reached_target_ = true;
   }
   
-  void set_target_value(const Triplet& target_triplet) noexcept {
+  void SetTargetValue(const Triplet& target_triplet) noexcept {
     target_triplet_ = target_triplet;
     has_reached_target_ = false;
   }
@@ -210,8 +210,7 @@ public:
   
   Sample target_value() const noexcept { return target_value_; }
   
-  void set_target_value(const Sample target_value,
-                        const Time ramp_time) noexcept {
+  void SetTargetValue(const Sample target_value, const Time ramp_time) noexcept {
     ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
                         "Ramp time cannot be negative ");
     if (((Int) round(ramp_time*sampling_frequency_)) == 0) {

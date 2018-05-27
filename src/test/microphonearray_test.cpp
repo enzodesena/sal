@@ -47,7 +47,7 @@ bool MicrophoneArrayTest() {
   ASSERT(mcl::IsEqual(microphones_a[0]->orientation(), mcl::AxAng2Quat(0,0,1,0)));
   ASSERT(mcl::IsEqual(microphones_a[1]->orientation(), mcl::AxAng2Quat(0,0,1,2.0*PI/5.0)));
 
-  microphone_array_a.set_position(Point(1.0,0.0,1.5));
+  microphone_array_a.SetPosition(Point(1.0,0.0,1.5));
   ASSERT(microphones_a[0]->position().Equals(Point(1.0+array_radius,0.0,1.5)));
   ASSERT(microphones_a[1]->position().Equals(Point(1.0+array_radius*cos(2.0*PI/5.0),
                                                    0.0+array_radius*sin(2.0*PI/5.0),

@@ -23,7 +23,7 @@ Source::Source(const Point& position) noexcept :
 
 Point Source::position() const noexcept { return position_; }
 
-void Source::set_position(const Point& position) noexcept {
+void Source::SetPosition(const Point& position) noexcept {
   position_ = position;
 }
 

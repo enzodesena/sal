@@ -344,14 +344,14 @@ bool CipicMic::Test() {
   
   // Testing bypass
   stream_t.Reset();
-  mic_t.set_bypass(false);
-  mic_t.set_bypass(true);
+  mic_t.SetBypass(false);
+  mic_t.SetBypass(true);
   mic_t.AddPlaneWave(MonoBuffer::Unary(1.2), Point(0.0,0.0,-1.0), stream_t);
   ASSERT(IsEqual(stream_t.GetLeftReadPointer()[0], 1.2));
   ASSERT(IsEqual(stream_t.GetRightReadPointer()[0], 1.2));
   
   stream_t.Reset();
-  mic_t.set_bypass(false);
+  mic_t.SetBypass(false);
   mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
   ASSERT(mcl::IsEqual(stream_t.GetLeftReadPointer(), cmp_imp_back_left));
   ASSERT(mcl::IsEqual(stream_t.GetRightReadPointer(), cmp_imp_back_right));

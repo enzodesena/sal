@@ -23,7 +23,7 @@ Microphone::Microphone(Point position, mcl::Quaternion orientation) :
 
 Point Microphone::position() const noexcept { return position_; }
 
-void Microphone::set_position(const Point& position) noexcept {
+void Microphone::SetPosition(const Point& position) noexcept {
   position_ = position;
 }
   
@@ -31,12 +31,12 @@ void Microphone::set_position(const Point& position) noexcept {
 Quaternion Microphone::orientation() const noexcept { return orientation_; }
   
 /** Set microphone orientation */
-void Microphone::set_orientation(const mcl::Quaternion& orientation) noexcept {
+void Microphone::SetOrientation(const mcl::Quaternion& orientation) noexcept {
   orientation_ = orientation;
 }
   
   
-void Microphone::set_handedness(const Handedness handedness) noexcept {
+void Microphone::SetHandedness(const Handedness handedness) noexcept {
   handedness_ = handedness;
 }
   

@@ -163,7 +163,7 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(Int order,
   Matrix<Sample> temp(2*order+1, num_loudspeakers);
   
   for (Int i=0; i<num_loudspeakers; ++i) {
-    temp.set_column(i, AmbisonicsMic::HorizontalEncoding(order,
+    temp.SetColumn(i, AmbisonicsMic::HorizontalEncoding(order,
                                                          loudspeaker_angles[i]));
   }
   // TODO: implement for non-regular loudspeaker arrays.
@@ -178,12 +178,12 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(Int order,
                  const std::vector<Angle>& loudspeaker_angles) {
   // TODO: Implement for non-regular loudspeaker arrays.
   mcl::Matrix<Sample> decoding_matrix(2*order+1, 2*order+1);
-  decoding_matrix.set_element(0, 0, MaxEnergyDecWeight(0, order));
+  decoding_matrix.SetElement(0, 0, MaxEnergyDecWeight(0, order));
   Int k=1;
   for (Int i=1; i<=order; ++i) {
-    decoding_matrix.set_element(k, k, MaxEnergyDecWeight(i, order));
+    decoding_matrix.SetElement(k, k, MaxEnergyDecWeight(i, order));
     k++;
-    decoding_matrix.set_element(k, k, MaxEnergyDecWeight(i, order));
+    decoding_matrix.SetElement(k, k, MaxEnergyDecWeight(i, order));
     k++;
   }
   return decoding_matrix;

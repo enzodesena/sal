@@ -34,7 +34,7 @@ void BinauralMic::AddPlaneWaveRelative(const Sample* input_data,
 }
   
 
-void BinauralMic::set_bypass(bool bypass) noexcept {
+void BinauralMic::SetBypass(bool bypass) noexcept {
   if (bypass_  && !bypass) { this->Reset(); }
   bypass_ = bypass;
 }
@@ -84,9 +84,9 @@ void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
     // Update cache variables
     previous_point_ = point;
     
-    filter_left_.set_impulse_response(base_mic_->GetBrir(left_ear, point),
+    filter_left_.SetImpulseResponse(base_mic_->GetBrir(left_ear, point),
                                       update_length_);
-    filter_right_.set_impulse_response(base_mic_->GetBrir(right_ear, point),
+    filter_right_.SetImpulseResponse(base_mic_->GetBrir(right_ear, point),
                                       update_length_);
   }
 }

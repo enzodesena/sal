@@ -54,7 +54,7 @@ public:
   sal::Length distance() const noexcept;
   
   /** This overrides the 1/r rule attenuation. */
-  void set_attenuation(const sal::Sample,
+  void SetAttenuation(const sal::Sample,
                        const sal::Time ramp_time = 0.0) noexcept;
   
   inline sal::Time current_latency() const noexcept { return current_latency_; }
@@ -63,7 +63,7 @@ public:
     return latency_smoother_.target_value();
   }
   
-  void set_air_filters_active(const bool) noexcept;
+  void SetAirFiltersActive(const bool) noexcept;
   
   void Write(const sal::Sample &sample) noexcept;
   
@@ -88,7 +88,7 @@ public:
    since if the distance is changed too fast, sound distortion will be
    observed.
    */
-  void set_distance(const sal::Length distance,
+  void SetDistance(const sal::Length distance,
                     const sal::Time ramp_time = 0.0) noexcept;
   
   /** Resets the state of the filter */

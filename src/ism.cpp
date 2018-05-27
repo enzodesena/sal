@@ -65,13 +65,13 @@ void Ism::Run(const Sample* input_data, const Int num_samples,
 void Ism::CalculateRir() {
   mcl::Matrix<Sample> beta(2,3);
   std::vector<mcl::IirFilter> filters = room_->wall_filters();
-  beta.set_element(0, 0, filters[0].B()[0]); // beta_{x1}
-  beta.set_element(0, 1, filters[2].B()[0]); // beta_{y1}
-  beta.set_element(0, 2, filters[4].B()[0]); // beta_{z1}
+  beta.SetElement(0, 0, filters[0].B()[0]); // beta_{x1}
+  beta.SetElement(0, 1, filters[2].B()[0]); // beta_{y1}
+  beta.SetElement(0, 2, filters[4].B()[0]); // beta_{z1}
   
-  beta.set_element(1, 0, filters[1].B()[0]); // beta_{x2}
-  beta.set_element(1, 1, filters[3].B()[0]); // beta_{y2}
-  beta.set_element(1, 2, filters[5].B()[0]); // beta_{z2}
+  beta.SetElement(1, 0, filters[1].B()[0]); // beta_{x2}
+  beta.SetElement(1, 1, filters[3].B()[0]); // beta_{y2}
+  beta.SetElement(1, 2, filters[5].B()[0]); // beta_{z2}
   
   Length room_x = ((CuboidRoom*)room_)->dimensions().x();
   Length room_y = ((CuboidRoom*)room_)->dimensions().y();
@@ -126,12 +126,12 @@ void Ism::CalculateRir() {
               if (round(delay*sampling_frequency_) < 0 ||
                   round(delay*sampling_frequency_) >= rir_length_) { continue; }
               
-              Sample gid = Pow(beta.element(0,0), Abs((Sample)mx-px)) *
-                           Pow(beta.element(1,0), Abs((Sample)mx)) *
-                           Pow(beta.element(0,1), Abs((Sample)my-py)) *
-                           Pow(beta.element(1,1), Abs((Sample)my)) *
-                           Pow(beta.element(0,2), Abs((Sample)mz-pz)) *
-                           Pow(beta.element(1,2), Abs((Sample)mz));
+              Sample gid = Pow(beta.GetElement(0,0), Abs((Sample)mx-px)) *
+                           Pow(beta.GetElement(1,0), Abs((Sample)mx)) *
+                           Pow(beta.GetElement(0,1), Abs((Sample)my-py)) *
+                           Pow(beta.GetElement(1,1), Abs((Sample)my)) *
+                           Pow(beta.GetElement(0,2), Abs((Sample)mz-pz)) *
+                           Pow(beta.GetElement(1,2), Abs((Sample)mz));
               
               Sample attenuation = gid/(delay*sampling_frequency_);
               

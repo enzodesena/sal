@@ -73,7 +73,7 @@ bool PropagationLine::Test() {
   
   //
   prop_line_a.Reset();
-  prop_line_a.set_distance((Length) 2.0 * SOUND_SPEED/FS);
+  prop_line_a.SetDistance((Length) 2.0 * SOUND_SPEED/FS);
   attenuation = 1.0 / 2.0;
   
   prop_line_a.Tick();
@@ -102,7 +102,7 @@ bool PropagationLine::Test() {
   ASSERT(IsEqual(prop_line_b.Read(), 1.0*attenuation));
   
   
-  prop_line_b.set_distance((Length) 2.0 * SOUND_SPEED/FS);
+  prop_line_b.SetDistance((Length) 2.0 * SOUND_SPEED/FS);
   attenuation = 1.0 / 2.0;
   for (Int i=0; i<20; ++i) {
     prop_line_b.Tick();
