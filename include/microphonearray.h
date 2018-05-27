@@ -33,7 +33,7 @@ class MicrophoneArray : public Microphone {
 public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
-                  const std::vector<MonoMic*>& microphones) :
+                  const std::vector<Microphone*>& microphones) :
       Microphone(position, orientation), microphones_(microphones) {}
 
   
@@ -95,8 +95,16 @@ public:
     return microphones_.at(microphone_id);
   }
   
-  std::vector<MonoMic*> GetMicrophonePointers() const noexcept {
+  std::vector<Microphone*> GetMicrophonePointers() const noexcept {
     return microphones_;
+  }
+  
+  std::vector<const Microphone*> GetConstMicrophonePointers() const noexcept {
+    std::vector<const Microphone*> microphones(num_microphones());
+    for (Int i=0; i<num_microphones(); ++i) {
+      microphones[i] = (const Microphone*) microphones_[i];
+    }
+    return microphones;
   }
 
   Int num_microphones() const noexcept {
@@ -132,7 +140,7 @@ public:
     }
   }
 protected:
-  std::vector<MonoMic*> microphones_;
+  std::vector<Microphone*> microphones_;
 };
 
   
@@ -156,9 +164,9 @@ public:
   }
   
 private:
-  std::vector<MonoMic*>
+  std::vector<Microphone*>
   MicrophoneFactory(const T& mic_prototype, const Int num_microphones) {
-    std::vector<MonoMic*> output(num_microphones);
+    std::vector<Microphone*> output(num_microphones);
     for (Int i=0; i<num_microphones; ++i) {
       output[i] = new T(mic_prototype);
     }
