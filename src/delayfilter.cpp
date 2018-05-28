@@ -65,6 +65,7 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
 void DelayFilter::Tick(const Int num_samples) noexcept {
   ASSERT(num_samples >= 0);
   if (num_samples > latency_) {
+    Logger::GetInstance().
     LogError("Ticking by more samples (%d) than the latency of the delay "
              "line (%d). The operation will go ahead, but this implies that "
              "some samples may never be read.",
@@ -90,6 +91,7 @@ void DelayFilter::Tick(const Int num_samples) noexcept {
 void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
   ASSERT(num_samples >= 0);
   if (num_samples > (max_latency_-latency_+1)) {
+    Logger::GetInstance().
     LogError("Writing more samples (%d) than max_latency-latency+1 (%d)."
              "This operation will go ahead, but some samples will be "
              "overwritten. ",
@@ -113,6 +115,7 @@ void DelayFilter::SetLatency(const Int latency) noexcept {
   if (latency_ == latency) { return; }
   latency_ = latency;
   if (latency > max_latency_) {
+    Logger::GetInstance().
     LogError("Trying to set a delay filter latency (%d) larger than "
              "the maximum latency (%d). The latency will be set to the "
              "the maximum latency instead. ",
@@ -134,6 +137,7 @@ Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 Sample DelayFilter::ReadAt(const Int delay_tap) const noexcept {
   Int sanitised_delay_tap = delay_tap;
   if (delay_tap >= max_latency_) {
+    Logger::GetInstance().
     LogError("Trying to read at a delay tap (%d) larger than the maximum latency "
              "of the delay line (%d). Giving back the value at the maximum "
              "latency instead. ",
@@ -150,6 +154,7 @@ Sample DelayFilter::ReadAt(const Int delay_tap) const noexcept {
 void DelayFilter::Read(const Int num_samples,
                        Sample* output_data) const noexcept {
   if (num_samples > latency_) {
+    Logger::GetInstance().
     LogError("Trying to read a number of samples (%d) larger than the latency "
              "of the delay line (%d). This operation will go ahead, but it "
              "means you will be reading samples that haven't been written yet.",
@@ -172,6 +177,7 @@ Sample DelayFilter::FractionalReadAt(const Time fractional_delay_tap)
       const noexcept {
   Time sanitised_delay_tap = fractional_delay_tap;
   if (fractional_delay_tap >= (Time) max_latency_) {
+    Logger::GetInstance().
     LogError("Trying to read at a delay tap (%f) larger than the maximum latency "
              "of the delay line (%d). Giving back the value at the maximum "
              "latency instead. ",
