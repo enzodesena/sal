@@ -27,7 +27,11 @@ public:
   Real x() const noexcept { return x_; }
   Real y() const noexcept { return y_; }
   Real z() const noexcept { return z_; }
-  
+
+  void SetX(const Real value) noexcept { x_ = value; }
+  void SetY(const Real value) noexcept { y_ = value; }
+  void SetZ(const Real value) noexcept { z_ = value; }
+
   /** Returns the norm of the vector, or, in other words, the distance
    of the point from the origin (0,0,0) */
   Real norm() const noexcept;
