@@ -285,8 +285,8 @@ public:
         Buffer(1, num_samples) {}
   
   MonoBuffer(Sample* data_referenced, const Int num_samples) noexcept :
-        data_referenced_(data_referenced),
-        Buffer(&data_referenced_, 1, num_samples) {}
+        Buffer(&data_referenced_, 1, num_samples),
+        data_referenced_(data_referenced) {}
   
   /** Constructs a mono buffer as a reference to a multichannel buffer.
    If constructed in this way, this object will not own the data.
