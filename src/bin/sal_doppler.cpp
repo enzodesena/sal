@@ -40,20 +40,20 @@ int main(int argc, char * const argv[]) {
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
   PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
-                               PropagationLine::rounding);
+                               kRounding);
   
   PropagationLine line(current_distance, sampling_frequency, 1000.0,
-                       PropagationLine::rounding);
-  line.set_attenuation(1.0, 0.0);
+                       kRounding);
+  line.SetAttenuation(1.0, 0.0);
   
   Int index = 0;
   while (index<ceil(sine_length*sampling_frequency)) {
     Time update_period = (Time) samples_per_buffer / sampling_frequency; // In seconds
     Length space_covered = update_period * speed;
     current_distance += space_covered;
-    line_doppler.set_distance(current_distance, update_period);
+    line_doppler.SetDistance(current_distance, update_period);
     
-    line_doppler.set_attenuation(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
+    line_doppler.SetAttenuation(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
     
     for (Int i=0; i<samples_per_buffer; ++i) {
       if (index>=ceil(sine_length*sampling_frequency)) { continue; }
@@ -64,10 +64,10 @@ int main(int argc, char * const argv[]) {
       line.Tick();
       line.Write(sine.at(index));
       
-      doppler_sine.set_element(index, 0, line_doppler.Read());
-      original_sine.set_element(index, 0, line.Read());
+      doppler_sine.SetElement(index, 0, line_doppler.Read());
+      original_sine.SetElement(index, 0, line.Read());
       
-      current_latency.set_element(index, 0, line_doppler.current_latency());
+      current_latency.SetElement(index, 0, line_doppler.current_latency());
       
       index++;
     }
