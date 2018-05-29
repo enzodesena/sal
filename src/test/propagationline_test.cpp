@@ -90,7 +90,7 @@ bool PropagationLine::Test() {
   
   //
   PropagationLine prop_line_b = PropagationLine((Length) 5.0 * SOUND_SPEED/FS,
-                                                FS, 100.0, kRounding);
+                                                FS, 100.0, sal::kRounding);
   attenuation = 1.0 / 5.0;
   
   prop_line_b.Tick();
@@ -128,7 +128,7 @@ bool PropagationLine::Test() {
   assert(input_samples.size() == output_samples.size());
   
   PropagationLine prop_line_c = PropagationLine(((Length) latency_samples) * SOUND_SPEED/FS,
-                                                FS, 1.0, kRounding);
+                                                FS, 1.0, sal::kRounding);
   
   for (Int i=0; i<num_samples; ++i) {
     prop_line_c.Write(input_samples[i]);

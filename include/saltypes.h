@@ -41,6 +41,14 @@ enum Ear {
   right_ear
 };
 
+
+enum InterpolationType {
+  kRounding, /** Rounds the latency to the nearest integer. */
+  kLinear, /** Applies fractional delays with linear interpolation.
+            It reduces audible clicks, but can cause low-pass
+            effect. */
+};
+
   
   
 } // namespace sal

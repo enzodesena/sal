@@ -23,7 +23,7 @@ namespace sal {
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance,
-                                 const InterpolationType interpolation_type,
+                                 const sal::InterpolationType interpolation_type,
                                  const bool air_filters_active,
                                  const bool allow_gain) noexcept :
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
@@ -165,14 +165,14 @@ void PropagationLine::Read(const Int num_samples,
     RampSmoother temp_latency(latency_smoother_);
     
     switch (interpolation_type_) {
-      case kRounding: {
+      case sal::kRounding: {
         for (Int i=1; i<num_samples; ++i) {
           output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i)
                            * temp_attenuation.GetNextValue();
         }
         return;
       }
-      case kLinear: {
+      case sal::kLinear: {
         for (Int i=1; i<num_samples; ++i) {
           output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
                            * temp_attenuation.GetNextValue();
@@ -189,10 +189,10 @@ void PropagationLine::Read(const Int num_samples,
   
 sal::Sample PropagationLine::Read() const noexcept {
   switch (interpolation_type_) {
-    case kRounding: {
+    case sal::kRounding: {
       return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
     }
-    case kLinear: {
+    case sal::kLinear: {
       return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
     }
     default:

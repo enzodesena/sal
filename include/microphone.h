@@ -62,7 +62,7 @@ public:
   void SetOrientation(const mcl::Quaternion& orientation) noexcept;
   
   /** Set handedness of reference system */
-  void SetHandedness(const Handedness handedness) noexcept;
+  void SetHandedness(const mcl::Handedness handedness) noexcept;
   
   /**
    We do not implement directly the case of a single plane wave because in
@@ -154,7 +154,7 @@ public:
 private:
   mcl::Triplet position_;
   mcl::Quaternion orientation_;
-  Handedness handedness_;
+  mcl::Handedness handedness_;
   
   friend class MicrophoneArray;
 };

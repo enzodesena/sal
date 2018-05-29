@@ -19,7 +19,7 @@ namespace sal {
   
 Microphone::Microphone(Point position, mcl::Quaternion orientation) :
   position_(position), orientation_(orientation),
-  handedness_(kRightHanded) {}
+  handedness_(mcl::kRightHanded) {}
   
 
 Point Microphone::position() const noexcept { return position_; }
@@ -37,7 +37,7 @@ void Microphone::SetOrientation(const mcl::Quaternion& orientation) noexcept {
 }
   
   
-void Microphone::SetHandedness(const Handedness handedness) noexcept {
+  void Microphone::SetHandedness(const mcl::Handedness handedness) noexcept {
   handedness_ = handedness;
 }
   

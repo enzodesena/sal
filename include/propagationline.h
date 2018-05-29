@@ -44,7 +44,7 @@ public:
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100.0,
-                  const InterpolationType = kRounding,
+                  const sal::InterpolationType = sal::kRounding,
                   const bool air_filters_active = false,
                   const bool allow_attenuation_larger_than_one = false) noexcept;
   
@@ -120,7 +120,7 @@ private:
   bool air_filters_active_;
   mcl::FirFilter air_filter_;
   
-  InterpolationType interpolation_type_;
+  sal::InterpolationType interpolation_type_;
   
   /** This is true if the attenuation coefficients can be larger than 1.0 */
   bool allow_gain_;
