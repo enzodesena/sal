@@ -352,9 +352,9 @@ bool VectorOpTest() {
   vector_g_frame_0[1] = 0.0;
   ASSERT(IsEqual(GetSegment(vector_g, 0, 2), vector_g_frame_0));
   ASSERT(IsEqual(GetSegment(vector_g, 1, 2), UnaryVector((Real) -2.4)));
-  ASSERT(IsEqual(GetSegment(vector_g, 1, 2, true), BinaryVector(-2.4, 0.0)));
+  ASSERT(IsEqual<Real>(GetSegment(vector_g, 1, 2, true), BinaryVector<Real>(-2.4, 0.0)));
   ASSERT(IsEqual(GetSegment(vector_g, 2, 2, false), std::vector<Real>()));
-  ASSERT(IsEqual(GetSegment(vector_g, 2, 2, true), BinaryVector(0.0, 0.0)));
+  ASSERT(IsEqual<Real>(GetSegment(vector_g, 2, 2, true), BinaryVector<Real>(0.0, 0.0)));
   
   // Testing prod()
   ASSERT(IsEqual(Prod(vector_g_frame_0), 0.0));
@@ -538,9 +538,9 @@ bool VectorOpTest() {
   vector_bb_result_cmp[3] = -5.0*0.5+0.0;
   ASSERT(IsEqual(vector_bb_result, vector_bb_result_cmp));
   
-  std::vector<Real> weights_uniform_a = Multiply(Ones(4), 1.0/4.0);
+  std::vector<Real> weights_uniform_a = Multiply<Real>(Ones(4), 1.0/4.0);
   ASSERT(IsEqual(Mean(vector_ba), Mean(vector_ba, weights_uniform_a)));
-  std::vector<Real> weights_uniform_b = Multiply(Ones(4), 1.0);
+  std::vector<Real> weights_uniform_b = Multiply<Real>(Ones(4), 1.0);
   ASSERT(IsEqual(Mean(vector_ba), Mean(vector_ba, weights_uniform_b)));
   std::vector<Real> weights_uniform_c = Zeros<Real>(4);
   weights_uniform_c[0] = 0.5;

@@ -27,7 +27,7 @@
   #endif
 #endif
 
-enum DLL_PUBLIC InterpolationType {
+enum InterpolationType {
   kRounding, /** Rounds the latency to the nearest integer. */
   kLinear, /** Applies fractional delays with linear interpolation.
            It reduces audible clicks, but can cause low-pass
@@ -49,14 +49,14 @@ enum AttenuationType {
 
 /** Enum describing whether we are using a right handed or left handed
  reference system. */
-enum DLL_PUBLIC Handedness {
+enum Handedness {
   kRightHanded,
   kLeftHanded
 };
 
 /** This enum is related to the frequencye absorption characteristics of
  the different walls.  */
-enum DLL_PUBLIC WallType {
+enum WallType {
   kCarpetPile,      /** 6 mm pile carpet bonded to open-cell foam underlay
                      alpha = [0.03,0.09,0.20,0.54,0.70,0.72,0.72];
                      f = [125, 250, 500, 1000, 2000, 4000, 8000]; */
