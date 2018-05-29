@@ -29,7 +29,7 @@ bool KemarMic::Test() {
   Sample sample = 0.5;
   impulse.SetSample(0, sample);
   
-  Sample normalising_value = sample*1.0/NORMALISING_VALUE_KEMAR;
+  Sample normalising_value = sample/NORMALISING_VALUE_KEMAR;
   
   
   // Testing frontal direction

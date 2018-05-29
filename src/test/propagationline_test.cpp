@@ -124,7 +124,7 @@ bool PropagationLine::Test() {
   std::vector<Sample> output_samples = mcl::Concatenate(mcl::Zeros<Sample>(latency_samples),
                                                         mcl::Elements(input_samples, 0,
                                                                       num_samples-latency_samples));
-  output_samples = mcl::Multiply(output_samples, 1.0/3.0);
+  output_samples = mcl::Multiply<sal::Sample>(output_samples, 1.0/3.0);
   assert(input_samples.size() == output_samples.size());
   
   PropagationLine prop_line_c = PropagationLine(((Length) latency_samples) * SOUND_SPEED/FS,

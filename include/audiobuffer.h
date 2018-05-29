@@ -263,9 +263,9 @@ private:
   std::vector<Sample> temporary_vector_; // Support vector for filter operation
   
   void AllocateMemory() {
-    data_ = new double*[num_channels_];
+    data_ = new Sample*[num_channels_];
     for (Int chan_id=0; chan_id<num_channels_; ++chan_id) {
-      data_[chan_id] = new double[num_samples_]();
+      data_[chan_id] = new Sample[num_samples_]();
     }
   }
   
