@@ -102,7 +102,7 @@ Int Next2(Int input) {
 }
   
 Real Entropy(std::vector<Real> pdf, Real base) {
-  pdf = Multiply(pdf, 1.0/Sum(pdf));
+  pdf = Multiply<Real>(pdf, 1.0/Sum(pdf));
   return -Sum(Multiply(pdf, Log(pdf)))/log(base);
 }
   
