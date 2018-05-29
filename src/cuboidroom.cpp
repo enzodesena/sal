@@ -26,9 +26,9 @@ using mcl::IsSmallerOrEqual;
 
 bool CuboidRoom::IsPointInRoom(const Point& point,
                                const Length wall_distance) const noexcept {
-  return isgreaterequal(point.x(), 0.0 - origin_position_.x() + wall_distance) &&
-         isgreaterequal(point.y(), 0.0 - origin_position_.y() + wall_distance) &&
-         isgreaterequal(point.z(), 0.0 - origin_position_.z() + wall_distance) &&
+  return isgreaterequal(point.x(), origin_position_.x() + wall_distance) &&
+         isgreaterequal(point.y(), origin_position_.y() + wall_distance) &&
+         isgreaterequal(point.z(), origin_position_.z() + wall_distance) &&
          islessequal(point.x(), dimensions_.x() -  origin_position_.x() - wall_distance) &&
          islessequal(point.y(), dimensions_.y() -  origin_position_.y() - wall_distance) &&
          islessequal(point.z(), dimensions_.z() -  origin_position_.z() - wall_distance);
@@ -36,21 +36,23 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
                                                        const Point& mic_point) const noexcept {
-  
+  // These points are normalised such that they are between 0<x<Lx etc...
+  mcl::Point shifted_source_point = mcl::Subtract(source_point, origin_position_);
+  mcl::Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
   std::vector<Point> reflection_points(6);
   
-  reflection_points[0] = (ReflectionPoint(kX1, source_point, mic_point));
-  reflection_points[1] = (ReflectionPoint(kX2, source_point, mic_point));
-  reflection_points[2] = (ReflectionPoint(kY1, source_point, mic_point));
-  reflection_points[3] = (ReflectionPoint(kY2, source_point, mic_point));
-  reflection_points[4] = (ReflectionPoint(kZ1, source_point, mic_point));
-  reflection_points[5] = (ReflectionPoint(kZ2, source_point, mic_point));
+  reflection_points[0] = (ReflectionPoint(kX1, shifted_source_point, shifted_mic_point));
+  reflection_points[1] = (ReflectionPoint(kX2, shifted_source_point, shifted_mic_point));
+  reflection_points[2] = (ReflectionPoint(kY1, shifted_source_point, shifted_mic_point));
+  reflection_points[3] = (ReflectionPoint(kY2, shifted_source_point, shifted_mic_point));
+  reflection_points[4] = (ReflectionPoint(kZ1, shifted_source_point, shifted_mic_point));
+  reflection_points[5] = (ReflectionPoint(kZ2, shifted_source_point, shifted_mic_point));
   
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 = IntersectionPoint(kX2, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 1,0,0, 1,1,0));
-    Point a_kY1 = IntersectionPoint(kY1, dimensions_, mic_point,
-                                   ImageSourcePosition(source_point, 1,0,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 1,0,0, 1,1,0));
+    Point a_kY1 = IntersectionPoint(kY1, dimensions_, shifted_mic_point,
+                                   ImageSourcePosition(shifted_source_point, 1,0,0, 1,1,0));
     if (IsPointInRoom(a_kX2, EPSILON)) {
       ASSERT(!IsPointInRoom(a_kY1, EPSILON));
       reflection_points.push_back(a_kX2);
@@ -60,9 +62,9 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
     }
     
     Point b_kX2 = IntersectionPoint(kX2, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 1,1,0, 1,1,0));
     Point b_kY2 = IntersectionPoint(kY2, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 1,1,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 1,1,0, 1,1,0));
     if (IsPointInRoom(b_kX2, EPSILON)) {
       ASSERT(!IsPointInRoom(b_kY2, EPSILON));
       reflection_points.push_back(b_kX2);
@@ -72,9 +74,9 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
     }
     
     Point c_kX1 = IntersectionPoint(kX1, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 0,1,0, 1,1,0));
     Point c_kY2 = IntersectionPoint(kY2, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 0,1,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 0,1,0, 1,1,0));
     if (IsPointInRoom(c_kX1, EPSILON)) {
       ASSERT(!IsPointInRoom(c_kY2, EPSILON));
       reflection_points.push_back(c_kX1);
@@ -84,9 +86,9 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
     }
     
     Point d_kX1 = IntersectionPoint(kX1, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 0,0,0, 1,1,0));
     Point d_kY1 = IntersectionPoint(kY1, dimensions_,
-                                   mic_point, ImageSourcePosition(source_point, 0,0,0, 1,1,0));
+                                   shifted_mic_point, ImageSourcePosition(shifted_source_point, 0,0,0, 1,1,0));
     if (IsPointInRoom(d_kX1, EPSILON)) {
       ASSERT(!IsPointInRoom(d_kY1, EPSILON));
       reflection_points.push_back(d_kX1);
@@ -97,8 +99,7 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   }
   
   for (Int i=0; i<(Int) reflection_points.size(); ++i) {
-    reflection_points[i] = mcl::Subtract(reflection_points[i],
-                                         origin_position_);
+    reflection_points[i] = mcl::Sum(reflection_points[i], origin_position_);
   }
   
   return reflection_points;
@@ -295,10 +296,13 @@ mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
   
   
 std::string CuboidRoom::ShapeDescription() const noexcept {
-  return "The room is rectangular with dimensions (" +
-          std::to_string(dimensions_.x()) + ", " +
-          std::to_string(dimensions_.y()) + ", " +
-          std::to_string(dimensions_.z()) + ") [m].";
+  return "The room is rectangular with " +
+      std::to_string(origin_position_.x()) + "<x<" +
+      std::to_string(origin_position_.x()+dimensions_.x()) + " " +
+      std::to_string(origin_position_.y()) + "<y<" +
+      std::to_string(origin_position_.y()+dimensions_.y()) + " " +
+      std::to_string(origin_position_.z()) + "<z<" +
+      std::to_string(origin_position_.z()+dimensions_.z()) + " [m].";
 }
   
 } // namespace sal
