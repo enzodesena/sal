@@ -2,48 +2,8 @@
 #define CONSTANTS_H
 
 
-#if defined _WIN32 || defined __CYGWIN__
-  #ifdef _EXPORTING
-    #ifdef __GNUC__
-      #define DLL_PUBLIC __attribute__((dllexport))
-    #else
-      #define DLL_PUBLIC __declspec(dllexport)
-    #endif
-      #else
-    #ifdef __GNUC__
-      #define DLL_PUBLIC __attribute__((dllimport))
-    #else
-      #define DLL_PUBLIC __declspec(dllimport)
-    #endif
-  #endif
-  #define DLL_HIDDEN
-#else
-  #if __GNUC__ > 4
-    #define DLL_PUBLIC __attribute__ ((visibility("default")))
-    #define DLL_HIDDEN __attribute__ ((visibility("hidden")))
-  #else
-    #define DLL_PUBLIC
-    #define DLL_HIDDEN
-  #endif
-#endif
-
-enum InterpolationType {
-  kRounding, /** Rounds the latency to the nearest integer. */
-  kLinear, /** Applies fractional delays with linear interpolation.
-           It reduces audible clicks, but can cause low-pass
-           effect. */
-};
-
-
-/** Defines different strategies for the attenuation of the SDN. */
-enum AttenuationType {
-  kInverseSquareLaw, /** This is the standard strategy which emulates the
-                      inverse square law for all components, including the LOS
-                      (see paper) */
-  kConstantLos /** This strategy is the same as kInverseSquareLaw, except
-                that the LOS componet does not attenuate, and it is taken
-                as the attenuation corresponding to a 1 meter distance. */
-};
+namespace mcl {
+  
 
 
 
@@ -74,4 +34,5 @@ enum WallType {
                      alpha = 0 for all frequencies */
 };
 
+}
 #endif /* CONSTANTS_H */
