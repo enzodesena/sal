@@ -35,6 +35,18 @@ enum DLL_PUBLIC InterpolationType {
 };
 
 
+/** Defines different strategies for the attenuation of the SDN. */
+enum AttenuationType {
+  kInverseSquareLaw, /** This is the standard strategy which emulates the
+                      inverse square law for all components, including the LOS
+                      (see paper) */
+  kConstantLos /** This strategy is the same as kInverseSquareLaw, except
+                that the LOS componet does not attenuate, and it is taken
+                as the attenuation corresponding to a 1 meter distance. */
+};
+
+
+
 /** Enum describing whether we are using a right handed or left handed
  reference system. */
 enum DLL_PUBLIC Handedness {
