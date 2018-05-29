@@ -10,6 +10,7 @@
 
 #include "microphone.h"
 #include "quaternion.h"
+#include "mcltypes.h"
 
 using mcl::Point;
 using mcl::Quaternion;
@@ -103,7 +104,7 @@ void Microphone::AddPlaneWaveRelative(const MonoBuffer& signal,
 
 Point Microphone::GetRelativePoint(const Point& point) const noexcept {
   if (mcl::IsEqual(point, position_)) {
-    Logger::GetInstance().
+    mcl::Logger::GetInstance().
     LogError("Microphone (%f, %f, %f) and observation point (%f, %f, %f) appear "
              "to be approximately in the same position. Behaviour undefined.",
              point.x(), point.y(), point.z(),

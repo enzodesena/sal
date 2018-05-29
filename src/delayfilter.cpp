@@ -14,6 +14,7 @@
 
 using sal::Sample;
 using sal::Int;
+using mcl::Logger;
 
 namespace sal {
 

@@ -53,7 +53,7 @@ PropagationLine::PropagationLine(const Length distance,
   
 Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
   if (isgreater(mcl::Abs(attenuation), 1.0)) {
-    Logger::GetInstance().
+    mcl::Logger::GetInstance().
     LogError("Attempting to set the attenuation of a propagation line to %f, "
              "which has modulus larger than 1. Clipping to 1 "
              "(+-, depending on sign). If you want to "

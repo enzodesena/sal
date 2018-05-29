@@ -26,25 +26,25 @@ using mcl::IsSmallerOrEqual;
 
 bool CuboidRoom::IsPointInRoom(const Point& point,
                                const Length wall_distance) const noexcept {
-  return isgreaterequal(point.x(), 0.0 + wall_distance) &&
-         isgreaterequal(point.y(), 0.0 + wall_distance) &&
-         isgreaterequal(point.z(), 0.0 + wall_distance) &&
-         islessequal(point.x(), dimensions_.x() - wall_distance) &&
-         islessequal(point.y(), dimensions_.y() - wall_distance) &&
-         islessequal(point.z(), dimensions_.z() - wall_distance);
+  return isgreaterequal(point.x(), 0.0 - origin_position_.x() + wall_distance) &&
+         isgreaterequal(point.y(), 0.0 - origin_position_.y() + wall_distance) &&
+         isgreaterequal(point.z(), 0.0 - origin_position_.z() + wall_distance) &&
+         islessequal(point.x(), dimensions_.x() -  origin_position_.x() - wall_distance) &&
+         islessequal(point.y(), dimensions_.y() -  origin_position_.y() - wall_distance) &&
+         islessequal(point.z(), dimensions_.z() -  origin_position_.z() - wall_distance);
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
                                                        const Point& mic_point) const noexcept {
   
-  std::vector<Point> reflection_points;
+  std::vector<Point> reflection_points(6);
   
-  reflection_points.push_back(ReflectionPoint(kX1, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(kX2, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(kY1, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(kY2, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(kZ1, source_point, mic_point));
-  reflection_points.push_back(ReflectionPoint(kZ2, source_point, mic_point));
+  reflection_points[0] = (ReflectionPoint(kX1, source_point, mic_point));
+  reflection_points[1] = (ReflectionPoint(kX2, source_point, mic_point));
+  reflection_points[2] = (ReflectionPoint(kY1, source_point, mic_point));
+  reflection_points[3] = (ReflectionPoint(kY2, source_point, mic_point));
+  reflection_points[4] = (ReflectionPoint(kZ1, source_point, mic_point));
+  reflection_points[5] = (ReflectionPoint(kZ2, source_point, mic_point));
   
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 = IntersectionPoint(kX2, dimensions_,
@@ -97,7 +97,8 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   }
   
   for (Int i=0; i<(Int) reflection_points.size(); ++i) {
-    reflection_points[i] = mcl::Subtract(reflection_points[i], origin_position_);
+    reflection_points[i] = mcl::Subtract(reflection_points[i],
+                                         origin_position_);
   }
   
   return reflection_points;
@@ -153,7 +154,6 @@ mcl::Int CuboidRoom::num_boundary_points() const noexcept {
       return 10;
       break;
     default:
-      ASSERT(false);
       ASSERT(false);
       return (mcl::UInt) NAN;
       break;

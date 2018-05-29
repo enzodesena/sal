@@ -40,6 +40,8 @@ public:
            const Int update_length = 0,
            const HeadRefOrientation reference_orientation = standard);
   
+  static bool IsDatabaseAvailable(const std::string directory);
+  
   static bool Test();
 private:
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
@@ -61,9 +63,14 @@ private:
    */
   Int FindAzimuthIndex(Angle azimuth, Int elevation_index);
   
+  static Array<mcl::Int, NUM_ELEVATIONS_KEMAR> GetNumMeasurements() noexcept;
+  static Array<mcl::Int, NUM_ELEVATIONS_KEMAR> GetElevations() noexcept;
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations_;
+  
+  static std::string GetFilePath(const Angle elevation, const Angle angle,
+                                 const std::string directory) noexcept;
 };
   
 

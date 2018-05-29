@@ -35,14 +35,60 @@ KemarMic::KemarMic(const Point& position,
           DatabaseBinauralMic(position, orientation, update_length,
                               reference_orientation) {
             
-  num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
-  elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
+  num_measurements_ = GetNumMeasurements();
+  elevations_ = GetElevations();
             
   hrtf_database_right_ = Load(right_ear, directory, num_samples);
   hrtf_database_left_ = Load(left_ear, directory, num_samples);
 }
   
+Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetNumMeasurements() noexcept {
+  return {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
+}
 
+Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetElevations() noexcept {
+  return {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
+}
+  
+bool KemarMic::IsDatabaseAvailable(const std::string directory) {
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
+  
+  for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+    
+    Angle resolution = 360.0 / num_measurements[i];
+    Angle elevation = elevations[i];
+    Int num_measurement = (UInt) floor(((Angle) num_measurements[i])/2.0)+1;
+    
+    for (Int j=0; j<num_measurement; ++j) {
+      Angle angle = (Int) round(j * resolution);
+      
+      std::ifstream file;
+      file.open (GetFilePath(elevation, angle, directory),
+                 std::ios::in | std::ios::binary | std::ios::ate);
+      if (! file.good()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
+                                  const std::string directory) noexcept {
+  char file_name[1000];
+  char directory_name[1000];
+  char file_path[1000];
+  sprintf(directory_name, "/elev%d/", (int)elevation);
+  
+  sprintf(file_name, "H%de%03da.dat", (int)elevation, (int)angle);
+  
+  strcpy(file_path, directory.c_str());
+  strcat(file_path, directory_name);
+  strcat(file_path, file_name);
+  return std::string(file_path);
+}
+  
 std::vector<std::vector<Signal> >
   KemarMic::Load(const Ear ear, const std::string directory,
                  const Int num_samples) {
@@ -59,21 +105,13 @@ std::vector<std::vector<Signal> >
     for (Int j=0; j<num_measurement; ++j) {
       Angle angle = (Int) round(j * resolution);
       
-      char file_name[1000];
-      char directory_name[1000];
-      char file_path[1000];
-      sprintf(directory_name, "/elev%d/", (int)elevation);
-      
-      sprintf(file_name, "H%de%03da.dat", (int)elevation, (int)angle);
-      
-      strcpy(file_path, directory.c_str());
-      strcat(file_path, directory_name);
-      strcat(file_path, file_name);
-      
       std::ifstream file;
-      
-      file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-      if (! file.good()) { throw("Kemar lib not found."); }
+      file.open (GetFilePath(elevation, angle, directory),
+                 std::ios::in | std::ios::binary | std::ios::ate);
+      if (! file.good()) {
+        mcl::Logger::GetInstance().LogErrorToCerr("Kemar lib not found.");
+        throw("Kemar lib not found.");
+      }
       long size = (long) file.tellg();
       ASSERT(sizeof(short) == 2);
       short* data = new short[size/2];

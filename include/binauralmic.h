@@ -99,6 +99,8 @@ public:
    */
   void FilterAll(mcl::DigitalFilter* filter);
   
+  static bool IsDatabaseAvailable(const std::string directory);
+  
   virtual ~DatabaseBinauralMic() {}
 protected:
   // Database

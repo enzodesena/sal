@@ -20,11 +20,13 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   SF_INFO input_file_info;
   
   if (! (input_file = sf_open(file_name.c_str(), SFM_READ, &input_file_info))) {
+    mcl::Logger::GetInstance().LogErrorToCerr("Error : could not open file.");
     throw("Error : could not open file.");
   }
   
   if (! sf_format_check (&input_file_info)) {
     sf_close (input_file);
+    mcl::Logger::GetInstance().LogErrorToCerr("Error : could not open file.");
     throw("Error : could not open file.");
   }
   
