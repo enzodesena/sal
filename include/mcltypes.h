@@ -23,6 +23,7 @@
 
 #include <complex>
 #include <vector>
+#include <iostream>
 
 #if _WIN32 || _WIN64
   #if _WIN64
@@ -55,6 +56,57 @@ typedef std::complex<Real> Complex; /**< Complex type */
   typedef long Int; /**< Int type */
 #endif
 
+class Logger {
+public:
+  static Logger& GetInstance() {
+    static Logger instance;
+    return instance;
+  }
+  
+  enum OutputType {
+    kNone,
+    kCerr,
+    kOutputFile
+  };
+  
+  void LogErrorToCerr(std::string output) {
+    std::cerr<<output<<std::endl;
+  }
+  
+  void LogErrorToCerr(const char* output) {
+    std::cerr<<output<<std::endl;
+  }
+  
+  template< typename... argv >
+  void LogError(const char* format, argv... args) {
+    if (output_type_ == kNone) { return; }
+    
+    const size_t SIZE = std::snprintf( NULL, 0, format, args... );
+    
+    std::string output;
+    output.resize(SIZE+1);
+    std::snprintf( &(output[0]), SIZE+1, format, args... );
+    
+    if (output_type_ == kCerr) {
+      std::cerr<<output<<std::endl;
+    } else if (output_type_ == kOutputFile) {
+      // TODO: implement me.
+    }
+  }
+  
+  void SetOutputType(OutputType output_type) {
+    output_type_ = output_type;
+  }
+  
+  
+private:
+  Logger() : output_type_(kCerr) {}
+  ~Logger() {}
+  Logger(const Logger&);
+  const Logger& operator= (const Logger&);
+  OutputType output_type_;
+};
+  
 
 } // namespace mcl
 
