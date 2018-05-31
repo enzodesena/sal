@@ -25,7 +25,6 @@
 namespace sal {
   
 
-  
 class KemarMic : public DatabaseBinauralMic {
 public:
   /** 
@@ -36,19 +35,34 @@ public:
    */
   KemarMic(const mcl::Point& position,
            const mcl::Quaternion orientation,
-           const std::string directory, const Int num_samples = 0,
+           const std::string directory = "",
+           const Int num_samples = kFullBrirLength,
            const Int update_length = 0,
            const HeadRefOrientation reference_orientation = standard);
   
+  static const int kFullBrirLength = -1;
+  
   static bool IsDatabaseAvailable(const std::string directory);
+  
+  static void PrintParsedDatabase(const Ear ear,
+                                  const std::string directory,
+                                  const Int num_samples,
+                                  std::string variable_name);
   
   static bool Test();
 private:
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
+  static
   std::vector<std::vector<Signal> > Load(const Ear ear,
                                          const std::string directory,
                                          const Int num_samples);
+  
+  static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear,
+                                                        const Int num_samples);
+  
+  static void LoadEmbeddedData(const Ear ear,
+                               std::vector<std::vector<Signal> >& data);
   
   /**
    Returns the elevation index for kemar database for elevation in azimuth.
@@ -76,5 +90,9 @@ private:
 
   
 } // namespace sal
+
+//#ifndef DO_NOT_LOAD_EMBEDDED_KEMAR
+//  #include "kemarmicdata.h"
+//#endif
 
 #endif

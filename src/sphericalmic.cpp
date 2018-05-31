@@ -39,7 +39,7 @@ Angle SphericalHeadMic::GetTheta(const Point& point,
                                  const Angle& ears_angle,
                                  const Ear& ear) {
   Angle theta_ear = PI/2.0;
-  Angle phi_ear = (ear==left_ear) ? ears_angle : -ears_angle;
+  Angle phi_ear = (ear==kLeftEar) ? ears_angle : -ears_angle;
   
   // Here we compute the angle between the direction of the ear and the 
   // direction of the incoming wave.
