@@ -186,7 +186,7 @@ bool IntersectionPlaneLineExists(const Point& line_point,
   // Otherwise, the line and plane have no intersection.
   // So, the case of no intersection is when the denominator = 0 and the
   // numerator is not = 0.
-  return zero_denominator & ! zero_numerator;
+  return ! (zero_denominator & ! zero_numerator);
 }
   
 Point IntersectionPlaneLine(const Point& line_point,
