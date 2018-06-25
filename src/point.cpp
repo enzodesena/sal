@@ -171,12 +171,22 @@ bool IntersectionPlaneLineExists(const Point& line_point,
                                  const Point& plane_point,
                                  const Point& plane_normal) noexcept {
   // TODO: find a way to avoid rewriting this calculation in the next function
-  Real d = DotProduct(Subtract(plane_point, line_point),
-                      plane_normal) /
-           DotProduct(line_direction, plane_normal);
+  Real numerator = DotProduct(Subtract(plane_point, line_point),
+                              plane_normal);
+  Real denominator = DotProduct(line_direction, plane_normal);
   
-  return ! (IsEqual(DotProduct(line_direction, plane_normal), 0.0)
-            & ! IsNan(d));
+  bool zero_numerator = IsEqual(numerator, 0.0);
+  bool zero_denominator = IsEqual(denominator, 0.0);
+  
+  // If denominator = 0 then the line and plane are parallel.
+  // There will be two cases:
+  // if numerator = 0 then the line is contained in the plane, that is, the line
+  // intersects the plane at each point of the line (and thus an intersection
+  // still exists).
+  // Otherwise, the line and plane have no intersection.
+  // So, the case of no intersection is when the denominator = 0 and the
+  // numerator is not = 0.
+  return zero_denominator & ! zero_numerator;
 }
   
 Point IntersectionPlaneLine(const Point& line_point,
@@ -184,16 +194,20 @@ Point IntersectionPlaneLine(const Point& line_point,
                             const Point& plane_point,
                             const Point& plane_normal) noexcept {
   if (! IntersectionPlaneLineExists(line_point, line_direction,
-                                    plane_point, plane_normal)) { ASSERT(false); }
+                                    plane_point, plane_normal)) {
+    return Point(NAN, NAN, NAN);
+  }
   
   Real d = DotProduct(Subtract(plane_point, line_point),
                       plane_normal) /
            DotProduct(line_direction, plane_normal);
   
-  // if line and plane are parallel and line is contained in plane
-  if (IsNan(d)) { return line_point; }
-  
-  return Sum(Multiply(line_direction, d), line_point);
+  // if line and plane are parallel, and line is contained in plane
+  if (IsNan(d)) {
+    return line_point;
+  } else {
+    return Sum(Multiply(line_direction, d), line_point);
+  }
 }
   
 } // namespace sal

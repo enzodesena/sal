@@ -136,14 +136,14 @@ Point Normalized(Point point) noexcept;
  the normal to the plane, plane_normal (every point on the plane can be
  expressed as (p-plane_point, plane_normal)=0 where (x,y) is scalar product).
  If the line is contained in the plane, the function returns line_point.
- If there is no intersection, then the function throws an exception.
+ If there is no intersection, then the function returns a point of NANs.
  The user should first check whether an intersection exists using
  IntersectionPlaneLineExists.
  */
 Point IntersectionPlaneLine(const Point& line_point,
-                                    const Point& line_direction,
-                                    const Point& plane_point,
-                                    const Point& plane_normal) noexcept;
+                            const Point& line_direction,
+                            const Point& plane_point,
+                            const Point& plane_normal) noexcept;
 
 /**
  Returns whther or not an intersection between a plane and a line exists. 
@@ -156,9 +156,9 @@ Point IntersectionPlaneLine(const Point& line_point,
  expressed as (p-plane_point, plane_normal)=0 where (x,y) is scalar product).
  */
 bool IntersectionPlaneLineExists(const Point& line_point,
-                                         const Point& line_direction,
-                                         const Point& plane_point,
-                                         const Point& plane_normal) noexcept;
+                                 const Point& line_direction,
+                                 const Point& plane_point,
+                                 const Point& plane_normal) noexcept;
   
 bool PointTest();
   
