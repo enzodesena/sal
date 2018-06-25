@@ -67,8 +67,8 @@ CipicMic::CipicMic(const Point& position, const Quaternion& orientation,
     -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
     30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0});
 
-  hrtf_database_right_ = Load(right_ear, directory, data_type, azimuths_);
-  hrtf_database_left_ = Load(left_ear, directory, data_type, azimuths_);
+  hrtf_database_right_ = Load(kRightEar, directory, data_type, azimuths_);
+  hrtf_database_left_ = Load(kLeftEar, directory, data_type, azimuths_);
 }
 
 std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
@@ -82,7 +82,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
 
     std::string sign_text = (azimuth < 0) ? "neg" : "";
     std::string azimuth_text = std::to_string((azimuth > 0) ? azimuth:-azimuth);
-    std::string ear_text = (ear == left_ear) ? "left" : "right";
+    std::string ear_text = (ear == kLeftEar) ? "left" : "right";
     std::string data_type_text = (data_type == wav) ? ".wav" : ".txt";
     std::string file_name =
     sign_text + azimuth_text + "az" + ear_text + data_type_text;
@@ -171,7 +171,7 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
   ASSERT((azimuth_index >= 0) & (azimuth_index < (Int)azimuths_.size()));
   ASSERT((elevation_index >= 0) & (elevation_index <= 49));
   
-  return (ear == left_ear) ?
+  return (ear == kLeftEar) ?
           hrtf_database_left_[azimuth_index][elevation_index] :
           hrtf_database_right_[azimuth_index][elevation_index];
 }

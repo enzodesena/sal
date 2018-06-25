@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		570EACA320BF920E000E2618 /* kemarmicdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.cpp */; };
+		570EACA620BF9217000E2618 /* kemarmicdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.cpp */; };
+		570EACA720BF9217000E2618 /* kemarmicdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.cpp */; };
+		570EACA820BF9410000E2618 /* kemarmicdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.cpp */; };
 		5722E2421C9ECB49007FCF59 /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5722E2401C9ECB49007FCF59 /* delayfilter.cpp */; };
 		5722E2431C9ECB49007FCF59 /* delayfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5722E2401C9ECB49007FCF59 /* delayfilter.cpp */; };
 		572A878319C0712500F62F8F /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
@@ -246,6 +250,7 @@
 
 /* Begin PBXFileReference section */
 		57061AD815B6D6CE000CD42D /* array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = array.h; path = include/array.h; sourceTree = "<group>"; };
+		570EACA220BF920D000E2618 /* kemarmicdata.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kemarmicdata.cpp; path = hrtfs/kemar/kemarmicdata.cpp; sourceTree = "<group>"; };
 		5713F76E15F38C4800AF1DE2 /* salconstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = salconstants.h; path = include/salconstants.h; sourceTree = "<group>"; };
 		5719A9AD15B57CCC000AD692 /* saltypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = saltypes.h; path = include/saltypes.h; sourceTree = "<group>"; };
 		5722E23F1C9ECB37007FCF59 /* delayfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = delayfilter.h; path = include/delayfilter.h; sourceTree = "<group>"; };
@@ -513,6 +518,7 @@
 		57A156FA1593465600AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				570EACA220BF920D000E2618 /* kemarmicdata.cpp */,
 				57B053E41D6B039100202654 /* MCL.xcodeproj */,
 				57B4EFAB1CD81D5D00134991 /* libsndfile */,
 				57B4EFA21CD81D3000134991 /* portaudio */,
@@ -812,6 +818,7 @@
 				578EB0652085BD90006F06B8 /* delayfilter.cpp in Sources */,
 				578EB0662085BE4D006F06B8 /* propagationline.cpp in Sources */,
 				578EB0632085BD73006F06B8 /* cuboidroom.cpp in Sources */,
+				570EACA320BF920E000E2618 /* kemarmicdata.cpp in Sources */,
 				578EB0612085BA57006F06B8 /* ism_test.cpp in Sources */,
 				578EB0642085BD82006F06B8 /* source.cpp in Sources */,
 				578EB05F2085BA53006F06B8 /* riranalysis.cpp in Sources */,
@@ -826,6 +833,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				570EACA820BF9410000E2618 /* kemarmicdata.cpp in Sources */,
 				57CE72BC1C95844A00149808 /* pawrapper.cpp in Sources */,
 				5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */,
 				5778112B20600683004B9C6F /* cuboidroom.cpp in Sources */,
@@ -855,6 +863,7 @@
 				57AA6159205C9D290044A3A9 /* salutilities.cpp in Sources */,
 				57AA615B205C9D290044A3A9 /* microphonearray_test.cpp in Sources */,
 				57AA615C205C9D290044A3A9 /* cipicmic.cpp in Sources */,
+				570EACA620BF9217000E2618 /* kemarmicdata.cpp in Sources */,
 				57AA615D205C9D290044A3A9 /* binauralmic.cpp in Sources */,
 				57AA615E205C9D290044A3A9 /* delayfilter_test.cpp in Sources */,
 				57AA615F205C9D290044A3A9 /* freefieldsimulation.cpp in Sources */,
@@ -885,6 +894,7 @@
 				57B054A11D6B363100202654 /* sal_sound_test.cpp in Sources */,
 				57B0547A1D6B361300202654 /* microphonearray_test.cpp in Sources */,
 				57B0547B1D6B361300202654 /* cipicmic.cpp in Sources */,
+				570EACA720BF9217000E2618 /* kemarmicdata.cpp in Sources */,
 				57B0547C1D6B361300202654 /* binauralmic.cpp in Sources */,
 				57B0547D1D6B361300202654 /* delayfilter_test.cpp in Sources */,
 				57B0547E1D6B361300202654 /* freefieldsimulation.cpp in Sources */,

@@ -69,10 +69,9 @@ bool KemarMic::Test() {
   
   // Testing frontal direction for reference point at y-axis
   KemarMic mic_ia(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path, 0, 0, y_z);
+                  kemar_path, kFullBrirLength, 0, y_z);
   StereoBuffer stream_ia(impulse_response_length);
   mic_ia.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_ia);
-  
   ASSERT(mcl::IsEqual(cmp_imp_front_left,
                       stream_ia.GetLeftReadPointer()));
   
@@ -139,7 +138,7 @@ bool KemarMic::Test() {
   
   // Case for a source to the right (90deg) of the kemar with reference on the y axis
   KemarMic mic_pa(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path, 0, 0, y_z);
+                 kemar_path, kFullBrirLength, 0, y_z);
   StereoBuffer stream_pa(impulse_response_length);
   mic_pa.AddPlaneWave(impulse, Point(1.0,0.0,0.0), stream_pa);
   ASSERT(mcl::IsEqual(cmp_imp_right_left,

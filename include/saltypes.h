@@ -37,8 +37,8 @@ struct StereoSignal {
   
   
 enum Ear {
-  left_ear,
-  right_ear
+  kLeftEar,
+  kRightEar
 };
 
 

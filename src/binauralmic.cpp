@@ -84,9 +84,9 @@ void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
     // Update cache variables
     previous_point_ = point;
     
-    filter_left_.SetImpulseResponse(base_mic_->GetBrir(left_ear, point),
+    filter_left_.SetImpulseResponse(base_mic_->GetBrir(kLeftEar, point),
                                       update_length_);
-    filter_right_.SetImpulseResponse(base_mic_->GetBrir(right_ear, point),
+    filter_right_.SetImpulseResponse(base_mic_->GetBrir(kRightEar, point),
                                       update_length_);
   }
 }
