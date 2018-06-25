@@ -124,7 +124,7 @@ void DelayFilter::SetLatency(const Int latency) noexcept {
     latency_ = max_latency_;
   }
   
-  read_index_ = write_index_ - latency;
+  read_index_ = write_index_ - latency_;
   
   if (read_index_ < start_) { read_index_ += max_latency_ + 1; }
   
