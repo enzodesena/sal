@@ -289,6 +289,20 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
   
   azimuth = mcl::Mod(azimuth, 360.0);
   
+  if (std::isnan(elevation)) {
+    elevation = 0.0;
+    mcl::Logger::GetInstance().LogError("The elevation of a sound source "
+          "appears to be NAN (possibily due to coincident sound source and "
+          "observation point). Reverting to a %f elevation. ", elevation);
+  }
+  
+  if (std::isnan(azimuth)) {
+    azimuth = 0.0;
+    mcl::Logger::GetInstance().LogError("The azimuth of a sound source "
+          "appears to be NAN (possibily due to coincident sound source and "
+          "observation point). Reverting to a %f azimuth.", azimuth);
+  }
+    
   ASSERT((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
   ASSERT((azimuth >= (0.0-VERY_SMALL)) & (azimuth <= (360.0+VERY_SMALL)));
   

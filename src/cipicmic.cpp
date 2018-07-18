@@ -140,10 +140,10 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
   
   // Calculate elevation
   Point proj_xz = Projection(point, Point(0.0, 1.0, 0.0));
-  // "Positive evelation coresponds to moving up"
+  // "Positive elevation coresponds to moving up"
   Angle elevation;
   if (point.x() >= 0.0) {
-    elevation = 90.0-proj_xz.theta()/PI*180.0;
+    elevation = 90.0 - proj_xz.theta()/PI*180.0;
   } else {
     elevation = 90.0 + proj_xz.theta()/PI*180.0;
   }

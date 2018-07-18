@@ -19,9 +19,6 @@ using mcl::Quaternion;
 
 namespace sal {
   
-
-  
-  
 bool CipicMic::Test() {
   using mcl::IsEqual;
   
