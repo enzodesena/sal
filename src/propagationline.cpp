@@ -20,32 +20,35 @@ using sal::Sample;
 
 namespace sal {
 
+const Length PropagationLine::kOneSampleDistance = NAN;
+  
 PropagationLine::PropagationLine(const Length distance, 
                                  const Time sampling_frequency, 
                                  const Length max_distance,
                                  const sal::InterpolationType interpolation_type,
                                  const bool air_filters_active,
-                                 const bool allow_gain) noexcept :
-        delay_filter_(DelayFilter((Int) round(ComputeLatency(distance, sampling_frequency)),
-                                  (Int) round(ComputeLatency(max_distance, sampling_frequency)))),
+                                 const bool allow_gain,
+                                 const double reference_distance) noexcept :
         sampling_frequency_(sampling_frequency),
-        current_attenuation_(ComputeAttenuation(distance, sampling_frequency)),
-        current_latency_(ComputeLatency(distance, sampling_frequency)),
+        delay_filter_(DelayFilter((Int) round(ComputeLatency(distance)),
+                                  (Int) round(ComputeLatency(max_distance)))),
+        reference_distance_(isnan(reference_distance) ?
+                            SOUND_SPEED/sampling_frequency : reference_distance),
+        allow_gain_(allow_gain),
+        current_attenuation_(allow_gain_ ?
+                             ComputeAttenuation(distance) :
+                             SanitiseAttenuation(ComputeAttenuation(distance))),
+        current_latency_(ComputeLatency(distance)),
         air_filters_active_(air_filters_active),
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
         interpolation_type_(interpolation_type),
-        allow_gain_(allow_gain),
         attenuation_smoother_(RampSmoother(current_attenuation_, sampling_frequency)),
         latency_smoother_(RampSmoother(current_latency_, sampling_frequency)) {
   ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
                       "The sampling frequency cannot be negative.");
   ASSERT_WITH_MESSAGE(isgreaterequal(max_distance, 0.0),
                       "The maximum distance cannot be negative.");
-  if ((!allow_gain_)) {
-    current_attenuation_ = SanitiseAttenuation(ComputeAttenuation(distance,
-                                                          sampling_frequency));
-  }
-          
+  
   if (air_filters_active_) {
     air_filter_ = mcl::FirFilter(GetAirFilter(distance));
   }
@@ -74,9 +77,9 @@ void PropagationLine::SetAttenuation(const Sample attenuation,
 
 void PropagationLine::SetDistance(const Length distance,
                                    const sal::Time ramp_time) noexcept {
-  latency_smoother_.SetTargetValue(ComputeLatency(distance, sampling_frequency_),
+  latency_smoother_.SetTargetValue(ComputeLatency(distance),
                                      ramp_time);
-  SetAttenuation(ComputeAttenuation(distance, sampling_frequency_), ramp_time);
+  SetAttenuation(ComputeAttenuation(distance), ramp_time);
   
   if (air_filters_active_) {
     air_filter_.SetImpulseResponse(GetAirFilter(distance),
@@ -98,10 +101,7 @@ void PropagationLine::Reset() noexcept {
   
   
 void PropagationLine::Tick() noexcept {
-  current_attenuation_ = attenuation_smoother_.GetNextValue();
-  current_latency_ = latency_smoother_.GetNextValue();
-  delay_filter_.SetLatency((int) round(current_latency_));
-  delay_filter_.Tick();
+  Tick(1);
 }
   
 void PropagationLine::Tick(const Int num_samples) noexcept {
@@ -111,21 +111,14 @@ void PropagationLine::Tick(const Int num_samples) noexcept {
   delay_filter_.Tick(num_samples);
 }
   
-Time PropagationLine::ComputeLatency(const Length distance, 
-                                     const Time sampling_frequency) noexcept {
+Time PropagationLine::ComputeLatency(const Length distance) noexcept {
   ASSERT_WITH_MESSAGE(isgreaterequal(distance, 0.0),
                       "Distance cannot be negative.");
-  return (Time) (distance / SOUND_SPEED * sampling_frequency);
+  return (Time) (distance / SOUND_SPEED * sampling_frequency_);
 }
 
-Sample PropagationLine::ComputeAttenuation(const Length distance,
-                                           const Time sampling_frequency) noexcept {
-  // If you do the math looking into ComputeLatency, you'll realise that
-  // the result of these operations is (SPEED_OF_SOUND/Fs_) / (distance).
-  // Please observe that this attenuation is actually 1/r rule. In fact, 1/r rule has to be
-  // normalized to some value, which in this case we choose to be the
-  // minimum possible distance in the software.
-  return (Sample) 1.0 / ComputeLatency(distance, sampling_frequency);
+Sample PropagationLine::ComputeAttenuation(const Length distance) noexcept {
+  return (Sample) reference_distance_ / distance;
 }
   
 sal::Length PropagationLine::distance() const noexcept {

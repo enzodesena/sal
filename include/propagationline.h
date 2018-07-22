@@ -46,7 +46,8 @@ public:
                   const sal::Length max_distance = 100.0,
                   const sal::InterpolationType = sal::kRounding,
                   const bool air_filters_active = false,
-                  const bool allow_attenuation_larger_than_one = false) noexcept;
+                  const bool allow_attenuation_larger_than_one = false,
+                  const sal::Length reference_distance = kOneSampleDistance) noexcept;
   
   /** Returns the multiplicative attenuation of the propagation line */
   sal::Sample attenuation() const noexcept;
@@ -55,7 +56,7 @@ public:
   
   /** This overrides the 1/r rule attenuation. */
   void SetAttenuation(const sal::Sample,
-                       const sal::Time ramp_time = 0.0) noexcept;
+                      const sal::Time ramp_time = 0.0) noexcept;
   
   inline sal::Time current_latency() const noexcept { return current_latency_; }
   
@@ -89,44 +90,34 @@ public:
    observed.
    */
   void SetDistance(const sal::Length distance,
-                    const sal::Time ramp_time = 0.0) noexcept;
+                   const sal::Time ramp_time = 0.0) noexcept;
   
   /** Resets the state of the filter */
   void Reset() noexcept;
   
+  static const Length kOneSampleDistance;
   
   static bool Test();
 private:
-  DelayFilter delay_filter_;
-  
-  void Update() noexcept;
-  
-  static sal::Time ComputeLatency(const sal::Length,
-                                  const sal::Time) noexcept;
-  
-  static sal::Sample ComputeAttenuation(const sal::Length,
-                                 const sal::Time) noexcept;
-  
-  static std::vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
-  
-  static Sample SanitiseAttenuation(const sal::Sample attenuation);
-  
   sal::Time sampling_frequency_;
-  
-  sal::Sample current_attenuation_;
-  
-  sal::Time current_latency_; /** Target latency [in samples]. */
-  
-  bool air_filters_active_;
-  mcl::FirFilter air_filter_;
-  
-  sal::InterpolationType interpolation_type_;
-  
+  DelayFilter delay_filter_;
+  sal::Length reference_distance_; /** Distance with attenuation equal to 1 */
   /** This is true if the attenuation coefficients can be larger than 1.0 */
   bool allow_gain_;
-  
+  sal::Sample current_attenuation_;
+  sal::Time current_latency_; /** Target latency [in samples]. */
+  bool air_filters_active_;
+  mcl::FirFilter air_filter_;
+  sal::InterpolationType interpolation_type_;
   RampSmoother attenuation_smoother_;
   RampSmoother latency_smoother_;
+  
+  void Update() noexcept;
+  sal::Time ComputeLatency(const sal::Length) noexcept;
+  sal::Sample ComputeAttenuation(const sal::Length) noexcept;
+  
+  static std::vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
+  static Sample SanitiseAttenuation(const sal::Sample attenuation);
 };
   
 
