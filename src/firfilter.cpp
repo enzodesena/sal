@@ -239,7 +239,7 @@ void FirFilter::SetImpulseResponse(const std::vector<Real>& impulse_response,
 }
 
 void FirFilter::UpdateCoefficients() noexcept {
-  ASSERT(update_index_>=0 & update_index_<=update_length_);
+  ASSERT(update_index_>=0 && update_index_<=update_length_);
   ASSERT(impulse_response_.size() == impulse_response_old_.size());
   Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
   Real weight_old = 1.0f-weight_new;

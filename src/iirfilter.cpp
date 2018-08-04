@@ -15,7 +15,7 @@
 namespace mcl {
   
 Real IirFilter::GetNumeratorCoefficient(const Int coeff_id) const noexcept {
-  ASSERT(coeff_id>=0 & coeff_id<=order());
+  ASSERT(coeff_id>=0 && coeff_id<=order());
   return B_[coeff_id]*A0_;
 }
   
