@@ -6,6 +6,8 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
+#include <assert.h>
+
 #ifndef MCL_MCLTYPES_H
 #define MCL_MCLTYPES_H
 
