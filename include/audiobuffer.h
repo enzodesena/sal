@@ -29,7 +29,7 @@ public:
   Buffer(const Int num_channels, const Int num_samples) :
       num_channels_(num_channels), num_samples_(num_samples),
       owns_data_(true), temporary_vector_(std::vector<Sample>(num_samples, 0.0)) {
-    ASSERT(num_channels >= 0 & num_samples >= 0);
+    ASSERT(num_channels >= 0 && num_samples >= 0);
     AllocateMemory();
   }
   
