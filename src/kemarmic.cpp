@@ -115,16 +115,26 @@ KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
 //      }
 //    }
 //  }
-    for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
-      for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
-        printf("%s[%d][%d] = {", variable_name.c_str(), (int) i, (int) j);
-        for (Int sample_id=0; sample_id<(Int)hrtf_database[i][j].size(); ++sample_id) {
-          printf("%.4E", hrtf_database[i][j][sample_id]);
-          if (sample_id < (Int)hrtf_database[i][j].size()-1) { printf(","); }
-        }
-        printf("}; \n");
+//    for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
+//      for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
+//        printf("%s[%d][%d] = {", variable_name.c_str(), (int) i, (int) j);
+//        for (Int sample_id=0; sample_id<(Int)hrtf_database[i][j].size(); ++sample_id) {
+//          printf("%.4E", hrtf_database[i][j][sample_id]);
+//          if (sample_id < (Int)hrtf_database[i][j].size()-1) { printf(","); }
+//        }
+//        printf("}; \n");
+//      }
+//    }
+  for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
+    for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
+      printf("{%d,%d,", (int) i, (int) j);
+      for (Int sample_id=0; sample_id<(Int)hrtf_database[i][j].size(); ++sample_id) {
+        printf("%.4E", hrtf_database[i][j][sample_id]);
+        if (sample_id < (Int)hrtf_database[i][j].size()-1) { printf(","); }
       }
+      printf("}, \n");
     }
+  }
 }
   
 std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
@@ -136,7 +146,7 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
     // Initialise vector
     hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
     for (Int j=0; j<num_measurements[i]; ++j) {
-      hrtf_database[i].push_back(Signal(128));
+      hrtf_database[i].push_back(Signal(FULL_LENGTH_KEMAR));
     }
   }
   
