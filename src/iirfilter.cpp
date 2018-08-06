@@ -183,12 +183,12 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
   std::vector<Real> A;
   
   switch (wall_type) {
-    case kRigid:
+    case kRigid: {
       B.push_back(1.0);
       A.push_back(1.0);
       break;
-      
-    case kCarpetPile:
+    }
+    case kCarpetPile: {
       // B_carpet_pile=[0.562666833756030  -1.032627191365576   0.469961155406544];
       // A_carpet_pile=[1.000000000000000  -1.896102349247713   0.896352947528892];
       B.push_back(0.562666833756030);
@@ -198,8 +198,8 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       A.push_back(-1.896102349247713);
       A.push_back(0.896352947528892);
       break;
-      
-    case kCarpetCotton:
+    }
+    case kCarpetCotton: {
       // B_carpet_cotton = [0.687580695329600  -1.920746652319969   1.789915765926473  -0.556749690855965];
       // A_carpet_cotton = [1.000000000000000  -2.761840732459190   2.536820778736938  -0.774942833868750];
       B.push_back(0.687580695329600);
@@ -211,8 +211,8 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       A.push_back(2.536820778736938);
       A.push_back(-0.774942833868750);
       break;
-      
-    case kWallBricks:
+    }
+    case kWallBricks: {
       // B_wall=[0.978495798553620  -1.817487798457697   0.839209660516074];
       // A_wall=[1.000000000000000  -1.858806492488240   0.859035906864860];
       B.push_back(0.978495798553620);
@@ -222,8 +222,8 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       A.push_back(-1.858806492488240);
       A.push_back(0.859035906864860);
       break;
-      
-    case kCeilingTile:
+    }
+    case kCeilingTile: {
       // B_ceiling=[0.168413736374283  -0.243270224986791   0.074863520490536];
       // A_ceiling=[1.000000000000000  -1.845049094190385   0.845565720138466];
       B.push_back(0.168413736374283);
@@ -233,6 +233,14 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       A.push_back(-1.845049094190385);
       A.push_back(0.845565720138466);
       break;
+    }
+    default: {
+      mcl::Logger::GetInstance().LogError("Unrecognised type of wall filter. "
+                                          "Reverting to a completely absorptive one.");
+      B.push_back(0.0);
+      A.push_back(1.0);
+      break;
+    }
   }
   
   return IirFilter(B,A);
