@@ -105,26 +105,6 @@ KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
                               const Int num_samples, std::string variable_name) {
   std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory, num_samples);
   
-//  exit(0);
-//  for (Int i=0; i<hrtf_database.size(); ++i) {
-//    for (Int j=0; j<hrtf_database[i].size(); ++j) {
-//      for (Int sample_id=0; sample_id<hrtf_database[i][j].size(); ++sample_id) {
-//        printf("%s[%d][%d][%d]=%.4E;\n", variable_name.c_str(),
-//               (int) i, (int) j, (int) sample_id,
-//               hrtf_database[i][j][sample_id]);
-//      }
-//    }
-//  }
-//    for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
-//      for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
-//        printf("%s[%d][%d] = {", variable_name.c_str(), (int) i, (int) j);
-//        for (Int sample_id=0; sample_id<(Int)hrtf_database[i][j].size(); ++sample_id) {
-//          printf("%.4E", hrtf_database[i][j][sample_id]);
-//          if (sample_id < (Int)hrtf_database[i][j].size()-1) { printf(","); }
-//        }
-//        printf("}; \n");
-//      }
-//    }
   for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
     for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
       printf("{%d,%d,", (int) i, (int) j);
@@ -188,7 +168,7 @@ std::vector<std::vector<Signal> >
                  std::ios::in | std::ios::binary | std::ios::ate);
       if (! file.good()) {
         mcl::Logger::GetInstance().LogErrorToCerr("Kemar lib not found.");
-        throw("Kemar lib not found.");
+        ASSERT(false);
       }
       long size = (long) file.tellg();
       ASSERT(sizeof(short) == 2);

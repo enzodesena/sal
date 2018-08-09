@@ -21,13 +21,13 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   
   if (! (input_file = sf_open(file_name.c_str(), SFM_READ, &input_file_info))) {
     mcl::Logger::GetInstance().LogErrorToCerr("Error : could not open file.");
-    throw("Error : could not open file.");
+    assert(false);
   }
   
   if (! sf_format_check (&input_file_info)) {
     sf_close (input_file);
     mcl::Logger::GetInstance().LogErrorToCerr("Error : could not open file.");
-    throw("Error : could not open file.");
+    assert(false);
   }
   
   ASSERT(input_file_info.frames > 0);
@@ -106,7 +106,7 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   
   if (! (output_file = sf_open (file_name.c_str(), SFM_WRITE, &output_file_info))) {
     std::cout<<"Error: could not open file : "<<file_name<<"\n";
-    exit (1);
+    ASSERT(false);
   }
   
   double* samples = new double[num_channels*file_length];

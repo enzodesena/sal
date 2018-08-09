@@ -92,7 +92,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
     file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
     if (! file.good()) {
       mcl::Logger::GetInstance().LogErrorToCerr("Cipic lib not found.");
-      throw("Cipic lib not found.");
+      ASSERT(false);
     }
     file.close();
 

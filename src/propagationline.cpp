@@ -182,15 +182,13 @@ void PropagationLine::Read(const Int num_samples,
   
 sal::Sample PropagationLine::Read() const noexcept {
   switch (interpolation_type_) {
+    default:
     case sal::kRounding: {
       return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
     }
     case sal::kLinear: {
       return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
     }
-    default:
-      ASSERT(false);
-      exit(1);
   }
 }
   
