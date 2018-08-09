@@ -81,7 +81,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
     Int azimuth = (Int) azimuths[j];
 
     std::string sign_text = (azimuth < 0) ? "neg" : "";
-    std::string azimuth_text = std::to_string((azimuth > 0) ? azimuth:-azimuth);
+    std::string azimuth_text = ToString((azimuth > 0) ? azimuth:-azimuth);
     std::string ear_text = (ear == kLeftEar) ? "left" : "right";
     std::string data_type_text = (data_type == wav) ? ".wav" : ".txt";
     std::string file_name =

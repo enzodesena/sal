@@ -297,12 +297,12 @@ mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
   
 std::string CuboidRoom::ShapeDescription() const noexcept {
   return "The room is rectangular with " +
-      std::to_string(origin_position_.x()) + "<x<" +
-      std::to_string(origin_position_.x()+dimensions_.x()) + " " +
-      std::to_string(origin_position_.y()) + "<y<" +
-      std::to_string(origin_position_.y()+dimensions_.y()) + " " +
-      std::to_string(origin_position_.z()) + "<z<" +
-      std::to_string(origin_position_.z()+dimensions_.z()) + " [m].";
+      ToString(origin_position_.x()) + "<x<" +
+      ToString(origin_position_.x()+dimensions_.x()) + " " +
+      ToString(origin_position_.y()) + "<y<" +
+      ToString(origin_position_.y()+dimensions_.y()) + " " +
+      ToString(origin_position_.z()) + "<z<" +
+      ToString(origin_position_.z()+dimensions_.z()) + " [m].";
 }
   
 } // namespace sal

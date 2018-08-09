@@ -264,6 +264,14 @@ private:
   mcl::IirFilter filter_;
 };
 
+  
+template <typename T>
+std::string ToString(T input) {
+  std::ostringstream output;
+  output << input;
+  return output.str();
+}
+  
 } // namespace sal
 
 #endif /* salutilities_h */
