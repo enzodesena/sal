@@ -13,6 +13,7 @@
 #include "delayfilter.h"
 #include "matrixop.h"
 #include "salutilities.h"
+#include <cstdlib>
 
 using sal::Length;
 using sal::Time;
