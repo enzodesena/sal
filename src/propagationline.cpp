@@ -45,9 +45,9 @@ PropagationLine::PropagationLine(const Length distance,
         interpolation_type_(interpolation_type),
         attenuation_smoother_(RampSmoother(current_attenuation_, sampling_frequency)),
         latency_smoother_(RampSmoother(current_latency_, sampling_frequency)) {
-  ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
+  ASSERT_WITH_MESSAGE(std::isgreaterequal(sampling_frequency, 0.0),
                       "The sampling frequency cannot be negative.");
-  ASSERT_WITH_MESSAGE(isgreaterequal(max_distance, 0.0),
+  ASSERT_WITH_MESSAGE(std::isgreaterequal(max_distance, 0.0),
                       "The maximum distance cannot be negative.");
   
   if (air_filters_active_) {
@@ -56,13 +56,13 @@ PropagationLine::PropagationLine(const Length distance,
 }
   
 Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
-  if (isgreater(mcl::Abs(attenuation), 1.0)) {
+  if (std::isgreater(mcl::Abs(attenuation), 1.0)) {
     mcl::Logger::GetInstance().
     LogError("Attempting to set the attenuation of a propagation line to %f, "
              "which has modulus larger than 1. Clipping to 1 "
              "(+-, depending on sign). If you want to "
              "bypass this check, please enable allow_gain.", attenuation);
-    return (isgreater(attenuation,0.0)) ? 1.0 : -1.0;
+    return (std::isgreater(attenuation,0.0)) ? 1.0 : -1.0;
   } else {
     return attenuation;
   }
@@ -113,7 +113,7 @@ void PropagationLine::Tick(const Int num_samples) noexcept {
 }
   
 Time PropagationLine::ComputeLatency(const Length distance) noexcept {
-  ASSERT_WITH_MESSAGE(isgreaterequal(distance, 0.0),
+  ASSERT_WITH_MESSAGE(std::isgreaterequal(distance, 0.0),
                       "Distance cannot be negative.");
   return (Time) (distance / SOUND_SPEED * sampling_frequency_);
 }

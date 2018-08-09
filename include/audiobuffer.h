@@ -469,7 +469,7 @@ public:
   
   static Int GetChannelId(const Int degree, const Int order) {
     ASSERT(degree >= 0);
-    ASSERT(order <= abs(degree));
+    ASSERT(order <= std::abs(degree));
     Int centre_index = 0;
     for (Int degree_id = 0; degree_id <= degree; ++degree_id) {
       centre_index = centre_index + 2*degree_id;

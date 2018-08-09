@@ -120,7 +120,7 @@ public:
                const Time sampling_frequency) noexcept :
       current_value_(initial_value), target_value_(initial_value),
       step_(0.0), countdown_(0), sampling_frequency_(sampling_frequency) {
-    ASSERT_WITH_MESSAGE(isgreaterequal(sampling_frequency, 0.0),
+    ASSERT_WITH_MESSAGE(std::isgreaterequal(sampling_frequency, 0.0),
                         "Sampling frequency cannot be negative ");
   }
   
@@ -200,7 +200,7 @@ public:
   Sample target_value() const noexcept { return target_value_; }
   
   void SetTargetValue(const Sample target_value, const Time ramp_time) noexcept {
-    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_time, 0.0),
+    ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_time, 0.0),
                         "Ramp time cannot be negative ");
     if (((Int) round(ramp_time*sampling_frequency_)) == 0) {
       target_value_ = target_value;
@@ -243,7 +243,7 @@ public:
    @param[in] ramp_samples number of samples after which the value is
    to 1/e away from target value. */
   LowPassSmoothingFilter(const mcl::Real ramp_samples) noexcept {
-    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+    ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_samples, 0),
                         "Decay constant cannot be negative.");
     
     mcl::Real a1 = exp(-1.0/ramp_samples);

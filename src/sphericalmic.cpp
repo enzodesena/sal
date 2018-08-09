@@ -84,7 +84,7 @@ mcl::Complex SphericalHeadMic::Sphere(Length a, Length r,
                 Complex(2.0,0.0) * za + Complex(1.0, 0.0))); 
   sum = sum + term;
   Real oldratio = 1; 
-  Real newratio = abs(term)/abs(sum);
+  Real newratio = std::abs(term)/std::abs(sum);
   Int m = 2;
   while (oldratio > threshold || newratio > threshold) {
     // Qr = - (2 * m - 1) * zr * Qr1 + Qr2;
@@ -103,7 +103,7 @@ mcl::Complex SphericalHeadMic::Sphere(Length a, Length r,
     m = m + 1;
     Qr2 = Qr1; Qr1 = Qr; Qa2 = Qa1; Qa1 = Qa; P2 = P1; P1 = P;
     oldratio = newratio; 
-    newratio = abs(term)/abs(sum);
+    newratio = std::abs(term)/std::abs(sum);
   }
   
   return (rho * exp(- Complex(0.0,1.0) * mu) * sum) / (Complex(0.0,1.0) * mu);

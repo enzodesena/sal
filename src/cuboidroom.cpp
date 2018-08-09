@@ -26,12 +26,12 @@ using mcl::IsSmallerOrEqual;
 
 bool CuboidRoom::IsPointInRoom(const Point& point,
                                const Length wall_distance) const noexcept {
-  return isgreaterequal(point.x(), origin_position_.x() + wall_distance) &&
-         isgreaterequal(point.y(), origin_position_.y() + wall_distance) &&
-         isgreaterequal(point.z(), origin_position_.z() + wall_distance) &&
-         islessequal(point.x(), dimensions_.x() -  origin_position_.x() - wall_distance) &&
-         islessequal(point.y(), dimensions_.y() -  origin_position_.y() - wall_distance) &&
-         islessequal(point.z(), dimensions_.z() -  origin_position_.z() - wall_distance);
+  return std::isgreaterequal(point.x(), origin_position_.x() + wall_distance) &&
+         std::isgreaterequal(point.y(), origin_position_.y() + wall_distance) &&
+         std::isgreaterequal(point.z(), origin_position_.z() + wall_distance) &&
+         std::islessequal(point.x(), dimensions_.x() -  origin_position_.x() - wall_distance) &&
+         std::islessequal(point.y(), dimensions_.y() -  origin_position_.y() - wall_distance) &&
+         std::islessequal(point.z(), dimensions_.z() -  origin_position_.z() - wall_distance);
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,

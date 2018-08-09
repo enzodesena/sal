@@ -113,9 +113,9 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   Int k = 0;
   for (Int i=0; i<(num_channels*file_length); i += num_channels) {
     for (Int j=0; j<num_channels; ++j) {
-      if (fabs(signals[j][k]) > 1.0) {
+      if (std::fabs(signals[j][k]) > 1.0) {
         std::cout<<"Warning: wav writer clipped (value: "<<
-                fabs(signals[j][k])<<")"<<std::endl;
+                std::fabs(signals[j][k])<<")"<<std::endl;
       }
       samples[i+j] = (double) signals[j][k];
     }
