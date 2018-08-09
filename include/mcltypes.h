@@ -18,11 +18,6 @@
 #define ASSERT(arg) assert(arg)
 #define ASSERT_WITH_MESSAGE(condition, message) ASSERT(condition && message)
 
-#define throw_line(arg) throw(mcl::Exception(std::string("Error at line n. ") + \
-      std::string(std::to_string(__LINE__)) + std::string(" of file ") + \
-      std::string(__FILE__) + std::string(" ") + arg))
-// #define throw_line(arg) throw std::runtime_error(std::string("Error at line n. ") +std::string(std::to_string(__LINE__)) + std::string(" of file ") + std::string(__FILE__));
-
 #include <complex>
 #include <vector>
 #include <iostream>

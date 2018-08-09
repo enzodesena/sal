@@ -122,9 +122,9 @@ Real LinearInterpolation(Real x0, Real y0, Real x1, Real y1, Real x) {
 
 #if MCL_LOAD_BOOST
 Real AssociatedLegendreP(Int n, Int m, Real x) {
-  if (n < 0) throw; // As in Matlab we don't accept n<0
-  if (m < 0) throw; // As in Matlab we don't accept m<0
-  if (n < m) throw; // As in Matlab we don't accept n<m
+  ASSERT(n >= 0); // As in Matlab we don't accept n<0
+  ASSERT(m >= 0); // As in Matlab we don't accept m<0
+  ASSERT(n >= m); // As in Matlab we don't accept n<m
   return boost::math::legendre_p<Real>((int) n, (int) m, x);
 }
   
