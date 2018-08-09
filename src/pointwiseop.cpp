@@ -122,7 +122,7 @@ std::vector<Real> HalfWave(const std::vector<Real>& input) noexcept {
 std::vector<Real> Abs(const std::vector<Real>& input) noexcept {
   std::vector<Real> output(input.size());
   for (Int i=0; i<(Int)input.size(); ++i) { 
-    output[i] = fabs(input[i]);
+    output[i] = std::fabs(input[i]);
   }
   return output;
 }
@@ -131,7 +131,7 @@ std::vector<Real> Abs(const std::vector<Real>& input) noexcept {
 std::vector<Real> Abs(const std::vector<Complex>& input) noexcept {
   std::vector<Real> output(input.size());
   for (Int i=0; i<(Int)input.size(); ++i) { 
-    output[i] = abs(input[i]);
+    output[i] = std::abs(input[i]);
   }
   return output;
 }

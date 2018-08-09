@@ -168,11 +168,11 @@ std::vector<Complex> Poly(const std::vector<Real> roots) noexcept {
   
 std::vector<Real>
 ColonOperator(const Real from, const Real step, const Real to) noexcept {
-  if (islessequal(step, 0)) { ASSERT(false); }
+  if (std::islessequal(step, 0)) { ASSERT(false); }
   std::vector<Real> output;
   output.push_back(from);
   Int i = 1;
-  while (islessequal(((Real) i)*step+from, to)) {
+  while (std::islessequal(((Real) i)*step+from, to)) {
     output.push_back(((Real) i++)*step+from);
   }
   return output;
@@ -213,9 +213,9 @@ Real Norm(const std::vector<Real>& vector, Real l_norm) noexcept {
   const Int num_elements = vector.size();
   Real output = 0.0;
   for (Int i=0; i<num_elements; ++i) {
-    output += pow(fabs(vector[i]), l_norm);
+    output += std::pow(std::fabs(vector[i]), l_norm);
   }
-  return pow(output, 1.0/l_norm);
+  return std::pow(output, 1.0/l_norm);
 }
   
 bool IsNonNegative(const std::vector<Real>& input) noexcept {

@@ -29,7 +29,7 @@ namespace mcl {
 
 bool IsEqual(Real num_a, Real num_b, Real precision) {
   if (isnan(num_a) || isnan(num_b)) { return false; }
-  return ((Real) fabs(((double) num_a) - ((double) num_b))) < precision;
+  return ((Real) std::fabs(((double) num_a) - ((double) num_b))) < precision;
 }
   
 
@@ -46,7 +46,7 @@ std::vector<bool> IsNan(std::vector<Real> input) {
 }
 
 bool IsInf(Real num) {
-  return isinf(num);
+  return std::isinf(num);
 }
 
 std::vector<bool> IsInf(std::vector<Real> input) {
@@ -108,8 +108,8 @@ bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
 }
 
 bool IsEqual(Complex num_a, Complex num_b, Real precision) {
-  return (fabs(num_a.real() - num_b.real()) < precision) &
-  (fabs(num_a.imag() - num_b.imag()) < precision);
+  return (std::fabs(num_a.real() - num_b.real()) < precision) &
+  (std::fabs(num_a.imag() - num_b.imag()) < precision);
 }
 
 bool IsEqual(const Quaternion& q_a, const Quaternion& q_b) {

@@ -78,7 +78,7 @@ Real ImagPart(Complex scalar) {
   return scalar.imag();
 }
   
-Int NextPow2(Real input) { return (UInt) ceil(log2(fabs((double) input))); }
+Int NextPow2(Real input) { return (UInt) std::ceil(std::log2(std::fabs((double) input))); }
 
   
 double StringToDouble(const std::string& s) {
@@ -90,11 +90,11 @@ double StringToDouble(const std::string& s) {
 }
   
 Real Abs(Real input) {
-  return (Real) fabs((double) input);
+  return (Real) std::fabs((double) input);
 }
   
 Real Abs(Complex input) {
-  return (Real) abs(input);
+  return (Real) std::abs(input);
 }
   
 Int Next2(Int input) {

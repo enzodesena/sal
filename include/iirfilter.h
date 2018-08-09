@@ -124,7 +124,7 @@ public:
 //     @param[in] ramp_samples number of samples after which the value is
 //     to 1/e away from target value. */
 //    RampSmoothingFilter(const Real ramp_samples) noexcept {
-//      ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+//      ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_samples, 0),
 //                          "Decay constant cannot be negative ");
 //      
 //      
@@ -150,7 +150,7 @@ public:
 //   @param[in] ramp_samples number of samples after which the value is
 //   to 1/e away from target value. */
 //  LowPassSmoothingFilter(const Real ramp_samples) noexcept {
-//    ASSERT_WITH_MESSAGE(isgreaterequal(ramp_samples, 0),
+//    ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_samples, 0),
 //                        "Decay constant cannot be negative ");
 //    
 //    Real a1 = exp(-1.0/ramp_samples);
