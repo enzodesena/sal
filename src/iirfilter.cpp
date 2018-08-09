@@ -235,8 +235,7 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       break;
     }
     default: {
-      mcl::Logger::GetInstance().LogError("Unrecognised type of wall filter. "
-                                          "Reverting to a completely absorptive one.");
+      mcl::Logger::GetInstance().LogError("Unrecognised type of wall filter. Reverting to a completely absorptive one.");
       B.push_back(0.0);
       A.push_back(1.0);
       break;

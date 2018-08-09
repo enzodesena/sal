@@ -79,6 +79,22 @@ public:
     std::cerr<<output<<std::endl;
   }
   
+  void LogError(const char* format) {
+    if (output_type_ == kNone) { return; }
+    
+    const size_t SIZE = std::snprintf( NULL, 0, "%s", format);
+    
+    std::string output;
+    output.resize(SIZE+1);
+    std::snprintf( &(output[0]), SIZE+1, "%s", format);
+    
+    if (output_type_ == kCerr) {
+      std::cerr<<output<<std::endl;
+    } else if (output_type_ == kOutputFile) {
+      // TODO: implement me.
+    }
+  }
+  
   template< typename... argv >
   void LogError(const char* format, argv... args) {
     if (output_type_ == kNone) { return; }
