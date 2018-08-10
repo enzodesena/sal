@@ -77,11 +77,11 @@ public:
   void LogError(const char* format) {
     if (output_type_ == kNone) { return; }
     
-    const size_t SIZE = std::snprintf( NULL, 0, "%s", format);
+    const size_t SIZE = snprintf( NULL, 0, "%s", format);
     
     std::string output;
     output.resize(SIZE+1);
-    std::snprintf( &(output[0]), SIZE+1, "%s", format);
+    snprintf( &(output[0]), SIZE+1, "%s", format);
     
     if (output_type_ == kCerr) {
       std::cerr<<output<<std::endl;
@@ -94,11 +94,11 @@ public:
   void LogError(const char* format, argv... args) {
     if (output_type_ == kNone) { return; }
     
-    const size_t SIZE = std::snprintf( NULL, 0, format, args... );
+    const size_t SIZE = snprintf( NULL, 0, format, args... );
     
     std::string output;
     output.resize(SIZE+1);
-    std::snprintf( &(output[0]), SIZE+1, format, args... );
+    snprintf( &(output[0]), SIZE+1, format, args... );
     
     if (output_type_ == kCerr) {
       std::cerr<<output<<std::endl;
