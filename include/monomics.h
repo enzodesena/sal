@@ -57,7 +57,8 @@ private:
 class MemorylessMonoMic : public MemorylessMic, public MonoMic {
 public:
   MemorylessMonoMic(mcl::Point position, mcl::Quaternion orientation) :
-  MemorylessMic(position, orientation), MonoMic(position, orientation)  {}
+  MemorylessMic(position, orientation), MonoMic(position, orientation),
+  Microphone(position, orientation) {}
   
   virtual ~MemorylessMonoMic() {}
   

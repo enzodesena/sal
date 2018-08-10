@@ -209,7 +209,7 @@ public:
       return;
     }
     
-    if (islessgreater(target_value, target_value_)) {
+    if (std::islessgreater(target_value, target_value_)) {
       const Int num_update_samples = (Int) round(ramp_time*sampling_frequency_);
       countdown_ = num_update_samples;
       target_value_ = target_value;
