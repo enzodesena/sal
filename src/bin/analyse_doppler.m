@@ -1,7 +1,7 @@
 load 'sine_original.txt';
 load 'sine_doppler.txt';
 load 'current_latency.txt';
-
+sine_doppler = sine_doppler;
 FS = 44100;
 
 t = linspace(0,length(sine_original)/FS, length(sine_original));
@@ -9,7 +9,7 @@ subplot(3,1,1);
 plot(t',sine_original);
 hold on;
 plot(t', sine_doppler);
-plot(diff(sine_doppler));
+plot(t(1:end-1), diff(sine_doppler));
 hold off;
 
 
