@@ -74,40 +74,9 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
   Real result = 0.0;
   Int index = (Int) counter_;
   
-  if (length_%8 != 0) {
-    for (int i=0; i<length_; ++i) {
-      result += coefficients_[i] * delay_line_[index++];
-      if (index >= length_) { index = 0; }
-    }
-  } else {
-    // This is easier for the compiler to vectorise
-    Real result_a = 0;
-    Real result_b = 0;
-    Real result_c = 0;
-    Real result_d = 0;
-    Real result_e = 0;
-    Real result_f = 0;
-    Real result_g = 0;
-    Real result_h = 0;
-    Int i = 0;
-    while (i < length_) {
-      if (index < (length_-8)) {
-        result_a += coefficients_[i++] * delay_line_[index++];
-        result_b += coefficients_[i++] * delay_line_[index++];
-        result_c += coefficients_[i++] * delay_line_[index++];
-        result_d += coefficients_[i++] * delay_line_[index++];
-        result_e += coefficients_[i++] * delay_line_[index++];
-        result_f += coefficients_[i++] * delay_line_[index++];
-        result_g += coefficients_[i++] * delay_line_[index++];
-        result_h += coefficients_[i++] * delay_line_[index++];
-      } else {
-        for (Int k=0; k<8; ++k) {
-          result += coefficients_[i++] * delay_line_[index++];
-          if (index >= length_) { index = 0; }
-        }
-      }
-    }
-    result += result_a + result_b + result_c + result_d + result_e + result_f + result_g + result_h;
+  for (int i=0; i<length_; ++i) {
+    result += coefficients_[i] * delay_line_[index++];
+    if (index >= length_) { index = 0; }
   }
   
   if (--counter_ < 0) { counter_ = length_-1; }
