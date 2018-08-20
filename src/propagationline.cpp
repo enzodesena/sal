@@ -158,24 +158,14 @@ void PropagationLine::Read(const Int num_samples,
     RampSmoother temp_attenuation(attenuation_smoother_);
     RampSmoother temp_latency(latency_smoother_);
     
-    switch (interpolation_type_) {
-      case sal::kRounding: {
-        for (Int i=1; i<num_samples; ++i) {
-          output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i)
-                           * temp_attenuation.GetNextValue();
-        }
-        return;
+    for (Int i=1; i<num_samples; ++i) {
+      if (interpolation_type_ == sal::kLinear) {
+        output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
+            * temp_attenuation.GetNextValue();
+      } else {
+        output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i)
+            * temp_attenuation.GetNextValue();
       }
-      case sal::kLinear: {
-        for (Int i=1; i<num_samples; ++i) {
-          output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
-                           * temp_attenuation.GetNextValue();
-        }
-        return;
-      }
-      default:
-        ASSERT(false);
-        exit(1);
     }
   }
 }

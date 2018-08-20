@@ -40,14 +40,17 @@ int main(int argc, char * const argv[]) {
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
   PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
-                               kRounding);
+                               kLinear);
   
   PropagationLine line(current_distance, sampling_frequency, 1000.0,
-                       kRounding);
+                       kLinear);
   line.SetAttenuation(1.0, 0.0);
   
+  Sample line_tmp[samples_per_buffer];
+  Sample line_doppler_tmp[samples_per_buffer];
+  
   Int index = 0;
-  while (index<ceil(sine_length*sampling_frequency)) {
+  while ((index+samples_per_buffer) < ceil(sine_length*sampling_frequency)) {
     Time update_period = (Time) samples_per_buffer / sampling_frequency; // In seconds
     Length space_covered = update_period * speed;
     current_distance += space_covered;
@@ -55,22 +58,21 @@ int main(int argc, char * const argv[]) {
     
     line_doppler.SetAttenuation(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
     
+    
+    line_doppler.Write(&sine[index], samples_per_buffer);
+    line_doppler.Read(samples_per_buffer, line_doppler_tmp);
+    line_doppler.Tick(samples_per_buffer);
+    
+    line.Write(&sine[index], samples_per_buffer);
+    line.Read(samples_per_buffer, line_tmp);
+    line.Tick(samples_per_buffer);
+    
     for (Int i=0; i<samples_per_buffer; ++i) {
-      if (index>=ceil(sine_length*sampling_frequency)) { continue; }
-      
-      line_doppler.Tick();
-      line_doppler.Write(sine.at(index));
-      
-      line.Tick();
-      line.Write(sine.at(index));
-      
-      doppler_sine.SetElement(index, 0, line_doppler.Read());
-      original_sine.SetElement(index, 0, line.Read());
-      
-      current_latency.SetElement(index, 0, line_doppler.current_latency());
-      
-      index++;
+      doppler_sine.SetElement(index+i, 0, line_doppler_tmp[i]);
+      original_sine.SetElement(index+i, 0, line_tmp[i]);
     }
+    
+    index += samples_per_buffer;
   }
   
   original_sine.Save("/Users/enzodesena/repos/sal/src/bin/sine_original.txt", 5);

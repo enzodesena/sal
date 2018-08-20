@@ -65,9 +65,9 @@ DelayFilter& DelayFilter::operator= (const DelayFilter& other) {
   
 void DelayFilter::Tick(const Int num_samples) noexcept {
   ASSERT(num_samples >= 0);
-  if (num_samples > latency_) {
+  if (num_samples > max_latency_) {
     Logger::GetInstance().
-    LogError("Ticking by more samples (%d) than the latency of the delay "
+    LogError("Ticking by more samples (%d) than the max latency of the delay "
              "line (%d). The operation will go ahead, but this implies that "
              "some samples may never be read.",
              num_samples, latency_);
@@ -137,7 +137,7 @@ Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
 Sample DelayFilter::ReadAt(const Int delay_tap) const noexcept {
   Int sanitised_delay_tap = delay_tap;
-  if (delay_tap >= max_latency_) {
+  if (delay_tap > max_latency_) {
     Logger::GetInstance().
     LogError("Trying to read at a delay tap (%d) larger than the maximum latency "
              "of the delay line (%d). Giving back the value at the maximum "
@@ -146,8 +146,7 @@ Sample DelayFilter::ReadAt(const Int delay_tap) const noexcept {
     sanitised_delay_tap = max_latency_;
   }
   
-  ASSERT(write_index_>=start_);
-  ASSERT(write_index_<=end_);
+  ASSERT(write_index_>= start_ && write_index_ <= end_);
   Sample* read_index = write_index_ - sanitised_delay_tap;
   return (read_index >= start_) ? *read_index : *(read_index + max_latency_ + 1);
 }
