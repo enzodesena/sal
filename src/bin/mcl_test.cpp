@@ -22,8 +22,6 @@ int main (int argc, char * const argv[]) {
   using namespace mcl;
   
   FirFilter::Test();
-  
-  
   Quaternion::Test();
   ElementaryOpTest();
   BasicOpTest();
@@ -35,12 +33,12 @@ int main (int argc, char * const argv[]) {
   ComparisonOpTest();
   PointTest();
   
+  std::cout<<"All tests succeded!\n";
+  
   IirFilter::Test();
   FirFilter::SpeedTests();
   RandomGenerator::Test();
   
-  
-  std::cout<<"All tests succeded!\n";
   
   return 0;
 }

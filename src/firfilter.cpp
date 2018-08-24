@@ -10,6 +10,8 @@
 #include "vectorop.h"
 #include "mcltypes.h"
 #include <vector>
+#include <pmmintrin.h>
+#include <xmmintrin.h>
 
 #ifdef OSXIOS
   #include <Accelerate/Accelerate.h>
@@ -52,6 +54,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
   return FilterStraight(input_sample);
 #endif
 }
+  
 
 void FirFilter::Filter(const Real* input_data, const Int num_samples,
                        Real* output_data) noexcept {
@@ -64,7 +67,51 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
 #ifdef OSXIOS
   FilterAppleDsp(input_data, num_samples, output_data);
 #else // If not OSXIOS
-  FilterSerial(input_data, num_samples, output_data);
+  if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
+    FilterSerial(input_data, num_samples, output_data);
+    return;
+  }
+  
+  float* extended_input_data = (float*)alloca((num_samples+length_-1) * sizeof(float)); // TODO: handle stack overflow
+  float* output_data_float = (float*)alloca((num_samples) * sizeof(float)); // TODO: handle stack overflow
+  GetExtendedInput(input_data, num_samples, extended_input_data);
+  
+  __declspec(align(16)) __m256 input_frame; // __attribute__ ((aligned (16)));
+  __declspec(align(16)) __m256 coefficient; // __attribute__ ((aligned (16)));
+  __declspec(align(16)) __m256 product;     // __attribute__ ((aligned (16)));
+  __declspec(align(16)) __m256 accumulator; // __attribute__ ((aligned (16)));
+  const Int batch_size = 8;
+  
+  for(Int n=0; (n+batch_size)<=num_samples; n+=batch_size) {
+    accumulator = _mm256_setzero_ps();
+    for(Int k=0; k<length_; k++) {
+      coefficient = _mm256_set1_ps(coefficients_[length_ - k - 1]);
+      input_frame = _mm256_loadu_ps(extended_input_data + n + k);
+      product = _mm256_mul_ps(coefficient, input_frame);
+      accumulator = _mm256_add_ps(accumulator, product);
+    }
+    _mm256_storeu_ps(output_data_float+n, accumulator);
+  }
+  
+  const Int num_samples_left = num_samples % batch_size;
+  const Int num_samples_completed = num_samples - num_samples_left;
+  
+  for (Int n=0; n<num_samples_completed; ++n) {
+    output_data[n] = (Real) output_data_float[n];
+  }
+  
+  for (Int n=num_samples_completed; n<num_samples; ++n) {
+    output_data[n] = 0.0;
+    for (Int p=0; p<length_; ++p) {
+      output_data[n] += coefficients_[length_-p-1] * extended_input_data[n+p];
+    }
+  }
+  
+  // Reorganise state for the next run
+  for (Int i=0; i<length_; ++i) {
+    delay_line_[i] = input_data[num_samples-1-i];
+  }
+  counter_ = length_-1;
 #endif
 }
   
@@ -123,24 +170,7 @@ void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
   }
   
   Real padded_data[num_samples+length_-1];
-  
-  // Stage 1
-  for (Int i=0; i<counter_; ++i) {
-    padded_data[i] = delay_line_[counter_-i-1];
-  }
-  
-  // Stage 2
-  // Starting from counter_ in padded_data
-  // Ending in counter_+(length_-counter_-1)
-  for (Int i=counter_; i<(length_-1); ++i) {
-    padded_data[i] = delay_line_[length_-1-(i-counter_)];
-  }
-  
-  // Stage 3
-  // Append input signal
-  for (Int i=(length_-1); i<(length_-1+num_samples); ++i) {
-    padded_data[i] = input_data[i-(length_-1)];
-  }
+  GetExtendedInput(input_data, num_samples, padded_data);
   
 #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_convD(padded_data, 1,

@@ -210,6 +210,30 @@ bool IirFilter::Test() {
 bool FirFilter::Test() {
   using mcl::IsEqual;
   
+  
+  
+  std::vector<Real>  ir = {0.1, 0.2, 0.3};
+  FirFilter filter_lasplita(ir);
+  std::vector<Real> input = {1, 2, 3, 4, 5, 6, 7};
+  Real output_lasplita_a[3];
+  filter_lasplita.FilterAppleDsp(&input.data()[0], 3, output_lasplita_a);
+  std::vector<Real> cmp_lasplita_a = { 0.1, 0.4, 1.0 };
+  ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
+  
+  Real output_lasplita_b[4];
+  filter_lasplita.FilterAppleDsp(&input.data()[3], 4, output_lasplita_b);
+  std::vector<Real> cmp_lasplita_b = { 1.6, 2.2, 2.8, 3.4 };
+  ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
+  
+  
+  filter_lasplita.Reset();
+  filter_lasplita.Filter(&input.data()[0], 3, output_lasplita_a);
+  ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
+  filter_lasplita.Filter(&input.data()[3], 4, output_lasplita_b);
+  ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
+  
+  
+  
   std::vector<Real> impulse_resp(3);
   impulse_resp[0] = 0.2;
   impulse_resp[1] = -0.1;
@@ -237,8 +261,8 @@ bool FirFilter::Test() {
   output_a_cmp[1] = -0.7600;
   output_a_cmp[2] = 2.9700;
   output_a_cmp[3] = -8.8500;
-  std::vector<Real> output_a = filter_b.Filter(input_a);
-  
+  std::vector<Real> output_a;
+  output_a = filter_b.Filter(input_a);
   ASSERT(IsEqual(output_a, output_a_cmp));
   
   FirFilter filter_c(impulse_resp);
@@ -290,6 +314,16 @@ bool FirFilter::Test() {
   Real cmp_la[input_b.size()];
   filter_la.FilterAppleDsp(input_b.data(), input_b.size(), cmp_la);
   ASSERT(IsEqual(output_b_cmp, cmp_la));
+  
+  
+  FirFilter filter_lasplit(impulse_resp_b);
+  Real cmp_lasplit_a[4];
+  Real cmp_lasplit_b[8];
+  filter_lasplit.FilterAppleDsp(&input_b.data()[0], 4, cmp_lasplit_a);
+  ASSERT(IsEqual(&output_b_cmp.data()[0], cmp_lasplit_a, 4));
+  filter_lasplit.FilterAppleDsp(&input_b.data()[4], 8, cmp_lasplit_b);
+  ASSERT(IsEqual(&output_b_cmp.data()[4], cmp_lasplit_b, 8));
+  
   
   FirFilter filter_lb(impulse_resp_b);
   Real cmp_lb[input_b.size()];
