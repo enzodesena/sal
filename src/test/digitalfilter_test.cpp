@@ -211,20 +211,23 @@ bool FirFilter::Test() {
   using mcl::IsEqual;
   
   
-  
+
   std::vector<Real>  ir = {0.1, 0.2, 0.3};
   FirFilter filter_lasplita(ir);
   std::vector<Real> input = {1, 2, 3, 4, 5, 6, 7};
   Real output_lasplita_a[3];
-  filter_lasplita.FilterAppleDsp(&input.data()[0], 3, output_lasplita_a);
   std::vector<Real> cmp_lasplita_a = { 0.1, 0.4, 1.0 };
+#ifdef OSXIOS
+  filter_lasplita.FilterAppleDsp(&input.data()[0], 3, output_lasplita_a);
   ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
-  
+#endif
+
   Real output_lasplita_b[4];
-  filter_lasplita.FilterAppleDsp(&input.data()[3], 4, output_lasplita_b);
   std::vector<Real> cmp_lasplita_b = { 1.6, 2.2, 2.8, 3.4 };
+#ifdef OSXIOS
+  filter_lasplita.FilterAppleDsp(&input.data()[3], 4, output_lasplita_b);
   ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
-  
+#endif
   
   filter_lasplita.Reset();
   filter_lasplita.Filter(&input.data()[0], 3, output_lasplita_a);
@@ -270,21 +273,27 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(filter_c.Filter(-3.5), -0.7600));
   
   FirFilter filter_ca(impulse_resp);
+#ifdef OSXIOS
   ASSERT(IsEqual(filter_ca.FilterAppleDsp(0.6), 0.1200));
   ASSERT(IsEqual(filter_ca.FilterAppleDsp(-3.5), -0.7600));
+#endif
   
   FirFilter filter_cb(impulse_resp);
   ASSERT(IsEqual(filter_cb.FilterStraight(0.6), 0.1200));
   ASSERT(IsEqual(filter_cb.FilterStraight(-3.5), -0.7600));
   
   FirFilter filter_cd(impulse_resp);
+#ifdef OSXIOS
   ASSERT(IsEqual(filter_cd.FilterAppleDsp(0.6), 0.1200));
   ASSERT(IsEqual(filter_cd.FilterStraight(-3.5), -0.7600));
+#endif
   
   FirFilter filter_ce(impulse_resp);
   ASSERT(IsEqual(filter_ce.FilterStraight(0.6), 0.1200));
+#ifdef OSXIOS
   ASSERT(IsEqual(filter_ce.FilterAppleDsp(-3.5), -0.7600));
-  
+#endif
+
   // Testing copy constructor
   FirFilter filter_d = filter_c;
   ASSERT(IsEqual(filter_d.Filter(5.6), 2.9700));
@@ -310,24 +319,26 @@ bool FirFilter::Test() {
     ASSERT(mcl::IsEqual(filter_l.Filter(input_b[i]), output_b_cmp[i]));
   }
   
+#ifdef OSXIOS
   FirFilter filter_la(impulse_resp_b);
   Real cmp_la[input_b.size()];
   filter_la.FilterAppleDsp(input_b.data(), input_b.size(), cmp_la);
   ASSERT(IsEqual(output_b_cmp, cmp_la));
-  
+#endif
   
   FirFilter filter_lasplit(impulse_resp_b);
   Real cmp_lasplit_a[4];
   Real cmp_lasplit_b[8];
+#ifdef OSXIOS
   filter_lasplit.FilterAppleDsp(&input_b.data()[0], 4, cmp_lasplit_a);
   ASSERT(IsEqual(&output_b_cmp.data()[0], cmp_lasplit_a, 4));
   filter_lasplit.FilterAppleDsp(&input_b.data()[4], 8, cmp_lasplit_b);
   ASSERT(IsEqual(&output_b_cmp.data()[4], cmp_lasplit_b, 8));
-  
+#endif
   
   FirFilter filter_lb(impulse_resp_b);
-  Real cmp_lb[input_b.size()];
-  filter_lb.FilterSerial(input_b.data(), input_b.size(), cmp_lb);
+  std::vector<Real> cmp_lb(input_b.size(), 0.0);
+  filter_lb.FilterSerial(input_b.data(), input_b.size(), cmp_lb.data());
   ASSERT(IsEqual(output_b_cmp, cmp_lb));
   
   std::vector<Real> input_c = {0.8147, 0.9058, 0.1270, 0.9134, 0.6324, 0.0975, 0.2785, 0.5469, 0.9575, 0.9649, 0.1576, 0.9706, 0.9572, 0.4854, 0.8003, 0.1419, 0.4218, 0.9157, 0.7922, 0.9595};

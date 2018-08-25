@@ -12,6 +12,7 @@
 #include <vector>
 #include <pmmintrin.h>
 #include <xmmintrin.h>
+#include <immintrin.h>
 
 #ifdef OSXIOS
   #include <Accelerate/Accelerate.h>
@@ -74,7 +75,7 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   
   float* extended_input_data = (float*)alloca((num_samples+length_-1) * sizeof(float)); // TODO: handle stack overflow
   float* output_data_float = (float*)alloca((num_samples) * sizeof(float)); // TODO: handle stack overflow
-  GetExtendedInput(input_data, num_samples, extended_input_data);
+  GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
   __declspec(align(16)) __m256 input_frame; // __attribute__ ((aligned (16)));
   __declspec(align(16)) __m256 coefficient; // __attribute__ ((aligned (16)));
@@ -85,7 +86,7 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   for(Int n=0; (n+batch_size)<=num_samples; n+=batch_size) {
     accumulator = _mm256_setzero_ps();
     for(Int k=0; k<length_; k++) {
-      coefficient = _mm256_set1_ps(coefficients_[length_ - k - 1]);
+      coefficient = _mm256_set1_ps((float) coefficients_[length_ - k - 1]);
       input_frame = _mm256_loadu_ps(extended_input_data + n + k);
       product = _mm256_mul_ps(coefficient, input_frame);
       accumulator = _mm256_add_ps(accumulator, product);
