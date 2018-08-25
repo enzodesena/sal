@@ -138,7 +138,7 @@ void PropagationLine::Write(const Sample* samples,
                             const Int num_samples) noexcept {
   if (air_filters_active_) {
     assert(num_samples < MAX_VLA_LENGTH);
-	Sample* temp_samples = (Sample*)alloca(num_samples * sizeof(Sample)); // TODO: handle stack overflow
+    Sample* temp_samples = (Sample*)alloca(num_samples * sizeof(Sample)); // TODO: handle stack overflow
     air_filter_.Filter(samples, num_samples, temp_samples);
     delay_filter_.Write(temp_samples, num_samples);
   } else {
@@ -172,14 +172,10 @@ void PropagationLine::Read(const Int num_samples,
   
   
 sal::Sample PropagationLine::Read() const noexcept {
-  switch (interpolation_type_) {
-    default:
-    case sal::kRounding: {
-      return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
-    }
-    case sal::kLinear: {
-      return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
-    }
+  if (interpolation_type_ == sal::kLinear) {
+    return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
+  } else {
+    return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
   }
 }
   

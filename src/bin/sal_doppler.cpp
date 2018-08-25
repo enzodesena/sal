@@ -40,7 +40,7 @@ int main(int argc, char * const argv[]) {
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
   PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
-                               kLinear);
+                               kRounding);
   
   PropagationLine line(current_distance, sampling_frequency, 1000.0,
                        kLinear);
