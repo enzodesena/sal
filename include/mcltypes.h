@@ -21,6 +21,7 @@
 #include <complex>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 #if _WIN32 || _WIN64
   #if _WIN64
@@ -94,7 +95,8 @@ public:
     if (output_type_ == kCerr) {
       std::cerr<<output<<std::endl;
     } else if (output_type_ == kOutputFile) {
-      // TODO: implement me.
+      log_string_.append("\n");
+      log_string_.append(format);
     }
   }
   
@@ -111,7 +113,8 @@ public:
     if (output_type_ == kCerr) {
       std::cerr<<output<<std::endl;
     } else if (output_type_ == kOutputFile) {
-      // TODO: implement me.
+      log_string_.append("\n");
+      log_string_.append(format);
     }
   }
   
@@ -119,13 +122,27 @@ public:
     output_type_ = output_type;
   }
   
+  void SetOutputFile(const std::string& log_output_file) {
+    log_output_file_ = log_output_file;
+  }
   
 private:
-  Logger() : output_type_(kCerr) {}
-  ~Logger() {}
+  Logger() : output_type_(kCerr), log_output_file_("err.log") {}
+  ~Logger() {
+    if (log_string_.length() > 0) {
+      std::cerr<<"Writing logger out to "<<log_output_file_<<std::endl;
+      std::ofstream output_stream(log_output_file_);
+      output_stream<<log_string_;
+      output_stream.close();
+    }
+  }
+  
   Logger(const Logger&);
   const Logger& operator= (const Logger&);
   OutputType output_type_;
+  
+  std::string log_string_;
+  std::string log_output_file_;
 };
   
 
