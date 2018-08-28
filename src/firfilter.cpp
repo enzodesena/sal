@@ -10,12 +10,23 @@
 #include "vectorop.h"
 #include "mcltypes.h"
 #include <vector>
-#include <pmmintrin.h>
-#include <xmmintrin.h>
-#include <immintrin.h>
 
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   #include <Accelerate/Accelerate.h>
+#else
+  #ifndef ENVARM
+    #include <pmmintrin.h>
+    #include <xmmintrin.h>
+    #include <immintrin.h>
+  #endif
+#endif
+
+
+
+#ifdef ENVWINDOWS
+  #define ALIGNED(n) __declspec(align(n))
+#else
+  #define ALIGNED(n) __attribute__ ((aligned (n)))
 #endif
 
 namespace mcl {
@@ -49,7 +60,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
     delay_line_[0] = input_sample;
     return input_sample*coefficients_[0];
   }
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   return FilterAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
@@ -65,9 +76,11 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     mcl::Multiply(input_data, num_samples, coefficients_[0], output_data);
     return;
   }
-#ifdef OSXIOS
+#if defined(ENVAPPLE)
   FilterAppleDsp(input_data, num_samples, output_data);
-#else // If not OSXIOS
+#elif defined(ENVARM)
+  FilterSerial(input_data, num_samples, output_data);
+#else
   if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
@@ -77,10 +90,10 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   float* output_data_float = (float*)alloca((num_samples) * sizeof(float)); // TODO: handle stack overflow
   GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
-  __declspec(align(16)) __m256 input_frame; // __attribute__ ((aligned (16)));
-  __declspec(align(16)) __m256 coefficient; // __attribute__ ((aligned (16)));
-  __declspec(align(16)) __m256 product;     // __attribute__ ((aligned (16)));
-  __declspec(align(16)) __m256 accumulator; // __attribute__ ((aligned (16)));
+  ALIGNED(16) __m256 input_frame;
+  ALIGNED(16) __m256 coefficient;
+  ALIGNED(16) __m256 product;
+  ALIGNED(16) __m256 accumulator;
   const Int batch_size = 8;
   
   for(Int n=0; (n+batch_size)<=num_samples; n+=batch_size) {
@@ -133,7 +146,7 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
 }
   
   
-#ifdef OSXIOS
+#ifdef ENVAPPLE
 Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   if (length_-counter_ > MAX_VLA_LENGTH) {
     return FilterStraight(input_sample);

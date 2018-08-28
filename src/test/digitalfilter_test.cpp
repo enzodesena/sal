@@ -217,14 +217,14 @@ bool FirFilter::Test() {
   std::vector<Real> input = {1, 2, 3, 4, 5, 6, 7};
   Real output_lasplita_a[3];
   std::vector<Real> cmp_lasplita_a = { 0.1, 0.4, 1.0 };
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   filter_lasplita.FilterAppleDsp(&input.data()[0], 3, output_lasplita_a);
   ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
 #endif
 
   Real output_lasplita_b[4];
   std::vector<Real> cmp_lasplita_b = { 1.6, 2.2, 2.8, 3.4 };
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   filter_lasplita.FilterAppleDsp(&input.data()[3], 4, output_lasplita_b);
   ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
 #endif
@@ -273,7 +273,7 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(filter_c.Filter(-3.5), -0.7600));
   
   FirFilter filter_ca(impulse_resp);
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   ASSERT(IsEqual(filter_ca.FilterAppleDsp(0.6), 0.1200));
   ASSERT(IsEqual(filter_ca.FilterAppleDsp(-3.5), -0.7600));
 #endif
@@ -283,14 +283,14 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(filter_cb.FilterStraight(-3.5), -0.7600));
   
   FirFilter filter_cd(impulse_resp);
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   ASSERT(IsEqual(filter_cd.FilterAppleDsp(0.6), 0.1200));
   ASSERT(IsEqual(filter_cd.FilterStraight(-3.5), -0.7600));
 #endif
   
   FirFilter filter_ce(impulse_resp);
   ASSERT(IsEqual(filter_ce.FilterStraight(0.6), 0.1200));
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   ASSERT(IsEqual(filter_ce.FilterAppleDsp(-3.5), -0.7600));
 #endif
 
@@ -319,7 +319,7 @@ bool FirFilter::Test() {
     ASSERT(mcl::IsEqual(filter_l.Filter(input_b[i]), output_b_cmp[i]));
   }
   
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   FirFilter filter_la(impulse_resp_b);
   Real cmp_la[input_b.size()];
   filter_la.FilterAppleDsp(input_b.data(), input_b.size(), cmp_la);
@@ -329,7 +329,7 @@ bool FirFilter::Test() {
   FirFilter filter_lasplit(impulse_resp_b);
   Real cmp_lasplit_a[4];
   Real cmp_lasplit_b[8];
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   filter_lasplit.FilterAppleDsp(&input_b.data()[0], 4, cmp_lasplit_a);
   ASSERT(IsEqual(&output_b_cmp.data()[0], cmp_lasplit_a, 4));
   filter_lasplit.FilterAppleDsp(&input_b.data()[4], 8, cmp_lasplit_b);

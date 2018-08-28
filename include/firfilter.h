@@ -71,7 +71,7 @@ public:
   virtual ~FirFilter() {}
   
 private:
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   Real FilterAppleDsp(Real input_sample) noexcept;
   void FilterAppleDsp(const Real* input_data, const Int num_samples,
                       Real* output_data) noexcept;

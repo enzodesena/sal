@@ -28,9 +28,7 @@
   #else
     #define ENV32BIT
   #endif
-#endif
-
-#if __GNUC__
+#elif __GNUC__
   #if __x86_64__ || __ppc64__
     #define ENV64BIT
   #else
@@ -38,6 +36,16 @@
   #endif
 #endif
 
+
+#if _WIN32 || _WIN64
+  #define ENVWINDOWS
+#elif __arm__ || __aarch64__
+  #define ENVARM
+#elif __APPLE__
+  #define ENVAPPLE
+#else
+  #define ENVOTHER
+#endif
 
 namespace mcl {
 #define MAX_VLA_LENGTH 5000
