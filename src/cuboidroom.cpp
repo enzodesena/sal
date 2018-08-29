@@ -41,12 +41,19 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   mcl::Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
   std::vector<Point> reflection_points(6);
   
-  reflection_points[0] = (ReflectionPoint(kX1, shifted_source_point, shifted_mic_point));
-  reflection_points[1] = (ReflectionPoint(kX2, shifted_source_point, shifted_mic_point));
-  reflection_points[2] = (ReflectionPoint(kY1, shifted_source_point, shifted_mic_point));
-  reflection_points[3] = (ReflectionPoint(kY2, shifted_source_point, shifted_mic_point));
-  reflection_points[4] = (ReflectionPoint(kZ1, shifted_source_point, shifted_mic_point));
-  reflection_points[5] = (ReflectionPoint(kZ2, shifted_source_point, shifted_mic_point));
+  reflection_points[0] = ReflectionPoint(kX1, shifted_source_point, shifted_mic_point);
+  reflection_points[1] = ReflectionPoint(kX2, shifted_source_point, shifted_mic_point);
+  reflection_points[2] = ReflectionPoint(kY1, shifted_source_point, shifted_mic_point);
+  reflection_points[3] = ReflectionPoint(kY2, shifted_source_point, shifted_mic_point);
+  reflection_points[4] = ReflectionPoint(kZ1, shifted_source_point, shifted_mic_point);
+  reflection_points[5] = ReflectionPoint(kZ2, shifted_source_point, shifted_mic_point);
+  
+  ASSERT(mcl::IsEqual(reflection_points[0].x(), 0.0));
+  ASSERT(mcl::IsEqual(reflection_points[1].x(), dimensions_.x()));
+  ASSERT(mcl::IsEqual(reflection_points[2].y(), 0.0));
+  ASSERT(mcl::IsEqual(reflection_points[3].y(), dimensions_.y()));
+  ASSERT(mcl::IsEqual(reflection_points[4].z(), 0.0));
+  ASSERT(mcl::IsEqual(reflection_points[5].z(), dimensions_.z()));
   
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 = IntersectionPoint(kX2, dimensions_,
@@ -101,6 +108,13 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   for (Int i=0; i<(Int) reflection_points.size(); ++i) {
     reflection_points[i] = mcl::Sum(reflection_points[i], origin_position_);
   }
+  
+  ASSERT(mcl::IsEqual(reflection_points[0].x(), origin_position_.x()));
+  ASSERT(mcl::IsEqual(reflection_points[1].x(), dimensions_.x()+origin_position_.x()));
+  ASSERT(mcl::IsEqual(reflection_points[2].y(), origin_position_.y()));
+  ASSERT(mcl::IsEqual(reflection_points[3].y(), dimensions_.y()+origin_position_.y()));
+  ASSERT(mcl::IsEqual(reflection_points[4].z(), origin_position_.z()));
+  ASSERT(mcl::IsEqual(reflection_points[5].z(), dimensions_.z()+origin_position_.z()));
   
   return reflection_points;
 }
