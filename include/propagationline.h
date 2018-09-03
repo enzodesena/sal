@@ -71,7 +71,13 @@ public:
   void Write(const Sample* samples, const Int num_samples) noexcept;
   
   /** Returns the current read sample */
-  sal::Sample Read() const noexcept;
+  inline sal::Sample Read() const noexcept {
+    if (interpolation_type_ == sal::kLinear) {
+      return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
+    } else {
+      return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
+    }
+  }
   
   /** Returns a set of `num_samples` samples and writes them into `output_data`.
    @param[in] num_samples the number of samples to read.

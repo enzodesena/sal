@@ -49,14 +49,44 @@ public:
   inline Sample Read() const noexcept { return *read_index_; }
   
   /** This allows to read at a different location from the read pointer. */
-  Sample ReadAt(const Int delay_tap) const noexcept;
+  inline Sample ReadAt(const Int delay_tap) const noexcept {
+    Int sanitised_delay_tap = delay_tap;
+    if (delay_tap > max_latency_) {
+      mcl::Logger::GetInstance().
+      LogError("Trying to read at a delay tap (%d) larger than the maximum latency "
+               "of the delay line (%d). Giving back the value at the maximum "
+               "latency instead. ",
+               delay_tap, max_latency_);
+      sanitised_delay_tap = max_latency_;
+    }
+    
+    ASSERT(write_index_>= start_ && write_index_ <= end_);
+    Sample* read_index = write_index_ - sanitised_delay_tap;
+    return (read_index >= start_) ? *read_index : *(read_index + max_latency_ + 1);
+  }
   
   /** Read the next `num_samples` samples.
    @param[in] num_samples the number of samples to be read.
    @param[out] output_data the array where to write these samples. */
   void Read(const Int num_samples, Sample* output_data) const noexcept;
   
-  Sample FractionalReadAt(const Time fractional_delay_tap) const noexcept;
+  inline Sample FractionalReadAt(const Time fractional_delay_tap) const noexcept {
+    Time sanitised_delay_tap = fractional_delay_tap;
+    if (fractional_delay_tap >= (Time) max_latency_) {
+      mcl::Logger::GetInstance().
+      LogError("Trying to read at a delay tap (%f) larger than the maximum latency "
+               "of the delay line (%d). Giving back the value at the maximum "
+               "latency instead. ",
+               fractional_delay_tap, max_latency_);
+      sanitised_delay_tap = (Time) max_latency_;
+    }
+    
+    Int x_a = (Int) sanitised_delay_tap; // Cast to int is equivalent to floor
+    Int x_b = x_a + 1;
+    Sample f_x_a = ReadAt(x_a);
+    Sample f_x_b = ReadAt(x_b);
+    return (f_x_b-f_x_a)/(x_b-x_a)*(sanitised_delay_tap-x_a)+f_x_a;
+  }
   
   /** This causes time to tick by one sample. */
   inline void Tick() noexcept {

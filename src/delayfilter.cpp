@@ -135,22 +135,6 @@ Int DelayFilter::latency() const noexcept { return latency_; }
 
 Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
-Sample DelayFilter::ReadAt(const Int delay_tap) const noexcept {
-  Int sanitised_delay_tap = delay_tap;
-  if (delay_tap > max_latency_) {
-    Logger::GetInstance().
-    LogError("Trying to read at a delay tap (%d) larger than the maximum latency "
-             "of the delay line (%d). Giving back the value at the maximum "
-             "latency instead. ",
-             delay_tap, max_latency_);
-    sanitised_delay_tap = max_latency_;
-  }
-  
-  ASSERT(write_index_>= start_ && write_index_ <= end_);
-  Sample* read_index = write_index_ - sanitised_delay_tap;
-  return (read_index >= start_) ? *read_index : *(read_index + max_latency_ + 1);
-}
-  
 void DelayFilter::Read(const Int num_samples,
                        Sample* output_data) const noexcept {
   if (num_samples > latency_) {
@@ -171,25 +155,6 @@ void DelayFilter::Read(const Int num_samples,
       k = start_-read_index_;
     }
   }
-}
-
-Sample DelayFilter::FractionalReadAt(const Time fractional_delay_tap)
-      const noexcept {
-  Time sanitised_delay_tap = fractional_delay_tap;
-  if (fractional_delay_tap >= (Time) max_latency_) {
-    Logger::GetInstance().
-    LogError("Trying to read at a delay tap (%f) larger than the maximum latency "
-             "of the delay line (%d). Giving back the value at the maximum "
-             "latency instead. ",
-             fractional_delay_tap, max_latency_);
-    sanitised_delay_tap = (Time) max_latency_;
-  }
-        
-  Int x_a = (UInt) floor(sanitised_delay_tap);
-  Int x_b = x_a+1;
-  Sample f_x_a = ReadAt(x_a);
-  Sample f_x_b = ReadAt(x_b);
-  return (f_x_b-f_x_a)/(x_b-x_a)*(sanitised_delay_tap-x_a)+f_x_a;
 }
   
 void DelayFilter::Reset() noexcept {

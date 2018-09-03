@@ -126,7 +126,7 @@ sal::Length PropagationLine::distance() const noexcept {
   return current_latency_/sampling_frequency_*SOUND_SPEED;
 }
   
-void PropagationLine::Write(const sal::Sample &sample) noexcept {
+void PropagationLine::Write(const sal::Sample& sample) noexcept {
   if (air_filters_active_) {
     delay_filter_.Write(air_filter_.Filter(sample));
   } else {
@@ -137,8 +137,8 @@ void PropagationLine::Write(const sal::Sample &sample) noexcept {
 void PropagationLine::Write(const Sample* samples,
                             const Int num_samples) noexcept {
   if (air_filters_active_) {
-    assert(num_samples < MAX_VLA_LENGTH);
-    Sample* temp_samples = (Sample*)alloca(num_samples * sizeof(Sample)); // TODO: handle stack overflow
+    ASSERT(num_samples < MAX_VLA_LENGTH);
+    Sample* temp_samples = (Sample*) alloca(num_samples * sizeof(Sample)); // TODO: handle stack overflow
     air_filter_.Filter(samples, num_samples, temp_samples);
     delay_filter_.Write(temp_samples, num_samples);
   } else {
@@ -158,11 +158,13 @@ void PropagationLine::Read(const Int num_samples,
     RampSmoother temp_attenuation(attenuation_smoother_);
     RampSmoother temp_latency(latency_smoother_);
     
-    for (Int i=1; i<num_samples; ++i) {
-      if (interpolation_type_ == sal::kLinear) {
+    if (interpolation_type_ == sal::kLinear) {
+      for (Int i=1; i<num_samples; ++i) {
         output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
             * temp_attenuation.GetNextValue();
-      } else {
+      }
+    } else {
+      for (Int i=1; i<num_samples; ++i) {
         output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i)
             * temp_attenuation.GetNextValue();
       }
@@ -170,18 +172,9 @@ void PropagationLine::Read(const Int num_samples,
   }
 }
   
-  
-sal::Sample PropagationLine::Read() const noexcept {
-  if (interpolation_type_ == sal::kLinear) {
-    return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
-  } else {
-    return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
-  }
-}
-  
 
 std::vector<sal::Sample>
-  PropagationLine::GetAirFilter(sal::Length distance) noexcept {
+PropagationLine::GetAirFilter(sal::Length distance) noexcept {
   
   std::vector<sal::Length> distances = {1,1.2743,1.6238,2.0691,2.6367,3.3598,
                                         4.2813,5.4556,6.9519,8.8587,11.288,
