@@ -146,14 +146,12 @@ void DelayFilter::Read(const Int num_samples,
              num_samples, latency_);
   }
   
-  Int k = 0;
+  Sample* read_index = read_index_;
   for (Int i=0; i<num_samples; ++i) {
-    ASSERT((read_index_+k) >= start_ && (read_index_+k) <= end_);
-    output_data[i] = *(read_index_+k++);
-    if (read_index_+k > end_) {
-      // Make it such that for the next loop, read_index_+k == start_, i.e.
-      // k becomes negative
-      k = start_-read_index_;
+    ASSERT(read_index >= start_ && read_index <= end_);
+    output_data[i] = *(read_index++);
+    if (read_index > end_) {
+      read_index = start_;
     }
   }
 }
