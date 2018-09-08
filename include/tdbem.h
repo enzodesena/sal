@@ -82,8 +82,7 @@ public:
         const sal::Time sampling_frequency,
         const sal::Length spatial_sampling_period,
         const sal::Sample specific_acoustic_impedance);
-  
-  
+    
   void WriteOutPoints(const std::string file_name);
   
   void Run(const MonoBuffer& input_buffer, Buffer& output_buffer);
@@ -95,7 +94,7 @@ public:
     log_file_name_ = file_name;
   }
   
-  static bool Test();
+  static bool SimulationTime();
 };
   
 } // namespace sal

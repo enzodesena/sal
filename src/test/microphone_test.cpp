@@ -44,14 +44,12 @@ bool Microphone::Test() {
   
   TrigMic mic_i(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/4.0), coefficients);
   
-  const Angle angle_i = PI/4.0;
   ASSERT(IsEqual(mic_i.RecordPlaneWave(0.5, Point(0.0,1.0,0.0)),
-                 0.5*(0.5-1.0*cos(angle_i)-0.5*pow(cos(angle_i),2.0))));
+                 0.5*(0.5-1.0*cos(PI/4.0)-0.5*pow(cos(PI/4.0),2.0))));
   
   TrigMic mic_e(Point(1.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0), coefficients);
-  const Angle angle_e = PI/4.0;
   ASSERT(IsEqual(mic_e.RecordPlaneWave(0.5, Point(0.0,1.0,0.0)),
-                 0.5*(0.5-1.0*cos(angle_e)-0.5*pow(cos(angle_e),2.0))));
+                 0.5*(0.5-1.0*cos(PI/4.0)-0.5*pow(cos(PI/4.0),2.0))));
   
   TrigMic mic_f(Point(2.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0), coefficients);
   const Angle angle_f= PI/2.0-acos(2.0/sqrt(5.0));

@@ -114,15 +114,16 @@ void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
   
 void DelayFilter::SetLatency(const Int latency) noexcept {
   if (latency_ == latency) { return; }
-  latency_ = latency;
+  
   if (latency > max_latency_) {
     Logger::GetInstance().
     LogError("Trying to set a delay filter latency (%d) larger than "
              "the maximum latency (%d). The latency will be set to the "
              "the maximum latency instead. ",
              latency, max_latency_);
-    latency_ = max_latency_;
   }
+  
+  latency_ = std::min(latency, max_latency_);
   
   read_index_ = write_index_ - latency_;
   

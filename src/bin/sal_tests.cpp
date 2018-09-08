@@ -30,6 +30,7 @@
 
 int main(int argc, char * const argv[]) {
   
+#ifndef NDEBUG
   sal::Buffer::Test();
   sal::AmbisonicsMic::Test();
   sal::AmbisonicsHorizDec::Test();
@@ -45,13 +46,15 @@ int main(int argc, char * const argv[]) {
   sal::Ism::Test();
   sal::RirAnalysis::Test();
   sal::TripletHandler::Test();
-  
-  std::cout<<"All tests succeded!\n";
-  
   sal::Fdtd::Test();
-  sal::TdBem::Test();
-  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
+
+  std::cout<<"All tests succeded!\n";
+#else
+  std::cout<<"Not running tests since NDEBUG is defined and asserts are ignored.\n";
+#endif
   
+  sal::TdBem::SimulationTime();
+  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
     
   return 0;
 }

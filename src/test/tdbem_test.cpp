@@ -24,7 +24,7 @@ using sal::Sample;
 using sal::OmniMic;
 using sal::Length;
   
-bool TdBem::Test() {
+bool TdBem::SimulationTime() {
   
   
   Time sampling_frequency = 4000;
