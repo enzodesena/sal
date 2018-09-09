@@ -86,8 +86,8 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     return;
   }
   
-  float* extended_input_data = (float*)alloca((num_samples+length_-1) * sizeof(float)); // TODO: handle stack overflow
-  float* output_data_float = (float*)alloca((num_samples) * sizeof(float)); // TODO: handle stack overflow
+  float* extended_input_data = STACK_ALLOCATE(num_samples+length_-1, float); // TODO: handle stack overflow
+  float* output_data_float = STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
   GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
   ALIGNED(16) __m256 input_frame;

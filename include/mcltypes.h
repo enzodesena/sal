@@ -48,8 +48,11 @@
   #define ENVOTHER
 #endif
 
-namespace mcl {
 #define MAX_VLA_LENGTH 5000
+#define STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
+
+namespace mcl {
+
 #define MCL_DATA_TYPE_DOUBLE
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
