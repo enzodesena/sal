@@ -16,8 +16,8 @@
 #include <vector>
 #include <cassert>
 
-#ifdef MCL_ENVAPPLE
-#include <Accelerate/Accelerate.h>
+#ifdef MCL_APPLE_ACCELERATE
+  #include <Accelerate/Accelerate.h>
 #endif
 
 namespace mcl {
@@ -26,7 +26,7 @@ void Multiply(const Real* input_data,
                       const Int num_samples,
                       const Real gain,
                       Real* output_data) noexcept {
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
   #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_vmulD(input_data, 1,
              &gain, 0,
@@ -46,7 +46,7 @@ void Multiply(const Real* input_data,
 void MultiplyAdd(const Real* input_data_mult, const Real gain,
                  const Real* input_data_add, const Int num_samples,
                  Real* output_data) noexcept {
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
   #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_vmaD(input_data_mult, 1,
             &gain, 0,

@@ -11,7 +11,7 @@
 #include "mcltypes.h"
 #include <vector>
 
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
   #include <Accelerate/Accelerate.h>
 #else
   #ifndef MCL_ENVARM
@@ -60,7 +60,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
     delay_line_[0] = input_sample;
     return input_sample*coefficients_[0];
   }
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
   return FilterAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
@@ -76,11 +76,9 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     mcl::Multiply(input_data, num_samples, coefficients_[0], output_data);
     return;
   }
-#if defined(MCL_ENVAPPLE)
+#if defined(MCL_APPLE_ACCELERATE)
   FilterAppleDsp(input_data, num_samples, output_data);
-#elif defined(MCL_ENVARM)
-  FilterSerial(input_data, num_samples, output_data);
-#else
+#elif defined(MCL_AVX_ACCELERATE)
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
@@ -126,6 +124,8 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     delay_line_[i] = input_data[num_samples-1-i];
   }
   counter_ = length_-1;
+#else // defined(MCL_NO_ACCELERATE)
+  FilterSerial(input_data, num_samples, output_data);
 #endif
 }
   
@@ -146,7 +146,7 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
 }
   
   
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
 Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   if (length_-counter_ > MCL_MAX_VLA_LENGTH) {
     return FilterStraight(input_sample);

@@ -11,8 +11,8 @@
 #include "vectorop.h"
 #include <vector>
 
-#ifdef MCL_ENVAPPLE
-#include <Accelerate/Accelerate.h>
+#ifdef MCL_APPLE_ACCELERATE
+  #include <Accelerate/Accelerate.h>
 #endif
 
 namespace mcl {
@@ -22,7 +22,7 @@ void Multiply(const Real* input_data_a,
               const Real* input_data_b,
               Int num_samples,
               Real* output_data) noexcept {
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
   #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_vmulD(input_data_a, 1,
              input_data_b, 1,
@@ -45,7 +45,7 @@ void Add(const Real* input_data_a,
                  const Real* input_data_b,
                  Int num_samples,
                  Real* output_data) noexcept {
-#ifdef MCL_ENVAPPLE
+#ifdef MCL_APPLE_ACCELERATE
   #ifdef MCL_DATA_TYPE_DOUBLE
     vDSP_vaddD(input_data_a, 1,
                input_data_b, 1,

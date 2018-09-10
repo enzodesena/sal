@@ -48,6 +48,15 @@
   #define MCL_ENVOTHER
 #endif
 
+#ifdef MCL_ENVAPPLE
+  #define MCL_APPLE_ACCELERATE
+#elif MCL_ENVARM
+  #define MCL_NO_ACCELERATE
+#else // MCL_ENVWINDOWS || MCL_ENVOTHER
+  #define MCL_AVX_ACCELERATE
+#endif
+
+
 #define MCL_MAX_VLA_LENGTH 5000
 #define MCL_STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
 
