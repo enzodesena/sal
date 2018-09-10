@@ -10,9 +10,11 @@
 
 #include "kemarmic.h"
 #include "point.h"
+#include "butter.h"
 #include "salconstants.h"
 #include "vectorop.h"
 #include <fstream>
+#include <algorithm>
 
 #ifdef _WIN32
   #define sprintf(...) sprintf_s(__VA_ARGS__)
@@ -31,7 +33,8 @@ KemarMic::KemarMic(const Point& position,
                    const std::string directory,
                    const Int num_samples,
                    const Int update_length,
-                   const HeadRefOrientation reference_orientation) :
+                   const HeadRefOrientation reference_orientation,
+                   const Time sampling_frequency) :
           DatabaseBinauralMic(position, orientation, update_length,
                               reference_orientation) {
             
@@ -39,11 +42,38 @@ KemarMic::KemarMic(const Point& position,
   elevations_ = GetElevations();
             
   if (directory.length() == 0) {
-    hrtf_database_right_ = LoadEmbedded(kRightEar, num_samples);
-    hrtf_database_left_ = LoadEmbedded(kLeftEar, num_samples);
+    hrtf_database_right_ = LoadEmbedded(kRightEar);
+    hrtf_database_left_ = LoadEmbedded(kLeftEar);
   } else {
-    hrtf_database_right_ = Load(kRightEar, directory, num_samples);
-    hrtf_database_left_ = Load(kLeftEar, directory, num_samples);
+    hrtf_database_right_ = Load(kRightEar, directory);
+    hrtf_database_left_ = Load(kLeftEar, directory);
+  }
+  
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+            
+  if (mcl::IsEqual(sampling_frequency, 44100.0)) {
+    // OK
+  } else if (mcl::IsEqual(sampling_frequency, 22050.0)) {
+    mcl::IirFilter filter = mcl::Butter(10, 0.001, 0.45);
+    FilterAll(&filter);
+    for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+      for (Int j=0; j<num_measurements[i]; ++j) {
+        hrtf_database_right_[i][j] = mcl::Downsample(hrtf_database_right_[i][j], 2);
+        hrtf_database_left_[i][j] = mcl::Downsample(hrtf_database_left_[i][j], 2);
+      }
+    }
+  } else {
+    mcl::Logger::GetInstance().LogError("The sampling frequency is not supported for "
+                                        "the Kemar mic. Using 44100.0 instead.");
+  }
+  
+  if (num_samples != kFullBrirLength) {
+    for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+      for (Int j=0; j<num_measurements[i]; ++j) {
+        hrtf_database_right_[i][j] = mcl::Subset(hrtf_database_right_[i][j], 0, num_samples);
+        hrtf_database_left_[i][j] = mcl::Subset(hrtf_database_left_[i][j], 0, num_samples);
+      }
+    }
   }
 }
   
@@ -103,7 +133,7 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
 void
 KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
                               const Int num_samples, std::string variable_name) {
-  std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory, num_samples);
+  std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
   
   for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
     for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
@@ -117,8 +147,7 @@ KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
   }
 }
   
-std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
-                                                         const Int num_samples) {
+std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
   std::vector<std::vector<Signal> > hrtf_database;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   
@@ -132,21 +161,13 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
   
   LoadEmbeddedData(ear, hrtf_database);
   
-  if (num_samples != kFullBrirLength) {
-    for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
-      for (Int j=0; j<num_measurements[i]; ++j) {
-        hrtf_database[i][j] = mcl::Subset(hrtf_database[i][j], 0, num_samples);
-      }
-    }
-  }
   return hrtf_database;
 }
   
   
   
 std::vector<std::vector<Signal> >
-  KemarMic::Load(const Ear ear, const std::string directory,
-                 const Int num_samples) {
+  KemarMic::Load(const Ear ear, const std::string directory) {
   std::vector<std::vector<Signal> > hrtf_database;
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
@@ -188,10 +209,6 @@ std::vector<std::vector<Signal> >
       size = size / 2; // Length in number of samples
       ASSERT(size%2 == 0);
       ASSERT((size/2)%2 == 0);
-      
-      if (num_samples != kFullBrirLength) {
-        size = num_samples;
-      }
       
       for (Int k=0; k<size; k+=2) {
         Int ipsilateral_index = j;

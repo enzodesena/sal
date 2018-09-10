@@ -39,7 +39,8 @@ public:
            const std::string directory = "",
            const Int num_samples = kFullBrirLength,
            const Int update_length = 0,
-           const HeadRefOrientation reference_orientation = standard);
+           const HeadRefOrientation reference_orientation = standard,
+           const Time sampling_frequency = 44100.0);
   
   static const int kFullBrirLength = -1;
   
@@ -56,11 +57,9 @@ private:
   
   static
   std::vector<std::vector<Signal> > Load(const Ear ear,
-                                         const std::string directory,
-                                         const Int num_samples);
+                                         const std::string directory);
   
-  static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear,
-                                                        const Int num_samples);
+  static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear);
   
   static void LoadEmbeddedData(const Ear ear,
                                std::vector<std::vector<Signal> >& data);
