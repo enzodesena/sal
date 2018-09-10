@@ -25,35 +25,35 @@
 
 #if _WIN32 || _WIN64
   #if _WIN64
-    #define MCL_ENV64BIT
+    #define MCL_ENV64BIT 1
   #else
-    #define MCL_ENV32BIT
+    #define MCL_ENV32BIT 1
   #endif
 #elif __GNUC__
   #if __x86_64__ || __ppc64__
-    #define MCL_ENV64BIT
+    #define MCL_ENV64BIT 1
   #else
-    #define MCL_ENV32BIT
+    #define MCL_ENV32BIT 1
   #endif
 #endif
 
 
 #if _WIN32 || _WIN64
-  #define MCL_ENVWINDOWS
+  #define MCL_ENVWINDOWS 1
 #elif __arm__ || __aarch64__
-  #define MCL_ENVARM
+  #define MCL_ENVARM 1
 #elif __APPLE__
-  #define MCL_ENVAPPLE
+  #define MCL_ENVAPPLE 1
 #else
-  #define MCL_ENVOTHER
+  #define MCL_ENVOTHER 1
 #endif
 
 #ifdef MCL_ENVAPPLE
-  #define MCL_APPLE_ACCELERATE
+  #define MCL_APPLE_ACCELERATE 1
 #elif MCL_ENVARM
-  #define MCL_NO_ACCELERATE
+  #define MCL_NO_ACCELERATE 1
 #else // MCL_ENVWINDOWS || MCL_ENVOTHER
-  #define MCL_AVX_ACCELERATE
+  #define MCL_AVX_ACCELERATE 1
 #endif
 
 #define MCL_MAX_VLA_LENGTH 5000
@@ -61,7 +61,7 @@
 
 namespace mcl {
 
-#define MCL_DATA_TYPE_DOUBLE
+#define MCL_DATA_TYPE_DOUBLE 1
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
   
