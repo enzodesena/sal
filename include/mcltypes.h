@@ -56,7 +56,6 @@
   #define MCL_AVX_ACCELERATE
 #endif
 
-
 #define MCL_MAX_VLA_LENGTH 5000
 #define MCL_STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
 

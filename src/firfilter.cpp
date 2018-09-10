@@ -11,14 +11,12 @@
 #include "mcltypes.h"
 #include <vector>
 
-#ifdef MCL_APPLE_ACCELERATE
+#if defined(MCL_APPLE_ACCELERATE)
   #include <Accelerate/Accelerate.h>
-#else
-  #ifndef MCL_ENVARM
-    #include <pmmintrin.h>
-    #include <xmmintrin.h>
-    #include <immintrin.h>
-  #endif
+#elif defined(MCL_AVX_ACCELERATE)
+  #include <pmmintrin.h>
+  #include <xmmintrin.h>
+  #include <immintrin.h>
 #endif
 
 
@@ -90,7 +88,6 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   
   ALIGNED(16) __m256 input_frame;
   ALIGNED(16) __m256 coefficient;
-  ALIGNED(16) __m256 product;
   ALIGNED(16) __m256 accumulator;
   const Int batch_size = 8;
   
@@ -99,8 +96,8 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     for(Int k=0; k<length_; k++) {
       coefficient = _mm256_set1_ps((float) coefficients_[length_ - k - 1]);
       input_frame = _mm256_loadu_ps(extended_input_data + n + k);
-      product = _mm256_mul_ps(coefficient, input_frame);
-      accumulator = _mm256_add_ps(accumulator, product);
+      accumulator = _mm256_add_ps(_mm256_mul_ps(coefficient, input_frame), accumulator);
+      // accumulator = _mm256_fmadd_ps(coefficient, input_frame, accumulator);
     }
     _mm256_storeu_ps(output_data_float+n, accumulator);
   }
