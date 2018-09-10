@@ -99,14 +99,12 @@ void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
              num_samples, max_latency_-latency_+1);
   }
   
-  Int k = 0;
+  Sample* write_index = write_index_;
   for (Int i=0; i<num_samples; ++i) {
-    ASSERT((write_index_+k) >= start_ && (write_index_+k) <= end_);
-    *(write_index_+k++) = samples[i];
-    if (write_index_+k > end_) {
-      // Make it such that for the next loop, write_index_+k == start_, i.e.
-      // k becomes negative
-      k = start_-write_index_;
+    ASSERT(write_index >= start_ && write_index <= end_);
+    *(write_index++) = samples[i];
+    if (write_index > end_) {
+      write_index = start_;
     }
   }
 }
