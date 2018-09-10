@@ -38,6 +38,9 @@ public:
    */
   virtual Real Filter(const Real input) noexcept;
   
+  virtual void Filter(const Real* input_data, const Int num_samples,
+                      Real* output_data) noexcept;
+  
   using DigitalFilter::Filter;
   
   /** Returns the order of the filter. */
@@ -48,7 +51,7 @@ public:
    updated too rapidly.
    */
   void SetCoefficients(const std::vector<Real>& B,
-                        const std::vector<Real>& A) noexcept;
+                       const std::vector<Real>& A) noexcept;
   
   /** Sets the coefficients as identical to those of another filter. */
   void SetCoefficients(const IirFilter& filter) noexcept;
@@ -58,10 +61,10 @@ public:
   Real GetDenominatorCoefficient(const Int coeff_id) const noexcept;
   
   void SetNumeratorCoefficient(const Int coeff_id,
-                                 const Real value) noexcept;
+                               const Real value) noexcept;
   
   inline void SetDenominatorCoefficient(const Int coeff_id,
-                                          const Real value) noexcept;
+                                        const Real value) noexcept;
   
   /** Returns the forward coefficients */
   std::vector<Real> B() const;

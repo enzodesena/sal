@@ -124,7 +124,16 @@ void IirFilter::SetDenominatorCoefficient(const Int coeff_id,
   if (coeff_id == 0) { A0_ = value; }
 }
 
-
+void IirFilter::Filter(const Real* input_data, const Int num_samples,
+                       Real* output_data) noexcept {
+  if (B_.size() == 1) {
+    Multiply(input_data, num_samples, B_[0], output_data);
+  } else {
+    FilterSerial(input_data, num_samples, output_data);
+  }
+}
+  
+  
 Real IirFilter::Filter(Real input) noexcept {
   Real v = input; // The temporary value in the recursive branch.
   Real output(0.0);
