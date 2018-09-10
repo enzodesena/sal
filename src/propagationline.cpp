@@ -151,23 +151,29 @@ void PropagationLine::Read(const Int num_samples,
   ASSERT(num_samples >= 0);
   if (num_samples == 0) { return; }
   
-  output_data[0] = Read();
-  
-  if (num_samples > 1) {
-    // Create a temporary we can discard
-    RampSmoother temp_attenuation(attenuation_smoother_);
-    RampSmoother temp_latency(latency_smoother_);
+  if (! attenuation_smoother_.IsUpdating() && ! latency_smoother_.IsUpdating() &&
+      interpolation_type_ == sal::InterpolationType::kRounding) {
+    delay_filter_.Read(num_samples, output_data);
+    mcl::Multiply(output_data, num_samples, current_attenuation_, output_data);
+  } else {
+    output_data[0] = Read();
     
-    if (interpolation_type_ == sal::InterpolationType::kLinear) {
-      for (Int i=1; i<num_samples; ++i) {
-        output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
-            * temp_attenuation.GetNextValue();
+    if (num_samples > 1) {
+      // Create a temporary we can discard
+      RampSmoother temp_attenuation(attenuation_smoother_);
+      RampSmoother temp_latency(latency_smoother_);
+      
+      if (interpolation_type_ == sal::InterpolationType::kLinear) {
+        for (Int i=1; i<num_samples; ++i) {
+          output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
+              * temp_attenuation.GetNextValue();
+        }
+      } else {
+        for (Int i=1; i<num_samples; ++i) {
+          output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i);
+        }
+        temp_attenuation.GetNextValuesMultiply(&output_data[1], num_samples-1, &output_data[1]);
       }
-    } else {
-      for (Int i=1; i<num_samples; ++i) {
-        output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i);
-      }
-      temp_attenuation.GetNextValuesMultiply(&output_data[1], num_samples-1, &output_data[1]);
     }
   }
 }
