@@ -40,10 +40,10 @@ int main(int argc, char * const argv[]) {
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
   PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
-                               kRounding);
+                               InterpolationType::kRounding);
   
   PropagationLine line(current_distance, sampling_frequency, 1000.0,
-                       kLinear);
+                       InterpolationType::kLinear);
   line.SetAttenuation(1.0, 0.0);
   
   Sample line_tmp[samples_per_buffer];
