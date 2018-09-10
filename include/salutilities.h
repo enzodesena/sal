@@ -132,11 +132,12 @@ public:
   }
   
   Sample GetNextValue(const Int num_jumps) noexcept {
-    countdown_ -= num_jumps;
-    if (countdown_ <= 0) {
+    // The +1 below is to make this identical to GetNextValue()
+    if ((countdown_-num_jumps) <= 0) {
       current_value_ = target_value_;
       countdown_ = 0;
     } else {
+      countdown_ -= num_jumps;
       current_value_ += step_*((Sample)num_jumps);
     }
     return current_value_;
