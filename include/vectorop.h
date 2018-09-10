@@ -275,6 +275,19 @@ std::vector<T> Interleave(const std::vector<T>& vector_a,
   return output;
 }
 
+/** Decreases the sampling frequency of the input vector by keeping
+ the first sample and then every `downsampling_factor`-th sample after the first. */
+template<class T>
+std::vector<T> Downsample(const std::vector<T>& vector,
+                          const Int downsampling_factor) noexcept {
+  ASSERT(downsampling_factor >= 1);
+  std::vector<T> output;
+  for (Int i=0; i<(Int)vector.size(); i += downsampling_factor) {
+    output.push_back(vector[i]);
+  }
+  return output;
+}
+
 /**
  This is equivalent to Matlab's from:to. E.g. 3:5 outputs a vector [3,4,5].
  TODO: Implement fractional input.

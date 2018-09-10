@@ -125,7 +125,25 @@ bool VectorOpTest() {
   
   ASSERT(IsEqual(Sum(vector_e), -0.3+30.3+2.4+12.4));
   
-    
+  ASSERT(Downsample(vector_f, 2).size() == 2);
+  ASSERT(Downsample(vector_f, 3).size() == 2);
+  ASSERT(Downsample(vector_f, 4).size() == 1);
+  ASSERT(Downsample(vector_f, 10).size() == 1);
+  ASSERT(Downsample(pad_vector_c_cmp, 2).size() == 3);
+  ASSERT(Downsample(pad_vector_c_cmp, 3).size() == 2);
+  ASSERT(Downsample(pad_vector_c_cmp, 4).size() == 2);
+  ASSERT(Downsample(pad_vector_c_cmp, 5).size() == 1);
+  
+  std::vector<Real> cmp_downsample_f(2);
+  cmp_downsample_f[0] = 2.5;
+  cmp_downsample_f[1] = -2.4;
+  ASSERT(IsEqual(cmp_downsample_f, Downsample(vector_f, 2)));
+  
+  std::vector<Real> cmp_downsample_f_3(2);
+  cmp_downsample_f_3[0] = 2.5;
+  cmp_downsample_f_3[1] = -1.0;
+  ASSERT(IsEqual(cmp_downsample_f_3, Downsample(vector_f, 3)));
+  
   std::vector<Real> vector_f_sub_0_2 = Subset(vector_f, 0, 2);
   ASSERT(vector_f_sub_0_2.size() == 3);
   std::vector<Real> vector_f_sub_0_2_cmp(3);
