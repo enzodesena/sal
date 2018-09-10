@@ -71,11 +71,34 @@ public:
   virtual ~FirFilter() {}
   
 private:
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   Real FilterAppleDsp(Real input_sample) noexcept;
   void FilterAppleDsp(const Real* input_data, const Int num_samples,
                       Real* output_data) noexcept;
 #endif
+  
+  template<class T>
+  void GetExtendedInput(const Real* input_data, const Int num_samples,
+                        T* extended_input_data) {
+    
+    // Stage 1
+    for (Int i=0; i<counter_; ++i) {
+      extended_input_data[i] = delay_line_[counter_-i-1];
+    }
+    
+    // Stage 2
+    // Starting from counter_ in padded_data
+    // Ending in counter_+(length_-counter_-1)
+    for (Int i=counter_; i<(length_-1); ++i) {
+      extended_input_data[i] = delay_line_[length_-1-(i-counter_)];
+    }
+    
+    // Stage 3
+    // Append input signal
+    for (Int i=(length_-1); i<(length_-1+num_samples); ++i) {
+      extended_input_data[i] = input_data[i-(length_-1)];
+    }
+  }
   
   Real FilterStraight(Real input_sample) noexcept;
   

@@ -21,6 +21,7 @@
 #include <complex>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 #if _WIN32 || _WIN64
   #if _WIN64
@@ -28,9 +29,7 @@
   #else
     #define ENV32BIT
   #endif
-#endif
-
-#if __GNUC__
+#elif __GNUC__
   #if __x86_64__ || __ppc64__
     #define ENV64BIT
   #else
@@ -39,8 +38,21 @@
 #endif
 
 
-namespace mcl {
+#if _WIN32 || _WIN64
+  #define ENVWINDOWS
+#elif __arm__ || __aarch64__
+  #define ENVARM
+#elif __APPLE__
+  #define ENVAPPLE
+#else
+  #define ENVOTHER
+#endif
+
 #define MAX_VLA_LENGTH 5000
+#define STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
+
+namespace mcl {
+
 #define MCL_DATA_TYPE_DOUBLE
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
@@ -86,7 +98,8 @@ public:
     if (output_type_ == kCerr) {
       std::cerr<<output<<std::endl;
     } else if (output_type_ == kOutputFile) {
-      // TODO: implement me.
+      log_string_.append("\n");
+      log_string_.append(format);
     }
   }
   
@@ -103,7 +116,8 @@ public:
     if (output_type_ == kCerr) {
       std::cerr<<output<<std::endl;
     } else if (output_type_ == kOutputFile) {
-      // TODO: implement me.
+      log_string_.append("\n");
+      log_string_.append(format);
     }
   }
   
@@ -111,13 +125,27 @@ public:
     output_type_ = output_type;
   }
   
+  void SetOutputFile(const std::string& log_output_file) {
+    log_output_file_ = log_output_file;
+  }
   
 private:
-  Logger() : output_type_(kCerr) {}
-  ~Logger() {}
+  Logger() : output_type_(kCerr), log_output_file_("err.log") {}
+  ~Logger() {
+    if (log_string_.length() > 0) {
+      std::cerr<<"Writing logger out to "<<log_output_file_<<std::endl;
+      std::ofstream output_stream(log_output_file_);
+      output_stream<<log_string_;
+      output_stream.close();
+    }
+  }
+  
   Logger(const Logger&);
   const Logger& operator= (const Logger&);
   OutputType output_type_;
+  
+  std::string log_string_;
+  std::string log_output_file_;
 };
   
 

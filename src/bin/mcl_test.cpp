@@ -20,10 +20,9 @@
 
 int main (int argc, char * const argv[]) {
   using namespace mcl;
-  
+
+#ifndef NDEBUG
   FirFilter::Test();
-  
-  
   Quaternion::Test();
   ElementaryOpTest();
   BasicOpTest();
@@ -34,13 +33,14 @@ int main (int argc, char * const argv[]) {
   StatisticsOpTest();
   ComparisonOpTest();
   PointTest();
-  
   IirFilter::Test();
-  FirFilter::SpeedTests();
   RandomGenerator::Test();
-  
-  
   std::cout<<"All tests succeded!\n";
+#else
+  std::cout<<"Not running tests since NDEBUG is defined and asserts are ignored.\n";
+#endif
+
+  FirFilter::SpeedTests();
   
   return 0;
 }

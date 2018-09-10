@@ -78,7 +78,7 @@ Real ImagPart(Complex scalar) {
   return scalar.imag();
 }
   
-Int NextPow2(Real input) { return (UInt) std::ceil(std::log2(std::fabs((double) input))); }
+Int NextPow2(Real input) { return (UInt) std::ceil(log2(std::fabs((double) input))); }
 
   
 double StringToDouble(const std::string& s) {

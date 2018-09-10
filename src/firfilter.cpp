@@ -11,8 +11,22 @@
 #include "mcltypes.h"
 #include <vector>
 
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   #include <Accelerate/Accelerate.h>
+#else
+  #ifndef ENVARM
+    #include <pmmintrin.h>
+    #include <xmmintrin.h>
+    #include <immintrin.h>
+  #endif
+#endif
+
+
+
+#ifdef ENVWINDOWS
+  #define ALIGNED(n) __declspec(align(n))
+#else
+  #define ALIGNED(n) __attribute__ ((aligned (n)))
 #endif
 
 namespace mcl {
@@ -46,12 +60,13 @@ Real FirFilter::Filter(Real input_sample) noexcept {
     delay_line_[0] = input_sample;
     return input_sample*coefficients_[0];
   }
-#ifdef OSXIOS
+#ifdef ENVAPPLE
   return FilterAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
 #endif
 }
+  
 
 void FirFilter::Filter(const Real* input_data, const Int num_samples,
                        Real* output_data) noexcept {
@@ -61,10 +76,56 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     mcl::Multiply(input_data, num_samples, coefficients_[0], output_data);
     return;
   }
-#ifdef OSXIOS
+#if defined(ENVAPPLE)
   FilterAppleDsp(input_data, num_samples, output_data);
-#else // If not OSXIOS
+#elif defined(ENVARM)
   FilterSerial(input_data, num_samples, output_data);
+#else
+  if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
+    FilterSerial(input_data, num_samples, output_data);
+    return;
+  }
+  
+  float* extended_input_data = STACK_ALLOCATE(num_samples+length_-1, float); // TODO: handle stack overflow
+  float* output_data_float = STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
+  GetExtendedInput<float>(input_data, num_samples, extended_input_data);
+  
+  ALIGNED(16) __m256 input_frame;
+  ALIGNED(16) __m256 coefficient;
+  ALIGNED(16) __m256 product;
+  ALIGNED(16) __m256 accumulator;
+  const Int batch_size = 8;
+  
+  for(Int n=0; (n+batch_size)<=num_samples; n+=batch_size) {
+    accumulator = _mm256_setzero_ps();
+    for(Int k=0; k<length_; k++) {
+      coefficient = _mm256_set1_ps((float) coefficients_[length_ - k - 1]);
+      input_frame = _mm256_loadu_ps(extended_input_data + n + k);
+      product = _mm256_mul_ps(coefficient, input_frame);
+      accumulator = _mm256_add_ps(accumulator, product);
+    }
+    _mm256_storeu_ps(output_data_float+n, accumulator);
+  }
+  
+  const Int num_samples_left = num_samples % batch_size;
+  const Int num_samples_completed = num_samples - num_samples_left;
+  
+  for (Int n=0; n<num_samples_completed; ++n) {
+    output_data[n] = (Real) output_data_float[n];
+  }
+  
+  for (Int n=num_samples_completed; n<num_samples; ++n) {
+    output_data[n] = 0.0;
+    for (Int p=0; p<length_; ++p) {
+      output_data[n] += coefficients_[length_-p-1] * extended_input_data[n+p];
+    }
+  }
+  
+  // Reorganise state for the next run
+  for (Int i=0; i<length_; ++i) {
+    delay_line_[i] = input_data[num_samples-1-i];
+  }
+  counter_ = length_-1;
 #endif
 }
   
@@ -74,40 +135,9 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
   Real result = 0.0;
   Int index = (Int) counter_;
   
-  if (length_%8 != 0) {
-    for (int i=0; i<length_; ++i) {
-      result += coefficients_[i] * delay_line_[index++];
-      if (index >= length_) { index = 0; }
-    }
-  } else {
-    // This is easier for the compiler to vectorise
-    Real result_a = 0;
-    Real result_b = 0;
-    Real result_c = 0;
-    Real result_d = 0;
-    Real result_e = 0;
-    Real result_f = 0;
-    Real result_g = 0;
-    Real result_h = 0;
-    Int i = 0;
-    while (i < length_) {
-      if (index < (length_-8)) {
-        result_a += coefficients_[i++] * delay_line_[index++];
-        result_b += coefficients_[i++] * delay_line_[index++];
-        result_c += coefficients_[i++] * delay_line_[index++];
-        result_d += coefficients_[i++] * delay_line_[index++];
-        result_e += coefficients_[i++] * delay_line_[index++];
-        result_f += coefficients_[i++] * delay_line_[index++];
-        result_g += coefficients_[i++] * delay_line_[index++];
-        result_h += coefficients_[i++] * delay_line_[index++];
-      } else {
-        for (Int k=0; k<8; ++k) {
-          result += coefficients_[i++] * delay_line_[index++];
-          if (index >= length_) { index = 0; }
-        }
-      }
-    }
-    result += result_a + result_b + result_c + result_d + result_e + result_f + result_g + result_h;
+  for (int i=0; i<length_; ++i) {
+    result += coefficients_[i] * delay_line_[index++];
+    if (index >= length_) { index = 0; }
   }
   
   if (--counter_ < 0) { counter_ = length_-1; }
@@ -116,7 +146,7 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
 }
   
   
-#ifdef OSXIOS
+#ifdef ENVAPPLE
 Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   if (length_-counter_ > MAX_VLA_LENGTH) {
     return FilterStraight(input_sample);
@@ -154,24 +184,7 @@ void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
   }
   
   Real padded_data[num_samples+length_-1];
-  
-  // Stage 1
-  for (Int i=0; i<counter_; ++i) {
-    padded_data[i] = delay_line_[counter_-i-1];
-  }
-  
-  // Stage 2
-  // Starting from counter_ in padded_data
-  // Ending in counter_+(length_-counter_-1)
-  for (Int i=counter_; i<(length_-1); ++i) {
-    padded_data[i] = delay_line_[length_-1-(i-counter_)];
-  }
-  
-  // Stage 3
-  // Append input signal
-  for (Int i=(length_-1); i<(length_-1+num_samples); ++i) {
-    padded_data[i] = input_data[i-(length_-1)];
-  }
+  GetExtendedInput(input_data, num_samples, padded_data);
   
 #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_convD(padded_data, 1,
