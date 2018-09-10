@@ -16,6 +16,7 @@
 #include "saltypes.h"
 #include "digitalfilter.h"
 #include "salconstants.h"
+#include <algorithm>
 
 namespace sal {
   
