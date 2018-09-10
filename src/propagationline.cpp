@@ -136,6 +136,8 @@ void PropagationLine::Write(const sal::Sample& sample) noexcept {
   
 void PropagationLine::Write(const Sample* samples,
                             const Int num_samples) noexcept {
+  ASSERT(num_samples > 0);
+  
   if (air_filters_active_) {
     ASSERT(num_samples < MCL_MAX_VLA_LENGTH);
     Sample* temp_samples = (Sample*) alloca(num_samples * sizeof(Sample)); // TODO: handle stack overflow
@@ -148,11 +150,10 @@ void PropagationLine::Write(const Sample* samples,
 
 void PropagationLine::Read(const Int num_samples,
                            Sample* output_data) const noexcept {
-  ASSERT(num_samples >= 0);
-  if (num_samples == 0) { return; }
+  ASSERT(num_samples > 0);
   
-  if (! attenuation_smoother_.IsUpdating() && ! latency_smoother_.IsUpdating() &&
-      interpolation_type_ == sal::InterpolationType::kRounding) {
+  if (interpolation_type_ == sal::InterpolationType::kRounding &&
+      ! attenuation_smoother_.IsUpdating() && ! latency_smoother_.IsUpdating()) {
     delay_filter_.Read(num_samples, output_data);
     mcl::Multiply(output_data, num_samples, current_attenuation_, output_data);
   } else {
