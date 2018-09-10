@@ -367,15 +367,19 @@ T Dot(const std::vector<T>& vector_a,
 
 Real Norm(const std::vector<Real>& vector,
                   Real l_norm = 2.0) noexcept;
-  
+
 template<class T>
-void Print(const std::vector<T>& vector) noexcept {
-  const Int num_elements = vector.size();
+void Print(const T* vector, const Int num_elements) noexcept {
   std::cout<<"\n------------\n";
   for (Int i=0; i<num_elements; ++i) {
     std::cout<<vector[i]<<std::endl;
   }
   std::cout<<"------------\n";
+}
+  
+template<class T>
+void Print(const std::vector<T>& vector) noexcept {
+  Print(vector.data(), vector.size());
 }
 
 /** Returns a real vector of `length` ones. */
