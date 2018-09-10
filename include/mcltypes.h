@@ -25,31 +25,31 @@
 
 #if _WIN32 || _WIN64
   #if _WIN64
-    #define ENV64BIT
+    #define MCL_ENV64BIT
   #else
-    #define ENV32BIT
+    #define MCL_ENV32BIT
   #endif
 #elif __GNUC__
   #if __x86_64__ || __ppc64__
-    #define ENV64BIT
+    #define MCL_ENV64BIT
   #else
-    #define ENV32BIT
+    #define MCL_ENV32BIT
   #endif
 #endif
 
 
 #if _WIN32 || _WIN64
-  #define ENVWINDOWS
+  #define MCL_ENVWINDOWS
 #elif __arm__ || __aarch64__
-  #define ENVARM
+  #define MCL_ENVARM
 #elif __APPLE__
-  #define ENVAPPLE
+  #define MCL_ENVAPPLE
 #else
-  #define ENVOTHER
+  #define MCL_ENVOTHER
 #endif
 
-#define MAX_VLA_LENGTH 5000
-#define STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
+#define MCL_MAX_VLA_LENGTH 5000
+#define MCL_STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
 
 namespace mcl {
 
@@ -57,7 +57,7 @@ namespace mcl {
 typedef double Real; /**< Real type */
 typedef std::complex<Real> Complex; /**< Complex type */
   
-#ifdef ENV64BIT
+#ifdef MCL_ENV64BIT
   typedef unsigned long long UInt; /**< Unsigned int type */
   typedef long long Int; /**< Int type */
 #else // If it is 32 bits or unknown then...

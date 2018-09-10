@@ -11,10 +11,10 @@
 #include "mcltypes.h"
 #include <vector>
 
-#ifdef ENVAPPLE
+#ifdef MCL_ENVAPPLE
   #include <Accelerate/Accelerate.h>
 #else
-  #ifndef ENVARM
+  #ifndef MCL_ENVARM
     #include <pmmintrin.h>
     #include <xmmintrin.h>
     #include <immintrin.h>
@@ -23,7 +23,7 @@
 
 
 
-#ifdef ENVWINDOWS
+#ifdef MCL_ENVWINDOWS
   #define ALIGNED(n) __declspec(align(n))
 #else
   #define ALIGNED(n) __attribute__ ((aligned (n)))
@@ -60,7 +60,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
     delay_line_[0] = input_sample;
     return input_sample*coefficients_[0];
   }
-#ifdef ENVAPPLE
+#ifdef MCL_ENVAPPLE
   return FilterAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
@@ -76,18 +76,18 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     mcl::Multiply(input_data, num_samples, coefficients_[0], output_data);
     return;
   }
-#if defined(ENVAPPLE)
+#if defined(MCL_ENVAPPLE)
   FilterAppleDsp(input_data, num_samples, output_data);
-#elif defined(ENVARM)
+#elif defined(MCL_ENVARM)
   FilterSerial(input_data, num_samples, output_data);
 #else
-  if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
+  if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
   }
   
-  float* extended_input_data = STACK_ALLOCATE(num_samples+length_-1, float); // TODO: handle stack overflow
-  float* output_data_float = STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
+  float* extended_input_data = MCL_STACK_ALLOCATE(num_samples+length_-1, float); // TODO: handle stack overflow
+  float* output_data_float = MCL_STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
   GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
   ALIGNED(16) __m256 input_frame;
@@ -146,9 +146,9 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
 }
   
   
-#ifdef ENVAPPLE
+#ifdef MCL_ENVAPPLE
 Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
-  if (length_-counter_ > MAX_VLA_LENGTH) {
+  if (length_-counter_ > MCL_MAX_VLA_LENGTH) {
     return FilterStraight(input_sample);
   }
   
@@ -178,7 +178,7 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   
 void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
                                Real* output_data) noexcept {
-  if (num_samples < length_ || (num_samples+length_-1) > MAX_VLA_LENGTH) {
+  if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
   }
