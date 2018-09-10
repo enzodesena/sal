@@ -165,9 +165,9 @@ void PropagationLine::Read(const Int num_samples,
       }
     } else {
       for (Int i=1; i<num_samples; ++i) {
-        output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i)
-            * temp_attenuation.GetNextValue();
+        output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i);
       }
+      temp_attenuation.GetNextValuesMultiply(&output_data[1], num_samples-1, &output_data[1]);
     }
   }
 }
