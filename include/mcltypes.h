@@ -56,6 +56,9 @@
   #define MCL_AVX_ACCELERATE 1
 #endif
 
+// Exlude multiply and multiply-add as the compiler is able to do a better job
+#define MCL_APPLE_ACCELERATE_MMA 0
+
 #define MCL_MAX_VLA_LENGTH 5000
 #define MCL_STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
 
