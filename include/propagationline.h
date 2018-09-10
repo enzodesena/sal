@@ -44,7 +44,7 @@ public:
   PropagationLine(const sal::Length distance, 
                   const sal::Time sampling_frequency, 
                   const sal::Length max_distance = 100.0,
-                  const sal::InterpolationType = sal::kRounding,
+                  const sal::InterpolationType = sal::InterpolationType::kRounding,
                   const bool air_filters_active = false,
                   const bool allow_attenuation_larger_than_one = false,
                   const sal::Length reference_distance = kOneSampleDistance) noexcept;
@@ -72,7 +72,7 @@ public:
   
   /** Returns the current read sample */
   inline sal::Sample Read() const noexcept {
-    if (interpolation_type_ == sal::kLinear) {
+    if (interpolation_type_ == sal::InterpolationType::kLinear) {
       return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
     } else {
       return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;

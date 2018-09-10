@@ -158,7 +158,7 @@ void PropagationLine::Read(const Int num_samples,
     RampSmoother temp_attenuation(attenuation_smoother_);
     RampSmoother temp_latency(latency_smoother_);
     
-    if (interpolation_type_ == sal::kLinear) {
+    if (interpolation_type_ == sal::InterpolationType::kLinear) {
       for (Int i=1; i<num_samples; ++i) {
         output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
             * temp_attenuation.GetNextValue();
