@@ -249,8 +249,8 @@ public:
     
     mcl::Real a1 = exp(-1.0/ramp_samples);
     mcl::Real b0 = 1.0 - a1;
-    filter_ = mcl::IirFilter(mcl::BinaryVector(b0, 0.0),
-                             mcl::BinaryVector(1.0, -a1));
+    filter_ = mcl::IirFilter(mcl::BinaryVector<mcl::Real>(b0, 0.0),
+                             mcl::BinaryVector<mcl::Real>(1.0, -a1));
   }
   
   virtual mcl::Real Filter(const mcl::Real input) noexcept {

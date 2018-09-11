@@ -29,7 +29,7 @@ PropagationLine::PropagationLine(const Length distance,
                                  const sal::InterpolationType interpolation_type,
                                  const bool air_filters_active,
                                  const bool allow_gain,
-                                 const double reference_distance) noexcept :
+                                 const sal::Length reference_distance) noexcept :
         sampling_frequency_(sampling_frequency),
         delay_filter_(DelayFilter((Int) round(ComputeLatency(distance)),
                                   (Int) round(ComputeLatency(max_distance)))),
