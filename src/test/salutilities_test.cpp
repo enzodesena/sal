@@ -62,8 +62,7 @@ bool TripletHandler::Test() {
   assert(IsEqual(smoother.GetNextValue(), 1.0));
   assert(!smoother.IsUpdating());
   
-  smoother.SetTargetValue(3.0,
-                            2.0);  // ramp time
+  smoother.SetTargetValue(3.0, 2.0);  // ramp time
   assert(smoother.IsUpdating());
   assert(IsEqual(smoother.GetNextValue(), 2.0));
   assert(smoother.IsUpdating());
@@ -83,6 +82,15 @@ bool TripletHandler::Test() {
   Sample output_samples_cmp[5] = { 1.5, 2.0, 2.0, 2.0, };
   smoother.GetNextValuesMultiply(input_samples, 4, output_samples);
   assert(IsEqual(output_samples, output_samples_cmp, 4));
+  
+  
+  smoother.SetTargetValue(15000.0, 6.0);  // ramp time
+  RampSmoother smoother_copy(smoother);
+  ASSERT(IsEqual(smoother.GetNextValue(), smoother_copy.GetNextValue(1)));
+  smoother.GetNextValue();
+  smoother.GetNextValue();
+  ASSERT(IsEqual(smoother.GetNextValue(), smoother_copy.GetNextValue(3)));
+  
   
   return true;
 }

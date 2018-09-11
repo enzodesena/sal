@@ -23,7 +23,14 @@ Signal GenerateSine(const Time length, const Time sine_frequency,
 int main(int argc, char * const argv[]) {
   
   const Time sampling_frequency = 44100;
-  const Int samples_per_buffer = 1000;
+  const Int samples_per_buffer = 1024;
+  // Please notice that with samples_per_buffer = 1000, I observed a quirky effect
+  // whereby the samples align in such a way that the latency are very close
+  // to integers values. However, very small changes (e.g. the difference between
+  // repeated summation and multiplication in the the RampSmoother object)
+  // can make the latency fluctuate when taking the floor(value). This
+  // results in some very faint clicks. It is next to impossible to observe something
+  // like this, unless in a very carefully designed example like this.
   
   const Time sine_frequency = 1000.0;
   const Sample sine_amplitude = 0.1;
@@ -40,10 +47,10 @@ int main(int argc, char * const argv[]) {
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
   PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
-                               InterpolationType::kLinear);
+                               InterpolationType::kRounding);
   
   PropagationLine line(current_distance, sampling_frequency, 1000.0,
-                       InterpolationType::kLinear);
+                       InterpolationType::kRounding);
   line.SetAttenuation(1.0, 0.0);
   
   Sample line_tmp[samples_per_buffer];

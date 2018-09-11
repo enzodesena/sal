@@ -136,7 +136,7 @@ Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
 void DelayFilter::Read(const Int num_samples,
                        Sample* output_data) const noexcept {
-  if (num_samples > latency_) {
+  if (num_samples > max_latency_) {
     Logger::GetInstance().
     LogError("Trying to read a number of samples (%d) larger than the latency "
              "of the delay line (%d). This operation will go ahead, but it "

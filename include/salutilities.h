@@ -133,14 +133,14 @@ public:
   
   Sample GetNextValue(const Int num_jumps) noexcept {
     // The +1 below is to make this identical to GetNextValue()
-    if ((countdown_-num_jumps) <= 0) {
-      current_value_ = target_value_;
+    if ((countdown_-num_jumps+1) <= 0) {
       countdown_ = 0;
+      return target_value_;
     } else {
       countdown_ -= num_jumps;
       current_value_ += step_*((Sample)num_jumps);
+      return current_value_;
     }
-    return current_value_;
   }
   
   /** Takes an array of values (`input_data`), multiplies them by the
