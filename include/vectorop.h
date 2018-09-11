@@ -156,8 +156,7 @@ std::vector<T> UnaryVector(const T& element) noexcept {
   
 /** Returns a vector with two elements. */
 template<class T>
-std::vector<T> BinaryVector(const T& element_a,
-                                    const T& element_b) noexcept {
+std::vector<T> BinaryVector(const T& element_a, const T& element_b) noexcept {
   std::vector<T> output(2);
   output[0] = element_a;
   output[1] = element_b;
