@@ -180,7 +180,7 @@ void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
     return;
   }
   
-  Real padded_data[num_samples+length_-1];
+  Real* padded_data = MCL_STACK_ALLOCATE(num_samples+length_-1, mcl::Real);
   GetExtendedInput(input_data, num_samples, padded_data);
   
 #ifdef MCL_DATA_TYPE_DOUBLE
@@ -219,31 +219,33 @@ void FirFilter::Reset() noexcept {
 }
   
 void FirFilter::SetImpulseResponse(const std::vector<Real>& impulse_response,
-                                     const Int update_length) noexcept {
-  if (mcl::IsEqual(std::vector<Real>(impulse_response.begin(),
-                                      impulse_response.end()),
-                   impulse_response_)) {
-    return;
-  }
+                                   const Int update_length) noexcept {
+  if (mcl::IsEqual(impulse_response, impulse_response_)) { return; }
   
-  if (! updating_) { // If there is no update being carried out
-    impulse_response_old_ = mcl::ZeroPad<Real>(impulse_response_,
-                                               impulse_response.size());
-  } else {
-    impulse_response_old_ = mcl::ZeroPad<Real>(coefficients_,
-                                               impulse_response.size());
-  }
-  
-  updating_ = true;
-  update_length_ = update_length;
-  update_index_ = 0;
-  impulse_response_ = impulse_response;
+
   
   if ((Int)impulse_response.size() != length_) {
     // If the impulse response changes length, then reset everything.
     length_ = impulse_response.size();
     delay_line_.assign(length_, 0.0);
-    counter_ = impulse_response.size()-1;
+    counter_ = length_-1;
+    impulse_response_ = impulse_response;
+    impulse_response_old_ = impulse_response;
+    coefficients_ = impulse_response;
+    updating_ = false;
+    update_length_ = 0;
+    update_index_ = 0;
+  } else {
+    updating_ = true;
+    update_length_ = update_length;
+    update_index_ = 0;
+    impulse_response_ = impulse_response;
+    
+    if (! updating_) { // If there is no update being carried out
+      impulse_response_old_ = impulse_response_;
+    } else {
+      impulse_response_old_ = coefficients_;
+    }
   }
   ASSERT(impulse_response_.size() == impulse_response_old_.size());
 }
@@ -251,10 +253,16 @@ void FirFilter::SetImpulseResponse(const std::vector<Real>& impulse_response,
 void FirFilter::UpdateCoefficients() noexcept {
   ASSERT(update_index_>=0 && update_index_<=update_length_);
   ASSERT(impulse_response_.size() == impulse_response_old_.size());
+  ASSERT(impulse_response_.size() == coefficients_.size());
   Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
   Real weight_old = 1.0f-weight_new;
-  coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
-                           mcl::Multiply(impulse_response_old_, weight_old));
+  Multiply(impulse_response_.data(), impulse_response_.size(), weight_new, coefficients_.data());
+  MultiplyAdd(impulse_response_old_.data(), weight_old,
+              coefficients_.data(), impulse_response_.size(),
+              coefficients_.data());
+  // The above is a lock-free equivalent version to
+  // coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
+  //                          mcl::Multiply(impulse_response_old_, weight_old));
   
   if (update_index_ == update_length_) {
     updating_ = false;

@@ -48,11 +48,10 @@ public:
    @param[in] update_length How many calls to Filter it takes to update the
    coefficients. A value of 0 means that the update is instantaneous. A call
    to Filter(const Real input) counts one, just like
-   Filter(const std::vector<Real>& input). This is due to the fact that it
-   is difficult to update a filter when using DSP-enabled batch filtering. 
+   Filter(const std::vector<Real>& input).
    */
   void SetImpulseResponse(const std::vector<Real>& impulse_response,
-                            const Int update_length = 0) noexcept;
+                          const Int update_length = 0) noexcept;
   
   /** Resets the state of the filter */
   void Reset() noexcept;
@@ -117,6 +116,8 @@ private:
   
   bool updating_;
   
+  /* This is the current vector of coefficients. When the filter is updating
+   this will in general be different from impulse_response_. */
   std::vector<Real> coefficients_;
   std::vector<Real> delay_line_;
   Int counter_;
