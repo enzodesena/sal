@@ -40,10 +40,10 @@
 
 #if _WIN32 || _WIN64
   #define MCL_ENVWINDOWS 1
-#elif __arm__ || __aarch64__
-  #define MCL_ENVARM 1
 #elif __APPLE__
   #define MCL_ENVAPPLE 1
+#elif __arm__ || __aarch64__ // Since this elif comes second, priority is given to APPLE descriptor
+  #define MCL_ENVARM 1
 #else
   #define MCL_ENVOTHER 1
 #endif
@@ -51,9 +51,11 @@
 #ifdef MCL_ENVAPPLE
   #define MCL_APPLE_ACCELERATE 1
 #elif MCL_ENVARM
-  #define MCL_NO_ACCELERATE 1
-#else // MCL_ENVWINDOWS || MCL_ENVOTHER
+  #define MCL_NEON_ACCELERATE 1
+#elif MCL_ENVWINDOWS
   #define MCL_AVX_ACCELERATE 1
+#else // MCL_ENVOTHER
+  #define MCL_NO_ACCELERATE 1
 #endif
 
 // Exlude multiply and multiply-add as the compiler is able to do a better job

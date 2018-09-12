@@ -40,6 +40,7 @@
 		5778D81015B616320015AAC9 /* firfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80D15B616320015AAC9 /* firfilter.cpp */; };
 		5778D81115B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
 		5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778D80E15B616320015AAC9 /* iirfilter.cpp */; };
+		578BDE692149BEFB001D89B9 /* digitalfilter_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF701CD8177900134991 /* digitalfilter_test.cpp */; };
 		57B4EF6D1CD8174E00134991 /* mcl_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF6C1CD8174E00134991 /* mcl_test.cpp */; };
 		57B4EF781CD8177900134991 /* basicop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF6E1CD8177900134991 /* basicop_test.cpp */; };
 		57B4EF791CD8177900134991 /* comparisonop_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF6F1CD8177900134991 /* comparisonop_test.cpp */; };
@@ -439,6 +440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				578BDE692149BEFB001D89B9 /* digitalfilter_test.cpp in Sources */,
 				572A876A19C070ED00F62F8F /* pointwiseop.cpp in Sources */,
 				572A876B19C070ED00F62F8F /* vectorop.cpp in Sources */,
 				572A876C19C070ED00F62F8F /* elementaryop.cpp in Sources */,

@@ -19,7 +19,9 @@
   #include <immintrin.h>
 #endif
 
-
+#ifdef MCL_NEON_ACCELERATE
+  #include "arm_neon.h"
+#endif
 
 #ifdef MCL_ENVWINDOWS
   #define ALIGNED(n) __declspec(align(n))
@@ -76,7 +78,7 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   }
 #if defined(MCL_APPLE_ACCELERATE)
   FilterAppleDsp(input_data, num_samples, output_data);
-#elif defined(MCL_AVX_ACCELERATE)
+#elif defined(MCL_AVX_ACCELERATE) || defined(MCL_NEON_ACCELERATE)
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
@@ -86,10 +88,11 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
   float* output_data_float = MCL_STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
   GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
+#ifdef MCL_AVX_ACCELERATE
+  const Int batch_size = 8;
   ALIGNED(16) __m256 input_frame;
   ALIGNED(16) __m256 coefficient;
   ALIGNED(16) __m256 accumulator;
-  const Int batch_size = 8;
   
   for(Int n=0; (n+batch_size)<=num_samples; n+=batch_size) {
     accumulator = _mm256_setzero_ps();
@@ -101,7 +104,22 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     }
     _mm256_storeu_ps(output_data_float+n, accumulator);
   }
+#else // MCL_NEON_ACCELERATE
+  const Int batch_size = 4;
+  float32x4_t input_frame;
+  float32x4_t coefficient;
+  float32x4_t accumulator;
   
+  for(Int n=0; (n+batch_size)<=num_samples; n+=batch_size) {
+    accumulator = vdupq_n_f32(0.0);
+    for(Int k=0; k<length_; k++) {
+      coefficient = vdupq_n_f32((float) coefficients_[length_ - k - 1]);
+      input_frame = vld1q_f32(extended_input_data + n + k);
+      accumulator = vmlaq_f32(accumulator, coefficient, input_frame);
+    }
+    vst1q_f32(output_data_float+n, accumulator);
+  }
+#endif
   const Int num_samples_left = num_samples % batch_size;
   const Int num_samples_completed = num_samples - num_samples_left;
   
@@ -152,7 +170,7 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
   Real result = 0.0;
   
-  Real result_a[length_-counter_];
+  Real* result_a = MCL_STACK_ALLOCATE(length_-counter_, mcl::Real);
   Multiply(&coefficients_[0],
            &delay_line_[counter_],
            length_-counter_, result_a);
