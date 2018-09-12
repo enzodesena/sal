@@ -51,9 +51,15 @@ KemarMic::KemarMic(const Point& position,
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
             
-  if (mcl::IsEqual(sampling_frequency, 44100.0)) {
-    // OK
-  } else if (mcl::IsEqual(sampling_frequency, 22050.0)) {
+            // This is the sampling frequency that will actually be used
+  Time used_sampling_frequency;
+            
+  if (sampling_frequency > 33075.0) {
+    used_sampling_frequency = 44100.0;
+    // Do nothing as the database is already 44100.0
+  } else {
+    used_sampling_frequency = 22050.0;
+    // Downsample the database by a factor 2
     mcl::IirFilter filter = mcl::Butter(10, 0.001, 0.45);
     FilterAll(&filter);
     for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
@@ -62,9 +68,11 @@ KemarMic::KemarMic(const Point& position,
         hrtf_database_left_[i][j] = mcl::Downsample(hrtf_database_left_[i][j], 2);
       }
     }
-  } else {
+  }
+            
+  if (! mcl::IsEqual(sampling_frequency, 22050.0) && ! mcl::IsEqual(sampling_frequency, 44100.0)) {
     mcl::Logger::GetInstance().LogError("The sampling frequency is not supported for "
-                                        "the Kemar mic. Using 44100.0 instead.");
+                                        "the Kemar mic. Using %f instead.", used_sampling_frequency);
   }
   
   if (num_samples != kFullBrirLength) {
