@@ -278,12 +278,12 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
   Angle azimuth;
   
   switch (reference_orientation_) {
-    case standard:
+    case HeadRefOrientation::standard:
       azimuth = atan((double) norm_point.y()/norm_point.x())/PI*180.0;
       if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
       if (norm_point.x() < 0.0) { azimuth += 180.0; }
       break;
-    case y_z:
+    case HeadRefOrientation::y_z:
       azimuth = -atan((double) norm_point.x()/norm_point.y())/PI*180.0;
       if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
       if (norm_point.y() < 0.0) { azimuth += 180.0; }

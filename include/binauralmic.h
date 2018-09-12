@@ -21,7 +21,7 @@
 
 namespace sal {
   
-enum HeadRefOrientation {
+enum class HeadRefOrientation {
   standard, // Head facing positive x-axis; positive z-axis passing through jaw and then scalp
   y_z  // Head facing positive y-axis; positive z-axis passing through jaw and then scalp
 };
@@ -37,7 +37,7 @@ public:
   BinauralMic(const mcl::Point& position,
               const mcl::Quaternion orientation,
               const Int update_length,
-              const HeadRefOrientation reference_orientation = standard);
+              const HeadRefOrientation reference_orientation = HeadRefOrientation::standard);
   
   void SetUpdateLength(Int update_length) noexcept { update_length_ = update_length; }
   
@@ -91,7 +91,7 @@ public:
   DatabaseBinauralMic(const mcl::Point& position,
                       const mcl::Quaternion orientation,
                       const Int update_length,
-                      const HeadRefOrientation reference_orientation = standard);
+                      const HeadRefOrientation reference_orientation = HeadRefOrientation::standard);
   
   /**
    Filters all responses by `filter`. Useful for instance for including
@@ -112,7 +112,7 @@ protected:
 class BinauralMicInstance {
 private:
   BinauralMicInstance(BinauralMic* base_mic, sal::Int update_length,
-                      const HeadRefOrientation reference_orientation = standard) :
+                      const HeadRefOrientation reference_orientation = HeadRefOrientation::standard) :
   previous_point_(mcl::Point(NAN, NAN, NAN)),
   base_mic_(base_mic),
   filter_left_(mcl::FirFilter::GainFilter(1.0)),

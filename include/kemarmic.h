@@ -39,7 +39,7 @@ public:
            const std::string directory = "",
            const Int num_samples = kFullBrirLength,
            const Int update_length = 0,
-           const HeadRefOrientation reference_orientation = standard,
+           const HeadRefOrientation reference_orientation = HeadRefOrientation::standard,
            const Time sampling_frequency = 44100.0);
   
   static const int kFullBrirLength = -1;
