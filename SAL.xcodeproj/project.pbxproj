@@ -48,6 +48,7 @@
 		578A62271D89346200233890 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
 		578A62281D89346200233890 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
 		578A62291D89346200233890 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
+		578BDE672149BE70001D89B9 /* kemarmicdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.cpp */; };
 		578EB05C2085B8E3006F06B8 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		578EB05E2085B8E5006F06B8 /* sphericalheadmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */; };
 		578EB05F2085BA53006F06B8 /* riranalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112220600683004B9C6F /* riranalysis.cpp */; };
@@ -770,6 +771,7 @@
 				5778112F20600683004B9C6F /* riranalysis.cpp in Sources */,
 				572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */,
 				572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */,
+				578BDE672149BE70001D89B9 /* kemarmicdata.cpp in Sources */,
 				572A878719C0712500F62F8F /* kemarmic.cpp in Sources */,
 				572A878819C0712500F62F8F /* microphone.cpp in Sources */,
 				5778112C20600683004B9C6F /* cuboidroom.cpp in Sources */,
