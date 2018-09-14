@@ -49,6 +49,14 @@ Real Pow(Real input, Real exponent);
 /** Square root function. Equivalent to Matlab's sqrt(input) */
 Real Sqrt(Real input);
   
+/** Equivalent to Matlab's round(input). This is faster than the standard
+ C++ round function, especially on Windows. Returns an integer. */
+inline Int RoundToInt(Real input) {
+  Int output = static_cast<int>(input);
+  output += (input-output >= 0.5) - (input-output <= -0.5);
+  return output;
+}
+    
 /** 
  Equivalent to Matlab's sign. Returns 1 if the element
  is greater than zero, 0 if it equals zero and -1 if it is less than zero.

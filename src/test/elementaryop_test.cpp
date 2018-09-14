@@ -126,6 +126,12 @@ bool ElementaryOpTest() {
   ASSERT(IsEqual(LinearInterpolation(1.0, 0.0, 2.0, 1.0, 2.0), 1.0));
   ASSERT(IsEqual(LinearInterpolation(1.0, 0.0, 2.0, 1.0, 1.5), 0.5));
   
+  ASSERT(RoundToInt(3.2) == 3);
+  ASSERT(RoundToInt(3.6) == 4);
+  ASSERT(RoundToInt(0.2) == 0);
+  ASSERT(RoundToInt(-0.2) == 0);
+  ASSERT(RoundToInt(-3.6) == -4);
+  
 #if MCL_LOAD_BOOST  
   ASSERT(IsEqual(AssociatedLegendreP(3, 0, 0.8), 0.08));
   ASSERT(IsEqual(AssociatedLegendreP(3, 1, 0.8), -1.980000000000001));
