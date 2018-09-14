@@ -68,8 +68,9 @@ Real FirFilter::Filter(Real input_sample) noexcept {
 }
   
 
-void FirFilter::Filter(const Real* input_data, const Int num_samples,
-                       Real* output_data) noexcept {
+void FirFilter::Filter(const Real* __restrict input_data,
+                       const Int num_samples,
+                       Real* __restrict output_data) noexcept {
   if (updating_) { UpdateCoefficients(); }
   if (length_ == 1) {
     delay_line_[0] = input_data[num_samples-1];
@@ -191,8 +192,9 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   return result;
 }
   
-void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
-                               Real* output_data) noexcept {
+void FirFilter::FilterAppleDsp(const Real* __restrict input_data,
+                               const Int num_samples,
+                               Real* __restrict output_data) noexcept {
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
