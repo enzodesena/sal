@@ -203,7 +203,7 @@ public:
   void SetTargetValue(const Sample target_value, const Time ramp_time) noexcept {
     ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_time, 0.0),
                         "Ramp time cannot be negative ");
-    if (((Int) round(ramp_time*sampling_frequency_)) == 0) {
+    if ((mcl::RoundToInt(ramp_time*sampling_frequency_)) == 0) {
       target_value_ = target_value;
       current_value_ = target_value;
       countdown_ = 0;
@@ -211,7 +211,7 @@ public:
     }
     
     if (std::islessgreater(target_value, target_value_)) {
-      const Int num_update_samples = (Int) round(ramp_time*sampling_frequency_);
+      const Int num_update_samples = mcl::RoundToInt(ramp_time*sampling_frequency_);
       countdown_ = num_update_samples;
       target_value_ = target_value;
       

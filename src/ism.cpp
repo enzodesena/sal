@@ -150,7 +150,7 @@ void Ism::CalculateRir() {
 void Ism::WriteSample(const sal::Time& delay,
                       const sal::Sample& attenuation) {
   sal::Time delay_norm = delay*sampling_frequency_;
-  Int id_round = (UInt) round(delay_norm);
+  Int id_round = mcl::RoundToInt(delay_norm);
   Int rir_length = rir_.size();
   
   switch (interpolation_) {

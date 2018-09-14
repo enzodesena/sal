@@ -104,7 +104,7 @@ bool KemarMic::IsDatabaseAvailable(const std::string directory) {
     Int num_measurement = (UInt) floor(((Angle) num_measurements[i])/2.0)+1;
     
     for (Int j=0; j<num_measurement; ++j) {
-      Angle angle = (Int) round(j * resolution);
+      Angle angle = mcl::RoundToInt(j * resolution);
       
       std::ifstream file;
       file.open (GetFilePath(elevation, angle, directory),
@@ -190,7 +190,7 @@ std::vector<std::vector<Signal> >
     Int num_measurement = (UInt) floor(((Angle) num_measurements[i])/2.0)+1;
     
     for (Int j=0; j<num_measurement; ++j) {
-      Angle angle = (Int) round(j * resolution);
+      Angle angle = mcl::RoundToInt(j * resolution);
       
       std::ifstream file;
       file.open (GetFilePath(elevation, angle, directory),
@@ -254,7 +254,7 @@ std::vector<std::vector<Signal> >
 
   
 Int KemarMic::FindElevationIndex(Angle elevation) {
-  Int elevation_index = (Int) round(elevation/10.0) + 4;
+  Int elevation_index = mcl::RoundToInt(elevation/10.0) + 4;
   if (elevation_index < 0) {
     return 0;
   } else if (elevation_index > 13) {
@@ -270,7 +270,7 @@ Int KemarMic::FindAzimuthIndex(Angle azimuth, Int elevation_index) {
   
   Angle angular_resolution = 360.0 /
           ((Angle) num_measurements[elevation_index]);
-  Int azimuth_index = (UInt) round(azimuth/angular_resolution);
+  Int azimuth_index = mcl::RoundToInt(azimuth/angular_resolution);
   
   if (azimuth_index == num_measurements[elevation_index]) { azimuth_index = 0; }
   

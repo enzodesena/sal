@@ -75,7 +75,7 @@ public:
     if (interpolation_type_ == sal::InterpolationType::kLinear) {
       return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
     } else {
-      return delay_filter_.ReadAt((Int) round(current_latency_)) * current_attenuation_;
+      return delay_filter_.ReadAt(mcl::RoundToInt(current_latency_)) * current_attenuation_;
     }
   }
   

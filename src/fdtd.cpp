@@ -104,17 +104,17 @@ void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
   
   double spatial_frequency = SOUND_SPEED/(curant_number*sampling_frequency_);
   
-  Int Nx = (UInt) round(dimensions.x()/spatial_frequency);
-  Int Ny = (UInt) round(dimensions.y()/spatial_frequency);
-  Int Nz = (UInt) round(dimensions.z()/spatial_frequency);
+  Int Nx = mcl::RoundToInt(dimensions.x()/spatial_frequency);
+  Int Ny = mcl::RoundToInt(dimensions.y()/spatial_frequency);
+  Int Nz = mcl::RoundToInt(dimensions.z()/spatial_frequency);
   
-  Int pos_s_x = (UInt) round(source_->position().x()/spatial_frequency)+1;
-  Int pos_s_y = (UInt) round(source_->position().y()/spatial_frequency)+1;
-  Int pos_s_z = (UInt) round(source_->position().z()/spatial_frequency)+1;
+  Int pos_s_x = mcl::RoundToInt(source_->position().x()/spatial_frequency)+1;
+  Int pos_s_y = mcl::RoundToInt(source_->position().y()/spatial_frequency)+1;
+  Int pos_s_z = mcl::RoundToInt(source_->position().z()/spatial_frequency)+1;
   
-  Int pos_m_x = (UInt) round(microphone_->position().x()/spatial_frequency)+1;
-  Int pos_m_y = (UInt) round(microphone_->position().y()/spatial_frequency)+1;
-  Int pos_m_z = (UInt) round(microphone_->position().z()/spatial_frequency)+1;
+  Int pos_m_x = mcl::RoundToInt(microphone_->position().x()/spatial_frequency)+1;
+  Int pos_m_y = mcl::RoundToInt(microphone_->position().y()/spatial_frequency)+1;
+  Int pos_m_z = mcl::RoundToInt(microphone_->position().z()/spatial_frequency)+1;
   
   rir_ = Fdtd::RunFdtd(Nx, Ny, Nz,
                        input_buffer.num_samples(),

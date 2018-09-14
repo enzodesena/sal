@@ -165,7 +165,7 @@ Signal CipicMic::GetBrir(const Ear ear, const Point& point) noexcept {
   } else if (elevation > -45.0+360.0/64.0*49.0) {
     elevation_index = 49;
   } else {
-    elevation_index = (Int) round((elevation + 45.0) * 64.0 / 360.0);
+    elevation_index = mcl::RoundToInt((elevation + 45.0) * 64.0 / 360.0);
   }
   
   ASSERT((azimuth_index >= 0) & (azimuth_index < (Int)azimuths_.size()));

@@ -31,8 +31,8 @@ PropagationLine::PropagationLine(const Length distance,
                                  const bool allow_gain,
                                  const sal::Length reference_distance) noexcept :
         sampling_frequency_(sampling_frequency),
-        delay_filter_(DelayFilter((Int) round(ComputeLatency(distance)),
-                                  (Int) round(ComputeLatency(max_distance)))),
+        delay_filter_(DelayFilter(mcl::RoundToInt(ComputeLatency(distance)),
+                                  mcl::RoundToInt(ComputeLatency(max_distance)))),
         reference_distance_(isnan(reference_distance) ?
                             SOUND_SPEED/sampling_frequency : reference_distance),
         allow_gain_(allow_gain),
@@ -108,7 +108,7 @@ void PropagationLine::Tick() noexcept {
 void PropagationLine::Tick(const Int num_samples) noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue(num_samples);
   current_latency_ = latency_smoother_.GetNextValue(num_samples);
-  delay_filter_.SetLatency((Int) round(current_latency_));
+  delay_filter_.SetLatency(mcl::RoundToInt(current_latency_));
   delay_filter_.Tick(num_samples);
 }
   
@@ -171,7 +171,7 @@ void PropagationLine::Read(const Int num_samples,
         }
       } else {
         for (Int i=1; i<num_samples; ++i) {
-          output_data[i] = delay_filter_.ReadAt(((Int) round(temp_latency.GetNextValue())) - i);
+          output_data[i] = delay_filter_.ReadAt((mcl::RoundToInt(temp_latency.GetNextValue())) - i);
         }
         temp_attenuation.GetNextValuesMultiply(&output_data[1], num_samples-1, &output_data[1]);
       }
