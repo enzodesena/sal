@@ -62,7 +62,12 @@
 #define MCL_APPLE_ACCELERATE_MMA 0
 
 #define MCL_MAX_VLA_LENGTH 16384
-#define MCL_STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
+
+#if MCL_ENVWINDOWS
+  #define MCL_STACK_ALLOCATE(type, variable, size) type* variable = (type*)alloca((size)*sizeof(type));
+#else
+  #define MCL_STACK_ALLOCATE(type, variable, size) type variable[(size)];
+#endif
 
 namespace mcl {
 

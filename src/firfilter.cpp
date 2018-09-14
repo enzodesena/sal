@@ -84,8 +84,8 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     return;
   }
   
-  float* extended_input_data = MCL_STACK_ALLOCATE(num_samples+length_-1, float); // TODO: handle stack overflow
-  float* output_data_float = MCL_STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
+  MCL_STACK_ALLOCATE(float, extended_input_data, num_samples+length_-1); // TODO: handle stack overflow
+  MCL_STACK_ALLOCATE(float, output_data_float, num_samples); // TODO: handle stack overflow
   GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
 #ifdef MCL_AVX_ACCELERATE
@@ -170,7 +170,7 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
   Real result = 0.0;
   
-  Real* result_a = MCL_STACK_ALLOCATE(length_-counter_, mcl::Real);
+  MCL_STACK_ALLOCATE(mcl::Real, result_a, length_-counter_); // TODO: handle stack overflow
   Multiply(&coefficients_[0],
            &delay_line_[counter_],
            length_-counter_, result_a);
@@ -198,7 +198,7 @@ void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
     return;
   }
   
-  Real* padded_data = MCL_STACK_ALLOCATE(num_samples+length_-1, mcl::Real);
+  MCL_STACK_ALLOCATE(mcl::Real, padded_data, num_samples+length_-1); // TODO: handle stack overflow
   GetExtendedInput(input_data, num_samples, padded_data);
   
 #if MCL_DATA_TYPE_DOUBLE
