@@ -201,7 +201,7 @@ void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
   Real* padded_data = MCL_STACK_ALLOCATE(num_samples+length_-1, mcl::Real);
   GetExtendedInput(input_data, num_samples, padded_data);
   
-#ifdef MCL_DATA_TYPE_DOUBLE
+#if MCL_DATA_TYPE_DOUBLE
   vDSP_convD(padded_data, 1,
              coefficients_.data()+length_-1, -1,
              output_data, 1,

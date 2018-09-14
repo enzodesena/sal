@@ -67,7 +67,13 @@
 namespace mcl {
 
 #define MCL_DATA_TYPE_DOUBLE 1
-typedef double Real; /**< Real type */
+  
+#if MCL_DATA_TYPE_DOUBLE
+  typedef double Real; /**< Real type */
+#else
+  typedef float Real; /**< Real type */
+#endif
+  
 typedef std::complex<Real> Complex; /**< Complex type */
   
 #ifdef MCL_ENV64BIT
