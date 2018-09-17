@@ -47,7 +47,7 @@ std::vector<T> EmptyVector() noexcept {
  */
 template<class T> 
 std::vector<T> ZeroPad(const std::vector<T>& input,
-                               Int total_length) noexcept {
+                       const Int total_length) noexcept {
   std::vector<T> output = Zeros<T>(total_length);
   Int M = ((Int)input.size() < total_length) ? input.size() : total_length;
   for (Int i=0; i<M; ++i) { output[i] = input[i]; }
@@ -120,17 +120,12 @@ Real Add(const Real* input_data, const Int num_samples) noexcept;
 template<class T> 
 std::vector<T> Subset(const std::vector<T>& vector,
                       const Int from_index, const Int to_index) noexcept {
-  if (from_index >= (Int)vector.size()) { ASSERT(false); }
-  if (to_index >= (Int)vector.size()) { ASSERT(false); }
-  if (from_index > to_index) { ASSERT(false); }
+  ASSERT(from_index < (Int)vector.size());
+  ASSERT(to_index < (Int)vector.size());
+  ASSERT(from_index <= to_index);
   
-  // Allocate output vector with appropriate length.
-  std::vector<T> output(to_index-from_index+1);
-  Int k = 0; // running index into new vector;
-  for (Int i=from_index; i<=to_index; ++i) {
-    output[k++] = vector[i];
-  }
-  return output;
+  return std::vector<T>(vector.begin() + from_index,
+                        vector.begin() + to_index + 1);
 }
 
 
