@@ -136,7 +136,7 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder,
                                      double Lcutoff,
                                      double Ucutoff,
                                      std::vector<double> DenC) {
-  if ((Lcutoff < 0.0) | (Ucutoff > 1.0)) { ASSERT(false); }
+  ASSERT(std::isgreaterequal(Lcutoff, 0.0) && std::isless(Ucutoff, 1.0));
   
   int i;
   

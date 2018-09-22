@@ -120,9 +120,9 @@ Real Add(const Real* input_data, const Int num_samples) noexcept;
 template<class T> 
 std::vector<T> Subset(const std::vector<T>& vector,
                       const Int from_index, const Int to_index) noexcept {
-  if (from_index >= (Int)vector.size()) { ASSERT(false); }
-  if (to_index >= (Int)vector.size()) { ASSERT(false); }
-  if (from_index > to_index) { ASSERT(false); }
+  ASSERT(from_index < (Int)vector.size());
+  ASSERT(to_index < (Int)vector.size());
+  ASSERT(from_index <= to_index);
   
   // Allocate output vector with appropriate length.
   std::vector<T> output(to_index-from_index+1);
@@ -264,7 +264,7 @@ std::vector<T> AddVectors(const std::vector<T>& vector_a,
 template<class T>
 std::vector<T> Interleave(const std::vector<T>& vector_a,
                           const std::vector<T>& vector_b) noexcept {
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+  ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<T> output;
   for (Int i=0; i<(Int)vector_a.size(); ++i) {
@@ -368,7 +368,7 @@ template<class T>
 T Dot(const std::vector<T>& vector_a,
               const std::vector<T>& vector_b) noexcept {
   const Int num_elements = (Int)vector_a.size();
-  if (num_elements != (Int)vector_b.size()) { ASSERT(false); }
+  ASSERT(num_elements == (Int)vector_b.size());
   
   T output = (T) 0.0;
   for (Int i=0; i<num_elements; ++i) {

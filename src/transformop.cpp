@@ -162,7 +162,7 @@ Irfft(const std::vector<std::vector<Complex> >& input, Int n_point) noexcept {
 std::vector<Real> XCorr(const std::vector<Real>& vector_a,
                         const std::vector<Real>& vector_b) {
   // TODO: implement for different sizes
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+  ASSERT(vector_a.size() == vector_b.size());
   
   Int M = (Int)vector_a.size();
   

@@ -98,8 +98,8 @@ Real Mean(const std::vector<Real>& input) noexcept {
   
 Real Mean(const std::vector<Real>& input,
           const std::vector<Real>& weights) noexcept {
-  if (input.size() != weights.size()) { ASSERT(false); }
-  if (! IsNonNegative(weights)) { ASSERT(false); }
+  ASSERT(input.size() == weights.size());
+  ASSERT(IsNonNegative(weights));
   
   // Normalise the weigths
   std::vector<Real> normalised_weights = Multiply<Real>(weights, 1.0/Sum(weights));
@@ -125,7 +125,7 @@ Real Var(const std::vector<Real>& input) noexcept {
   
 Real Var(const std::vector<Real>& input,
          const std::vector<Real>& weights) noexcept {
-  if(! IsNonNegative(weights)) { ASSERT(false); }
+  ASSERT(IsNonNegative(weights));
   
   Real weighted_mean = Mean(input, weights);
   std::vector<Real> temp = Pow(Add(input, -weighted_mean), 2.0);
@@ -168,7 +168,7 @@ std::vector<Complex> Poly(const std::vector<Real> roots) noexcept {
   
 std::vector<Real>
 ColonOperator(const Real from, const Real step, const Real to) noexcept {
-  if (std::islessequal(step, 0)) { ASSERT(false); }
+  ASSERT(std::isgreater(step, 0));
   std::vector<Real> output;
   output.push_back(from);
   Int i = 1;
@@ -248,7 +248,7 @@ Matrix<Real> Cov(const std::vector<std::vector<Real> >& input) noexcept {
 Real CovElement(const std::vector<Real>& x,
                 const std::vector<Real>& y) noexcept {
   const Int N = x.size();
-  if (N != (Int)y.size()) { ASSERT(false); }
+  ASSERT(N == (Int)y.size());
   
   Real output = Sum(Multiply(Add(x, -Mean(x)), Add(y, -Mean(y))));
   // In case N>1 use the unbiased estimator of covariance.

@@ -22,8 +22,8 @@ namespace mcl {
  */
 template<class T> 
 std::vector<T> Add(const std::vector<T>& vector_a,
-                           const std::vector<T>& vector_b) noexcept {
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+                   const std::vector<T>& vector_b) noexcept {
+  ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<T> output((Int)vector_a.size());
   for (Int i=0; i<(Int)vector_a.size(); ++i) {
@@ -40,8 +40,8 @@ void Add(const Real* input_data_a,
 
 template<>
 inline std::vector<Real> Add(const std::vector<Real>& vector_a,
-                                     const std::vector<Real>& vector_b) noexcept {
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+                             const std::vector<Real>& vector_b) noexcept {
+  ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<Real> output((Int)vector_a.size());
   Add(vector_a.data(), vector_b.data(), (Int)vector_a.size(),
@@ -71,7 +71,7 @@ std::vector<Real> Inverse(const std::vector<Real>& vector) noexcept;
  */
 template<class T> 
 std::vector<T> Subtract(const std::vector<T>& vector_a,
-                                const std::vector<T>& vector_b) noexcept {
+                        const std::vector<T>& vector_b) noexcept {
   return Add(vector_a, Opposite(vector_b));
 }
 
@@ -82,8 +82,8 @@ std::vector<T> Subtract(const std::vector<T>& vector_a,
  */
 template<class T> 
 std::vector<T> Multiply(const std::vector<T>& vector_a,
-                                const std::vector<T>& vector_b) noexcept {
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+                        const std::vector<T>& vector_b) noexcept {
+  ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<T> output((Int)vector_a.size());
   for (Int i=0; i<(Int)vector_a.size(); ++i) {
@@ -92,16 +92,14 @@ std::vector<T> Multiply(const std::vector<T>& vector_a,
   return output;
 }
 
-void Multiply(const Real* input_data_a,
-                      const Real* input_data_b,
-                      Int num_samples,
-                      Real* output_data) noexcept;
+void Multiply(const Real* input_data_a, const Real* input_data_b,
+              Int num_samples, Real* output_data) noexcept;
   
   
 template<>
 inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
-                                          const std::vector<Real>& vector_b) noexcept {
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+                                  const std::vector<Real>& vector_b) noexcept {
+  ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<Real> output((Int)vector_a.size());
   Multiply(vector_a.data(), vector_b.data(), (Int)vector_a.size(),
@@ -115,8 +113,8 @@ inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
  */
 template<class T>
 std::vector<T> Divide(const std::vector<T>& vector_a,
-                              const std::vector<T>& vector_b) noexcept {
-  if ((Int)vector_a.size() != (Int)vector_b.size()) { ASSERT(false); }
+                      const std::vector<T>& vector_b) noexcept {
+  ASSERT(vector_a.size() == vector_b.size());
   std::vector<T> output((Int)vector_a.size());
   for (Int i=0; i<(Int)vector_a.size(); ++i) {
     output[i] = vector_a[i]/vector_b[i];

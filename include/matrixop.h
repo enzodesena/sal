@@ -69,15 +69,15 @@ public:
   /** Sets element in given row and column */
   void SetElement(const Int& index_row, const Int& index_column,
                    const T& element) noexcept {
-    if (index_row>=num_rows_ || index_column>=num_columns_) {
-      ASSERT_WITH_MESSAGE(false, "Out-of-bounds index in setting matrix element");}
+    ASSERT_WITH_MESSAGE(index_row < num_rows_ && index_column < num_columns_,
+                        "Out-of-bounds index in setting matrix element");
     data_[index_row][index_column] = element;
   }
   
   /** Sets an entire column */
   void SetColumn(Int index_column, std::vector<T> column) noexcept {
-    if ((Int)column.size() != num_rows_) { ASSERT(false); }
-    if (index_column >= num_columns_) { ASSERT(false); }
+    ASSERT((Int)column.size() == num_rows_);
+    ASSERT(index_column < num_columns_);
     for (Int i=0; i<num_rows_; ++i) {
       SetElement(i, index_column, column[i]);
     }
@@ -85,27 +85,27 @@ public:
   
   /** Sets an entire row */
   void SetRow(Int index_row, std::vector<T> row) noexcept {
-    if ((Int)row.size() != num_columns_) { ASSERT(false); }
-    if (index_row >= num_rows_) { ASSERT(false); }
+    ASSERT((Int)row.size() == num_columns_);
+    ASSERT(index_row < num_rows_);
     data_[index_row] = row;
   }
   
   /** Accesses an element in given row and column */
   T GetElement(const Int& index_row, const Int& index_column) const noexcept {
-    if (index_row >= num_rows_) { ASSERT(false); }
-    if (index_column >= num_columns_) { ASSERT(false); }
+    ASSERT(index_row < num_rows_);
+    ASSERT(index_column < num_columns_);
     return data_[index_row][index_column];
   }
   
   /** Accesses an entire row */
   std::vector<T> GetRow(Int index_row) const noexcept {
-    if (index_row >= num_rows_) { ASSERT(false); }
+    ASSERT(index_row < num_rows_);
     return data_[index_row];
   }
   
   /** Accesses an entire column */
   std::vector<T> GetColumn(Int index_column) const noexcept {
-    if (index_column >= num_columns_) { ASSERT(false); }
+    ASSERT(index_column < num_columns_);
     std::vector<T> output(num_rows_);
     for (Int i=0; i<num_rows_; ++i) { output[i] = data_[i][index_column]; }
     return output;
@@ -156,16 +156,16 @@ public:
   static Matrix Load(std::string file_name) {
     std::string line;
     std::ifstream in_file (file_name.c_str());
-    if (! in_file.is_open()) { ASSERT(false); }
+    ASSERT(in_file.is_open());
     
     // First: lets count the number of rows
     Int number_of_rows = 0;
     Int number_of_columns = 0;
     while (std::getline(in_file, line)) {
       std::vector<std::string> elements = Split(line, '\t');
-      if (number_of_columns == 0) { number_of_columns = elements.size(); }
+      if (number_of_columns == 0) { number_of_columns = (Int) elements.size(); }
       else {
-        if (number_of_columns != (Int)elements.size()) { ASSERT(false); }
+        ASSERT(number_of_columns == (Int)elements.size());
       }
       
       ++number_of_rows; 
@@ -260,7 +260,7 @@ Matrix<T> Multiply(const Matrix<T>& matrix, T value) noexcept {
 template<class T>
 Matrix<T> Multiply(const Matrix<T>& matrix_a,
                            const Matrix<T>& matrix_b) noexcept {
-  if (matrix_a.num_columns() != matrix_b.num_rows()) { ASSERT(false); }
+  ASSERT(matrix_a.num_columns() == matrix_b.num_rows());
   
   Matrix<T> output(matrix_a.num_rows(), matrix_b.num_columns());
   for (Int i=0; i<output.num_rows(); ++i) {
@@ -278,12 +278,12 @@ Matrix<T> Multiply(const Matrix<T>& matrix_a,
 template<class T>
 std::vector<T> Multiply(const Matrix<T>& matrix_a,
                                 const std::vector<T>& vector) noexcept {
-  if (matrix_a.num_columns() != (Int)vector.size()) { ASSERT(false); }
-  Matrix<T> temp_input(vector.size(), 1);
+  ASSERT(matrix_a.num_columns() == (Int)vector.size());
+  Matrix<T> temp_input((Int) vector.size(), 1);
   temp_input.SetColumn(0, vector);
   Matrix<T> temp_output = Multiply(matrix_a, temp_input);
-  if (temp_output.num_columns() != 1) { ASSERT(false); }
-  if (temp_output.num_rows() != (Int)vector.size()) { ASSERT(false); }
+  ASSERT(temp_output.num_columns() == 1);
+  ASSERT(temp_output.num_rows() == (Int)vector.size());
   
   return temp_output.GetColumn(0);
 }

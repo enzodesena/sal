@@ -46,8 +46,8 @@ IirFilter::IirFilter() :
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
           B_(B), A_(A) {
   // TODO: implement also for B.size != A.size
-  if (B.size() != A.size()) { ASSERT(false); }
-  if (B.size() < 1) { ASSERT(false); }
+  ASSERT(B.size() == A.size());
+  ASSERT(B.size() >= 1);
   
   A0_ = A[0];
   if (! IsEqual(A[0], 1.0, std::numeric_limits<Real>::epsilon())) {
