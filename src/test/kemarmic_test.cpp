@@ -255,13 +255,12 @@ bool KemarMic::Test() {
   ASSERT(IsEqual(cmp_u_left_b, output_u_b_left));
   ASSERT(IsEqual(cmp_u_right_b, output_u_b_right));
   
-  // Testing frontal direction
-  KemarMic mic_l(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 "",
-                 kFullBrirLength,
-                 0,
-                 HeadRefOrientation::standard,
-                 24000);
+//  KemarMic mic_l(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
+//                 "",
+//                 kFullBrirLength,
+//                 0,
+//                 HeadRefOrientation::standard,
+//                 24000);
   
   return true;
 }
