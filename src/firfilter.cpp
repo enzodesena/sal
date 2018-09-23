@@ -68,8 +68,9 @@ Real FirFilter::Filter(Real input_sample) noexcept {
 }
   
 
-void FirFilter::Filter(const Real* input_data, const Int num_samples,
-                       Real* output_data) noexcept {
+void FirFilter::Filter(const Real* __restrict input_data,
+                       const Int num_samples,
+                       Real* __restrict output_data) noexcept {
   if (updating_) { UpdateCoefficients(); }
   if (length_ == 1) {
     delay_line_[0] = input_data[num_samples-1];
@@ -84,8 +85,8 @@ void FirFilter::Filter(const Real* input_data, const Int num_samples,
     return;
   }
   
-  float* extended_input_data = MCL_STACK_ALLOCATE(num_samples+length_-1, float); // TODO: handle stack overflow
-  float* output_data_float = MCL_STACK_ALLOCATE(num_samples, float); // TODO: handle stack overflow
+  MCL_STACK_ALLOCATE(float, extended_input_data, num_samples+length_-1); // TODO: handle stack overflow
+  MCL_STACK_ALLOCATE(float, output_data_float, num_samples); // TODO: handle stack overflow
   GetExtendedInput<float>(input_data, num_samples, extended_input_data);
   
 #ifdef MCL_AVX_ACCELERATE
@@ -170,7 +171,7 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
   Real result = 0.0;
   
-  Real* result_a = MCL_STACK_ALLOCATE(length_-counter_, mcl::Real);
+  MCL_STACK_ALLOCATE(mcl::Real, result_a, length_-counter_); // TODO: handle stack overflow
   Multiply(&coefficients_[0],
            &delay_line_[counter_],
            length_-counter_, result_a);
@@ -191,17 +192,18 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   return result;
 }
   
-void FirFilter::FilterAppleDsp(const Real* input_data, const Int num_samples,
-                               Real* output_data) noexcept {
+void FirFilter::FilterAppleDsp(const Real* __restrict input_data,
+                               const Int num_samples,
+                               Real* __restrict output_data) noexcept {
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
     return;
   }
   
-  Real* padded_data = MCL_STACK_ALLOCATE(num_samples+length_-1, mcl::Real);
+  MCL_STACK_ALLOCATE(mcl::Real, padded_data, num_samples+length_-1); // TODO: handle stack overflow
   GetExtendedInput(input_data, num_samples, padded_data);
   
-#ifdef MCL_DATA_TYPE_DOUBLE
+#if MCL_DATA_TYPE_DOUBLE
   vDSP_convD(padded_data, 1,
              coefficients_.data()+length_-1, -1,
              output_data, 1,

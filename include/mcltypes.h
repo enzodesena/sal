@@ -63,12 +63,23 @@
 #define MCL_APPLE_ACCELERATE_MMA 0
 
 #define MCL_MAX_VLA_LENGTH 16384
-#define MCL_STACK_ALLOCATE(size, type) (type*)alloca((size) * sizeof(type));
+
+#if MCL_ENVWINDOWS
+  #define MCL_STACK_ALLOCATE(type, variable, size) type* variable = (type*)alloca((size)*sizeof(type));
+#else
+  #define MCL_STACK_ALLOCATE(type, variable, size) type variable[(size)];
+#endif
 
 namespace mcl {
 
 #define MCL_DATA_TYPE_DOUBLE 1
-typedef double Real; /**< Real type */
+  
+#if MCL_DATA_TYPE_DOUBLE
+  typedef double Real; /**< Real type */
+#else
+  typedef float Real; /**< Real type */
+#endif
+  
 typedef std::complex<Real> Complex; /**< Complex type */
   
 #ifdef MCL_ENV64BIT

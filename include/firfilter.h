@@ -34,8 +34,8 @@ public:
    */
   virtual Real Filter(const Real input_sample) noexcept;
   
-  virtual void Filter(const Real* input_data, const Int num_samples,
-                      Real* output_data) noexcept;
+  virtual void Filter(const Real* __restrict input_data, const Int num_samples,
+                      Real* __restrict output_data) noexcept;
   
   using DigitalFilter::Filter;
   
@@ -72,13 +72,13 @@ public:
 private:
 #ifdef MCL_APPLE_ACCELERATE
   Real FilterAppleDsp(Real input_sample) noexcept;
-  void FilterAppleDsp(const Real* input_data, const Int num_samples,
-                      Real* output_data) noexcept;
+  void FilterAppleDsp(const Real* __restrict input_data, const Int num_samples,
+                      Real* __restrict output_data) noexcept;
 #endif
   
   template<class T>
-  void GetExtendedInput(const Real* input_data, const Int num_samples,
-                        T* extended_input_data) {
+  void GetExtendedInput(const Real* __restrict input_data, const Int num_samples,
+                        T* __restrict extended_input_data) {
     
     // Stage 1
     for (Int i=0; i<counter_; ++i) {
