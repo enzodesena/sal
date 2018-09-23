@@ -709,7 +709,7 @@
 		57A156BC1593457600AA6445 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1000;
 			};
 			buildConfigurationList = 57A156BF1593457600AA6445 /* Build configuration list for PBXProject "SAL" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -973,7 +973,6 @@
 					"$(PROJECT_DIR)/portaudio/lib",
 				);
 				LLVM_LTO = YES;
-				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -1011,7 +1010,6 @@
 					"$(PROJECT_DIR)/portaudio/lib",
 				);
 				LLVM_LTO = YES;
-				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -1239,7 +1237,6 @@
 					"$(PROJECT_DIR)/portaudio/lib",
 				);
 				LLVM_LTO = NO;
-				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = SAL;
@@ -1273,7 +1270,6 @@
 					"$(PROJECT_DIR)/portaudio/lib",
 				);
 				LLVM_LTO = YES;
-				LLVM_VECTORIZE_LOOPS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CFLAGS = "-DNDEBUG";
 				PRODUCT_NAME = SAL;
