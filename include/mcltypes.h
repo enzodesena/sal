@@ -59,7 +59,7 @@
   #define MCL_NO_ACCELERATE 1
 #endif
 
-// Exlude multiply and multiply-add as the compiler is able to do a better job
+// Exclude multiply and multiply-add as the compiler is able to do a better job
 #define MCL_APPLE_ACCELERATE_MMA 0
 
 #define MCL_MAX_VLA_LENGTH 16384
