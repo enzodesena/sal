@@ -88,10 +88,7 @@ void FirFilter::Filter(const Real* __restrict input_data,
     // Some Intel CPUs do not support AVX instructions.
     // Here we check whether they AVX supported or not, and in that case
     // we filter serially.
-    int cpu_info[4];
-    __cpuid(cpu_info, 1);
-    bool avx_supported = cpu_info[2] & (1 << 28) || false;
-    if (avx_supported) {
+    if (! RuntimeArchInfo::GetInstance().IsAvxSupported()) {
       FilterSerial(input_data, num_samples, output_data);
       return;
     }
