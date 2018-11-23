@@ -59,7 +59,7 @@ public:
   mcl::Quaternion orientation() const noexcept;
   
   /** Set microphone orientation */
-  void SetOrientation(const mcl::Quaternion& orientation) noexcept;
+  virtual void SetOrientation(const mcl::Quaternion& orientation) noexcept;
   
   /** Set handedness of reference system */
   void SetHandedness(const mcl::Handedness handedness) noexcept;

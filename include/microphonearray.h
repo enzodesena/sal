@@ -58,7 +58,7 @@ public:
   
   
 
-  virtual void SetOrientation(const mcl::Quaternion& orientation) {
+  void SetOrientation(const mcl::Quaternion& orientation) noexcept {
     for (Int i=0; i<(Int)microphones_.size(); ++i) {
       microphones_[i]->SetOrientation(orientation);
     }
@@ -194,7 +194,7 @@ public:
     SetOrientation(orientation);
   }
 
-  virtual void SetOrientation(const mcl::Quaternion& orientation) {
+  virtual void SetOrientation(const mcl::Quaternion& orientation) noexcept {
     mcl::Point position(this->position());
     std::vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
 
