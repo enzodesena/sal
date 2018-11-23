@@ -108,13 +108,14 @@ public:
 #if defined(MCL_ENVWINDOWS)
     if (! system_has_been_polled_) {
       int cpu_info[4];
-      __cpuid(data, 0);
-      if (data[0] >= 1) {
+      __cpuid(cpu_info, 0);
+      if (cpu_info[0] >= 1) {
         __cpuidex(cpu_info, 1, 0);
         if ((cpu_info[2] & (1 << 28)) != 0) {
           avx_supported_ = true;
         }
       }
+      system_has_been_polled_ = true;
     }
 #endif
 
