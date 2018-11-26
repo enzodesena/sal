@@ -8,9 +8,9 @@
  
  */
 
-#include "source.h"
-#include <vector>
-#include "saltypes.h"
+#include "source.hpp"
+#include "vector.hpp"
+#include "saltypes.hpp"
 
 using mcl::Point;
 

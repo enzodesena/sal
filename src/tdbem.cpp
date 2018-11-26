@@ -7,8 +7,8 @@
  */
 
 
-#include "tdbem.h"
-#include "salconstants.h"
+#include "tdbem.hpp"
+#include "salconstants.hpp"
 
 namespace sal {
   
@@ -40,7 +40,7 @@ TdBem::TdBem(Room* const room,
   
   num_elements_ = points_.size();
           
-  std::vector<sal::Length> all_distances;
+  mcl::Vector<sal::Length> all_distances;
   // Precalculate distances
   distance_los_ = Distance(microphone_->position(),
                                   source_->position());
@@ -53,7 +53,7 @@ TdBem::TdBem(Room* const room,
     all_distances.push_back(distances_mic_[i]);
     
     // Precalculate distances between points
-    distances_.push_back(std::vector<sal::Length>(num_elements_, 0.0));
+    distances_.push_back(mcl::Vector<sal::Length>(num_elements_, 0.0));
     for (Int j = 0; j<num_elements_; ++j) {
       if (i == j) { continue; }
       Length distance = mcl::Distance(points_[i], points_[j]);
@@ -63,11 +63,11 @@ TdBem::TdBem(Room* const room,
   }
           
           
-  std::vector<sal::Sample> all_weights;
+  mcl::Vector<sal::Sample> all_weights;
   
   for (Int i = 0; i<num_elements_; ++i) {
-    weights_current_.push_back(std::vector<sal::Sample>(num_elements_, 0.0));
-    weights_previous_.push_back(std::vector<sal::Sample>(num_elements_, 0.0));
+    weights_current_.push_back(mcl::Vector<sal::Sample>(num_elements_, 0.0));
+    weights_previous_.push_back(mcl::Vector<sal::Sample>(num_elements_, 0.0));
     for (Int j = 0; j<num_elements_; ++j) {
       if (i == j) { continue; }
       sal::Sample dr_dn = CalculateDrDn(points_[i], points_[j], normal_vectors_[j]);
@@ -160,7 +160,7 @@ void TdBem::CalculatePoints() {
   Length room_y = dimensions.y();
   Length room_z = dimensions.z();
   
-  std::vector<mcl::Point> boundary_points;
+  mcl::Vector<mcl::Point> boundary_points;
   sal::Length sp = spatial_sampling_period_;
   
   // Points on surface parallel to xy plane

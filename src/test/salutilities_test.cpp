@@ -7,8 +7,8 @@
  
  */
 
-#include "salutilities.h"
-#include "comparisonop.h"
+#include "salutilities.hpp"
+#include "comparisonop.hpp"
 #include <assert.h>
 
 using mcl::Point;

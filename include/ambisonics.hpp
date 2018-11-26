@@ -15,12 +15,12 @@
 #define SAL_HOA_H
 
 
-#include "microphone.h"
-#include "point.h"
-#include "decoder.h"
-#include "microphonearray.h"
-#include "salconstants.h"
-#include "iirfilter.h"
+#include "microphone.hpp"
+#include "point.hpp"
+#include "decoder.hpp"
+#include "microphonearray.hpp"
+#include "salconstants.hpp"
+#include "iirfilter.hpp"
 
 namespace sal {
 
@@ -50,7 +50,7 @@ public:
     return BFormatBuffer::GetNumChannels(order_);
   }
   
-  static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
+  static mcl::Vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
   
   static bool Test();
   virtual void AddPlaneWaveRelative(const Sample* input_data,
@@ -92,7 +92,7 @@ public:
   AmbisonicsHorizDec(const Int order,
                      const bool energy_decoding,
                      const Time cut_off_frequency,
-                     const std::vector<Angle>& loudspeaker_angles,
+                     const mcl::Vector<Angle>& loudspeaker_angles,
                      const bool near_field_correction,
                      const Length loudspeakers_distance,
                      const Time sampling_frequency,
@@ -109,14 +109,14 @@ public:
 private:
   
   static mcl::Matrix<Sample>
-  ModeMatchingDec(Int order, const std::vector<Angle>& loudspeaker_angles);
+  ModeMatchingDec(Int order, const mcl::Vector<Angle>& loudspeaker_angles);
   
   /**
    amb_re_weights_matrix produces the diagonal matrix of weights for energy
    vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
    */
   static mcl::Matrix<Sample>
-  MaxEnergyDec(Int order, const std::vector<Angle>& loudspeaker_angles);
+  MaxEnergyDec(Int order, const mcl::Vector<Angle>& loudspeaker_angles);
   
   /**
    Produces the weights for maximum energy vector for a regular polygon.
@@ -127,7 +127,7 @@ private:
     return (Sample) cos(((Angle) index)*PI/(2.0*((Angle) order)+2.0));
   }
   
-  static std::vector<Sample> GetFrame(const Int order, const Int sample_id,
+  static mcl::Vector<Sample> GetFrame(const Int order, const Int sample_id,
                                       const Buffer& buffer);
   
   /**
@@ -156,7 +156,7 @@ private:
   static mcl::IirFilter CrossoverFilterHigh(const Time cut_off_frequency,
                                             const Time sampling_frequency);
   
-  std::vector<Angle> loudspeaker_angles_;
+  mcl::Vector<Angle> loudspeaker_angles_;
   Int num_loudspeakers_;
   bool near_field_correction_;
   Length loudspeakers_distance_;
@@ -165,10 +165,10 @@ private:
   Int order_;
   
   // One filter per component
-  std::vector<mcl::IirFilter> nfc_filters_;
+  mcl::Vector<mcl::IirFilter> nfc_filters_;
   // One filter per loudspeaker
-  std::vector<mcl::IirFilter> crossover_filters_high_;
-  std::vector<mcl::IirFilter> crossover_filters_low_;
+  mcl::Vector<mcl::IirFilter> crossover_filters_high_;
+  mcl::Vector<mcl::IirFilter> crossover_filters_low_;
   
   // Cache the decoding matrix (mode-matching) for performance purposes.
   mcl::Matrix<Sample> mode_matching_matrix_;

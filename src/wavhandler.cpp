@@ -8,14 +8,14 @@
  
  */
 
-#include "wavhandler.h"
+#include "wavhandler.hpp"
 #include "sndfile.hh"
-#include "vectorop.h"
+#include "vectorop.hpp"
 #include <assert.h>
 
 namespace sal {
 
-std::vector<Signal> WavHandler::Read(const std::string file_name) {
+mcl::Vector<Signal> WavHandler::Read(const std::string file_name) {
   SNDFILE* input_file;
   SF_INFO input_file_info;
   
@@ -41,7 +41,7 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   
   sf_close(input_file);
   
-  std::vector<Signal> signals(num_channels,
+  mcl::Vector<Signal> signals(num_channels,
                               mcl::Zeros<Sample>(file_length));
   
   // input_file_info.samplerate
@@ -80,13 +80,13 @@ Time WavHandler::ReadSamplingFrequency(const std::string file_name) {
 void WavHandler::Write(const StereoSignal& stereo_signals,
                        const Time sampling_frequency,
                        std::string file_name) {
-  std::vector<Signal> signals(2);
+  mcl::Vector<Signal> signals(2);
   signals[0] = stereo_signals.left;
   signals[1] = stereo_signals.right;
   Write(signals, sampling_frequency, file_name);
 }
   
-void WavHandler::Write(const std::vector<Signal>& signals,
+void WavHandler::Write(const mcl::Vector<Signal>& signals,
                   const Time sampling_frequency,
                   std::string file_name) {
   // TODO: add support for more than 2 channels (wave_format_extensible)

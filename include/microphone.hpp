@@ -12,17 +12,18 @@
 #ifndef SAL_MICROPHONE_H
 #define SAL_MICROPHONE_H
 
-#include "point.h"
-#include "source.h"
-#include "quaternion.h"
+#include "point.hpp"
+#include "source.hpp"
+#include "quaternion.hpp"
 #include <assert.h>
 #include <map>
-#include "salconstants.h"
-#include "audiobuffer.h"
+#include "salconstants.hpp"
+#include "audiobuffer.hpp"
 
 namespace sal {
 
-class Microphone {
+class Microphone
+{
 public:
   /**
    `position` is the position of the microphone, and orientation 
@@ -46,8 +47,9 @@ public:
    on a new sample. Methods without wave_id (i.e. assuming there
    is a single plane wave incoming) do this automatically.
    */
-  Microphone(mcl::Point position,
-             mcl::Quaternion orientation = mcl::Quaternion::Identity());
+  Microphone(
+    mcl::Point position,
+    mcl::Quaternion orientation = mcl::Quaternion::Identity());
   
   /** Returns current position of the microphone */
   mcl::Point position() const noexcept;
@@ -75,16 +77,6 @@ public:
                     const mcl::Point& point,
                     Buffer& output_buffer) noexcept;
   
-  void AddPlaneWave(const Sample* input_data,
-                    const Int num_samples,
-                    const mcl::Point& point,
-                    Buffer& output_buffer) noexcept;
-  
-  void AddPlaneWave(const Sample input_sample,
-                    const mcl::Point& point,
-                    Buffer& output_buffer) noexcept;
-  
-  
   /**
    We need to
    keep track of the wave_id because some microphones (e.g. kemar) need
@@ -96,18 +88,7 @@ public:
    */
   void AddPlaneWave(const MonoBuffer& input_buffer,
                     const mcl::Point& point,
-                    const Int wave_id,
-                    Buffer& output_buffer) noexcept;
-  
-  void AddPlaneWave(const Sample input_sample,
-                    const mcl::Point& point,
-                    const Int wave_id,
-                    Buffer& output_buffer) noexcept;
-  
-  void AddPlaneWave(const Sample* input_data,
-                    const Int num_samples,
-                    const mcl::Point& point,
-                    const Int wave_id,
+                    const size_t wave_id,
                     Buffer& output_buffer) noexcept;
   
   virtual bool IsCoincident() const noexcept = 0;
@@ -126,12 +107,8 @@ public:
   
   virtual ~Microphone() {}
   
-  
-  virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
-                                    const mcl::Point& point,
-                                    const Int wave_id,
-                                    Buffer& output_buffer) noexcept;
-  
+private:
+
   /**
    This is implemented by the specific type of microphones. `mcl::Point` in this
    case is relative to the microphone reference system.
@@ -145,13 +122,11 @@ public:
    Other choices could be made, as long as the conventions are kept at
    higher levels.
    */
-  virtual void AddPlaneWaveRelative(const Sample* input_data,
-                                    const Int num_samples,
+  virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
                                     const mcl::Point& point,
                                     const Int wave_id,
                                     Buffer& output_buffer) noexcept = 0;
   
-private:
   mcl::Triplet position_;
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;

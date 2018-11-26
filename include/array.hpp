@@ -13,7 +13,7 @@
 #ifndef SAL_ARRAY_H
 #define SAL_ARRAY_H
 
-#include "salconstants.h"
+#include "salconstants.hpp"
 
 namespace sal {
 

@@ -8,10 +8,10 @@
  
  */
 
-#include "microphone.h"
-#include "microphonearray.h"
-#include "salconstants.h"
-#include "salutilities.h"
+#include "microphone.hpp"
+#include "microphonearray.hpp"
+#include "salconstants.hpp"
+#include "salutilities.hpp"
 
 namespace sal {
 
@@ -25,7 +25,7 @@ bool MicrophoneArrayTest() {
   
   TrigMic mic_prototype(Point(0,0,0),
                         mcl::Quaternion::Identity(),
-                        mcl::UnaryVector<Sample>(1.0));
+                        mcl::Unarymcl::Vector<Sample>(1.0));
   
   CircularArray<TrigMic> microphone_array_a(Point(0.0,0.0,1.5),
                                             mcl::Quaternion::Identity(),
@@ -35,7 +35,7 @@ bool MicrophoneArrayTest() {
 
   ASSERT(mcl::IsEqual(microphone_array_a.position(), Point(0.0,0.0,1.5)));
   
-  std::vector<Microphone*> microphones_a = microphone_array_a.GetMicrophonePointers();
+  mcl::Vector<Microphone*> microphones_a = microphone_array_a.GetMicrophonePointers();
   
   ASSERT(microphones_a.size() == num_microphones);
 
@@ -59,7 +59,7 @@ bool MicrophoneArrayTest() {
                                             array_radius,
                                             UniformAngles(num_microphones, 0));
   
-  std::vector<Microphone*> microphones_b = microphone_array_b.GetMicrophonePointers();
+  mcl::Vector<Microphone*> microphones_b = microphone_array_b.GetMicrophonePointers();
   
   ASSERT(mcl::IsEqual(microphones_b[0]->orientation(),
                       mcl::AxAng2Quat(0,0,1,PI/2.0)));
@@ -78,7 +78,7 @@ bool MicrophoneArrayTest() {
                                             array_radius,
                                             UniformAngles(num_microphones, 0));
   
-  std::vector<Microphone*> microphones_c = microphone_array_c.GetMicrophonePointers();
+  mcl::Vector<Microphone*> microphones_c = microphone_array_c.GetMicrophonePointers();
   
   ASSERT(mcl::IsEqual(microphones_c[0]->orientation(),
                       mcl::AxAng2Quat(0,0,1,PI/2.0)));
@@ -96,7 +96,7 @@ bool MicrophoneArrayTest() {
                                 mic_prototype,
                                 1.0, PI/4.0, +PI/8.0);
 
-  std::vector<Microphone*> stereo_mics =  stereo_mic.GetMicrophonePointers();
+  mcl::Vector<Microphone*> stereo_mics =  stereo_mic.GetMicrophonePointers();
   
   ASSERT(stereo_mics.size() == 2);
   ASSERT(mcl::IsEqual(stereo_mics[0]->position(), Point(0.2 + 1.0*cos(0), 1.0*sin(0), 1.5)));

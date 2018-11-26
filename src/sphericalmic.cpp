@@ -8,11 +8,11 @@
  
  */
 
-#include "sphericalheadmic.h"
-#include "salconstants.h"
-#include "vectorop.h"
+#include "sphericalheadmic.hpp"
+#include "salconstants.hpp"
+#include "vectorop.hpp"
 #include <cmath>
-#include "transformop.h"
+#include "transformop.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;
@@ -147,12 +147,12 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   theta = mcl::Mod(theta,2.0*PI);
   
   // f = linspace(Fs/N, Fs/2, N/2-1);
-  std::vector<Time> frequencies = LinSpace(
+  mcl::Vector<Time> frequencies = LinSpace(
                                   sampling_frequency / ((Time) N), 
                                   sampling_frequency / 2.0, 
                                   N/2-1);
   
-  std::vector<Complex> H = Zeros<Complex>(N);
+  mcl::Vector<Complex> H = Zeros<Complex>(N);
   
   for (Int i=0; i<N/2-1; ++i) {
     H[i+1] = SphericalHeadMic::Sphere(sphere_radius, source_distance, theta, 
@@ -176,9 +176,9 @@ Signal SphericalHeadMic::GenerateImpulseResponse(Length sphere_radius,
   // seems to output time-reversed samples. 
   // The output should already be real, but I still extract the real value to
   // account for round-off errors.
-  std::vector<Complex> inverse = Ifft(Conj(H), N);
+  mcl::Vector<Complex> inverse = Ifft(Conj(H), N);
   ASSERT(IsReal(inverse));
-  std::vector<Real> h = RealPart(inverse);
+  mcl::Vector<Real> h = RealPart(inverse);
   
   h = CircShift(h, -((Int)N)/2);
   

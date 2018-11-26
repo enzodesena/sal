@@ -12,21 +12,21 @@
 #define SAL_WAVHANDLER_H
 
 
-#include "saltypes.h"
-#include <vector>
+#include "saltypes.hpp"
+#include "vector.hpp"
 #include <iostream>
-#include "salconstants.h"
+#include "salconstants.hpp"
 
 namespace sal {
 
 class WavHandler {
 public:
-static std::vector<Signal> Read(const std::string file_name);
+static mcl::Vector<Signal> Read(const std::string file_name);
   
 static Time ReadSamplingFrequency(const std::string file_name);
 
 
-static void Write(const std::vector<Signal>& signals,
+static void Write(const mcl::Vector<Signal>& signals,
                   const Time sampling_frequency,
                   const std::string file_name);
   

@@ -13,8 +13,8 @@
 #ifndef SAL_TYPES_H
 #define SAL_TYPES_H
 
-#include <vector>
-#include "mcltypes.h"
+#include "vector.hpp"
+#include "mcltypes.hpp"
 
 
 namespace sal {
@@ -28,7 +28,7 @@ typedef mcl::Int UInt;
 typedef mcl::Int Int;
 
   
-typedef std::vector<Sample> Signal;
+typedef mcl::Vector<Sample> Signal;
   
 struct StereoSignal {
   Signal left;

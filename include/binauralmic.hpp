@@ -12,12 +12,12 @@
 #define SAL_BINAURALMIC_H
 
 #include <map>
-#include <vector>
-#include "microphone.h"
-#include "saltypes.h"
-#include "array.h"
-#include "salconstants.h"
-#include "firfilter.h"
+#include "vector.hpp"
+#include "microphone.hpp"
+#include "saltypes.hpp"
+#include "array.hpp"
+#include "salconstants.hpp"
+#include "firfilter.hpp"
 
 namespace sal {
   
@@ -102,8 +102,8 @@ public:
   virtual ~DatabaseBinauralMic() {}
 protected:
   // Database
-  std::vector<std::vector<Signal> > hrtf_database_right_;
-  std::vector<std::vector<Signal> > hrtf_database_left_;
+  std::vector<mcl::Vector<Signal> > hrtf_database_right_;
+  std::vector<mcl::Vector<Signal> > hrtf_database_left_;
 };
   
   

@@ -8,11 +8,11 @@
  
  */
 
-#include "kemarmic.h"
-#include "point.h"
-#include "butter.h"
-#include "salconstants.h"
-#include "vectorop.h"
+#include "kemarmic.hpp"
+#include "point.hpp"
+#include "butter.hpp"
+#include "salconstants.hpp"
+#include "vectorop.hpp"
 #include <fstream>
 #include <algorithm>
 
@@ -146,7 +146,7 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
 void
 KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
                               const Int num_samples, std::string variable_name) {
-  std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
+  std::vector<mcl::Vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
   
   for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
     for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
@@ -160,13 +160,13 @@ KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
   }
 }
   
-std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
-  std::vector<std::vector<Signal> > hrtf_database;
+std::vector<mcl::Vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
+  std::vector<mcl::Vector<Signal> > hrtf_database;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   
   for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
-    hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
+    hrtf_database.push_back(mcl::Vector<Signal>(num_measurements[i]));
     for (Int j=0; j<num_measurements[i]; ++j) {
       hrtf_database[i].push_back(Signal(FULL_LENGTH_KEMAR));
     }
@@ -179,16 +179,16 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
   
   
   
-std::vector<std::vector<Signal> >
+std::vector<mcl::Vector<Signal> >
   KemarMic::Load(const Ear ear, const std::string directory) {
-  std::vector<std::vector<Signal> > hrtf_database;
+  std::vector<mcl::Vector<Signal> > hrtf_database;
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
   
   for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
-    hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
+    hrtf_database.push_back(mcl::Vector<Signal>(num_measurements[i]));
     
     Angle resolution = 360.0 / num_measurements[i];
     Angle elevation = elevations[i];

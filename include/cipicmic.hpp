@@ -12,13 +12,13 @@
 #define SAL_CIPICMIC_H
 
 #include <map>
-#include <vector>
-#include "microphone.h"
-#include "quaternion.h"
-#include "saltypes.h"
-#include "array.h"
-#include "binauralmic.h"
-#include "salconstants.h"
+#include "vector.hpp"
+#include "microphone.hpp"
+#include "quaternion.hpp"
+#include "saltypes.hpp"
+#include "array.hpp"
+#include "binauralmic.hpp"
+#include "salconstants.hpp"
 
 #define NUM_ELEVATIONS_CIPIC 50
 #define LENGTH_BRIR_CIPIC 200
@@ -53,14 +53,14 @@ public:
   
   
 private:
-  static std::vector<std::vector<Signal> > Load(const Ear ear,
+  static std::vector<mcl::Vector<Signal> > Load(const Ear ear,
                                                 const std::string& directory,
                                                 const DataType data_type,
-                                                const std::vector<sal::Angle>& azimuths);
+                                                const mcl::Vector<sal::Angle>& azimuths);
 
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
-  std::vector<sal::Angle> azimuths_;
+  mcl::Vector<sal::Angle> azimuths_;
   
 };
   

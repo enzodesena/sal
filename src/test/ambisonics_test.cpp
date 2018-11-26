@@ -8,8 +8,8 @@
  
  */
 
-#include "ambisonics.h"
-#include "microphone.h"
+#include "ambisonics.hpp"
+#include "microphone.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;
@@ -115,24 +115,24 @@ bool AmbisonicsHorizDec::Test() {
   
   // Testing Crossover filters
   IirFilter filter_low(CrossoverFilterLow(380, 48000));
-  std::vector<Sample> num_lf_cmp(3);
+  mcl::Vector<Sample> num_lf_cmp(3);
   num_lf_cmp[0] = 0.000589143208472;
   num_lf_cmp[1] = 0.001178286416944;
   num_lf_cmp[2] = 0.000589143208472;
   ASSERT(IsEqual(filter_low.B(), num_lf_cmp));
-  std::vector<Sample> den_lf_cmp(3);
+  mcl::Vector<Sample> den_lf_cmp(3);
   den_lf_cmp[0] = 1.000000000000000;
   den_lf_cmp[1] = -1.902910910316590;
   den_lf_cmp[2] = 0.905267483150478;
   ASSERT(IsEqual(filter_low.A(), den_lf_cmp));
   
   IirFilter filter_high(CrossoverFilterHigh(380, 48000));
-  std::vector<Sample> num_hf_cmp(3);
+  mcl::Vector<Sample> num_hf_cmp(3);
   num_hf_cmp[0] = -0.952044598366767;
   num_hf_cmp[1] = 1.904089196733534;
   num_hf_cmp[2] = -0.952044598366767;
   ASSERT(IsEqual(filter_high.B(), num_hf_cmp));
-  std::vector<Sample> den_hf_cmp(3);
+  mcl::Vector<Sample> den_hf_cmp(3);
   den_hf_cmp[0] = 1.000000000000000;
   den_hf_cmp[1] = -1.902910910316590;
   den_hf_cmp[2] = 0.905267483150478;
@@ -148,11 +148,11 @@ bool AmbisonicsHorizDec::Test() {
   Complex x2 = conj(x1);
   Complex a(4.0*Fs*R/c, 0.0);
   Complex one(1.0, 0.0);
-  std::vector<Sample> BB(3);
+  mcl::Vector<Sample> BB(3);
   BB[0] = 1;
   BB[1] = -2;
   BB[2] = 1;
-  std::vector<Sample> AA(3);
+  mcl::Vector<Sample> AA(3);
   AA[0] = RealPart((one-x1/a)*(one-x2/a));
   AA[1] = RealPart(-(one-x1/a)*(one+x2/a)-(one+x1/a)*(one-x2/a));
   AA[2] = RealPart((one+x1/a)*(one+x2/a));
@@ -175,15 +175,15 @@ bool AmbisonicsHorizDec::Test() {
   ASSERT(IsEqual(filter_b.A()[1], -0.996111111111111));
 
   IirFilter filter_c = NFCFilter(0, R, Fs, c);
-  ASSERT(IsEqual(filter_c.B(), mcl::UnaryVector<Sample>(1.0)));
-  ASSERT(IsEqual(filter_c.A(), mcl::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.B(), mcl::Unarymcl::Vector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.A(), mcl::Unarymcl::Vector<Sample>(1.0)));
     
   
   // Testing loudspeaker placement
   
   const Int M = 5; // num loudspeakers
   const Angle phi0 = 2.0*PI/((Angle) M);
-  std::vector<Angle> loudspeaker_angles =
+  mcl::Vector<Angle> loudspeaker_angles =
           mcl::Multiply(mcl::ColonOperator<Angle>(0, M-1), phi0);
   ASSERT(IsEqual(loudspeaker_angles[0], 0.0));
   ASSERT(IsEqual(loudspeaker_angles[1], 1.256637061435917));
@@ -217,7 +217,7 @@ bool AmbisonicsHorizDec::Test() {
   const Int order = 2;
   const Int MM = 5; // num loudspeakers
   const Int num_theta(100);
-  std::vector<Angle> thetas = mcl::LinSpace(0.0, 2.0*PI, num_theta);
+  mcl::Vector<Angle> thetas = mcl::LinSpace(0.0, 2.0*PI, num_theta);
   
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), Quaternion::Identity(), order);
   
@@ -294,7 +294,7 @@ bool AmbisonicsHorizDec::Test() {
   decoder_b.Decode(stream_b, output_b);
   
   
-  std::vector<Sample> output_0_cmp(4);
+  mcl::Vector<Sample> output_0_cmp(4);
   output_0_cmp[0] = -0.261851079581371;
   output_0_cmp[1] = 0.091643993620079;
   output_0_cmp[2] = 0.077627205799285;

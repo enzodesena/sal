@@ -6,7 +6,7 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#include "cuboidroom.h"
+#include "cuboidroom.hpp"
 
 
 
@@ -96,7 +96,7 @@ bool CuboidRoom::Test() {
   Length room_y = 2.0;
   Length room_z = 3.0;
   
-  std::vector<mcl::IirFilter> wall_filters;
+  mcl::Vector<mcl::IirFilter> wall_filters;
   Sample alpha_x1 = 0.1;
   Sample beta_x1 = sqrt(1.0-alpha_x1);
   wall_filters.push_back(GainFilter(beta_x1));

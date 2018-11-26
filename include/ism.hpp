@@ -9,11 +9,11 @@
 #ifndef SAL_ISM_H
 #define SAL_ISM_H
 
-#include "cuboidroom.h"
-#include "source.h"
-#include "delayfilter.h"
-#include "microphone.h"
-#include "firfilter.h"
+#include "cuboidroom.hpp"
+#include "source.hpp"
+#include "delayfilter.hpp"
+#include "microphone.hpp"
+#include "firfilter.hpp"
 
 namespace sal {
   
@@ -35,12 +35,12 @@ private:
   
   sal::Time peterson_window_;
   
-  std::vector<sal::Sample> rir_;
-  std::vector<sal::Time> images_delay_;
-  std::vector<mcl::Point> images_position_;
+  mcl::Vector<sal::Sample> rir_;
+  mcl::Vector<sal::Time> images_delay_;
+  mcl::Vector<mcl::Point> images_position_;
   
-  std::vector<sal::DelayFilter> images_int_delay_filter_;
-  std::vector<mcl::FirFilter> images_frac_delay_filter_;
+  mcl::Vector<sal::DelayFilter> images_int_delay_filter_;
+  mcl::Vector<mcl::FirFilter> images_frac_delay_filter_;
   
   bool modified_;
   
@@ -63,8 +63,8 @@ public:
   // room or source (not including stream push) is updated.
   void Update();
   
-  std::vector<sal::Sample> rir() { return rir_; }
-  std::vector<sal::Time> images_delay() { return images_delay_; }
+  mcl::Vector<sal::Sample> rir() { return rir_; }
+  mcl::Vector<sal::Time> images_delay() { return images_delay_; }
   
   void SetPetersonWindow(sal::Time duration) { peterson_window_ = duration; }
   

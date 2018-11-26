@@ -16,12 +16,12 @@
 #define NORMALISING_VALUE_KEMAR 30000.0
 
 #include <map>
-#include <vector>
-#include "microphone.h"
-#include "saltypes.h"
-#include "array.h"
-#include "binauralmic.h"
-#include "salconstants.h"
+#include "vector.hpp"
+#include "microphone.hpp"
+#include "saltypes.hpp"
+#include "array.hpp"
+#include "binauralmic.hpp"
+#include "salconstants.hpp"
 
 namespace sal {
   
@@ -56,13 +56,13 @@ private:
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
   
   static
-  std::vector<std::vector<Signal> > Load(const Ear ear,
+  std::vector<mcl::Vector<Signal> > Load(const Ear ear,
                                          const std::string directory);
   
-  static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear);
+  static std::vector<mcl::Vector<Signal> > LoadEmbedded(const Ear ear);
   
   static void LoadEmbeddedData(const Ear ear,
-                               std::vector<std::vector<Signal> >& data);
+                               std::vector<mcl::Vector<Signal> >& data);
   
   /**
    Returns the elevation index for kemar database for elevation in azimuth.
@@ -92,7 +92,7 @@ private:
 } // namespace sal
 
 //#ifndef DO_NOT_LOAD_EMBEDDED_KEMAR
-//  #include "kemarmicdata.h"
+//  #include "kemarmicdata.hpp"
 //#endif
 
 #endif

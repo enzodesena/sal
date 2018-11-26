@@ -8,9 +8,9 @@
  
  */
 
-#include "binauralmic.h"
-#include "point.h"
-#include "salconstants.h"
+#include "binauralmic.hpp"
+#include "point.hpp"
+#include "salconstants.hpp"
 #include <string.h>
 
 using mcl::Point;
@@ -28,8 +28,8 @@ void BinauralMic::AddPlaneWaveRelative(const Sample* input_data,
     instances_.at(wave_id).AddPlaneWaveRelative(input_data, num_samples, point,
                                                 output_buffer);
   } else {
-    output_buffer.AddSamples(Buffer::kLeftChannel, 0, num_samples, input_data);
-    output_buffer.AddSamples(Buffer::kRightChannel, 0, num_samples, input_data);
+    output_buffer.AddSamples(Buffer::Channel::kLeft, 0, num_samples, input_data);
+    output_buffer.AddSamples(Buffer::Channel::kRight, 0, num_samples, input_data);
   }
 }
   
@@ -73,9 +73,9 @@ void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_data,
                                                const mcl::Point& point,
                                                Buffer& output_buffer) noexcept {
   UpdateFilter(point);
-  output_buffer.FilterAddSamples(Buffer::kLeftChannel, 0, num_samples,
+  output_buffer.FilterAddSamples(Buffer::Channel::kLeft, 0, num_samples,
                                  input_data, filter_left_);
-  output_buffer.FilterAddSamples(Buffer::kRightChannel, 0, num_samples,
+  output_buffer.FilterAddSamples(Buffer::Channel::kRight, 0, num_samples,
                                  input_data, filter_right_);
 }
 

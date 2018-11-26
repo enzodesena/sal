@@ -8,9 +8,9 @@
  
  */
 
-#include "delayfilter.h"
-#include "comparisonop.h"
-#include "vectorop.h"
+#include "delayfilter.hpp"
+#include "comparisonop.hpp"
+#include "vectorop.hpp"
 
 
 namespace sal {
@@ -287,8 +287,8 @@ bool DelayFilter::Test() {
   
   const Int num_samples = 10;
   const Int latency = 3;
-  std::vector<Sample> input_samples = mcl::ColonOperator(1.0, 1.0, (Sample) num_samples+1);
-  std::vector<Sample> output_samples = mcl::Concatenate(mcl::Zeros<Sample>(latency),
+  mcl::Vector<Sample> input_samples = mcl::ColonOperator(1.0, 1.0, (Sample) num_samples+1);
+  mcl::Vector<Sample> output_samples = mcl::Concatenate(mcl::Zeros<Sample>(latency),
                                                         mcl::Elements(input_samples, 0,
                                                                       num_samples-latency));
   assert(input_samples.size() == output_samples.size());

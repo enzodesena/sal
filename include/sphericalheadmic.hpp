@@ -11,11 +11,11 @@
 #ifndef SAL_DIRECTIVITYSPHERICAL_H
 #define SAL_DIRECTIVITYSPHERICAL_H
 
-#include "microphone.h"
-#include "saltypes.h"
-#include "kemarmic.h"
+#include "microphone.hpp"
+#include "saltypes.hpp"
+#include "kemarmic.hpp"
 #include <map>
-#include "salconstants.h"
+#include "salconstants.hpp"
 
 namespace sal {
 

@@ -10,10 +10,10 @@
 #define SAL_TDBEM_H
 
 
-#include "cuboidroom.h"
-#include "source.h"
-#include "microphone.h"
-#include "delayfilter.h"
+#include "cuboidroom.hpp"
+#include "source.hpp"
+#include "microphone.hpp"
+#include "delayfilter.hpp"
 
 namespace sal {
   
@@ -27,25 +27,25 @@ private:
   sal::Length spatial_sampling_period_;
   sal::Sample specific_acoustic_impedance_;
   
-  std::vector<sal::Sample> rir_;
+  mcl::Vector<sal::Sample> rir_;
   
   
-  std::vector<mcl::Point> points_; // Stores points on the bounduary
+  mcl::Vector<mcl::Point> points_; // Stores points on the bounduary
   sal::Int num_elements_;
-  std::vector<mcl::Point> normal_vectors_;
-  std::vector<std::vector<sal::Length> > distances_;
-  std::vector<std::vector<sal::Sample> > weights_current_;
-  std::vector<std::vector<sal::Sample> > weights_previous_;
+  mcl::Vector<mcl::Point> normal_vectors_;
+  std::vector<mcl::Vector<sal::Length> > distances_;
+  std::vector<mcl::Vector<sal::Sample> > weights_current_;
+  std::vector<mcl::Vector<sal::Sample> > weights_previous_;
   
-  std::vector<sal::Length> distances_mic_;
-  std::vector<sal::Sample> weights_mic_current_;
-  std::vector<sal::Sample> weights_mic_previous_;
-  std::vector<sal::Sample> weights_source_;
+  mcl::Vector<sal::Length> distances_mic_;
+  mcl::Vector<sal::Sample> weights_mic_current_;
+  mcl::Vector<sal::Sample> weights_mic_previous_;
+  mcl::Vector<sal::Sample> weights_source_;
   
-  std::vector<sal::Length> distances_source_;
+  mcl::Vector<sal::Length> distances_source_;
   sal::Length distance_los_;
   
-  std::vector<sal::DelayFilter> pressures_;
+  mcl::Vector<sal::DelayFilter> pressures_;
   
   sal::DelayFilter source_delay_line_;
   

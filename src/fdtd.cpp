@@ -8,8 +8,8 @@
  Enzo De Sena, enzodesena@gmail.com
  */
 
-#include "fdtd.h"
-#include "salconstants.h"
+#include "fdtd.hpp"
+#include "salconstants.hpp"
 
 using sal::Time;
 using sal::Length;
@@ -42,7 +42,7 @@ Fdtd::Fdtd(Room* const room,
   
 sal::Signal Fdtd::RunFdtd(Int Nx, Int Ny, Int Nz,
                           Int Nt,
-                          std::vector<std::vector<std::vector<sal::Int> > > G,
+                          mcl::Vector<std::vector<mcl::Vector<sal::Int> > > G,
                           Sample xi,
                           const Sample* signal,
                           Sample lmb,
@@ -50,11 +50,11 @@ sal::Signal Fdtd::RunFdtd(Int Nx, Int Ny, Int Nz,
                           Int pos_m_x, Int pos_m_y, Int pos_m_z) {
   
     
-  std::vector<sal::Sample> p_out(Nt, 0);
+  mcl::Vector<sal::Sample> p_out(Nt, 0);
   
-  std::vector<std::vector<std::vector<double> > > p_0;
-  std::vector<std::vector<std::vector<double> > > p_1;
-  std::vector<std::vector<std::vector<double> > > p_2;
+  mcl::Vector<std::vector<mcl::Vector<double> > > p_0;
+  mcl::Vector<std::vector<mcl::Vector<double> > > p_1;
+  mcl::Vector<std::vector<mcl::Vector<double> > > p_2;
   Fdtd::Initialise3DArray<double>(p_0, Nx+2, Ny+2, Nz+2);
   Fdtd::Initialise3DArray<double>(p_1, Nx+2, Ny+2, Nz+2);
   Fdtd::Initialise3DArray<double>(p_2, Nx+2, Ny+2, Nz+2);
@@ -127,10 +127,10 @@ void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
 }
   
   
-std::vector<std::vector<std::vector<sal::Int> > >
+mcl::Vector<std::vector<mcl::Vector<sal::Int> > >
 Fdtd::CreateGeometry(Int Nx, Int Ny, Int Nz) {
   // K = 6 air, K = 5 face, K = 4 edge, K = 3 corner
-  std::vector<std::vector<std::vector<sal::Int> > > G;
+  mcl::Vector<std::vector<mcl::Vector<sal::Int> > > G;
   
   
   Nx = Nx+2;

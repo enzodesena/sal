@@ -9,7 +9,7 @@
  */
 
 
-#include "pawrapper.h"
+#include "pawrapper.hpp"
 #include <unistd.h>
 
 using namespace sal;
@@ -37,7 +37,7 @@ int main(int argc, char * const argv[]) {
   std::cin>>dev_id;
   
   const Int max_num_channels = PaWrapper::NumOutputChannels(dev_id);
-  std::vector<Int> channel_ids =
+  mcl::Vector<Int> channel_ids =
   mcl::ColonOperator<mcl::Int>(0, max_num_channels-1);
   
   // Set streams

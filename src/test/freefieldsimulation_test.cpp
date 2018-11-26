@@ -8,9 +8,9 @@
  
  */
 
-#include "freefieldsimulation.h"
-#include "microphone.h"
-#include "monomics.h"
+#include "freefieldsimulation.hpp"
+#include "microphone.hpp"
+#include "monomics.hpp"
 
 using mcl::Point;
 
@@ -27,13 +27,13 @@ bool FreeFieldSim::Test() {
   MonoBuffer input_buffer_b(num_samples);
   input_buffer_b.SetSample(0, 0.5);
   
-  std::vector<MonoBuffer*> input_buffers;
+  mcl::Vector<MonoBuffer*> input_buffers;
   input_buffers.push_back(&input_buffer_a);
   input_buffers.push_back(&input_buffer_b);
   
   Source source_a(Point(-one_sample_space, 0.0, 0.0));
   Source source_b(Point(3*one_sample_space, 0.0, 0.0));
-  std::vector<Source*> sources(2);
+  mcl::Vector<Source*> sources(2);
   sources[0] = &source_a;
   sources[1] = &source_b;
   // Source/mics distribution
@@ -46,21 +46,21 @@ bool FreeFieldSim::Test() {
   OmniMic mic_b(Point(one_sample_space,0,0));
   MonoBuffer output_stream_b(num_output_samples);
   
-  std::vector<Microphone*> microphones(2);
+  mcl::Vector<Microphone*> microphones(2);
   microphones[0] = &mic_a;
   microphones[1] = &mic_b;
   
-  std::vector<Buffer*> output_buffers;
+  mcl::Vector<Buffer*> output_buffers;
   output_buffers.push_back(&output_stream_a);
   output_buffers.push_back(&output_stream_b);
   
   FreeFieldSim sim(microphones, sources, sampling_frequency, SOUND_SPEED);
   sim.Run(input_buffers, num_output_samples, output_buffers);
   
-  std::vector<Sample> output_mic_0_cmp = mcl::Zeros<Sample>(4);
+  mcl::Vector<Sample> output_mic_0_cmp = mcl::Zeros<Sample>(4);
   output_mic_0_cmp[1] = 0.5;
   output_mic_0_cmp[3] = 0.5/3.0;
-  std::vector<Sample> output_mic_1_cmp = mcl::Zeros<Sample>(4);
+  mcl::Vector<Sample> output_mic_1_cmp = mcl::Zeros<Sample>(4);
   output_mic_1_cmp[2] = 0.5/2.0+0.5/2.0;
   
   ASSERT(mcl::IsEqual(output_mic_0_cmp, output_stream_a.GetReadPointer()));

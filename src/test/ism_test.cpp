@@ -8,11 +8,11 @@
 
 
 
-#include "ism.h"
-#include "salconstants.h"
-#include "microphone.h"
-#include "monomics.h"
-#include "source.h"
+#include "ism.hpp"
+#include "salconstants.hpp"
+#include "microphone.hpp"
+#include "monomics.hpp"
+#include "source.hpp"
 
 using mcl::IsEqual;
 using sal::Time;
@@ -59,7 +59,7 @@ bool Ism::Test() {
   MonoBuffer test_rir(impulse.num_samples());
   ism.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
   
-  std::vector<Sample> cmp = mcl::Zeros<Sample>(9);
+  mcl::Vector<Sample> cmp = mcl::Zeros<Sample>(9);
   
   cmp[2] = 1.0/2.0;
 
@@ -113,7 +113,7 @@ bool Ism::Test() {
   Sample beta_y2 = 1.0/sqrt(6.0);
   
   
-  std::vector<mcl::IirFilter> iir_filters;
+  mcl::Vector<mcl::IirFilter> iir_filters;
   iir_filters.push_back(GainFilter(beta_x1));
   iir_filters.push_back(GainFilter(beta_x2));
   iir_filters.push_back(GainFilter(beta_y1));
@@ -130,7 +130,7 @@ bool Ism::Test() {
   test_rir.Reset();
   isma.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
   
-  std::vector<Sample> cmpa = mcl::Zeros<Sample>(9);
+  mcl::Vector<Sample> cmpa = mcl::Zeros<Sample>(9);
   
   cmpa[2] = 1.0/2.0; // LOS
   
@@ -177,7 +177,7 @@ bool Ism::Test() {
   //  Ism ism_b(&room_absorption, &source, &mic, peterson, 10, sampling_frequency);
   //  mic.Reset();
   //  source.stream()->Reset();
-  //  std::vector<sal::Sample> signal = {0.3, -0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  //  mcl::Vector<sal::Sample> signal = {0.3, -0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   //  source.stream()->Push(signal);
   //  ism_b.Run();
   //  mcl::Print(mic.stream()->PullAll());

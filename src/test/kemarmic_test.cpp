@@ -8,10 +8,10 @@
  
  */
 
-#include "kemarmic.h"
-#include "microphone.h"
-#include "salconstants.h"
-#include "vectorop.h"
+#include "kemarmic.hpp"
+#include "microphone.hpp"
+#include "salconstants.hpp"
+#include "vectorop.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;

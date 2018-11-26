@@ -16,29 +16,29 @@
 
 #define DEFAULT_MAX_BUFFER 10
 
-#include "source.h"
-#include "saltypes.h"
-#include "point.h"
-#include "microphone.h"
-#include "propagationline.h"
-#include <vector>
-#include "salconstants.h"
+#include "source.hpp"
+#include "saltypes.hpp"
+#include "point.hpp"
+#include "microphone.hpp"
+#include "propagationline.hpp"
+#include "vector.hpp"
+#include "salconstants.hpp"
 
 namespace sal {
   
 class FreeFieldSim {
 public:
-  FreeFieldSim(std::vector<Microphone*> microphones,
-               std::vector<Source*> sources,
+  FreeFieldSim(mcl::Vector<Microphone*> microphones,
+               mcl::Vector<Source*> sources,
                const Time sampling_frequency,
                const Length sound_speed);
   
   FreeFieldSim(Microphone* microphones,
-               std::vector<Source*> sources,
+               mcl::Vector<Source*> sources,
                const Time sampling_frequency,
                const Length sound_speed);
   
-  FreeFieldSim(std::vector<Microphone*> microphones,
+  FreeFieldSim(mcl::Vector<Microphone*> microphones,
                Source* sources,
                const Time sampling_frequency,
                const Length sound_speed);
@@ -48,14 +48,14 @@ public:
                const Time sampling_frequency,
                const Length sound_speed);
   
-  void Init(std::vector<Microphone*> microphones,
-            std::vector<Source*> sources,
+  void Init(mcl::Vector<Microphone*> microphones,
+            mcl::Vector<Source*> sources,
             const Time sampling_frequency,
             const Length sound_speed);
   
-  void Run(std::vector<MonoBuffer*> input_buffers,
+  void Run(mcl::Vector<MonoBuffer*> input_buffers,
            const Int num_output_samples,
-           std::vector<Buffer*> output_buffers);
+           mcl::Vector<Buffer*> output_buffers);
   
   void AllocateTempBuffers(const Int num_samples);
   void DeallocateTempBuffers();
@@ -69,24 +69,24 @@ private:
   void Tick();
   
   /** Returns the minimum distance between any source and any microphone. */
-  static Length MinimumDistance(const std::vector<Microphone*>& microphones,
-                                const std::vector<Source*>& sources);
+  static Length MinimumDistance(const mcl::Vector<Microphone*>& microphones,
+                                const mcl::Vector<Source*>& sources);
   
   /** Returns the maximum distance between any source and any microphone. */
-  static Length MaximumDistance(const std::vector<Microphone*>& microphones,
-                                const std::vector<Source*>& sources);
+  static Length MaximumDistance(const mcl::Vector<Microphone*>& microphones,
+                                const mcl::Vector<Source*>& sources);
   
-  static std::vector<Length>
-  AllDistances(const std::vector<Microphone*>& microphones,
-               const std::vector<Source*>& sources);
+  static mcl::Vector<Length>
+  AllDistances(const mcl::Vector<Microphone*>& microphones,
+               const mcl::Vector<Source*>& sources);
   
   
   
-  std::vector<std::vector<PropagationLine*> > propagation_lines_;
-  std::vector<std::vector<MonoBuffer*> > temp_buffers_;
+  std::vector<mcl::Vector<PropagationLine*> > propagation_lines_;
+  std::vector<mcl::Vector<MonoBuffer*> > temp_buffers_;
   
-  std::vector<Microphone*> microphones_;
-  std::vector<Source*> sources_;
+  mcl::Vector<Microphone*> microphones_;
+  mcl::Vector<Source*> sources_;
   Time sampling_frequency_;
   Speed sound_speed_;
 };

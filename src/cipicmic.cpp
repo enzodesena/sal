@@ -41,16 +41,16 @@
 
 
 
-#include "cipicmic.h"
-#include "point.h"
-#include "matrixop.h"
-#include "salconstants.h"
-#include "vectorop.h"
+#include "cipicmic.hpp"
+#include "point.hpp"
+#include "matrixop.hpp"
+#include "salconstants.hpp"
+#include "vectorop.hpp"
 #include <string.h>
 #include <fstream>
 
 #ifndef NO_WAV_HANDLER
-#include "wavhandler.h"
+#include "wavhandler.hpp"
 #endif
 
 using mcl::Point;
@@ -63,7 +63,7 @@ CipicMic::CipicMic(const Point& position, const Quaternion& orientation,
                    const Int update_length) :
         DatabaseBinauralMic(position, orientation, update_length) {
   
-  azimuths_ = std::vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
+  azimuths_ = mcl::Vector<sal::Angle>({-80.0,-65.0,-55.0,-45.0,-40.0,-35.0,
     -30.0,-25.0,-20.0,-15.0,-10.0,-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
     30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0});
 
@@ -71,11 +71,11 @@ CipicMic::CipicMic(const Point& position, const Quaternion& orientation,
   hrtf_database_left_ = Load(kLeftEar, directory, data_type, azimuths_);
 }
 
-std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
+std::vector<mcl::Vector<Signal> > CipicMic::Load(const Ear ear,
                                                  const std::string& directory,
                                                  const DataType data_type,
-                                                 const std::vector<sal::Angle>& azimuths) {
-  std::vector<std::vector<Signal> > hrtf_database;
+                                                 const mcl::Vector<sal::Angle>& azimuths) {
+  std::vector<mcl::Vector<Signal> > hrtf_database;
 
   for (Int j=0; j<(Int)azimuths.size(); ++j) {
     Int azimuth = (Int) azimuths[j];
@@ -96,7 +96,7 @@ std::vector<std::vector<Signal> > CipicMic::Load(const Ear ear,
     }
     file.close();
 
-    std::vector<std::vector<sal::Sample> > brirs;
+    std::vector<mcl::Vector<sal::Sample> > brirs;
     switch (data_type) {
 
 #ifdef __x86_64__

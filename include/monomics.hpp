@@ -11,10 +11,10 @@
 #ifndef SAL_DIRECTIVITYFUNCTION_H
 #define SAL_DIRECTIVITYFUNCTION_H
 
-#include "point.h"
-#include "salconstants.h"
-#include "microphone.h"
-#include "vectorop.h"
+#include "point.hpp"
+#include "salconstants.hpp"
+#include "microphone.hpp"
+#include "vectorop.hpp"
 
 
 
@@ -72,9 +72,9 @@ public:
     
     mcl::MultiplyAdd(input_data,
                      GetDirectivity(point),
-                     output_buffer.GetReadPointer(Buffer::kMonoChannel),
+                     output_buffer.GetReadPointer(Buffer::Channel::kMono),
                      num_samples,
-                     output_buffer.GetWritePointer(Buffer::kMonoChannel));
+                     output_buffer.GetWritePointer(Buffer::Channel::kMono));
   }
   
 private:
@@ -121,7 +121,7 @@ public:
 class TrigMic : public MemorylessMonoMic {
 public:
   TrigMic(mcl::Point position, mcl::Quaternion orientation,
-          std::vector<Sample> coefficients) :
+          mcl::Vector<Sample> coefficients) :
           Microphone(position, orientation),
           MemorylessMonoMic(position, orientation),
           coefficients_(coefficients) {}
@@ -138,7 +138,7 @@ private:
     return directivity;
   }
   
-  std::vector<Sample> coefficients_;
+  mcl::Vector<Sample> coefficients_;
 };
   
   

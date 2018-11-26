@@ -6,8 +6,8 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#include "cuboidroom.h"
-#include <vector>
+#include "cuboidroom.hpp"
+#include "vector.hpp"
 #include <cassert>
 #define EPSILON 1E-10
 
@@ -34,12 +34,12 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
          std::islessequal(point.z(), dimensions_.z() -  origin_position_.z() - wall_distance);
 }
 
-std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
+mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
                                                        const Point& mic_point) const noexcept {
   // These points are normalised such that they are between 0<x<Lx etc...
   mcl::Point shifted_source_point = mcl::Subtract(source_point, origin_position_);
   mcl::Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
-  std::vector<Point> reflection_points(6);
+  mcl::Vector<Point> reflection_points(6);
   
   reflection_points[0] = ReflectionPoint(kX1, shifted_source_point, shifted_mic_point);
   reflection_points[1] = ReflectionPoint(kX2, shifted_source_point, shifted_mic_point);
@@ -119,10 +119,10 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point
   return reflection_points;
 }
 
-std::vector<mcl::IirFilter>
+mcl::Vector<mcl::IirFilter>
 CuboidRoom::GetBoundaryFilters(const Point& source_point,
                                const Point& mic_point) const noexcept {
-  std::vector<mcl::IirFilter> boundary_filters(wall_filters_);
+  mcl::Vector<mcl::IirFilter> boundary_filters(wall_filters_);
   
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 = IntersectionPoint(kX2, dimensions_, mic_point,

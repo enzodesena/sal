@@ -8,9 +8,9 @@
  
  */
 
-#include "microphone.h"
-#include "quaternion.h"
-#include "mcltypes.h"
+#include "microphone.hpp"
+#include "quaternion.hpp"
+#include "mcltypes.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;

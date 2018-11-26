@@ -8,11 +8,11 @@
  
  */
 
-#include "propagationline.h"
-#include "salconstants.h"
-#include "delayfilter.h"
-#include "matrixop.h"
-#include "salutilities.h"
+#include "propagationline.hpp"
+#include "salconstants.hpp"
+#include "delayfilter.hpp"
+#include "matrixop.hpp"
+#include "salutilities.hpp"
 #include <cstdlib>
 
 using sal::Length;
@@ -180,17 +180,17 @@ void PropagationLine::Read(const Int num_samples,
 }
   
 
-std::vector<sal::Sample>
+mcl::Vector<sal::Sample>
 PropagationLine::GetAirFilter(sal::Length distance) noexcept {
   
-  std::vector<sal::Length> distances = {1,1.2743,1.6238,2.0691,2.6367,3.3598,
+  mcl::Vector<sal::Length> distances = {1,1.2743,1.6238,2.0691,2.6367,3.3598,
                                         4.2813,5.4556,6.9519,8.8587,11.288,
                                         14.384,18.33,23.357,29.764,37.927,
                                         48.329,61.585,78.476,100};
   
   Int filter_index =
   mcl::MinIndex(mcl::Abs(mcl::Subtract(distances,
-                                       std::vector<sal::Length>(distances.size(),
+                                       mcl::Vector<sal::Length>(distances.size(),
                                                                 distance))));
   switch (filter_index) { // 70% humidity N=4
     case 0:
@@ -255,7 +255,7 @@ PropagationLine::GetAirFilter(sal::Length distance) noexcept {
       break;
     default:
       ASSERT(false);
-      return std::vector<sal::Sample>(0, 1);
+      return mcl::Vector<sal::Sample>(0, 1);
   }
 }
 

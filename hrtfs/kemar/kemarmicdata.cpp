@@ -1,4 +1,4 @@
-#include "kemarmic.h"
+#include "kemarmic.hpp"
 
 namespace sal {
   
@@ -1441,7 +1441,7 @@ KemarData kRightEarData[] = {
 
 
   
-void KemarMic::LoadEmbeddedData(const Ear ear, std::vector<std::vector<Signal> >& h) {
+void KemarMic::LoadEmbeddedData(const Ear ear, std::vector<Vector<Signal> >& h) {
   if (ear == kLeftEar) {
     for (const KemarData& entry : kLeftEarData) {
       Signal& vector = h[entry.elevation_id][entry.azimuth_id];

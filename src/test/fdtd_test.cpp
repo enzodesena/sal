@@ -6,7 +6,7 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#include "fdtd.h"
+#include "fdtd.hpp"
 
 
 namespace sal {
@@ -21,7 +21,7 @@ bool Fdtd::Test() {
   unsigned int Ny=4;
   unsigned int Nz=4;
   
-  std::vector<sal::Sample> p_out=Fdtd::RunFdtd(Nx, Ny, Nz,
+  mcl::Vector<sal::Sample> p_out=Fdtd::RunFdtd(Nx, Ny, Nz,
                                 Nt,
                                 Fdtd::CreateGeometry(Nx, Ny, Nz),
                                 10,
@@ -32,7 +32,7 @@ bool Fdtd::Test() {
   
 
   
-  std::vector<sal::Sample> rir_cmp;
+  mcl::Vector<sal::Sample> rir_cmp;
   rir_cmp.push_back(0);
   rir_cmp.push_back(0);
   rir_cmp.push_back(0);

@@ -5,9 +5,9 @@
  
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
-#include "ism.h"
-#include "salconstants.h"
-#include "randomop.h"
+#include "ism.hpp"
+#include "salconstants.hpp"
+#include "randomop.hpp"
 
 using sal::Time;
 using sal::Length;
@@ -64,7 +64,7 @@ void Ism::Run(const Sample* input_data, const Int num_samples,
 /** Calculates the Rir. This is called by Run() before filtering. */
 void Ism::CalculateRir() {
   mcl::Matrix<Sample> beta(2,3);
-  std::vector<mcl::IirFilter> filters = room_->wall_filters();
+  mcl::Vector<mcl::IirFilter> filters = room_->wall_filters();
   beta.SetElement(0, 0, filters[0].B()[0]); // beta_{x1}
   beta.SetElement(0, 1, filters[2].B()[0]); // beta_{y1}
   beta.SetElement(0, 2, filters[4].B()[0]); // beta_{z1}
@@ -92,7 +92,7 @@ void Ism::CalculateRir() {
   images_frac_delay_filter_.reserve(max_num_images);
   
   mcl::RandomGenerator randn_gen;
-  std::vector<sal::Length> rand_delays;
+  mcl::Vector<sal::Length> rand_delays;
   
   Int k;
   bool randomisation = (mcl::IsEqual(random_distance_, 0.0)) ? false : true;
@@ -167,7 +167,7 @@ void Ism::WriteSample(const sal::Time& delay,
       
       sal::Time tau = ((sal::Time)delay_norm)/sampling_frequency_;
       
-      std::vector<sal::Sample> filter_coefficients;
+      mcl::Vector<sal::Sample> filter_coefficients;
       sal::Int integer_delay = (Int) floor(sampling_frequency_*(-T_w/2.0+tau));
       for (Int n=integer_delay+1;
            n<floor(sampling_frequency_*(T_w/2.0+tau));

@@ -10,12 +10,12 @@
 #define SAL_CUBOIDROOM_H
 
 
-#include <vector>
-#include "point.h"
-#include "iirfilter.h"
-#include "room.h"
-#include "comparisonop.h"
-#include "salutilities.h"
+#include "vector.hpp"
+#include "point.hpp"
+#include "iirfilter.hpp"
+#include "room.hpp"
+#include "comparisonop.hpp"
+#include "salutilities.hpp"
 
 namespace sal {
 
@@ -33,7 +33,7 @@ public:
   // The room filter is *not* an injected dependency. The software will do lots
   // of copies of the object.
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const std::vector<mcl::IirFilter>& filter_prototypes) :
+             const mcl::Vector<mcl::IirFilter>& filter_prototypes) :
           Room(filter_prototypes),
           dimensions_(Triplet(x, y, z)), origin_position_(Triplet(0,0,0)) {
     if ((Int)filter_prototypes.size() != num_faces()) { ASSERT(false); }
@@ -41,7 +41,7 @@ public:
   
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
              const mcl::IirFilter& filter_prototype) :
-          Room(std::vector<mcl::IirFilter>(6, filter_prototype)),
+          Room(mcl::Vector<mcl::IirFilter>(6, filter_prototype)),
           dimensions_(Triplet(x, y, z)), origin_position_(Triplet(0,0,0)) {}
   
   /**
@@ -53,14 +53,14 @@ public:
    */
   CuboidRoom(const Triplet& room_dimensions, const Triplet& origin_position,
              const mcl::IirFilter& filter_prototype) :
-          Room(std::vector<mcl::IirFilter>(6, filter_prototype)),
+          Room(mcl::Vector<mcl::IirFilter>(6, filter_prototype)),
           dimensions_(room_dimensions), origin_position_(origin_position) {}
 
-  virtual std::vector<mcl::Point>
+  virtual mcl::Vector<mcl::Point>
   CalculateBoundaryPoints(const mcl::Point& source,
                           const mcl::Point& destination) const noexcept;
   
-  virtual std::vector<mcl::IirFilter>
+  virtual mcl::Vector<mcl::IirFilter>
   GetBoundaryFilters(const mcl::Point& source_point,
                      const mcl::Point& mic_point) const noexcept;
   

@@ -8,11 +8,11 @@
  
  */
 
-#include "microphone.h"
-#include "monomics.h"
-#include "signal.h"
-#include "kemarmic.h"
-#include "sphericalheadmic.h"
+#include "microphone.hpp"
+#include "monomics.hpp"
+#include "signal.hpp"
+#include "kemarmic.hpp"
+#include "sphericalheadmic.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;
@@ -37,7 +37,7 @@ bool Microphone::Test() {
   //////////////////////////////////
   // TrigMic tests                //
   //////////////////////////////////
-  std::vector<Sample> coefficients(3);
+  mcl::Vector<Sample> coefficients(3);
   coefficients[0] = 0.5;
   coefficients[1] = -1.0;
   coefficients[2] = -0.5;

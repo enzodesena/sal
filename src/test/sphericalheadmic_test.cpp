@@ -8,9 +8,9 @@
  
  */
 
-#include "sphericalheadmic.h"
-#include "microphone.h"
-#include "salconstants.h"
+#include "sphericalheadmic.hpp"
+#include "microphone.hpp"
+#include "salconstants.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;
@@ -33,11 +33,11 @@ bool SphericalHeadMic::Test() {
   ASSERT(IsEqual(Sphere(0.15, 100.0, PI, 130.0, 330.0, 0.00012),
                  Complex(0.855026629580043, 0.533944979396686)));
   
-  std::vector<mcl::Real> hrir_a = GenerateImpulseResponse(0.09, 2, PI/4.0, 343,
+  mcl::Vector<mcl::Real> hrir_a = GenerateImpulseResponse(0.09, 2, PI/4.0, 343,
                                                           0.0001, 6, 40000.0,
                                                           false);
   
-  std::vector<mcl::Real> hrir_a_cmp(6);
+  mcl::Vector<mcl::Real> hrir_a_cmp(6);
   hrir_a_cmp[0] = -0.422751207729102;
   hrir_a_cmp[1] = 1.25968413581477;
   hrir_a_cmp[2] = 0.274433385673422;
@@ -73,7 +73,7 @@ bool SphericalHeadMic::Test() {
   // theta=0 (reference system of Duda's paper).
   
   
-  std::vector<Sample> output_ipsilateral(6);
+  mcl::Vector<Sample> output_ipsilateral(6);
   output_ipsilateral[0] = -0.064768721403534;
   output_ipsilateral[1] = -1.16235892863396;
   output_ipsilateral[2] = 0.0436720375962888;
@@ -85,7 +85,7 @@ bool SphericalHeadMic::Test() {
   
   // Trying now contralateral case (right ear output due to the
   // direction of left ear).
-  std::vector<Sample> output_contralateral(6);
+  mcl::Vector<Sample> output_contralateral(6);
   output_contralateral[0] = 0.091462139312559;
   output_contralateral[1] = -0.18323871195895;
   output_contralateral[2] = -0.11070828693118;
@@ -124,7 +124,7 @@ bool SphericalHeadMic::Test() {
                  stream_b.GetRightReadPointer(), impulse.num_samples()));
   
   
-  std::vector<Sample> output_frontal(6);
+  mcl::Vector<Sample> output_frontal(6);
   output_frontal[0] = 0.5249943567937;
   output_frontal[1] = -0.39587582734155;
   output_frontal[2] = -0.61842280953724;

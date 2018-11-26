@@ -8,8 +8,8 @@
  
  */
 
-#include "delayfilter.h"
-#include "salutilities.h"
+#include "delayfilter.hpp"
+#include "salutilities.hpp"
 #include <cassert>
 
 using sal::Sample;

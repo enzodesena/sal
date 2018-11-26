@@ -11,8 +11,8 @@
  
  */
 
-#include "ambisonics.h"
-#include "matrixop.h"
+#include "ambisonics.hpp"
+#include "matrixop.hpp"
 
 using mcl::Point;
 using mcl::Multiply;
@@ -83,9 +83,9 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
   }
 }
 
-std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(Int order,
+mcl::Vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(Int order,
                                                          Angle theta) {
-  std::vector<mcl::Real> output;
+  mcl::Vector<mcl::Real> output;
   output.reserve(2*order+1);
   output.push_back(1.0);
   for (Int i=1; i<=order; ++i) {
@@ -98,7 +98,7 @@ std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(Int order,
 AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        const bool energy_decoding,
                                        const Time cut_off_frequency,
-                                       const std::vector<Angle>& loudspeaker_angles,
+                                       const mcl::Vector<Angle>& loudspeaker_angles,
                                        const bool near_field_correction,
                                        const Length loudspeakers_distance,
                                        const Time sampling_frequency,
@@ -143,9 +143,9 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
     IirFilter cx_low = CrossoverFilterLow(cut_off_frequency,
                                           sampling_frequency);
     // One filter per loudspeaker
-    crossover_filters_high_ = std::vector<IirFilter>(num_loudspeakers_,
+    crossover_filters_high_ = mcl::Vector<IirFilter>(num_loudspeakers_,
                                                      cx_high);
-    crossover_filters_low_ = std::vector<IirFilter>(num_loudspeakers_,
+    crossover_filters_low_ = mcl::Vector<IirFilter>(num_loudspeakers_,
                                                     cx_low);
   }
   
@@ -155,7 +155,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
   
   
 mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(Int order,
-                const std::vector<Angle>& loudspeaker_angles) {
+                const mcl::Vector<Angle>& loudspeaker_angles) {
   using mcl::Matrix;
   using mcl::Multiply;
   const Int num_loudspeakers = loudspeaker_angles.size();
@@ -175,7 +175,7 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(Int order,
 }
   
 mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(Int order,
-                 const std::vector<Angle>& loudspeaker_angles) {
+                 const mcl::Vector<Angle>& loudspeaker_angles) {
   // TODO: Implement for non-regular loudspeaker arrays.
   mcl::Matrix<Sample> decoding_matrix(2*order+1, 2*order+1);
   decoding_matrix.SetElement(0, 0, MaxEnergyDecWeight(0, order));
@@ -189,13 +189,13 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(Int order,
   return decoding_matrix;
 }
   
-std::vector<Sample>
+mcl::Vector<Sample>
 AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
                              const Buffer& buffer) {
   ASSERT(order>=0);
   ASSERT(sample_id>=0 & sample_id<buffer.num_samples());
   
-  std::vector<Sample> output;
+  mcl::Vector<Sample> output;
   output.reserve(2*order+1);
   output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(0, 0),
                                     sample_id));
@@ -227,7 +227,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
   
   // Cache for speed
   for (Int sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
-    std::vector<Sample> bformat_frame = GetFrame(order_, sample_id,
+    mcl::Vector<Sample> bformat_frame = GetFrame(order_, sample_id,
                                                  input_buffer);
     
     // Near-field correcting
@@ -241,7 +241,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
     //  // Ambisonics decoding (mode-matching)
     //  M_d = amb_decoding(N, loudspeaker_angles);
     //  G_format_low = M_d*amb_nfc_filter(B_format, loudspeakers_distance, Fs, c);
-    std::vector<Sample> output = mcl::Multiply(mode_matching_matrix_,
+    mcl::Vector<Sample> output = mcl::Multiply(mode_matching_matrix_,
                                                bformat_frame);
     if (energy_decoding_) {
       // Maximum energy decoding at high frequency
@@ -250,7 +250,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
       //  display('energy');
       //  G = amb_re_weights_matrix(g);
       //  G_format_high = M_d*G*B_format;
-      std::vector<Sample> output_high =
+      mcl::Vector<Sample> output_high =
                 mcl::Multiply(mode_matching_matrix_,
                               mcl::Multiply(max_energy_matrix_, bformat_frame));
       
@@ -279,7 +279,7 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
         const Time cut_off_frequency, const Time sampling_frequency) {
   Sample k = tan(PI*cut_off_frequency/sampling_frequency);
   
-  std::vector<Sample> b_lf(3);
+  mcl::Vector<Sample> b_lf(3);
   // b0_lf = k^2/(k^2+2*k+1);
   b_lf[0] = pow(k,2.0)/(pow(k,2.0)+2.0*k+1.0);
   // b1_lf = 2*b0_lf;
@@ -287,7 +287,7 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
   // b2_lf = b0_lf;
   b_lf[2] = b_lf[0];
   
-  std::vector<Sample> a(3);
+  mcl::Vector<Sample> a(3);
   a[0] = 1.0;
   // a1 = 2*(k^2-1)/(k^2+2*k+1);
   a[1] = 2.*(pow(k,2.0)-1.0)/(pow(k,2.0)+2.0*k+1.0);
@@ -301,7 +301,7 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
         const Time cut_off_frequency, const Time sampling_frequency) {
   Sample k = tan(PI*cut_off_frequency/sampling_frequency);
   
-  std::vector<Sample> b_hf(3);
+  mcl::Vector<Sample> b_hf(3);
   // b0_hf = 1/(k^2+2*k+1);
   b_hf[0] = 1.0/(pow(k,2.0)+2.0*k+1.0);
   // b1_hf = -2*b0_hf;
@@ -340,35 +340,35 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
   using mcl::Multiply;
   using mcl::RealPart;
   
-  std::vector<Complex> X_Mq;
+  mcl::Vector<Complex> X_Mq;
   switch(order) {
     case 0:
-      X_Mq = std::vector<Complex>(0);
+      X_Mq = mcl::Vector<Complex>(0);
       break;
     case 1:
-      X_Mq = std::vector<Complex>(1);
+      X_Mq = mcl::Vector<Complex>(1);
       X_Mq[0] = Complex(-2.0, 0.0);
       break;
     case 2:
-      X_Mq = std::vector<Complex>(2);
+      X_Mq = mcl::Vector<Complex>(2);
       X_Mq[0] = Complex(-3.0000, 1.7321);
       X_Mq[1] = Conj(X_Mq[0]);
       break;
     case 3:
-      X_Mq = std::vector<Complex>(3);
+      X_Mq = mcl::Vector<Complex>(3);
       X_Mq[0] = Complex(-3.6778, 3.5088);
       X_Mq[1] = Conj(X_Mq[0]);
       X_Mq[2] = Complex(-4.6444, 0.0);
       break;
     case 4:
-      X_Mq = std::vector<Complex>(4);
+      X_Mq = mcl::Vector<Complex>(4);
       X_Mq[0] = Complex(-4.2076, 5.3148);
       X_Mq[1] = Conj(X_Mq[0]);
       X_Mq[2] = Complex(-5.7924, 1.7345);
       X_Mq[3] = Conj(X_Mq[2]);
       break;
     case 5:
-      X_Mq = std::vector<Complex>(5);
+      X_Mq = mcl::Vector<Complex>(5);
       X_Mq[0] = Complex(-4.6493, 7.1420);
       X_Mq[1] = Conj(X_Mq[0]);
       X_Mq[2] = Complex(-6.7039, 3.4853);
@@ -376,7 +376,7 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
       X_Mq[4] = Complex(-7.2935, 0.0);
       break;
     case 6:
-      X_Mq = std::vector<Complex>(6);
+      X_Mq = mcl::Vector<Complex>(6);
       X_Mq[0] = Complex(-5.0319, 8.9853);
       X_Mq[1] = Conj(X_Mq[0]);
       X_Mq[2] = Complex(-7.4714, 5.2525);
@@ -390,16 +390,16 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
   
   // I need to implement A(poly((1+X_mq/a)./(1-X_mq/a))*prod(1-X_mq./a);
   const Int num_samples = X_Mq.size();
-  std::vector<Complex> temp_1(num_samples); // (1+X_mq/a)./(1-X_mq/a))
-  std::vector<Complex> temp_2(num_samples); // 1-X_mq./a
+  mcl::Vector<Complex> temp_1(num_samples); // (1+X_mq/a)./(1-X_mq/a))
+  mcl::Vector<Complex> temp_2(num_samples); // 1-X_mq./a
   for (Int i=0; i<num_samples; ++i) {
     temp_1[i] = (Complex(1.0, 0.0)+X_Mq[i]/Complex(a, 0.0))/
                 (Complex(1.0,0.0)-X_Mq[i]/Complex(a, 0.0));
     temp_2[i] = (Complex(1.0,0.0)-X_Mq[i]/Complex(a, 0.0));
   }
   
-  std::vector<Real> B = mcl::RealPart(mcl::Poly(mcl::Ones(order)));
-  std::vector<Real> A = RealPart(Multiply(Poly(temp_1), Prod(temp_2)));
+  mcl::Vector<Real> B = mcl::RealPart(mcl::Poly(mcl::Ones(order)));
+  mcl::Vector<Real> A = RealPart(Multiply(Poly(temp_1), Prod(temp_2)));
   
   
   return mcl::IirFilter(B, A);

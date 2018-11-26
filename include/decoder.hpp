@@ -11,9 +11,9 @@
 #ifndef SAL_decoder_h
 #define SAL_decoder_h
 
-#include "audiobuffer.h"
-#include "vectorop.h"
-#include "salconstants.h"
+#include "audiobuffer.hpp"
+#include "vectorop.hpp"
+#include "salconstants.hpp"
 
 namespace sal {
 

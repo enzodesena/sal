@@ -13,9 +13,9 @@
 
 #define DEFAULT_MAX_LATENCY 3276800
 
-#include "saltypes.h"
-#include "digitalfilter.h"
-#include "salconstants.h"
+#include "saltypes.hpp"
+#include "digitalfilter.hpp"
+#include "salconstants.hpp"
 #include <algorithm>
 
 namespace sal {

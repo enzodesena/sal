@@ -13,9 +13,9 @@
 #define SAL_FDTD_H
 
 
-#include "cuboidroom.h"
-#include "source.h"
-#include "microphone.h"
+#include "cuboidroom.hpp"
+#include "source.hpp"
+#include "microphone.hpp"
 
 namespace sal {
   
@@ -29,12 +29,12 @@ private:
   
   sal::Time sampling_frequency_;
   
-  std::vector<sal::Sample> rir_;
+  mcl::Vector<sal::Sample> rir_;
   
   static
   sal::Signal RunFdtd(sal::Int Nx, sal::Int Ny, sal::Int Nz,
                       sal::Int Nt,
-                      std::vector<std::vector<std::vector<sal::Int> > > G,
+                      mcl::Vector<std::vector<mcl::Vector<sal::Int> > > G,
                       sal::Sample xi,
                       const Sample* signal,
                       sal::Sample lmb,
@@ -48,7 +48,7 @@ private:
   template<class T>
   static
   void
-  Initialise3DArray(std::vector<std::vector<std::vector<T> > >& array,
+  Initialise3DArray(mcl::Vector<std::vector<mcl::Vector<T> > >& array,
                     sal::Int size_x, sal::Int size_y, sal::Int size_z) {
     array.resize(size_x);
     for (sal::Int i = 0; i < size_x; ++i) {
@@ -73,7 +73,7 @@ public:
   sal::Signal rir() const { return rir_; }
   
   static
-  std::vector<std::vector<std::vector<sal::Int> > >
+  mcl::Vector<std::vector<mcl::Vector<sal::Int> > >
   CreateGeometry(sal::Int Nx, sal::Int Ny, sal::Int Nz);
   
   static bool Test();

@@ -8,11 +8,11 @@
  
  */
 
-#include "salutilities.h"
-#include "cipicmic.h"
-#include "microphone.h"
-#include "vectorop.h"
-#include "salconstants.h"
+#include "salutilities.hpp"
+#include "cipicmic.hpp"
+#include "microphone.hpp"
+#include "vectorop.hpp"
+#include "salconstants.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;

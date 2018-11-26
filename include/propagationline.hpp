@@ -11,12 +11,12 @@
 #ifndef SAL_PROPAGATIONLINE_H
 #define SAL_PROPAGATIONLINE_H
 
-#include "delayfilter.h"
-#include "iirfilter.h"
-#include "point.h"
-#include "firfilter.h"
-#include "salconstants.h"
-#include "salutilities.h"
+#include "delayfilter.hpp"
+#include "iirfilter.hpp"
+#include "point.hpp"
+#include "firfilter.hpp"
+#include "salconstants.hpp"
+#include "salutilities.hpp"
 
 namespace sal {
   
@@ -122,7 +122,7 @@ private:
   sal::Time ComputeLatency(const sal::Length) noexcept;
   sal::Sample ComputeAttenuation(const sal::Length) noexcept;
   
-  static std::vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
+  static mcl::Vector<sal::Sample> GetAirFilter(sal::Length distance) noexcept;
   static Sample SanitiseAttenuation(const sal::Sample attenuation);
 };
   

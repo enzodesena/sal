@@ -10,27 +10,27 @@
 #define SALUTILITIES_H
 
 
-#include <vector>
-#include "saltypes.h"
-#include "comparisonop.h"
-#include "digitalfilter.h"
-#include "iirfilter.h"
-#include "vectorop.h"
-#include "elementaryop.h"
-#include "point.h"
+#include "vector.hpp"
+#include "saltypes.hpp"
+#include "comparisonop.hpp"
+#include "digitalfilter.hpp"
+#include "iirfilter.hpp"
+#include "vectorop.hpp"
+#include "elementaryop.hpp"
+#include "point.hpp"
 #include <mutex>
 #include <iostream>
 
 
 namespace sal {
 
-std::vector<Angle> UniformAngles(const Int num_microphones,
+mcl::Vector<Angle> UniformAngles(const Int num_microphones,
                                  const Angle first_element_heading);
 
   
 template<class T, class V>
-std::vector<V> ConvertToType(std::vector<T> vector) {
-  std::vector<V> new_vector(vector.size());
+mcl::Vector<V> ConvertToType(mcl::Vector<T> vector) {
+  mcl::Vector<V> new_vector(vector.size());
   for (mcl::Int i=0; i<(Int)vector.size(); ++i) {
     new_vector[i] = (V) vector[i];
   }
@@ -249,8 +249,8 @@ public:
     
     mcl::Real a1 = exp(-1.0/ramp_samples);
     mcl::Real b0 = 1.0 - a1;
-    filter_ = mcl::IirFilter(mcl::BinaryVector<mcl::Real>(b0, 0.0),
-                             mcl::BinaryVector<mcl::Real>(1.0, -a1));
+    filter_ = mcl::IirFilter(mcl::Binarymcl::Vector<mcl::Real>(b0, 0.0),
+                             mcl::Binarymcl::Vector<mcl::Real>(1.0, -a1));
   }
   
   virtual mcl::Real Filter(const mcl::Real input) noexcept {

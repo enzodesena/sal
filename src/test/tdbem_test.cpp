@@ -6,8 +6,8 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#include "tdbem.h"
-#include "monomics.h"
+#include "tdbem.hpp"
+#include "monomics.hpp"
 
 
 namespace sal {

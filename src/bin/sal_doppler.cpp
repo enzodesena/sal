@@ -9,9 +9,9 @@
  */
 
 
-#include "pawrapper.h"
-#include "matrixop.h"
-#include "propagationline.h"
+#include "pawrapper.hpp"
+#include "matrixop.hpp"
+#include "propagationline.hpp"
 #include <unistd.h>
 
 using namespace sal;

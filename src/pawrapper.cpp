@@ -8,7 +8,7 @@
  
  */
 
-#include "pawrapper.h"
+#include "pawrapper.hpp"
 
 namespace sal {
   
@@ -30,13 +30,13 @@ void PaWrapper::PrintDevicesInfo() {
   Terminate();
 }
   
-std::vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
+mcl::Vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
                                                   const Int out_dev_id) {
   Init();
   
   const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int) out_dev_id));
   const Int max_num_channels(deviceInfo->maxOutputChannels);
-  std::vector<mcl::Int> channel_ids = std::vector<Int>(max_num_channels, -1);
+  mcl::Vector<mcl::Int> channel_ids = mcl::Vector<Int>(max_num_channels, -1);
   for (int i=0; i<num_loudspeakers; ++i) {
     Int channel_id;
     std::cout<<"Select channel id for mic n.: "<<i<<" (from 0 to "<<
@@ -61,7 +61,7 @@ Int PaWrapper::NumOutputChannels(const Int out_dev_id) {
 
 PaWrapper::PaWrapper(Time sampling_frequency,
                      Int out_dev_num,
-                     std::vector<Int> channel_ids) :
+                     mcl::Vector<Int> channel_ids) :
           channel_ids_(channel_ids) {
   //if (decoder->num_loudspeakers() != channel_ids.size()) { ASSERT(false); }
   

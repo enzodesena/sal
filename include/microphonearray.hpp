@@ -12,14 +12,14 @@
 #define SAL_MICROPHONEARRAY_H
 
 
-#include "microphone.h"
-#include "point.h"
-#include "source.h"
-#include "microphone.h"
-#include "saltypes.h"
-#include "salconstants.h"
-#include "monomics.h"
-#include "salconstants.h"
+#include "microphone.hpp"
+#include "point.hpp"
+#include "source.hpp"
+#include "microphone.hpp"
+#include "saltypes.hpp"
+#include "salconstants.hpp"
+#include "monomics.hpp"
+#include "salconstants.hpp"
 
 namespace sal {
 
@@ -33,7 +33,7 @@ class MicrophoneArray : public Microphone {
 public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
-                  const std::vector<Microphone*>& microphones) :
+                  const mcl::Vector<Microphone*>& microphones) :
       Microphone(position, orientation), microphones_(microphones) {}
 
   
@@ -95,12 +95,12 @@ public:
     return microphones_.at(microphone_id);
   }
   
-  std::vector<Microphone*> GetMicrophonePointers() const noexcept {
+  mcl::Vector<Microphone*> GetMicrophonePointers() const noexcept {
     return microphones_;
   }
   
-  std::vector<const Microphone*> GetConstMicrophonePointers() const noexcept {
-    std::vector<const Microphone*> microphones(num_microphones());
+  mcl::Vector<const Microphone*> GetConstMicrophonePointers() const noexcept {
+    mcl::Vector<const Microphone*> microphones(num_microphones());
     for (Int i=0; i<num_microphones(); ++i) {
       microphones[i] = (const Microphone*) microphones_[i];
     }
@@ -140,7 +140,7 @@ public:
     }
   }
 protected:
-  std::vector<Microphone*> microphones_;
+  mcl::Vector<Microphone*> microphones_;
 };
 
   
@@ -164,9 +164,9 @@ public:
   }
   
 private:
-  std::vector<Microphone*>
+  mcl::Vector<Microphone*>
   MicrophoneFactory(const T& mic_prototype, const Int num_microphones) {
-    std::vector<Microphone*> output(num_microphones);
+    mcl::Vector<Microphone*> output(num_microphones);
     for (Int i=0; i<num_microphones; ++i) {
       output[i] = new T(mic_prototype);
     }
@@ -188,7 +188,7 @@ public:
                 const mcl::Quaternion& orientation,
                 const T& mic_prototype,
                 const Length radius,
-                const std::vector<Angle>& angles) :
+                const mcl::Vector<Angle>& angles) :
         UniformArray<T>(position, orientation, mic_prototype, angles.size()),
       radius_(radius), angles_(angles) {
     SetOrientation(orientation);
@@ -196,7 +196,7 @@ public:
 
   virtual void SetOrientation(const mcl::Quaternion& orientation) noexcept {
     mcl::Point position(this->position());
-    std::vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
+    mcl::Vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
 
     mcl::AxAng axang = mcl::Quat2AxAng(orientation);
     for (mcl::Int i=0; i<(Int)angles_.size(); ++i) {
@@ -213,12 +213,12 @@ public:
 
 private:
   Length radius_;
-  std::vector<Angle> angles_;
+  mcl::Vector<Angle> angles_;
 
-  static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
+  static mcl::Vector<mcl::Point> GetPositions(const mcl::Point& position,
                                               const Length radius,
-                                              const std::vector<Angle>& angles) {
-    std::vector<mcl::Point> positions(angles.size());
+                                              const mcl::Vector<Angle>& angles) {
+    mcl::Vector<mcl::Point> positions(angles.size());
     for (Int i=0; i<(Int)angles.size(); ++i) {
       positions[i] = mcl::Point(radius*cos(angles[i])+position.x(),
                                 radius*sin(angles[i])+position.y(),
@@ -250,9 +250,9 @@ public:
                    StereoAngles(base_angle, center_angle)) {}
 
 private:
-  static std::vector<Angle> StereoAngles(const Angle base_angle,
+  static mcl::Vector<Angle> StereoAngles(const Angle base_angle,
                                          const Angle center_angle) {
-    std::vector<Angle> angles(2);
+    mcl::Vector<Angle> angles(2);
     angles[0] = center_angle-base_angle/2.0;
     angles[1] = center_angle+base_angle/2.0;
     return angles;

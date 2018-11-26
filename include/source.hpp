@@ -12,11 +12,11 @@
 #define SAL_SOURCE_H
 
 
-#include "saltypes.h"
-#include "salutilities.h"
-#include "point.h"
-#include <vector>
-#include "salconstants.h"
+#include "saltypes.hpp"
+#include "salutilities.hpp"
+#include "point.hpp"
+#include "vector.hpp"
+#include "salconstants.hpp"
 
 namespace sal {
 
