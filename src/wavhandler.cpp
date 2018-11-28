@@ -41,8 +41,9 @@ mcl::Vector<Signal> WavHandler::Read(const std::string file_name) {
   
   sf_close(input_file);
   
-  mcl::Vector<Signal> signals(num_channels,
-                              mcl::Zeros<Sample>(file_length));
+  mcl::Vector<Signal> signals(
+    num_channels,
+    mcl::Zeros<Sample>(file_length));
   
   // input_file_info.samplerate
   

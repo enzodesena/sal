@@ -33,8 +33,11 @@ private:
   mcl::Vector<mcl::Vector<T>> data_;
   size_t num_channels_;
   size_t num_samples_;
-  bool owns_data_;
+  
   mcl::Vector<T> temporary_vector_; // Support vector for filter operation
+  
+  Buffer& buffer_reference_ = *this;
+  bool owns_data_;
   
   void AllocateMemory()
   {
@@ -72,7 +75,7 @@ public:
    we are referencing to.
    */
 //  Buffer(
-//    Sample** data_referenced,
+//    Buffer& buffer_referenced,
 //    const size_t num_channels,
 //    const size_t num_samples) noexcept
 //    : num_channels_(num_channels)
@@ -128,16 +131,14 @@ public:
   void SetSamples(
     const size_t channel_id,
     const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples) noexcept
+    const mcl::Vector<T>& samples) noexcept
   {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(from_sample_id >= 0);
-    ASSERT(num_samples >= 0);
-    ASSERT((from_sample_id+num_samples) <= this->num_samples());
+    ASSERT((from_sample_id+samples.size()) <= num_samples());
 
     for (size_t sample_id=from_sample_id;
-         sample_id<(from_sample_id+num_samples);
+         sample_id<(from_sample_id+samples.size());
          ++sample_id)
     {
       data_[channel_id][sample_id] = samples[sample_id-from_sample_id];
@@ -168,17 +169,15 @@ public:
   void AddSamples(
     const size_t channel_id,
     const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples) noexcept
+    const mcl::Vector<T>& samples) noexcept
   {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(from_sample_id >= 0);
-    ASSERT(num_samples >= 0);
-    ASSERT((from_sample_id+num_samples) <= num_samples_);
+    ASSERT((from_sample_id+samples.size()) <= num_samples());
     
     mcl::Add(
       samples,
-      &(data_[channel_id][from_sample_id]), num_samples,
+      &(data_[channel_id][from_sample_id]),
       &(data_[channel_id][from_sample_id]));
   }
   
@@ -187,37 +186,33 @@ public:
   void MultiplyAddSamples(
     const size_t channel_id,
     const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples,
+    const mcl::Vector<T>& samples,
     const T constant) noexcept
   {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(from_sample_id >= 0);
-    ASSERT(num_samples >= 0);
-    ASSERT((from_sample_id+num_samples) <= num_samples_);
+    ASSERT((from_sample_id+samples.size()) <= num_samples_);
     mcl::MultiplyAdd(
       samples,
       constant,
-      &(data_[channel_id][from_sample_id]),
-      num_samples,
-      &(data_[channel_id][from_sample_id]));
+      Vector(data_[channel_id], from_sample_id, samples.size()),
+      Vector(data_[channel_id], from_sample_id, samples.size()));
   }
   
   void FilterAddSamples(
     const size_t channel_id,
     const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples,
+    const mcl::Vector<T>& samples,
     mcl::DigitalFilter<T>& filter) noexcept
   {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(from_sample_id >= 0);
-    ASSERT(num_samples >= 0);
-    ASSERT((from_sample_id+num_samples) <= num_samples_);
-    filter.Filter(samples, num_samples, temporary_vector_.data());
-    mcl::Add(temporary_vector_.data(),
-             &(data_[channel_id][from_sample_id]), num_samples,
-             &(data_[channel_id][from_sample_id]));
+    ASSERT((from_sample_id+samples.size()) <= num_samples_);
+    filter.Filter(samples, temporary_vector_);
+    mcl::Add(
+      temporary_vector_,
+      Vector(data_[channel_id], from_sample_id, samples.size()),
+      Vector(data_[channel_id], from_sample_id, samples.size()));
   }
 
   const mcl::Vector<T>& GetReadReference(
