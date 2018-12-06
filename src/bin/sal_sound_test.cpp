@@ -20,6 +20,7 @@ Signal GenerateSine(
   Sample amplitude,
   Time trailing_length);
 
+
 int main(
   int argc,
   char* const argv[])
@@ -47,31 +48,37 @@ int main(
   // Set streams
   Signal t = mcl::ColonOperator(0, 1.0 / sampling_frequency, pulse_length);
   Signal sine_wave = GenerateSine
-  (pulse_length,
-   pulse_frequency,
-   sampling_frequency,
-   pulse_amplitude,
-   trailing_length);
+  (
+    pulse_length,
+    pulse_frequency,
+    sampling_frequency,
+    pulse_amplitude,
+    trailing_length);
   Signal long_sine_wave = GenerateSine
-  (long_sine_length,
-   pulse_frequency,
-   sampling_frequency,
-   pulse_amplitude,
-   trailing_length);
+  (
+    long_sine_length,
+    pulse_frequency,
+    sampling_frequency,
+    pulse_amplitude,
+    trailing_length);
 
   Buffer buffer(max_num_channels, samples_per_buffer);
 
   PaWrapper pa
-  (sampling_frequency,
-   dev_id,
-   channel_ids);
+  (
+    sampling_frequency,
+    dev_id,
+    channel_ids);
 
   pa.StartStream();
 
   for (Int i = 0; i < max_num_channels; ++i)
   {
     Signal signal;
-    for (Int j = 1; j <= i + 1; ++j) { signal = mcl::Concatenate(signal, sine_wave); }
+    for (Int j = 1; j <= i + 1; ++j)
+    {
+      signal = mcl::Concatenate(signal, sine_wave);
+    }
 
     signal = mcl::Concatenate(signal, mcl::Zeros<mcl::Real>(sine_wave.size()));
     signal = mcl::Concatenate(signal, long_sine_wave);
@@ -81,7 +88,9 @@ int main(
     while (segment_id * samples_per_buffer < signal.size())
     {
       buffer.SetSamples
-        (i, 0, samples_per_buffer, mcl::GetSegment(signal, segment_id++, samples_per_buffer, true).data());
+      (
+        i, 0, samples_per_buffer, mcl::GetSegment(
+          signal, segment_id++, samples_per_buffer, true).data());
 
       PaError error = pa.WriteStream(buffer);
       if (error)
@@ -99,6 +108,7 @@ int main(
   return 0;
 }
 
+
 Signal GenerateSine(
   const Time length,
   const Time sine_frequency,
@@ -110,7 +120,8 @@ Signal GenerateSine(
   Signal sine_wave = mcl::Sin(mcl::Multiply(t, 2.0 * PI * sine_frequency));
   sine_wave = mcl::Multiply(sine_wave, amplitude);
   sine_wave = mcl::Concatenate
-  (sine_wave,
-   mcl::Zeros<mcl::Real>(trailing_length * sampling_frequency));
+  (
+    sine_wave,
+    mcl::Zeros<mcl::Real>(trailing_length * sampling_frequency));
   return sine_wave;
 }

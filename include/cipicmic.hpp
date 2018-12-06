@@ -36,6 +36,7 @@ public:
     wav
   };
 
+
   /**
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
@@ -52,9 +53,11 @@ public:
 
   static bool Test();
 
+
   ~CipicMic()
   {
   }
+
 
 private:
   static std::vector<mcl::Vector<Signal>> Load(

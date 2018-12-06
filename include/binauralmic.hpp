@@ -25,10 +25,13 @@ enum class HeadRefOrientation
 {
   standard,
   // Head facing positive x-axis; positive z-axis passing through jaw and then scalp
-  y_z // Head facing positive y-axis; positive z-axis passing through jaw and then scalp
+  y_z
+  // Head facing positive y-axis; positive z-axis passing through jaw and then scalp
 };
 
+
 class BinauralMicInstance;
+
 
 class BinauralMic : public StereoMicrophone
 {
@@ -43,8 +46,13 @@ public:
     Int update_length,
     HeadRefOrientation reference_orientation = HeadRefOrientation::standard);
 
+
   void SetUpdateLength(
-    Int update_length) noexcept { update_length_ = update_length; }
+    Int update_length) noexcept
+  {
+    update_length_ = update_length;
+  }
+
 
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
   void SetBypass(
@@ -52,13 +60,23 @@ public:
 
   void Reset() noexcept override;
 
-  bool IsCoincident() const noexcept override { return true; }
 
-  Int num_channels() const noexcept override { return 2; }
+  bool IsCoincident() const noexcept override
+  {
+    return true;
+  }
+
+
+  Int num_channels() const noexcept override
+  {
+    return 2;
+  }
+
 
   virtual ~BinauralMic()
   {
   }
+
 
   virtual void AddPlaneWaveRelative(
     const Sample* signal,
@@ -95,6 +113,7 @@ protected:
   HeadRefOrientation reference_orientation_;
 };
 
+
 class DatabaseBinauralMic : public BinauralMic
 {
 public:
@@ -111,9 +130,11 @@ public:
   void FilterAll(
     mcl::DigitalFilter* filter);
 
+
   virtual ~DatabaseBinauralMic()
   {
   }
+
 
 protected:
   // Database
@@ -121,13 +142,15 @@ protected:
   std::vector<mcl::Vector<Signal>> hrtf_database_left_;
 };
 
+
 class BinauralMicInstance
 {
 private:
   BinauralMicInstance(
     BinauralMic* base_mic,
     Int update_length,
-    const HeadRefOrientation reference_orientation = HeadRefOrientation::standard)
+    const HeadRefOrientation reference_orientation = HeadRefOrientation::
+      standard)
     : previous_point_(mcl::Point(NAN, NAN, NAN))
     , base_mic_(base_mic)
     , filter_left_(mcl::FirFilter::GainFilter(1.0))
@@ -136,6 +159,7 @@ private:
     , reference_orientation_(reference_orientation)
   {
   }
+
 
   void AddPlaneWaveRelative(
     const Sample* input_data,

@@ -23,6 +23,7 @@ namespace sal
 {
 const Length PropagationLine::kOneSampleDistance = NAN;
 
+
 PropagationLine::PropagationLine(
   const Length distance,
   const Time sampling_frequency,
@@ -33,28 +34,43 @@ PropagationLine::PropagationLine(
   const sal::Length reference_distance) noexcept
   : sampling_frequency_(sampling_frequency)
   , delay_filter_
-  (DelayFilter
-    (mcl::RoundToInt(ComputeLatency(distance)),
-     mcl::RoundToInt(ComputeLatency(max_distance))))
-  , reference_distance_(isnan(reference_distance) ? SOUND_SPEED / sampling_frequency : reference_distance)
+  (
+    DelayFilter
+    (
+      mcl::RoundToInt(ComputeLatency(distance)),
+      mcl::RoundToInt(ComputeLatency(max_distance))))
+  , reference_distance_(
+    isnan(reference_distance) ?
+      SOUND_SPEED / sampling_frequency :
+      reference_distance)
   , allow_gain_(allow_gain)
-  , current_attenuation_(allow_gain_ ? ComputeAttenuation(distance) : SanitiseAttenuation(ComputeAttenuation(distance)))
+  , current_attenuation_(
+    allow_gain_ ?
+      ComputeAttenuation(distance) :
+      SanitiseAttenuation(ComputeAttenuation(distance)))
   , current_latency_(ComputeLatency(distance))
   , air_filters_active_(air_filters_active)
   , air_filter_(mcl::FirFilter(GetAirFilter(distance)))
   , interpolation_type_(interpolation_type)
-  , attenuation_smoother_(RampSmoother(current_attenuation_, sampling_frequency))
+  , attenuation_smoother_(
+    RampSmoother(current_attenuation_, sampling_frequency))
   , latency_smoother_(RampSmoother(current_latency_, sampling_frequency))
 {
   ASSERT_WITH_MESSAGE
-  (std::isgreaterequal(sampling_frequency, 0.0),
-   "The sampling frequency cannot be negative.");
+  (
+    std::isgreaterequal(sampling_frequency, 0.0),
+    "The sampling frequency cannot be negative.");
   ASSERT_WITH_MESSAGE
-  (std::isgreaterequal(max_distance, 0.0),
-   "The maximum distance cannot be negative.");
+  (
+    std::isgreaterequal(max_distance, 0.0),
+    "The maximum distance cannot be negative.");
 
-  if (air_filters_active_) { air_filter_ = mcl::FirFilter(GetAirFilter(distance)); }
+  if (air_filters_active_)
+  {
+    air_filter_ = mcl::FirFilter(GetAirFilter(distance));
+  }
 }
+
 
 Sample PropagationLine::SanitiseAttenuation(
   const sal::Sample attenuation)
@@ -63,53 +79,73 @@ Sample PropagationLine::SanitiseAttenuation(
   {
     mcl::Logger::GetInstance().
       LogError
-      ("Attempting to set the attenuation of a propagation line to %f, "
-       "which has modulus larger than 1. Clipping to 1 "
-       "(+-, depending on sign). If you want to "
-       "bypass this check, please enable allow_gain.",
-       attenuation);
+      (
+        "Attempting to set the attenuation of a propagation line to %f, "
+        "which has modulus larger than 1. Clipping to 1 "
+        "(+-, depending on sign). If you want to "
+        "bypass this check, please enable allow_gain.",
+        attenuation);
     return (std::isgreater(attenuation, 0.0)) ? 1.0 : -1.0;
   }
   return attenuation;
 }
 
+
 void PropagationLine::SetAttenuation(
   const Sample attenuation,
   const sal::Time ramp_time) noexcept
 {
-  Sample attenuation_value = (allow_gain_) ? attenuation : SanitiseAttenuation(attenuation);
+  Sample attenuation_value = (allow_gain_) ?
+                               attenuation :
+                               SanitiseAttenuation(attenuation);
 
   attenuation_smoother_.SetTargetValue(attenuation_value, ramp_time);
 }
+
 
 void PropagationLine::SetDistance(
   const Length distance,
   const sal::Time ramp_time) noexcept
 {
   latency_smoother_.SetTargetValue
-  (ComputeLatency(distance),
-   ramp_time);
+  (
+    ComputeLatency(distance),
+    ramp_time);
   SetAttenuation(ComputeAttenuation(distance), ramp_time);
 
   if (air_filters_active_)
   {
     air_filter_.SetImpulseResponse
-    (GetAirFilter(distance),
-     (int)round(ramp_time * sampling_frequency_));
+    (
+      GetAirFilter(distance),
+      (int)round(ramp_time * sampling_frequency_));
   }
 }
+
 
 void PropagationLine::SetAirFiltersActive(
   const bool air_filters_active) noexcept
 {
   air_filters_active_ = air_filters_active;
-  if (air_filters_active_ == false) { air_filter_.Reset(); }
+  if (air_filters_active_ == false)
+  {
+    air_filter_.Reset();
+  }
 }
 
-/** Resets the state of the filter */
-void PropagationLine::Reset() noexcept { delay_filter_.Reset(); }
 
-void PropagationLine::Tick() noexcept { Tick(1); }
+/** Resets the state of the filter */
+void PropagationLine::Reset() noexcept
+{
+  delay_filter_.Reset();
+}
+
+
+void PropagationLine::Tick() noexcept
+{
+  Tick(1);
+}
+
 
 void PropagationLine::Tick(
   const Int num_samples) noexcept
@@ -120,26 +156,44 @@ void PropagationLine::Tick(
   delay_filter_.Tick(num_samples);
 }
 
+
 Time PropagationLine::ComputeLatency(
   const Length distance) noexcept
 {
   ASSERT_WITH_MESSAGE
-  (std::isgreaterequal(distance, 0.0),
-   "Distance cannot be negative.");
+  (
+    std::isgreaterequal(distance, 0.0),
+    "Distance cannot be negative.");
   return (Time)(distance / SOUND_SPEED * sampling_frequency_);
 }
 
-Sample PropagationLine::ComputeAttenuation(
-  const Length distance) noexcept { return (Sample)reference_distance_ / distance; }
 
-sal::Length PropagationLine::distance() const noexcept { return current_latency_ / sampling_frequency_ * SOUND_SPEED; }
+Sample PropagationLine::ComputeAttenuation(
+  const Length distance) noexcept
+{
+  return (Sample)reference_distance_ / distance;
+}
+
+
+sal::Length PropagationLine::distance() const noexcept
+{
+  return current_latency_ / sampling_frequency_ * SOUND_SPEED;
+}
+
 
 void PropagationLine::Write(
   const sal::Sample& sample) noexcept
 {
-  if (air_filters_active_) { delay_filter_.Write(air_filter_.Filter(sample)); }
-  else { delay_filter_.Write(sample); }
+  if (air_filters_active_)
+  {
+    delay_filter_.Write(air_filter_.Filter(sample));
+  }
+  else
+  {
+    delay_filter_.Write(sample);
+  }
 }
+
 
 void PropagationLine::Write(
   const Sample* samples,
@@ -150,12 +204,17 @@ void PropagationLine::Write(
   if (air_filters_active_)
   {
     ASSERT(num_samples < MCL_MAX_VLA_LENGTH);
-    MCL_STACK_ALLOCATE(Sample, temp_samples, num_samples); // TODO: handle stack overflow
+    MCL_STACK_ALLOCATE(Sample, temp_samples, num_samples);
+    // TODO: handle stack overflow
     air_filter_.Filter(samples, num_samples, temp_samples);
     delay_filter_.Write(temp_samples, num_samples);
   }
-  else { delay_filter_.Write(samples, num_samples); }
+  else
+  {
+    delay_filter_.Write(samples, num_samples);
+  }
 }
+
 
 void PropagationLine::Read(
   const Int num_samples,
@@ -183,7 +242,8 @@ void PropagationLine::Read(
       {
         for (Int i = 1; i < num_samples; ++i)
         {
-          output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time)i))
+          output_data[i] = delay_filter_.FractionalReadAt(
+              temp_latency.GetNextValue() - ((Time)i))
             * temp_attenuation.GetNextValue();
         }
       }
@@ -191,13 +251,16 @@ void PropagationLine::Read(
       {
         for (Int i = 1; i < num_samples; ++i)
         {
-          output_data[i] = delay_filter_.ReadAt((mcl::RoundToInt(temp_latency.GetNextValue())) - i);
+          output_data[i] = delay_filter_.ReadAt(
+            (mcl::RoundToInt(temp_latency.GetNextValue())) - i);
         }
-        temp_attenuation.GetNextValuesMultiply(&output_data[1], num_samples - 1, &output_data[1]);
+        temp_attenuation.GetNextValuesMultiply(
+          &output_data[1], num_samples - 1, &output_data[1]);
       }
     }
   }
 }
+
 
 mcl::Vector<sal::Sample>
 PropagationLine::GetAirFilter(
@@ -212,12 +275,16 @@ PropagationLine::GetAirFilter(
 
   Int filter_index =
     mcl::MinIndex
-    (mcl::Abs
-      (mcl::Subtract
-        (distances,
-         mcl::Vector<sal::Length>
-         (distances.size(),
-          distance))));
+    (
+      mcl::Abs
+      (
+        mcl::Subtract
+        (
+          distances,
+          mcl::Vector<sal::Length>
+          (
+            distances.size(),
+            distance))));
   switch (filter_index)
   {
     // 70% humidity N=4

@@ -55,7 +55,10 @@ mcl::Vector<Signal> WavHandler::Read(
   int k(0);
   for (int i = 0; i < (num_channels * file_length); i += num_channels)
   {
-    for (int j = 0; j < num_channels; ++j) { signals[j][k] = (Sample)data[i + j]; }
+    for (int j = 0; j < num_channels; ++j)
+    {
+      signals[j][k] = (Sample)data[i + j];
+    }
     k++;
   }
 
@@ -63,6 +66,7 @@ mcl::Vector<Signal> WavHandler::Read(
 
   return signals;
 }
+
 
 Time WavHandler::ReadSamplingFrequency(
   const std::string file_name)
@@ -86,6 +90,7 @@ Time WavHandler::ReadSamplingFrequency(
   return input_file_info.samplerate;
 }
 
+
 void WavHandler::Write(
   const StereoSignal& stereo_signals,
   const Time sampling_frequency,
@@ -96,6 +101,7 @@ void WavHandler::Write(
   signals[1] = stereo_signals.right;
   Write(signals, sampling_frequency, file_name);
 }
+
 
 void WavHandler::Write(
   const mcl::Vector<Signal>& signals,
@@ -117,7 +123,8 @@ void WavHandler::Write(
 
   ASSERT(sf_format_check(&output_file_info));
 
-  if (! (output_file = sf_open(file_name.c_str(), SFM_WRITE, &output_file_info)))
+  if (! (output_file = sf_open(
+    file_name.c_str(), SFM_WRITE, &output_file_info)))
   {
     std::cout << "Error: could not open file : " << file_name << "\n";
     ASSERT(false);
@@ -140,9 +147,10 @@ void WavHandler::Write(
   }
 
   sf_write_double
-  (output_file,
-   samples,
-   ((int)num_channels) * ((int)file_length));
+  (
+    output_file,
+    samples,
+    ((int)num_channels) * ((int)file_length));
 
   sf_close(output_file);
   delete [] samples;

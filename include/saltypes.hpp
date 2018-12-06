@@ -28,17 +28,20 @@ typedef mcl::Int Int;
 
 typedef mcl::Vector<Sample> Signal;
 
+
 struct StereoSignal
 {
   Signal left;
   Signal right;
 };
 
+
 enum Ear
 {
   kLeftEar,
   kRightEar
 };
+
 
 enum class InterpolationType
 {

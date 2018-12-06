@@ -22,6 +22,7 @@ enum BoundarySetType
   kFirstAndSecondOrder
 };
 
+
 class Room
 {
 public:
@@ -35,12 +36,21 @@ public:
   {
   }
 
-  const mcl::Vector<mcl::IirFilter>& wall_filters() const noexcept { return wall_filters_; }
+
+  const mcl::Vector<mcl::IirFilter>& wall_filters() const noexcept
+  {
+    return wall_filters_;
+  }
+
 
   // Resets the wall filters. Warning! It may cancel the state of the old ones,
   // with probable audible artifacts.
   void SetWallFilters(
-    const mcl::Vector<mcl::IirFilter>& wall_filters) noexcept { wall_filters_ = wall_filters; }
+    const mcl::Vector<mcl::IirFilter>& wall_filters) noexcept
+  {
+    wall_filters_ = wall_filters;
+  }
+
 
   void SetWallFilter(
     const Int wall_id,
@@ -50,15 +60,24 @@ public:
     wall_filters_[wall_id] = filter;
   }
 
+
   void SetWallFilters(
-    const mcl::IirFilter& filter) noexcept { wall_filters_.assign(num_faces(), filter); }
+    const mcl::IirFilter& filter) noexcept
+  {
+    wall_filters_.assign(num_faces(), filter);
+  }
+
 
   void SetFiltersNumeratorCoefficient(
     const Int coeff_id,
     const Sample value)
   {
-    for (Int i = 0; i < (Int)wall_filters_.size(); ++i) { wall_filters_[i].SetNumeratorCoefficient(coeff_id, value); }
+    for (Int i = 0; i < (Int)wall_filters_.size(); ++i)
+    {
+      wall_filters_[i].SetNumeratorCoefficient(coeff_id, value);
+    }
   }
+
 
   // Returns a vector of points located at geometrical reflections,
   // relative to source and destinatin points.
@@ -92,9 +111,11 @@ public:
 
   virtual std::string ShapeDescription() const noexcept = 0;
 
+
   virtual ~Room() noexcept
   {
   }
+
 
 protected:
   mcl::Vector<mcl::IirFilter> wall_filters_;

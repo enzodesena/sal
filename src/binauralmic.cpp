@@ -29,24 +29,32 @@ void BinauralMic::AddPlaneWaveRelative(
   {
     CreateInstanceIfNotExist(wave_id);
     instances_.at(wave_id).AddPlaneWaveRelative
-    (input_data,
-     num_samples,
-     point,
-     output_buffer);
+    (
+      input_data,
+      num_samples,
+      point,
+      output_buffer);
   }
   else
   {
-    output_buffer.AddSamples(Buffer::Channel::kLeft, 0, num_samples, input_data);
-    output_buffer.AddSamples(Buffer::Channel::kRight, 0, num_samples, input_data);
+    output_buffer.AddSamples(
+      Buffer::Channel::kLeft, 0, num_samples, input_data);
+    output_buffer.AddSamples(
+      Buffer::Channel::kRight, 0, num_samples, input_data);
   }
 }
+
 
 void BinauralMic::SetBypass(
   bool bypass) noexcept
 {
-  if (bypass_ && !bypass) { this->Reset(); }
+  if (bypass_ && !bypass)
+  {
+    this->Reset();
+  }
   bypass_ = bypass;
 }
+
 
 void BinauralMic::CreateInstanceIfNotExist(
   const Int wave_id) noexcept
@@ -55,13 +63,17 @@ void BinauralMic::CreateInstanceIfNotExist(
   if (instances_.count(wave_id) == 0)
   {
     instances_.insert
-    (std::make_pair
-      (wave_id,
-       BinauralMicInstance
-       (this,
-        update_length_)));
+    (
+      std::make_pair
+      (
+        wave_id,
+        BinauralMicInstance
+        (
+          this,
+          update_length_)));
   }
 }
+
 
 void BinauralMic::Reset() noexcept
 {
@@ -73,6 +85,7 @@ void BinauralMic::Reset() noexcept
     iterator->second.filter_right_.Reset();
   }
 }
+
 
 BinauralMic::BinauralMic(
   const Point& position,
@@ -86,6 +99,7 @@ BinauralMic::BinauralMic(
 {
 }
 
+
 // Use signals with 44100 sampling frequency!!!
 void BinauralMicInstance::AddPlaneWaveRelative(
   const Sample* input_data,
@@ -95,18 +109,21 @@ void BinauralMicInstance::AddPlaneWaveRelative(
 {
   UpdateFilter(point);
   output_buffer.FilterAddSamples
-  (Buffer::Channel::kLeft,
-   0,
-   num_samples,
-   input_data,
-   filter_left_);
+  (
+    Buffer::Channel::kLeft,
+    0,
+    num_samples,
+    input_data,
+    filter_left_);
   output_buffer.FilterAddSamples
-  (Buffer::Channel::kRight,
-   0,
-   num_samples,
-   input_data,
-   filter_right_);
+  (
+    Buffer::Channel::kRight,
+    0,
+    num_samples,
+    input_data,
+    filter_right_);
 }
+
 
 void BinauralMicInstance::UpdateFilter(
   const Point& point) noexcept
@@ -117,13 +134,16 @@ void BinauralMicInstance::UpdateFilter(
     previous_point_ = point;
 
     filter_left_.SetImpulseResponse
-    (base_mic_->GetBrir(kLeftEar, point),
-     update_length_);
+    (
+      base_mic_->GetBrir(kLeftEar, point),
+      update_length_);
     filter_right_.SetImpulseResponse
-    (base_mic_->GetBrir(kRightEar, point),
-     update_length_);
+    (
+      base_mic_->GetBrir(kRightEar, point),
+      update_length_);
   }
 }
+
 
 DatabaseBinauralMic::DatabaseBinauralMic(
   const Point& position,
@@ -133,6 +153,7 @@ DatabaseBinauralMic::DatabaseBinauralMic(
   : BinauralMic(position, orientation, update_length, reference_orientation)
 {
 }
+
 
 void DatabaseBinauralMic::FilterAll(
   mcl::DigitalFilter* filter)

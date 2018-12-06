@@ -47,6 +47,7 @@ private:
     Int position_m_y,
     Int position_m_z);
 
+
   template<class T>
   static
   void
@@ -60,9 +61,13 @@ private:
     for (Int i = 0; i < size_x; ++i)
     {
       array[i].resize(size_y);
-      for (Int j = 0; j < size_y; ++j) { array[i][j].resize(size_z); }
+      for (Int j = 0; j < size_y; ++j)
+      {
+        array[i][j].resize(size_z);
+      }
     }
   }
+
 
 public:
   Fdtd(
@@ -77,7 +82,12 @@ public:
     const MonoBuffer& input_buffer,
     Buffer& output_buffer);
 
-  Signal rir() const { return rir_; }
+
+  Signal rir() const
+  {
+    return rir_;
+  }
+
 
   static
   mcl::Vector<std::vector<mcl::Vector<Int>>>

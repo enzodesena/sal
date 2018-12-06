@@ -28,6 +28,7 @@ public:
   {
   }
 
+
   /** This method is used mostly for testing, as it is very slow.
    You should use AddPlaneWave instead. */
   Sample RecordPlaneWave(
@@ -40,14 +41,24 @@ public:
     return output_buffer.GetSample(0);
   }
 
-  bool IsCoincident() const noexcept override { return true; }
 
-  Int num_channels() const noexcept override { return 1; }
+  bool IsCoincident() const noexcept override
+  {
+    return true;
+  }
+
+
+  Int num_channels() const noexcept override
+  {
+    return 1;
+  }
+
 
   virtual ~MonoMic()
   {
   }
 };
+
 
 class MemorylessMic : virtual public Microphone
 {
@@ -59,14 +70,17 @@ public:
   {
   }
 
+
   virtual ~MemorylessMic()
   {
   }
+
 
 private:
   virtual Sample GetDirectivity(
     const mcl::Point& point) = 0;
 };
+
 
 class MemorylessMonoMic : public MemorylessMic, public MonoMic
 {
@@ -80,9 +94,11 @@ public:
   {
   }
 
+
   virtual ~MemorylessMonoMic()
   {
   }
+
 
   virtual void AddPlaneWaveRelative(
     const Sample* input_data,
@@ -95,18 +111,21 @@ public:
     ASSERT(num_samples <= output_buffer.num_samples());
 
     mcl::MultiplyAdd
-    (input_data,
-     GetDirectivity(point),
-     output_buffer.GetReadPointer(Buffer::Channel::kMono),
-     num_samples,
-     output_buffer.GetWritePointer(Buffer::Channel::kMono));
+    (
+      input_data,
+      GetDirectivity(point),
+      output_buffer.GetReadPointer(Buffer::Channel::kMono),
+      num_samples,
+      output_buffer.GetWritePointer(Buffer::Channel::kMono));
   }
+
 
 private:
 
   Sample GetDirectivity(
     const mcl::Point& point) override = 0;
 };
+
 
 class GainMic : public MemorylessMonoMic
 {
@@ -120,18 +139,29 @@ public:
   {
   }
 
-  bool IsOmni() const noexcept override { return true; }
+
+  bool IsOmni() const noexcept override
+  {
+    return true;
+  }
+
 
   virtual ~GainMic()
   {
   }
 
+
 private:
   Sample GetDirectivity(
-    const mcl::Point& /* point */) override { return gain_; }
+    const mcl::Point& /* point */) override
+  {
+    return gain_;
+  }
+
 
   Sample gain_;
 };
+
 
 class OmniMic : public GainMic
 {
@@ -143,10 +173,12 @@ public:
   {
   }
 
+
   virtual ~OmniMic()
   {
   }
 };
+
 
 /**
  This class describes directivity pattern whose expression is of the type:
@@ -166,26 +198,34 @@ public:
   {
   }
 
+
   virtual ~TrigMic()
   {
   }
+
 
 private:
   Sample GetDirectivity(
     const mcl::Point& point) override
   {
     Angle phi = AngleBetweenPoints
-    (point,
-     mcl::Point(1.0, 0.0, 0.0));
+    (
+      point,
+      mcl::Point(1.0, 0.0, 0.0));
 
     const Int N = coefficients_.size();
     Sample directivity(coefficients_[0]);
-    for (Int i = 1; i < N; ++i) { directivity += coefficients_[i] * pow(cos(phi), i); }
+    for (Int i = 1; i < N; ++i)
+    {
+      directivity += coefficients_[i] * pow(cos(phi), i);
+    }
     return directivity;
   }
 
+
   mcl::Vector<Sample> coefficients_;
 };
+
 
 /**
  This class describes directivity pattern whose expression is of the type:
@@ -205,9 +245,11 @@ public:
   {
   }
 
+
   virtual ~TanMic()
   {
   }
+
 
 private:
   Sample GetDirectivity(
@@ -222,12 +264,17 @@ private:
     if (phi < phi_lp1)
     {
       directivity =
-        1.0 / sqrt(1 + pow(sin(phi - phi_l), 2.0) / pow(sin(phi_lp1 - phi), 2.0));
+        1.0 / sqrt(
+          1 + pow(sin(phi - phi_l), 2.0) / pow(sin(phi_lp1 - phi), 2.0));
     }
-    else { directivity = 0.0; }
+    else
+    {
+      directivity = 0.0;
+    }
 
     return directivity;
   }
+
 
   Sample base_angle_;
 };

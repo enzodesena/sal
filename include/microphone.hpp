@@ -99,7 +99,12 @@ public:
 
   virtual Int num_channels() const noexcept = 0;
 
-  virtual bool IsOmni() const noexcept { return false; }
+
+  virtual bool IsOmni() const noexcept
+  {
+    return false;
+  }
+
 
   /** This method translates `point` in the reference system of the mic. */
   mcl::Point GetRelativePoint(
@@ -110,11 +115,14 @@ public:
   {
   }
 
+
   static bool Test();
+
 
   virtual ~Microphone()
   {
   }
+
 
 private:
 
@@ -144,6 +152,7 @@ private:
   friend class MicrophoneArray;
 };
 
+
 class StereoMicrophone : public Microphone
 {
 public:
@@ -153,6 +162,7 @@ public:
     : Microphone(position, orientation)
   {
   }
+
 
   virtual ~StereoMicrophone()
   {

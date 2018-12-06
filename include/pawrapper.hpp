@@ -37,7 +37,12 @@ public:
 
   PaError StopStream();
 
-  Int max_num_channels() { return channel_ids_.size(); }
+
+  Int max_num_channels()
+  {
+    return channel_ids_.size();
+  }
+
 
   static void PrintError(
     PaError err);

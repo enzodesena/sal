@@ -23,34 +23,43 @@ bool SphericalHeadMic::Test()
   using mcl::IsEqual;
 
   ASSERT
-  (IsEqual
-    (Sphere(0.09, 2.5, PI / 2, 500, 343, 0.0001),
-     Complex(0.948745443360044, -0.077722752497006)));
+  (
+    IsEqual
+    (
+      Sphere(0.09, 2.5, PI / 2, 500, 343, 0.0001),
+      Complex(0.948745443360044, -0.077722752497006)));
 
   ASSERT
-  (IsEqual
-    (Sphere(0.19, 2.25, PI / 3.0, 550.0, 340.0, 0.00001),
-     Complex(0.605269803039302, - 1.296402786840865)));
+  (
+    IsEqual
+    (
+      Sphere(0.19, 2.25, PI / 3.0, 550.0, 340.0, 0.00001),
+      Complex(0.605269803039302, - 1.296402786840865)));
 
   ASSERT
-  (IsEqual
-    (Sphere(0.20, 10.0, PI, 13000.0, 341.0, 0.00002),
-     Complex(-0.109475723791322, 0.458127257654756)));
+  (
+    IsEqual
+    (
+      Sphere(0.20, 10.0, PI, 13000.0, 341.0, 0.00002),
+      Complex(-0.109475723791322, 0.458127257654756)));
 
   ASSERT
-  (IsEqual
-    (Sphere(0.15, 100.0, PI, 130.0, 330.0, 0.00012),
-     Complex(0.855026629580043, 0.533944979396686)));
+  (
+    IsEqual
+    (
+      Sphere(0.15, 100.0, PI, 130.0, 330.0, 0.00012),
+      Complex(0.855026629580043, 0.533944979396686)));
 
   mcl::Vector<mcl::Real> hrir_a = GenerateImpulseResponse
-  (0.09,
-   2,
-   PI / 4.0,
-   343,
-   0.0001,
-   6,
-   40000.0,
-   false);
+  (
+    0.09,
+    2,
+    PI / 4.0,
+    343,
+    0.0001,
+    6,
+    40000.0,
+    false);
 
   mcl::Vector<mcl::Real> hrir_a_cmp(6);
   hrir_a_cmp[0] = -0.422751207729102;
@@ -68,24 +77,26 @@ bool SphericalHeadMic::Test()
 
   Angle ears_angle(100.0 / 180.0 * PI);
   SphericalHeadMic mic_a
-  (Point(0.0, 0.0, 0.0),
-   mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
-   ears_angle,
-   // ears angle
-   0.09,
-   // sphere radius
-   6,
-   // impulse response length
-   sampling_frequency);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
+    ears_angle,
+    // ears angle
+    0.09,
+    // sphere radius
+    6,
+    // impulse response length
+    sampling_frequency);
   StereoBuffer stream_a(impulse.num_samples());
 
   Length distance(2.0);
 
   // Generate a point on the line of the left ear.
   Point point_line_left
-  (0.0,
-   distance * cos(ears_angle - PI / 2.0),
-   -distance * sin(ears_angle - PI / 2.0));
+  (
+    0.0,
+    distance * cos(ears_angle - PI / 2.0),
+    -distance * sin(ears_angle - PI / 2.0));
 
   mic_a.AddPlaneWave(impulse, point_line_left, stream_a);
 
@@ -117,9 +128,10 @@ bool SphericalHeadMic::Test()
   // Generate a point on the line passing through the centre
   // of the head and the right ear.
   Point point_line_right
-  (0.0,
-   -distance * cos(ears_angle - PI / 2.0),
-   -distance * sin(ears_angle - PI / 2.0));
+  (
+    0.0,
+    -distance * cos(ears_angle - PI / 2.0),
+    -distance * sin(ears_angle - PI / 2.0));
   // Since the impulse response has 6 bins, I can reuse the same microphone for
   // this test.
   stream_a.Reset();
@@ -128,15 +140,16 @@ bool SphericalHeadMic::Test()
   ASSERT(IsEqual(stream_a.GetLeftReadPointer(), output_contralateral));
 
   SphericalHeadMic mic_b
-  (Point(0.0, 0.0, 0.0),
-   mcl::Quaternion::Identity(),
-   ears_angle,
-   // ears angle
-   0.09,
-   // sphere radius
-   6,
-   // impulse response length
-   sampling_frequency);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::Quaternion::Identity(),
+    ears_angle,
+    // ears angle
+    0.09,
+    // sphere radius
+    6,
+    // impulse response length
+    sampling_frequency);
   StereoBuffer stream_b(impulse.num_samples());
 
   // Point in front of face.
@@ -144,10 +157,12 @@ bool SphericalHeadMic::Test()
 
   mic_b.AddPlaneWave(impulse, point_front, stream_b);
   ASSERT
-  (IsEqual
-    (stream_b.GetLeftReadPointer(),
-     stream_b.GetRightReadPointer(),
-     impulse.num_samples()));
+  (
+    IsEqual
+    (
+      stream_b.GetLeftReadPointer(),
+      stream_b.GetRightReadPointer(),
+      impulse.num_samples()));
 
   mcl::Vector<Sample> output_frontal(6);
   output_frontal[0] = 0.5249943567937;

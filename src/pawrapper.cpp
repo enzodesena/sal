@@ -12,7 +12,11 @@
 
 namespace sal
 {
-PaError PaWrapper::Init() { return Pa_Initialize(); }
+PaError PaWrapper::Init()
+{
+  return Pa_Initialize();
+}
+
 
 void PaWrapper::PrintDevicesInfo()
 {
@@ -29,6 +33,7 @@ void PaWrapper::PrintDevicesInfo()
 
   Terminate();
 }
+
 
 mcl::Vector<mcl::Int> PaWrapper::SelectChannelIds(
   const Int num_loudspeakers,
@@ -53,6 +58,7 @@ mcl::Vector<mcl::Int> PaWrapper::SelectChannelIds(
   return channel_ids;
 }
 
+
 Int PaWrapper::NumOutputChannels(
   const Int out_dev_id)
 {
@@ -62,6 +68,7 @@ Int PaWrapper::NumOutputChannels(
   Terminate();
   return max_num_channels;
 }
+
 
 PaWrapper::PaWrapper(
   Time sampling_frequency,
@@ -87,19 +94,26 @@ PaWrapper::PaWrapper(
 
   /* Open an audio I/O stream. */
   Pa_OpenStream
-  (&stream_,
-   NULL,
-   &output_parameters,
-   sampling_frequency,
-   paFramesPerBufferUnspecified,
-   paNoFlag,
-   //flags that can be used to define dither, clip settings and more
-   NULL,
-   //your callback function
-   NULL); //data to be passed to callback. In C++, it is frequently (void *)this
+  (
+    &stream_,
+    NULL,
+    &output_parameters,
+    sampling_frequency,
+    paFramesPerBufferUnspecified,
+    paNoFlag,
+    //flags that can be used to define dither, clip settings and more
+    NULL,
+    //your callback function
+    NULL);
+  //data to be passed to callback. In C++, it is frequently (void *)this
 }
 
-PaError PaWrapper::StartStream() { return Pa_StartStream(stream_); }
+
+PaError PaWrapper::StartStream()
+{
+  return Pa_StartStream(stream_);
+}
+
 
 PaError PaWrapper::WriteStream(
   const Buffer& output_buffer)
@@ -115,8 +129,14 @@ PaError PaWrapper::WriteStream(
     {
       float sample;
       if (channel_ids_[j] == -1 ||
-        i >= output_buffer.num_samples()) { sample = 0.0; }
-      else { sample = (float)output_buffer.GetSample(channel_ids_[j], i); }
+        i >= output_buffer.num_samples())
+      {
+        sample = 0.0;
+      }
+      else
+      {
+        sample = (float)output_buffer.GetSample(channel_ids_[j], i);
+      }
       ASSERT(i * max_num_channels + j < block_length);
       sample_block[i * max_num_channels + j] = sample;
     }
@@ -125,7 +145,12 @@ PaError PaWrapper::WriteStream(
   return Pa_WriteStream(stream_, sample_block, num_samples);
 }
 
-PaError PaWrapper::StopStream() { return Pa_CloseStream(stream_); }
+
+PaError PaWrapper::StopStream()
+{
+  return Pa_CloseStream(stream_);
+}
+
 
 void PaWrapper::PrintError(
   PaError err)
@@ -135,7 +160,15 @@ void PaWrapper::PrintError(
   fprintf(stderr, "Error message: %s\n", Pa_GetErrorText(err));
 }
 
-PaError PaWrapper::Terminate() { return Pa_Terminate(); }
 
-PaWrapper::~PaWrapper() { Terminate(); }
+PaError PaWrapper::Terminate()
+{
+  return Pa_Terminate();
+}
+
+
+PaWrapper::~PaWrapper()
+{
+  Terminate();
+}
 } // namespace sal

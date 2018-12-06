@@ -24,6 +24,7 @@ enum class Channel
   kRight = 1
 };
 
+
 template<typename T>
 class Buffer
 {
@@ -37,11 +38,16 @@ private:
   Buffer& buffer_reference_ = *this;
   bool owns_data_;
 
+
   void AllocateMemory()
   {
     data_ = mcl::Vector<mcl::Vector<T>>(num_channels_);
-    for (size_t chan_id = 0; chan_id < num_channels_; ++chan_id) { data_[chan_id] = mcl::Vector<T>(num_samples_); }
+    for (size_t chan_id = 0; chan_id < num_channels_; ++chan_id)
+    {
+      data_[chan_id] = mcl::Vector<T>(num_samples_);
+    }
   }
+
 
 public:
   /** Constructs a multichannel buffer. */
@@ -56,10 +62,12 @@ public:
     AllocateMemory();
   }
 
+
   Buffer()
     : Buffer(0, 0)
   {
   }
+
 
   /** Constructs a multichannel buffer as a reference to another data
    structure. If constructed in this way, this object will not own the data.
@@ -82,9 +90,17 @@ public:
   //    data_ = data_referenced;
   //  }
 
-  virtual size_t num_channels() const noexcept { return num_channels_; }
+  virtual size_t num_channels() const noexcept
+  {
+    return num_channels_;
+  }
 
-  virtual size_t num_samples() const noexcept { return num_samples_; }
+
+  virtual size_t num_samples() const noexcept
+  {
+    return num_samples_;
+  }
+
 
   T GetSample(
     size_t channel_id,
@@ -95,7 +111,12 @@ public:
     return data_[channel_id][sample_id];
   }
 
-  bool IsDataOwner() const noexcept { return owns_data_; }
+
+  bool IsDataOwner() const noexcept
+  {
+    return owns_data_;
+  }
+
 
   void SetSample(
     const size_t channel_id,
@@ -106,6 +127,7 @@ public:
     ASSERT(sample_id >= 0 && sample_id < num_samples());
     data_[channel_id][sample_id] = sample;
   }
+
 
   /** Reassigns the values of a set of contigous samples in the buffer.
    
@@ -125,8 +147,12 @@ public:
 
     for (size_t sample_id = from_sample_id;
          sample_id < (from_sample_id + samples.size());
-         ++sample_id) { data_[channel_id][sample_id] = samples[sample_id - from_sample_id]; }
+         ++sample_id)
+    {
+      data_[channel_id][sample_id] = samples[sample_id - from_sample_id];
+    }
   }
+
 
   void SetSamples(
     const Buffer& other) noexcept
@@ -141,6 +167,7 @@ public:
       }
     }
   }
+
 
   /** Adds samples to current sample values in the buffer.
    
@@ -165,6 +192,7 @@ public:
       &(data_[channel_id][from_sample_id]));
   }
 
+
   /** This method first multiplies all the input samples by a certain constant
    and then adds the result to the samples in the buffer. */
   void MultiplyAddSamples(
@@ -184,6 +212,7 @@ public:
       Vector(data_[channel_id], from_sample_id, samples.size()));
   }
 
+
   void FilterAddSamples(
     const size_t channel_id,
     const size_t from_sample_id,
@@ -201,6 +230,7 @@ public:
       Vector(data_[channel_id], from_sample_id, samples.size()));
   }
 
+
   const mcl::Vector<T>& GetReadReference(
     const size_t channel_id) const noexcept
   {
@@ -208,12 +238,14 @@ public:
     return data_[channel_id];
   }
 
+
   mcl::Vector<T>& GetWriteReference(
     const size_t channel_id) noexcept
   {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     return data_[channel_id];
   }
+
 
   /** Adds all the samples from another buffer. The buffer has to be of the
    same type and have the same number of channels
@@ -235,23 +267,32 @@ public:
     }
   }
 
+
   void PrintData()
   {
     for (int chan_id = 0; chan_id < num_channels_; ++chan_id)
     {
-      for (int sample_id = 0; sample_id < num_samples_; ++sample_id) { std::cout << data_[chan_id][sample_id] << " "; }
+      for (int sample_id = 0; sample_id < num_samples_; ++sample_id)
+      {
+        std::cout << data_[chan_id][sample_id] << " ";
+      }
       std::cout << std::endl;
     }
   }
+
 
   /** Resets all the values to zero. */
   virtual void Reset() noexcept
   {
     for (size_t chan_id = 0; chan_id < num_channels(); ++chan_id)
     {
-      for (size_t sample_id = 0; sample_id < num_samples(); ++sample_id) { data_[chan_id][sample_id] = 0.0; }
+      for (size_t sample_id = 0; sample_id < num_samples(); ++sample_id)
+      {
+        data_[chan_id][sample_id] = 0.0;
+      }
     }
   }
+
 
   Buffer(
     const Buffer& other)
@@ -265,8 +306,12 @@ public:
       AllocateMemory();
       SetSamples(other);
     }
-    else { data_ = other.data_; }
+    else
+    {
+      data_ = other.data_;
+    }
   }
+
 
   /** Copy assignment operator. If you are trying to assign the object onto
    itself, this operator has no effect. Also, there is no effect if you try
@@ -278,7 +323,10 @@ public:
   {
     if (this != &other)
     {
-      if (owns_data_ && &(other.data_[0]) == &(data_[0])) { return *this; }
+      if (owns_data_ && &(other.data_[0]) == &(data_[0]))
+      {
+        return *this;
+      }
 
       num_channels_ = other.num_channels_;
       num_samples_ = other.num_samples_;
@@ -290,13 +338,18 @@ public:
         AllocateMemory();
         SetSamples(other);
       }
-      else { data_ = other.data_; }
+      else
+      {
+        data_ = other.data_;
+      }
     }
     return *this;
   }
 
+
   static bool Test();
 };
+
 
 template<typename T>
 class MonoBuffer : public Buffer<T>
@@ -307,6 +360,7 @@ public:
     : Buffer<T>(1, num_samples)
   {
   }
+
 
   //  MonoBuffer(
   //    Sample* data_referenced,
@@ -346,11 +400,17 @@ public:
       constant);
   }
 
+
   void SetSample(
     const size_t sample_id,
-    const T sample_value) noexcept { Buffer<T>::SetSample(Channel::kMono, sample_id, sample_value); }
+    const T sample_value) noexcept
+  {
+    Buffer<T>::SetSample(Channel::kMono, sample_id, sample_value);
+  }
+
 
   using Buffer<T>::SetSamples;
+
 
   void SetSamples(
     const size_t from_sample_id,
@@ -365,12 +425,25 @@ public:
       samples);
   }
 
+
   T GetSample(
-    const size_t sample_id) const noexcept { return Buffer<T>::GetSample(Channel::kMono, sample_id); }
+    const size_t sample_id) const noexcept
+  {
+    return Buffer<T>::GetSample(Channel::kMono, sample_id);
+  }
 
-  const T* GetReadPointer() const noexcept { return Buffer<T>::GetReadPointer(Channel::kMono); }
 
-  T* GetWritePointer() noexcept { return Buffer<T>::GetWritePointer(Channel::kMono); }
+  const T* GetReadPointer() const noexcept
+  {
+    return Buffer<T>::GetReadPointer(Channel::kMono);
+  }
+
+
+  T* GetWritePointer() noexcept
+  {
+    return Buffer<T>::GetWritePointer(Channel::kMono);
+  }
+
 
   static MonoBuffer Unary(
     const T sample) noexcept
@@ -380,7 +453,9 @@ public:
     return output;
   }
 
+
   using Buffer<T>::AddSamples;
+
 
   void AddSamples(
     const size_t from_sample_id,
@@ -395,9 +470,11 @@ public:
       samples);
   }
 
+
   virtual ~MonoBuffer()
   {
   }
+
 
 private:
   // We use in case of the MonoBuffer(Sample* data_referenced, const size_t num_samples)
@@ -405,6 +482,7 @@ private:
   // would be taking the address of a temporary.
   T* data_referenced_;
 };
+
 
 template<typename T>
 class StereoBuffer : public Buffer<T>
@@ -416,27 +494,60 @@ public:
   {
   }
 
+
   void SetLeftSample(
     const size_t sample_id,
-    const T sample_value) noexcept { Buffer<T>::SetSample(Channel::kLeft, sample_id, sample_value); }
+    const T sample_value) noexcept
+  {
+    Buffer<T>::SetSample(Channel::kLeft, sample_id, sample_value);
+  }
+
 
   void SetRightSample(
     const size_t sample_id,
-    const T sample_value) noexcept { Buffer<T>::SetSample(Channel::kRight, sample_id, sample_value); }
+    const T sample_value) noexcept
+  {
+    Buffer<T>::SetSample(Channel::kRight, sample_id, sample_value);
+  }
+
 
   T GetLeftSample(
-    const size_t sample_id) const noexcept { return Buffer<T>::GetSample(Channel::kLeft, sample_id); }
+    const size_t sample_id) const noexcept
+  {
+    return Buffer<T>::GetSample(Channel::kLeft, sample_id);
+  }
+
 
   T GetRightSample(
-    const size_t sample_id) const noexcept { return Buffer<T>::GetSample(Channel::kRight, sample_id); }
+    const size_t sample_id) const noexcept
+  {
+    return Buffer<T>::GetSample(Channel::kRight, sample_id);
+  }
 
-  const T* GetLeftReadPointer() const noexcept { return Buffer<T>::GetReadPointer(Channel::kLeft); }
 
-  const T* GetRightReadPointer() const noexcept { return Buffer<T>::GetReadPointer(Channel::kRight); }
+  const T* GetLeftReadPointer() const noexcept
+  {
+    return Buffer<T>::GetReadPointer(Channel::kLeft);
+  }
 
-  T* GetLeftWritePointer() noexcept { return Buffer<T>::GetWritePointer(Channel::kLeft); }
 
-  T* GetRightWritePointer() noexcept { return Buffer<T>::GetWritePointer(Channel::kRight); }
+  const T* GetRightReadPointer() const noexcept
+  {
+    return Buffer<T>::GetReadPointer(Channel::kRight);
+  }
+
+
+  T* GetLeftWritePointer() noexcept
+  {
+    return Buffer<T>::GetWritePointer(Channel::kLeft);
+  }
+
+
+  T* GetRightWritePointer() noexcept
+  {
+    return Buffer<T>::GetWritePointer(Channel::kRight);
+  }
+
 
   void AddSamplesLeft(
     const T* samples,
@@ -450,6 +561,7 @@ public:
       num_samples_to_add,
       samples);
   }
+
 
   void FilterAddSamplesLeft(
     const size_t from_sample_id,
@@ -466,6 +578,7 @@ public:
       filter);
   }
 
+
   void FilterAddSamplesRight(
     const size_t from_sample_id,
     const size_t num_samples,
@@ -481,6 +594,7 @@ public:
       filter);
   }
 
+
   void AddSamplesRight(
     const T* samples,
     const size_t from_sample_id,
@@ -494,10 +608,12 @@ public:
       samples);
   }
 
+
   virtual ~StereoBuffer()
   {
   }
 };
+
 
 template<typename T>
 class BFormatBuffer : public Buffer<T>
@@ -510,13 +626,19 @@ public:
   {
   }
 
+
   void SetSample(
     const Int degree,
     const size_t order,
     const size_t sample_id,
-    const T& sample_value) noexcept { Buffer<T>::SetSample(GetChannelId(degree, order), sample_id, sample_value); }
+    const T& sample_value) noexcept
+  {
+    Buffer<T>::SetSample(GetChannelId(degree, order), sample_id, sample_value);
+  }
+
 
   using Buffer<T>::AddSamples;
+
 
   void AddSamples(
     const Int degree,
@@ -532,6 +654,7 @@ public:
       num_samples,
       samples);
   }
+
 
   /** This first multiplies all the input samples by a certain constant
    and then adds the result to the samples in the buffer. */
@@ -552,10 +675,15 @@ public:
       constant);
   }
 
+
   T GetSample(
     const Int degree,
     const size_t order,
-    const size_t sample_id) const noexcept { return Buffer<T>::GetSample(GetChannelId(degree, order), sample_id); }
+    const size_t sample_id) const noexcept
+  {
+    return Buffer<T>::GetSample(GetChannelId(degree, order), sample_id);
+  }
+
 
   static size_t GetChannelId(
     const Int degree,
@@ -564,7 +692,10 @@ public:
     ASSERT(degree >= 0);
     ASSERT(order <= std::abs(degree));
     size_t centre_index = 0;
-    for (Int degree_id = 0; degree_id <= degree; ++degree_id) { centre_index = centre_index + 2 * degree_id; }
+    for (Int degree_id = 0; degree_id <= degree; ++degree_id)
+    {
+      centre_index = centre_index + 2 * degree_id;
+    }
     // 0 + 2*0 = 0 OK
     // 0 + 2*1 = 2 OK
     // 2 + 2*2 = 6 OK
@@ -572,6 +703,7 @@ public:
     ASSERT(centre_index + order >= 0);
     return centre_index + order;
   }
+
 
   static size_t GetNumChannels(
     const size_t max_degree) noexcept

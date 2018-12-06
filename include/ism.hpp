@@ -23,6 +23,7 @@ enum IsmInterpolation
   peterson
 };
 
+
 class Ism
 {
 private:
@@ -69,14 +70,32 @@ public:
   // room or source (not including stream push) is updated.
   void Update();
 
-  mcl::Vector<Sample> rir() { return rir_; }
-  mcl::Vector<Time> images_delay() { return images_delay_; }
+
+  mcl::Vector<Sample> rir()
+  {
+    return rir_;
+  }
+
+
+  mcl::Vector<Time> images_delay()
+  {
+    return images_delay_;
+  }
+
 
   void SetPetersonWindow(
-    Time duration) { peterson_window_ = duration; }
+    Time duration)
+  {
+    peterson_window_ = duration;
+  }
+
 
   void SetRandomDistance(
-    Length distance) { random_distance_ = distance; }
+    Length distance)
+  {
+    random_distance_ = distance;
+  }
+
 
   static bool Test();
 };

@@ -37,6 +37,7 @@ SphericalHeadMic::SphericalHeadMic(
 {
 }
 
+
 Angle SphericalHeadMic::GetTheta(
   const Point& point,
   const Angle& ears_angle,
@@ -48,12 +49,14 @@ Angle SphericalHeadMic::GetTheta(
   // Here we compute the angle between the direction of the ear and the 
   // direction of the incoming wave.
   Angle relative_angle = mcl::AngleBetweenDirections
-  (theta_ear,
-   phi_ear,
-   point.theta(),
-   point.phi());
+  (
+    theta_ear,
+    phi_ear,
+    point.theta(),
+    point.phi());
   return relative_angle;
 }
+
 
 // Ported from pseudo-code in R.O. Duda and W. L. Martens, "Range dependence 
 // of the response of a spherical head model".
@@ -125,20 +128,23 @@ mcl::Complex SphericalHeadMic::Sphere(
   return (rho * exp(- Complex(0.0, 1.0) * mu) * sum) / (Complex(0.0, 1.0) * mu);
 }
 
+
 Signal SphericalHeadMic::GetBrir(
   const Ear ear,
   const Point& point) noexcept
 {
   return GenerateImpulseResponse
-  (sphere_radius_,
-   point.norm(),
-   // point distance
-   GetTheta(point, ears_angle_, ear),
-   sound_speed_,
-   alg_threshold_,
-   impulse_response_length_,
-   sampling_frequency_);
+  (
+    sphere_radius_,
+    point.norm(),
+    // point distance
+    GetTheta(point, ears_angle_, ear),
+    sound_speed_,
+    alg_threshold_,
+    impulse_response_length_,
+    sampling_frequency_);
 }
+
 
 Signal SphericalHeadMic::GenerateImpulseResponse(
   Length sphere_radius,
@@ -180,12 +186,13 @@ Signal SphericalHeadMic::GenerateImpulseResponse(
   for (Int i = 0; i < N / 2 - 1; ++i)
   {
     H[i + 1] = SphericalHeadMic::Sphere
-    (sphere_radius,
-     source_distance,
-     theta,
-     frequencies[i],
-     sound_speed,
-     threshold);
+    (
+      sphere_radius,
+      source_distance,
+      theta,
+      frequencies[i],
+      sound_speed,
+      threshold);
   }
 
   // Sphere can't output values for 0 frequency. The value is not important
@@ -197,7 +204,10 @@ Signal SphericalHeadMic::GenerateImpulseResponse(
   H[N / 2] = Complex(RealPart(H[1]), 0.0);
 
   // H(N/2+1:end) = flipud(conj(H(1:N/2-1)));
-  for (Int i = (N / 2 + 1); i < N; ++i) { H[i] = Conj(H[N - i]); }
+  for (Int i = (N / 2 + 1); i < N; ++i)
+  {
+    H[i] = Conj(H[N - i]);
+  }
 
   // I take the ifft of the vector. I also include a Conj because Sphere
   // seems to output time-reversed samples. 
@@ -219,22 +229,26 @@ Signal SphericalHeadMic::GenerateImpulseResponse(
     if (theta < theta_0 || theta > (2.0 * PI - theta_0))
     {
       distance = sqrt
-      (pow(source_distance, 2.0) + pow(sphere_radius, 2.0)
+      (
+        pow(source_distance, 2.0) + pow(sphere_radius, 2.0)
         - 2.0 * source_distance * sphere_radius * cos(theta));
     }
     else
     {
       // The minimum in this formula is due to the shortest path around the head.
       distance = sqrt(pow(source_distance, 2.0) - pow(sphere_radius, 2.0))
-        + sphere_radius * mcl::Min<Real>(theta - theta_0, (2.0 * PI - theta_0) - theta);
+        + sphere_radius * mcl::Min<Real>(
+          theta - theta_0, (2.0 * PI - theta_0) - theta);
     }
     // Subract the distance between sphere and source
     distance = distance - (source_distance - sphere_radius);
     ASSERT(distance > 0.0);
-    Int num_delay_tap = mcl::RoundToInt(distance / sound_speed * sampling_frequency);
+    Int num_delay_tap = mcl::RoundToInt(
+      distance / sound_speed * sampling_frequency);
     h = mcl::Concatenate
-    (Zeros<Sample>(num_delay_tap),
-     mcl::Subset(h, 0, num_samples - num_delay_tap - 1));
+    (
+      Zeros<Sample>(num_delay_tap),
+      mcl::Subset(h, 0, num_samples - num_delay_tap - 1));
     ASSERT((Int)h.size() == num_samples);
   }
 

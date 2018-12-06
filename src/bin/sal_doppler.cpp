@@ -22,6 +22,7 @@ Signal GenerateSine(
   Sample amplitude,
   Time trailing_length);
 
+
 int main(
   int argc,
   char* const argv[])
@@ -43,23 +44,26 @@ int main(
 
   const Length speed = 171.5; //[m/s];
 
-  Signal sine = GenerateSine(sine_length, sine_frequency, sampling_frequency, sine_amplitude, 0);
+  Signal sine = GenerateSine(
+    sine_length, sine_frequency, sampling_frequency, sine_amplitude, 0);
   mcl::Matrix<sal::Sample> original_sine(sine.size(), 1);
   mcl::Matrix<sal::Sample> doppler_sine(sine.size(), 1);
   mcl::Matrix<sal::Time> current_latency(sine.size(), 1);
 
   Length current_distance = SOUND_SPEED / sampling_frequency;
   PropagationLine line_doppler
-  (current_distance,
-   sampling_frequency,
-   1000.0,
-   InterpolationType::kRounding);
+  (
+    current_distance,
+    sampling_frequency,
+    1000.0,
+    InterpolationType::kRounding);
 
   PropagationLine line
-  (current_distance,
-   sampling_frequency,
-   1000.0,
-   InterpolationType::kRounding);
+  (
+    current_distance,
+    sampling_frequency,
+    1000.0,
+    InterpolationType::kRounding);
   line.SetAttenuation(1.0, 0.0);
 
   Sample line_tmp[samples_per_buffer];
@@ -68,12 +72,14 @@ int main(
   Int index = 0;
   while ((index + samples_per_buffer) < ceil(sine_length * sampling_frequency))
   {
-    Time update_period = (Time)samples_per_buffer / sampling_frequency; // In seconds
+    Time update_period = (Time)samples_per_buffer / sampling_frequency;
+    // In seconds
     Length space_covered = update_period * speed;
     current_distance += space_covered;
     line_doppler.SetDistance(current_distance, update_period);
 
-    line_doppler.SetAttenuation(1.0, 0.0); // Sets gain to 1 instantly, to bypass the slow update of set_distance
+    line_doppler.SetAttenuation(1.0, 0.0);
+    // Sets gain to 1 instantly, to bypass the slow update of set_distance
 
     line_doppler.Write(&sine[index], samples_per_buffer);
     line_doppler.Read(samples_per_buffer, line_doppler_tmp);
@@ -92,12 +98,15 @@ int main(
     index += samples_per_buffer;
   }
 
-  original_sine.Save("/Users/enzodesena/repos/sal/src/bin/sine_original.txt", 5);
+  original_sine.Save(
+    "/Users/enzodesena/repos/sal/src/bin/sine_original.txt", 5);
   doppler_sine.Save("/Users/enzodesena/repos/sal/src/bin/sine_doppler.txt", 5);
-  current_latency.Save("/Users/enzodesena/repos/sal/src/bin/current_latency.txt", 10);
+  current_latency.Save(
+    "/Users/enzodesena/repos/sal/src/bin/current_latency.txt", 10);
 
   return 0;
 }
+
 
 Signal GenerateSine(
   const Time length,
@@ -110,7 +119,8 @@ Signal GenerateSine(
   Signal sine_wave = mcl::Sin(mcl::Multiply(t, 2.0 * PI * sine_frequency));
   sine_wave = mcl::Multiply(sine_wave, amplitude);
   sine_wave = mcl::Concatenate
-  (sine_wave,
-   mcl::Zeros<mcl::Real>(trailing_length * sampling_frequency));
+  (
+    sine_wave,
+    mcl::Zeros<mcl::Real>(trailing_length * sampling_frequency));
   return sine_wave;
 }

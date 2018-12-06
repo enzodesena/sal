@@ -27,7 +27,11 @@ FreeFieldSim::FreeFieldSim(
   mcl::Vector<Microphone*> microphones,
   mcl::Vector<Source*> sources,
   const Time sampling_frequency,
-  const Length sound_speed) { Init(microphones, sources, sampling_frequency, sound_speed); }
+  const Length sound_speed)
+{
+  Init(microphones, sources, sampling_frequency, sound_speed);
+}
+
 
 FreeFieldSim::FreeFieldSim(
   Microphone* microphone,
@@ -36,11 +40,13 @@ FreeFieldSim::FreeFieldSim(
   const Length sound_speed)
 {
   Init
-  (mcl::Unarymcl::Vector<Microphone*>(microphone),
-   sources,
-   sampling_frequency,
-   sound_speed);
+  (
+    mcl::Unarymcl::Vector<Microphone*>(microphone),
+    sources,
+    sampling_frequency,
+    sound_speed);
 }
+
 
 FreeFieldSim::FreeFieldSim(
   mcl::Vector<Microphone*> microphones,
@@ -49,11 +55,13 @@ FreeFieldSim::FreeFieldSim(
   const Length sound_speed)
 {
   Init
-  (microphones,
-   mcl::Unarymcl::Vector<Source*>(source),
-   sampling_frequency,
-   sound_speed);
+  (
+    microphones,
+    mcl::Unarymcl::Vector<Source*>(source),
+    sampling_frequency,
+    sound_speed);
 }
+
 
 FreeFieldSim::FreeFieldSim(
   Microphone* microphone,
@@ -62,11 +70,13 @@ FreeFieldSim::FreeFieldSim(
   const Length sound_speed)
 {
   Init
-  (mcl::Unarymcl::Vector<Microphone*>(microphone),
-   mcl::Unarymcl::Vector<Source*>(source),
-   sampling_frequency,
-   sound_speed);
+  (
+    mcl::Unarymcl::Vector<Microphone*>(microphone),
+    mcl::Unarymcl::Vector<Source*>(source),
+    sampling_frequency,
+    sound_speed);
 }
+
 
 void FreeFieldSim::Init(
   mcl::Vector<Microphone*> microphones,
@@ -87,7 +97,8 @@ void FreeFieldSim::Init(
   for (Int source_i = 0; source_i < num_sources; ++source_i)
   {
     Source* source = sources_[source_i];
-    propagation_lines_[source_i] = mcl::Vector<PropagationLine*>(num_microphones);
+    propagation_lines_[source_i] = mcl::Vector<PropagationLine*>(
+      num_microphones);
 
     for (Int mic_i = 0; mic_i < num_microphones; ++mic_i)
     {
@@ -103,13 +114,15 @@ void FreeFieldSim::Init(
   AllocateTempBuffers(DEFAULT_MAX_BUFFER);
 }
 
+
 void FreeFieldSim::AllocateTempBuffers(
   const Int num_samples)
 {
   temp_buffers_ = std::vector<mcl::Vector<MonoBuffer*>>(sources_.size());
   for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
   {
-    temp_buffers_[source_i] = mcl::Vector<MonoBuffer*>((Int)microphones_.size());
+    temp_buffers_[source_i] = mcl::Vector<MonoBuffer*
+    >((Int)microphones_.size());
     for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
     {
       temp_buffers_[source_i][mic_i] = new MonoBuffer(num_samples);
@@ -117,24 +130,33 @@ void FreeFieldSim::AllocateTempBuffers(
   }
 }
 
+
 void FreeFieldSim::DeallocateTempBuffers()
 {
   for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
   {
-    for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i) { delete temp_buffers_[source_i][mic_i]; }
+    for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+    {
+      delete temp_buffers_[source_i][mic_i];
+    }
   }
   temp_buffers_ = std::vector<mcl::Vector<MonoBuffer*>>();
 }
+
 
 FreeFieldSim::~FreeFieldSim()
 {
   for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
   {
-    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i) { delete propagation_lines_[source_i][mic_i]; }
+    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
+    {
+      delete propagation_lines_[source_i][mic_i];
+    }
   }
 
   DeallocateTempBuffers();
 }
+
 
 void FreeFieldSim::Run(
   mcl::Vector<MonoBuffer*> input_buffers,
@@ -155,10 +177,13 @@ void FreeFieldSim::Run(
       for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
       {
         Sample next_input_sample =
-          (sample_id < input_buffers[source_i]->num_samples()) ? input_buffers[source_i]->GetSample(sample_id) : 0.0;
+          (sample_id < input_buffers[source_i]->num_samples()) ?
+            input_buffers[source_i]->GetSample(sample_id) :
+            0.0;
         propagation_lines_[source_i][mic_i]->Write(next_input_sample);
         Sample next_output_sample = propagation_lines_[source_i][mic_i]->Read();
-        temp_buffers_[source_i][mic_i]->SetSample(sample_id, next_output_sample);
+        temp_buffers_[source_i][mic_i]->SetSample(
+          sample_id, next_output_sample);
       }
     }
 
@@ -172,22 +197,28 @@ void FreeFieldSim::Run(
     for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
     {
       microphones_[mic_i]->AddPlaneWave
-      (temp_buffers_[source_i][mic_i]->GetReadPointer(),
-       num_output_samples,
-       sources_[source_i]->position(),
-       source_i,
-       *(output_buffers[mic_i]));
+      (
+        temp_buffers_[source_i][mic_i]->GetReadPointer(),
+        num_output_samples,
+        sources_[source_i]->position(),
+        source_i,
+        *(output_buffers[mic_i]));
     }
   }
 }
+
 
 void FreeFieldSim::Tick()
 {
   for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
   {
-    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i) { propagation_lines_[source_i][mic_i]->Tick(); }
+    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
+    {
+      propagation_lines_[source_i][mic_i]->Tick();
+    }
   }
 }
+
 
 mcl::Vector<Length>
 FreeFieldSim::AllDistances(
@@ -203,20 +234,30 @@ FreeFieldSim::AllDistances(
     for (Int source_index = 0; source_index < num_sources; ++source_index)
     {
       distances.push_back
-      (Distance
-        (microphones[mic_index]->position(),
-         sources[source_index]->position()));
+      (
+        Distance
+        (
+          microphones[mic_index]->position(),
+          sources[source_index]->position()));
     }
   }
 
   return distances;
 }
 
+
 Length FreeFieldSim::MinimumDistance(
   const mcl::Vector<Microphone*>& microphones,
-  const mcl::Vector<Source*>& sources) { return mcl::Min(AllDistances(microphones, sources)); }
+  const mcl::Vector<Source*>& sources)
+{
+  return mcl::Min(AllDistances(microphones, sources));
+}
+
 
 Length FreeFieldSim::MaximumDistance(
   const mcl::Vector<Microphone*>& microphones,
-  const mcl::Vector<Source*>& sources) { return mcl::Max(AllDistances(microphones, sources)); }
+  const mcl::Vector<Source*>& sources)
+{
+  return mcl::Max(AllDistances(microphones, sources));
+}
 } // namespace sal

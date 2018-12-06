@@ -23,6 +23,7 @@ using sal::Sample;
 using sal::OmniMic;
 using sal::Length;
 
+
 bool TdBem::SimulationTime()
 {
   Time sampling_frequency = 4000;
@@ -42,14 +43,16 @@ bool TdBem::SimulationTime()
   TdBem tdbem(&room, &source, &mic, sampling_frequency, 0.2, 1000000.5);
   clock_t done = clock();
 
-  std::cout << "TDBEM Load: " << (done - launch) / ((sal::Time)CLOCKS_PER_SEC) << " s\n";
+  std::cout << "TDBEM Load: " << (done - launch) / ((sal::Time)CLOCKS_PER_SEC)
+    << " s\n";
 
   MonoBuffer output_buffer(num_samples);
   launch = clock();
   tdbem.Run(input, output_buffer);
   done = clock();
 
-  std::cout << "TDBEM Run: " << (done - launch) / ((sal::Time)CLOCKS_PER_SEC) << " s\n";
+  std::cout << "TDBEM Run: " << (done - launch) / ((sal::Time)CLOCKS_PER_SEC) <<
+    " s\n";
 
   return true;
 }

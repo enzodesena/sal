@@ -25,8 +25,16 @@ Source::Source(
 {
 }
 
-Point Source::position() const noexcept { return position_; }
+
+Point Source::position() const noexcept
+{
+  return position_;
+}
+
 
 void Source::SetPosition(
-  const Point& position) noexcept { position_ = position; }
+  const Point& position) noexcept
+{
+  position_ = position;
+}
 } // namespace sal

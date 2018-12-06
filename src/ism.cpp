@@ -27,9 +27,10 @@ using sal::Length;
 namespace sal
 {
 Ism::Ism
-(Room * const room,
- Source * const source,
- Microphone * const microphone,
+(
+  Room * const room,
+  Source * const source,
+  Microphone * const microphone,
          IsmInterpolation interpolation,
          Int rir_length,
          const Time sampling_frequency)
@@ -46,12 +47,16 @@ Ism::Ism
 {
 }
 
+
 void Ism::Run(
   const Sample* input_data,
   const Int num_samples,
   Buffer& output_buffer)
 {
-  if (modified_) { Ism::CalculateRir(); }
+  if (modified_)
+  {
+    Ism::CalculateRir();
+  }
 
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni())
@@ -60,10 +65,15 @@ void Ism::Run(
     assert(num_samples < MCL_MAX_VLA_LENGTH);
     Sample temp[num_samples];
     filter.Filter(input_data, num_samples, temp);
-    microphone_->AddPlaneWave(temp, num_samples, mcl::Point(0, 0, 0), output_buffer);
+    microphone_->AddPlaneWave(
+      temp, num_samples, mcl::Point(0, 0, 0), output_buffer);
   }
-  else { ASSERT(false); }
+  else
+  {
+    ASSERT(false);
+  }
 }
+
 
 /** Calculates the Rir. This is called by Run() before filtering. */
 void Ism::CalculateRir()
@@ -105,10 +115,12 @@ void Ism::CalculateRir()
   {
     sal::Time top_limit = random_distance_;
     rand_delays = mcl::Add
-    (mcl::Multiply<sal::Time>
-     (randn_gen.Rand(max_num_images),
-      2.0 * top_limit),
-     -top_limit);
+    (
+      mcl::Multiply<sal::Time>
+      (
+        randn_gen.Rand(max_num_images),
+        2.0 * top_limit),
+      -top_limit);
     k = 0;
   }
 
@@ -126,23 +138,31 @@ void Ism::CalculateRir()
             {
               Point image_position =
                 ((CuboidRoom*)room_)->ImageSourcePosition
-                (source_->position(),
-                 mx,
-                 my,
-                 mz,
-                 px,
-                 py,
-                 pz);
+                (
+                  source_->position(),
+                  mx,
+                  my,
+                  mz,
+                  px,
+                  py,
+                  pz);
 
               Time delay =
                 mcl::Subtract
-                (image_position,
-                 microphone_->position()).norm() / SOUND_SPEED;
+                (
+                  image_position,
+                  microphone_->position()).norm() / SOUND_SPEED;
 
-              if (randomisation) { delay += rand_delays.at(k++); }
+              if (randomisation)
+              {
+                delay += rand_delays.at(k++);
+              }
 
               if (round(delay * sampling_frequency_) < 0 ||
-                round(delay * sampling_frequency_) >= rir_length_) { continue; }
+                round(delay * sampling_frequency_) >= rir_length_)
+              {
+                continue;
+              }
 
               Sample gid = Pow(beta.GetElement(0, 0), Abs((Sample)mx - px)) *
                 Pow(beta.GetElement(1, 0), Abs((Sample)mx)) *
@@ -165,6 +185,7 @@ void Ism::CalculateRir()
   }
 }
 
+
 void Ism::WriteSample(
   const sal::Time& delay,
   const sal::Sample& attenuation)
@@ -176,50 +197,61 @@ void Ism::WriteSample(
   switch (interpolation_)
   {
   case none:
-    {
-      rir_.at(id_round) += attenuation;
-      images_int_delay_filter_.push_back(sal::DelayFilter(id_round, id_round));
-      images_frac_delay_filter_.push_back(mcl::FirFilter::GainFilter(attenuation));
-      break;
-    }
+  {
+    rir_.at(id_round) += attenuation;
+    images_int_delay_filter_.push_back(sal::DelayFilter(id_round, id_round));
+    images_frac_delay_filter_.push_back(
+      mcl::FirFilter::GainFilter(attenuation));
+    break;
+  }
   case peterson:
+  {
+    // The cutoff frequency is 90% of Nyquist frequency
+    sal::Time f_c = 0.9 * (sampling_frequency_ / 2.0);
+    sal::Time T_w = peterson_window_;
+
+    sal::Time tau = ((sal::Time)delay_norm) / sampling_frequency_;
+
+    mcl::Vector<sal::Sample> filter_coefficients;
+    sal::Int integer_delay = (Int)floor(
+      sampling_frequency_ * (-T_w / 2.0 + tau));
+    for (Int n = integer_delay + 1;
+         n < floor(sampling_frequency_ * (T_w / 2.0 + tau));
+         ++n)
     {
-      // The cutoff frequency is 90% of Nyquist frequency
-      sal::Time f_c = 0.9 * (sampling_frequency_ / 2.0);
-      sal::Time T_w = peterson_window_;
-
-      sal::Time tau = ((sal::Time)delay_norm) / sampling_frequency_;
-
-      mcl::Vector<sal::Sample> filter_coefficients;
-      sal::Int integer_delay = (Int)floor(sampling_frequency_ * (-T_w / 2.0 + tau));
-      for (Int n = integer_delay + 1;
-           n < floor(sampling_frequency_ * (T_w / 2.0 + tau));
-           ++n)
+      if (n < 0 || n >= ((Int)rir_length))
       {
-        if (n < 0 || n >= ((Int)rir_length)) { continue; }
-
-        sal::Time t = ((sal::Time)n) / sampling_frequency_ - tau;
-        sal::Sample low_pass = 1.0 / 2.0 * (1.0 + cos(2.0 * PI * t / T_w)) *
-          sin(2.0 * PI * f_c * t) / (2.0 * PI * f_c * t);
-
-        // If low_pass is nan it means that t=0 and sinc(0)=1
-        if (isnan(low_pass)) { low_pass = 1.0; }
-
-        filter_coefficients.push_back(attenuation * low_pass);
-        rir_.at(n) += attenuation * low_pass;
+        continue;
       }
 
-      sal::Int nneg_integer_delay = (integer_delay < 0) ? 0 : integer_delay;
-      images_int_delay_filter_.push_back
-      (sal::DelayFilter
-        (nneg_integer_delay,
-         nneg_integer_delay));
-      images_frac_delay_filter_.push_back(mcl::FirFilter(filter_coefficients));
+      sal::Time t = ((sal::Time)n) / sampling_frequency_ - tau;
+      sal::Sample low_pass = 1.0 / 2.0 * (1.0 + cos(2.0 * PI * t / T_w)) *
+        sin(2.0 * PI * f_c * t) / (2.0 * PI * f_c * t);
 
-      break;
+      // If low_pass is nan it means that t=0 and sinc(0)=1
+      if (isnan(low_pass))
+      {
+        low_pass = 1.0;
+      }
+
+      filter_coefficients.push_back(attenuation * low_pass);
+      rir_.at(n) += attenuation * low_pass;
     }
+
+    sal::Int nneg_integer_delay = (integer_delay < 0) ? 0 : integer_delay;
+    images_int_delay_filter_.push_back
+    (
+      sal::DelayFilter
+      (
+        nneg_integer_delay,
+        nneg_integer_delay));
+    images_frac_delay_filter_.push_back(mcl::FirFilter(filter_coefficients));
+
+    break;
+  }
   }
 }
+
 
 void Ism::Update()
 {

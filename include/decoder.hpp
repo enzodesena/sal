@@ -24,6 +24,7 @@ public:
   {
   }
 
+
   /**
    Decodes and puts in the output streams. It stops when the inputs stream
    is depleted.
@@ -32,10 +33,12 @@ public:
     const Buffer& input_buffer,
     Buffer& output_buffer) = 0;
 
+
   virtual ~Decoder()
   {
   }
 };
+
 
 class IdenticalDecoder : public Decoder
 {
@@ -44,9 +47,14 @@ public:
   {
   }
 
+
   void Decode(
     const Buffer& input_buffer,
-    Buffer& output_buffer) override { output_buffer.SetSamples(input_buffer); }
+    Buffer& output_buffer) override
+  {
+    output_buffer.SetSamples(input_buffer);
+  }
+
 
   virtual ~IdenticalDecoder()
   {

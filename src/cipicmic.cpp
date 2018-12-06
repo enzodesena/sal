@@ -65,15 +65,17 @@ CipicMic::CipicMic(
   : DatabaseBinauralMic(position, orientation, update_length)
 {
   azimuths_ = mcl::Vector<sal::Angle>
-  ({
-    -80.0, -65.0, -55.0, -45.0, -40.0, -35.0,
-    -30.0, -25.0, -20.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
-    30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0
-  });
+  (
+    {
+      -80.0, -65.0, -55.0, -45.0, -40.0, -35.0,
+      -30.0, -25.0, -20.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0,
+      30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0
+    });
 
   hrtf_database_right_ = Load(kRightEar, directory, data_type, azimuths_);
   hrtf_database_left_ = Load(kLeftEar, directory, data_type, azimuths_);
 }
+
 
 std::vector<mcl::Vector<Signal>> CipicMic::Load(
   const Ear ear,
@@ -137,6 +139,7 @@ std::vector<mcl::Vector<Signal>> CipicMic::Load(
   return hrtf_database;
 }
 
+
 Signal CipicMic::GetBrir(
   const Ear ear,
   const Point& point) noexcept
@@ -151,35 +154,61 @@ Signal CipicMic::GetBrir(
   Point proj_xz = Projection(point, Point(0.0, 1.0, 0.0));
   // "Positive elevation coresponds to moving up"
   Angle elevation;
-  if (point.x() >= 0.0) { elevation = 90.0 - proj_xz.theta() / PI * 180.0; }
-  else { elevation = 90.0 + proj_xz.theta() / PI * 180.0; }
+  if (point.x() >= 0.0)
+  {
+    elevation = 90.0 - proj_xz.theta() / PI * 180.0;
+  }
+  else
+  {
+    elevation = 90.0 + proj_xz.theta() / PI * 180.0;
+  }
 
-  if (isnan(elevation)) { elevation = 0.0; }
-  if (isnan(azimuth)) { azimuth = 0.0; }
+  if (isnan(elevation))
+  {
+    elevation = 0.0;
+  }
+  if (isnan(azimuth))
+  {
+    azimuth = 0.0;
+  }
 
   ASSERT
-  ((elevation >= (-90.0 - VERY_SMALL)) &
+  (
+    (elevation >= (-90.0 - VERY_SMALL)) &
     (elevation <= (270.0 + VERY_SMALL)));
   ASSERT
-  ((azimuth >= (-90.0 - VERY_SMALL)) &
+  (
+    (azimuth >= (-90.0 - VERY_SMALL)) &
     (azimuth <= (90.0 + VERY_SMALL)));
 
   Int azimuth_index = mcl::MinIndex
-  (mcl::Abs
-    (mcl::Add
-      (azimuths_,
-       -azimuth)));
+  (
+    mcl::Abs
+    (
+      mcl::Add
+      (
+        azimuths_,
+        -azimuth)));
 
   Int elevation_index;
-  if (elevation < -45.0) { elevation_index = 0; }
-  else if (elevation > -45.0 + 360.0 / 64.0 * 49.0) { elevation_index = 49; }
-  else { elevation_index = mcl::RoundToInt((elevation + 45.0) * 64.0 / 360.0); }
+  if (elevation < -45.0)
+  {
+    elevation_index = 0;
+  }
+  else if (elevation > -45.0 + 360.0 / 64.0 * 49.0)
+  {
+    elevation_index = 49;
+  }
+  else
+  {
+    elevation_index = mcl::RoundToInt((elevation + 45.0) * 64.0 / 360.0);
+  }
 
   ASSERT((azimuth_index >= 0) & (azimuth_index < (Int)azimuths_.size()));
   ASSERT((elevation_index >= 0) & (elevation_index <= 49));
 
-  return (ear == kLeftEar)
-           ? hrtf_database_left_[azimuth_index][elevation_index]
-           : hrtf_database_right_[azimuth_index][elevation_index];
+  return (ear == kLeftEar) ?
+           hrtf_database_left_[azimuth_index][elevation_index] :
+           hrtf_database_right_[azimuth_index][elevation_index];
 }
 } // namespace sal

@@ -26,9 +26,10 @@ using sal::Sample;
 namespace sal
 {
 Fdtd::Fdtd
-(Room * const room,
- Source * const source,
- Microphone * const microphone,
+(
+  Room * const room,
+  Source * const source,
+  Microphone * const microphone,
            const Time sampling_frequency,
            sal::Sample xi,
            sal::Sample lmb)
@@ -40,6 +41,7 @@ Fdtd::Fdtd
   , lmb_(lmb)
 {
 }
+
 
 sal::Signal Fdtd::RunFdtd(
   Int Nx,
@@ -84,7 +86,8 @@ sal::Signal Fdtd::RunFdtd(
             double KK = (double)K;
             double beta = (6.0 - KK) / (2.0 * xi);
 
-            p_2[l - 1][m - 1][i - 1] = 1.0 / (1.0 + lmb * beta) * ((2.0 - KK * lmb_2) * p_1[l - 1][m - 1][i - 1]
+            p_2[l - 1][m - 1][i - 1] = 1.0 / (1.0 + lmb * beta) * ((2.0 - KK *
+                lmb_2) * p_1[l - 1][m - 1][i - 1]
               + lmb_2 * (p_1[l][m - 1][i - 1] + p_1[l - 2][m - 1][i - 1]
                 + p_1[l - 1][m][i - 1] + p_1[l - 1][m - 2][i - 1]
                 + p_1[l - 1][m - 1][i] + p_1[l - 1][m - 1][i - 2])
@@ -108,6 +111,7 @@ sal::Signal Fdtd::RunFdtd(
   return p_out;
 }
 
+
 void Fdtd::Run(
   const MonoBuffer& input_buffer,
   Buffer& output_buffer)
@@ -117,36 +121,45 @@ void Fdtd::Run(
 
   double curant_number = 1.0 / sqrt(3.0);
 
-  double spatial_frequency = SOUND_SPEED / (curant_number * sampling_frequency_);
+  double spatial_frequency = SOUND_SPEED / (curant_number * sampling_frequency_
+  );
 
   Int Nx = mcl::RoundToInt(dimensions.x() / spatial_frequency);
   Int Ny = mcl::RoundToInt(dimensions.y() / spatial_frequency);
   Int Nz = mcl::RoundToInt(dimensions.z() / spatial_frequency);
 
-  Int pos_s_x = mcl::RoundToInt(source_->position().x() / spatial_frequency) + 1;
-  Int pos_s_y = mcl::RoundToInt(source_->position().y() / spatial_frequency) + 1;
-  Int pos_s_z = mcl::RoundToInt(source_->position().z() / spatial_frequency) + 1;
+  Int pos_s_x = mcl::RoundToInt(
+    source_->position().x() / spatial_frequency) + 1;
+  Int pos_s_y = mcl::RoundToInt(
+    source_->position().y() / spatial_frequency) + 1;
+  Int pos_s_z = mcl::RoundToInt(
+    source_->position().z() / spatial_frequency) + 1;
 
-  Int pos_m_x = mcl::RoundToInt(microphone_->position().x() / spatial_frequency) + 1;
-  Int pos_m_y = mcl::RoundToInt(microphone_->position().y() / spatial_frequency) + 1;
-  Int pos_m_z = mcl::RoundToInt(microphone_->position().z() / spatial_frequency) + 1;
+  Int pos_m_x = mcl::RoundToInt(
+    microphone_->position().x() / spatial_frequency) + 1;
+  Int pos_m_y = mcl::RoundToInt(
+    microphone_->position().y() / spatial_frequency) + 1;
+  Int pos_m_z = mcl::RoundToInt(
+    microphone_->position().z() / spatial_frequency) + 1;
 
   rir_ = Fdtd::RunFdtd
-  (Nx,
-   Ny,
-   Nz,
-   input_buffer.num_samples(),
-   CreateGeometry(Nx, Ny, Nz),
-   xi_,
-   input_buffer.GetReadPointer(),
-   lmb_,
-   pos_s_x,
-   pos_s_y,
-   pos_s_z,
-   pos_m_x,
-   pos_m_y,
-   pos_m_z);
+  (
+    Nx,
+    Ny,
+    Nz,
+    input_buffer.num_samples(),
+    CreateGeometry(Nx, Ny, Nz),
+    xi_,
+    input_buffer.GetReadPointer(),
+    lmb_,
+    pos_s_x,
+    pos_s_y,
+    pos_s_z,
+    pos_m_x,
+    pos_m_y,
+    pos_m_z);
 }
+
 
 mcl::Vector<std::vector<mcl::Vector<sal::Int>>>
 Fdtd::CreateGeometry(
@@ -164,7 +177,16 @@ Fdtd::CreateGeometry(
   Initialise3DArray<sal::Int>(G, Nx, Ny, Nz);
 
   // G = 6.*ones(Nx,Ny,Nz); %K = 6 air
-  for (Int i = 0; i < Nx; ++i) { for (Int j = 0; j < Ny; ++j) { for (Int k = 0; k < Nz; ++k) { G[i][j][k] = 6; } } }
+  for (Int i = 0; i < Nx; ++i)
+  {
+    for (Int j = 0; j < Ny; ++j)
+    {
+      for (Int k = 0; k < Nz; ++k)
+      {
+        G[i][j][k] = 6;
+      }
+    }
+  }
 
   //    %K = 5
   //    G(2,:,:) = 5;

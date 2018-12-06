@@ -37,9 +37,11 @@ public:
 
   static bool Test();
 
+
   virtual ~SphericalHeadMic()
   {
   }
+
 
 private:
 

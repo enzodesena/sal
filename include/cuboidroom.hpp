@@ -28,6 +28,7 @@ enum CuboidWallId
   kZ2
 };
 
+
 class CuboidRoom : public Room
 {
 public:
@@ -40,7 +41,14 @@ public:
     const mcl::Vector<mcl::IirFilter>& filter_prototypes)
     : Room(filter_prototypes)
     , dimensions_(Triplet(x, y, z))
-    , origin_position_(Triplet(0, 0, 0)) { if ((Int)filter_prototypes.size() != num_faces()) { ASSERT(false); } }
+    , origin_position_(Triplet(0, 0, 0))
+  {
+    if ((Int)filter_prototypes.size() != num_faces())
+    {
+      ASSERT(false);
+    }
+  }
+
 
   CuboidRoom(
     Length x,
@@ -52,6 +60,7 @@ public:
     , origin_position_(Triplet(0, 0, 0))
   {
   }
+
 
   /**
    Constructrs a cuboid room.
@@ -69,6 +78,7 @@ public:
     , origin_position_(origin_position)
   {
   }
+
 
   mcl::Vector<mcl::Point>
   CalculateBoundaryPoints(
@@ -93,17 +103,38 @@ public:
 
   Time SabineRt60() const;
 
-  Triplet dimensions() const noexcept { return dimensions_; }
+
+  Triplet dimensions() const noexcept
+  {
+    return dimensions_;
+  }
+
 
   void SetDimensions(
-    const Triplet& dimensions) noexcept { dimensions_ = dimensions; }
+    const Triplet& dimensions) noexcept
+  {
+    dimensions_ = dimensions;
+  }
+
 
   void SetOriginPosition(
-    const Triplet& position) { origin_position_ = position; }
+    const Triplet& position)
+  {
+    origin_position_ = position;
+  }
 
-  Int num_faces() const noexcept override { return 6; }
 
-  Length max_distance() const noexcept override { return dimensions_.norm(); }
+  Int num_faces() const noexcept override
+  {
+    return 6;
+  }
+
+
+  Length max_distance() const noexcept override
+  {
+    return dimensions_.norm();
+  }
+
 
   static bool Test();
 
@@ -114,9 +145,11 @@ public:
 
   std::string ShapeDescription() const noexcept override;
 
+
   virtual ~CuboidRoom()
   {
   }
+
 
 private:
 

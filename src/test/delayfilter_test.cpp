@@ -284,13 +284,16 @@ bool DelayFilter::Test()
 
   const Int num_samples = 10;
   const Int latency = 3;
-  mcl::Vector<Sample> input_samples = mcl::ColonOperator(1.0, 1.0, (Sample)num_samples + 1);
+  mcl::Vector<Sample> input_samples = mcl::ColonOperator(
+    1.0, 1.0, (Sample)num_samples + 1);
   mcl::Vector<Sample> output_samples = mcl::Concatenate
-  (mcl::Zeros<Sample>(latency),
-   mcl::Elements
-   (input_samples,
-    0,
-    num_samples - latency));
+  (
+    mcl::Zeros<Sample>(latency),
+    mcl::Elements
+    (
+      input_samples,
+      0,
+      num_samples - latency));
   assert(input_samples.size() == output_samples.size());
 
   DelayFilter delay_filter_g(latency, 4);

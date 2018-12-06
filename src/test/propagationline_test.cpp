@@ -85,10 +85,11 @@ bool PropagationLine::Test()
 
   //
   PropagationLine prop_line_b = PropagationLine
-  ((Length)5.0 * SOUND_SPEED / FS,
-   FS,
-   100.0,
-   sal::InterpolationType::kRounding);
+  (
+    (Length)5.0 * SOUND_SPEED / FS,
+    FS,
+    100.0,
+    sal::InterpolationType::kRounding);
   attenuation = 1.0 / 5.0;
 
   prop_line_b.Tick();
@@ -119,21 +120,25 @@ bool PropagationLine::Test()
   // Testing batch processing
   const Int latency_samples = 3;
   const Int num_samples = 10;
-  mcl::Vector<Sample> input_samples = mcl::ColonOperator(1.0, 1.0, (Sample)num_samples + 1);
+  mcl::Vector<Sample> input_samples = mcl::ColonOperator(
+    1.0, 1.0, (Sample)num_samples + 1);
   mcl::Vector<Sample> output_samples = mcl::Concatenate
-  (mcl::Zeros<Sample>(latency_samples),
-   mcl::Elements
-   (input_samples,
-    0,
-    num_samples - latency_samples));
+  (
+    mcl::Zeros<Sample>(latency_samples),
+    mcl::Elements
+    (
+      input_samples,
+      0,
+      num_samples - latency_samples));
   output_samples = mcl::Multiply<sal::Sample>(output_samples, 1.0 / 3.0);
   assert(input_samples.size() == output_samples.size());
 
   PropagationLine prop_line_c = PropagationLine
-  (((Length)latency_samples) * SOUND_SPEED / FS,
-   FS,
-   1.0,
-   sal::InterpolationType::kRounding);
+  (
+    ((Length)latency_samples) * SOUND_SPEED / FS,
+    FS,
+    1.0,
+    sal::InterpolationType::kRounding);
 
   for (Int i = 0; i < num_samples; ++i)
   {

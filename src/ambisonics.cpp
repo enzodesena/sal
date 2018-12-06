@@ -33,32 +33,35 @@ void AmbisonicsMic::AddPlaneWaveRelative(
   switch (convention_)
   {
   case sqrt2:
-    {
-      // Zero-th component
-      output_buffer.AddSamples
-      (BFormatBuffer::GetChannelId(0, 0),
-       0,
-       num_samples,
-       input_data);
+  {
+    // Zero-th component
+    output_buffer.AddSamples
+    (
+      BFormatBuffer::GetChannelId(0, 0),
+      0,
+      num_samples,
+      input_data);
 
-      for (Int i = 1; i <= order_; ++i)
-      {
-        // TODO: add 3D components
-        output_buffer.MultiplyAddSamples
-        (BFormatBuffer::GetChannelId(i, 1),
-         0,
-         num_samples,
-         input_data,
-         sqrt_2 * cos(((Angle)i) * phi));
-        output_buffer.MultiplyAddSamples
-        (BFormatBuffer::GetChannelId(i, -1),
-         0,
-         num_samples,
-         input_data,
-         sqrt_2 * sin(((Angle)i) * phi));
-      }
-      break;
+    for (Int i = 1; i <= order_; ++i)
+    {
+      // TODO: add 3D components
+      output_buffer.MultiplyAddSamples
+      (
+        BFormatBuffer::GetChannelId(i, 1),
+        0,
+        num_samples,
+        input_data,
+        sqrt_2 * cos(((Angle)i) * phi));
+      output_buffer.MultiplyAddSamples
+      (
+        BFormatBuffer::GetChannelId(i, -1),
+        0,
+        num_samples,
+        input_data,
+        sqrt_2 * sin(((Angle)i) * phi));
     }
+    break;
+  }
 
 #ifdef MCL_LOAD_BOOST
     case N3D: {
@@ -91,12 +94,13 @@ void AmbisonicsMic::AddPlaneWaveRelative(
 #endif
 
   default:
-    {
-      ASSERT(false);
-      break;
-    }
+  {
+    ASSERT(false);
+    break;
+  }
   }
 }
+
 
 mcl::Vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(
   Int order,
@@ -112,6 +116,7 @@ mcl::Vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(
   }
   return output;
 }
+
 
 AmbisonicsHorizDec::AmbisonicsHorizDec(
   const Int order,
@@ -130,13 +135,17 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(
   , sampling_frequency_(sampling_frequency)
   , order_(order)
   , mode_matching_matrix_
-  (mcl::Matrix<Sample>
-  (2 * order + 1,
-   loudspeaker_angles.size()))
+  (
+    mcl::Matrix<Sample>
+    (
+      2 * order + 1,
+      loudspeaker_angles.size()))
   , max_energy_matrix_
-  (mcl::Matrix<Sample>
-  (2 * order + 1,
-   loudspeaker_angles.size()))
+  (
+    mcl::Matrix<Sample>
+    (
+      2 * order + 1,
+      loudspeaker_angles.size()))
 {
   using mcl::IirFilter;
 
@@ -146,27 +155,33 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(
     // they are all equal).
     nfc_filters_.reserve(2 * order + 1);
     nfc_filters_.push_back
-    (NFCFilter
-      (0,
-       loudspeakers_distance_,
-       sampling_frequency_,
-       sound_speed));
+    (
+      NFCFilter
+      (
+        0,
+        loudspeakers_distance_,
+        sampling_frequency_,
+        sound_speed));
     for (Int i = 1; i <= order; ++i)
     {
       // Instanciating two filters because order higher than two have
       // both degrees +1 and -1
       nfc_filters_.push_back
-      (NFCFilter
-        (i,
-         loudspeakers_distance_,
-         sampling_frequency_,
-         sound_speed));
+      (
+        NFCFilter
+        (
+          i,
+          loudspeakers_distance_,
+          sampling_frequency_,
+          sound_speed));
       nfc_filters_.push_back
-      (NFCFilter
-        (i,
-         loudspeakers_distance_,
-         sampling_frequency_,
-         sound_speed));
+      (
+        NFCFilter
+        (
+          i,
+          loudspeakers_distance_,
+          sampling_frequency_,
+          sound_speed));
     }
     ASSERT((Int)nfc_filters_.size() == 2 * order + 1);
   }
@@ -174,23 +189,28 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(
   if (energy_decoding_)
   {
     IirFilter cx_high = CrossoverFilterHigh
-    (cut_off_frequency,
-     sampling_frequency);
+    (
+      cut_off_frequency,
+      sampling_frequency);
     IirFilter cx_low = CrossoverFilterLow
-    (cut_off_frequency,
-     sampling_frequency);
+    (
+      cut_off_frequency,
+      sampling_frequency);
     // One filter per loudspeaker
     crossover_filters_high_ = mcl::Vector<IirFilter>
-    (num_loudspeakers_,
-     cx_high);
+    (
+      num_loudspeakers_,
+      cx_high);
     crossover_filters_low_ = mcl::Vector<IirFilter>
-    (num_loudspeakers_,
-     cx_low);
+    (
+      num_loudspeakers_,
+      cx_low);
   }
 
   mode_matching_matrix_ = ModeMatchingDec(order_, loudspeaker_angles_);
   max_energy_matrix_ = MaxEnergyDec(order_, loudspeaker_angles_);
 }
+
 
 mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(
   Int order,
@@ -205,10 +225,12 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(
   for (Int i = 0; i < num_loudspeakers; ++i)
   {
     temp.SetColumn
-    (i,
-     AmbisonicsMic::HorizontalEncoding
-     (order,
-      loudspeaker_angles[i]));
+    (
+      i,
+      AmbisonicsMic::HorizontalEncoding
+      (
+        order,
+        loudspeaker_angles[i]));
   }
   // TODO: implement for non-regular loudspeaker arrays.
   // M_d = temp'*(temp*temp')^(-1);
@@ -217,6 +239,7 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(
   //return Multiply(Transpose(temp), 1.0/((Sample) 2*order+1));
   return Multiply(Transpose(temp), (Sample)1.0 / ((Sample)2 * order + 1));
 }
+
 
 mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(
   Int order,
@@ -236,6 +259,7 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(
   return decoding_matrix;
 }
 
+
 mcl::Vector<Sample>
 AmbisonicsHorizDec::GetFrame(
   const Int order,
@@ -248,22 +272,29 @@ AmbisonicsHorizDec::GetFrame(
   mcl::Vector<Sample> output;
   output.reserve(2 * order + 1);
   output.push_back
-  (buffer.GetSample
-    (BFormatBuffer::GetChannelId(0, 0),
-     sample_id));
+  (
+    buffer.GetSample
+    (
+      BFormatBuffer::GetChannelId(0, 0),
+      sample_id));
   for (Int i = 1; i <= order; ++i)
   {
     output.push_back
-    (buffer.GetSample
-      (BFormatBuffer::GetChannelId(i, 1),
-       sample_id));
+    (
+      buffer.GetSample
+      (
+        BFormatBuffer::GetChannelId(i, 1),
+        sample_id));
     output.push_back
-    (buffer.GetSample
-      (BFormatBuffer::GetChannelId(i, -1),
-       sample_id));
+    (
+      buffer.GetSample
+      (
+        BFormatBuffer::GetChannelId(i, -1),
+        sample_id));
   }
   return output;
 }
+
 
 /* AMB_NFC Near-Field Corrected Higher Order Ambisonics.
  OUT_NFC = AMB_NFC(X, FS, THETA, N, LOUDSP_ANGLES, LOUDSP_DIST) produces
@@ -287,14 +318,18 @@ void AmbisonicsHorizDec::Decode(
   for (Int sample_id = 0; sample_id < input_buffer.num_samples(); ++sample_id)
   {
     mcl::Vector<Sample> bformat_frame = GetFrame
-    (order_,
-     sample_id,
-     input_buffer);
+    (
+      order_,
+      sample_id,
+      input_buffer);
 
     // Near-field correcting
     if (near_field_correction_)
     {
-      for (Int i = 0; i < (2 * order_ + 1); ++i) { bformat_frame[i] = nfc_filters_[i].Filter(bformat_frame[i]); }
+      for (Int i = 0; i < (2 * order_ + 1); ++i)
+      {
+        bformat_frame[i] = nfc_filters_[i].Filter(bformat_frame[i]);
+      }
     }
 
     // Mode matching decoding
@@ -302,8 +337,9 @@ void AmbisonicsHorizDec::Decode(
     //  M_d = amb_decoding(N, loudspeaker_angles);
     //  G_format_low = M_d*amb_nfc_filter(B_format, loudspeakers_distance, Fs, c);
     mcl::Vector<Sample> output = mcl::Multiply
-    (mode_matching_matrix_,
-     bformat_frame);
+    (
+      mode_matching_matrix_,
+      bformat_frame);
     if (energy_decoding_)
     {
       // Maximum energy decoding at high frequency
@@ -314,8 +350,9 @@ void AmbisonicsHorizDec::Decode(
       //  G_format_high = M_d*G*B_format;
       mcl::Vector<Sample> output_high =
         mcl::Multiply
-        (mode_matching_matrix_,
-         mcl::Multiply(max_energy_matrix_, bformat_frame));
+        (
+          mode_matching_matrix_,
+          mcl::Multiply(max_energy_matrix_, bformat_frame));
 
       // Cross-fading high and low
       //  // Generate output
@@ -331,9 +368,13 @@ void AmbisonicsHorizDec::Decode(
     }
 
     // Push into each loudspeaker stream
-    for (Int i = 0; i < num_loudspeakers_; ++i) { output_buffer.SetSample(i, sample_id, output[i]); }
+    for (Int i = 0; i < num_loudspeakers_; ++i)
+    {
+      output_buffer.SetSample(i, sample_id, output[i]);
+    }
   }
 }
+
 
 mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
   const Time cut_off_frequency,
@@ -359,6 +400,7 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
   return mcl::IirFilter(b_lf, a);
 }
 
+
 mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
   const Time cut_off_frequency,
   const Time sampling_frequency)
@@ -378,12 +420,15 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
 
   // The denominator of the high frequency filter is the same as the low one.
   mcl::IirFilter filter_low
-  (CrossoverFilterLow
-    (cut_off_frequency,
-     sampling_frequency));
+  (
+    CrossoverFilterLow
+    (
+      cut_off_frequency,
+      sampling_frequency));
 
   return mcl::IirFilter(b_hf, filter_low.A());
 }
+
 
 // Near-field correction filters as described in
 // "Spatial Sound Encoding Including Near Field Effect: Introducing
@@ -396,7 +441,10 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(
   const Length sound_speed)
 {
   // TODO: implement for orders higher than 6
-  if (order > 6) { ASSERT(false); }
+  if (order > 6)
+  {
+    ASSERT(false);
+  }
   using mcl::Real;
   using mcl::Poly;
   using mcl::Ones;

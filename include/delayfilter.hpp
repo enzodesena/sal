@@ -32,14 +32,23 @@ public:
     Int latency,
     Int max_latency) noexcept;
 
-  ~DelayFilter() noexcept { delete[] start_; }
+
+  ~DelayFilter() noexcept
+  {
+    delete[] start_;
+  }
+
 
   /**
    This writes the next sample into the filter. If this method is called 2 times
    before the Tick() operation, the former value will be overwritten.
    */
   void Write(
-    const Sample sample) noexcept { *write_index_ = sample; }
+    const Sample sample) noexcept
+  {
+    *write_index_ = sample;
+  }
+
 
   void Write(
     const Sample* samples,
@@ -48,11 +57,16 @@ public:
   /** Resets the state of the filter */
   virtual void Reset() noexcept;
 
+
   /**
    Returns the current sample from the filter. Between two Tick() operation it will
    give always the same output.
    */
-  Sample Read() const noexcept { return *read_index_; }
+  Sample Read() const noexcept
+  {
+    return *read_index_;
+  }
+
 
   /** This allows to read at a different location from the read pointer. */
   const Sample& ReadAt(
@@ -63,18 +77,22 @@ public:
     {
       mcl::Logger::GetInstance().
         LogError
-        ("Trying to read at a delay tap (%d) larger than the maximum latency "
-         "of the delay line (%d). Giving back the value at the maximum "
-         "latency instead. ",
-         delay_tap,
-         max_latency_);
+        (
+          "Trying to read at a delay tap (%d) larger than the maximum latency "
+          "of the delay line (%d). Giving back the value at the maximum "
+          "latency instead. ",
+          delay_tap,
+          max_latency_);
     }
 #endif
 
     ASSERT(write_index_ >= start_ && write_index_ <= end_);
     Sample* read_index = write_index_ - std::min(delay_tap, max_latency_);
-    return (read_index >= start_) ? *read_index : *(read_index + max_latency_ + 1);
+    return (read_index >= start_) ?
+             *read_index :
+             *(read_index + max_latency_ + 1);
   }
+
 
   /** Read the next `num_samples` samples.
    @param[in] num_samples the number of samples to be read.
@@ -82,6 +100,7 @@ public:
   void Read(
     Int num_samples,
     Sample* output_data) const noexcept;
+
 
   Sample FractionalReadAt(
     const Time fractional_delay_tap) const noexcept
@@ -91,15 +110,17 @@ public:
     {
       mcl::Logger::GetInstance().
         LogError
-        ("Trying to read at a delay tap (%f) larger than the maximum latency "
-         "of the delay line (%d). Giving back the value at the maximum "
-         "latency instead. ",
-         fractional_delay_tap,
-         max_latency_);
+        (
+          "Trying to read at a delay tap (%f) larger than the maximum latency "
+          "of the delay line (%d). Giving back the value at the maximum "
+          "latency instead. ",
+          fractional_delay_tap,
+          max_latency_);
     }
 #endif
 
-    Time sanitised_delay_tap = std::min(fractional_delay_tap, (Time)max_latency_);
+    Time sanitised_delay_tap = std::min(
+      fractional_delay_tap, (Time)max_latency_);
     Int x_a = (Int)sanitised_delay_tap; // Cast to int is equivalent to floor
     Int x_b = x_a + 1;
     Sample f_x_a = ReadAt(x_a);
@@ -107,12 +128,14 @@ public:
     return (f_x_b - f_x_a) / (x_b - x_a) * (sanitised_delay_tap - x_a) + f_x_a;
   }
 
+
   /** This causes time to tick by one sample. */
   void Tick() noexcept
   {
     write_index_ = (write_index_ != end_) ? (write_index_ + 1) : start_;
     read_index_ = (read_index_ != end_) ? (read_index_ + 1) : start_;
   }
+
 
   /** This causes time to tick by more than one sample (use only if you
    understand what you are doing!). */

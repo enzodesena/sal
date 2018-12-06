@@ -26,16 +26,22 @@ mcl::Vector<Angle> UniformAngles(
   Int num_microphones,
   Angle first_element_heading);
 
+
 template<class T, class V>
 mcl::Vector<V> ConvertToType(
   mcl::Vector<T> vector)
 {
   mcl::Vector<V> new_vector(vector.size());
-  for (mcl::Int i = 0; i < (Int)vector.size(); ++i) { new_vector[i] = (V)vector[i]; }
+  for (mcl::Int i = 0; i < (Int)vector.size(); ++i)
+  {
+    new_vector[i] = (V)vector[i];
+  }
   return new_vector;
 }
 
+
 typedef mcl::Point Triplet;
+
 
 /** */
 class TripletHandler
@@ -50,12 +56,18 @@ public:
   {
     ASSERT(std::numeric_limits<Speed>::has_infinity);
     ASSERT
-    (std::numeric_limits<Speed>::infinity() ==
+    (
+      std::numeric_limits<Speed>::infinity() ==
       std::numeric_limits<Speed>::infinity());
   }
 
+
   void SetMaxSpeed(
-    const Length& max_speed) { max_speed_ = max_speed; }
+    const Length& max_speed)
+  {
+    max_speed_ = max_speed;
+  }
+
 
   /** This sets the triplet regardless of the maximum speed. */
   void SetValue(
@@ -66,6 +78,7 @@ public:
     has_reached_target_ = true;
   }
 
+
   void SetTargetValue(
     const Triplet& target_triplet) noexcept
   {
@@ -73,7 +86,12 @@ public:
     has_reached_target_ = false;
   }
 
-  Triplet target_value() const noexcept { return target_triplet_; }
+
+  Triplet target_value() const noexcept
+  {
+    return target_triplet_;
+  }
+
 
   void Update(
     const Time time_elapsed_since_last_tick)
@@ -97,16 +115,26 @@ public:
       else
       {
         current_triplet_ = PointOnLine
-        (current_triplet_,
-         target_triplet_,
-         max_speed_ * time_elapsed_since_last_tick);
+        (
+          current_triplet_,
+          target_triplet_,
+          max_speed_ * time_elapsed_since_last_tick);
       }
     }
   }
 
-  bool HasReachedTarget() const noexcept { return has_reached_target_; }
 
-  mcl::Point value() const noexcept { return current_triplet_; }
+  bool HasReachedTarget() const noexcept
+  {
+    return has_reached_target_;
+  }
+
+
+  mcl::Point value() const noexcept
+  {
+    return current_triplet_;
+  }
+
 
   static bool Test();
 
@@ -117,6 +145,7 @@ private:
   Length max_speed_;
   bool has_reached_target_;
 };
+
 
 class RampSmoother
 {
@@ -133,17 +162,23 @@ public:
     , sampling_frequency_(sampling_frequency)
   {
     ASSERT_WITH_MESSAGE
-    (std::isgreaterequal(sampling_frequency, 0.0),
-     "Sampling frequency cannot be negative ");
+    (
+      std::isgreaterequal(sampling_frequency, 0.0),
+      "Sampling frequency cannot be negative ");
   }
+
 
   Sample GetNextValue() noexcept
   {
-    if (countdown_ <= 0) { return target_value_; }
+    if (countdown_ <= 0)
+    {
+      return target_value_;
+    }
     --countdown_;
     current_value_ += step_;
     return current_value_;
   }
+
 
   Sample GetNextValue(
     const Int num_jumps) noexcept
@@ -159,6 +194,7 @@ public:
     return current_value_;
   }
 
+
   /** Takes an array of values (`input_data`), multiplies them by the
    next values coming out of the smoother, and writes the result into
    an output array (`output_data`).
@@ -171,9 +207,19 @@ public:
     const Int num_samples,
     Sample* output_data) noexcept
   {
-    if (IsUpdating()) { for (Int i = 0; i < num_samples; ++i) { output_data[i] = input_data[i] * GetNextValue(); } }
-    else { mcl::Multiply(input_data, num_samples, target_value_, output_data); }
+    if (IsUpdating())
+    {
+      for (Int i = 0; i < num_samples; ++i)
+      {
+        output_data[i] = input_data[i] * GetNextValue();
+      }
+    }
+    else
+    {
+      mcl::Multiply(input_data, num_samples, target_value_, output_data);
+    }
   }
+
 
   /** Takes an array of values (`input_data`), multiplies them by the
    next values coming out of the smoother, and adds the result to
@@ -189,10 +235,20 @@ public:
   {
     if (IsUpdating())
     {
-      for (Int i = 0; i < num_samples; ++i) { input_output_data[i] += input_data[i] * GetNextValue(); }
+      for (Int i = 0; i < num_samples; ++i)
+      {
+        input_output_data[i] += input_data[i] * GetNextValue();
+      }
     }
-    else { for (Int i = 0; i < num_samples; ++i) { input_output_data[i] += input_data[i] * target_value_; } }
+    else
+    {
+      for (Int i = 0; i < num_samples; ++i)
+      {
+        input_output_data[i] += input_data[i] * target_value_;
+      }
+    }
   }
+
 
   /** Does the same as GetNextValuesAndMultiply, but without modifying the
    object. */
@@ -204,20 +260,32 @@ public:
     if (IsUpdating())
     {
       RampSmoother temp(*this); // Create a copy of itself that we will discard.
-      for (Int i = 0; i < num_samples; ++i) { output_data[i] = input_data[i] * temp.GetNextValue(); }
+      for (Int i = 0; i < num_samples; ++i)
+      {
+        output_data[i] = input_data[i] * temp.GetNextValue();
+      }
     }
-    else { mcl::Multiply(input_data, num_samples, target_value_, output_data); }
+    else
+    {
+      mcl::Multiply(input_data, num_samples, target_value_, output_data);
+    }
   }
 
-  Sample target_value() const noexcept { return target_value_; }
+
+  Sample target_value() const noexcept
+  {
+    return target_value_;
+  }
+
 
   void SetTargetValue(
     const Sample target_value,
     const Time ramp_time) noexcept
   {
     ASSERT_WITH_MESSAGE
-    (std::isgreaterequal(ramp_time, 0.0),
-     "Ramp time cannot be negative ");
+    (
+      std::isgreaterequal(ramp_time, 0.0),
+      "Ramp time cannot be negative ");
     if ((mcl::RoundToInt(ramp_time * sampling_frequency_)) == 0)
     {
       target_value_ = target_value;
@@ -228,11 +296,15 @@ public:
 
     if (std::islessgreater(target_value, target_value_))
     {
-      const Int num_update_samples = mcl::RoundToInt(ramp_time * sampling_frequency_);
+      const Int num_update_samples = mcl::RoundToInt(
+        ramp_time * sampling_frequency_);
       countdown_ = num_update_samples;
       target_value_ = target_value;
 
-      if (num_update_samples == 0) { current_value_ = target_value; }
+      if (num_update_samples == 0)
+      {
+        current_value_ = target_value;
+      }
       else
       {
         step_ = (target_value_ - current_value_) /
@@ -241,7 +313,12 @@ public:
     }
   }
 
-  bool IsUpdating() const noexcept { return countdown_ > 0; }
+
+  bool IsUpdating() const noexcept
+  {
+    return countdown_ > 0;
+  }
+
 
 private:
   Sample current_value_;
@@ -251,6 +328,7 @@ private:
 
   Time sampling_frequency_;
 };
+
 
 /** Implements a first-order IIR low-pass filter with a given decay constant. */
 class LowPassSmoothingFilter : public mcl::DigitalFilter
@@ -263,26 +341,39 @@ public:
     const mcl::Real ramp_samples) noexcept
   {
     ASSERT_WITH_MESSAGE
-    (std::isgreaterequal(ramp_samples, 0),
-     "Decay constant cannot be negative.");
+    (
+      std::isgreaterequal(ramp_samples, 0),
+      "Decay constant cannot be negative.");
 
     mcl::Real a1 = exp(-1.0 / ramp_samples);
     mcl::Real b0 = 1.0 - a1;
     filter_ = mcl::IirFilter
-    (mcl::Binarymcl::Vector<mcl::Real>(b0, 0.0),
-     mcl::Binarymcl::Vector<mcl::Real>(1.0, -a1));
+    (
+      mcl::Binarymcl::Vector<mcl::Real>(b0, 0.0),
+      mcl::Binarymcl::Vector<mcl::Real>(1.0, -a1));
   }
 
+
   virtual mcl::Real Filter(
-    const mcl::Real input) noexcept { return filter_.Filter(input); }
+    const mcl::Real input) noexcept
+  {
+    return filter_.Filter(input);
+  }
+
 
   using mcl::DigitalFilter::Filter;
 
-  virtual void Reset() noexcept { filter_.Reset(); }
+
+  virtual void Reset() noexcept
+  {
+    filter_.Reset();
+  }
+
 
 private:
   mcl::IirFilter filter_;
 };
+
 
 template<typename T>
 std::string ToString(

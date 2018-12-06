@@ -26,16 +26,18 @@ bool AmbisonicsMic::Test()
   const Int N = 2; // Ambisonics order
 
   AmbisonicsMic mic_a
-  (Point(0.0, 0.0, 0.0),
-   mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
-   N);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
+    N);
   BFormatBuffer stream_a(N, 1);
 
   Sample sample = 0.3;
   mic_a.AddPlaneWave
-  (MonoBuffer::Unary(sample),
-   Point(1.0, 0.0, 0.0),
-   stream_a);
+  (
+    MonoBuffer::Unary(sample),
+    Point(1.0, 0.0, 0.0),
+    stream_a);
 
   ASSERT(IsEqual(stream_a.GetSample(0, 0, 0), sample * 1.000000000000000));
   ASSERT(IsEqual(stream_a.GetSample(1, 1, 0), sample * 1.414213562373095));
@@ -109,6 +111,7 @@ bool AmbisonicsMic::Test()
   return true;
 }
 
+
 bool AmbisonicsHorizDec::Test()
 {
   using mcl::IsEqual;
@@ -157,7 +160,8 @@ bool AmbisonicsHorizDec::Test()
   BB[2] = 1;
   mcl::Vector<Sample> AA(3);
   AA[0] = RealPart((one - x1 / a) * (one - x2 / a));
-  AA[1] = RealPart(-(one - x1 / a) * (one + x2 / a) - (one + x1 / a) * (one - x2 / a));
+  AA[1] = RealPart(
+    -(one - x1 / a) * (one + x2 / a) - (one + x1 / a) * (one - x2 / a));
   AA[2] = RealPart((one + x1 / a) * (one + x2 / a));
   // Checking straight from a tested Matlab implementation:
   ASSERT(IsEqual(AA[0], 1.011712037681334));
@@ -222,19 +226,20 @@ bool AmbisonicsHorizDec::Test()
   AmbisonicsMic mic_a(Point(0.0, 0.0, 0.0), Quaternion::Identity(), order);
 
   AmbisonicsHorizDec decoder_a
-  (order,
-   false,
-   // energy_decoding,
-   1.0,
-   // cut_off_frequency,
-   loudspeaker_angles,
-   false,
-   //near_field_correction,
-   1.0,
-   //loudspeakers_distance,
-   1.0,
-   // sampling_frequency,
-   SOUND_SPEED);
+  (
+    order,
+    false,
+    // energy_decoding,
+    1.0,
+    // cut_off_frequency,
+    loudspeaker_angles,
+    false,
+    //near_field_correction,
+    1.0,
+    //loudspeakers_distance,
+    1.0,
+    // sampling_frequency,
+    SOUND_SPEED);
   BFormatBuffer bformat_buffer(order, 1);
   Buffer output_buffer(loudspeaker_angles.size(), 1);
 
@@ -247,9 +252,10 @@ bool AmbisonicsHorizDec::Test()
     Angle theta(thetas[theta_index]);
 
     mic_a.AddPlaneWave
-    (MonoBuffer::Unary(1.0),
-     Point(cos(theta), sin(theta), 0.0),
-     bformat_buffer);
+    (
+      MonoBuffer::Unary(1.0),
+      Point(cos(theta), sin(theta), 0.0),
+      bformat_buffer);
     decoder_a.Decode(bformat_buffer, output_buffer);
 
     Sample output = output_buffer.GetSample(0, 0);
@@ -285,19 +291,20 @@ bool AmbisonicsHorizDec::Test()
   Buffer output_b(loudspeaker_angles.size(), num_samples);
 
   AmbisonicsHorizDec decoder_b
-  (order,
-   true,
-   // energy_decoding,
-   1200,
-   // cut_off_frequency,
-   loudspeaker_angles,
-   true,
-   //near_field_correction,
-   2.0,
-   //loudspeakers_distance,
-   44100,
-   // sampling_frequency,
-   SOUND_SPEED);
+  (
+    order,
+    true,
+    // energy_decoding,
+    1200,
+    // cut_off_frequency,
+    loudspeaker_angles,
+    true,
+    //near_field_correction,
+    2.0,
+    //loudspeakers_distance,
+    44100,
+    // sampling_frequency,
+    SOUND_SPEED);
   const Angle theta_b = PI / 4.0;
   MonoBuffer impulse(num_samples);
   impulse.SetSample(0, 0.7);

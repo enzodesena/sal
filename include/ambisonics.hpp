@@ -29,6 +29,7 @@ enum AmbisonicsConvention
   N3D
 };
 
+
 class AmbisonicsMic : public Microphone
 {
 public:
@@ -51,9 +52,18 @@ public:
   {
   }
 
-  bool IsCoincident() const noexcept override { return true; }
 
-  Int num_channels() const noexcept override { return BFormatBuffer::GetNumChannels(order_); }
+  bool IsCoincident() const noexcept override
+  {
+    return true;
+  }
+
+
+  Int num_channels() const noexcept override
+  {
+    return BFormatBuffer::GetNumChannels(order_);
+  }
+
 
   static mcl::Vector<mcl::Real> HorizontalEncoding(
     Int order,
@@ -72,6 +82,7 @@ private:
   const Int order_;
   AmbisonicsConvention convention_;
 };
+
 
 /** 
  Implements horizontal higher order ambisonics with regular loudspeakers
@@ -112,9 +123,11 @@ public:
 
   static bool Test();
 
+
   virtual ~AmbisonicsHorizDec()
   {
   }
+
 
 private:
 
@@ -132,6 +145,7 @@ private:
     Int order,
     const mcl::Vector<Angle>& loudspeaker_angles);
 
+
   /**
    Produces the weights for maximum energy vector for a regular polygon.
    N is ambisonics order. The function outputs g(0) = 1 which means that
@@ -139,7 +153,11 @@ private:
    */
   static Sample MaxEnergyDecWeight(
     Int index,
-    Int order) { return (Sample)cos(((Angle)index) * PI / (2.0 * ((Angle)order) + 2.0)); }
+    Int order)
+  {
+    return (Sample)cos(((Angle)index) * PI / (2.0 * ((Angle)order) + 2.0));
+  }
+
 
   static mcl::Vector<Sample> GetFrame(
     Int order,

@@ -92,7 +92,12 @@ public:
     const MonoBuffer& input_buffer,
     Buffer& output_buffer);
 
-  Signal rir() const { return rir_; }
+
+  Signal rir() const
+  {
+    return rir_;
+  }
+
 
   void Log(
     std::string file_name)
@@ -100,6 +105,7 @@ public:
     log_ = true;
     log_file_name_ = file_name;
   }
+
 
   static bool SimulationTime();
 };

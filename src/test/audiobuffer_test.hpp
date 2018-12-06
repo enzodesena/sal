@@ -20,7 +20,13 @@ inline bool BufferTest()
   Buffer<double> buffer(2, 3);
   ASSERT(buffer.num_samples() == 3);
   ASSERT(buffer.num_channels() == 2);
-  for (Int i = 0; i < 2; ++i) { for (Int j = 0; j < 3; ++j) { ASSERT(mcl::IsEqual(buffer.GetSample(i, j), 0.0)); } }
+  for (Int i = 0; i < 2; ++i)
+  {
+    for (Int j = 0; j < 3; ++j)
+    {
+      ASSERT(mcl::IsEqual(buffer.GetSample(i, j), 0.0));
+    }
+  }
 
   buffer.SetSample(0, 0, 0.5);
   ASSERT(mcl::IsEqual(buffer.GetSample(0, 0), 0.5));

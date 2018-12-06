@@ -36,25 +36,30 @@ bool Ism::Test()
   Time sampling_frequency = 44100;
 
   OmniMic mic
-  (Point
-    (1.0 * SOUND_SPEED / sampling_frequency,
-     1.0 * SOUND_SPEED / sampling_frequency,
-     500.0 * SOUND_SPEED / sampling_frequency));
+  (
+    Point
+    (
+      1.0 * SOUND_SPEED / sampling_frequency,
+      1.0 * SOUND_SPEED / sampling_frequency,
+      500.0 * SOUND_SPEED / sampling_frequency));
 
   Source source
-  (Point
-    (1.0 * SOUND_SPEED / sampling_frequency,
-     3.0 * SOUND_SPEED / sampling_frequency,
-     500.0 * SOUND_SPEED / sampling_frequency));
+  (
+    Point
+    (
+      1.0 * SOUND_SPEED / sampling_frequency,
+      3.0 * SOUND_SPEED / sampling_frequency,
+      500.0 * SOUND_SPEED / sampling_frequency));
 
   MonoBuffer impulse(9);
   impulse.SetSample(0, 1.0);
 
   CuboidRoom room
-  (5.0 * SOUND_SPEED / sampling_frequency,
-   5.0 * SOUND_SPEED / sampling_frequency,
-   1000.0 * SOUND_SPEED / sampling_frequency,
-   GainFilter(1.0));
+  (
+    5.0 * SOUND_SPEED / sampling_frequency,
+    5.0 * SOUND_SPEED / sampling_frequency,
+    1000.0 * SOUND_SPEED / sampling_frequency,
+    GainFilter(1.0));
 
   Ism ism(&room, &source, &mic, none, 9, sampling_frequency);
   MonoBuffer test_rir(impulse.num_samples());
@@ -118,10 +123,11 @@ bool Ism::Test()
   iir_filters.push_back(GainFilter(0.0));
 
   CuboidRoom room_absorption
-  (5.0 * SOUND_SPEED / sampling_frequency,
-   5.0 * SOUND_SPEED / sampling_frequency,
-   1000.0 * SOUND_SPEED / sampling_frequency,
-   iir_filters);
+  (
+    5.0 * SOUND_SPEED / sampling_frequency,
+    5.0 * SOUND_SPEED / sampling_frequency,
+    1000.0 * SOUND_SPEED / sampling_frequency,
+    iir_filters);
 
   Ism isma(&room_absorption, &source, &mic, none, 9, sampling_frequency);
   test_rir.Reset();

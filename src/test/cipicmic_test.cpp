@@ -35,10 +35,11 @@ bool CipicMic::Test()
 
   // Testing frontal direction
   CipicMic mic_i
-  (Point(0.0, 0.0, 0.0),
-   mcl::Quaternion::Identity(),
-   cipic_path,
-   wav);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::Quaternion::Identity(),
+    cipic_path,
+    wav);
   StereoBuffer stream_i(impulse_response_length);
 
   mic_i.AddPlaneWave(impulse, Point(1.0, 0.0, 0.0), stream_i);
@@ -54,16 +55,18 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_front_left
-  (imp_front_left,
-   imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
+  (
+    imp_front_left,
+    imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
   ASSERT(IsEqual(stream_i.GetLeftReadPointer(), cmp_imp_front_left));
 
   CipicMic mic_o
-  (Point(0.0, 0.0, 0.0),
-   mcl::AxAng2Quat(0, 0, 1, PI / 2.0),
-   cipic_path,
-   wav);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::AxAng2Quat(0, 0, 1, PI / 2.0),
+    cipic_path,
+    wav);
   StereoBuffer output_buffer_b(impulse_response_length);
   mic_o.AddPlaneWave(impulse, Point(0.0, 1.0, 0.0), output_buffer_b);
   ASSERT(IsEqual(output_buffer_b.GetLeftReadPointer(), cmp_imp_front_left));
@@ -80,11 +83,13 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_up_left
-  (imp_up_left,
-   imp_up_left + sizeof(imp_up_left) / sizeof(Sample));
+  (
+    imp_up_left,
+    imp_up_left + sizeof(imp_up_left) / sizeof(Sample));
   cmp_imp_up_left = mcl::Multiply(cmp_imp_up_left, normalising_value);
 
-  CipicMic mic_m(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0), cipic_path, wav);
+  CipicMic mic_m(
+    Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0), cipic_path, wav);
   StereoBuffer stream_m(impulse_response_length);
 
   mic_m.AddPlaneWave(impulse, Point(-1.0, 0.0, 0.0), stream_m);
@@ -126,8 +131,9 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_right_left
-  (imp_right_left,
-   imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
+  (
+    imp_right_left,
+    imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
   cmp_imp_right_left = mcl::Multiply(cmp_imp_right_left, normalising_value);
 
   const Sample imp_right_right[] = {
@@ -165,15 +171,17 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_right_right
-  (imp_right_right,
-   imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
+  (
+    imp_right_right,
+    imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
   cmp_imp_right_right = mcl::Multiply(cmp_imp_right_right, normalising_value);
 
   CipicMic mic_p
-  (Point(0.0, 0.0, 0.0),
-   mcl::Quaternion::Identity(),
-   cipic_path,
-   wav);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::Quaternion::Identity(),
+    cipic_path,
+    wav);
   StereoBuffer stream_p(impulse_response_length);
 
   // The cipic database has no entry at 90deg. All sources at 80deg azimuth
@@ -223,8 +231,9 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_left_right
-  (imp_left_right,
-   imp_left_right + sizeof(imp_left_right) / sizeof(Sample));
+  (
+    imp_left_right,
+    imp_left_right + sizeof(imp_left_right) / sizeof(Sample));
   cmp_imp_left_right = mcl::Multiply(cmp_imp_left_right, normalising_value);
 
   const Sample imp_left_left[] = {
@@ -265,15 +274,17 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_left_left
-  (imp_left_left,
-   imp_left_left + sizeof(imp_left_left) / sizeof(Sample));
+  (
+    imp_left_left,
+    imp_left_left + sizeof(imp_left_left) / sizeof(Sample));
   cmp_imp_left_left = mcl::Multiply(cmp_imp_left_left, normalising_value);
 
   CipicMic mic_r
-  (Point(0.0, 0.0, 0.0),
-   mcl::Quaternion::Identity(),
-   cipic_path,
-   wav);
+  (
+    Point(0.0, 0.0, 0.0),
+    mcl::Quaternion::Identity(),
+    cipic_path,
+    wav);
   StereoBuffer stream_r(impulse_response_length);
 
   mic_r.AddPlaneWave(impulse, Point(0.0, 1.0, 0.0), stream_r);
@@ -305,9 +316,10 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_back_left
-  (imp_back_left,
-   imp_back_left +
-   sizeof(imp_back_left) / sizeof(Sample));
+  (
+    imp_back_left,
+    imp_back_left +
+    sizeof(imp_back_left) / sizeof(Sample));
   cmp_imp_back_left = mcl::Multiply(cmp_imp_back_left, normalising_value);
 
   const Sample imp_back_right[] = {
@@ -334,12 +346,14 @@ bool CipicMic::Test()
   };
 
   Signal cmp_imp_back_right
-  (imp_back_right,
-   imp_back_right +
-   sizeof(imp_back_right) / sizeof(Sample));
+  (
+    imp_back_right,
+    imp_back_right +
+    sizeof(imp_back_right) / sizeof(Sample));
   cmp_imp_back_right = mcl::Multiply(cmp_imp_back_right, normalising_value);
 
-  CipicMic mic_t(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0), cipic_path, wav);
+  CipicMic mic_t(
+    Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0), cipic_path, wav);
   StereoBuffer stream_t(impulse_response_length);
 
   mic_t.AddPlaneWave(impulse, Point(0.0, 0.0, -1.0), stream_t);

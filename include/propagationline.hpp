@@ -59,9 +59,18 @@ public:
     Sample,
     Time ramp_time = 0.0) noexcept;
 
-  Time current_latency() const noexcept { return current_latency_; }
 
-  Time target_latency() const noexcept { return latency_smoother_.target_value(); }
+  Time current_latency() const noexcept
+  {
+    return current_latency_;
+  }
+
+
+  Time target_latency() const noexcept
+  {
+    return latency_smoother_.target_value();
+  }
+
 
   void SetAirFiltersActive(
     bool) noexcept;
@@ -78,10 +87,13 @@ public:
   {
     if (interpolation_type_ == InterpolationType::kLinear)
     {
-      return delay_filter_.FractionalReadAt(current_latency_) * current_attenuation_;
+      return delay_filter_.FractionalReadAt(current_latency_) *
+        current_attenuation_;
     }
-    return delay_filter_.ReadAt(mcl::RoundToInt(current_latency_)) * current_attenuation_;
+    return delay_filter_.ReadAt(mcl::RoundToInt(current_latency_)) *
+      current_attenuation_;
   }
+
 
   /** Returns a set of `num_samples` samples and writes them into `output_data`.
    @param[in] num_samples the number of samples to read.
