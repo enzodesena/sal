@@ -11,27 +11,28 @@
 #ifndef SAL_SOURCE_H
 #define SAL_SOURCE_H
 
-
 #include "saltypes.hpp"
 #include "salutilities.hpp"
 #include "point.hpp"
 #include "vector.hpp"
 #include "salconstants.hpp"
 
-namespace sal {
-
-class Source {
+namespace sal
+{
+class Source
+{
 public:
-  Source(const mcl::Point&) noexcept;
-  
+  Source(
+    const mcl::Point&) noexcept;
+
   mcl::Point position() const noexcept;
-  
-  void SetPosition(const mcl::Point& position) noexcept;
-  
+
+  void SetPosition(
+    const mcl::Point& position) noexcept;
+
 private:
   Triplet position_;
 };
-
 } // namespace sal
 
 #endif

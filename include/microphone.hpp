@@ -8,7 +8,6 @@
  
  */
 
-
 #ifndef SAL_MICROPHONE_H
 #define SAL_MICROPHONE_H
 
@@ -20,8 +19,8 @@
 #include "salconstants.hpp"
 #include "audiobuffer.hpp"
 
-namespace sal {
-
+namespace sal
+{
 class Microphone
 {
 public:
@@ -50,22 +49,25 @@ public:
   Microphone(
     mcl::Point position,
     mcl::Quaternion orientation = mcl::Quaternion::Identity());
-  
+
   /** Returns current position of the microphone */
   mcl::Point position() const noexcept;
-  
+
   /** Set microphone position */
-  virtual void SetPosition(const mcl::Point& position) noexcept;
-  
+  virtual void SetPosition(
+    const mcl::Point& position) noexcept;
+
   /** Returns current orientation of the microphone */
   mcl::Quaternion orientation() const noexcept;
-  
+
   /** Set microphone orientation */
-  virtual void SetOrientation(const mcl::Quaternion& orientation) noexcept;
-  
+  virtual void SetOrientation(
+    const mcl::Quaternion& orientation) noexcept;
+
   /** Set handedness of reference system */
-  void SetHandedness(const mcl::Handedness handedness) noexcept;
-  
+  void SetHandedness(
+    mcl::Handedness handedness) noexcept;
+
   /**
    We do not implement directly the case of a single plane wave because in
    most situations the microphone is recording many plane waves at the same
@@ -73,10 +75,11 @@ public:
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void AddPlaneWave(const MonoBuffer& signal,
-                    const mcl::Point& point,
-                    Buffer& output_buffer) noexcept;
-  
+  void AddPlaneWave(
+    const MonoBuffer& signal,
+    const mcl::Point& point,
+    Buffer& output_buffer) noexcept;
+
   /**
    We need to
    keep track of the wave_id because some microphones (e.g. kemar) need
@@ -86,27 +89,33 @@ public:
    the first time it sees a new wave_id, it will allocate a new filter
    for it.
    */
-  void AddPlaneWave(const MonoBuffer& input_buffer,
-                    const mcl::Point& point,
-                    const size_t wave_id,
-                    Buffer& output_buffer) noexcept;
-  
+  void AddPlaneWave(
+    const MonoBuffer& input_buffer,
+    const mcl::Point& point,
+    size_t wave_id,
+    Buffer& output_buffer) noexcept;
+
   virtual bool IsCoincident() const noexcept = 0;
-  
+
   virtual Int num_channels() const noexcept = 0;
-  
+
   virtual bool IsOmni() const noexcept { return false; }
-  
+
   /** This method translates `point` in the reference system of the mic. */
-  mcl::Point GetRelativePoint(const mcl::Point& point) const noexcept;
-  
+  mcl::Point GetRelativePoint(
+    const mcl::Point& point) const noexcept;
+
   /** Resets the state of the microphone (if any). */
-  virtual void Reset() noexcept {}
-  
+  virtual void Reset() noexcept
+  {
+  }
+
   static bool Test();
-  
-  virtual ~Microphone() {}
-  
+
+  virtual ~Microphone()
+  {
+  }
+
 private:
 
   /**
@@ -122,26 +131,33 @@ private:
    Other choices could be made, as long as the conventions are kept at
    higher levels.
    */
-  virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
-                                    const mcl::Point& point,
-                                    const Int wave_id,
-                                    Buffer& output_buffer) noexcept = 0;
-  
+  virtual void AddPlaneWaveRelative(
+    const MonoBuffer& signal,
+    const mcl::Point& point,
+    Int wave_id,
+    Buffer& output_buffer) noexcept = 0;
+
   mcl::Triplet position_;
   mcl::Quaternion orientation_;
   mcl::Handedness handedness_;
-  
+
   friend class MicrophoneArray;
 };
 
-class StereoMicrophone : public Microphone {
+class StereoMicrophone : public Microphone
+{
 public:
-  StereoMicrophone(mcl::Point position, mcl::Quaternion orientation) :
-      Microphone(position, orientation) {}
-  
-  virtual ~StereoMicrophone() {}
+  StereoMicrophone(
+    mcl::Point position,
+    mcl::Quaternion orientation)
+    : Microphone(position, orientation)
+  {
+  }
+
+  virtual ~StereoMicrophone()
+  {
+  }
 };
-  
 } // namespace sal
 
 #endif

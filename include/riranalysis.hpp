@@ -12,42 +12,45 @@
 #include "vector.hpp"
 #include "saltypes.hpp"
 
-namespace sal {
-  
-class RirAnalysis {
-  
+namespace sal
+{
+class RirAnalysis
+{
 public:
-  static mcl::Vector<sal::Sample>
-  EnergyDecayCurve(mcl::Vector<sal::Sample> room_impulse_response);
-  
+  static mcl::Vector<Sample>
+  EnergyDecayCurve(
+    mcl::Vector<Sample> room_impulse_response);
+
   /** 
    Returns the reverberation time RT60, i.e. the point where the EDC
    reaches -60 dB in [s]. Returns the length of the rir if the EDC doesn't
    fall below -60 dB. 
    */
-  static sal::Time Rt60(mcl::Vector<sal::Sample> room_impulse_response,
-                        sal::Time sampling_frequency);
-  
+  static Time Rt60(
+    mcl::Vector<Sample> room_impulse_response,
+    Time sampling_frequency);
+
   /**
    Returns the reverberation sample RT60, i.e. the point where the EDC
    reaches -60 dB in number of samples. Returns the length of the rir 
    if the EDC doesn's fall below -60 dB.
    */
-  static sal::Time Rs60(mcl::Vector<sal::Sample> room_impulse_response);
-  
-  static sal::Time Rs60FromEdc(mcl::Vector<sal::Sample> edc);
-  
-  static sal::Time Rs(mcl::Vector<sal::Sample> room_impulse_response,
-                      sal::Sample decay_value);
-  
-  static sal::Time RsFromEdc(mcl::Vector<sal::Sample> edc,
-                             sal::Sample decay_value);
-  
+  static Time Rs60(
+    mcl::Vector<Sample> room_impulse_response);
+
+  static Time Rs60FromEdc(
+    mcl::Vector<Sample> edc);
+
+  static Time Rs(
+    mcl::Vector<Sample> room_impulse_response,
+    Sample decay_value);
+
+  static Time RsFromEdc(
+    mcl::Vector<Sample> edc,
+    Sample decay_value);
+
   static bool Test();
 };
-
-
 } // namespace sal
-  
-  
+
 #endif

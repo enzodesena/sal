@@ -19,39 +19,44 @@
 #include "salconstants.hpp"
 #include "audiobuffer.hpp"
 
-namespace sal {
-  
+namespace sal
+{
 /** A wrapper for portaudio */
-class PaWrapper {
+class PaWrapper
+{
 public:
-  PaWrapper(Time sampling_frequency, Int out_dev_num,
-            mcl::Vector<Int> channel_ids);
-  
+  PaWrapper(
+    Time sampling_frequency,
+    Int out_dev_num,
+    mcl::Vector<Int> channel_ids);
+
   PaError StartStream();
-  
-  PaError WriteStream(const Buffer& output_buffer);
-  
+
+  PaError WriteStream(
+    const Buffer& output_buffer);
+
   PaError StopStream();
-  
+
   Int max_num_channels() { return channel_ids_.size(); }
-  
-  static void PrintError(PaError err);
-  
+
+  static void PrintError(
+    PaError err);
+
   static void PrintDevicesInfo();
-  static Int NumOutputChannels(const Int out_dev_id);
-  static mcl::Vector<mcl::Int> SelectChannelIds(const Int num_loudspeakers,
-                                                const Int out_dev_id);
-  
+  static Int NumOutputChannels(
+    Int out_dev_id);
+  static mcl::Vector<mcl::Int> SelectChannelIds(
+    Int num_loudspeakers,
+    Int out_dev_id);
+
   ~PaWrapper();
 private:
   static PaError Init();
   static PaError Terminate();
-  
+
   PaStream* stream_;
   mcl::Vector<Int> channel_ids_;
 };
-  
-  
 } // namespace sal
 
 #endif

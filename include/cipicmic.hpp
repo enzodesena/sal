@@ -24,48 +24,51 @@
 #define LENGTH_BRIR_CIPIC 200
 #define NORMALISING_VALUE_CIPIC 1.0
 
-namespace sal {
-  
-
-  
-class CipicMic : public DatabaseBinauralMic {
+namespace sal
+{
+class CipicMic : public DatabaseBinauralMic
+{
 public:
-  
-  enum DataType {
+
+  enum DataType
+  {
     txt,
     wav
   };
-  
+
   /**
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  CipicMic(const mcl::Point& position, const mcl::Quaternion& orientation,
-           const std::string& directory, const DataType data_type,
-           const Int update_length = 0);
-  
+  CipicMic(
+    const mcl::Point& position,
+    const mcl::Quaternion& orientation,
+    const std::string& directory,
+    DataType data_type,
+    Int update_length = 0);
+
   using BinauralMic::IsCoincident;
   using BinauralMic::num_channels;
-  
-  static bool Test();
-  
-  ~CipicMic() {}
-  
-  
-private:
-  static std::vector<mcl::Vector<Signal> > Load(const Ear ear,
-                                                const std::string& directory,
-                                                const DataType data_type,
-                                                const mcl::Vector<sal::Angle>& azimuths);
 
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
-  
-  mcl::Vector<sal::Angle> azimuths_;
-  
+  static bool Test();
+
+  ~CipicMic()
+  {
+  }
+
+private:
+  static std::vector<mcl::Vector<Signal>> Load(
+    Ear ear,
+    const std::string& directory,
+    DataType data_type,
+    const mcl::Vector<Angle>& azimuths);
+
+  Signal GetBrir(
+    Ear ear,
+    const mcl::Point& point) noexcept override;
+
+  mcl::Vector<Angle> azimuths_;
 };
-  
-  
-  
 } // namespace sal
 
 #endif

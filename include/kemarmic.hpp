@@ -23,10 +23,10 @@
 #include "binauralmic.hpp"
 #include "salconstants.hpp"
 
-namespace sal {
-  
-
-class KemarMic : public DatabaseBinauralMic {
+namespace sal
+{
+class KemarMic : public DatabaseBinauralMic
+{
 public:
   /** 
    Constructs a Kemar microphone opject. 
@@ -34,61 +34,70 @@ public:
    With `num_samples` you can choose the length of the 
    BRIR. If set to zero yields the entire BRIR.
    */
-  KemarMic(const mcl::Point& position,
-           const mcl::Quaternion orientation,
-           const std::string directory = "",
-           const Int num_samples = kFullBrirLength,
-           const Int update_length = 0,
-           const HeadRefOrientation reference_orientation = HeadRefOrientation::standard,
-           const Time sampling_frequency = 44100.0);
-  
+  KemarMic(
+    const mcl::Point& position,
+    mcl::Quaternion orientation,
+    std::string directory = "",
+    Int num_samples = kFullBrirLength,
+    Int update_length = 0,
+    HeadRefOrientation reference_orientation = HeadRefOrientation::standard,
+    Time sampling_frequency = 44100.0);
+
   static const int kFullBrirLength = -1;
-  
-  static bool IsDatabaseAvailable(const std::string directory);
-  
-  static void PrintParsedDatabase(const Ear ear,
-                                  const std::string directory,
-                                  const Int num_samples,
-                                  std::string variable_name);
-  
+
+  static bool IsDatabaseAvailable(
+    std::string directory);
+
+  static void PrintParsedDatabase(
+    Ear ear,
+    std::string directory,
+    Int num_samples,
+    std::string variable_name);
+
   static bool Test();
 private:
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
-  
+  Signal GetBrir(
+    Ear ear,
+    const mcl::Point& point) noexcept override;
+
   static
-  std::vector<mcl::Vector<Signal> > Load(const Ear ear,
-                                         const std::string directory);
-  
-  static std::vector<mcl::Vector<Signal> > LoadEmbedded(const Ear ear);
-  
-  static void LoadEmbeddedData(const Ear ear,
-                               std::vector<mcl::Vector<Signal> >& data);
-  
+  std::vector<mcl::Vector<Signal>> Load(
+    Ear ear,
+    std::string directory);
+
+  static std::vector<mcl::Vector<Signal>> LoadEmbedded(
+    Ear ear);
+
+  static void LoadEmbeddedData(
+    Ear ear,
+    std::vector<mcl::Vector<Signal>>& data);
+
   /**
    Returns the elevation index for kemar database for elevation in azimuth.
    The index departs from 0.
    */
-  Int FindElevationIndex(Angle elevation);
-  
-  
+  Int FindElevationIndex(
+    Angle elevation);
+
   /** 
    Returns the azimuthal index for kemar database for azimuth in grad.
    The index departs from 0.
    */
-  Int FindAzimuthIndex(Angle azimuth, Int elevation_index);
-  
+  Int FindAzimuthIndex(
+    Angle azimuth,
+    Int elevation_index);
+
   static Array<mcl::Int, NUM_ELEVATIONS_KEMAR> GetNumMeasurements() noexcept;
   static Array<mcl::Int, NUM_ELEVATIONS_KEMAR> GetElevations() noexcept;
-  
+
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations_;
-  
-  static std::string GetFilePath(const Angle elevation, const Angle angle,
-                                 const std::string directory) noexcept;
-};
-  
 
-  
+  static std::string GetFilePath(
+    Angle elevation,
+    Angle angle,
+    std::string directory) noexcept;
+};
 } // namespace sal
 
 //#ifndef DO_NOT_LOAD_EMBEDDED_KEMAR

@@ -8,30 +8,35 @@
 
 #include "fdtd.hpp"
 
-
-namespace sal {
-  
-bool Fdtd::Test() {
-  
-  unsigned int Nt=20;
+namespace sal
+{
+bool Fdtd::Test()
+{
+  unsigned int Nt = 20;
   MonoBuffer s(Nt);
   s.SetSample(1, 1.0);
-  
-  unsigned int Nx=4;
-  unsigned int Ny=4;
-  unsigned int Nz=4;
-  
-  mcl::Vector<sal::Sample> p_out=Fdtd::RunFdtd(Nx, Ny, Nz,
-                                Nt,
-                                Fdtd::CreateGeometry(Nx, Ny, Nz),
-                                10,
-                                s.GetReadPointer(),
-                                1.0/sqrt(3.0),
-                                3, 3, 3, // source
-                                4, 4, 4); // microphone
-  
 
-  
+  unsigned int Nx = 4;
+  unsigned int Ny = 4;
+  unsigned int Nz = 4;
+
+  mcl::Vector<sal::Sample> p_out = Fdtd::RunFdtd
+  (Nx,
+   Ny,
+   Nz,
+   Nt,
+   Fdtd::CreateGeometry(Nx, Ny, Nz),
+   10,
+   s.GetReadPointer(),
+   1.0 / sqrt(3.0),
+   3,
+   3,
+   3,
+   // source
+   4,
+   4,
+   4); // microphone
+
   mcl::Vector<sal::Sample> rir_cmp;
   rir_cmp.push_back(0);
   rir_cmp.push_back(0);
@@ -56,37 +61,39 @@ bool Fdtd::Test() {
 
   ASSERT(mcl::IsEqual(rir_cmp, p_out, 0.001));
 
-  
   return true;
 }
-  
-  
-sal::Time Fdtd::SimulationTime() {
 
+sal::Time Fdtd::SimulationTime()
+{
   //  clock_t launch=clock();
-  unsigned int Nt=1000;
+  unsigned int Nt = 1000;
   MonoBuffer s(Nt);
   s.SetSample(1, 1.0);
-  
-  unsigned int Nx=50;
-  unsigned int Ny=50;
-  unsigned int Nz=50;
-  
-  
-  clock_t launch=clock();
-  Fdtd::RunFdtd(Nx, Ny, Nz,
-             Nt,
-             Fdtd::CreateGeometry(Nx, Ny, Nz),
-             10,
-             s.GetReadPointer(),
-             1.0/sqrt(3.0),
-             3, 3, 3, // source
-             4, 4, 4); // microphone
-  clock_t done=clock();
-  
-  return (done - launch) / ((sal::Time) CLOCKS_PER_SEC);
-  }
-  
-  
-} // namespace sal
 
+  unsigned int Nx = 50;
+  unsigned int Ny = 50;
+  unsigned int Nz = 50;
+
+  clock_t launch = clock();
+  Fdtd::RunFdtd
+  (Nx,
+   Ny,
+   Nz,
+   Nt,
+   Fdtd::CreateGeometry(Nx, Ny, Nz),
+   10,
+   s.GetReadPointer(),
+   1.0 / sqrt(3.0),
+   3,
+   3,
+   3,
+   // source
+   4,
+   4,
+   4); // microphone
+  clock_t done = clock();
+
+  return (done - launch) / ((sal::Time)CLOCKS_PER_SEC);
+}
+} // namespace sal

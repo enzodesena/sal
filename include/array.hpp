@@ -15,19 +15,21 @@
 
 #include "salconstants.hpp"
 
-namespace sal {
-
-template<typename T, std::size_t N> 
-class Array {
+namespace sal
+{
+template<typename T, std::size_t N>
+class Array
+{
 public:
   T elems[N];
-  
-  T& operator[] (std::size_t i) { 
-    ASSERT(i < N); 
+
+  T& operator[](
+    std::size_t i)
+  {
+    ASSERT(i < N);
     return elems[i];
   }
 };
-
 } // namespace sal
-  
+
 #endif

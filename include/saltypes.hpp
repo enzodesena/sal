@@ -16,9 +16,8 @@
 #include "vector.hpp"
 #include "mcltypes.hpp"
 
-
-namespace sal {
-
+namespace sal
+{
 typedef mcl::Real Sample;
 typedef mcl::Real Time;
 typedef mcl::Real Speed;
@@ -27,33 +26,29 @@ typedef mcl::Real Angle;
 typedef mcl::Int UInt;
 typedef mcl::Int Int;
 
-  
 typedef mcl::Vector<Sample> Signal;
-  
-struct StereoSignal {
+
+struct StereoSignal
+{
   Signal left;
   Signal right;
 };
-  
-  
-enum Ear {
+
+enum Ear
+{
   kLeftEar,
   kRightEar
 };
 
-
-enum class InterpolationType {
-  kRounding, /** Rounds the latency to the nearest integer. */
-  kLinear, /** Applies fractional delays with linear interpolation.
-            It reduces audible clicks, but can cause low-pass
-            effect. */
+enum class InterpolationType
+{
+  kRounding,
+  /** Rounds the latency to the nearest integer. */
+  kLinear,
+  /** Applies fractional delays with linear interpolation.
+             It reduces audible clicks, but can cause low-pass
+             effect. */
 };
-
-  
-  
 } // namespace sal
-
-
-
 
 #endif

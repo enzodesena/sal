@@ -8,7 +8,6 @@
  
  */
 
-
 #include <iostream>
 
 #include "audiobuffer.hpp"
@@ -31,33 +30,35 @@
 //#include "tdbem.hpp"
 //#include "vector.hpp"
 
-int main(int argc, char * const argv[]) {
-  
+int main(
+  int argc,
+  char* const argv[])
+{
 #ifndef NDEBUG
-//  sal::Buffer::Test();
-//  sal::AmbisonicsMic::Test();
-//  sal::AmbisonicsHorizDec::Test();
-//  sal::Microphone::Test();
-//  sal::KemarMic::Test();
-//  sal::CipicMic::Test();
-//  sal::SphericalHeadMic::Test();
-//  sal::MicrophoneArrayTest();
-//  sal::DelayFilter::Test();
-//  sal::PropagationLine::Test();
-//  sal::FreeFieldSim::Test();
-//  sal::CuboidRoom::Test();
-//  sal::Ism::Test();
-//  sal::RirAnalysis::Test();
-//  sal::TripletHandler::Test();
-//  sal::Fdtd::Test();
+  //  sal::Buffer::Test();
+  //  sal::AmbisonicsMic::Test();
+  //  sal::AmbisonicsHorizDec::Test();
+  //  sal::Microphone::Test();
+  //  sal::KemarMic::Test();
+  //  sal::CipicMic::Test();
+  //  sal::SphericalHeadMic::Test();
+  //  sal::MicrophoneArrayTest();
+  //  sal::DelayFilter::Test();
+  //  sal::PropagationLine::Test();
+  //  sal::FreeFieldSim::Test();
+  //  sal::CuboidRoom::Test();
+  //  sal::Ism::Test();
+  //  sal::RirAnalysis::Test();
+  //  sal::TripletHandler::Test();
+  //  sal::Fdtd::Test();
 
-  std::cout<<"All tests succeded!\n";
+  std::cout << "All tests succeded!\n";
 #else
   std::cout<<"Not running tests since NDEBUG is defined and asserts are ignored.\n";
 #endif
-  
-//  sal::TdBem::SimulationTime();
-//  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
+
+  //  sal::TdBem::SimulationTime();
+  //  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
 
   return 0;
 }

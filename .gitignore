@@ -3,6 +3,9 @@
 *.DS_Store
 *current_latency.txt
 
+.vs
+sal.vcxproj.user
+
 # Xcode
 *.pbxuser
 *.mode1v3

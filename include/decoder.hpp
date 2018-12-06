@@ -15,36 +15,43 @@
 #include "vectorop.hpp"
 #include "salconstants.hpp"
 
-namespace sal {
-
-class Decoder {
+namespace sal
+{
+class Decoder
+{
 public:
-  Decoder() {}
-  
+  Decoder()
+  {
+  }
+
   /**
    Decodes and puts in the output streams. It stops when the inputs stream
    is depleted.
    */
-  virtual void Decode(const Buffer& input_buffer,
-                      Buffer& output_buffer) = 0;
-  
-  
-  virtual ~Decoder() {}
-};
-  
-  
-class IdenticalDecoder : public Decoder {
-public:
-  IdenticalDecoder() {}
-  
-  virtual void Decode(const Buffer& input_buffer,
-                      Buffer& output_buffer) {
-    output_buffer.SetSamples(input_buffer);
+  virtual void Decode(
+    const Buffer& input_buffer,
+    Buffer& output_buffer) = 0;
+
+  virtual ~Decoder()
+  {
   }
-  
-  virtual ~IdenticalDecoder() {}
 };
 
+class IdenticalDecoder : public Decoder
+{
+public:
+  IdenticalDecoder()
+  {
+  }
+
+  void Decode(
+    const Buffer& input_buffer,
+    Buffer& output_buffer) override { output_buffer.SetSamples(input_buffer); }
+
+  virtual ~IdenticalDecoder()
+  {
+  }
+};
 } // namespace sal
 
 #endif

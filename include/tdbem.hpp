@@ -9,95 +9,100 @@
 #ifndef SAL_TDBEM_H
 #define SAL_TDBEM_H
 
-
 #include "cuboidroom.hpp"
 #include "source.hpp"
 #include "microphone.hpp"
 #include "delayfilter.hpp"
 
-namespace sal {
-  
-class TdBem {
+namespace sal
+{
+class TdBem
+{
 private:
   Room* const room_;
-  sal::Source* const source_;
-  sal::Microphone* const microphone_;
-  
-  sal::Time sampling_frequency_;
-  sal::Length spatial_sampling_period_;
-  sal::Sample specific_acoustic_impedance_;
-  
-  mcl::Vector<sal::Sample> rir_;
-  
-  
+  Source* const source_;
+  Microphone* const microphone_;
+
+  Time sampling_frequency_;
+  Length spatial_sampling_period_;
+  Sample specific_acoustic_impedance_;
+
+  mcl::Vector<Sample> rir_;
+
   mcl::Vector<mcl::Point> points_; // Stores points on the bounduary
-  sal::Int num_elements_;
+  Int num_elements_;
   mcl::Vector<mcl::Point> normal_vectors_;
-  std::vector<mcl::Vector<sal::Length> > distances_;
-  std::vector<mcl::Vector<sal::Sample> > weights_current_;
-  std::vector<mcl::Vector<sal::Sample> > weights_previous_;
-  
-  mcl::Vector<sal::Length> distances_mic_;
-  mcl::Vector<sal::Sample> weights_mic_current_;
-  mcl::Vector<sal::Sample> weights_mic_previous_;
-  mcl::Vector<sal::Sample> weights_source_;
-  
-  mcl::Vector<sal::Length> distances_source_;
-  sal::Length distance_los_;
-  
-  mcl::Vector<sal::DelayFilter> pressures_;
-  
-  sal::DelayFilter source_delay_line_;
-  
+  std::vector<mcl::Vector<Length>> distances_;
+  std::vector<mcl::Vector<Sample>> weights_current_;
+  std::vector<mcl::Vector<Sample>> weights_previous_;
+
+  mcl::Vector<Length> distances_mic_;
+  mcl::Vector<Sample> weights_mic_current_;
+  mcl::Vector<Sample> weights_mic_previous_;
+  mcl::Vector<Sample> weights_source_;
+
+  mcl::Vector<Length> distances_source_;
+  Length distance_los_;
+
+  mcl::Vector<DelayFilter> pressures_;
+
+  DelayFilter source_delay_line_;
+
   bool log_;
   std::string log_file_name_;
-  
+
   void CalculatePoints();
-  
-  static sal::Sample
-  CalculateWeightCurrent(sal::Sample dr_dn,
-                         sal::Length distance,
-                         sal::Length sound_speed,
-                         sal::Time sampling_frequency,
-                         sal::Length spatial_sampling_period,
-                         sal::Sample specific_acoustic_impedance);
-  
-  
-  static sal::Sample
-  CalculateWeightPrevious(sal::Sample dr_dn,
-                          sal::Length distance,
-                          sal::Length sound_speed,
-                          sal::Time sampling_frequency,
-                          sal::Length spatial_sampling_period,
-                          sal::Sample specific_acoustic_impedance);
-  
-  static sal::Sample CalculateDrDn(mcl::Point point_x,
-                                   mcl::Point point_y,
-                                   mcl::Point normal_y);
-  
+
+  static Sample
+  CalculateWeightCurrent(
+    Sample dr_dn,
+    Length distance,
+    Length sound_speed,
+    Time sampling_frequency,
+    Length spatial_sampling_period,
+    Sample specific_acoustic_impedance);
+
+  static Sample
+  CalculateWeightPrevious(
+    Sample dr_dn,
+    Length distance,
+    Length sound_speed,
+    Time sampling_frequency,
+    Length spatial_sampling_period,
+    Sample specific_acoustic_impedance);
+
+  static Sample CalculateDrDn(
+    mcl::Point point_x,
+    mcl::Point point_y,
+    mcl::Point normal_y);
+
 public:
-  TdBem(Room* const room,
-        sal::Source* const source,
-        sal::Microphone* const microphone,
-        const sal::Time sampling_frequency,
-        const sal::Length spatial_sampling_period,
-        const sal::Sample specific_acoustic_impedance);
-    
-  void WriteOutPoints(const std::string file_name);
-  
-  void Run(const MonoBuffer& input_buffer, Buffer& output_buffer);
-  
-  sal::Signal rir() const { return rir_; }
-  
-  void Log(std::string file_name) {
+  TdBem(
+    Room* room,
+    Source* source,
+    Microphone* microphone,
+    Time sampling_frequency,
+    Length spatial_sampling_period,
+    Sample specific_acoustic_impedance);
+
+  void WriteOutPoints(
+    std::string file_name);
+
+  void Run(
+    const MonoBuffer& input_buffer,
+    Buffer& output_buffer);
+
+  Signal rir() const { return rir_; }
+
+  void Log(
+    std::string file_name)
+  {
     log_ = true;
     log_file_name_ = file_name;
   }
-  
+
   static bool SimulationTime();
 };
-  
 } // namespace sal
-
 
 #endif

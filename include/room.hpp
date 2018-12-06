@@ -14,83 +14,92 @@
 #include "iirfilter.hpp"
 #include "comparisonop.hpp"
 
-namespace sal {
-
-  
-enum BoundarySetType {
+namespace sal
+{
+enum BoundarySetType
+{
   kFirstOrder,
   kFirstAndSecondOrder
 };
-  
-  
-class Room {
+
+class Room
+{
 public:
   // This is the standard constructor where you feed the room `shape` and for
   // each face of the shape you also provide a filter. The order in the 
   // `filters` vector follows that of the employed shape.
-  Room(const mcl::Vector<mcl::IirFilter>& wall_filters) noexcept :
-          wall_filters_(wall_filters), boundary_set_type_(kFirstOrder) {}
-  
-  const mcl::Vector<mcl::IirFilter>& wall_filters() const noexcept {
-    return wall_filters_;
+  Room(
+    const mcl::Vector<mcl::IirFilter>& wall_filters) noexcept
+    : wall_filters_(wall_filters)
+    , boundary_set_type_(kFirstOrder)
+  {
   }
-  
+
+  const mcl::Vector<mcl::IirFilter>& wall_filters() const noexcept { return wall_filters_; }
+
   // Resets the wall filters. Warning! It may cancel the state of the old ones,
   // with probable audible artifacts.
-  void SetWallFilters(const mcl::Vector<mcl::IirFilter>& wall_filters) noexcept {
-    wall_filters_ = wall_filters;
-  }
-  
-  void SetWallFilter(const Int wall_id, const mcl::IirFilter& filter) noexcept {
-    ASSERT(wall_id>=0 && wall_id<num_boundary_points());
+  void SetWallFilters(
+    const mcl::Vector<mcl::IirFilter>& wall_filters) noexcept { wall_filters_ = wall_filters; }
+
+  void SetWallFilter(
+    const Int wall_id,
+    const mcl::IirFilter& filter) noexcept
+  {
+    ASSERT(wall_id >= 0 && wall_id < num_boundary_points());
     wall_filters_[wall_id] = filter;
   }
-  
-  void SetWallFilters(const mcl::IirFilter& filter) noexcept {
-    wall_filters_.assign(num_faces(), filter);
+
+  void SetWallFilters(
+    const mcl::IirFilter& filter) noexcept { wall_filters_.assign(num_faces(), filter); }
+
+  void SetFiltersNumeratorCoefficient(
+    const Int coeff_id,
+    const Sample value)
+  {
+    for (Int i = 0; i < (Int)wall_filters_.size(); ++i) { wall_filters_[i].SetNumeratorCoefficient(coeff_id, value); }
   }
-  
-  void SetFiltersNumeratorCoefficient(const Int coeff_id, const Sample value) {
-    for (Int i=0; i < (Int) wall_filters_.size(); ++i) {
-      wall_filters_[i].SetNumeratorCoefficient(coeff_id, value);
-    }
-  }
-  
+
   // Returns a vector of points located at geometrical reflections,
   // relative to source and destinatin points.
   virtual mcl::Vector<mcl::Point>
-  CalculateBoundaryPoints(const mcl::Point& source,
-                          const mcl::Point& destination) const noexcept = 0;
-  
+  CalculateBoundaryPoints(
+    const mcl::Point& source,
+    const mcl::Point& destination) const noexcept = 0;
+
   virtual mcl::Vector<mcl::IirFilter>
-  GetBoundaryFilters(const mcl::Point& source_point,
-                     const mcl::Point& mic_point) const noexcept = 0;
-  
-  virtual sal::Int num_boundary_points() const noexcept = 0;
-  
+  GetBoundaryFilters(
+    const mcl::Point& source_point,
+    const mcl::Point& mic_point) const noexcept = 0;
+
+  virtual Int num_boundary_points() const noexcept = 0;
+
   // Returns the shape's number of faces.
-  virtual sal::Int num_faces() const noexcept = 0;
-  
+  virtual Int num_faces() const noexcept = 0;
+
   // Returns the maximum distance between two points inside the shape.
-  virtual sal::Length max_distance() const noexcept = 0;
-  
+  virtual Length max_distance() const noexcept = 0;
+
   /** Returns true if the specified point is inside the room.
    @param[in] wall_distance This parameter allows to set also a safe distance
    form the walls. For instance, if wall_distance is set to 1 meter,
    and the point is less than 1 meter away from a wall,
    this method will return false. */
   virtual bool
-  IsPointInRoom(const mcl::Point& point,
-                const sal::Length wall_distance = 0.0) const noexcept = 0;
-  
+  IsPointInRoom(
+    const mcl::Point& point,
+    Length wall_distance = 0.0) const noexcept = 0;
+
   virtual std::string ShapeDescription() const noexcept = 0;
-  
-  virtual ~Room() noexcept {}
+
+  virtual ~Room() noexcept
+  {
+  }
+
 protected:
   mcl::Vector<mcl::IirFilter> wall_filters_;
   BoundarySetType boundary_set_type_;
 };
-  
 } // namespace sal
 
 #endif
