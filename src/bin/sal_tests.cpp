@@ -17,7 +17,8 @@
 //#include "sphericalheadmic.hpp"
 //#include "kemarmic.hpp"
 //#include "ambisonics.hpp"
-//#include "delayfilter.hpp"
+#include "delayfilter.hpp"
+#include "delayfilter_test.hpp"
 //#include "propagationline.hpp"
 //#include "freefieldsimulation.hpp"
 //#include "wavhandler.hpp"
@@ -35,7 +36,7 @@ int main(
   char* const argv[])
 {
 #ifndef NDEBUG
-  //  sal::Buffer::Test();
+    sal::BufferTest();
   //  sal::AmbisonicsMic::Test();
   //  sal::AmbisonicsHorizDec::Test();
   //  sal::Microphone::Test();
@@ -43,7 +44,7 @@ int main(
   //  sal::CipicMic::Test();
   //  sal::SphericalHeadMic::Test();
   //  sal::MicrophoneArrayTest();
-  //  sal::DelayFilter::Test();
+    sal::DelayFilterTest();
   //  sal::PropagationLine::Test();
   //  sal::FreeFieldSim::Test();
   //  sal::CuboidRoom::Test();
