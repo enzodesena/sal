@@ -14,7 +14,6 @@
 		572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		572A878719C0712500F62F8F /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
-		572A878819C0712500F62F8F /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		572A878D19C0712500F62F8F /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		572A878F19C0712500F62F8F /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
 		572C3BEB1B35F9CF0071BB39 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */; };
@@ -40,7 +39,6 @@
 		578A62291D89346200233890 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
 		578BDE672149BE70001D89B9 /* kemarmicdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.cpp */; };
 		57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
-		57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57AA6152205C9C3A0044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
 		57AA6159205C9D290044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
 		57AA615B205C9D290044A3A9 /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */; };
@@ -53,11 +51,10 @@
 		57AA6163205C9D290044A3A9 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
 		57AA6164205C9D290044A3A9 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		57AA6165205C9D290044A3A9 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
-		57AA6166205C9D290044A3A9 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57AA6167205C9D290044A3A9 /* propagationline_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */; };
 		57AA6169205C9D290044A3A9 /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicmic_test.cpp */; };
 		57AA616A205C9D290044A3A9 /* sphericalheadmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */; };
-		57AA616B205C9D290044A3A9 /* microphone_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.cpp */; };
+		57AA616B205C9D290044A3A9 /* microphone_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.hpp */; };
 		57AA616C205C9D290044A3A9 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
 		57AA616D205C9D290044A3A9 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578A62251D89346200233890 /* source.cpp */; };
 		57AA616E205C9D290044A3A9 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF861CD81AB400134991 /* ambisonics_test.cpp */; };
@@ -87,11 +84,10 @@
 		57B054811D6B361300202654 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57B054841D6B361300202654 /* kemarmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DC1593460A00AA6445 /* kemarmic.cpp */; };
 		57B054851D6B361300202654 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
-		57B054871D6B361300202654 /* microphone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A156DF1593460A00AA6445 /* microphone.cpp */; };
 		57B054881D6B361300202654 /* propagationline_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */; };
 		57B0548B1D6B361300202654 /* cipicmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicmic_test.cpp */; };
 		57B0548C1D6B361300202654 /* sphericalheadmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */; };
-		57B0548E1D6B361300202654 /* microphone_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.cpp */; };
+		57B0548E1D6B361300202654 /* microphone_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.hpp */; };
 		57B0548F1D6B361300202654 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
 		57B054901D6B361300202654 /* ambisonics_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF861CD81AB400134991 /* ambisonics_test.cpp */; };
 		57B054911D6B361300202654 /* kemarmic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8A1CD81AB400134991 /* kemarmic_test.cpp */; };
@@ -244,8 +240,7 @@
 		57986F101C939CD700648377 /* pawrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = pawrapper.hpp; path = include/pawrapper.hpp; sourceTree = "<group>"; };
 		57A156C51593457600AA6445 /* SAL_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SAL_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A156DC1593460A00AA6445 /* kemarmic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = kemarmic.cpp; path = src/kemarmic.cpp; sourceTree = "<group>"; };
-		57A156DF1593460A00AA6445 /* microphone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = microphone.cpp; path = src/microphone.cpp; sourceTree = "<group>"; };
-		57A156ED1593464300AA6445 /* monomics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = monomics.hpp; path = include/monomics.hpp; sourceTree = "<group>"; };
+		57A156ED1593464300AA6445 /* directivity.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = directivity.hpp; path = include/directivity.hpp; sourceTree = "<group>"; };
 		57A156F01593464300AA6445 /* microphone.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = microphone.hpp; path = include/microphone.hpp; sourceTree = "<group>"; };
 		57A156F11593464300AA6445 /* microphonearray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = microphonearray.hpp; path = include/microphonearray.hpp; sourceTree = "<group>"; };
 		57A156F51593464300AA6445 /* source.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = source.hpp; path = include/source.hpp; sourceTree = "<group>"; };
@@ -266,7 +261,7 @@
 		57B4EF881CD81AB400134991 /* delayfilter_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = delayfilter_test.hpp; path = src/test/delayfilter_test.hpp; sourceTree = "<group>"; };
 		57B4EF891CD81AB400134991 /* freefieldsimulation_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = freefieldsimulation_test.cpp; path = src/test/freefieldsimulation_test.cpp; sourceTree = "<group>"; };
 		57B4EF8A1CD81AB400134991 /* kemarmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kemarmic_test.cpp; path = src/test/kemarmic_test.cpp; sourceTree = "<group>"; };
-		57B4EF8B1CD81AB400134991 /* microphone_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = microphone_test.cpp; path = src/test/microphone_test.cpp; sourceTree = "<group>"; };
+		57B4EF8B1CD81AB400134991 /* microphone_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = microphone_test.hpp; path = src/test/microphone_test.hpp; sourceTree = "<group>"; };
 		57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = microphonearray_test.cpp; path = src/test/microphonearray_test.cpp; sourceTree = "<group>"; };
 		57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = propagationline_test.cpp; path = src/test/propagationline_test.cpp; sourceTree = "<group>"; };
 		57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalheadmic_test.cpp; path = src/test/sphericalheadmic_test.cpp; sourceTree = "<group>"; };
@@ -389,7 +384,6 @@
 				57C2C7A71B1739A600B7F58C /* binauralmic.cpp */,
 				578751E715AE01590008761C /* sphericalmic.cpp */,
 				57C94CC6204F853400471213 /* salutilities.cpp */,
-				57A156DF1593460A00AA6445 /* microphone.cpp */,
 				57CE72B91C9583FC00149808 /* pawrapper.cpp */,
 				578A62251D89346200233890 /* source.cpp */,
 				578E967215D128820094FBBE /* freefieldsimulation.cpp */,
@@ -419,7 +413,7 @@
 				578ABDFF15AC9E3100966F2E /* kemarmic.hpp */,
 				57A156F01593464300AA6445 /* microphone.hpp */,
 				57A156F11593464300AA6445 /* microphonearray.hpp */,
-				57A156ED1593464300AA6445 /* monomics.hpp */,
+				57A156ED1593464300AA6445 /* directivity.hpp */,
 				57986F101C939CD700648377 /* pawrapper.hpp */,
 				57895F5B16304F00002C962B /* propagationline.hpp */,
 				5713F76E15F38C4800AF1DE2 /* salconstants.hpp */,
@@ -456,7 +450,7 @@
 				57B4EF881CD81AB400134991 /* delayfilter_test.hpp */,
 				57B4EF891CD81AB400134991 /* freefieldsimulation_test.cpp */,
 				57B4EF8A1CD81AB400134991 /* kemarmic_test.cpp */,
-				57B4EF8B1CD81AB400134991 /* microphone_test.cpp */,
+				57B4EF8B1CD81AB400134991 /* microphone_test.hpp */,
 				57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */,
 				57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */,
 				57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */,
@@ -722,7 +716,6 @@
 				572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */,
 				578BDE672149BE70001D89B9 /* kemarmicdata.cpp in Sources */,
 				572A878719C0712500F62F8F /* kemarmic.cpp in Sources */,
-				572A878819C0712500F62F8F /* microphone.cpp in Sources */,
 				5778112C20600683004B9C6F /* cuboidroom.cpp in Sources */,
 				5778112620600683004B9C6F /* ism.cpp in Sources */,
 				572A878D19C0712500F62F8F /* propagationline.cpp in Sources */,
@@ -756,7 +749,6 @@
 				57D7EB601625CE5A00771188 /* sphericalmic.cpp in Sources */,
 				578A62271D89346200233890 /* source.cpp in Sources */,
 				57A1574A15934AFF00AA6445 /* kemarmic.cpp in Sources */,
-				57A1574D15934AFF00AA6445 /* microphone.cpp in Sources */,
 				5778112E20600683004B9C6F /* riranalysis.cpp in Sources */,
 				57895F6216304F18002C962B /* propagationline.cpp in Sources */,
 				5778113120600683004B9C6F /* fdtd.cpp in Sources */,
@@ -786,11 +778,10 @@
 				57AA6163205C9D290044A3A9 /* kemarmic.cpp in Sources */,
 				57AA6164205C9D290044A3A9 /* sphericalmic.cpp in Sources */,
 				57AA6165205C9D290044A3A9 /* pawrapper.cpp in Sources */,
-				57AA6166205C9D290044A3A9 /* microphone.cpp in Sources */,
 				57AA6167205C9D290044A3A9 /* propagationline_test.cpp in Sources */,
 				57AA6169205C9D290044A3A9 /* cipicmic_test.cpp in Sources */,
 				57AA616A205C9D290044A3A9 /* sphericalheadmic_test.cpp in Sources */,
-				57AA616B205C9D290044A3A9 /* microphone_test.cpp in Sources */,
+				57AA616B205C9D290044A3A9 /* microphone_test.hpp in Sources */,
 				57AA616C205C9D290044A3A9 /* wavhandler.cpp in Sources */,
 				57AA616D205C9D290044A3A9 /* source.cpp in Sources */,
 				57AA616E205C9D290044A3A9 /* ambisonics_test.cpp in Sources */,
@@ -816,11 +807,10 @@
 				57B054841D6B361300202654 /* kemarmic.cpp in Sources */,
 				57B054851D6B361300202654 /* sphericalmic.cpp in Sources */,
 				57B054791D6B361300202654 /* pawrapper.cpp in Sources */,
-				57B054871D6B361300202654 /* microphone.cpp in Sources */,
 				57B054881D6B361300202654 /* propagationline_test.cpp in Sources */,
 				57B0548B1D6B361300202654 /* cipicmic_test.cpp in Sources */,
 				57B0548C1D6B361300202654 /* sphericalheadmic_test.cpp in Sources */,
-				57B0548E1D6B361300202654 /* microphone_test.cpp in Sources */,
+				57B0548E1D6B361300202654 /* microphone_test.hpp in Sources */,
 				57B0548F1D6B361300202654 /* wavhandler.cpp in Sources */,
 				578A62291D89346200233890 /* source.cpp in Sources */,
 				57B054901D6B361300202654 /* ambisonics_test.cpp in Sources */,

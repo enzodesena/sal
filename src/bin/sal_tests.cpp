@@ -12,13 +12,12 @@
 
 #include "audiobuffer.hpp"
 #include "audiobuffer_test.hpp"
-//#include "microphone.hpp"
+#include "microphone.hpp"
 //#include "microphonearray.hpp"
 //#include "sphericalheadmic.hpp"
 //#include "kemarmic.hpp"
 //#include "ambisonics.hpp"
 #include "delayfilter.hpp"
-#include "delayfilter_test.hpp"
 //#include "propagationline.hpp"
 //#include "freefieldsimulation.hpp"
 //#include "wavhandler.hpp"
@@ -27,9 +26,13 @@
 //#include "cuboidroom.hpp"
 //#include "fdtd.hpp"
 //#include "riranalysis.hpp"
-//#include "monomics.hpp"
+#include "directivity.hpp"
 //#include "tdbem.hpp"
 //#include "vector.hpp"
+
+
+#include "delayfilter_test.hpp"
+#include "microphone_test.hpp"
 
 int main(
   int argc,
@@ -39,7 +42,7 @@ int main(
     sal::BufferTest();
   //  sal::AmbisonicsMic::Test();
   //  sal::AmbisonicsHorizDec::Test();
-  //  sal::Microphone::Test();
+    sal::ReceiverTest();
   //  sal::KemarMic::Test();
   //  sal::CipicMic::Test();
   //  sal::SphericalHeadMic::Test();
@@ -57,7 +60,7 @@ int main(
 #else
   std::cout<<"Not running tests since NDEBUG is defined and asserts are ignored.\n";
 #endif
-
+  
   //  sal::TdBem::SimulationTime();
   //  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
 

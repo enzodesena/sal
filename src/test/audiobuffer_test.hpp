@@ -64,6 +64,14 @@ inline bool BufferTest()
   ASSERT(IsEqual(buf2.GetSample(0, 1), 2.0)); // Checking no references
   ASSERT(IsEqual(buf.GetSample(0, 1), -1.0)); // Checking no references
 
+  buf2.SetSamplesToZero();
+  ASSERT(buf2.GetSample(0, 0) == 0.0);
+  ASSERT(buf2.GetSample(0, 1) == 0.0);
+  ASSERT(buf2.GetSample(0, 2) == 0.0);
+  ASSERT(buf2.GetSample(1, 0) == 0.0);
+  ASSERT(buf2.GetSample(1, 1) == 0.0);
+  ASSERT(buf2.GetSample(1, 2) == 0.0);
+
   //  Buffer<double> buf3(buf.GetWritePointers(),
   //                          buf.num_channels(), buf.num_samples());
   //

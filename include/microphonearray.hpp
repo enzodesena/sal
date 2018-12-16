@@ -177,8 +177,7 @@ public:
       MonoBuffer referencing_buffer(output_buffer, mic_i);
       // Each microphone will push in his own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
-      microphones_[mic_i]->AddPlaneWaveRelative
-      (
+      microphones_[mic_i]->AddPlaneWaveRelative(
         input_data,
         num_samples,
         point,

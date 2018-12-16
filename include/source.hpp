@@ -8,8 +8,7 @@
  
  */
 
-#ifndef SAL_SOURCE_H
-#define SAL_SOURCE_H
+#pragma once
 
 #include "saltypes.hpp"
 #include "salutilities.hpp"
@@ -23,12 +22,12 @@ class Source
 {
 public:
   Source(
-    const mcl::Point&) noexcept;
+    const Point&) noexcept;
 
-  mcl::Point position() const noexcept;
+  Point position() const noexcept;
 
   void SetPosition(
-    const mcl::Point& position) noexcept;
+    const Point& position) noexcept;
 
 private:
   Triplet position_;

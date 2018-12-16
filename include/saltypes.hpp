@@ -14,6 +14,8 @@
 #define SAL_TYPES_H
 
 #include "vector.hpp"
+#include "point.hpp"
+#include "quaternion.hpp"
 #include "mcltypes.hpp"
 
 namespace sal
@@ -26,21 +28,26 @@ typedef mcl::Real Angle;
 typedef mcl::Int UInt;
 typedef mcl::Int Int;
 
-typedef mcl::Vector<Sample> Signal;
+template<class T>
+using Signal = mcl::Vector<T>;
 
 
+template<class T>
 struct StereoSignal
 {
-  Signal left;
-  Signal right;
+  Signal<T> left;
+  Signal<T> right;
 };
 
 
-enum Ear
+enum class Ear
 {
-  kLeftEar,
-  kRightEar
+  kLeft,
+  kRight
 };
+
+typedef mcl::Point<Length> Point;
+typedef mcl::Quaternion<Length> Quaternion;
 
 
 enum class InterpolationType

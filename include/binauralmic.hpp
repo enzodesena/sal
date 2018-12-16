@@ -33,85 +33,6 @@ enum class HeadRefOrientation
 class BinauralMicInstance;
 
 
-class BinauralMic : public StereoMicrophone
-{
-public:
-  /**
-   Constructs a Kemar microphone opject.
-   `directory` contains the hrtf database.
-   */
-  BinauralMic(
-    const mcl::Point& position,
-    mcl::Quaternion orientation,
-    Int update_length,
-    HeadRefOrientation reference_orientation = HeadRefOrientation::standard);
-
-
-  void SetUpdateLength(
-    Int update_length) noexcept
-  {
-    update_length_ = update_length;
-  }
-
-
-  /** When bypass_ is true, the signals will not be filtered by the HRTF */
-  void SetBypass(
-    bool bypass) noexcept;
-
-  void Reset() noexcept override;
-
-
-  bool IsCoincident() const noexcept override
-  {
-    return true;
-  }
-
-
-  Int num_channels() const noexcept override
-  {
-    return 2;
-  }
-
-
-  virtual ~BinauralMic()
-  {
-  }
-
-
-  virtual void AddPlaneWaveRelative(
-    const Sample* signal,
-    Int num_samples,
-    const mcl::Point& point,
-    Int wave_id,
-    Buffer& output_buffer) noexcept;
-
-private:
-
-  /** Retrieves the BRIR for a source in position `point`.
-   The head is assumed to be positioned lying on the z-axis and facing
-   the positive x-direction. E.g. a point on the positive x-axis
-   is facing directly ahead of the head. */
-  virtual Signal GetBrir(
-    Ear ear,
-    const mcl::Point& point) noexcept = 0;
-
-  void CreateInstanceIfNotExist(
-    Int wave_id) noexcept;
-
-  std::map<UInt,BinauralMicInstance> instances_;
-
-  /** How long it takes to update the underlying HRTF filter */
-  Int update_length_;
-
-  /** When bypass_ is true, the signals will not be filtered by the HRTF */
-  bool bypass_;
-
-  friend class BinauralMicInstance;
-
-protected:
-
-  HeadRefOrientation reference_orientation_;
-};
 
 
 class DatabaseBinauralMic : public BinauralMic
@@ -143,18 +64,16 @@ protected:
 };
 
 
-class BinauralMicInstance
+template<typename T>
+class BinauralFilter : public SpatialFilterInterface<T>
 {
 private:
-  BinauralMicInstance(
-    BinauralMic* base_mic,
-    Int update_length,
+  BinauralFilter(
+    size_t update_length,
     const HeadRefOrientation reference_orientation = HeadRefOrientation::
       standard)
-    : previous_point_(mcl::Point(NAN, NAN, NAN))
-    , base_mic_(base_mic)
-    , filter_left_(mcl::FirFilter::GainFilter(1.0))
-    , filter_right_(mcl::FirFilter::GainFilter(1.0))
+    : filter_left_(mcl::GainFilter(1.0))
+    , filter_right_(mcl::GainFilter(1.0))
     , update_length_(update_length)
     , reference_orientation_(reference_orientation)
   {
@@ -170,21 +89,10 @@ private:
   void UpdateFilter(
     const mcl::Point& point) noexcept;
 
-  /**
-   The microphone object is called for every sample, while the position
-   of SDN's elements is changed once in a while. Hence, these angles are
-   stored so that we don't need to update the filter coefficients at every
-   sample, but only when something changes.
-   */
-  mcl::Point previous_point_;
-
-  BinauralMic* base_mic_;
-  mcl::FirFilter filter_left_;
-  mcl::FirFilter filter_right_;
-  Int update_length_;
+  mcl::DigitalFilter filter_left_;
+  mcl::DigitalFilter filter_right_;
+  size_t update_length_;
   HeadRefOrientation reference_orientation_;
-
-  friend class BinauralMic;
 };
 } // namespace sal
 

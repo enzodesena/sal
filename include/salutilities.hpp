@@ -40,7 +40,7 @@ mcl::Vector<V> ConvertToType(
 }
 
 
-typedef mcl::Point Triplet;
+typedef Point Triplet;
 
 
 /** */
@@ -130,7 +130,7 @@ public:
   }
 
 
-  mcl::Point value() const noexcept
+  Triplet value() const noexcept
   {
     return current_triplet_;
   }
@@ -147,13 +147,14 @@ private:
 };
 
 
+template<typename T>
 class RampSmoother
 {
 public:
   /**
    @param[in] initial_value The initial assigned value. */
   RampSmoother(
-    const Sample initial_value,
+    const T initial_value,
     const Time sampling_frequency) noexcept
     : current_value_(initial_value)
     , target_value_(initial_value)
@@ -168,20 +169,23 @@ public:
   }
 
 
-  Sample GetNextValue() noexcept
+  T GetNextValue() noexcept
   {
     if (countdown_ <= 0)
     {
       return target_value_;
     }
-    --countdown_;
-    current_value_ += step_;
-    return current_value_;
+    else
+    {
+      --countdown_;
+      current_value_ += step_;
+      return current_value_;
+    }
   }
 
 
-  Sample GetNextValue(
-    const Int num_jumps) noexcept
+  T GetNextValue(
+    const size_t num_jumps) noexcept
   {
     // The +1 below is to make this identical to GetNextValue()
     if ((countdown_ - num_jumps + 1) <= 0)
@@ -189,34 +193,42 @@ public:
       countdown_ = 0;
       return target_value_;
     }
-    countdown_ -= num_jumps;
-    current_value_ += step_ * ((Sample)num_jumps);
-    return current_value_;
+    else
+    {
+      countdown_ -= num_jumps;
+      current_value_ += step_ * ((T)num_jumps);
+      return current_value_;
+    }
   }
 
 
   /** Takes an array of values (`input_data`), multiplies them by the
    next values coming out of the smoother, and writes the result into
    an output array (`output_data`).
-   @param[in] input_data The input data.
-   @param[in] num_samples The number of samples.
-   @param[out] output_data The output array (data already there will be
-   overwritten. */
+   @param[in] input The input vector.
+   @param[out] output The output vector (data will be overwritten. */
   void GetNextValuesMultiply(
-    const Sample* input_data,
-    const Int num_samples,
-    Sample* output_data) noexcept
+    const mcl::Vector<T>& input,
+    mcl::Vector<T>& output) noexcept
   {
+    ASSERT(input.size() == output.size());
+    auto input_iter = input.begin();
+    auto output_iter = input.begin();
     if (IsUpdating())
     {
-      for (Int i = 0; i < num_samples; ++i)
+      while (input_iter != input.end())
       {
-        output_data[i] = input_data[i] * GetNextValue();
+        *output_iter++ = *input_iter++ * GetNextValue();
       }
     }
     else
     {
-      mcl::Multiply(input_data, num_samples, target_value_, output_data);
+      mcl::Multiply
+      (
+        input_iter,
+        input.end(),
+        target_value_,
+        output_iter);
     }
   }
 
@@ -225,13 +237,12 @@ public:
    next values coming out of the smoother, and adds the result to
    an input-output array (`input_output_data`).
    @param[in] input_data The input data to multiply by.
-   @param[in] num_samples The number of samples to be handled.
    @param[in,out] input_output_data The data onto which we will add the result
    of the multiplication. */
   void GetNextValuesMultiplyAdd(
-    const Sample* input_data,
+    const T* input_data,
     const Int num_samples,
-    Sample* input_output_data) noexcept
+    T* input_output_data) noexcept
   {
     if (IsUpdating())
     {
@@ -250,36 +261,14 @@ public:
   }
 
 
-  /** Does the same as GetNextValuesAndMultiply, but without modifying the
-   object. */
-  void PredictNextValuesAndMultiply(
-    const Sample* input_data,
-    const Int num_samples,
-    Sample* output_data) const noexcept
-  {
-    if (IsUpdating())
-    {
-      RampSmoother temp(*this); // Create a copy of itself that we will discard.
-      for (Int i = 0; i < num_samples; ++i)
-      {
-        output_data[i] = input_data[i] * temp.GetNextValue();
-      }
-    }
-    else
-    {
-      mcl::Multiply(input_data, num_samples, target_value_, output_data);
-    }
-  }
-
-
-  Sample target_value() const noexcept
+  T target_value() const noexcept
   {
     return target_value_;
   }
 
 
   void SetTargetValue(
-    const Sample target_value,
+    const T target_value,
     const Time ramp_time) noexcept
   {
     ASSERT_WITH_MESSAGE
@@ -308,7 +297,7 @@ public:
       else
       {
         step_ = (target_value_ - current_value_) /
-          ((Sample)num_update_samples);
+          ((T)num_update_samples);
       }
     }
   }
@@ -321,58 +310,58 @@ public:
 
 
 private:
-  Sample current_value_;
-  Sample target_value_;
-  Sample step_;
+  T current_value_;
+  T target_value_;
+  T step_;
   Int countdown_;
 
   Time sampling_frequency_;
 };
 
 
-/** Implements a first-order IIR low-pass filter with a given decay constant. */
-class LowPassSmoothingFilter : public mcl::DigitalFilter
-{
-public:
-  /**
-   @param[in] ramp_samples number of samples after which the value is
-   to 1/e away from target value. */
-  LowPassSmoothingFilter(
-    const mcl::Real ramp_samples) noexcept
-  {
-    ASSERT_WITH_MESSAGE
-    (
-      std::isgreaterequal(ramp_samples, 0),
-      "Decay constant cannot be negative.");
-
-    mcl::Real a1 = exp(-1.0 / ramp_samples);
-    mcl::Real b0 = 1.0 - a1;
-    filter_ = mcl::IirFilter
-    (
-      mcl::Binarymcl::Vector<mcl::Real>(b0, 0.0),
-      mcl::Binarymcl::Vector<mcl::Real>(1.0, -a1));
-  }
-
-
-  virtual mcl::Real Filter(
-    const mcl::Real input) noexcept
-  {
-    return filter_.Filter(input);
-  }
-
-
-  using mcl::DigitalFilter::Filter;
-
-
-  virtual void Reset() noexcept
-  {
-    filter_.Reset();
-  }
-
-
-private:
-  mcl::IirFilter filter_;
-};
+///** Implements a first-order IIR low-pass filter with a given decay constant. */
+//class LowPassSmoothingFilter : public mcl::DigitalFilter
+//{
+//public:
+//  /**
+//   @param[in] ramp_samples number of samples after which the value is
+//   to 1/e away from target value. */
+//  LowPassSmoothingFilter(
+//    const mcl::Real ramp_samples) noexcept
+//  {
+//    ASSERT_WITH_MESSAGE
+//    (
+//      std::isgreaterequal(ramp_samples, 0),
+//      "Decay constant cannot be negative.");
+//
+//    mcl::Real a1 = exp(-1.0 / ramp_samples);
+//    mcl::Real b0 = 1.0 - a1;
+//    filter_ = mcl::IirFilter
+//    (
+//      mcl::Binarymcl::Vector<mcl::Real>(b0, 0.0),
+//      mcl::Binarymcl::Vector<mcl::Real>(1.0, -a1));
+//  }
+//
+//
+//  virtual mcl::Real Filter(
+//    const mcl::Real input) noexcept
+//  {
+//    return filter_.Filter(input);
+//  }
+//
+//
+//  using mcl::DigitalFilter::Filter;
+//
+//
+//  virtual void Reset() noexcept
+//  {
+//    filter_.Reset();
+//  }
+//
+//
+//private:
+//  mcl::IirFilter filter_;
+//};
 
 
 template<typename T>

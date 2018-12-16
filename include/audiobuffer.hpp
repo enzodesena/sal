@@ -17,12 +17,6 @@
 
 namespace sal
 {
-enum class Channel
-{
-  kMono = 0,
-  kLeft = 0,
-  kRight = 1
-};
 
 
 template<typename T>
@@ -50,6 +44,11 @@ private:
 
 
 public:
+
+  static constexpr size_t kMonoChannel = 0;
+  static constexpr size_t kLeftChannel = 0;
+  static constexpr size_t kRightChannel = 0;
+  
   /** Constructs a multichannel buffer. */
   Buffer(
     const size_t num_channels,
@@ -64,7 +63,7 @@ public:
 
 
   Buffer()
-    : Buffer(0, 0)
+    : Buffer(1, 0)
   {
   }
 
@@ -106,13 +105,11 @@ public:
     size_t channel_id,
     size_t sample_id) const noexcept
   {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    ASSERT(sample_id >= 0 && sample_id < num_samples());
     return data_[channel_id][sample_id];
   }
 
 
-  bool IsDataOwner() const noexcept
+  bool OwnsData() const noexcept
   {
     return owns_data_;
   }
@@ -169,81 +166,31 @@ public:
   }
 
 
-  /** Adds samples to current sample values in the buffer.
-   
-   @param[in] channel_id The ID of the channel.
-   @param[in] from_sample_id The index of the first sample we want to modify.
-   @param[in] num_samples The number of samples we want to modify.
-   @param[in] samples The new samples.
-   */
-  void AddSamples(
-    const size_t channel_id,
-    const size_t from_sample_id,
-    const mcl::Vector<T>& samples) noexcept
-  {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    ASSERT(from_sample_id >= 0);
-    ASSERT((from_sample_id + samples.size()) <= num_samples());
-
-    mcl::Add
-    (
-      samples,
-      &(data_[channel_id][from_sample_id]),
-      &(data_[channel_id][from_sample_id]));
-  }
-
-
-  /** This method first multiplies all the input samples by a certain constant
-   and then adds the result to the samples in the buffer. */
-  void MultiplyAddSamples(
-    const size_t channel_id,
-    const size_t from_sample_id,
-    const mcl::Vector<T>& samples,
-    const T constant) noexcept
-  {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    ASSERT(from_sample_id >= 0);
-    ASSERT((from_sample_id + samples.size()) <= num_samples_);
-    mcl::MultiplyAdd
-    (
-      samples,
-      constant,
-      Vector(data_[channel_id], from_sample_id, samples.size()),
-      Vector(data_[channel_id], from_sample_id, samples.size()));
-  }
-
-
-  void FilterAddSamples(
-    const size_t channel_id,
-    const size_t from_sample_id,
-    const mcl::Vector<T>& samples,
-    mcl::DigitalFilter<T>& filter) noexcept
-  {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    ASSERT(from_sample_id >= 0);
-    ASSERT((from_sample_id + samples.size()) <= num_samples_);
-    filter.Filter(samples, temporary_vector_);
-    mcl::Add
-    (
-      temporary_vector_,
-      Vector(data_[channel_id], from_sample_id, samples.size()),
-      Vector(data_[channel_id], from_sample_id, samples.size()));
-  }
-
-
-  const mcl::Vector<T>& GetReadReference(
+  typename mcl::Vector<T>::ConstIterator begin(
     const size_t channel_id) const noexcept
   {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    return data_[channel_id];
+    return data_[channel_id].begin();
   }
 
 
-  mcl::Vector<T>& GetWriteReference(
+  typename mcl::Vector<T>::Iterator begin(
     const size_t channel_id) noexcept
   {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    return data_[channel_id];
+    return data_[channel_id].begin();
+  }
+
+
+  typename mcl::Vector<T>::ConstIterator end(
+    const size_t channel_id) const noexcept
+  {
+    return data_[channel_id].end();
+  }
+
+
+  typename mcl::Vector<T>::Iterator end(
+    const size_t channel_id) noexcept
+  {
+    return data_[channel_id].end();
   }
 
 
@@ -261,20 +208,21 @@ public:
     {
       mcl::Add
       (
-        GetReadReference(chan_id),
-        other_buffer.GetReadReference(chan_id),
-        GetWriteReference(chan_id));
+        begin(chan_id),
+        end(chan_id),
+        other_buffer.begin(chan_id),
+        begin(chan_id));
     }
   }
 
 
   void PrintData()
   {
-    for (int chan_id = 0; chan_id < num_channels_; ++chan_id)
+    for (auto& vector : data_)
     {
-      for (int sample_id = 0; sample_id < num_samples_; ++sample_id)
+      for (auto& sample : vector)
       {
-        std::cout << data_[chan_id][sample_id] << " ";
+        std::cout << sample << " ";
       }
       std::cout << std::endl;
     }
@@ -282,14 +230,11 @@ public:
 
 
   /** Resets all the values to zero. */
-  virtual void Reset() noexcept
+  virtual void SetSamplesToZero() noexcept
   {
-    for (size_t chan_id = 0; chan_id < num_channels(); ++chan_id)
+    for (auto& vector : data_)
     {
-      for (size_t sample_id = 0; sample_id < num_samples(); ++sample_id)
-      {
-        data_[chan_id][sample_id] = 0.0;
-      }
+      SetToZero(vector);
     }
   }
 
@@ -345,9 +290,6 @@ public:
     }
     return *this;
   }
-
-
-  static bool Test();
 };
 
 
@@ -355,6 +297,8 @@ template<typename T>
 class MonoBuffer : public Buffer<T>
 {
 public:
+  using Buffer<T>::kMonoChannel;
+
   explicit MonoBuffer(
     const size_t num_samples) noexcept
     : Buffer<T>(1, num_samples)
@@ -393,7 +337,7 @@ public:
   {
     Buffer<T>::MultiplyAddSamples
     (
-      Channel::kMono,
+      kMonoChannel,
       from_sample_id,
       num_samples,
       samples,
@@ -405,7 +349,7 @@ public:
     const size_t sample_id,
     const T sample_value) noexcept
   {
-    Buffer<T>::SetSample(Channel::kMono, sample_id, sample_value);
+    Buffer<T>::SetSample(kMonoChannel, sample_id, sample_value);
   }
 
 
@@ -419,7 +363,7 @@ public:
   {
     Buffer<T>::SetSamples
     (
-      Channel::kMono,
+      kMonoChannel,
       from_sample_id,
       num_samples,
       samples);
@@ -429,19 +373,19 @@ public:
   T GetSample(
     const size_t sample_id) const noexcept
   {
-    return Buffer<T>::GetSample(Channel::kMono, sample_id);
+    return Buffer<T>::GetSample(kMonoChannel, sample_id);
   }
 
 
   const T* GetReadPointer() const noexcept
   {
-    return Buffer<T>::GetReadPointer(Channel::kMono);
+    return Buffer<T>::GetReadPointer(kMonoChannel);
   }
 
 
   T* GetWritePointer() noexcept
   {
-    return Buffer<T>::GetWritePointer(Channel::kMono);
+    return Buffer<T>::GetWritePointer(kMonoChannel);
   }
 
 
@@ -464,7 +408,7 @@ public:
   {
     Buffer<T>::AddSamples
     (
-      Channel::kMono,
+      kMonoChannel,
       from_sample_id,
       num_samples,
       samples);
@@ -488,6 +432,9 @@ template<typename T>
 class StereoBuffer : public Buffer<T>
 {
 public:
+  using Buffer<T>::kLeftChannel;
+  using Buffer<T>::kRightChannel;
+  
   StereoBuffer(
     const size_t num_samples) noexcept
     : Buffer<T>(2, num_samples)
@@ -499,7 +446,7 @@ public:
     const size_t sample_id,
     const T sample_value) noexcept
   {
-    Buffer<T>::SetSample(Channel::kLeft, sample_id, sample_value);
+    Buffer<T>::SetSample(kLeftChannel, sample_id, sample_value);
   }
 
 
@@ -507,45 +454,45 @@ public:
     const size_t sample_id,
     const T sample_value) noexcept
   {
-    Buffer<T>::SetSample(Channel::kRight, sample_id, sample_value);
+    Buffer<T>::SetSample(kRightChannel, sample_id, sample_value);
   }
 
 
   T GetLeftSample(
     const size_t sample_id) const noexcept
   {
-    return Buffer<T>::GetSample(Channel::kLeft, sample_id);
+    return Buffer<T>::GetSample(kLeftChannel, sample_id);
   }
 
 
   T GetRightSample(
     const size_t sample_id) const noexcept
   {
-    return Buffer<T>::GetSample(Channel::kRight, sample_id);
+    return Buffer<T>::GetSample(kRightChannel, sample_id);
   }
 
 
   const T* GetLeftReadPointer() const noexcept
   {
-    return Buffer<T>::GetReadPointer(Channel::kLeft);
+    return Buffer<T>::GetReadPointer(kLeftChannel);
   }
 
 
   const T* GetRightReadPointer() const noexcept
   {
-    return Buffer<T>::GetReadPointer(Channel::kRight);
+    return Buffer<T>::GetReadPointer(kRightChannel);
   }
 
 
   T* GetLeftWritePointer() noexcept
   {
-    return Buffer<T>::GetWritePointer(Channel::kLeft);
+    return Buffer<T>::GetWritePointer(kLeftChannel);
   }
 
 
   T* GetRightWritePointer() noexcept
   {
-    return Buffer<T>::GetWritePointer(Channel::kRight);
+    return Buffer<T>::GetWritePointer(kRightChannel);
   }
 
 
@@ -556,7 +503,7 @@ public:
   {
     Buffer<T>::AddSamples
     (
-      Channel::kLeft,
+      kLeftChannel,
       from_sample_id,
       num_samples_to_add,
       samples);
@@ -571,7 +518,7 @@ public:
   {
     Buffer<T>::FilterAddSamples
     (
-      Channel::kLeft,
+      kLeftChannel,
       from_sample_id,
       num_samples,
       samples,
@@ -587,7 +534,7 @@ public:
   {
     Buffer<T>::FilterAddSamples
     (
-      Channel::kRight,
+      kRightChannel,
       from_sample_id,
       num_samples,
       samples,
@@ -602,7 +549,7 @@ public:
   {
     Buffer<T>::AddSamples
     (
-      Channel::kRight,
+      kRightChannel,
       from_sample_id,
       num_samples_to_add,
       samples);

@@ -1442,7 +1442,7 @@ KemarData kRightEarData[] = {
 
   
 void KemarMic::LoadEmbeddedData(const Ear ear, std::vector<Vector<Signal> >& h) {
-  if (ear == kLeftEar) {
+  if (ear == kLeft) {
     for (const KemarData& entry : kLeftEarData) {
       Signal& vector = h[entry.elevation_id][entry.azimuth_id];
       vector.insert(vector.begin(), entry.data, entry.data + FULL_LENGTH_KEMAR);

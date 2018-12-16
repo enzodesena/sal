@@ -150,37 +150,4 @@ void Microphone::AddPlaneWaveRelative(
 }
 
 
-Point Microphone::GetRelativePoint(
-  const Point& point) const noexcept
-{
-  if (mcl::IsEqual(point, position_))
-  {
-    mcl::Logger::GetInstance().
-      LogError
-      (
-        "Microphone (%f, %f, %f) and observation point (%f, %f, %f) appear "
-        "to be approximately in the same position. Behaviour undefined.",
-        point.x(),
-        point.y(),
-        point.z(),
-        position_.x(),
-        position_.y(),
-        position_.z());
-  }
-  // Centering the reference system around the microphone
-  Point centered
-  (
-    point.x() - position_.x(),
-    point.y() - position_.y(),
-    point.z() - position_.z());
-
-  // Instead of rotating the head, we are rotating the point in an opposite
-  // direction (that's why the QuatInverse).
-  Point rotated = mcl::QuatRotate
-  (
-    mcl::QuatInverse(orientation_),
-    centered,
-    handedness_);
-  return rotated;
-}
 } // namespace sal
