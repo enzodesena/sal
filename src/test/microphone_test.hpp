@@ -8,7 +8,7 @@
  
  */
 
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "directivity.hpp"
 #include "audiobuffer.hpp"
 

@@ -39,11 +39,25 @@ struct StereoSignal
   Signal<T> right;
 };
 
-
-enum class Ear
+template<typename T, std::size_t N>
+class Array
 {
-  kLeft,
-  kRight
+public:
+  T elems[N];
+
+  T& operator[](
+    std::size_t i) noexcept
+  {
+    ASSERT(i < N);
+    return elems[i];
+  }
+  
+  const T& operator[](
+    std::size_t i) const noexcept
+  {
+    ASSERT(i < N);
+    return elems[i];
+  }
 };
 
 typedef mcl::Point<Length> Point;

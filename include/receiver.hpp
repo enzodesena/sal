@@ -26,16 +26,17 @@ class Receiver
 {
 public:
   /**
-   `position` is the position of the microphone, and orientation 
-   is a quaternion describing the microphone rotation.
-   A microphone generally has its acoustical axis on the x-axis.
+    This represents a receiver (e.g. virtual microphone).
    
-   An example on the use of this function is as follow:
-   if you don't want to change its orientation, then you should use
-   a Quaternion::Identical().
-   Otherwise, if you want to rotate it around the z-axis (i.e. a
-   rotation on the horizontal plane), then you should use 
-   mcl::AxAng2Quat(0,0,1,angle) with angle in radians.
+   @param[in] directivity_prototype is the prototype of the directivity pattern.
+   The receiver will then create a certain number of copies of the directivity
+   pattern, each associated to a given incoming wave.
+   @param[in] position is the position of the receiver.
+   @param[in] orientation is the quaternion orientation of the receiver.
+   The default is Quaternion identity.
+   @param[in] max_num_incoming_waves is the number of incoming waves. The
+   receiver will assert if it receives more incoming waves. The default is a
+   single incoming wave.
    */
   Receiver(
     Directivity<T> directivity_prototype,
@@ -99,7 +100,7 @@ public:
   {
     ASSERT_WITH_MESSAGE
     (
-      wave_id>=directivity_instances_.size(),
+      wave_id<directivity_instances_.size(),
       "Requested a wave id larger than the max num of incoming waves.");
     directivity_instances_[wave_id].ReceiveAndAddToBuffer
     (

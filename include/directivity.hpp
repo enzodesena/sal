@@ -33,6 +33,7 @@ namespace sal
 template<typename T>
 class DirectivityInterface
 {
+public:
   virtual void ReceiveAndAddToBuffer(
     const mcl::Vector<T>& input,
     const Point& point,
@@ -47,7 +48,6 @@ template<typename T>
 class MemorylessMonoDirectivity: DirectivityInterface<T>
 {
 public:
-
   void ReceiveAndAddToBuffer(
     const mcl::Vector<T>& input,
     const Point& point,

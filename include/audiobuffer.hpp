@@ -47,7 +47,7 @@ public:
 
   static constexpr size_t kMonoChannel = 0;
   static constexpr size_t kLeftChannel = 0;
-  static constexpr size_t kRightChannel = 0;
+  static constexpr size_t kRightChannel = 1;
   
   /** Constructs a multichannel buffer. */
   Buffer(
@@ -120,8 +120,6 @@ public:
     const size_t sample_id,
     const T sample) noexcept
   {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-    ASSERT(sample_id >= 0 && sample_id < num_samples());
     data_[channel_id][sample_id] = sample;
   }
 
@@ -191,6 +189,18 @@ public:
     const size_t channel_id) noexcept
   {
     return data_[channel_id].end();
+  }
+  
+  mcl::Vector<T> GetChannelReference(
+    const size_t channel_id) noexcept
+  {
+    return std::move(MakeReference(data_[channel_id]));
+  }
+  
+  mcl::Vector<T> GetChannelConstReference(
+    const size_t channel_id) const noexcept
+  {
+    return std::move(MakeConstReference(data_[channel_id]));
   }
 
 
@@ -327,23 +337,6 @@ public:
   //  {
   //  }
 
-  /** This first multiplies all the input samples by a certain constant
-   and then adds the result to the samples in the buffer. */
-  void MultiplyAddSamples(
-    const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples,
-    const T constant) noexcept
-  {
-    Buffer<T>::MultiplyAddSamples
-    (
-      kMonoChannel,
-      from_sample_id,
-      num_samples,
-      samples,
-      constant);
-  }
-
 
   void SetSample(
     const size_t sample_id,
@@ -377,17 +370,6 @@ public:
   }
 
 
-  const T* GetReadPointer() const noexcept
-  {
-    return Buffer<T>::GetReadPointer(kMonoChannel);
-  }
-
-
-  T* GetWritePointer() noexcept
-  {
-    return Buffer<T>::GetWritePointer(kMonoChannel);
-  }
-
 
   static MonoBuffer Unary(
     const T sample) noexcept
@@ -400,24 +382,6 @@ public:
 
   using Buffer<T>::AddSamples;
 
-
-  void AddSamples(
-    const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples) noexcept
-  {
-    Buffer<T>::AddSamples
-    (
-      kMonoChannel,
-      from_sample_id,
-      num_samples,
-      samples);
-  }
-
-
-  virtual ~MonoBuffer()
-  {
-  }
 
 
 private:
@@ -470,95 +434,6 @@ public:
   {
     return Buffer<T>::GetSample(kRightChannel, sample_id);
   }
-
-
-  const T* GetLeftReadPointer() const noexcept
-  {
-    return Buffer<T>::GetReadPointer(kLeftChannel);
-  }
-
-
-  const T* GetRightReadPointer() const noexcept
-  {
-    return Buffer<T>::GetReadPointer(kRightChannel);
-  }
-
-
-  T* GetLeftWritePointer() noexcept
-  {
-    return Buffer<T>::GetWritePointer(kLeftChannel);
-  }
-
-
-  T* GetRightWritePointer() noexcept
-  {
-    return Buffer<T>::GetWritePointer(kRightChannel);
-  }
-
-
-  void AddSamplesLeft(
-    const T* samples,
-    const size_t from_sample_id,
-    const size_t num_samples_to_add) noexcept
-  {
-    Buffer<T>::AddSamples
-    (
-      kLeftChannel,
-      from_sample_id,
-      num_samples_to_add,
-      samples);
-  }
-
-
-  void FilterAddSamplesLeft(
-    const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples,
-    mcl::DigitalFilter<T>& filter) noexcept
-  {
-    Buffer<T>::FilterAddSamples
-    (
-      kLeftChannel,
-      from_sample_id,
-      num_samples,
-      samples,
-      filter);
-  }
-
-
-  void FilterAddSamplesRight(
-    const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples,
-    mcl::DigitalFilter<T>& filter) noexcept
-  {
-    Buffer<T>::FilterAddSamples
-    (
-      kRightChannel,
-      from_sample_id,
-      num_samples,
-      samples,
-      filter);
-  }
-
-
-  void AddSamplesRight(
-    const T* samples,
-    const size_t from_sample_id,
-    const size_t num_samples_to_add) noexcept
-  {
-    Buffer<T>::AddSamples
-    (
-      kRightChannel,
-      from_sample_id,
-      num_samples_to_add,
-      samples);
-  }
-
-
-  virtual ~StereoBuffer()
-  {
-  }
 };
 
 
@@ -603,24 +478,6 @@ public:
   }
 
 
-  /** This first multiplies all the input samples by a certain constant
-   and then adds the result to the samples in the buffer. */
-  void MultiplyAddSamples(
-    const Int degree,
-    const size_t order,
-    const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples,
-    const T constant) noexcept
-  {
-    Buffer<T>::MultiplyAddSamples
-    (
-      GetChannelId(degree, order),
-      from_sample_id,
-      num_samples,
-      samples,
-      constant);
-  }
 
 
   T GetSample(

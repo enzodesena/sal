@@ -12,10 +12,10 @@
 
 #include "audiobuffer.hpp"
 #include "audiobuffer_test.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 //#include "microphonearray.hpp"
 //#include "sphericalheadmic.hpp"
-//#include "kemarmic.hpp"
+#include "kemarmic.hpp"
 //#include "ambisonics.hpp"
 #include "delayfilter.hpp"
 //#include "propagationline.hpp"
@@ -31,8 +31,9 @@
 //#include "vector.hpp"
 
 
-#include "delayfilter_test.hpp"
+//#include "delayfilter_test.hpp"
 #include "microphone_test.hpp"
+#include "kemarmic_test.hpp"
 
 int main(
   int argc,
@@ -43,11 +44,11 @@ int main(
   //  sal::AmbisonicsMic::Test();
   //  sal::AmbisonicsHorizDec::Test();
     sal::ReceiverTest();
-  //  sal::KemarMic::Test();
+    sal::KemarMicTest();
   //  sal::CipicMic::Test();
   //  sal::SphericalHeadMic::Test();
   //  sal::MicrophoneArrayTest();
-    sal::DelayFilterTest();
+//    sal::DelayFilterTest();
   //  sal::PropagationLine::Test();
   //  sal::FreeFieldSim::Test();
   //  sal::CuboidRoom::Test();

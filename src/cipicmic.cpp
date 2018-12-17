@@ -72,8 +72,8 @@ CipicMic::CipicMic(
       30.0, 35.0, 40.0, 45.0, 55.0, 65.0, 80.0
     });
 
-  hrtf_database_right_ = Load(kRightEar, directory, data_type, azimuths_);
-  hrtf_database_left_ = Load(kLeftEar, directory, data_type, azimuths_);
+  hrtf_database_right_ = Load(Ear::kRight, directory, data_type, azimuths_);
+  hrtf_database_left_ = Load(Ear::kLeft, directory, data_type, azimuths_);
 }
 
 
@@ -91,7 +91,7 @@ std::vector<mcl::Vector<Signal>> CipicMic::Load(
 
     std::string sign_text = (azimuth < 0) ? "neg" : "";
     std::string azimuth_text = ToString((azimuth > 0) ? azimuth : -azimuth);
-    std::string ear_text = (ear == kLeftEar) ? "left" : "right";
+    std::string ear_text = (ear == Ear::kLeft) ? "left" : "right";
     std::string data_type_text = (data_type == wav) ? ".wav" : ".txt";
     std::string file_name =
       sign_text + azimuth_text + "az" + ear_text + data_type_text;
@@ -207,7 +207,7 @@ Signal CipicMic::GetBrir(
   ASSERT((azimuth_index >= 0) & (azimuth_index < (Int)azimuths_.size()));
   ASSERT((elevation_index >= 0) & (elevation_index <= 49));
 
-  return (ear == kLeftEar) ?
+  return (ear == Ear::kLeft) ?
            hrtf_database_left_[azimuth_index][elevation_index] :
            hrtf_database_right_[azimuth_index][elevation_index];
 }
