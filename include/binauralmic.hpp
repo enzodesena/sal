@@ -59,7 +59,7 @@ private:
   size_t update_length_;
 
   virtual mcl::Vector<T>& GetBrir(
-    Ear ear,
+    const Ear ear,
     const Point& point) noexcept = 0;
   
   

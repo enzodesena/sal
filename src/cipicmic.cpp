@@ -8,36 +8,7 @@
  
  */
 
-// To convert the CIPIC database to text, please run the following in Matlab
-// in the directory where you see the various 'subject_021' etc
 
-//azimuths = [-80,-65,-55,-45:5:45, 55, 65, 80];
-//listing = dir;
-//for i = 1:numel(listing)
-//listing_name = listing(i).name;
-//if listing_name == '.'
-//continue
-//end
-//if ~isempty(strfind(listing_name, 'show_data')) | ...
-//~isempty(strfind(listing_name, 'convertToText.m')) | ...
-//~isempty(strfind(listing_name, '.DS_Store'))
-//continue
-//end
-//
-//load(strcat(listing_name, '/hrir_final.mat'));
-//
-//for j=1:25
-//azimuth = azimuths(j);
-//if azimuth < 0; sign_text = 'neg'; else sign_text = ''; end
-//
-//dlmwrite(strcat(listing_name, '/', sign_text, num2str(abs(azimuth)), 'azleft.txt'), ...
-//         squeeze(hrir_l(j, :, :)), ...
-//         'delimiter','\t');
-//dlmwrite(strcat(listing_name, '/', sign_text, num2str(abs(azimuth)), 'azright.txt'), ...
-//         squeeze(hrir_r(j, :, :)), ...
-//         'delimiter','\t');
-//end
-//end
 
 #include "cipicmic.hpp"
 #include "point.hpp"
