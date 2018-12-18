@@ -1,28 +1,12 @@
 /*
  Spatial Audio Library (SAL)
- Copyright (c) 2013-2018, Enzo De Sena
+ Copyright (c) 2012, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@gmail.com
+ 
  */
-#include "ism.hpp"
-#include "salconstants.hpp"
-#include "randomop.hpp"
 
-using sal::Time;
-using sal::Length;
-using sal::Sample;
-using mcl::IirFilter;
-using sal::Int;
-using sal::Int;
-using sal::Source;
-using sal::Microphone;
-using mcl::Point;
-using sal::Time;
-using sal::Sample;
-using mcl::Pow;
-using mcl::Abs;
-using sal::Length;
 
 namespace sal
 {

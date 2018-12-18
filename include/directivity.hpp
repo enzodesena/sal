@@ -60,8 +60,8 @@ public:
       input.begin(),
       input.end(),
       GetDirectivity(point),
-      output.begin(Buffer<T>::kMonoChannel),
-      output.begin(Buffer<T>::kMonoChannel));
+      output.begin(Channel::kMono),
+      output.begin(Channel::kMono));
   }
   
   void Reset() noexcept override

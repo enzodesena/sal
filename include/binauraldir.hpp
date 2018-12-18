@@ -1,15 +1,13 @@
 /*
- binauralmic.h
  Spatial Audio Library (SAL)
- Copyright (c) 2011, Enzo De Sena
+ Copyright (c) 2011-2018, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@gmail.com
  
  */
 
-#ifndef SAL_BINAURALMIC_H
-#define SAL_BINAURALMIC_H
+#pragma once
 
 #include <map>
 #include "vector.hpp"
@@ -103,18 +101,18 @@ public:
     const Point& point,
     Buffer<T>& output) noexcept override
   {
-    mcl::Vector<T> ref_left = output.GetChannelReference(Buffer<T>::kLeftChannel);
-    mcl::Vector<T> ref_right = output.GetChannelReference(Buffer<T>::kRightChannel);
+    mcl::Vector<T> ref_left = output.GetChannelReference(Channel::kLeft);
+    mcl::Vector<T> ref_right = output.GetChannelReference(Channel::kRight);
     UpdateFilters(point);
     left_filter_.FilterAdd
     (
       input,
-      output.GetChannelReference(Buffer<T>::kLeftChannel),
+      output.GetChannelReference(Channel::kLeft),
       ref_left);
     right_filter_.FilterAdd
     (
       input,
-      output.GetChannelReference(Buffer<T>::kRightChannel),
+      output.GetChannelReference(Channel::kRight),
       ref_right);
   }
   
@@ -169,5 +167,3 @@ public:
 
 
 } // namespace sal
-
-#endif

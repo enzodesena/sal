@@ -9,7 +9,7 @@
  */
 
 #include "salutilities.hpp"
-#include "cipicdirectivity.hpp"
+#include "cipicdir.hpp"
 #include "receiver.hpp"
 #include "vectorop.hpp"
 #include "salconstants.hpp"
@@ -50,7 +50,7 @@ inline bool CipicMicTest()
   };
 
   cmp_imp_front_left = mcl::Multiply<Sample>(cmp_imp_front_left, normalising_value);
-  ASSERT(IsEqual(stream_i.GetChannelReference(Buffer<Sample>::kLeftChannel), cmp_imp_front_left));
+  ASSERT(IsEqual(stream_i.GetChannelReference(Channel::kLeft), cmp_imp_front_left));
 
   Receiver<Sample> mic_o
   (
@@ -59,7 +59,7 @@ inline bool CipicMicTest()
     mcl::AxAng2Quat<Length>(0, 0.0, 1, PI / 2.0));
   StereoBuffer<Sample> output_buffer_b(impulse_response_length);
   mic_o.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), output_buffer_b);
-  ASSERT(IsEqual(output_buffer_b.GetChannelReference(Buffer<Sample>::kLeftChannel), cmp_imp_front_left));
+  ASSERT(IsEqual(output_buffer_b.GetChannelReference(Channel::kLeft), cmp_imp_front_left));
 
   // Testing upward direction
   Signal<Sample> cmp_imp_up_left = {
@@ -81,7 +81,7 @@ inline bool CipicMicTest()
   StereoBuffer<Sample> stream_m(impulse_response_length);
 
   mic_m.ReceiveAndAddToBuffer(impulse, Point(-1.0, 0.0, 0.0), stream_m);
-  ASSERT(IsEqual(stream_m.GetChannelReference(Buffer<Sample>::kLeftChannel), cmp_imp_up_left));
+  ASSERT(IsEqual(stream_m.GetChannelReference(Channel::kLeft), cmp_imp_up_left));
 
   // Case for a source to the right (90deg) of the kemar.
   Signal<Sample> cmp_imp_right_left = {
@@ -167,8 +167,8 @@ inline bool CipicMicTest()
   // I put the source slightly forward (in x direction) so that I know
   // that the one with 0 elevation will be selected.
   mic_p.ReceiveAndAddToBuffer(impulse, Point(0.001, -1.0, 0.0), stream_p);
-  ASSERT(mcl::IsApproximatelyEqual(stream_p.GetChannelReference(Buffer<Sample>::kLeftChannel), cmp_imp_right_left));
-  ASSERT(mcl::IsApproximatelyEqual(stream_p.GetChannelReference(Buffer<Sample>::kRightChannel), cmp_imp_right_right));
+  ASSERT(mcl::IsApproximatelyEqual(stream_p.GetChannelReference(Channel::kLeft), cmp_imp_right_left));
+  ASSERT(mcl::IsApproximatelyEqual(stream_p.GetChannelReference(Channel::kRight), cmp_imp_right_right));
 
   // Case for a source to the left (-90deg) of the kemar.
   Signal<Sample> cmp_imp_left_right = {
@@ -256,8 +256,8 @@ inline bool CipicMicTest()
   StereoBuffer<Sample> stream_r(impulse_response_length);
 
   mic_r.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), stream_r);
-  ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Buffer<Sample>::kLeftChannel), cmp_imp_left_left));
-  ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Buffer<Sample>::kRightChannel), cmp_imp_left_right));
+  ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Channel::kLeft), cmp_imp_left_left));
+  ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Channel::kRight), cmp_imp_left_right));
 
   // Case for a source in the back
   Signal<Sample> cmp_imp_back_left = {
@@ -317,39 +317,39 @@ inline bool CipicMicTest()
 
   mic_t.ReceiveAndAddToBuffer(impulse, Point(0.0, 0.0, -1.0), stream_t);
 
-  ASSERT(mcl::IsApproximatelyEqual(cmp_imp_back_left, stream_t.GetChannelReference(Buffer<Sample>::kLeftChannel)));
-  ASSERT(mcl::IsApproximatelyEqual(cmp_imp_back_right, stream_t.GetChannelReference(Buffer<Sample>::kRightChannel)));
+  ASSERT(mcl::IsApproximatelyEqual(cmp_imp_back_left, stream_t.GetChannelReference(Channel::kLeft)));
+  ASSERT(mcl::IsApproximatelyEqual(cmp_imp_back_right, stream_t.GetChannelReference(Channel::kRight)));
 
   // Testing reset
   stream_t.SetSamplesToZero();
   mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_t);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kLeftChannel)[0] != 0.0);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kRightChannel)[0] != 0.0);
+  ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] != 0.0);
+  ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] != 0.0);
 
   stream_t.SetSamplesToZero();
   mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kLeftChannel)[0] != 0.0);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kRightChannel)[0] != 0.0);
+  ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] != 0.0);
+  ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] != 0.0);
 
   stream_t.SetSamplesToZero();
   mic_t.Reset();
   mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kLeftChannel)[0] == 0.0);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kRightChannel)[0] == 0.0);
+  ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] == 0.0);
+  ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] == 0.0);
 
   // Testing bypass
   stream_t.SetSamplesToZero();
   mic_t.SetBypass(false);
   mic_t.SetBypass(true);
   mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(1.2), Point(0.0, 0.0, -1.0), stream_t);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kLeftChannel)[0] == 1.2);
-  ASSERT(stream_t.GetChannelReference(Buffer<Sample>::kRightChannel)[0] == 1.2);
+  ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] == 1.2);
+  ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] == 1.2);
 
   stream_t.SetSamplesToZero();
   mic_t.SetBypass(false);
   mic_t.ReceiveAndAddToBuffer(impulse, Point(0.0, 0.0, -1.0), stream_t);
-  ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Buffer<Sample>::kLeftChannel), cmp_imp_back_left));
-  ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Buffer<Sample>::kRightChannel), cmp_imp_back_right));
+  ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft), cmp_imp_back_left));
+  ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight), cmp_imp_back_right));
 
   return true;
 }

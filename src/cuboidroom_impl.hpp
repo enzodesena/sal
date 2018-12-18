@@ -8,13 +8,10 @@
 
 #include "cuboidroom.hpp"
 #include "vector.hpp"
-#include <cassert>
-#define EPSILON 1E-10
 
 namespace sal
 {
 using sal::Length;
-using mcl::Point;
 using mcl::Int;
 using sal::Int;
 using sal::Time;
@@ -22,8 +19,8 @@ using sal::Sample;
 using mcl::IsLargerOrEqual;
 using mcl::IsSmallerOrEqual;
 
-
-bool CuboidRoom::IsPointInRoom(
+template<typename T>
+bool CuboidRoom<T>::IsPointInRoom(
   const Point& point,
   const Length wall_distance) const noexcept
 {
@@ -39,14 +36,15 @@ bool CuboidRoom::IsPointInRoom(
 }
 
 
-mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(
+template<typename T>
+mcl::Vector<Point> CuboidRoom<T>::GetBoundaryPoints(
   const Point& source_point,
   const Point& mic_point) const noexcept
 {
   // These points are normalised such that they are between 0<x<Lx etc...
-  mcl::Point shifted_source_point = mcl::Subtract(
+  Point shifted_source_point = mcl::Subtract(
     source_point, origin_position_);
-  mcl::Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
+  Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
   mcl::Vector<Point> reflection_points(6);
 
   reflection_points[0] = ReflectionPoint(
@@ -83,14 +81,14 @@ mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(
       dimensions_,
       shifted_mic_point,
       ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(a_kX2, EPSILON))
+    if (IsPointInRoom(a_kX2, VERY_SMALL))
     {
-      ASSERT(!IsPointInRoom(a_kY1, EPSILON));
+      ASSERT(!IsPointInRoom(a_kY1, VERY_SMALL));
       reflection_points.push_back(a_kX2);
     }
     else
     {
-      ASSERT(!IsPointInRoom(a_kX2, EPSILON));
+      ASSERT(!IsPointInRoom(a_kX2, VERY_SMALL));
       reflection_points.push_back(a_kY1);
     }
 
@@ -106,14 +104,14 @@ mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(
       dimensions_,
       shifted_mic_point,
       ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(b_kX2, EPSILON))
+    if (IsPointInRoom(b_kX2, VERY_SMALL))
     {
-      ASSERT(!IsPointInRoom(b_kY2, EPSILON));
+      ASSERT(!IsPointInRoom(b_kY2, VERY_SMALL));
       reflection_points.push_back(b_kX2);
     }
     else
     {
-      ASSERT(!IsPointInRoom(b_kX2, EPSILON));
+      ASSERT(!IsPointInRoom(b_kX2, VERY_SMALL));
       reflection_points.push_back(b_kY2);
     }
 
@@ -129,14 +127,14 @@ mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(
       dimensions_,
       shifted_mic_point,
       ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(c_kX1, EPSILON))
+    if (IsPointInRoom(c_kX1, VERY_SMALL))
     {
-      ASSERT(!IsPointInRoom(c_kY2, EPSILON));
+      ASSERT(!IsPointInRoom(c_kY2, VERY_SMALL));
       reflection_points.push_back(c_kX1);
     }
     else
     {
-      ASSERT(!IsPointInRoom(c_kX1, EPSILON));
+      ASSERT(!IsPointInRoom(c_kX1, VERY_SMALL));
       reflection_points.push_back(c_kY2);
     }
 
@@ -152,14 +150,14 @@ mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(
       dimensions_,
       shifted_mic_point,
       ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(d_kX1, EPSILON))
+    if (IsPointInRoom(d_kX1, VERY_SMALL))
     {
-      ASSERT(!IsPointInRoom(d_kY1, EPSILON));
+      ASSERT(!IsPointInRoom(d_kY1, VERY_SMALL));
       reflection_points.push_back(d_kX1);
     }
     else
     {
-      ASSERT(!IsPointInRoom(d_kX1, EPSILON));
+      ASSERT(!IsPointInRoom(d_kX1, VERY_SMALL));
       reflection_points.push_back(d_kY1);
     }
   }
@@ -186,12 +184,12 @@ mcl::Vector<Point> CuboidRoom::CalculateBoundaryPoints(
 }
 
 
-mcl::Vector<mcl::IirFilter>
-CuboidRoom::GetBoundaryFilters(
+mcl::Vector<mcl::DigitalFilter<T>>
+CuboidRoom<T>::GetBoundaryFilters(
   const Point& source_point,
   const Point& mic_point) const noexcept
 {
-  mcl::Vector<mcl::IirFilter> boundary_filters(wall_filters_);
+  mcl::Vector<mcl::DigitalFilter<T>> boundary_filters(wall_filters_);
 
   if (boundary_set_type_ == kFirstAndSecondOrder)
   {
@@ -201,7 +199,7 @@ CuboidRoom::GetBoundaryFilters(
       dimensions_,
       mic_point,
       ImageSourcePosition(source_point, 1, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(a_kX2, EPSILON))
+    if (IsPointInRoom(a_kX2, VERY_SMALL))
     {
       boundary_filters.push_back(boundary_filters[kX2]);
     }
@@ -216,7 +214,7 @@ CuboidRoom::GetBoundaryFilters(
       mic_point,
       dimensions_,
       ImageSourcePosition(source_point, 1, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(b_kX2, EPSILON))
+    if (IsPointInRoom(b_kX2, VERY_SMALL))
     {
       boundary_filters.push_back(boundary_filters[kX2]);
     }
@@ -231,7 +229,7 @@ CuboidRoom::GetBoundaryFilters(
       mic_point,
       dimensions_,
       ImageSourcePosition(source_point, 0, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(c_kX1, EPSILON))
+    if (IsPointInRoom(c_kX1, VERY_SMALL))
     {
       boundary_filters.push_back(boundary_filters[kX1]);
     }
@@ -246,7 +244,7 @@ CuboidRoom::GetBoundaryFilters(
       mic_point,
       dimensions_,
       ImageSourcePosition(source_point, 0, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(d_kX1, EPSILON))
+    if (IsPointInRoom(d_kX1, VERY_SMALL))
     {
       boundary_filters.push_back(boundary_filters[kX1]);
     }
@@ -259,7 +257,8 @@ CuboidRoom::GetBoundaryFilters(
 }
 
 
-mcl::Int CuboidRoom::num_boundary_points() const noexcept
+template<typename T>
+mcl::Int CuboidRoom<T>::num_boundary_points() const noexcept
 {
   switch (boundary_set_type_)
   {
@@ -277,7 +276,8 @@ mcl::Int CuboidRoom::num_boundary_points() const noexcept
 }
 
 
-Point CuboidRoom::IntersectionPoint(
+template<typename T>
+Point CuboidRoom<T>::IntersectionPoint(
   const CuboidWallId wall_id,
   const Triplet dimensions,
   const Point& observation_pos,
@@ -326,7 +326,8 @@ Point CuboidRoom::IntersectionPoint(
 }
 
 
-Point CuboidRoom::ReflectionPoint(
+template<typename T>
+Point CuboidRoom<T>::ReflectionPoint(
   const CuboidWallId wall_id,
   const Point& source_pos,
   const Point& observation_pos) const
@@ -368,7 +369,8 @@ Point CuboidRoom::ReflectionPoint(
 }
 
 
-Time CuboidRoom::SabineRt60() const
+template<typename T>
+Time CuboidRoom<T>::SabineRt60() const
 {
   Length volume = dimensions_.x() * dimensions_.y() * dimensions_.z();
   Length weighted_area = 0.0;
@@ -416,7 +418,8 @@ Time CuboidRoom::SabineRt60() const
 }
 
 
-mcl::Point CuboidRoom::ImageSourcePosition(
+template<typename T>
+Point CuboidRoom<T>::ImageSourcePosition(
   const Point& source_position,
   const Int mx,
   const Int my,
@@ -436,7 +439,8 @@ mcl::Point CuboidRoom::ImageSourcePosition(
 }
 
 
-std::string CuboidRoom::ShapeDescription() const noexcept
+template<typename T>
+std::string CuboidRoom<T>::ShapeDescription() const noexcept
 {
   return "The room is rectangular with " +
     ToString(origin_position_.x()) + "<x<" +

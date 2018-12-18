@@ -1,30 +1,19 @@
 /*
- propagationline.cpp
  Spatial Audio Library (SAL)
- Copyright (c) 2011, Enzo De Sena
+ Copyright (c) 2011-2018, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@gmail.com
  
  */
 
-#include "propagationline.hpp"
-#include "salconstants.hpp"
-#include "delayfilter.hpp"
-#include "matrixop.hpp"
-#include "salutilities.hpp"
-#include <cstdlib>
-
-using sal::Length;
-using sal::Time;
-using sal::Sample;
 
 namespace sal
 {
-const Length PropagationLine::kOneSampleDistance = NAN;
 
 
-PropagationLine::PropagationLine(
+template<typename T>
+PropagationLine<T>::PropagationLine(
   const Length distance,
   const Time sampling_frequency,
   const Length max_distance,
@@ -35,7 +24,7 @@ PropagationLine::PropagationLine(
   : sampling_frequency_(sampling_frequency)
   , delay_filter_
   (
-    DelayFilter
+    DelayFilter<T>
     (
       mcl::RoundToInt(ComputeLatency(distance)),
       mcl::RoundToInt(ComputeLatency(max_distance))))
@@ -72,8 +61,9 @@ PropagationLine::PropagationLine(
 }
 
 
-Sample PropagationLine::SanitiseAttenuation(
-  const sal::Sample attenuation)
+template<typename T>
+T PropagationLine<T>::SanitiseAttenuation(
+  const T attenuation)
 {
   if (std::isgreater(mcl::Abs(attenuation), 1.0))
   {
@@ -91,11 +81,12 @@ Sample PropagationLine::SanitiseAttenuation(
 }
 
 
-void PropagationLine::SetAttenuation(
-  const Sample attenuation,
-  const sal::Time ramp_time) noexcept
+template<typename T>
+void PropagationLine<T>::SetAttenuation(
+  const T attenuation,
+  const Time ramp_time) noexcept
 {
-  Sample attenuation_value = (allow_gain_) ?
+  T attenuation_value = (allow_gain_) ?
                                attenuation :
                                SanitiseAttenuation(attenuation);
 
@@ -103,9 +94,10 @@ void PropagationLine::SetAttenuation(
 }
 
 
-void PropagationLine::SetDistance(
+template<typename T>
+void PropagationLine<T>::SetDistance(
   const Length distance,
-  const sal::Time ramp_time) noexcept
+  const Time ramp_time) noexcept
 {
   latency_smoother_.SetTargetValue
   (
@@ -123,7 +115,8 @@ void PropagationLine::SetDistance(
 }
 
 
-void PropagationLine::SetAirFiltersActive(
+template<typename T>
+void PropagationLine<T>::SetAirFiltersActive(
   const bool air_filters_active) noexcept
 {
   air_filters_active_ = air_filters_active;
@@ -134,20 +127,23 @@ void PropagationLine::SetAirFiltersActive(
 }
 
 
+template<typename T>
 /** Resets the state of the filter */
-void PropagationLine::Reset() noexcept
+void PropagationLine<T>::Reset() noexcept
 {
   delay_filter_.Reset();
 }
 
 
-void PropagationLine::Tick() noexcept
+template<typename T>
+void PropagationLine<T>::Tick() noexcept
 {
   Tick(1);
 }
 
 
-void PropagationLine::Tick(
+template<typename T>
+void PropagationLine<T>::Tick(
   const Int num_samples) noexcept
 {
   current_attenuation_ = attenuation_smoother_.GetNextValue(num_samples);
@@ -157,7 +153,8 @@ void PropagationLine::Tick(
 }
 
 
-Time PropagationLine::ComputeLatency(
+template<typename T>
+Time PropagationLine<T>::ComputeLatency(
   const Length distance) noexcept
 {
   ASSERT_WITH_MESSAGE
@@ -168,21 +165,24 @@ Time PropagationLine::ComputeLatency(
 }
 
 
-Sample PropagationLine::ComputeAttenuation(
+template<typename T>
+T PropagationLine<T>::ComputeAttenuation(
   const Length distance) noexcept
 {
-  return (Sample)reference_distance_ / distance;
+  return static_cast<T>(reference_distance_ / distance);
 }
 
 
-sal::Length PropagationLine::distance() const noexcept
+template<typename T>
+sal::Length PropagationLine<T>::distance() const noexcept
 {
   return current_latency_ / sampling_frequency_ * SOUND_SPEED;
 }
 
 
-void PropagationLine::Write(
-  const sal::Sample& sample) noexcept
+template<typename T>
+void PropagationLine<T>::Write(
+  const T sample) noexcept
 {
   if (air_filters_active_)
   {
@@ -195,42 +195,41 @@ void PropagationLine::Write(
 }
 
 
-void PropagationLine::Write(
-  const Sample* samples,
-  const Int num_samples) noexcept
+template<typename T>
+void PropagationLine<T>::Write(
+  const mcl::Vector<T>& input) noexcept
 {
+  const size_t num_samples = input.size();
   ASSERT(num_samples > 0);
 
   if (air_filters_active_)
   {
-    ASSERT(num_samples < MCL_MAX_VLA_LENGTH);
-    MCL_STACK_ALLOCATE(Sample, temp_samples, num_samples);
-    // TODO: handle stack overflow
-    air_filter_.Filter(samples, num_samples, temp_samples);
-    delay_filter_.Write(temp_samples, num_samples);
+    mcl::Vector<T> temp_samples(num_samples);
+    air_filter_.Filter(input, temp_samples);
+    delay_filter_.Write(temp_samples);
   }
   else
   {
-    delay_filter_.Write(samples, num_samples);
+    delay_filter_.Write(input);
   }
 }
 
 
-void PropagationLine::Read(
-  const Int num_samples,
-  Sample* output_data) const noexcept
+template<typename T>
+void PropagationLine<T>::Read(
+  mcl::Vector<T>& output) const noexcept
 {
+  const size_t num_samples = output.size();
   ASSERT(num_samples > 0);
-
   if (interpolation_type_ == sal::InterpolationType::kRounding &&
     ! attenuation_smoother_.IsUpdating() && ! latency_smoother_.IsUpdating())
   {
-    delay_filter_.Read(num_samples, output_data);
-    mcl::Multiply(output_data, num_samples, current_attenuation_, output_data);
+    delay_filter_.Read(output);
+    mcl::Multiply(output, current_attenuation_, output);
   }
   else
   {
-    output_data[0] = Read();
+    output[0] = Read();
 
     if (num_samples > 1)
     {
@@ -240,30 +239,30 @@ void PropagationLine::Read(
 
       if (interpolation_type_ == sal::InterpolationType::kLinear)
       {
-        for (Int i = 1; i < num_samples; ++i)
+        for (size_t i = 1; i < num_samples; ++i)
         {
-          output_data[i] = delay_filter_.FractionalReadAt(
+          output[i] = delay_filter_.FractionalReadAt(
               temp_latency.GetNextValue() - ((Time)i))
             * temp_attenuation.GetNextValue();
         }
       }
       else
       {
-        for (Int i = 1; i < num_samples; ++i)
+        for (size_t i = 1; i < num_samples; ++i)
         {
-          output_data[i] = delay_filter_.ReadAt(
+          output[i] = delay_filter_.ReadAt(
             (mcl::RoundToInt(temp_latency.GetNextValue())) - i);
         }
-        temp_attenuation.GetNextValuesMultiply(
-          &output_data[1], num_samples - 1, &output_data[1]);
+        temp_attenuation.GetNextValuesMultiply(output, output);
       }
     }
   }
 }
 
 
-mcl::Vector<sal::Sample>
-PropagationLine::GetAirFilter(
+template<typename T>
+mcl::Vector<T>
+PropagationLine<T>::GetAirFilter(
   sal::Length distance) noexcept
 {
   mcl::Vector<sal::Length> distances = {
@@ -273,7 +272,7 @@ PropagationLine::GetAirFilter(
     48.329, 61.585, 78.476, 100
   };
 
-  Int filter_index =
+  size_t filter_index =
     mcl::MinIndex
     (
       mcl::Abs
@@ -350,7 +349,7 @@ PropagationLine::GetAirFilter(
     break;
   default:
     ASSERT(false);
-    return mcl::Vector<sal::Sample>(0, 1);
+    return mcl::Vector<T>(0, 1);
   }
 }
 } // namespace sal

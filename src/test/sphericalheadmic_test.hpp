@@ -8,7 +8,7 @@
  
  */
 
-#include "sphericalheadmic.hpp"
+#include "sphericalheaddir.hpp"
 #include "receiver.hpp"
 #include "salconstants.hpp"
 
@@ -108,7 +108,7 @@ inline bool SphericalHeadMicTest()
   output_ipsilateral[3] = 0.0952699695904199;
   output_ipsilateral[4] = 0.0210966838072453;
   output_ipsilateral[5] = 1.2271276500375;
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Buffer<Sample>::kLeftChannel), output_ipsilateral));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kLeft), output_ipsilateral));
 
   // Trying now contralateral case (right ear output due to the
   // direction of left ear).
@@ -119,7 +119,7 @@ inline bool SphericalHeadMicTest()
   output_contralateral[3] = -0.17029879934648;
   output_contralateral[4] = 0.019246147618618;
   output_contralateral[5] = 0.091776572646393;
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Buffer<Sample>::kRightChannel), output_contralateral));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kRight), output_contralateral));
 
   // ASSERT(mcl::IsApproximatelyEqual(mic_a_left.ImpulseResponse(point_line_left), output_a_cmp));
 
@@ -134,8 +134,8 @@ inline bool SphericalHeadMicTest()
   // this test.
   stream_a.SetSamplesToZero();
   mic_a.ReceiveAndAddToBuffer(impulse, point_line_right, stream_a);
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Buffer<Sample>::kRightChannel), output_ipsilateral));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Buffer<Sample>::kLeftChannel), output_contralateral));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kRight), output_ipsilateral));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kLeft), output_contralateral));
 
   Receiver<Sample> mic_b
   (
@@ -157,8 +157,8 @@ inline bool SphericalHeadMicTest()
   (
     IsEqual
     (
-      stream_b.GetChannelReference(Buffer<Sample>::kLeftChannel),
-      stream_b.GetChannelReference(Buffer<Sample>::kRightChannel)));
+      stream_b.GetChannelReference(Channel::kLeft),
+      stream_b.GetChannelReference(Channel::kRight)));
 
   mcl::Vector<Sample> output_frontal(6);
   output_frontal[0] = 0.5249943567937;
@@ -168,24 +168,24 @@ inline bool SphericalHeadMicTest()
   output_frontal[4] = 0.093428452743537;
   output_frontal[5] = -0.12911852945215;
 
-  ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kLeftChannel), output_frontal));
+  ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft), output_frontal));
 
   // Testing reset
   stream_b.SetSamplesToZero();
   mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_b);
-  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kLeftChannel)[0], 0.0));
-  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kRightChannel)[0], 0.0));
+  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
+  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
   stream_b.SetSamplesToZero();
   mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
-  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kLeftChannel)[0], 0.0));
-  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kRightChannel)[0], 0.0));
+  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
+  ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
   stream_b.SetSamplesToZero();
   mic_b.Reset();
   mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
-  ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kLeftChannel)[0], 0.0));
-  ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Buffer<Sample>::kRightChannel)[0], 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
   return true;
 }

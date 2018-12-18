@@ -42,56 +42,31 @@ public:
     Directivity<T> directivity_prototype,
     Point position,
     Quaternion orientation = Quaternion::Identity(),
-    size_t max_num_incoming_waves = 1)
-    : position_(position)
-    , orientation_(orientation)
-    , handedness_(mcl::kRightHanded)
-    , directivity_instances_(max_num_incoming_waves, directivity_prototype)
-    , bypass_(false)
-  {
-  }
+    size_t max_num_incoming_waves = 1);
 
   /** Returns current position of the microphone */
-  Point position() const noexcept
-  {
-    return position_;
-  }
+  Point position() const noexcept;
 
   /** Set microphone position */
   virtual void SetPosition(
-    const Point& position) noexcept
-  {
-    position_ = position;
-  }
+    const Point& position) noexcept;
 
   /** Returns current orientation of the microphone */
-  Quaternion orientation() const noexcept
-  {
-    return orientation_;
-  }
+  Quaternion orientation() const noexcept;
 
   /** Set microphone orientation */
   virtual void SetOrientation(
-    const Quaternion& orientation) noexcept
-  {
-    orientation_ = orientation;
-  }
+    const Quaternion& orientation) noexcept;
 
   /** Set handedness of reference system */
   void SetHandedness(
-    mcl::Handedness handedness) noexcept
-  {
-    handedness_ = handedness;
-  }
+    mcl::Handedness handedness) noexcept;
   
   /** Allows to bypass the directivity pattern.
   @param[in] bypass if true, every call to `ReceiveAndAddToBuffer` will
   simply copy the input to all the channels of the output buffer */
   void SetBypass(
-    bool bypass) noexcept
-  {
-    bypass_ = bypass;
-  }
+    bool bypass) noexcept;
 
   /**
    We need to
@@ -106,96 +81,22 @@ public:
     const mcl::Vector<T>& input,
     const Point& point,
     const size_t wave_id,
-    Buffer<T>& output_buffer) noexcept
-  {
-    ASSERT_WITH_MESSAGE
-    (
-      wave_id<directivity_instances_.size(),
-      "Requested a wave id larger than the max num of incoming waves.");
-    if (! bypass_)
-    {
-      directivity_instances_[wave_id].ReceiveAndAddToBuffer
-      (
-        input,
-        GetRelativePoint(point),
-        output_buffer);
-    }
-    else
-    {
-      for (size_t i=0; i<output_buffer.num_channels(); ++i)
-      {
-        std::copy(input.begin(), input.end(), output_buffer.begin(i));
-      }
-    }
-  }
+    Buffer<T>& output_buffer) noexcept;
 
   void ReceiveAndAddToBuffer(
     const mcl::Vector<T>& input,
     const Point& point,
-    Buffer<T>& output_buffer) noexcept
-  {
-    if (! bypass_)
-    {
-      directivity_instances_[0].ReceiveAndAddToBuffer
-      (
-        input,
-        GetRelativePoint(point),
-        output_buffer);
-    }
-    else
-    {
-      for (size_t i=0; i<output_buffer.num_channels(); ++i)
-      {
-        std::copy(input.begin(), input.end(), output_buffer.begin(i));
-      }
-    }
-  }
+    Buffer<T>& output_buffer) noexcept;
 
   /** Resets the state of the microphone (if any). */
-  virtual void Reset() noexcept
-  {
-    for (
-      auto iter=directivity_instances_.begin();
-      iter != directivity_instances_.end();
-      ++iter)
-    {
-      (*iter).Reset();
-    }
-  }
+  virtual void Reset() noexcept;
 
 
 private:
 
   /** This method translates `point` in the reference system of the mic. */
   Point GetRelativePoint(
-    const Point& point) const noexcept
-  {
-    if (mcl::IsEqual(point, position_))
-    {
-      mcl::Logger::GetInstance().
-        LogError
-        (
-          "Microphone (%f, %f, %f) and observation point (%f, %f, %f) appear "
-          "to be approximately in the same position. Behaviour undefined.",
-          point.x(),
-          point.y(),
-          point.z(),
-          position_.x(),
-          position_.y(),
-          position_.z());
-    }
-
-    // Instead of rotating the head, we are rotating the point in an opposite
-    // direction (that's why the QuatInverse).
-    Point rotated = mcl::QuatRotate
-    (
-      mcl::QuatInverse(orientation_),
-      Point(point.x() - position_.x(),
-      point.y() - position_.y(),
-      point.z() - position_.z()),
-      handedness_);
-    return rotated;
-  }
+    const Point& point) const noexcept;
   
   Point position_;
   Quaternion orientation_;
@@ -209,3 +110,5 @@ private:
 
 
 } // namespace sal
+
+#include "receiver_impl.hpp"

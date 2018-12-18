@@ -6,8 +6,7 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef SAL_TDBEM_H
-#define SAL_TDBEM_H
+#pragma once
 
 #include "cuboidroom.hpp"
 #include "source.hpp"
@@ -111,4 +110,3 @@ public:
 };
 } // namespace sal
 
-#endif

@@ -1,5 +1,4 @@
 /*
- decoder
  Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
@@ -8,8 +7,7 @@
  
  */
 
-#ifndef SAL_decoder_h
-#define SAL_decoder_h
+#pragma once
 
 #include "audiobuffer.hpp"
 #include "vectorop.hpp"
@@ -61,5 +59,3 @@ public:
   }
 };
 } // namespace sal
-
-#endif

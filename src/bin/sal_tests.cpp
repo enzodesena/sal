@@ -11,17 +11,16 @@
 #include <iostream>
 
 #include "audiobuffer.hpp"
-#include "audiobuffer_test.hpp"
 #include "receiver.hpp"
 //#include "microphonearray.hpp"
-#include "sphericalheadmic.hpp"
-#include "kemarmic.hpp"
+#include "sphericalheaddir.hpp"
+#include "kemardir.hpp"
 //#include "ambisonics.hpp"
 #include "delayfilter.hpp"
 #include "propagationline.hpp"
 //#include "freefieldsimulation.hpp"
 //#include "wavhandler.hpp"
-#include "cipicdirectivity.hpp"
+#include "cipicdir.hpp"
 //#include "ism.hpp"
 //#include "cuboidroom.hpp"
 //#include "fdtd.hpp"
@@ -31,6 +30,7 @@
 //#include "vector.hpp"
 
 
+#include "audiobuffer_test.hpp"
 #include "delayfilter_test.hpp"
 #include "microphone_test.hpp"
 #include "kemarmic_test.hpp"

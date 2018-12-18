@@ -6,8 +6,7 @@
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef SAL_ISM_H
-#define SAL_ISM_H
+#pragma once
 
 #include "cuboidroom.hpp"
 #include "source.hpp"
@@ -99,6 +98,9 @@ public:
 
   static bool Test();
 };
+
+
+
 } // namespace sal
 
-#endif
+#include "ism_impl.hpp"

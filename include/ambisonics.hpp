@@ -11,8 +11,7 @@
  
  */
 
-#ifndef SAL_HOA_H
-#define SAL_HOA_H
+#pragma once
 
 #include "receiver.hpp"
 #include "point.hpp"
@@ -216,4 +215,4 @@ private:
 };
 } // namespace sal
 
-#endif
+#include "ambisonics_impl.hpp"

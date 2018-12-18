@@ -8,7 +8,6 @@
  
  */
 
-#include "pawrapper.hpp"
 
 namespace sal
 {
@@ -36,7 +35,7 @@ void PaWrapper::PrintDevicesInfo()
 
 
 mcl::Vector<mcl::Int> PaWrapper::SelectChannelIds(
-  const Int num_loudspeakers,
+  const size_t num_loudspeakers,
   const Int out_dev_id)
 {
   Init();
@@ -46,7 +45,7 @@ mcl::Vector<mcl::Int> PaWrapper::SelectChannelIds(
   mcl::Vector<mcl::Int> channel_ids = mcl::Vector<Int>(max_num_channels, -1);
   for (int i = 0; i < num_loudspeakers; ++i)
   {
-    Int channel_id;
+    size_t channel_id;
     std::cout << "Select channel id for mic n.: " << i << " (from 0 to " <<
       (max_num_channels - 1) << "): ";
     std::cin >> channel_id;
@@ -59,12 +58,12 @@ mcl::Vector<mcl::Int> PaWrapper::SelectChannelIds(
 }
 
 
-Int PaWrapper::NumOutputChannels(
+size_t PaWrapper::NumOutputChannels(
   const Int out_dev_id)
 {
   Init();
   const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int)out_dev_id));
-  const Int max_num_channels(deviceInfo->maxOutputChannels);
+  const size_t max_num_channels(deviceInfo->maxOutputChannels);
   Terminate();
   return max_num_channels;
 }
@@ -76,8 +75,6 @@ PaWrapper::PaWrapper(
   mcl::Vector<Int> channel_ids)
   : channel_ids_(channel_ids)
 {
-  //if (decoder->num_loudspeakers() != channel_ids.size()) { ASSERT(false); }
-
   Init();
 
   const PaDeviceInfo* device_info = Pa_GetDeviceInfo((int)out_dev_num);
@@ -114,13 +111,13 @@ PaError PaWrapper::StartStream()
   return Pa_StartStream(stream_);
 }
 
-
+template<typename T>
 PaError PaWrapper::WriteStream(
-  const Buffer& output_buffer)
+  const Buffer<T>& output_buffer)
 {
-  const Int num_samples = output_buffer.num_samples();
-  sal::Int max_num_channels = channel_ids_.size();
-  const Int block_length = num_samples * max_num_channels;
+  const size_t num_samples = output_buffer.num_samples();
+  size_t max_num_channels = channel_ids_.size();
+  const size_t block_length = num_samples * max_num_channels;
   float sample_block[block_length];
 
   for (Int i = 0; i < num_samples; ++i)

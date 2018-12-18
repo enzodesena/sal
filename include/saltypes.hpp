@@ -10,8 +10,7 @@
  
  */
 
-#ifndef SAL_TYPES_H
-#define SAL_TYPES_H
+#pragma once
 
 #include "vector.hpp"
 #include "point.hpp"
@@ -37,6 +36,14 @@ struct StereoSignal
 {
   Signal<T> left;
   Signal<T> right;
+};
+
+
+struct Channel
+{
+  static constexpr size_t kMono= 0;
+  static constexpr size_t kLeft = 0;
+  static constexpr size_t kRight = 1;
 };
 
 template<typename T, std::size_t N>
@@ -74,5 +81,3 @@ enum class InterpolationType
              effect. */
 };
 } // namespace sal
-
-#endif

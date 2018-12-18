@@ -11,15 +11,6 @@
  
  */
 
-#include "freefieldsimulation.hpp"
-#include "saltypes.hpp"
-#include "propagationline.hpp"
-#include "point.hpp"
-#include "source.hpp"
-#include "receiver.hpp"
-#include "vector.hpp"
-
-using mcl::Point;
 
 namespace sal
 {
