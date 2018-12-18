@@ -12,7 +12,6 @@
 		570EACA820BF9410000E2618 /* kemarmicdata.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.hpp */; };
 		572A878319C0712500F62F8F /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
-		572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		572A878D19C0712500F62F8F /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		572C3BEB1B35F9CF0071BB39 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */; };
 		5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
@@ -23,23 +22,18 @@
 		5778112920600683004B9C6F /* tdbem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112020600683004B9C6F /* tdbem.cpp */; };
 		5778112B20600683004B9C6F /* cuboidroom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112120600683004B9C6F /* cuboidroom.cpp */; };
 		5778112C20600683004B9C6F /* cuboidroom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112120600683004B9C6F /* cuboidroom.cpp */; };
-		5778112E20600683004B9C6F /* riranalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112220600683004B9C6F /* riranalysis.cpp */; };
-		5778112F20600683004B9C6F /* riranalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112220600683004B9C6F /* riranalysis.cpp */; };
 		5778113120600683004B9C6F /* fdtd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112320600683004B9C6F /* fdtd.cpp */; };
 		5778113220600683004B9C6F /* fdtd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5778112320600683004B9C6F /* fdtd.cpp */; };
 		577834E721AC9E0F007FD06C /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF841CD81A8D00134991 /* sal_tests.cpp */; };
 		57895F6216304F18002C962B /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		578BDE672149BE70001D89B9 /* kemarmicdata.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 570EACA220BF920D000E2618 /* kemarmicdata.hpp */; };
-		57AA6152205C9C3A0044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
-		57AA6159205C9D290044A3A9 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
 		57AA615B205C9D290044A3A9 /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */; };
 		57AA615E205C9D290044A3A9 /* delayfilter_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF881CD81AB400134991 /* delayfilter_test.hpp */; };
 		57AA615F205C9D290044A3A9 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		57AA6160205C9D290044A3A9 /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		57AA6161205C9D290044A3A9 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
-		57AA6164205C9D290044A3A9 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		57AA6165205C9D290044A3A9 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
-		57AA6167205C9D290044A3A9 /* propagationline_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */; };
+		57AA6167205C9D290044A3A9 /* propagationline_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.hpp */; };
 		57AA6169205C9D290044A3A9 /* cipicdirectivity_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicdirectivity_test.hpp */; };
 		57AA616A205C9D290044A3A9 /* sphericalheadmic_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.hpp */; };
 		57AA616B205C9D290044A3A9 /* microphone_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.hpp */; };
@@ -66,8 +60,7 @@
 		57B0547E1D6B361300202654 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		57B054801D6B361300202654 /* propagationline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57895F5D16304F18002C962B /* propagationline.cpp */; };
 		57B054811D6B361300202654 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
-		57B054851D6B361300202654 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
-		57B054881D6B361300202654 /* propagationline_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */; };
+		57B054881D6B361300202654 /* propagationline_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8E1CD81AB400134991 /* propagationline_test.hpp */; };
 		57B0548B1D6B361300202654 /* cipicdirectivity_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF871CD81AB400134991 /* cipicdirectivity_test.hpp */; };
 		57B0548C1D6B361300202654 /* sphericalheadmic_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF901CD81AB400134991 /* sphericalheadmic_test.hpp */; };
 		57B0548E1D6B361300202654 /* microphone_test.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.hpp */; };
@@ -82,14 +75,11 @@
 		57B0549A1D6B361300202654 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C61C95AD2E00149808 /* CoreAudio.framework */; };
 		57B0549B1D6B361300202654 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572C3BEA1B35F9CF0071BB39 /* Accelerate.framework */; };
 		57B054A11D6B363100202654 /* sal_sound_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B054731D6B360B00202654 /* sal_sound_test.cpp */; };
-		57C94CD2204F86E200471213 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
-		57C94CD4204F86E500471213 /* salutilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C94CC6204F853400471213 /* salutilities.cpp */; };
 		57CE72BC1C95844A00149808 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57CE72CA1C95AD4900149808 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C61C95AD2E00149808 /* CoreAudio.framework */; };
 		57CE72CB1C95AD5700149808 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C81C95AD3F00149808 /* AudioUnit.framework */; };
 		57CE72CD1C95AD6900149808 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72CC1C95AD6900149808 /* AudioToolbox.framework */; };
 		57CE72D01C95AD8C00149808 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72CE1C95AD7600149808 /* Carbon.framework */; };
-		57D7EB601625CE5A00771188 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,7 +182,6 @@
 		5778111E20600683004B9C6F /* ism.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ism.cpp; path = src/ism.cpp; sourceTree = "<group>"; };
 		5778112020600683004B9C6F /* tdbem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tdbem.cpp; path = src/tdbem.cpp; sourceTree = "<group>"; };
 		5778112120600683004B9C6F /* cuboidroom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cuboidroom.cpp; path = src/cuboidroom.cpp; sourceTree = "<group>"; };
-		5778112220600683004B9C6F /* riranalysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = riranalysis.cpp; path = src/riranalysis.cpp; sourceTree = "<group>"; };
 		5778112320600683004B9C6F /* fdtd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fdtd.cpp; path = src/fdtd.cpp; sourceTree = "<group>"; };
 		57781133206006D1004B9C6F /* room.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = room.hpp; path = include/room.hpp; sourceTree = "<group>"; };
 		57781134206006D1004B9C6F /* cuboidroom.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = cuboidroom.hpp; path = include/cuboidroom.hpp; sourceTree = "<group>"; };
@@ -200,12 +189,11 @@
 		57781136206006D1004B9C6F /* ism.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ism.hpp; path = include/ism.hpp; sourceTree = "<group>"; };
 		57781137206006D1004B9C6F /* tdbem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = tdbem.hpp; path = include/tdbem.hpp; sourceTree = "<group>"; };
 		57781138206006D1004B9C6F /* riranalysis.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = riranalysis.hpp; path = include/riranalysis.hpp; sourceTree = "<group>"; };
-		5778113920600B5A004B9C6F /* riranalysis_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = riranalysis_test.cpp; path = src/test/riranalysis_test.cpp; sourceTree = "<group>"; };
+		5778113920600B5A004B9C6F /* riranalysis_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = riranalysis_test.hpp; path = src/test/riranalysis_test.hpp; sourceTree = "<group>"; };
 		5778113A20600B5A004B9C6F /* ism_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ism_test.cpp; path = src/test/ism_test.cpp; sourceTree = "<group>"; };
 		5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cuboidroom_test.cpp; path = src/test/cuboidroom_test.cpp; sourceTree = "<group>"; };
 		5778113C20600B5A004B9C6F /* tdbem_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tdbem_test.cpp; path = src/test/tdbem_test.cpp; sourceTree = "<group>"; };
 		5778113D20600B5A004B9C6F /* fdtd_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fdtd_test.cpp; path = src/test/fdtd_test.cpp; sourceTree = "<group>"; };
-		578751E715AE01590008761C /* sphericalmic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sphericalmic.cpp; path = src/sphericalmic.cpp; sourceTree = "<group>"; };
 		5787B4F0208031060068C104 /* salutilities_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = salutilities_test.cpp; path = src/test/salutilities_test.cpp; sourceTree = "<group>"; };
 		57895F5B16304F00002C962B /* propagationline.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = propagationline.hpp; path = include/propagationline.hpp; sourceTree = "<group>"; };
 		57895F5D16304F18002C962B /* propagationline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = propagationline.cpp; path = src/propagationline.cpp; sourceTree = "<group>"; };
@@ -239,13 +227,12 @@
 		57B4EF8A1CD81AB400134991 /* kemarmic_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = kemarmic_test.hpp; path = src/test/kemarmic_test.hpp; sourceTree = "<group>"; };
 		57B4EF8B1CD81AB400134991 /* microphone_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = microphone_test.hpp; path = src/test/microphone_test.hpp; sourceTree = "<group>"; };
 		57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = microphonearray_test.cpp; path = src/test/microphonearray_test.cpp; sourceTree = "<group>"; };
-		57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = propagationline_test.cpp; path = src/test/propagationline_test.cpp; sourceTree = "<group>"; };
+		57B4EF8E1CD81AB400134991 /* propagationline_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = propagationline_test.hpp; path = src/test/propagationline_test.hpp; sourceTree = "<group>"; };
 		57B4EF901CD81AB400134991 /* sphericalheadmic_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = sphericalheadmic_test.hpp; path = src/test/sphericalheadmic_test.hpp; sourceTree = "<group>"; };
 		57B4EF9F1CD81B6900134991 /* libSAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B4EFA01CD81B6900134991 /* libSALiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSALiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57C2C7A51B17399000B7F58C /* binauralmic.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = binauralmic.hpp; path = include/binauralmic.hpp; sourceTree = "<group>"; };
 		57C94CC4204F851100471213 /* salutilities.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = salutilities.hpp; path = include/salutilities.hpp; sourceTree = "<group>"; };
-		57C94CC6204F853400471213 /* salutilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = salutilities.cpp; path = src/salutilities.cpp; sourceTree = "<group>"; };
 		57CE72B91C9583FC00149808 /* pawrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pawrapper.cpp; path = src/pawrapper.cpp; sourceTree = "<group>"; };
 		57CE72C61C95AD2E00149808 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		57CE72C81C95AD3F00149808 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -351,11 +338,8 @@
 				5778112120600683004B9C6F /* cuboidroom.cpp */,
 				5778112320600683004B9C6F /* fdtd.cpp */,
 				5778111E20600683004B9C6F /* ism.cpp */,
-				5778112220600683004B9C6F /* riranalysis.cpp */,
 				5778112020600683004B9C6F /* tdbem.cpp */,
 				57895F5D16304F18002C962B /* propagationline.cpp */,
-				578751E715AE01590008761C /* sphericalmic.cpp */,
-				57C94CC6204F853400471213 /* salutilities.cpp */,
 				57CE72B91C9583FC00149808 /* pawrapper.cpp */,
 				578E967215D128820094FBBE /* freefieldsimulation.cpp */,
 				57A156E51593462300AA6445 /* test */,
@@ -413,8 +397,6 @@
 				5778113B20600B5A004B9C6F /* cuboidroom_test.cpp */,
 				5778113D20600B5A004B9C6F /* fdtd_test.cpp */,
 				5778113A20600B5A004B9C6F /* ism_test.cpp */,
-				5778113920600B5A004B9C6F /* riranalysis_test.cpp */,
-				5778113C20600B5A004B9C6F /* tdbem_test.cpp */,
 				57B4EF861CD81AB400134991 /* ambisonics_test.cpp */,
 				57B4EF871CD81AB400134991 /* cipicdirectivity_test.hpp */,
 				57B4EF881CD81AB400134991 /* delayfilter_test.hpp */,
@@ -422,9 +404,11 @@
 				57B4EF8A1CD81AB400134991 /* kemarmic_test.hpp */,
 				57B4EF8B1CD81AB400134991 /* microphone_test.hpp */,
 				57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */,
-				57B4EF8E1CD81AB400134991 /* propagationline_test.cpp */,
+				5778113920600B5A004B9C6F /* riranalysis_test.hpp */,
+				57B4EF8E1CD81AB400134991 /* propagationline_test.hpp */,
 				57B4EF901CD81AB400134991 /* sphericalheadmic_test.hpp */,
 				5787B4F0208031060068C104 /* salutilities_test.cpp */,
+				5778113C20600B5A004B9C6F /* tdbem_test.cpp */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -681,16 +665,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				572A878319C0712500F62F8F /* ambisonics.cpp in Sources */,
-				5778112F20600683004B9C6F /* riranalysis.cpp in Sources */,
 				572A878419C0712500F62F8F /* freefieldsimulation.cpp in Sources */,
-				572A878519C0712500F62F8F /* sphericalmic.cpp in Sources */,
 				578BDE672149BE70001D89B9 /* kemarmicdata.hpp in Sources */,
 				5778112C20600683004B9C6F /* cuboidroom.cpp in Sources */,
 				5778112620600683004B9C6F /* ism.cpp in Sources */,
 				572A878D19C0712500F62F8F /* propagationline.cpp in Sources */,
 				5778113220600683004B9C6F /* fdtd.cpp in Sources */,
 				5778112920600683004B9C6F /* tdbem.cpp in Sources */,
-				57C94CD4204F86E500471213 /* salutilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,13 +692,10 @@
 				5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */,
 				5778112B20600683004B9C6F /* cuboidroom.cpp in Sources */,
 				57595410174123EE0015B9A0 /* freefieldsimulation.cpp in Sources */,
-				57D7EB601625CE5A00771188 /* sphericalmic.cpp in Sources */,
-				5778112E20600683004B9C6F /* riranalysis.cpp in Sources */,
 				57895F6216304F18002C962B /* propagationline.cpp in Sources */,
 				5778113120600683004B9C6F /* fdtd.cpp in Sources */,
 				5778112520600683004B9C6F /* ism.cpp in Sources */,
 				5778112820600683004B9C6F /* tdbem.cpp in Sources */,
-				57C94CD2204F86E200471213 /* salutilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -726,16 +704,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				57AA617F205C9D3D0044A3A9 /* sal_doppler.cpp in Sources */,
-				57AA6159205C9D290044A3A9 /* salutilities.cpp in Sources */,
 				57AA615B205C9D290044A3A9 /* microphonearray_test.cpp in Sources */,
 				570EACA620BF9217000E2618 /* kemarmicdata.hpp in Sources */,
 				57AA615E205C9D290044A3A9 /* delayfilter_test.hpp in Sources */,
 				57AA615F205C9D290044A3A9 /* freefieldsimulation.cpp in Sources */,
 				57AA6160205C9D290044A3A9 /* propagationline.cpp in Sources */,
 				57AA6161205C9D290044A3A9 /* ambisonics.cpp in Sources */,
-				57AA6164205C9D290044A3A9 /* sphericalmic.cpp in Sources */,
 				57AA6165205C9D290044A3A9 /* pawrapper.cpp in Sources */,
-				57AA6167205C9D290044A3A9 /* propagationline_test.cpp in Sources */,
+				57AA6167205C9D290044A3A9 /* propagationline_test.hpp in Sources */,
 				57AA6169205C9D290044A3A9 /* cipicdirectivity_test.hpp in Sources */,
 				57AA616A205C9D290044A3A9 /* sphericalheadmic_test.hpp in Sources */,
 				57AA616B205C9D290044A3A9 /* microphone_test.hpp in Sources */,
@@ -749,7 +725,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57AA6152205C9C3A0044A3A9 /* salutilities.cpp in Sources */,
 				57B054A11D6B363100202654 /* sal_sound_test.cpp in Sources */,
 				57B0547A1D6B361300202654 /* microphonearray_test.cpp in Sources */,
 				570EACA720BF9217000E2618 /* kemarmicdata.hpp in Sources */,
@@ -757,9 +732,8 @@
 				57B0547E1D6B361300202654 /* freefieldsimulation.cpp in Sources */,
 				57B054801D6B361300202654 /* propagationline.cpp in Sources */,
 				57B054811D6B361300202654 /* ambisonics.cpp in Sources */,
-				57B054851D6B361300202654 /* sphericalmic.cpp in Sources */,
 				57B054791D6B361300202654 /* pawrapper.cpp in Sources */,
-				57B054881D6B361300202654 /* propagationline_test.cpp in Sources */,
+				57B054881D6B361300202654 /* propagationline_test.hpp in Sources */,
 				57B0548B1D6B361300202654 /* cipicdirectivity_test.hpp in Sources */,
 				57B0548C1D6B361300202654 /* sphericalheadmic_test.hpp in Sources */,
 				57B0548E1D6B361300202654 /* microphone_test.hpp in Sources */,

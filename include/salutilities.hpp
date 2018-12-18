@@ -21,9 +21,18 @@
 
 namespace sal
 {
-mcl::Vector<Angle> UniformAngles(
-  Int num_microphones,
-  Angle first_element_heading);
+inline mcl::Vector<Angle> UniformAngles(
+  const size_t num_elements,
+  const Angle first_element_heading)
+{
+  mcl::Vector<Angle> angles(num_elements);
+  for (size_t i = 0; i < num_elements; ++i)
+  {
+    angles[i] = first_element_heading +
+      2.0 * PI / ((Angle)num_elements) * ((Angle)i);
+  }
+  return angles;
+}
 
 
 template<class T, class V>

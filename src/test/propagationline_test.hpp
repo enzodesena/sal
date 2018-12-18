@@ -13,15 +13,10 @@
 #include "salconstants.hpp"
 #include "comparisonop.hpp"
 
-using mcl::IsEqual;
-using sal::Length;
-using sal::Time;
-using mcl::Point;
-using sal::Sample;
 
 namespace sal
 {
-bool PropagationLine::Test()
+inline bool PropagationLineTest()
 {
   Time FS = 40000;
   Length distance = (Length)3.0 * SOUND_SPEED / FS;
@@ -29,42 +24,42 @@ bool PropagationLine::Test()
   Point point_a(0, 0, 0);
   Point point_b(distance, 0, 0);
 
-  ASSERT(IsEqual(Distance(point_a, point_b), distance));
+  ASSERT(mcl::IsApproximatelyEqual(Distance(point_a, point_b), distance));
 
   Sample attenuation = (Sample)(SOUND_SPEED / FS) / (distance);
   Time delay = distance / SOUND_SPEED;
   Time latency = delay * FS;
 
-  ASSERT(IsEqual(latency, 3.0));
+  ASSERT(mcl::IsApproximatelyEqual(latency, 3.0));
 
-  PropagationLine prop_line_a = PropagationLine(distance, FS);
+  PropagationLine<Sample> prop_line_a(distance, FS);
 
   prop_line_a.Write(1.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 0.0));
 
   prop_line_a.Tick();
   prop_line_a.Write(2.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 0.0));
 
   prop_line_a.Tick();
   prop_line_a.Write(3.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 0.0));
 
   prop_line_a.Tick();
   prop_line_a.Write(-1.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 1.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 1.0 * attenuation));
 
   prop_line_a.Tick();
   prop_line_a.Write(-1.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 2.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 2.0 * attenuation));
 
   prop_line_a.Tick();
   prop_line_a.Write(-1.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 3.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 3.0 * attenuation));
 
   prop_line_a.Tick();
   prop_line_a.Write(-1.0);
-  ASSERT(IsEqual(prop_line_a.Read(), -1.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), -1.0 * attenuation));
 
   //
   prop_line_a.Reset();
@@ -73,18 +68,18 @@ bool PropagationLine::Test()
 
   prop_line_a.Tick();
   prop_line_a.Write(1.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 0.0));
+  ASSERT(prop_line_a.Read() == 0.0);
 
   prop_line_a.Tick();
   prop_line_a.Write(2.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 0.0));
+  ASSERT(prop_line_a.Read() == 0.0);
 
   prop_line_a.Tick();
   prop_line_a.Write(3.0);
-  ASSERT(IsEqual(prop_line_a.Read(), 1.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), 1.0 * attenuation));
 
   //
-  PropagationLine prop_line_b = PropagationLine
+  PropagationLine<Sample> prop_line_b
   (
     (Length)5.0 * SOUND_SPEED / FS,
     FS,
@@ -99,7 +94,7 @@ bool PropagationLine::Test()
     prop_line_b.Tick();
     prop_line_b.Write(0.0);
   }
-  ASSERT(IsEqual(prop_line_b.Read(), 1.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_b.Read(), 1.0 * attenuation));
 
   prop_line_b.SetDistance((Length)2.0 * SOUND_SPEED / FS);
   attenuation = 1.0 / 2.0;
@@ -115,7 +110,7 @@ bool PropagationLine::Test()
     prop_line_b.Tick();
     prop_line_b.Write(0.0);
   }
-  ASSERT(IsEqual(prop_line_b.Read(), 1.0 * attenuation));
+  ASSERT(mcl::IsApproximatelyEqual(prop_line_b.Read(), 1.0 * attenuation));
 
   // Testing batch processing
   const Int latency_samples = 3;
@@ -133,7 +128,7 @@ bool PropagationLine::Test()
   output_samples = mcl::Multiply<sal::Sample>(output_samples, 1.0 / 3.0);
   assert(input_samples.size() == output_samples.size());
 
-  PropagationLine prop_line_c = PropagationLine
+  PropagationLine<Sample> prop_line_c
   (
     ((Length)latency_samples) * SOUND_SPEED / FS,
     FS,
@@ -143,7 +138,7 @@ bool PropagationLine::Test()
   for (Int i = 0; i < num_samples; ++i)
   {
     prop_line_c.Write(input_samples[i]);
-    ASSERT(IsEqual(prop_line_c.Read(), output_samples[i]));
+    ASSERT(mcl::IsApproximatelyEqual(prop_line_c.Read(), output_samples[i]));
     prop_line_c.Tick();
   }
 
@@ -151,10 +146,10 @@ bool PropagationLine::Test()
   Int stride = 2;
   for (Int i = 0; i < num_samples; i += stride)
   {
-    prop_line_c.Write(&input_samples[i], stride);
-    Sample cmp_samples[stride];
-    prop_line_c.Read(stride, cmp_samples);
-    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    prop_line_c.Write(MakeReference(input_samples, i, stride));
+    mcl::Vector<Sample> cmp_samples(stride);
+    prop_line_c.Read(cmp_samples);
+    ASSERT(mcl::IsApproximatelyEqual(cmp_samples, MakeReference(output_samples, i, stride)));
     prop_line_c.Tick(stride);
   }
 
@@ -162,10 +157,10 @@ bool PropagationLine::Test()
   stride = 3;
   for (Int i = 0; (i + stride) < num_samples; i += stride)
   {
-    prop_line_c.Write(&input_samples[i], stride);
-    Sample cmp_samples[stride];
-    prop_line_c.Read(stride, cmp_samples);
-    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    prop_line_c.Write(MakeReference(input_samples, i, stride));
+    mcl::Vector<Sample> cmp_samples(stride);
+    prop_line_c.Read(cmp_samples);
+    ASSERT(mcl::IsApproximatelyEqual(cmp_samples, MakeReference(output_samples, i, stride)));
     prop_line_c.Tick(stride);
   }
 

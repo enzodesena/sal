@@ -77,7 +77,7 @@ public:
   {
     ASSERT(input.size() == output.size());
     auto input_iter = input.begin();
-    auto output_iter = input.begin();
+    auto output_iter = output.begin();
     if (IsUpdating())
     {
       while (input_iter != input.end())

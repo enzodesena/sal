@@ -18,24 +18,26 @@
 #include "kemarmic.hpp"
 //#include "ambisonics.hpp"
 #include "delayfilter.hpp"
-//#include "propagationline.hpp"
+#include "propagationline.hpp"
 //#include "freefieldsimulation.hpp"
 //#include "wavhandler.hpp"
 #include "cipicdirectivity.hpp"
 //#include "ism.hpp"
 //#include "cuboidroom.hpp"
 //#include "fdtd.hpp"
-//#include "riranalysis.hpp"
+#include "riranalysis.hpp"
 #include "directivity.hpp"
 //#include "tdbem.hpp"
 //#include "vector.hpp"
 
 
-//#include "delayfilter_test.hpp"
+#include "delayfilter_test.hpp"
 #include "microphone_test.hpp"
 #include "kemarmic_test.hpp"
 #include "cipicdirectivity_test.hpp"
 #include "sphericalheadmic_test.hpp"
+#include "riranalysis_test.hpp"
+#include "propagationline_test.hpp"
 
 int main(
   int argc,
@@ -50,12 +52,12 @@ int main(
     sal::CipicMicTest();
     sal::SphericalHeadMicTest();
   //  sal::MicrophoneArrayTest();
-//    sal::DelayFilterTest();
-  //  sal::PropagationLine::Test();
+    sal::DelayFilterTest();
+    sal::PropagationLineTest();
   //  sal::FreeFieldSim::Test();
   //  sal::CuboidRoom::Test();
   //  sal::Ism::Test();
-  //  sal::RirAnalysis::Test();
+    sal::RirAnalysisTest();
   //  sal::TripletHandler::Test();
   //  sal::Fdtd::Test();
 
