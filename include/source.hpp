@@ -32,6 +32,27 @@ public:
 private:
   Triplet position_;
 };
+
+Source::Source(
+  const Point& position) noexcept
+  : position_(position)
+{
+}
+
+
+Point Source::position() const noexcept
+{
+  return position_;
+}
+
+
+void Source::SetPosition(
+  const Point& position) noexcept
+{
+  position_ = position;
+}
+
+
 } // namespace sal
 
 #endif

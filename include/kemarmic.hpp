@@ -118,7 +118,7 @@ private:
     const size_t elevation_index) const noexcept;
   
   
-  mcl::Vector<T>& GetBrir(
+  mcl::Vector<T> GetBrir(
     const Ear ear,
     const Point& point) noexcept override;
 
@@ -157,7 +157,7 @@ KemarDirectivity<T>::KemarDirectivity(
   const size_t num_samples,
   const size_t update_length,
   const HeadRefOrientation reference_orientation) noexcept
-  : DatabaseBinauralDirectivity<T>(reference_orientation, update_length)
+  : DatabaseBinauralDirectivity<T>(update_length, reference_orientation)
 {
   Time employed_sampling_frequency =
     (sampling_frequency > 33075.0)
@@ -295,7 +295,7 @@ size_t KemarDirectivity<T>::GetAzimuthIndex(
 
 
 template<typename T>
-mcl::Vector<T>& KemarDirectivity<T>::GetBrir(
+mcl::Vector<T> KemarDirectivity<T>::GetBrir(
   const Ear ear,
   const Point& point) noexcept
 {

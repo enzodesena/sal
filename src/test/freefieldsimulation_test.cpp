@@ -9,7 +9,7 @@
  */
 
 #include "freefieldsimulation.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "monomics.hpp"
 
 using mcl::Point;

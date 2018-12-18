@@ -9,7 +9,7 @@
  */
 
 #include "ambisonics.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 
 using mcl::Point;
 using mcl::Quaternion;

@@ -19,7 +19,7 @@
 #include "source.hpp"
 #include "saltypes.hpp"
 #include "point.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "propagationline.hpp"
 #include "vector.hpp"
 #include "salconstants.hpp"

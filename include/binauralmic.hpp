@@ -58,7 +58,7 @@ private:
   Point previous_point_;
   size_t update_length_;
 
-  virtual mcl::Vector<T>& GetBrir(
+  virtual mcl::Vector<T> GetBrir(
     const Ear ear,
     const Point& point) noexcept = 0;
   
@@ -87,8 +87,8 @@ private:
   
 public:
   FirBinauralDirectivity(
-    HeadRefOrientation reference_orientation = HeadRefOrientation::x_facing,
-    size_t update_length = 0)
+    size_t update_length = 0,
+    HeadRefOrientation reference_orientation = HeadRefOrientation::x_facing)
     : BinauralDirectivity<T>(reference_orientation)
     , left_filter_(mcl::FirFilter<T>())
     , right_filter_(mcl::FirFilter<T>())
@@ -131,10 +131,17 @@ template<typename T>
 class DatabaseBinauralDirectivity : public FirBinauralDirectivity<T>
 {
 public:
+  /** This is a virtual class that implements binaural patterns that
+  are based on databases of impulse responses.
+  @param[in] reference_orientation the reference orientation of the
+  direcitivity pattern. Default is `x_facing`, i.e. facing the x axis
+  and with the z-axis along the direction of the head.
+  @param[in] update_length how many calls to Receive it takes to update
+  the underlying FIR filter. */
   DatabaseBinauralDirectivity(
-    HeadRefOrientation reference_orientation = HeadRefOrientation::x_facing,
-    size_t update_length = 0)
-    : FirBinauralDirectivity<T>(reference_orientation, update_length)
+    size_t update_length = 0,
+    HeadRefOrientation reference_orientation = HeadRefOrientation::x_facing)
+    : FirBinauralDirectivity<T>(update_length, reference_orientation)
   {
   }
 

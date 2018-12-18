@@ -8,7 +8,7 @@
  
  */
 
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "microphonearray.hpp"
 #include "salconstants.hpp"
 #include "salutilities.hpp"

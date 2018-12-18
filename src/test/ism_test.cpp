@@ -8,7 +8,7 @@
 
 #include "ism.hpp"
 #include "salconstants.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "monomics.hpp"
 #include "source.hpp"
 

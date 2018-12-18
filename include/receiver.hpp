@@ -47,6 +47,7 @@ public:
     , orientation_(orientation)
     , handedness_(mcl::kRightHanded)
     , directivity_instances_(max_num_incoming_waves, directivity_prototype)
+    , bypass_(false)
   {
   }
 
@@ -82,6 +83,15 @@ public:
   {
     handedness_ = handedness;
   }
+  
+  /** Allows to bypass the directivity pattern.
+  @param[in] bypass if true, every call to `ReceiveAndAddToBuffer` will
+  simply copy the input to all the channels of the output buffer */
+  void SetBypass(
+    bool bypass) noexcept
+  {
+    bypass_ = bypass;
+  }
 
   /**
    We need to
@@ -102,11 +112,21 @@ public:
     (
       wave_id<directivity_instances_.size(),
       "Requested a wave id larger than the max num of incoming waves.");
-    directivity_instances_[wave_id].ReceiveAndAddToBuffer
-    (
-      input,
-      GetRelativePoint(point),
-      output_buffer);
+    if (! bypass_)
+    {
+      directivity_instances_[wave_id].ReceiveAndAddToBuffer
+      (
+        input,
+        GetRelativePoint(point),
+        output_buffer);
+    }
+    else
+    {
+      for (size_t i=0; i<output_buffer.num_channels(); ++i)
+      {
+        std::copy(input.begin(), input.end(), output_buffer.begin(i));
+      }
+    }
   }
 
   void ReceiveAndAddToBuffer(
@@ -114,11 +134,21 @@ public:
     const Point& point,
     Buffer<T>& output_buffer) noexcept
   {
-    directivity_instances_[0].ReceiveAndAddToBuffer
-    (
-      input,
-      GetRelativePoint(point),
-      output_buffer);
+    if (! bypass_)
+    {
+      directivity_instances_[0].ReceiveAndAddToBuffer
+      (
+        input,
+        GetRelativePoint(point),
+        output_buffer);
+    }
+    else
+    {
+      for (size_t i=0; i<output_buffer.num_channels(); ++i)
+      {
+        std::copy(input.begin(), input.end(), output_buffer.begin(i));
+      }
+    }
   }
 
   /** Resets the state of the microphone (if any). */
@@ -170,6 +200,7 @@ private:
   Point position_;
   Quaternion orientation_;
   mcl::Handedness handedness_;
+  bool bypass_;
   
   mcl::Vector<Directivity<T>> directivity_instances_;
 };

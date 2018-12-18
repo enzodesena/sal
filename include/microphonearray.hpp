@@ -11,10 +11,10 @@
 #ifndef SAL_MICROPHONEARRAY_H
 #define SAL_MICROPHONEARRAY_H
 
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "point.hpp"
 #include "source.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "saltypes.hpp"
 #include "salconstants.hpp"
 #include "monomics.hpp"

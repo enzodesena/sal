@@ -16,7 +16,7 @@
 #include "propagationline.hpp"
 #include "point.hpp"
 #include "source.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "vector.hpp"
 
 using mcl::Point;

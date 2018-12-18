@@ -14,7 +14,7 @@
 #ifndef SAL_HOA_H
 #define SAL_HOA_H
 
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "point.hpp"
 #include "decoder.hpp"
 #include "microphonearray.hpp"

@@ -12,7 +12,7 @@
 #include "cuboidroom.hpp"
 #include "source.hpp"
 #include "delayfilter.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 #include "firfilter.hpp"
 
 namespace sal

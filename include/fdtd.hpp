@@ -13,7 +13,7 @@
 
 #include "cuboidroom.hpp"
 #include "source.hpp"
-#include "microphone.hpp"
+#include "receiver.hpp"
 
 namespace sal
 {

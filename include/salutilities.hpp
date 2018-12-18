@@ -204,4 +204,3 @@ std::string ToString(
 }
 } // namespace sal
 
-#endif /* salutilities_h */
