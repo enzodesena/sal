@@ -274,7 +274,7 @@ inline bool KemarMicTest()
   ASSERT(! mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight)[0], 0.0, 1.0E-10));
 
   stream_t.SetSamplesToZero();
-  mic_t.Reset();
+  mic_t.ResetState();
   mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight)[0], 0.0));
@@ -307,7 +307,7 @@ inline bool KemarMicTest()
   ASSERT(mcl::IsApproximatelyEqual(cmp_u_left, output_u_left, SMALL));
   ASSERT(mcl::IsApproximatelyEqual(cmp_u_right, output_u_right, SMALL));
 
-  mic_u.Reset();
+  mic_u.ResetState();
   stream_u.SetSamplesToZero();
   mic_u.ReceiveAndAddToBuffer(impulse, Point(1.0, 0.0, 0.0), 1, stream_u);
   mic_u.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), 2, stream_u);
@@ -317,7 +317,6 @@ inline bool KemarMicTest()
 
   Signal<Sample> cmp_u_left_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_left);
   Signal<Sample> cmp_u_right_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_right);
-
   ASSERT(mcl::IsApproximatelyEqual(cmp_u_left_b, output_u_b_left, 0.0001));
   ASSERT(mcl::IsApproximatelyEqual(cmp_u_right_b, output_u_b_right, 0.0001));
 

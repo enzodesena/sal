@@ -130,7 +130,7 @@ bool Ism::Test()
     iir_filters);
 
   Ism isma(&room_absorption, &source, &mic, none, 9, sampling_frequency);
-  test_rir.Reset();
+  test_rir.ResetState();
   isma.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
 
   mcl::Vector<Sample> cmpa = mcl::Zeros<Sample>(9);
@@ -177,8 +177,8 @@ bool Ism::Test()
   // Testing peterson
   // TODO: complete this test.
   //  Ism ism_b(&room_absorption, &source, &mic, peterson, 10, sampling_frequency);
-  //  mic.Reset();
-  //  source.stream()->Reset();
+  //  mic.ResetState();
+  //  source.stream()->ResetState();
   //  mcl::Vector<sal::Sample> signal = {0.3, -0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   //  source.stream()->Push(signal);
   //  ism_b.Run();

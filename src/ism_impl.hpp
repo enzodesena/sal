@@ -45,7 +45,7 @@ void Ism::Run(
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni())
   {
-    mcl::FirFilter filter(rir_);
+    mcl::DigitalFilter<T> filter(rir_);
     assert(num_samples < MCL_MAX_VLA_LENGTH);
     Sample temp[num_samples];
     filter.Filter(input_data, num_samples, temp);
@@ -185,7 +185,7 @@ void Ism::WriteSample(
     rir_.at(id_round) += attenuation;
     images_int_delay_filter_.push_back(sal::DelayFilter(id_round, id_round));
     images_frac_delay_filter_.push_back(
-      mcl::FirFilter::GainFilter(attenuation));
+      mcl::DigitalFilter<T>::GainFilter(attenuation));
     break;
   }
   case peterson:
@@ -229,7 +229,7 @@ void Ism::WriteSample(
       (
         nneg_integer_delay,
         nneg_integer_delay));
-    images_frac_delay_filter_.push_back(mcl::FirFilter(filter_coefficients));
+    images_frac_delay_filter_.push_back(mcl::DigitalFilter<T>(filter_coefficients));
 
     break;
   }

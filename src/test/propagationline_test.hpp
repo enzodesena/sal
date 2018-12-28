@@ -62,7 +62,7 @@ inline bool PropagationLineTest()
   ASSERT(mcl::IsApproximatelyEqual(prop_line_a.Read(), -1.0 * attenuation));
 
   //
-  prop_line_a.Reset();
+  prop_line_a.ResetState();
   prop_line_a.SetDistance((Length)2.0 * SOUND_SPEED / FS);
   attenuation = 1.0 / 2.0;
 
@@ -142,7 +142,7 @@ inline bool PropagationLineTest()
     prop_line_c.Tick();
   }
 
-  prop_line_c.Reset();
+  prop_line_c.ResetState();
   Int stride = 2;
   for (Int i = 0; i < num_samples; i += stride)
   {
@@ -153,7 +153,7 @@ inline bool PropagationLineTest()
     prop_line_c.Tick(stride);
   }
 
-  prop_line_c.Reset();
+  prop_line_c.ResetState();
   stride = 3;
   for (Int i = 0; (i + stride) < num_samples; i += stride)
   {

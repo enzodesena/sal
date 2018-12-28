@@ -39,7 +39,7 @@ public:
     const Point& point,
     Buffer<T>& output) noexcept = 0;
   
-  virtual void Reset() noexcept = 0;
+  virtual void ResetState() noexcept = 0;
 };
 
 
@@ -64,7 +64,7 @@ public:
       output.begin(Channel::kMono));
   }
   
-  void Reset() noexcept override
+  void ResetState() noexcept override
   {
   }
 
@@ -217,7 +217,7 @@ public:
   }
 
 
-  void Reset() noexcept
+  void ResetState() noexcept
   {
     self_->Reset_();
   }
@@ -265,7 +265,7 @@ private:
 
     void Reset_() noexcept override
     {
-      data_.Reset();
+      data_.ResetState();
     }
   };
   

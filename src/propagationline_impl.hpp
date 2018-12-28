@@ -39,11 +39,10 @@ PropagationLine<T>::PropagationLine(
       SanitiseAttenuation(ComputeAttenuation(distance)))
   , current_latency_(ComputeLatency(distance))
   , air_filters_active_(air_filters_active)
-  , air_filter_(mcl::FirFilter(GetAirFilter(distance)))
+  , air_filter_(GetAirFilter(distance))
   , interpolation_type_(interpolation_type)
-  , attenuation_smoother_(
-    RampSmoother(current_attenuation_, sampling_frequency))
-  , latency_smoother_(RampSmoother(current_latency_, sampling_frequency))
+  , attenuation_smoother_(current_attenuation_)
+  , latency_smoother_(current_latency_)
 {
   ASSERT_WITH_MESSAGE
   (
@@ -56,7 +55,7 @@ PropagationLine<T>::PropagationLine(
 
   if (air_filters_active_)
   {
-    air_filter_ = mcl::FirFilter(GetAirFilter(distance));
+    air_filter_ = mcl::DigitalFilter(GetAirFilter(distance));
   }
 }
 
@@ -90,7 +89,7 @@ void PropagationLine<T>::SetAttenuation(
                                attenuation :
                                SanitiseAttenuation(attenuation);
 
-  attenuation_smoother_.SetTargetValue(attenuation_value, ramp_time);
+  attenuation_smoother_.SetTargetValue(attenuation_value, ramp_time*sampling_frequency_);
 }
 
 
@@ -102,15 +101,15 @@ void PropagationLine<T>::SetDistance(
   latency_smoother_.SetTargetValue
   (
     ComputeLatency(distance),
-    ramp_time);
+    ramp_time * sampling_frequency_);
   SetAttenuation(ComputeAttenuation(distance), ramp_time);
 
   if (air_filters_active_)
   {
-    air_filter_.SetImpulseResponse
+    air_filter_.SetNumeratorCoeffs
     (
       GetAirFilter(distance),
-      (int)round(ramp_time * sampling_frequency_));
+      ramp_time * sampling_frequency_);
   }
 }
 
@@ -122,16 +121,16 @@ void PropagationLine<T>::SetAirFiltersActive(
   air_filters_active_ = air_filters_active;
   if (air_filters_active_ == false)
   {
-    air_filter_.Reset();
+    air_filter_.ResetState();
   }
 }
 
 
 template<typename T>
 /** Resets the state of the filter */
-void PropagationLine<T>::Reset() noexcept
+void PropagationLine<T>::ResetState() noexcept
 {
-  delay_filter_.Reset();
+  delay_filter_.ResetState();
 }
 
 
@@ -234,8 +233,8 @@ void PropagationLine<T>::Read(
     if (num_samples > 1)
     {
       // Create a temporary we can discard
-      RampSmoother temp_attenuation(attenuation_smoother_);
-      RampSmoother temp_latency(latency_smoother_);
+      mcl::RampSmoother temp_attenuation(attenuation_smoother_);
+      mcl::RampSmoother temp_latency(latency_smoother_);
 
       if (interpolation_type_ == sal::InterpolationType::kLinear)
       {

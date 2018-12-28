@@ -272,7 +272,7 @@ void KemarDirectivity<T>::LoadDatabase(
 
   if (mcl::IsApproximatelyEqual(sampling_frequency, 22050.0))
   {
-    DatabaseBinauralDirectivity<T>::FilterAll(mcl::Butter<T>(10, 0.001, 0.45), kemar_db.hrir_right, kemar_db.hrir_left);
+    DatabaseBinauralDirectivity<T>::template FilterAll<mcl::DigitalFilter<T>>(mcl::Butter<T>(10, 0.001, 0.45), kemar_db.hrir_right, kemar_db.hrir_left);
     for (size_t i = 0; i < NUM_ELEVATIONS_KEMAR; ++i)
     {
       for (size_t j = 0; j < num_measurements_[i]; ++j)

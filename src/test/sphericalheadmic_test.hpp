@@ -182,7 +182,7 @@ inline bool SphericalHeadMicTest()
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
   stream_b.SetSamplesToZero();
-  mic_b.Reset();
+  mic_b.ResetState();
   mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));

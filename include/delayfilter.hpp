@@ -44,7 +44,7 @@ public:
     const mcl::Vector<T>& input) noexcept;
 
   /** Resets the state of the filter */
-  void Reset() noexcept;
+  void ResetState() noexcept;
 
 
   /**

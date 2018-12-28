@@ -66,7 +66,7 @@ void DelayFilter<T>::Write(
 
 
 template<typename T>
-void DelayFilter<T>::Reset() noexcept
+void DelayFilter<T>::ResetState() noexcept
 {
   mcl::SetToZero(data_);
 }

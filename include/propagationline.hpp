@@ -9,9 +9,8 @@
 #pragma once
 
 #include "delayfilter.hpp"
-#include "iirfilter.hpp"
 #include "point.hpp"
-#include "firfilter.hpp"
+#include "digitalfilter.hpp"
 #include "salconstants.hpp"
 #include "rampsmoother.h"
 #include "salutilities.hpp"
@@ -116,7 +115,7 @@ public:
     Time ramp_time = 0.0) noexcept;
 
   /** Resets the state of the filter */
-  void Reset() noexcept;
+  void ResetState() noexcept;
 
   static constexpr Length kOneSampleDistance = NAN;
 
@@ -130,10 +129,10 @@ private:
   T current_attenuation_;
   Time current_latency_; /** Target latency [in samples]. */
   bool air_filters_active_;
-  mcl::FirFilter<T> air_filter_;
+  mcl::DigitalFilter<T> air_filter_;
   InterpolationType interpolation_type_;
-  RampSmoother<T> attenuation_smoother_;
-  RampSmoother<T> latency_smoother_;
+  mcl::RampSmoother<T> attenuation_smoother_;
+  mcl::RampSmoother<T> latency_smoother_;
 
   void Update() noexcept;
   Time ComputeLatency(
@@ -143,6 +142,7 @@ private:
 
   static mcl::Vector<T> GetAirFilter(
     Length distance) noexcept;
+    
   static T SanitiseAttenuation(
     T attenuation);
 };

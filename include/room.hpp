@@ -10,7 +10,7 @@
 
 #include "saltypes.hpp"
 #include "point.hpp"
-#include "iirfilter.hpp"
+#include "digitalfilter.hpp"
 #include "comparisonop.hpp"
 
 namespace sal
@@ -147,7 +147,7 @@ public:
   }
 
 
-  void Reset() noexcept
+  void ResetState() noexcept
   {
     self_->Reset_();
   }

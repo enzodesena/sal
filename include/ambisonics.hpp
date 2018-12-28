@@ -18,7 +18,7 @@
 #include "decoder.hpp"
 #include "microphonearray.hpp"
 #include "salconstants.hpp"
-#include "iirfilter.hpp"
+#include "digitalfilter.hpp"
 
 namespace sal
 {

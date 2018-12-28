@@ -99,7 +99,7 @@ int main(
         exit(1);
       }
 
-      buffer.Reset();
+      buffer.ResetState();
     }
   }
 

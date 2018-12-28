@@ -14,7 +14,7 @@
 #include "receiver.hpp"
 #include "saltypes.hpp"
 #include "salconstants.hpp"
-#include "firfilter.hpp"
+#include "digitalfilter.hpp"
 
 namespace sal
 {
@@ -51,8 +51,8 @@ template<typename T>
 class FirBinauralDirectivity : public BinauralDirectivity<T>
 {
 private:
-  mcl::FirFilter<T> left_filter_;
-  mcl::FirFilter<T> right_filter_;
+  mcl::DigitalFilter<T> left_filter_;
+  mcl::DigitalFilter<T> right_filter_;
   Point previous_point_;
   size_t update_length_;
 
@@ -72,11 +72,11 @@ private:
       // Update cache variables
       previous_point_ = point;
 
-      left_filter_.SetImpulseResponse
+      left_filter_.SetNumeratorCoeffs
       (
         GetBrir(Ear::kLeft, point),
         update_length);
-      right_filter_.SetImpulseResponse
+      right_filter_.SetNumeratorCoeffs
       (
         GetBrir(Ear::kRight, point),
         update_length);
@@ -88,8 +88,8 @@ public:
     size_t update_length = 0,
     HeadRefOrientation reference_orientation = HeadRefOrientation::x_facing)
     : BinauralDirectivity<T>(reference_orientation)
-    , left_filter_(mcl::FirFilter<T>())
-    , right_filter_(mcl::FirFilter<T>())
+    , left_filter_(mcl::DigitalFilter<T>())
+    , right_filter_(mcl::DigitalFilter<T>())
     , previous_point_(Point(NAN, NAN, NAN))
     , update_length_(update_length)
   {
@@ -116,10 +116,10 @@ public:
       ref_right);
   }
   
-  void Reset() noexcept override
+  void ResetState() noexcept override
   {
-    left_filter_.Reset();
-    right_filter_.Reset();
+    left_filter_.ResetState();
+    right_filter_.ResetState();
 //    previous_point_ = Point(NAN, NAN, NAN);
   }
 };
@@ -147,6 +147,7 @@ public:
    Filters all responses by `filter`. Useful for instance for including
    an inverse headphone filter
    */
+  template<typename FilterType>
   static void FilterAll(
     mcl::DigitalFilter<T> filter,
     mcl::Vector<mcl::Vector<Signal<T>>>& hrir_right,
@@ -156,9 +157,9 @@ public:
     {
       for (size_t j = 0; j < hrir_left[i].size(); ++j)
       {
-        filter.Reset();
+        filter.ResetState();
         filter.Filter(hrir_left[i][j], hrir_left[i][j]);
-        filter.Reset();
+        filter.ResetState();
         filter.Filter(hrir_right[i][j], hrir_right[i][j]);
       }
     }

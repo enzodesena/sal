@@ -332,7 +332,7 @@ inline bool CipicMicTest()
   ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] != 0.0);
 
   stream_t.SetSamplesToZero();
-  mic_t.Reset();
+  mic_t.ResetState();
   mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] == 0.0);
   ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] == 0.0);

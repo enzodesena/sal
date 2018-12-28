@@ -12,7 +12,7 @@
 #include "source.hpp"
 #include "delayfilter.hpp"
 #include "receiver.hpp"
-#include "firfilter.hpp"
+#include "digitalfilter.hpp"
 
 namespace sal
 {
@@ -42,7 +42,7 @@ private:
   mcl::Vector<mcl::Point> images_position_;
 
   mcl::Vector<DelayFilter> images_int_delay_filter_;
-  mcl::Vector<mcl::FirFilter> images_frac_delay_filter_;
+  mcl::Vector<mcl::DigitalFilter> images_frac_delay_filter_;
 
   bool modified_;
 

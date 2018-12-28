@@ -258,7 +258,7 @@ inline bool DelayFilterTest()
 //  ASSERT(IsEqual(delay_filter_e.Filter(0.0), 0.0));
 //  ASSERT(IsEqual(delay_filter_e.Filter(0.2), 0.2));
 //  delay_filter_e.SetLatency(1);
-//  delay_filter_e.Reset();
+//  delay_filter_e.ResetState();
 //  ASSERT(IsEqual(delay_filter_e.Filter(1.0), 0.0));
 //  ASSERT(IsEqual(delay_filter_e.Filter(0.0), 1.0));
 //
@@ -305,7 +305,7 @@ inline bool DelayFilterTest()
 //    delay_filter_g.Tick();
 //  }
 //
-//  delay_filter_g.Reset();
+//  delay_filter_g.ResetState();
 //  Int stride = 2;
 //  for (Int i = 0; i < num_samples; i += stride)
 //  {
@@ -316,7 +316,7 @@ inline bool DelayFilterTest()
 //    delay_filter_g.Tick(stride);
 //  }
 //
-//  delay_filter_g.Reset();
+//  delay_filter_g.ResetState();
 //  DelayFilter delay_filter_h(latency, 5);
 //  stride = 3;
 //  for (Int i = 0; (i + stride) < num_samples; i += stride)

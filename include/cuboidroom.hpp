@@ -10,7 +10,7 @@
 
 #include "vector.hpp"
 #include "point.hpp"
-#include "iirfilter.hpp"
+#include "digitalfilter.hpp"
 #include "room.hpp"
 #include "comparisonop.hpp"
 #include "salutilities.hpp"

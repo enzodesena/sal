@@ -12,7 +12,7 @@
 #include "saltypes.hpp"
 #include "comparisonop.hpp"
 #include "digitalfilter.hpp"
-#include "iirfilter.hpp"
+#include "digitalfilter.hpp"
 #include "vectorop.hpp"
 #include "elementaryop.hpp"
 #include "point.hpp"
@@ -192,9 +192,9 @@ private:
 //  using mcl::DigitalFilter::Filter;
 //
 //
-//  virtual void Reset() noexcept
+//  virtual void ResetState() noexcept
 //  {
-//    filter_.Reset();
+//    filter_.ResetState();
 //  }
 //
 //

@@ -89,7 +89,7 @@ public:
     Buffer<T>& output_buffer) noexcept;
 
   /** Resets the state of the microphone (if any). */
-  virtual void Reset() noexcept;
+  virtual void ResetState() noexcept;
 
 
 private:

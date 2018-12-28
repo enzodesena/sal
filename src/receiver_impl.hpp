@@ -125,14 +125,14 @@ void Receiver<T>::ReceiveAndAddToBuffer(
 
 
 template<typename T>
-void Receiver<T>::Reset() noexcept
+void Receiver<T>::ResetState() noexcept
 {
   for (
     auto iter=directivity_instances_.begin();
     iter != directivity_instances_.end();
     ++iter)
   {
-    (*iter).Reset();
+    (*iter).ResetState();
   }
 }
 

@@ -60,61 +60,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		57AA6157205C9D290044A3A9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57A157151593475000AA6445;
-			remoteInfo = MCL;
-		};
 		57B053EA1D6B039100202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 57A158AA1593501200AA6445;
 			remoteInfo = MCL_test;
-		};
-		57B053EC1D6B039100202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 57A158AC1593501200AA6445;
-			remoteInfo = MCL;
-		};
-		57B053EE1D6B039100202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 572A877E19C070ED00F62F8F;
-			remoteInfo = MCLiOS;
-		};
-		57B053F01D6B039700202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57A157151593475000AA6445;
-			remoteInfo = MCL;
-		};
-		57B053F21D6B039B00202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57A157151593475000AA6445;
-			remoteInfo = MCL;
-		};
-		57B053F41D6B039E00202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 572A876719C070ED00F62F8F;
-			remoteInfo = MCLiOS;
-		};
-		57B054771D6B361300202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57A157151593475000AA6445;
-			remoteInfo = MCL;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -172,10 +123,8 @@
 		578ABDFF15AC9E3100966F2E /* kemardir.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = kemardir.hpp; path = include/kemardir.hpp; sourceTree = "<group>"; };
 		578ABE0115ACA8BB00966F2E /* sphericalheaddir.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = sphericalheaddir.hpp; path = include/sphericalheaddir.hpp; sourceTree = "<group>"; };
 		578E967015D1279D0094FBBE /* freefieldsimulation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = freefieldsimulation.hpp; path = include/freefieldsimulation.hpp; sourceTree = "<group>"; };
-		5794825F21C6F97900A778CD /* rampsmoother.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rampsmoother.h; path = include/rampsmoother.h; sourceTree = "<group>"; };
 		5794826B21C9662E00A778CD /* cipicdir_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = cipicdir_impl.hpp; path = src/cipicdir_impl.hpp; sourceTree = "<group>"; };
 		5794826C21C9662E00A778CD /* ambisonics_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ambisonics_impl.hpp; path = src/ambisonics_impl.hpp; sourceTree = "<group>"; };
-		5794826D21C9662E00A778CD /* rampsmoother_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = rampsmoother_impl.hpp; path = src/rampsmoother_impl.hpp; sourceTree = "<group>"; };
 		5794826E21C9662E00A778CD /* propagationline_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = propagationline_impl.hpp; path = src/propagationline_impl.hpp; sourceTree = "<group>"; };
 		5794826F21C9662E00A778CD /* cuboidroom_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = cuboidroom_impl.hpp; path = src/cuboidroom_impl.hpp; sourceTree = "<group>"; };
 		5794827021C9662F00A778CD /* fdtd_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = fdtd_impl.hpp; path = src/fdtd_impl.hpp; sourceTree = "<group>"; };
@@ -330,7 +279,6 @@
 				5794827521C9662F00A778CD /* kemardir_impl.hpp */,
 				5794827121C9662F00A778CD /* pawrapper_impl.hpp */,
 				5794826E21C9662E00A778CD /* propagationline_impl.hpp */,
-				5794826D21C9662E00A778CD /* rampsmoother_impl.hpp */,
 				5794827921C9662F00A778CD /* receiver_impl.hpp */,
 				5794827421C9662F00A778CD /* riranalysis_impl.hpp */,
 				5794827221C9662F00A778CD /* sphericalheaddir_impl.hpp */,
@@ -360,7 +308,6 @@
 				57A156F11593464300AA6445 /* microphonearray.hpp */,
 				57986F101C939CD700648377 /* pawrapper.hpp */,
 				57895F5B16304F00002C962B /* propagationline.hpp */,
-				5794825F21C6F97900A778CD /* rampsmoother.h */,
 				57A156F01593464300AA6445 /* receiver.hpp */,
 				57781138206006D1004B9C6F /* riranalysis.hpp */,
 				57781133206006D1004B9C6F /* room.hpp */,
@@ -428,8 +375,6 @@
 			isa = PBXGroup;
 			children = (
 				57B053EB1D6B039100202654 /* MCL_test */,
-				57B053ED1D6B039100202654 /* libMCL.a */,
-				57B053EF1D6B039100202654 /* libMCLiOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -516,7 +461,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				57B053F51D6B039E00202654 /* PBXTargetDependency */,
 			);
 			name = SALiOS;
 			productName = SAT;
@@ -534,7 +478,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				57B053F11D6B039700202654 /* PBXTargetDependency */,
 			);
 			name = "SAL test";
 			productName = SAT;
@@ -552,7 +495,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				57B053F31D6B039B00202654 /* PBXTargetDependency */,
 			);
 			name = SAL;
 			productName = SAT;
@@ -570,7 +512,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				57AA6156205C9D290044A3A9 /* PBXTargetDependency */,
 			);
 			name = "SAL doppler";
 			productName = SAT;
@@ -588,7 +529,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				57B054761D6B361300202654 /* PBXTargetDependency */,
 			);
 			name = "SAL sound test";
 			productName = SAT;
@@ -636,20 +576,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = MCL_test;
 			remoteRef = 57B053EA1D6B039100202654 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		57B053ED1D6B039100202654 /* libMCL.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libMCL.a;
-			remoteRef = 57B053EC1D6B039100202654 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		57B053EF1D6B039100202654 /* libMCLiOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libMCLiOS.a;
-			remoteRef = 57B053EE1D6B039100202654 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -716,34 +642,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		57AA6156205C9D290044A3A9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCL;
-			targetProxy = 57AA6157205C9D290044A3A9 /* PBXContainerItemProxy */;
-		};
-		57B053F11D6B039700202654 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCL;
-			targetProxy = 57B053F01D6B039700202654 /* PBXContainerItemProxy */;
-		};
-		57B053F31D6B039B00202654 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCL;
-			targetProxy = 57B053F21D6B039B00202654 /* PBXContainerItemProxy */;
-		};
-		57B053F51D6B039E00202654 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCLiOS;
-			targetProxy = 57B053F41D6B039E00202654 /* PBXContainerItemProxy */;
-		};
-		57B054761D6B361300202654 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCL;
-			targetProxy = 57B054771D6B361300202654 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		572A879619C0712500F62F8F /* Debug */ = {
@@ -864,7 +762,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/mcl/include",
+					"$(PROJECT_DIR)/mcl/include/**",
 					"$(PROJECT_DIR)/portaudio/include",
 					"$(PROJECT_DIR)/mcl/butter/include",
 					"$(PROJECT_DIR)/mcl/kissfft/include",
@@ -925,7 +823,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/mcl/include",
+					"$(PROJECT_DIR)/mcl/include/**",
 					"$(PROJECT_DIR)/portaudio/include",
 					"$(PROJECT_DIR)/mcl/butter/include",
 					"$(PROJECT_DIR)/mcl/kissfft/include",
@@ -988,7 +886,7 @@
 				CLANG_X86_VECTOR_INSTRUCTIONS = avx;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SSE42_EXTENSIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"__DIR__=\\\"$(SRCROOT)/\\\"",
 					"$(inherited)",
