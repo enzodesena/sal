@@ -215,4 +215,4 @@ private:
 };
 } // namespace sal
 
-#include "ambisonics_impl.hpp"
+#include "ambisonics.ipp"

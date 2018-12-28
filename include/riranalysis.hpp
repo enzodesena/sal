@@ -56,4 +56,4 @@ public:
 } // namespace sal
 
 
-#include "riranalysis_impl.hpp"
+#include "riranalysis.ipp"

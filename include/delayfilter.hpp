@@ -108,4 +108,4 @@ protected:
 } // namespace sal
 
 
-#include "delayfilter_impl.hpp"
+#include "delayfilter.ipp"

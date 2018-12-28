@@ -109,4 +109,4 @@ private:
 };
 } // namespace sal
 
-#include "cipicdir_impl.hpp"
+#include "cipicdir.ipp"

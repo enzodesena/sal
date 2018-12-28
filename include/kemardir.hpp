@@ -150,6 +150,6 @@ private:
 
 } // namespace sal
 
-#include "kemardir_impl.hpp"
+#include "kemardir.ipp"
 #include "kemardir_data.hpp"
 

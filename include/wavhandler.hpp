@@ -43,4 +43,4 @@ public:
 
 } // namespace sal
 
-#include "wavhandler_impl.hpp"
+#include "wavhandler.ipp"

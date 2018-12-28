@@ -212,4 +212,4 @@ public:
 };
 } // End namespace
 
-#include "audiobuffer_impl.hpp"
+#include "audiobuffer.ipp"

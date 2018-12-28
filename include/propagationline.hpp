@@ -142,7 +142,7 @@ private:
 
   static mcl::Vector<T> GetAirFilter(
     Length distance) noexcept;
-    
+  
   static T SanitiseAttenuation(
     T attenuation);
 };
@@ -152,4 +152,4 @@ private:
 } // namespace sal
 
 
-#include "propagationline_impl.hpp"
+#include "propagationline.ipp"

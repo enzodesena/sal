@@ -111,4 +111,4 @@ private:
 
 } // namespace sal
 
-#include "receiver_impl.hpp"
+#include "receiver.ipp"

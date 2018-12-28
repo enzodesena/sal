@@ -103,4 +103,4 @@ public:
 
 } // namespace sal
 
-#include "ism_impl.hpp"
+#include "ism.ipp"

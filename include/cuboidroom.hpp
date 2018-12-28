@@ -189,4 +189,4 @@ private:
 };
 } // namespace sal
 
-#include "cuboidroom_impl.hpp"
+#include "cuboidroom.ipp"

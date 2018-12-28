@@ -102,4 +102,4 @@ private:
 
 } // namespace sal
 
-#include "sphericalheaddir_impl.hpp"
+#include "sphericalheaddir.ipp"
