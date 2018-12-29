@@ -1,6 +1,6 @@
 /*
  Spatial Audio Library (SAL)
- Copyright (c) 2012, Enzo De Sena
+ Copyright (c) 2012-2018, Enzo De Sena
  All rights reserved.
  
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -12,10 +12,10 @@ namespace sal
 {
 template<typename T>
 Receiver<T>::Receiver(
-  Directivity<T> directivity_prototype,
-  Point position,
-  Quaternion orientation,
-  size_t max_num_incoming_waves)
+  const Directivity<T>& directivity_prototype,
+    const Point& position,
+    const Quaternion& orientation,
+    const size_t max_num_incoming_waves)
   : position_(position)
   , orientation_(orientation)
   , handedness_(mcl::kRightHanded)
@@ -72,7 +72,7 @@ void Receiver<T>::SetBypass(
 
 
 template<typename T>
-void Receiver<T>::ReceiveAndAddToBuffer(
+void Receiver<T>::ReceiveAdd(
   const mcl::Vector<T>& input,
   const Point& point,
   const size_t wave_id,
@@ -84,7 +84,7 @@ void Receiver<T>::ReceiveAndAddToBuffer(
     "Requested a wave id larger than the max num of incoming waves.");
   if (! bypass_)
   {
-    directivity_instances_[wave_id].ReceiveAndAddToBuffer
+    directivity_instances_[wave_id].ReceiveAdd
     (
       input,
       GetRelativePoint(point),
@@ -101,14 +101,14 @@ void Receiver<T>::ReceiveAndAddToBuffer(
 
 
 template<typename T>
-void Receiver<T>::ReceiveAndAddToBuffer(
+void Receiver<T>::ReceiveAdd(
   const mcl::Vector<T>& input,
   const Point& point,
   Buffer<T>& output_buffer) noexcept
 {
   if (! bypass_)
   {
-    directivity_instances_[0].ReceiveAndAddToBuffer
+    directivity_instances_[0].ReceiveAdd
     (
       input,
       GetRelativePoint(point),

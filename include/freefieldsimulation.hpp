@@ -93,7 +93,7 @@ private:
   std::vector<mcl::Vector<PropagationLine*>> propagation_lines_;
   std::vector<mcl::Vector<MonoBuffer*>> temp_buffers_;
 
-  mcl::Vector<Microphone*> microphones_;
+  mcl::Vector<Microphone*> receivers_;
   mcl::Vector<Source*> sources_;
   Time sampling_frequency_;
   Speed sound_speed_;

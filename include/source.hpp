@@ -54,5 +54,3 @@ void Source::SetPosition(
 
 
 } // namespace sal
-
-#endif

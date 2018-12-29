@@ -75,11 +75,11 @@ void FreeFieldSim::Init(
   const Time sampling_frequency,
   const Length sound_speed)
 {
-  microphones_ = microphones;
+  receivers_ = microphones;
   sources_ = sources;
   sampling_frequency_ = sampling_frequency;
   sound_speed_ = sound_speed;
-  const Int num_microphones = (Int)microphones_.size();
+  const Int num_microphones = (Int)receivers_.size();
   const Int num_sources = sources_.size();
 
   propagation_lines_ = std::vector<mcl::Vector<PropagationLine*>>(num_sources);
@@ -93,7 +93,7 @@ void FreeFieldSim::Init(
 
     for (Int mic_i = 0; mic_i < num_microphones; ++mic_i)
     {
-      Microphone* microphone = microphones_[mic_i];
+      Microphone* microphone = receivers_[mic_i];
 
       Length distance = Distance(source->position(), microphone->position());
 
@@ -113,8 +113,8 @@ void FreeFieldSim::AllocateTempBuffers(
   for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
   {
     temp_buffers_[source_i] = mcl::Vector<MonoBuffer*
-    >((Int)microphones_.size());
-    for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+    >((Int)receivers_.size());
+    for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
     {
       temp_buffers_[source_i][mic_i] = new MonoBuffer(num_samples);
     }
@@ -126,7 +126,7 @@ void FreeFieldSim::DeallocateTempBuffers()
 {
   for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
   {
-    for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+    for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
     {
       delete temp_buffers_[source_i][mic_i];
     }
@@ -137,7 +137,7 @@ void FreeFieldSim::DeallocateTempBuffers()
 
 FreeFieldSim::~FreeFieldSim()
 {
-  for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+  for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
   {
     for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
     {
@@ -165,7 +165,7 @@ void FreeFieldSim::Run(
   {
     for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
     {
-      for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+      for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
       {
         Sample next_input_sample =
           (sample_id < input_buffers[source_i]->num_samples()) ?
@@ -185,9 +185,9 @@ void FreeFieldSim::Run(
   // Write to microphones
   for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
   {
-    for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+    for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
     {
-      microphones_[mic_i]->AddPlaneWave
+      receivers_[mic_i]->AddPlaneWave
       (
         temp_buffers_[source_i][mic_i]->GetReadPointer(),
         num_output_samples,
@@ -201,7 +201,7 @@ void FreeFieldSim::Run(
 
 void FreeFieldSim::Tick()
 {
-  for (Int mic_i = 0; mic_i < (Int)microphones_.size(); ++mic_i)
+  for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
   {
     for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
     {

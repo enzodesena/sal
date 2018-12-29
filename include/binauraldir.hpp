@@ -96,7 +96,7 @@ public:
   }
 
 
-  void ReceiveAndAddToBuffer(
+  void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
     Buffer<T>& output) noexcept override

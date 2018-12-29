@@ -38,7 +38,7 @@ inline bool KemarMicTest()
     Quaternion::Identity());
   StereoBuffer<Sample> stream_i(impulse_response_length);
 
-  mic_i.ReceiveAndAddToBuffer(impulse, Point(1.0, 0.0, 0.0), stream_i);
+  mic_i.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), stream_i);
 
 
   Signal<Sample> cmp_imp_front_left = {
@@ -77,7 +77,7 @@ inline bool KemarMicTest()
     mcl::AxAng2Quat<Length>(0, 0, 1, PI / 2.0));
   StereoBuffer<Sample> stream_o(impulse_response_length);
 
-  mic_o.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), stream_o);
+  mic_o.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_o);
   ASSERT(mcl::IsApproximatelyEqual(cmp_imp_front_left, stream_o.GetChannelReference(Channel::kLeft), SMALL));
 
   // Testing frontal direction for reference point at y-axis
@@ -93,7 +93,7 @@ inline bool KemarMicTest()
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
   StereoBuffer<Sample> stream_ia(impulse_response_length);
-  mic_ia.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), stream_ia);
+  mic_ia.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_ia);
   ASSERT
   (
     mcl::IsApproximatelyEqual
@@ -129,7 +129,7 @@ inline bool KemarMicTest()
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
   StereoBuffer<Sample> stream_m(impulse_response_length);
 
-  mic_m.ReceiveAndAddToBuffer(impulse, Point(-1.0, 0.0, 0.0), stream_m);
+  mic_m.ReceiveAdd(impulse, Point(-1.0, 0.0, 0.0), stream_m);
   ASSERT(mcl::IsApproximatelyEqual(stream_m.GetChannelReference(Channel::kLeft), cmp_imp_up_left, SMALL));
 
   // Case for a source to the right (90deg) of the kemar.
@@ -179,7 +179,7 @@ inline bool KemarMicTest()
     Quaternion::Identity());
   StereoBuffer<Sample> stream_p(impulse_response_length);
 
-  mic_p.ReceiveAndAddToBuffer(impulse, Point(0.0, -1.0, 0.0), stream_p);
+  mic_p.ReceiveAdd(impulse, Point(0.0, -1.0, 0.0), stream_p);
 
   ASSERT(mcl::IsApproximatelyEqual(stream_p.GetChannelReference(Channel::kLeft), cmp_imp_right_left, SMALL));
   ASSERT(mcl::IsApproximatelyEqual(stream_p.GetChannelReference(Channel::kRight), cmp_imp_right_right, SMALL));
@@ -197,7 +197,7 @@ inline bool KemarMicTest()
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
   StereoBuffer<Sample> stream_pa(impulse_response_length);
-  mic_pa.ReceiveAndAddToBuffer(impulse, Point(1.0, 0.0, 0.0), stream_pa);
+  mic_pa.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), stream_pa);
   ASSERT
   (
     mcl::IsApproximatelyEqual
@@ -223,7 +223,7 @@ inline bool KemarMicTest()
     Quaternion::Identity());
   StereoBuffer<Sample> stream_r(impulse_response_length);
   stream_r.SetSamplesToZero();
-  mic_r.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), stream_r);
+  mic_r.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_r);
 
   ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Channel::kLeft), cmp_imp_left_left, SMALL));
   ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Channel::kRight), cmp_imp_left_right, SMALL));
@@ -256,7 +256,7 @@ inline bool KemarMicTest()
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
   StereoBuffer<Sample> stream_t(impulse_response_length);
 
-  mic_t.ReceiveAndAddToBuffer(impulse, Point(0.0, 0.0, -1.0), stream_t);
+  mic_t.ReceiveAdd(impulse, Point(0.0, 0.0, -1.0), stream_t);
 
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft), cmp_imp_back, SMALL));
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight), cmp_imp_back, SMALL));
@@ -264,18 +264,18 @@ inline bool KemarMicTest()
   // Testing reset
   stream_t.SetSamplesToZero();
 
-  mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_t);
+  mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(! mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft)[0], 0.0, 1.0E-10));
   ASSERT(! mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight)[0], 0.0, 1.0E-10));
 
   stream_t.SetSamplesToZero();
-  mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
+  mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(! mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft)[0], 0.0, 1.0E-10));
   ASSERT(! mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight)[0], 0.0, 1.0E-10));
 
   stream_t.SetSamplesToZero();
   mic_t.ResetState();
-  mic_t.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
+  mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kRight)[0], 0.0));
 
@@ -288,7 +288,7 @@ inline bool KemarMicTest()
     3);
   StereoBuffer<Sample> stream_u(impulse_response_length);
 
-  mic_u.ReceiveAndAddToBuffer(impulse, Point(1.0, 0.0, 0.0), 0, stream_u);
+  mic_u.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), 0, stream_u);
 
   Signal<Sample> output_u_left = stream_u.GetChannelReference(Channel::kLeft);
   Signal<Sample> output_u_right = stream_u.GetChannelReference(Channel::kRight);
@@ -296,7 +296,7 @@ inline bool KemarMicTest()
   ASSERT(mcl::IsApproximatelyEqual(cmp_imp_front_left, output_u_left, SMALL));
   ASSERT(mcl::IsApproximatelyEqual(cmp_imp_front_left, output_u_right, SMALL));
 
-  mic_u.ReceiveAndAddToBuffer(impulse, Point(0.0, -1.0, 0.0), 1, stream_u);
+  mic_u.ReceiveAdd(impulse, Point(0.0, -1.0, 0.0), 1, stream_u);
 
   output_u_left = stream_u.GetChannelReference(Channel::kLeft);
   output_u_right = stream_u.GetChannelReference(Channel::kRight);
@@ -309,8 +309,8 @@ inline bool KemarMicTest()
 
   mic_u.ResetState();
   stream_u.SetSamplesToZero();
-  mic_u.ReceiveAndAddToBuffer(impulse, Point(1.0, 0.0, 0.0), 1, stream_u);
-  mic_u.ReceiveAndAddToBuffer(impulse, Point(0.0, 1.0, 0.0), 2, stream_u);
+  mic_u.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), 1, stream_u);
+  mic_u.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), 2, stream_u);
 
   Signal<Sample> output_u_b_left = stream_u.GetChannelReference(Channel::kLeft);
   Signal<Sample> output_u_b_right = stream_u.GetChannelReference(Channel::kRight);

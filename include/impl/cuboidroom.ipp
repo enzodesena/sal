@@ -67,100 +67,100 @@ mcl::Vector<Point> CuboidRoom<T>::GetBoundaryPoints(
   ASSERT(mcl::IsEqual(reflection_points[4].z(), 0.0));
   ASSERT(mcl::IsEqual(reflection_points[5].z(), dimensions_.z()));
 
-  if (boundary_set_type_ == kFirstAndSecondOrder)
-  {
-    Point a_kX2 = IntersectionPoint
-    (
-      kX2,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
-    Point a_kY1 = IntersectionPoint
-    (
-      kY1,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(a_kX2, VERY_SMALL))
-    {
-      ASSERT(!IsPointInRoom(a_kY1, VERY_SMALL));
-      reflection_points.push_back(a_kX2);
-    }
-    else
-    {
-      ASSERT(!IsPointInRoom(a_kX2, VERY_SMALL));
-      reflection_points.push_back(a_kY1);
-    }
-
-    Point b_kX2 = IntersectionPoint
-    (
-      kX2,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
-    Point b_kY2 = IntersectionPoint
-    (
-      kY2,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(b_kX2, VERY_SMALL))
-    {
-      ASSERT(!IsPointInRoom(b_kY2, VERY_SMALL));
-      reflection_points.push_back(b_kX2);
-    }
-    else
-    {
-      ASSERT(!IsPointInRoom(b_kX2, VERY_SMALL));
-      reflection_points.push_back(b_kY2);
-    }
-
-    Point c_kX1 = IntersectionPoint
-    (
-      kX1,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
-    Point c_kY2 = IntersectionPoint
-    (
-      kY2,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(c_kX1, VERY_SMALL))
-    {
-      ASSERT(!IsPointInRoom(c_kY2, VERY_SMALL));
-      reflection_points.push_back(c_kX1);
-    }
-    else
-    {
-      ASSERT(!IsPointInRoom(c_kX1, VERY_SMALL));
-      reflection_points.push_back(c_kY2);
-    }
-
-    Point d_kX1 = IntersectionPoint
-    (
-      kX1,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
-    Point d_kY1 = IntersectionPoint
-    (
-      kY1,
-      dimensions_,
-      shifted_mic_point,
-      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(d_kX1, VERY_SMALL))
-    {
-      ASSERT(!IsPointInRoom(d_kY1, VERY_SMALL));
-      reflection_points.push_back(d_kX1);
-    }
-    else
-    {
-      ASSERT(!IsPointInRoom(d_kX1, VERY_SMALL));
-      reflection_points.push_back(d_kY1);
-    }
-  }
+//  if (boundary_set_type_ == kFirstAndSecondOrder)
+//  {
+//    Point a_kX2 = IntersectionPoint
+//    (
+//      kX2,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
+//    Point a_kY1 = IntersectionPoint
+//    (
+//      kY1,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
+//    if (IsPointInRoom(a_kX2, VERY_SMALL))
+//    {
+//      ASSERT(!IsPointInRoom(a_kY1, VERY_SMALL));
+//      reflection_points.push_back(a_kX2);
+//    }
+//    else
+//    {
+//      ASSERT(!IsPointInRoom(a_kX2, VERY_SMALL));
+//      reflection_points.push_back(a_kY1);
+//    }
+//
+//    Point b_kX2 = IntersectionPoint
+//    (
+//      kX2,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
+//    Point b_kY2 = IntersectionPoint
+//    (
+//      kY2,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
+//    if (IsPointInRoom(b_kX2, VERY_SMALL))
+//    {
+//      ASSERT(!IsPointInRoom(b_kY2, VERY_SMALL));
+//      reflection_points.push_back(b_kX2);
+//    }
+//    else
+//    {
+//      ASSERT(!IsPointInRoom(b_kX2, VERY_SMALL));
+//      reflection_points.push_back(b_kY2);
+//    }
+//
+//    Point c_kX1 = IntersectionPoint
+//    (
+//      kX1,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
+//    Point c_kY2 = IntersectionPoint
+//    (
+//      kY2,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
+//    if (IsPointInRoom(c_kX1, VERY_SMALL))
+//    {
+//      ASSERT(!IsPointInRoom(c_kY2, VERY_SMALL));
+//      reflection_points.push_back(c_kX1);
+//    }
+//    else
+//    {
+//      ASSERT(!IsPointInRoom(c_kX1, VERY_SMALL));
+//      reflection_points.push_back(c_kY2);
+//    }
+//
+//    Point d_kX1 = IntersectionPoint
+//    (
+//      kX1,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
+//    Point d_kY1 = IntersectionPoint
+//    (
+//      kY1,
+//      dimensions_,
+//      shifted_mic_point,
+//      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
+//    if (IsPointInRoom(d_kX1, VERY_SMALL))
+//    {
+//      ASSERT(!IsPointInRoom(d_kY1, VERY_SMALL));
+//      reflection_points.push_back(d_kX1);
+//    }
+//    else
+//    {
+//      ASSERT(!IsPointInRoom(d_kX1, VERY_SMALL));
+//      reflection_points.push_back(d_kY1);
+//    }
+//  }
 
   for (Int i = 0; i < (Int)reflection_points.size(); ++i)
   {
@@ -191,68 +191,68 @@ CuboidRoom<T>::GetBoundaryFilters(
 {
   mcl::Vector<mcl::DigitalFilter<T>> boundary_filters(wall_filters_);
 
-  if (boundary_set_type_ == kFirstAndSecondOrder)
-  {
-    Point a_kX2 = IntersectionPoint
-    (
-      kX2,
-      dimensions_,
-      mic_point,
-      ImageSourcePosition(source_point, 1, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(a_kX2, VERY_SMALL))
-    {
-      boundary_filters.push_back(boundary_filters[kX2]);
-    }
-    else
-    {
-      boundary_filters.push_back(boundary_filters[kY1]);
-    }
-
-    Point b_kX2 = IntersectionPoint
-    (
-      kX2,
-      mic_point,
-      dimensions_,
-      ImageSourcePosition(source_point, 1, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(b_kX2, VERY_SMALL))
-    {
-      boundary_filters.push_back(boundary_filters[kX2]);
-    }
-    else
-    {
-      boundary_filters.push_back(boundary_filters[kY2]);
-    }
-
-    Point c_kX1 = IntersectionPoint
-    (
-      kX2,
-      mic_point,
-      dimensions_,
-      ImageSourcePosition(source_point, 0, 1, 0, 1, 1, 0));
-    if (IsPointInRoom(c_kX1, VERY_SMALL))
-    {
-      boundary_filters.push_back(boundary_filters[kX1]);
-    }
-    else
-    {
-      boundary_filters.push_back(boundary_filters[kY2]);
-    }
-
-    Point d_kX1 = IntersectionPoint
-    (
-      kX1,
-      mic_point,
-      dimensions_,
-      ImageSourcePosition(source_point, 0, 0, 0, 1, 1, 0));
-    if (IsPointInRoom(d_kX1, VERY_SMALL))
-    {
-      boundary_filters.push_back(boundary_filters[kX1]);
-    }
-    else
-    {
-      boundary_filters.push_back(boundary_filters[kY1]);
-    }
-  }
+//  if (boundary_set_type_ == kFirstAndSecondOrder)
+//  {
+//    Point a_kX2 = IntersectionPoint
+//    (
+//      kX2,
+//      dimensions_,
+//      mic_point,
+//      ImageSourcePosition(source_point, 1, 0, 0, 1, 1, 0));
+//    if (IsPointInRoom(a_kX2, VERY_SMALL))
+//    {
+//      boundary_filters.push_back(boundary_filters[kX2]);
+//    }
+//    else
+//    {
+//      boundary_filters.push_back(boundary_filters[kY1]);
+//    }
+//
+//    Point b_kX2 = IntersectionPoint
+//    (
+//      kX2,
+//      mic_point,
+//      dimensions_,
+//      ImageSourcePosition(source_point, 1, 1, 0, 1, 1, 0));
+//    if (IsPointInRoom(b_kX2, VERY_SMALL))
+//    {
+//      boundary_filters.push_back(boundary_filters[kX2]);
+//    }
+//    else
+//    {
+//      boundary_filters.push_back(boundary_filters[kY2]);
+//    }
+//
+//    Point c_kX1 = IntersectionPoint
+//    (
+//      kX2,
+//      mic_point,
+//      dimensions_,
+//      ImageSourcePosition(source_point, 0, 1, 0, 1, 1, 0));
+//    if (IsPointInRoom(c_kX1, VERY_SMALL))
+//    {
+//      boundary_filters.push_back(boundary_filters[kX1]);
+//    }
+//    else
+//    {
+//      boundary_filters.push_back(boundary_filters[kY2]);
+//    }
+//
+//    Point d_kX1 = IntersectionPoint
+//    (
+//      kX1,
+//      mic_point,
+//      dimensions_,
+//      ImageSourcePosition(source_point, 0, 0, 0, 1, 1, 0));
+//    if (IsPointInRoom(d_kX1, VERY_SMALL))
+//    {
+//      boundary_filters.push_back(boundary_filters[kX1]);
+//    }
+//    else
+//    {
+//      boundary_filters.push_back(boundary_filters[kY1]);
+//    }
+//  }
   return boundary_filters;
 }
 

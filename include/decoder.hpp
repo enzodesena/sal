@@ -15,6 +15,7 @@
 
 namespace sal
 {
+template<typename T>
 class Decoder
 {
 public:
@@ -28,17 +29,13 @@ public:
    is depleted.
    */
   virtual void Decode(
-    const Buffer& input_buffer,
-    Buffer& output_buffer) = 0;
-
-
-  virtual ~Decoder()
-  {
-  }
+    const Buffer<T>& input_buffer,
+    Buffer<T>& output_buffer) = 0;
 };
 
 
-class IdenticalDecoder : public Decoder
+template<typename T>
+class IdenticalDecoder : public Decoder<T>
 {
 public:
   IdenticalDecoder()
@@ -47,15 +44,10 @@ public:
 
 
   void Decode(
-    const Buffer& input_buffer,
-    Buffer& output_buffer) override
+    const Buffer<T>& input_buffer,
+    Buffer<T>& output_buffer) override
   {
     output_buffer.SetSamples(input_buffer);
-  }
-
-
-  virtual ~IdenticalDecoder()
-  {
   }
 };
 } // namespace sal

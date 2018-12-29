@@ -47,7 +47,7 @@ public:
    @param[in] num_samples you can choose the length of the
    BRIR. If set to `kFullBrirLength` yields the entire BRIR.
    @param[int] update_length tells the object how many calls to
-   `ReceiveAndAddToBuffer` it takes to switch to the new 
+   `ReceiveAdd` it takes to switch to the new 
    */
   KemarDirectivity(
     const Time sampling_frequency,

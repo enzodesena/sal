@@ -96,7 +96,7 @@ inline bool SphericalHeadMicTest()
     distance * cos(ears_angle - PI / 2.0),
     -distance * sin(ears_angle - PI / 2.0));
 
-  mic_a.ReceiveAndAddToBuffer(impulse, point_line_left, stream_a);
+  mic_a.ReceiveAdd(impulse, point_line_left, stream_a);
 
   // The output of the left ear should be the sphere response from angle
   // theta=0 (reference system of Duda's paper).
@@ -133,7 +133,7 @@ inline bool SphericalHeadMicTest()
   // Since the impulse response has 6 bins, I can reuse the same microphone for
   // this test.
   stream_a.SetSamplesToZero();
-  mic_a.ReceiveAndAddToBuffer(impulse, point_line_right, stream_a);
+  mic_a.ReceiveAdd(impulse, point_line_right, stream_a);
   ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kRight), output_ipsilateral));
   ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kLeft), output_contralateral));
 
@@ -152,7 +152,7 @@ inline bool SphericalHeadMicTest()
   // Point in front of face.
   Point point_front(distance, 0.0, 0.0);
 
-  mic_b.ReceiveAndAddToBuffer(impulse, point_front, stream_b);
+  mic_b.ReceiveAdd(impulse, point_front, stream_b);
   ASSERT
   (
     IsEqual
@@ -172,18 +172,18 @@ inline bool SphericalHeadMicTest()
 
   // Testing reset
   stream_b.SetSamplesToZero();
-  mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_b);
+  mic_b.ReceiveAdd(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
   stream_b.SetSamplesToZero();
-  mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
+  mic_b.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
   stream_b.SetSamplesToZero();
   mic_b.ResetState();
-  mic_b.ReceiveAndAddToBuffer(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
+  mic_b.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 

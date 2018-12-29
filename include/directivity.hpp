@@ -34,7 +34,7 @@ template<typename T>
 class DirectivityInterface
 {
 public:
-  virtual void ReceiveAndAddToBuffer(
+  virtual void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
     Buffer<T>& output) noexcept = 0;
@@ -48,7 +48,7 @@ template<typename T>
 class MemorylessMonoDirectivity: DirectivityInterface<T>
 {
 public:
-  void ReceiveAndAddToBuffer(
+  void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
     Buffer<T>& output) noexcept override
@@ -208,12 +208,12 @@ public:
     Directivity&& x) noexcept = default;
 
 
-  void ReceiveAndAddToBuffer(
+  void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
     Buffer<T>& output) noexcept
   {
-    self_->ReceiveAndAddToBuffer_(input, point, output);
+    self_->ReceiveAdd_(input, point, output);
   }
 
 
@@ -227,7 +227,7 @@ private:
   struct DirectivityConcept
   {
     virtual ~DirectivityConcept() = default;
-    virtual void ReceiveAndAddToBuffer_(
+    virtual void ReceiveAdd_(
       const mcl::Vector<T>& input,
       const Point& point,
       Buffer<T>& output) = 0;
@@ -254,12 +254,12 @@ private:
     }
 
 
-    void ReceiveAndAddToBuffer_(
+    void ReceiveAdd_(
       const mcl::Vector<T>& input,
       const Point& point,
       Buffer<T>& output) noexcept override
     {
-      data_.ReceiveAndAddToBuffer(input, point, output);
+      data_.ReceiveAdd(input, point, output);
     }
 
 

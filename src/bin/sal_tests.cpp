@@ -12,7 +12,7 @@
 
 #include "audiobuffer.hpp"
 #include "receiver.hpp"
-//#include "microphonearray.hpp"
+#include "receiverarray.hpp"
 #include "sphericalheaddir.hpp"
 #include "kemardir.hpp"
 //#include "ambisonics.hpp"
@@ -27,12 +27,12 @@
 #include "riranalysis.hpp"
 #include "directivity.hpp"
 //#include "tdbem.hpp"
-//#include "vector.hpp"
 
 
 #include "audiobuffer_test.hpp"
 #include "delayfilter_test.hpp"
-#include "microphone_test.hpp"
+#include "receiver_test.hpp"
+#include "receiverarray_test.hpp"
 #include "kemarmic_test.hpp"
 #include "cipicdirectivity_test.hpp"
 #include "sphericalheadmic_test.hpp"
@@ -51,7 +51,7 @@ int main(
     sal::KemarMicTest();
     sal::CipicMicTest();
     sal::SphericalHeadMicTest();
-  //  sal::MicrophoneArrayTest();
+    sal::ReceiverArrayTest();
     sal::DelayFilterTest();
     sal::PropagationLineTest();
   //  sal::FreeFieldSim::Test();

@@ -39,10 +39,10 @@ public:
    single incoming wave.
    */
   Receiver(
-    Directivity<T> directivity_prototype,
-    Point position,
-    Quaternion orientation = Quaternion::Identity(),
-    size_t max_num_incoming_waves = 1);
+    const Directivity<T>& directivity_prototype,
+    const Point& position,
+    const Quaternion& orientation = Quaternion::Identity(),
+    const size_t max_num_incoming_waves = 1);
 
   /** Returns current position of the microphone */
   Point position() const noexcept;
@@ -63,7 +63,7 @@ public:
     mcl::Handedness handedness) noexcept;
   
   /** Allows to bypass the directivity pattern.
-  @param[in] bypass if true, every call to `ReceiveAndAddToBuffer` will
+  @param[in] bypass if true, every call to `ReceiveAdd` will
   simply copy the input to all the channels of the output buffer */
   void SetBypass(
     bool bypass) noexcept;
@@ -77,13 +77,13 @@ public:
    the first time it sees a new wave_id, it will allocate a new filter
    for it.
    */
-  void ReceiveAndAddToBuffer(
+  void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
     const size_t wave_id,
     Buffer<T>& output_buffer) noexcept;
 
-  void ReceiveAndAddToBuffer(
+  void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
     Buffer<T>& output_buffer) noexcept;
