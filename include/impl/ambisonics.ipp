@@ -20,7 +20,6 @@ template<typename T>
 void AmbisonicsDir<T>::ReceiveAdd(
   const mcl::Vector<T>& input,
   const Point& point,
-  const size_t wave_id,
   Buffer<T>& output_buffer) noexcept
 {
   // Precompute for performance gain
@@ -73,7 +72,7 @@ void AmbisonicsDir<T>::ReceiveAdd(
       for (Int degree_n=1; degree_n<=order_; ++degree_n) {
         for (Int order_m=0; order_m<=degree_n; ++order_m) {
           mcl::Complex spherical_harmonic =
-              mcl::Pow(-1.0, (mcl::Real) order_m) *
+              mcl::Pow(-1.0, (T) order_m) *
               (order_m==0 ? 1.0 : sqrt_2) *
               sqrt_4pi *
               mcl::SphericalHarmonic(degree_n, mcl::Abs(order_m), theta, phi);
@@ -105,7 +104,7 @@ mcl::Vector<T> AmbisonicsDir<T>::HorizontalEncoding(
   size_t order,
   Angle theta)
 {
-  mcl::Vector<mcl::Real> output(2 * order + 1);
+  mcl::Vector<T> output(2 * order + 1);
   output[0] = T(1.0);
   size_t k = 1;
   for (size_t i = 1; i <= order; ++i)
@@ -148,42 +147,39 @@ AmbisonicsHorizDec<T>::AmbisonicsHorizDec(
       loudspeaker_angles.size()))
 {
   using mcl::DigitalFilter;
-
+  nfc_filters_ = mcl::Vector<mcl::DigitalFilter<T>>(2 * order + 1);
   if (near_field_correction_)
   {
     // One filter per order per loudspeaker (inner is per loudspeaker, so that
     // they are all equal).
-    nfc_filters_.reserve(2 * order + 1);
-    nfc_filters_.push_back
-    (
+    nfc_filters_[0] =
       NFCFilter
       (
         0,
         loudspeakers_distance_,
         sampling_frequency_,
-        sound_speed));
+        sound_speed);
+    size_t k = 1;
     for (size_t i = 1; i <= order; ++i)
     {
       // Instanciating two filters because order higher than two have
       // both degrees +1 and -1
-      nfc_filters_.push_back
-      (
+      nfc_filters_[k++] =
         NFCFilter
         (
           i,
           loudspeakers_distance_,
           sampling_frequency_,
-          sound_speed));
-      nfc_filters_.push_back
-      (
+          sound_speed);
+      nfc_filters_[k++] =
         NFCFilter
         (
           i,
           loudspeakers_distance_,
           sampling_frequency_,
-          sound_speed));
+          sound_speed);
     }
-    ASSERT((Int)nfc_filters_.size() == 2 * order + 1);
+    ASSERT(nfc_filters_.size() == 2 * order + 1);
   }
 
   if (energy_decoding_)
@@ -263,34 +259,33 @@ mcl::Matrix<T> AmbisonicsHorizDec<T>::MaxEnergyDec(
 
 template<typename T>
 mcl::Vector<T> AmbisonicsHorizDec<T>::GetFrame(
-  const Int order,
-  const Int sample_id,
+  const size_t order,
+  const size_t sample_id,
   const Buffer<T>& buffer)
 {
   ASSERT(order >= 0);
   ASSERT(sample_id >= 0 & sample_id < buffer.num_samples());
 
   mcl::Vector<T> output(2 * order + 1);
-  output.push_back
-  (
-    buffer.GetSamples
+  output[0] =
+    buffer.GetSample
     (
       AmbisonicsDir<T>::GetChannelId(0, 0),
-      sample_id));
-  for (Int i = 1; i <= order; ++i)
+      sample_id);
+  
+  size_t k = 1;
+  for (size_t i = 1; i <= order; ++i)
   {
-    output.push_back
-    (
-      buffer.GetSamples
+    output[k++] =
+      buffer.GetSample
       (
         AmbisonicsDir<T>::GetChannelId(i, 1),
-        sample_id));
-    output.push_back
-    (
-      buffer.GetSamples
+        sample_id);
+    output[k++] =
+      buffer.GetSample
       (
         AmbisonicsDir<T>::GetChannelId(i, -1),
-        sample_id));
+        sample_id);
   }
   return output;
 }
@@ -316,7 +311,7 @@ void AmbisonicsHorizDec<T>::Decode(
   ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
 
   // Cache for speed
-  for (Int sample_id = 0; sample_id < input_buffer.num_samples(); ++sample_id)
+  for (size_t sample_id = 0; sample_id < input_buffer.num_samples(); ++sample_id)
   {
     mcl::Vector<T> bformat_frame = GetFrame
     (
@@ -327,7 +322,7 @@ void AmbisonicsHorizDec<T>::Decode(
     // Near-field correcting
     if (near_field_correction_)
     {
-      for (Int i = 0; i < (2 * order_ + 1); ++i)
+      for (size_t i = 0; i < (2 * order_ + 1); ++i)
       {
         bformat_frame[i] = nfc_filters_[i].Filter(bformat_frame[i]);
       }
@@ -361,7 +356,7 @@ void AmbisonicsHorizDec<T>::Decode(
       //  out_low = filter(B_LF, A_LF, G_format_low, [], 2);
       //  out_high = filter(B_HF, A_HF, G_format_high, [], 2);
       //  out_nfc = out_low + out_high;
-      for (Int i = 0; i < num_loudspeakers_; ++i)
+      for (size_t i = 0; i < num_loudspeakers_; ++i)
       {
         output[i] = crossover_filters_low_[i].Filter(output[i]) +
           crossover_filters_high_[i].Filter(output_high[i]);
@@ -369,7 +364,7 @@ void AmbisonicsHorizDec<T>::Decode(
     }
 
     // Push into each loudspeaker stream
-    for (Int i = 0; i < num_loudspeakers_; ++i)
+    for (size_t i = 0; i < num_loudspeakers_; ++i)
     {
       output_buffer.SetSample(i, sample_id, output[i]);
     }
@@ -429,7 +424,7 @@ mcl::DigitalFilter<T> AmbisonicsHorizDec<T>::CrossoverFilterHigh(
       cut_off_frequency,
       sampling_frequency));
 
-  return mcl::DigitalFilter(b_hf, filter_low.A());
+  return mcl::DigitalFilter(b_hf, filter_low.GetDenominatorCoeffs());
 }
 
 
@@ -449,7 +444,6 @@ mcl::DigitalFilter<T> AmbisonicsHorizDec<T>::NFCFilter(
   {
     ASSERT(false);
   }
-  using mcl::Real;
   using mcl::Poly;
   using mcl::Ones;
   using mcl::Complex;
@@ -505,7 +499,7 @@ mcl::DigitalFilter<T> AmbisonicsHorizDec<T>::NFCFilter(
     break;
   }
 
-  Real a = 4.0 * sampling_frequency * loudspeaker_distance / sound_speed;
+  T a = 4.0 * sampling_frequency * loudspeaker_distance / sound_speed;
 
   // I need to implement A(poly((1+X_mq/a)./(1-X_mq/a))*prod(1-X_mq./a);
   const Int num_samples = X_Mq.size();
@@ -518,9 +512,10 @@ mcl::DigitalFilter<T> AmbisonicsHorizDec<T>::NFCFilter(
     temp_2[i] = (Complex<T>(1.0, 0.0) - X_Mq[i] / Complex<T>(a, 0.0));
   }
 
-  mcl::Vector<Real> B = mcl::RealPart(mcl::Poly(mcl::Ones<T>(order)));
-  mcl::Vector<Real> A = RealPart(Multiply(Poly(temp_1), Prod(temp_2)));
-
+  mcl::Vector<T> B = mcl::RealPart(mcl::Poly(mcl::Ones<T>(order)));
+  mcl::Vector<T> A = mcl::RealPart(Multiply(Poly(temp_1), Prod(temp_2)));
+  mcl::Multiply(B, T(1.0)/A[0], B); // Normalise
+  mcl::Multiply(A, T(1.0)/A[0], A); // Normalise
   return mcl::DigitalFilter(B, A);
 }
 
@@ -530,7 +525,7 @@ size_t AmbisonicsDir<T>::GetChannelId(
   const size_t order) noexcept
 {
   ASSERT(degree >= 0);
-  ASSERT(order <= std::abs(degree));
+  ASSERT(((Int)order) <= std::abs(degree));
   size_t centre_index = 0;
   for (Int degree_id = 0; degree_id <= degree; ++degree_id)
   {

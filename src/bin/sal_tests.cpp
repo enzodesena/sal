@@ -38,7 +38,7 @@
 #include "sphericalheadmic_test.ipp"
 #include "riranalysis_test.ipp"
 #include "propagationline_test.ipp"
-//#include "ambisonics_test.ipp"
+#include "ambisonics_test.ipp"
 
 int main(
   int argc,
@@ -46,8 +46,8 @@ int main(
 {
 #ifndef NDEBUG
     sal::BufferTest();
-  //  sal::AmbisonicsMic::Test();
-  //  sal::AmbisonicsHorizDec::Test();
+    sal::AmbisonicsMicTest();
+    sal::AmbisonicsHorizDecTest();
     sal::ReceiverTest();
     sal::KemarMicTest();
     sal::CipicMicTest();

@@ -41,8 +41,6 @@ public:
    upwards.
    */
   AmbisonicsDir(
-    const Point& position,
-    const Quaternion& orientation,
     const size_t order,
     const AmbisonicsConvention convention = sqrt2)
     : order_(order)
@@ -50,32 +48,26 @@ public:
   {
   }
 
-
-  size_t GetNumChannels() const noexcept
-  {
-    return GetNumChannels(order_);
-  }
-
   void ResetState() noexcept override
   {
   }
 
+  static size_t GetNumChannels(
+    const size_t order) noexcept;
+  
   static mcl::Vector<T> HorizontalEncoding(
-    size_t order,
-    Angle theta);
+    const size_t order,
+    const Angle theta);
 
-  virtual void ReceiveAdd(
+  void ReceiveAdd(
     const mcl::Vector<T>& input,
     const Point& point,
-    size_t wave_id,
-    Buffer<T>& output_buffer) noexcept;
+    Buffer<T>& output_buffer) noexcept override;
   
   static size_t GetChannelId(
     const Int degree,
     const size_t order) noexcept;
 private:
-  static size_t GetNumChannels(
-    const size_t max_degree) noexcept;
   
   const size_t order_;
   AmbisonicsConvention convention_;
@@ -120,41 +112,6 @@ public:
     const Buffer<T>& input_buffer,
     Buffer<T>& output_buffer);
 
-
-private:
-  static mcl::Matrix<T>
-  ModeMatchingDec(
-    Int order,
-    const mcl::Vector<Angle>& loudspeaker_angles);
-
-  /**
-   amb_re_weights_matrix produces the diagonal matrix of weights for energy
-   vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
-   */
-  static mcl::Matrix<T>
-  MaxEnergyDec(
-    const size_t order,
-    const mcl::Vector<Angle>& loudspeaker_angles);
-
-
-  /**
-   Produces the weights for maximum energy vector for a regular polygon.
-   N is ambisonics order. The function outputs g(0) = 1 which means that
-   normalisation is such that pressure is preserved.
-   */
-  static T MaxEnergyDecWeight(
-    Int index,
-    size_t order)
-  {
-    return (Sample)cos(((Angle)index) * PI / (2.0 * ((Angle)order) + 2.0));
-  }
-
-
-  static mcl::Vector<T> GetFrame(
-    Int order,
-    Int sample_id,
-    const Buffer<T>& buffer);
-
   /**
    Produces the near field correction
    filters as described in "Spatial Sound Encoding Including Near Field
@@ -182,6 +139,42 @@ private:
   static mcl::DigitalFilter<T> CrossoverFilterHigh(
     Time cut_off_frequency,
     Time sampling_frequency);
+
+  /**
+   amb_re_weights_matrix produces the diagonal matrix of weights for energy
+   vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
+   */
+  static mcl::Matrix<T>
+  MaxEnergyDec(
+    const size_t order,
+    const mcl::Vector<Angle>& loudspeaker_angles);
+
+
+  /**
+   Produces the weights for maximum energy vector for a regular polygon.
+   N is ambisonics order. The function outputs g(0) = 1 which means that
+   normalisation is such that pressure is preserved.
+   */
+  static T MaxEnergyDecWeight(
+    Int index,
+    size_t order)
+  {
+    return (Sample)cos(((Angle)index) * PI / (2.0 * ((Angle)order) + 2.0));
+  }
+
+  static mcl::Matrix<T>
+  ModeMatchingDec(
+    Int order,
+    const mcl::Vector<Angle>& loudspeaker_angles);
+
+private:
+
+
+  static mcl::Vector<T> GetFrame(
+    const size_t order,
+    const size_t sample_id,
+    const Buffer<T>& buffer);
+
 
   mcl::Vector<Angle> loudspeaker_angles_;
   size_t num_loudspeakers_;

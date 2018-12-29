@@ -29,24 +29,24 @@ inline bool AmbisonicsMicTest()
   Sample sample = 0.3;
   mic_a.ReceiveAdd
   (
-    MonoBuffer::Unary(sample),
+    mcl::UnaryVector<Sample>(sample),
     Point(1.0, 0.0, 0.0),
     stream_a);
 
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(0, 0, 0), sample * 1.000000000000000));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(1, 1, 0), sample * 1.414213562373095));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(1, -1, 0), sample * 0.0));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(2, 1, 0), sample * 1.414213562373095));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(2, -1, 0), sample * 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(0, 0), 0), sample * 1.000000000000000));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(1, 1), 0), sample * 1.414213562373095));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(1, -1), 0), sample * 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(2, 1), 0), sample * 1.414213562373095));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(2, -1), 0), sample * 0.0));
   mic_a.ResetState();
   stream_a.ResetSamples();
 
-  mic_a.ReceiveAdd(sample, Point(0.0, 1.0, 0.0), stream_a);
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(0, 0, 0), sample * 1.000000000000000));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(1, -1, 0), sample * 1.414213562373095));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(1, 1, 0), sample * 0.0));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(2, 1, 0), sample * (-1.414213562373095)));
-  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(2, -1, 0), sample * 0.0));
+  mic_a.ReceiveAdd(mcl::UnaryVector<Sample>(sample), Point(0.0, 1.0, 0.0), stream_a);
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(0, 0), 0), sample * 1.000000000000000));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(1, -1), 0), sample * 1.414213562373095));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(1, 1), 0), sample * 0.0));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(2, 1), 0), sample * (-1.414213562373095)));
+  ASSERT(mcl::IsApproximatelyEqual(stream_a.GetSample(AmbisonicsDir<Sample>::GetChannelId(2, -1), 0), sample * 0.0));
 
 #ifdef MCL_LOAD_BOOST
   // Testing Ambisonics encoding
@@ -106,48 +106,47 @@ inline bool AmbisonicsMicTest()
 }
 
 
-bool AmbisonicsHorizDec::Test()
+inline bool AmbisonicsHorizDecTest()
 {
-  using mcl::mcl::IsApproximatelyEqual;
-  using mcl::IirFilter;
-  using mcl::mcl::IsApproximatelyEqual;
+  using mcl::IsApproximatelyEqual;
+  using mcl::DigitalFilter;
   using mcl::Complex;
   using mcl::RealPart;
 
   // Testing Crossover filters
-  IirFilter filter_low(CrossoverFilterLow(380, 48000));
+  DigitalFilter<Sample> filter_low(AmbisonicsHorizDec<Sample>::CrossoverFilterLow(380, 48000));
   mcl::Vector<Sample> num_lf_cmp(3);
   num_lf_cmp[0] = 0.000589143208472;
   num_lf_cmp[1] = 0.001178286416944;
   num_lf_cmp[2] = 0.000589143208472;
-  ASSERT(mcl::IsApproximatelyEqual(filter_low.B(), num_lf_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(filter_low.GetNumeratorCoeffs(), num_lf_cmp));
   mcl::Vector<Sample> den_lf_cmp(3);
   den_lf_cmp[0] = 1.000000000000000;
   den_lf_cmp[1] = -1.902910910316590;
   den_lf_cmp[2] = 0.905267483150478;
-  ASSERT(mcl::IsApproximatelyEqual(filter_low.A(), den_lf_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(filter_low.GetDenominatorCoeffs(), den_lf_cmp));
 
-  IirFilter filter_high(CrossoverFilterHigh(380, 48000));
+  DigitalFilter<Sample> filter_high(AmbisonicsHorizDec<Sample>::CrossoverFilterHigh(380, 48000));
   mcl::Vector<Sample> num_hf_cmp(3);
   num_hf_cmp[0] = -0.952044598366767;
   num_hf_cmp[1] = 1.904089196733534;
   num_hf_cmp[2] = -0.952044598366767;
-  ASSERT(mcl::IsApproximatelyEqual(filter_high.B(), num_hf_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(filter_high.GetNumeratorCoeffs(), num_hf_cmp));
   mcl::Vector<Sample> den_hf_cmp(3);
   den_hf_cmp[0] = 1.000000000000000;
   den_hf_cmp[1] = -1.902910910316590;
   den_hf_cmp[2] = 0.905267483150478;
-  ASSERT(mcl::IsApproximatelyEqual(filter_high.A(), den_hf_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(filter_high.GetDenominatorCoeffs(), den_hf_cmp));
 
   // Testing near field correction filter by J. Daniel
 
   const Time Fs = 44100.0;
   const Length R = 1.0;
   const Speed c = 343.0;
-  Complex x1(-3, 1.7321);
-  Complex x2 = conj(x1);
-  Complex a(4.0 * Fs * R / c, 0.0);
-  Complex one(1.0, 0.0);
+  Complex<Sample> x1(-3, 1.7321);
+  Complex<Sample> x2 = conj(x1);
+  Complex<Sample> a(4.0 * Fs * R / c, 0.0);
+  Complex<Sample> one(1.0, 0.0);
   mcl::Vector<Sample> BB(3);
   BB[0] = 1;
   BB[1] = -2;
@@ -161,23 +160,25 @@ bool AmbisonicsHorizDec::Test()
   ASSERT(mcl::IsApproximatelyEqual(AA[0], 1.011712037681334));
   ASSERT(mcl::IsApproximatelyEqual(AA[1], -1.999909257970665));
   ASSERT(mcl::IsApproximatelyEqual(AA[2], 0.988378704348000));
+  mcl::Multiply(BB, Sample(1.0)/AA[0], BB); // Normalise
+  mcl::Multiply(AA, Sample(1.0)/AA[0], AA); // Normalise
 
-  IirFilter filter_a = NFCFilter(2, R, Fs, c);
+  DigitalFilter<Sample> filter_a = AmbisonicsHorizDec<Sample>::NFCFilter(2, R, Fs, c);
 
-  ASSERT(mcl::IsApproximatelyEqual(filter_a.B(), BB, 1.0E-3));
-  ASSERT(mcl::IsApproximatelyEqual(filter_a.A(), AA, 1.0E-3));
+  ASSERT(mcl::IsApproximatelyEqual(filter_a.GetNumeratorCoeffs(), BB, 1.0E-3));
+  ASSERT(mcl::IsApproximatelyEqual(filter_a.GetDenominatorCoeffs(), AA, 1.0E-3));
 
-  IirFilter filter_b = NFCFilter(1, R, Fs, c);
+  DigitalFilter<Sample> filter_b = AmbisonicsHorizDec<Sample>::NFCFilter(1, R, Fs, c);
   // TODO: I copied this values from my Matlab implementation,
   // but I am not sure whether that implementation was tested for first-order.
-  ASSERT(mcl::IsApproximatelyEqual(filter_b.B()[0], 1.0));
-  ASSERT(mcl::IsApproximatelyEqual(filter_b.B()[1], -1.0));
-  ASSERT(mcl::IsApproximatelyEqual(filter_b.A()[0], 1.003888888888889));
-  ASSERT(mcl::IsApproximatelyEqual(filter_b.A()[1], -0.996111111111111));
+  ASSERT(mcl::IsApproximatelyEqual(filter_b.GetNumeratorCoeffs()[0], 1.0/1.003888888888889)); // Unnormalised : 1.0
+  ASSERT(mcl::IsApproximatelyEqual(filter_b.GetNumeratorCoeffs()[1], -1.0/1.003888888888889)); // Unnormalised : 1.0
+  ASSERT(mcl::IsApproximatelyEqual(filter_b.GetDenominatorCoeffs()[0], 1.0)); // Unnormalised : 1.003888888888889
+  ASSERT(mcl::IsApproximatelyEqual(filter_b.GetDenominatorCoeffs()[1], -0.996111111111111/1.003888888888889)); // Unnormalised : -0.996111111111111
 
-  IirFilter filter_c = NFCFilter(0, R, Fs, c);
-  ASSERT(mcl::IsApproximatelyEqual(filter_c.B(), mcl::Unarymcl::Vector<Sample>(1.0)));
-  ASSERT(mcl::IsApproximatelyEqual(filter_c.A(), mcl::Unarymcl::Vector<Sample>(1.0)));
+  DigitalFilter<Sample> filter_c = AmbisonicsHorizDec<Sample>::NFCFilter(0, R, Fs, c);
+  ASSERT(mcl::IsApproximatelyEqual(filter_c.GetNumeratorCoeffs(), mcl::UnaryVector<Sample>(1.0)));
+  ASSERT(mcl::IsApproximatelyEqual(filter_c.GetDenominatorCoeffs(), mcl::UnaryVector<Sample>(1.0)));
 
   // Testing loudspeaker placement
 
@@ -192,7 +193,7 @@ bool AmbisonicsHorizDec::Test()
   // Testing decoding matrix
 
   mcl::Matrix<Sample> decoding_matrix =
-    AmbisonicsHorizDec::ModeMatchingDec(2, loudspeaker_angles);
+    AmbisonicsHorizDec<Sample>::ModeMatchingDec(2, loudspeaker_angles);
   ASSERT(decoding_matrix.num_columns() == 5);
   ASSERT(decoding_matrix.num_rows() == 5);
   ASSERT(mcl::IsApproximatelyEqual(decoding_matrix.GetElement(0, 0), 0.200000000000000));
@@ -217,37 +218,36 @@ bool AmbisonicsHorizDec::Test()
   const Int num_theta(100);
   mcl::Vector<Angle> thetas = mcl::LinSpace(0.0, 2.0 * PI, num_theta);
 
-  AmbisonicsMic mic_a(Point(0.0, 0.0, 0.0), Quaternion::Identity(), order);
-
-  AmbisonicsHorizDec decoder_a
+  Receiver<Sample> mic_a
+  (
+    AmbisonicsDir<Sample>(order),
+    Point(0.0, 0.0, 0.0),
+    Quaternion::Identity());
+  
+  AmbisonicsHorizDec<Sample> decoder_a
   (
     order,
-    false,
-    // energy_decoding,
-    1.0,
-    // cut_off_frequency,
+    false, // energy_decoding,
+    1.0, // cut_off_frequency,
     loudspeaker_angles,
-    false,
-    //near_field_correction,
-    1.0,
-    //loudspeakers_distance,
-    1.0,
-    // sampling_frequency,
+    false, //near_field_correction,
+    1.0, //loudspeakers_distance,
+    1.0, // sampling_frequency,
     SOUND_SPEED);
-  BFormatBuffer bformat_buffer(order, 1);
-  Buffer output_buffer(loudspeaker_angles.size(), 1);
+  Buffer<Sample> bformat_buffer(AmbisonicsDir<Sample>::GetNumChannels(order), 1);
+  Buffer<Sample> output_buffer(loudspeaker_angles.size(), 1);
 
-  for (Int theta_index = 0; theta_index < num_theta; ++theta_index)
+  for (size_t theta_index = 0; theta_index < num_theta; ++theta_index)
   {
-    output_buffer.ResetState();
-    bformat_buffer.ResetState();
+    output_buffer.ResetSamples();
+    bformat_buffer.ResetSamples();
     mic_a.ResetState();
 
     Angle theta(thetas[theta_index]);
 
     mic_a.ReceiveAdd
     (
-      MonoBuffer::Unary(1.0),
+      mcl::UnaryVector<Sample>(1.0),
       Point(cos(theta), sin(theta), 0.0),
       bformat_buffer);
     decoder_a.Decode(bformat_buffer, output_buffer);
@@ -261,14 +261,14 @@ bool AmbisonicsHorizDec::Test()
 
   // Testing ambisonics maximum energy vector weights
 
-  ASSERT(mcl::IsApproximatelyEqual(MaxEnergyDecWeight(0, 2), 1.0));
-  ASSERT(mcl::IsApproximatelyEqual(MaxEnergyDecWeight(1, 2), cos(PI / (6.0))));
-  ASSERT(mcl::IsApproximatelyEqual(MaxEnergyDecWeight(2, 2), cos(2.0 * PI / (6.0))));
+  ASSERT(mcl::IsApproximatelyEqual(AmbisonicsHorizDec<Sample>::MaxEnergyDecWeight(0, 2), 1.0));
+  ASSERT(mcl::IsApproximatelyEqual(AmbisonicsHorizDec<Sample>::MaxEnergyDecWeight(1, 2), cos(PI / (6.0))));
+  ASSERT(mcl::IsApproximatelyEqual(AmbisonicsHorizDec<Sample>::MaxEnergyDecWeight(2, 2), cos(2.0 * PI / (6.0))));
 
   // Testing ambisonics maximum energy vector decoding matrix
 
   mcl::Matrix<Sample> max_re_dec =
-    AmbisonicsHorizDec::MaxEnergyDec(2, loudspeaker_angles);
+    AmbisonicsHorizDec<Sample>::MaxEnergyDec(2, loudspeaker_angles);
   mcl::Matrix<Sample> max_re_dec_cmp(5, 5);
   max_re_dec_cmp.SetElement(0, 0, 1.0);
   max_re_dec_cmp.SetElement(1, 1, cos(PI / (6.0)));
@@ -278,31 +278,27 @@ bool AmbisonicsHorizDec::Test()
   ASSERT(mcl::IsApproximatelyEqual(max_re_dec, max_re_dec_cmp));
 
   // A complete test comparing with Matlab's tested implementation
+  Receiver<Sample> mic_b(mic_a);
+  mic_b.ResetState();
+  const size_t num_samples = 4;
+  Buffer<Sample> stream_b(AmbisonicsDir<Sample>::GetNumChannels(order), num_samples);
+  Buffer<Sample> output_b(loudspeaker_angles.size(), num_samples);
 
-  AmbisonicsMic mic_b(Point(0.0, 0.0, 0.0), Quaternion::Identity(), 2);
-  const Int num_samples = 4;
-  BFormatBuffer stream_b(order, num_samples);
-  Buffer output_b(loudspeaker_angles.size(), num_samples);
-
-  AmbisonicsHorizDec decoder_b
+  AmbisonicsHorizDec<Sample> decoder_b
   (
     order,
-    true,
-    // energy_decoding,
-    1200,
-    // cut_off_frequency,
+    true, // energy_decoding,
+    1200, // cut_off_frequency,
     loudspeaker_angles,
-    true,
-    //near_field_correction,
-    2.0,
-    //loudspeakers_distance,
-    44100,
-    // sampling_frequency,
+    true, //near_field_correction,
+    2.0, //loudspeakers_distance,
+    44100, // sampling_frequency,
     SOUND_SPEED);
   const Angle theta_b = PI / 4.0;
-  MonoBuffer impulse(num_samples);
-  impulse.SetSample(0, 0.7);
-  mic_b.ReceiveAdd(impulse, Point(cos(theta_b), sin(theta_b), 0.0), stream_b);
+  mic_b.ReceiveAdd(
+    mcl::UnaryVector<Sample>(0.7),
+    Point(cos(theta_b), sin(theta_b), 0.0),
+    stream_b);
   decoder_b.Decode(stream_b, output_b);
 
   mcl::Vector<Sample> output_0_cmp(4);
@@ -311,35 +307,35 @@ bool AmbisonicsHorizDec::Test()
   output_0_cmp[2] = 0.077627205799285;
   output_0_cmp[3] = 0.065733018793426;
 
-  Signal output_1_cmp(4);
+  Signal<Sample> output_1_cmp(4);
   output_1_cmp[0] = -0.367676280830305;
   output_1_cmp[1] = 0.131355135297581;
   output_1_cmp[2] = 0.112736846228488;
   output_1_cmp[3] = 0.096652325199862;
 
-  Signal output_2_cmp(4);
+  Signal<Sample> output_2_cmp(4);
   output_2_cmp[0] = 0.024600010853482;
   output_2_cmp[1] = -0.013376971132794;
   output_2_cmp[2] = -0.013873224419426;
   output_2_cmp[3] = -0.013799068046006;
 
-  Signal output_3_cmp(4);
+  Signal<Sample> output_3_cmp(4);
   output_3_cmp[0] = -0.027480352752649;
   output_3_cmp[1] = 0.012392179960282;
   output_3_cmp[2] = 0.012315424782320;
   output_3_cmp[3] = 0.011904504267406;
 
-  Signal output_4_cmp(4);
+  Signal<Sample> output_4_cmp(4);
   output_4_cmp[0] = 0.042910353779761;
   output_4_cmp[1] = -0.018453086209685;
   output_4_cmp[2] = -0.017379369470917;
   output_4_cmp[3] = -0.016125504574487;
 
-  ASSERT(mcl::IsApproximatelyEqual(output_b.GetReadPointer(0), output_0_cmp));
-  ASSERT(mcl::IsApproximatelyEqual(output_b.GetReadPointer(1), output_1_cmp));
-  ASSERT(mcl::IsApproximatelyEqual(output_b.GetReadPointer(2), output_2_cmp));
-  ASSERT(mcl::IsApproximatelyEqual(output_b.GetReadPointer(3), output_3_cmp));
-  ASSERT(mcl::IsApproximatelyEqual(output_b.GetReadPointer(4), output_4_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(output_b.GetChannelReference(0), output_0_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(output_b.GetChannelReference(1), output_1_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(output_b.GetChannelReference(2), output_2_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(output_b.GetChannelReference(3), output_3_cmp));
+  ASSERT(mcl::IsApproximatelyEqual(output_b.GetChannelReference(4), output_4_cmp));
 
   return true;
 }
