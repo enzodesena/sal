@@ -219,7 +219,7 @@ void Buffer<T>::PrintData()
 
 
 template<typename T>
-void Buffer<T>::SetSamplesToZero() noexcept
+void Buffer<T>::ResetSamples() noexcept
 {
   for (auto& vector : data_)
   {
@@ -438,33 +438,6 @@ T BFormatBuffer<T>::GetSample(
 }
 
 
-template<typename T>
-size_t BFormatBuffer<T>::GetChannelId(
-  const Int degree,
-  const size_t order)
-{
-  ASSERT(degree >= 0);
-  ASSERT(order <= std::abs(degree));
-  size_t centre_index = 0;
-  for (Int degree_id = 0; degree_id <= degree; ++degree_id)
-  {
-    centre_index = centre_index + 2 * degree_id;
-  }
-  // 0 + 2*0 = 0 OK
-  // 0 + 2*1 = 2 OK
-  // 2 + 2*2 = 6 OK
-  // 6 + 2*3 = 12 OK
-  ASSERT(centre_index + order >= 0);
-  return centre_index + order;
-}
 
-
-template<typename T>
-size_t BFormatBuffer<T>::GetNumChannels(
-  const size_t max_degree) noexcept
-{
-  ASSERT(max_degree > 0);
-  return (max_degree + 1) * (max_degree + 1); // (N+1)^2
-}
 
 } // namespace sal

@@ -16,7 +16,7 @@
 #include "receiver.hpp"
 #include "point.hpp"
 #include "decoder.hpp"
-#include "microphonearray.hpp"
+#include "matrix.hpp"
 #include "salconstants.hpp"
 #include "digitalfilter.hpp"
 
@@ -28,8 +28,8 @@ enum AmbisonicsConvention
   N3D
 };
 
-
-class AmbisonicsMic : public Microphone
+template<typename T>
+class AmbisonicsDir : public DirectivityInterface<T>
 {
 public:
   /**
@@ -40,45 +40,44 @@ public:
    if theta = 0.0. I am thinking of soundfield microphone, which is pointing
    upwards.
    */
-  AmbisonicsMic(
-    const mcl::Point& position,
-    mcl::Quaternion orientation,
-    Int order,
-    AmbisonicsConvention convention = sqrt2)
-    : Microphone(position, orientation)
-    , order_(order)
+  AmbisonicsDir(
+    const Point& position,
+    const Quaternion& orientation,
+    const size_t order,
+    const AmbisonicsConvention convention = sqrt2)
+    : order_(order)
     , convention_(convention)
   {
   }
 
 
-  bool IsCoincident() const noexcept override
+  size_t GetNumChannels() const noexcept
   {
-    return true;
+    return GetNumChannels(order_);
   }
 
-
-  Int num_channels() const noexcept override
+  void ResetState() noexcept override
   {
-    return BFormatBuffer::GetNumChannels(order_);
   }
 
-
-  static mcl::Vector<mcl::Real> HorizontalEncoding(
-    Int order,
+  static mcl::Vector<T> HorizontalEncoding(
+    size_t order,
     Angle theta);
 
-  static bool Test();
-  virtual void AddPlaneWaveRelative(
-    const Sample* input_data,
-    Int num_samples,
-    const mcl::Point& point,
-    Int wave_id,
-    Buffer& output_buffer) noexcept;
-
+  virtual void ReceiveAdd(
+    const mcl::Vector<T>& input,
+    const Point& point,
+    size_t wave_id,
+    Buffer<T>& output_buffer) noexcept;
+  
+  static size_t GetChannelId(
+    const Int degree,
+    const size_t order) noexcept;
 private:
-
-  const Int order_;
+  static size_t GetNumChannels(
+    const size_t max_degree) noexcept;
+  
+  const size_t order_;
   AmbisonicsConvention convention_;
 };
 
@@ -87,7 +86,8 @@ private:
  Implements horizontal higher order ambisonics with regular loudspeakers
  configuration (e.g. pentagon for II-order etc..).
  */
-class AmbisonicsHorizDec : public Decoder
+template<typename T>
+class AmbisonicsHorizDec
 {
 public:
   /**
@@ -107,7 +107,7 @@ public:
    J. Daniel's near-field correction.
    */
   AmbisonicsHorizDec(
-    Int order,
+    size_t order,
     bool energy_decoding,
     Time cut_off_frequency,
     const mcl::Vector<Angle>& loudspeaker_angles,
@@ -117,20 +117,12 @@ public:
     Speed sound_speed);
 
   void Decode(
-    const Buffer& input_buffer,
-    Buffer& output_buffer) override;
-
-  static bool Test();
-
-
-  virtual ~AmbisonicsHorizDec()
-  {
-  }
+    const Buffer<T>& input_buffer,
+    Buffer<T>& output_buffer);
 
 
 private:
-
-  static mcl::Matrix<Sample>
+  static mcl::Matrix<T>
   ModeMatchingDec(
     Int order,
     const mcl::Vector<Angle>& loudspeaker_angles);
@@ -139,9 +131,9 @@ private:
    amb_re_weights_matrix produces the diagonal matrix of weights for energy
    vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
    */
-  static mcl::Matrix<Sample>
+  static mcl::Matrix<T>
   MaxEnergyDec(
-    Int order,
+    const size_t order,
     const mcl::Vector<Angle>& loudspeaker_angles);
 
 
@@ -150,18 +142,18 @@ private:
    N is ambisonics order. The function outputs g(0) = 1 which means that
    normalisation is such that pressure is preserved.
    */
-  static Sample MaxEnergyDecWeight(
+  static T MaxEnergyDecWeight(
     Int index,
-    Int order)
+    size_t order)
   {
     return (Sample)cos(((Angle)index) * PI / (2.0 * ((Angle)order) + 2.0));
   }
 
 
-  static mcl::Vector<Sample> GetFrame(
+  static mcl::Vector<T> GetFrame(
     Int order,
     Int sample_id,
-    const Buffer& buffer);
+    const Buffer<T>& buffer);
 
   /**
    Produces the near field correction
@@ -173,7 +165,7 @@ private:
    `sampling_frequency` is the sampling frequency (in Hz) and `sound_speed`
    the speed of sound (in m/s).
    */
-  static mcl::IirFilter NFCFilter(
+  static mcl::DigitalFilter<T> NFCFilter(
     Int order,
     Length loudspeaker_distance,
     Time sampling_frequency,
@@ -184,32 +176,32 @@ private:
    frequency Fc and sampling frequency Fs as descibed by A. Heller et al.,
    "Is My Decoder Ambisonic?", in AES 125th Convention.
    */
-  static mcl::IirFilter CrossoverFilterLow(
+  static mcl::DigitalFilter<T> CrossoverFilterLow(
     Time cut_off_frequency,
     Time sampling_frequency);
-  static mcl::IirFilter CrossoverFilterHigh(
+  static mcl::DigitalFilter<T> CrossoverFilterHigh(
     Time cut_off_frequency,
     Time sampling_frequency);
 
   mcl::Vector<Angle> loudspeaker_angles_;
-  Int num_loudspeakers_;
+  size_t num_loudspeakers_;
   bool near_field_correction_;
   Length loudspeakers_distance_;
   bool energy_decoding_;
   // Ambisonics order
-  Int order_;
+  size_t order_;
 
   // One filter per component
-  mcl::Vector<mcl::IirFilter> nfc_filters_;
+  mcl::Vector<mcl::DigitalFilter<T>> nfc_filters_;
   // One filter per loudspeaker
-  mcl::Vector<mcl::IirFilter> crossover_filters_high_;
-  mcl::Vector<mcl::IirFilter> crossover_filters_low_;
+  mcl::Vector<mcl::DigitalFilter<T>> crossover_filters_high_;
+  mcl::Vector<mcl::DigitalFilter<T>> crossover_filters_low_;
 
   // Cache the decoding matrix (mode-matching) for performance purposes.
-  mcl::Matrix<Sample> mode_matching_matrix_;
+  mcl::Matrix<T> mode_matching_matrix_;
 
   // Cache the decoding matrix (maximum energy) for performance purposes.
-  mcl::Matrix<Sample> max_energy_matrix_;
+  mcl::Matrix<T> max_energy_matrix_;
 
   Time sampling_frequency_;
 };

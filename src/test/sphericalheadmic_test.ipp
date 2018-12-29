@@ -132,7 +132,7 @@ inline bool SphericalHeadMicTest()
     -distance * sin(ears_angle - PI / 2.0));
   // Since the impulse response has 6 bins, I can reuse the same microphone for
   // this test.
-  stream_a.SetSamplesToZero();
+  stream_a.ResetSamples();
   mic_a.ReceiveAdd(impulse, point_line_right, stream_a);
   ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kRight), output_ipsilateral));
   ASSERT(mcl::IsApproximatelyEqual(stream_a.GetChannelReference(Channel::kLeft), output_contralateral));
@@ -171,17 +171,17 @@ inline bool SphericalHeadMicTest()
   ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft), output_frontal));
 
   // Testing reset
-  stream_b.SetSamplesToZero();
+  stream_b.ResetSamples();
   mic_b.ReceiveAdd(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
-  stream_b.SetSamplesToZero();
+  stream_b.ResetSamples();
   mic_b.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));
   ASSERT(! mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kRight)[0], 0.0));
 
-  stream_b.SetSamplesToZero();
+  stream_b.ResetSamples();
   mic_b.ResetState();
   mic_b.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(mcl::IsApproximatelyEqual(stream_b.GetChannelReference(Channel::kLeft)[0], 0.0));

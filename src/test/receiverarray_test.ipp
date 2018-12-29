@@ -159,15 +159,15 @@ inline bool ReceiverArrayTest()
   array_d[0].ReceiveAdd(mcl::UnaryVector(1.0), Point(1.0,0.0,0.0), output);
   ASSERT(mcl::IsApproximatelyEqual(output.GetSample(0,0), 1.0));
   
-  output.SetSamplesToZero();
+  output.ResetSamples();
   array_d[0].ReceiveAdd(mcl::UnaryVector(1.0), Point(-1.0,0.0,0.0), output);
   ASSERT(mcl::IsApproximatelyEqual(output.GetSample(0,0), 0.0));
   
-  output.SetSamplesToZero();
+  output.ResetSamples();
   array_d[0].ReceiveAdd(mcl::UnaryVector(1.0), Point(0.0,1.0,0.0), output);
   ASSERT(! mcl::IsApproximatelyEqual(output.GetSample(0,0), 1.0));
   
-  output.SetSamplesToZero();
+  output.ResetSamples();
   array_d.SetArrayOrientation(mcl::AxAng2Quat(0.0, 0.0, 1.0, PI/2.0));
   ASSERT(mcl::IsApproximatelyEqual(array_d[0].position(), Point(0.0, array_radius, 0.0)));
   array_d[0].ReceiveAdd(mcl::UnaryVector(1.0), Point(0.0,1.0,0.0), output);
@@ -186,15 +186,15 @@ inline bool ReceiverArrayTest()
   
   ASSERT(IsEqual(array_e[0].position(), Point(1.0, array_radius, 0.0)));
   
-  output.SetSamplesToZero();
+  output.ResetSamples();
   array_e[0].ReceiveAdd(mcl::UnaryVector(1.0), Point(1.0,1.0,0.0), output);
   ASSERT(mcl::IsApproximatelyEqual(output.GetSample(0,0), 1.0));
 
-  output.SetSamplesToZero();
+  output.ResetSamples();
   array_e[0].ReceiveAdd(mcl::UnaryVector(1.0), Point(0.0,1.0,0.0), output);
   ASSERT(! mcl::IsApproximatelyEqual(output.GetSample(0,0), 1.0));
 
-  output.SetSamplesToZero();
+  output.ResetSamples();
   array_e.SetArrayOrientation(mcl::AxAng2Quat(0.0, 0.0, 1.0, PI));
   array_e.SetArrayOrientation(mcl::AxAng2Quat(0.0, 0.0, 1.0, PI));
   ASSERT(mcl::IsApproximatelyEqual(array_e[0].position(), Point(1.0-array_radius, 0.0, 0.0)));

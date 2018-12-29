@@ -101,7 +101,7 @@ public:
   void PrintData();
 
   /** Resets all the values to zero. */
-  virtual void SetSamplesToZero() noexcept;
+  virtual void ResetSamples() noexcept;
 
   Buffer(
     const Buffer& other);

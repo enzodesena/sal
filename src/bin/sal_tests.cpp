@@ -15,7 +15,7 @@
 #include "receiverarray.hpp"
 #include "sphericalheaddir.hpp"
 #include "kemardir.hpp"
-//#include "ambisonics.hpp"
+#include "ambisonics.hpp"
 #include "delayfilter.hpp"
 #include "propagationline.hpp"
 //#include "freefieldsimulation.hpp"
@@ -29,15 +29,16 @@
 //#include "tdbem.hpp"
 
 
-#include "audiobuffer_test.hpp"
-#include "delayfilter_test.hpp"
-#include "receiver_test.hpp"
-#include "receiverarray_test.hpp"
-#include "kemarmic_test.hpp"
-#include "cipicdirectivity_test.hpp"
-#include "sphericalheadmic_test.hpp"
-#include "riranalysis_test.hpp"
-#include "propagationline_test.hpp"
+#include "audiobuffer_test.ipp"
+#include "delayfilter_test.ipp"
+#include "receiver_test.ipp"
+#include "receiverarray_test.ipp"
+#include "kemarmic_test.ipp"
+#include "cipicdirectivity_test.ipp"
+#include "sphericalheadmic_test.ipp"
+#include "riranalysis_test.ipp"
+#include "propagationline_test.ipp"
+//#include "ambisonics_test.ipp"
 
 int main(
   int argc,

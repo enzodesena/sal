@@ -64,7 +64,7 @@ inline bool BufferTest()
   ASSERT(IsEqual(buf2.GetSample(0, 1), 2.0)); // Checking no references
   ASSERT(IsEqual(buf.GetSample(0, 1), -1.0)); // Checking no references
 
-  buf2.SetSamplesToZero();
+  buf2.ResetSamples();
   ASSERT(buf2.GetSample(0, 0) == 0.0);
   ASSERT(buf2.GetSample(0, 1) == 0.0);
   ASSERT(buf2.GetSample(0, 2) == 0.0);

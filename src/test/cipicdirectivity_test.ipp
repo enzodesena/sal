@@ -321,31 +321,31 @@ inline bool CipicMicTest()
   ASSERT(mcl::IsApproximatelyEqual(cmp_imp_back_right, stream_t.GetChannelReference(Channel::kRight)));
 
   // Testing reset
-  stream_t.SetSamplesToZero();
+  stream_t.ResetSamples();
   mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(1.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] != 0.0);
   ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] != 0.0);
 
-  stream_t.SetSamplesToZero();
+  stream_t.ResetSamples();
   mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] != 0.0);
   ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] != 0.0);
 
-  stream_t.SetSamplesToZero();
+  stream_t.ResetSamples();
   mic_t.ResetState();
   mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(0.0), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] == 0.0);
   ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] == 0.0);
 
   // Testing bypass
-  stream_t.SetSamplesToZero();
+  stream_t.ResetSamples();
   mic_t.SetBypass(false);
   mic_t.SetBypass(true);
   mic_t.ReceiveAdd(mcl::UnaryVector<Sample>(1.2), Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(stream_t.GetChannelReference(Channel::kLeft)[0] == 1.2);
   ASSERT(stream_t.GetChannelReference(Channel::kRight)[0] == 1.2);
 
-  stream_t.SetSamplesToZero();
+  stream_t.ResetSamples();
   mic_t.SetBypass(false);
   mic_t.ReceiveAdd(impulse, Point(0.0, 0.0, -1.0), stream_t);
   ASSERT(mcl::IsApproximatelyEqual(stream_t.GetChannelReference(Channel::kLeft), cmp_imp_back_left));

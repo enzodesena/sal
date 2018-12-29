@@ -31,7 +31,7 @@ inline bool ReceiverTest()
   mic_a.ReceiveAdd(mcl::UnaryVector<Sample>(-1.0), Point(1.0, 0.0, 2.0), buffer);
   ASSERT(buffer.GetSample(0,0) == -1.0);
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_a.ReceiveAdd(mcl::UnaryVector<Sample>(2.0), Point(1.0, 0.0, 2.0), buffer);
   ASSERT(buffer.GetSample(0,0) == 2.0);
 
@@ -48,7 +48,7 @@ inline bool ReceiverTest()
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0, 1, PI / 4.0));
 
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_i.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(0.0, 1.0, 0.0), buffer);
   Sample mic_i_cmp = 0.5 * (0.5 - 1.0 * cos(PI / 4.0) - 0.5 * pow(cos(PI / 4.0), 2.0));
   ASSERT(mcl::IsApproximatelyEqual(buffer.GetSample(0,0), mic_i_cmp));
@@ -58,7 +58,7 @@ inline bool ReceiverTest()
     Point(0.0, 0.0, 1.0),
     mcl::AxAng2Quat<Length>(0, 0, 1, PI / 2.0));
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_e.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(0.0, 1.0, 0.0), buffer);
   Sample mic_e_cmp = 0.5 * (0.5 - 1.0 * cos(PI / 4.0) - 0.5 * pow(cos(PI / 4.0), 2.0));
   ASSERT(mcl::IsApproximatelyEqual(buffer.GetSample(0,0), mic_e_cmp));
@@ -69,7 +69,7 @@ inline bool ReceiverTest()
     Point(2.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0, 1, PI / 2.0));
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_f.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(0.0, 1.0, 0.0), buffer);
   const Angle angle_f = PI / 2.0 - acos(2.0 / sqrt(5.0));
   const Sample mic_f_cmp = 0.5 * (0.5 - 1.0 * cos(angle_f) - 0.5 * pow(cos(angle_f), 2.0));
@@ -80,7 +80,7 @@ inline bool ReceiverTest()
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_g.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(1.0, 0.0, 0.0), buffer);
   ASSERT(mcl::IsApproximatelyEqual(buffer.GetSample(0,0), 0.5 * (0.5 - 1.0 - 0.5)));
 
@@ -90,7 +90,7 @@ inline bool ReceiverTest()
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0, 1, PI / 5.0));
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_h.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(2.0, 2.0 * tan(PI / 5.0), 0.0), buffer);
   ASSERT(mcl::IsApproximatelyEqual(buffer.GetSample(0,0), 0.5 * (0.5 - 1.0 - 0.5)));
   
@@ -100,12 +100,12 @@ inline bool ReceiverTest()
     Point(2.0, 1.2, 0.5),
     mcl::AxAng2Quat<Length>(0, 0, 1, 0));
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_p.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(2.0 + cos(0), 1.2 + sin(0), 0.5 + 0.4), buffer);
   const Sample sample = buffer.GetSample(0,0);
   mic_p.SetOrientation(mcl::AxAng2Quat<Length>(0, 0, 1, PI / 10.0));
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_p.ReceiveAdd(mcl::UnaryVector<Sample>(0.5), Point(2.0 + cos(PI / 10.0), 1.2 + sin(PI / 10.0), 0.5 + 0.4), buffer);
   ASSERT(mcl::IsApproximatelyEqual(buffer.GetSample(0,0), sample));
   
@@ -115,7 +115,7 @@ inline bool ReceiverTest()
 
   Receiver<Sample> mic_v(OmniDirectivity<Sample>(0.5), Point(0.0, 0.0, 0.0));
   
-  buffer.SetSamplesToZero();
+  buffer.ResetSamples();
   mic_v.ReceiveAdd(mcl::UnaryVector<Sample>(-1.0), Point(1.0, 0.0, 2.0), buffer);
   ASSERT(mcl::IsApproximatelyEqual(buffer.GetSample(0,0), -1.0*0.5));
   return true;
