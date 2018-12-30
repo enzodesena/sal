@@ -23,7 +23,7 @@
 #include "cipicdir.hpp"
 #include "ism.hpp"
 #include "cuboidroom.hpp"
-//#include "fdtd.hpp"
+#include "fdtd.hpp"
 #include "riranalysis.hpp"
 #include "directivity.hpp"
 //#include "tdbem.hpp"
@@ -43,6 +43,7 @@
 #include "freefieldsimulation_test.ipp"
 #include "cuboidroom_test.ipp"
 #include "ism_test.ipp"
+#include "fdtd_test.ipp"
 
 int main(
   int argc,
@@ -64,7 +65,7 @@ int main(
     sal::Ism<sal::Sample>::Test();
     sal::RirAnalysisTest();
     sal::TripletHandlerTest();
-  //  sal::Fdtd::Test();
+    sal::Fdtd<sal::Sample>::Test();
 
   std::cout << "All tests succeded!\n";
 #else

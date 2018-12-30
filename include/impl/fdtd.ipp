@@ -11,73 +11,59 @@
 #include "fdtd.hpp"
 #include "salconstants.hpp"
 
-using sal::Time;
-using sal::Length;
-using sal::Sample;
-using mcl::IirFilter;
-using sal::Int;
-using sal::Int;
-using sal::Source;
-using sal::Microphone;
-using mcl::Point;
-using sal::Time;
-using sal::Sample;
 
 namespace sal
 {
-Fdtd::Fdtd
-(
-  Room * const room,
-  Source * const source,
-  Microphone * const microphone,
-           const Time sampling_frequency,
-           sal::Sample xi,
-           sal::Sample lmb)
-  : room_(room)
-  , source_(source)
-  , microphone_(microphone)
-  , sampling_frequency_(sampling_frequency)
+template<typename T>
+Fdtd<T>::Fdtd(
+  const CuboidRoom<T>& room,
+  const Source& source,
+  const Receiver<T>& microphone,
+  const Time sampling_frequency,
+  const T xi,
+  const T lmb)
+  : sampling_frequency_(sampling_frequency)
   , xi_(xi)
   , lmb_(lmb)
 {
 }
 
 
-sal::Signal Fdtd::RunFdtd(
-  Int Nx,
-  Int Ny,
-  Int Nz,
-  Int Nt,
-  mcl::Vector<std::vector<mcl::Vector<sal::Int>>> G,
-  Sample xi,
-  const Sample* signal,
-  Sample lmb,
-  Int pos_s_x,
-  Int pos_s_y,
-  Int pos_s_z,
-  Int pos_m_x,
-  Int pos_m_y,
-  Int pos_m_z)
+template<typename T>
+Signal<T> Fdtd<T>::RunFdtd(
+  const size_t Nx,
+  const size_t Ny,
+  const size_t Nz,
+  const mcl::Vector<mcl::Vector<mcl::Vector<Int>>> G,
+  const T xi,
+  const mcl::Vector<T> input,
+  const T lmb,
+  const size_t pos_s_x,
+  const size_t pos_s_y,
+  const size_t pos_s_z,
+  const size_t pos_m_x,
+  const size_t pos_m_y,
+  const size_t pos_m_z)
 {
-  mcl::Vector<sal::Sample> p_out(Nt, 0);
+  mcl::Vector<sal::Sample> p_out(input.size(), 0);
 
-  mcl::Vector<std::vector<mcl::Vector<double>>> p_0;
-  mcl::Vector<std::vector<mcl::Vector<double>>> p_1;
-  mcl::Vector<std::vector<mcl::Vector<double>>> p_2;
-  Fdtd::Initialise3DArray<double>(p_0, Nx + 2, Ny + 2, Nz + 2);
-  Fdtd::Initialise3DArray<double>(p_1, Nx + 2, Ny + 2, Nz + 2);
-  Fdtd::Initialise3DArray<double>(p_2, Nx + 2, Ny + 2, Nz + 2);
+  mcl::Vector<mcl::Vector<mcl::Vector<T>>> p_0;
+  mcl::Vector<mcl::Vector<mcl::Vector<T>>> p_1;
+  mcl::Vector<mcl::Vector<mcl::Vector<T>>> p_2;
+  Initialise3DArray(p_0, Nx + 2, Ny + 2, Nz + 2);
+  Initialise3DArray(p_1, Nx + 2, Ny + 2, Nz + 2);
+  Initialise3DArray(p_2, Nx + 2, Ny + 2, Nz + 2);
 
   double lmb_2 = pow(lmb, 2.0);
 
-  for (Int n = 2; n <= Nt; n++)
+  for (size_t n = 2; n <= input.size(); n++)
   {
     //std::cout<<"Running FDTD sample n."<<n<<std::endl;
-    for (Int l = 2; l <= (Nx + 1); l++)
+    for (size_t l = 2; l <= (Nx + 1); l++)
     {
-      for (Int m = 2; m <= (Ny + 1); m++)
+      for (size_t m = 2; m <= (Ny + 1); m++)
       {
-        for (Int i = 2; i <= (Nz + 1); i++)
+        for (size_t i = 2; i <= (Nz + 1); i++)
         {
           Int K = G[l - 1][m - 1][i - 1];
 
@@ -95,7 +81,7 @@ sal::Signal Fdtd::RunFdtd(
 
             if (pos_s_x == l && pos_s_y == m && pos_s_z == i)
             {
-              p_2[l - 1][m - 1][i - 1] += signal[n - 2]; // Soft source
+              p_2[l - 1][m - 1][i - 1] += input[n - 2]; // Soft source
             }
           }
         }
@@ -112,45 +98,45 @@ sal::Signal Fdtd::RunFdtd(
 }
 
 
-void Fdtd::Run(
-  const MonoBuffer& input_buffer,
-  Buffer& output_buffer)
+template<typename T>
+void Fdtd<T>::Run(
+  const mcl::Vector<T>& input,
+  Receiver<T>& receiver,
+  Buffer<T>& output_buffer)
 {
-  ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
-  Triplet dimensions = ((CuboidRoom*)room_)->dimensions();
+  ASSERT(input.size() == output_buffer.num_samples());
 
   double curant_number = 1.0 / sqrt(3.0);
 
   double spatial_frequency = SOUND_SPEED / (curant_number * sampling_frequency_
   );
 
-  Int Nx = mcl::RoundToInt(dimensions.x() / spatial_frequency);
-  Int Ny = mcl::RoundToInt(dimensions.y() / spatial_frequency);
-  Int Nz = mcl::RoundToInt(dimensions.z() / spatial_frequency);
+  size_t Nx = mcl::RoundToInt(room_dimensions_.x() / spatial_frequency);
+  size_t Ny = mcl::RoundToInt(room_dimensions_.y() / spatial_frequency);
+  size_t Nz = mcl::RoundToInt(room_dimensions_.z() / spatial_frequency);
 
   Int pos_s_x = mcl::RoundToInt(
-    source_->position().x() / spatial_frequency) + 1;
+    source_position_.x() / spatial_frequency) + 1;
   Int pos_s_y = mcl::RoundToInt(
-    source_->position().y() / spatial_frequency) + 1;
+    source_position_.y() / spatial_frequency) + 1;
   Int pos_s_z = mcl::RoundToInt(
-    source_->position().z() / spatial_frequency) + 1;
+    source_position_.z() / spatial_frequency) + 1;
 
   Int pos_m_x = mcl::RoundToInt(
-    microphone_->position().x() / spatial_frequency) + 1;
+    receiver_position_.x() / spatial_frequency) + 1;
   Int pos_m_y = mcl::RoundToInt(
-    microphone_->position().y() / spatial_frequency) + 1;
+    receiver_position_.y() / spatial_frequency) + 1;
   Int pos_m_z = mcl::RoundToInt(
-    microphone_->position().z() / spatial_frequency) + 1;
+    receiver_position_.z() / spatial_frequency) + 1;
 
-  rir_ = Fdtd::RunFdtd
+  rir_ = Fdtd<T>::RunFdtd
   (
     Nx,
     Ny,
     Nz,
-    input_buffer.num_samples(),
     CreateGeometry(Nx, Ny, Nz),
     xi_,
-    input_buffer.GetReadPointer(),
+    input,
     lmb_,
     pos_s_x,
     pos_s_y,
@@ -161,27 +147,28 @@ void Fdtd::Run(
 }
 
 
-mcl::Vector<std::vector<mcl::Vector<sal::Int>>>
-Fdtd::CreateGeometry(
-  Int Nx,
-  Int Ny,
-  Int Nz)
+template<typename T>
+mcl::Vector<mcl::Vector<mcl::Vector<sal::Int>>>
+Fdtd<T>::CreateGeometry(
+  size_t Nx,
+  size_t Ny,
+  size_t Nz)
 {
   // K = 6 air, K = 5 face, K = 4 edge, K = 3 corner
-  mcl::Vector<std::vector<mcl::Vector<sal::Int>>> G;
+  mcl::Vector<mcl::Vector<mcl::Vector<sal::Int>>> G;
 
   Nx = Nx + 2;
   Ny = Ny + 2;
   Nz = Nz + 2;
 
-  Initialise3DArray<sal::Int>(G, Nx, Ny, Nz);
+  Initialise3DArray(G, Nx, Ny, Nz);
 
   // G = 6.*ones(Nx,Ny,Nz); %K = 6 air
-  for (Int i = 0; i < Nx; ++i)
+  for (size_t i = 0; i < Nx; ++i)
   {
-    for (Int j = 0; j < Ny; ++j)
+    for (size_t j = 0; j < Ny; ++j)
     {
-      for (Int k = 0; k < Nz; ++k)
+      for (size_t k = 0; k < Nz; ++k)
       {
         G[i][j][k] = 6;
       }
@@ -191,9 +178,9 @@ Fdtd::CreateGeometry(
   //    %K = 5
   //    G(2,:,:) = 5;
   //    G(Nx-1,:,:) = 5;
-  for (Int j = 0; j < Ny; ++j)
+  for (size_t j = 0; j < Ny; ++j)
   {
-    for (Int k = 0; k < Nz; ++k)
+    for (size_t k = 0; k < Nz; ++k)
     {
       G[1][j][k] = 5;
       G[Nx - 2][j][k] = 5;
@@ -202,9 +189,9 @@ Fdtd::CreateGeometry(
 
   //    G(:,2,:) = 5;
   //    G(:,Ny-1,:) = 5;
-  for (Int i = 0; i < Nx; ++i)
+  for (size_t i = 0; i < Nx; ++i)
   {
-    for (Int k = 0; k < Nz; ++k)
+    for (size_t k = 0; k < Nz; ++k)
     {
       G[i][1][k] = 5;
       G[i][Ny - 2][k] = 5;
@@ -213,9 +200,9 @@ Fdtd::CreateGeometry(
 
   //    G(:,:,2) = 5;
   //    G(:,:,Nz-1) = 5;
-  for (Int i = 0; i < Nx; ++i)
+  for (size_t i = 0; i < Nx; ++i)
   {
-    for (Int j = 0; j < Ny; ++j)
+    for (size_t j = 0; j < Ny; ++j)
     {
       G[i][j][1] = 5;
       G[i][j][Nz - 2] = 5;
@@ -228,7 +215,7 @@ Fdtd::CreateGeometry(
   //    G(2,Ny-1,:) = 4;
   //    G(Nx-1,Ny-1,:) = 4;
   //    G(Nx-1,2,:) = 4;
-  for (Int k = 0; k < Nz; ++k)
+  for (size_t k = 0; k < Nz; ++k)
   {
     G[1][1][k] = 4;
     G[1][Ny - 2][k] = 4;
@@ -240,7 +227,7 @@ Fdtd::CreateGeometry(
   //    G(:,2,Nz-1) = 4;
   //    G(:,Ny-1,Nz-1) = 4;
   //    G(:,Ny-1,2) = 4;
-  for (Int i = 0; i < Nx; ++i)
+  for (size_t i = 0; i < Nx; ++i)
   {
     G[i][1][1] = 4;
     G[i][1][Nz - 2] = 4;
@@ -252,7 +239,7 @@ Fdtd::CreateGeometry(
   //    G(2,:,Nz-1) = 4;
   //    G(Nx-1,:,Nz-1) = 4;
   //    G(Nx-1,:,2) = 4;
-  for (Int j = 0; j < Ny; ++j)
+  for (size_t j = 0; j < Ny; ++j)
   {
     G[1][j][1] = 4;
     G[1][j][Nz - 2] = 4;
@@ -282,9 +269,9 @@ Fdtd::CreateGeometry(
 
   //    G(1,:,:) = 0;
   //    G(Nx,:,:) = 0;
-  for (Int j = 0; j < Ny; ++j)
+  for (size_t j = 0; j < Ny; ++j)
   {
-    for (Int k = 0; k < Nz; ++k)
+    for (size_t k = 0; k < Nz; ++k)
     {
       G[0][j][k] = 0;
       G[Nx - 1][j][k] = 0;
@@ -294,9 +281,9 @@ Fdtd::CreateGeometry(
   //
   //    G(:,1,:) = 0;
   //    G(:,Ny,:) = 0;
-  for (Int i = 0; i < Nx; ++i)
+  for (size_t i = 0; i < Nx; ++i)
   {
-    for (Int k = 0; k < Nz; ++k)
+    for (size_t k = 0; k < Nz; ++k)
     {
       G[i][0][k] = 0;
       G[i][Ny - 1][k] = 0;
@@ -306,9 +293,9 @@ Fdtd::CreateGeometry(
   //
   //    G(:,:,1) = 0;
   //    G(:,:,Nz) = 0;
-  for (Int i = 0; i < Nx; ++i)
+  for (size_t i = 0; i < Nx; ++i)
   {
-    for (Int j = 0; j < Ny; ++j)
+    for (size_t j = 0; j < Ny; ++j)
     {
       G[i][j][0] = 0;
       G[i][j][Nz - 1] = 0;

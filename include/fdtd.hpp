@@ -16,53 +16,51 @@
 
 namespace sal
 {
+template<typename T>
 class Fdtd
 {
 private:
-  Room* const room_;
-  Source* const source_;
-  Microphone* const microphone_;
-  Sample xi_;
-  Sample lmb_;
+  Triplet room_dimensions_;
+  Triplet source_position_;
+  Triplet receiver_position_;
+  
+  T xi_;
+  T lmb_;
 
   Time sampling_frequency_;
 
-  mcl::Vector<Sample> rir_;
+  mcl::Vector<T> rir_;
 
   static
-  Signal RunFdtd(
-    Int Nx,
-    Int Ny,
-    Int Nz,
-    Int Nt,
-    mcl::Vector<std::vector<mcl::Vector<Int>>> G,
-    Sample xi,
-    const Sample* signal,
-    Sample lmb,
-    Int position_x,
-    Int position_y,
-    Int position_z,
-    Int position_m_x,
-    Int position_m_y,
-    Int position_m_z);
+  Signal<T> RunFdtd(
+    const size_t Nx,
+    const size_t Ny,
+    const size_t Nz,
+    const mcl::Vector<mcl::Vector<mcl::Vector<Int>>> G,
+    const T xi,
+    const mcl::Vector<T> input,
+    const T lmb,
+    const size_t position_x,
+    const size_t position_y,
+    const size_t position_z,
+    const size_t position_m_x,
+    const size_t position_m_y,
+    const size_t position_m_z);
 
-
-  template<class T>
-  static
-  void
-  Initialise3DArray(
-    mcl::Vector<std::vector<mcl::Vector<T>>>& array,
-    Int size_x,
-    Int size_y,
-    Int size_z)
+  template<typename G>
+  static void Initialise3DArray(
+    mcl::Vector<mcl::Vector<mcl::Vector<G>>>& array,
+    size_t size_x,
+    size_t size_y,
+    size_t size_z)
   {
-    array.resize(size_x);
-    for (Int i = 0; i < size_x; ++i)
+    array = mcl::Vector<mcl::Vector<mcl::Vector<G>>>(size_x);
+    for (size_t i = 0; i < size_x; ++i)
     {
-      array[i].resize(size_y);
-      for (Int j = 0; j < size_y; ++j)
+      array[i] = mcl::Vector<mcl::Vector<G>>(size_y);
+      for (size_t j = 0; j < size_y; ++j)
       {
-        array[i][j].resize(size_z);
+        array[i][j] = mcl::Vector<G>(size_z);
       }
     }
   }
@@ -70,32 +68,35 @@ private:
 
 public:
   Fdtd(
-    Room* room,
-    Source* source,
-    Microphone* microphone,
-    Time sampling_frequency,
-    Sample xi,
-    Sample lmb);
+    const CuboidRoom<T>& room,
+    const Source& source,
+    const Receiver<T>& microphone,
+    const Time sampling_frequency,
+    const T xi,
+    const T lmb);
 
   void Run(
-    const MonoBuffer& input_buffer,
-    Buffer& output_buffer);
+    const mcl::Vector<T>& input,
+    Receiver<T>& receiver,
+    Buffer<T>& output_buffer);
 
 
-  Signal rir() const
+  Signal<T> rir() const
   {
     return rir_;
   }
 
 
   static
-  mcl::Vector<std::vector<mcl::Vector<Int>>>
+  mcl::Vector<mcl::Vector<mcl::Vector<sal::Int>>>
   CreateGeometry(
-    Int Nx,
-    Int Ny,
-    Int Nz);
+    size_t Nx,
+    size_t Ny,
+    size_t Nz);
 
   static bool Test();
   static Time SimulationTime();
 };
 } // namespace raily
+
+#include "fdtd.ipp"

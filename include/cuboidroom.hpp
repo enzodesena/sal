@@ -162,11 +162,6 @@ public:
   std::string ShapeDescription() const noexcept;
 
 
-  virtual ~CuboidRoom()
-  {
-  }
-
-
 private:
 
   //  Reference system:
