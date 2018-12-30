@@ -22,55 +22,32 @@ enum IsmInterpolation
   peterson
 };
 
-
+template<typename T>
 class Ism
 {
-private:
-  Room* const room_;
-  Source* const source_;
-  Microphone* const microphone_;
-
-  Int rir_length_;
-  IsmInterpolation interpolation_;
-  Time sampling_frequency_;
-  Length random_distance_;
-
-  Time peterson_window_;
-
-  mcl::Vector<Sample> rir_;
-  mcl::Vector<Time> images_delay_;
-  mcl::Vector<mcl::Point> images_position_;
-
-  mcl::Vector<DelayFilter> images_int_delay_filter_;
-  mcl::Vector<mcl::DigitalFilter> images_frac_delay_filter_;
-
-  bool modified_;
-
-  void CalculateRir();
-
-  void WriteSample(
-    const Time& delay_norm,
-    const Sample& gid);
 public:
   Ism(
-    Room* room,
-    Source* source,
-    Microphone* microphone,
-    IsmInterpolation interpolation,
-    Int rir_length,
-    Time sampling_frequency);
+    const CuboidRoom<T>& room,
+    const Source& source,
+    const Receiver<T>& receiver,
+    const IsmInterpolation interpolation,
+    const size_t rir_length,
+    const Time sampling_frequency);
 
   void Run(
-    const Sample* input_data,
-    Int num_samples,
-    Buffer& output_buffer);
+    const mcl::Vector<T> input,
+    Receiver<T>& receiver,
+    Buffer<T>& output_buffer);
 
   // Triggers a self-update of the network. Has to be called after microphone,
   // room or source (not including stream push) is updated.
-  void Update();
+  void Update(
+    const CuboidRoom<T>& room,
+    const Source& source,
+    const Receiver<T>& receiver);
 
 
-  mcl::Vector<Sample> rir()
+  mcl::Vector<T> rir()
   {
     return rir_;
   }
@@ -95,8 +72,33 @@ public:
     random_distance_ = distance;
   }
 
-
   static bool Test();
+  
+private:
+  void CalculateRir(
+    const CuboidRoom<T>& room,
+    const Source& source,
+    const Receiver<T>& receiver);
+
+
+  void WriteSample(
+    const Time delay_norm,
+    const T gid);
+  
+  // Member variables
+  IsmInterpolation interpolation_;
+  Time sampling_frequency_;
+  Length random_distance_;
+
+  Time peterson_window_;
+
+  mcl::Vector<T> rir_;
+  mcl::Vector<Time> images_delay_;
+  mcl::Vector<Point> images_position_;
+
+  mcl::Vector<DelayFilter<T>> images_int_delay_filter_;
+  mcl::Vector<mcl::DigitalFilter<T>> images_frac_delay_filter_;
+
 };
 
 

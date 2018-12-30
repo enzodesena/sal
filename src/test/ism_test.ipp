@@ -9,36 +9,21 @@
 #include "ism.hpp"
 #include "salconstants.hpp"
 #include "receiver.hpp"
-#include "monomics.hpp"
 #include "source.hpp"
 
-using mcl::IsEqual;
-using sal::Time;
-using sal::Length;
-using sal::Sample;
-using mcl::IirFilter;
-using sal::Int;
-using sal::Source;
-using sal::Microphone;
-using mcl::Point;
-using sal::Sample;
-using sal::OmniMic;
-using sal::Length;
-using mcl::GainFilter;
 
 namespace sal
 {
-bool Ism::Test()
+template<typename T>
+bool Ism<T>::Test()
 {
   //  %% Test with rigid walls
   //  
   //  test_rir = sroom([1 1 500], [1 3 500], [5 5 1000], ones(2,3), 9);
   Time sampling_frequency = 44100;
 
-  OmniMic mic
-  (
-    Point
-    (
+  Receiver<Sample> mic(OmniDirectivity<Sample>(),
+    Point(
       1.0 * SOUND_SPEED / sampling_frequency,
       1.0 * SOUND_SPEED / sampling_frequency,
       500.0 * SOUND_SPEED / sampling_frequency));
@@ -51,21 +36,21 @@ bool Ism::Test()
       3.0 * SOUND_SPEED / sampling_frequency,
       500.0 * SOUND_SPEED / sampling_frequency));
 
-  MonoBuffer impulse(9);
-  impulse.SetSample(0, 1.0);
+  mcl::Vector<Sample> impulse(9);
+  impulse[0] = 1.0;
 
   CuboidRoom room
   (
     5.0 * SOUND_SPEED / sampling_frequency,
     5.0 * SOUND_SPEED / sampling_frequency,
     1000.0 * SOUND_SPEED / sampling_frequency,
-    GainFilter(1.0));
+    mcl::DigitalFilter<Sample>(mcl::UnaryVector(1.0)));
 
-  Ism ism(&room, &source, &mic, none, 9, sampling_frequency);
-  MonoBuffer test_rir(impulse.num_samples());
-  ism.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
+  Ism ism(room, source, mic, none, 9, sampling_frequency);
+  Buffer<Sample> test_rir(1, impulse.size());
+  ism.Run(impulse, mic, test_rir);
 
-  mcl::Vector<Sample> cmp = mcl::Zeros<Sample>(9);
+  mcl::Vector<T> cmp = mcl::Zeros<T>(9);
 
   cmp[2] = 1.0 / 2.0;
 
@@ -103,24 +88,22 @@ bool Ism::Test()
   //  0
   //  0.3675
   //  0.1118
-  ASSERT(mcl::IsEqual(cmp, test_rir.GetReadPointer()));
+  ASSERT(mcl::IsApproximatelyEqual(cmp, test_rir.GetChannelReference(0)));
 
   ////////////////////////////////////
   // Test with wall absorption      //
   ////////////////////////////////////
 
-  Sample beta_x1 = 1.0 / sqrt(2.0);
-  Sample beta_x2 = 1.0 / sqrt(3.0);
-  Sample beta_y1 = 1.0 / sqrt(5.0);
-  Sample beta_y2 = 1.0 / sqrt(6.0);
+  T beta_x1 = 1.0 / sqrt(2.0);
+  T beta_x2 = 1.0 / sqrt(3.0);
+  T beta_y1 = 1.0 / sqrt(5.0);
+  T beta_y2 = 1.0 / sqrt(6.0);
 
-  mcl::Vector<mcl::IirFilter> iir_filters;
-  iir_filters.push_back(GainFilter(beta_x1));
-  iir_filters.push_back(GainFilter(beta_x2));
-  iir_filters.push_back(GainFilter(beta_y1));
-  iir_filters.push_back(GainFilter(beta_y2));
-  iir_filters.push_back(GainFilter(0.0));
-  iir_filters.push_back(GainFilter(0.0));
+  mcl::Vector<mcl::DigitalFilter<Sample>> iir_filters(6, mcl::GainFilter(0.0));
+  iir_filters[0] = mcl::GainFilter(beta_x1);
+  iir_filters[1] = mcl::GainFilter(beta_x2);
+  iir_filters[2] = mcl::GainFilter(beta_y1);
+  iir_filters[3] = mcl::GainFilter(beta_y2);
 
   CuboidRoom room_absorption
   (
@@ -129,11 +112,11 @@ bool Ism::Test()
     1000.0 * SOUND_SPEED / sampling_frequency,
     iir_filters);
 
-  Ism isma(&room_absorption, &source, &mic, none, 9, sampling_frequency);
-  test_rir.ResetState();
-  isma.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
+  Ism isma(room_absorption, source, mic, none, 9, sampling_frequency);
+  test_rir.ResetSamples();
+  isma.Run(impulse, mic, test_rir);
 
-  mcl::Vector<Sample> cmpa = mcl::Zeros<Sample>(9);
+  mcl::Vector<T> cmpa = mcl::Zeros<T>(9);
 
   cmpa[2] = 1.0 / 2.0; // LOS
 
@@ -172,14 +155,14 @@ bool Ism::Test()
   //  0.1085
   //  0.0289
 
-  ASSERT(mcl::IsEqual(cmpa, test_rir.GetReadPointer()));
-
+  ASSERT(mcl::IsApproximatelyEqual(cmpa, test_rir.GetChannelReference(0)));
+  
   // Testing peterson
   // TODO: complete this test.
   //  Ism ism_b(&room_absorption, &source, &mic, peterson, 10, sampling_frequency);
   //  mic.ResetState();
   //  source.stream()->ResetState();
-  //  mcl::Vector<sal::Sample> signal = {0.3, -0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  //  mcl::Vector<sal::T> signal = {0.3, -0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   //  source.stream()->Push(signal);
   //  ism_b.Run();
   //  mcl::Print(mic.stream()->PullAll());

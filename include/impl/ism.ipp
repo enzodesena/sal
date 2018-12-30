@@ -7,63 +7,57 @@
  
  */
 
+#include "randomop.hpp"
 
 namespace sal
 {
-Ism::Ism
-(
-  Room * const room,
-  Source * const source,
-  Microphone * const microphone,
-         IsmInterpolation interpolation,
-         Int rir_length,
-         const Time sampling_frequency)
-  : rir_length_(rir_length)
-  , interpolation_(interpolation)
-  , room_(room)
-  , source_(source)
-  , microphone_(microphone)
+template<typename T>
+Ism<T>::Ism(
+  const CuboidRoom<T>& room,
+  const Source& source,
+  const Receiver<T>& receiver,
+  const IsmInterpolation interpolation,
+  const size_t rir_length,
+  const Time sampling_frequency)
+  : interpolation_(interpolation)
   , sampling_frequency_(sampling_frequency)
   , random_distance_(0)
-  , peterson_window_(0.004)
-  , // Standard value in Peterson's paper
-  modified_(true)
+  , peterson_window_(0.004) // Standard value in Peterson's paper
+  , rir_(rir_length, T(0.0))
 {
+  Update(room, source, receiver);
 }
 
 
-void Ism::Run(
-  const Sample* input_data,
-  const Int num_samples,
-  Buffer& output_buffer)
+template<typename T>
+void Ism<T>::Run(
+  const mcl::Vector<T> input,
+  Receiver<T>& receiver,
+  Buffer<T>& output_buffer)
 {
-  if (modified_)
-  {
-    Ism::CalculateRir();
-  }
-
   // TODO: I still need to test the spatialised implementation
-  if (microphone_->IsOmni())
-  {
-    mcl::DigitalFilter<T> filter(rir_);
-    assert(num_samples < MCL_MAX_VLA_LENGTH);
-    Sample temp[num_samples];
-    filter.Filter(input_data, num_samples, temp);
-    microphone_->AddPlaneWave(
-      temp, num_samples, mcl::Point(0, 0, 0), output_buffer);
-  }
-  else
-  {
-    ASSERT(false);
-  }
+  mcl::Vector<Sample> temp(input.size(), T(0.0));
+  mcl::DigitalFilter<T> fir_filter(rir_);
+  fir_filter.Filter(input, temp);
+  receiver.ReceiveAdd(
+    temp,
+    Point(0, 0, 0),
+    output_buffer);
 }
 
 
 /** Calculates the Rir. This is called by Run() before filtering. */
-void Ism::CalculateRir()
+template<typename T>
+void Ism<T>::CalculateRir(
+  const CuboidRoom<T>& room,
+  const Source& source,
+  const Receiver<T>& receiver)
 {
-  mcl::Matrix<Sample> beta(2, 3);
-  mcl::Vector<mcl::IirFilter> filters = room_->GetWallFilters();
+  using mcl::Abs;
+  using mcl::Pow;
+  
+  mcl::Matrix<T> beta(2, 3);
+  const mcl::Vector<mcl::DigitalFilter<T>>& filters = room.GetWallFilters();
   beta.SetElement(0, 0, filters[0].GetNumeratorCoeffs()[0]); // beta_{x1}
   beta.SetElement(0, 1, filters[2].GetNumeratorCoeffs()[0]); // beta_{y1}
   beta.SetElement(0, 2, filters[4].GetNumeratorCoeffs()[0]); // beta_{z1}
@@ -72,28 +66,27 @@ void Ism::CalculateRir()
   beta.SetElement(1, 1, filters[3].GetNumeratorCoeffs()[0]); // beta_{y2}
   beta.SetElement(1, 2, filters[5].GetNumeratorCoeffs()[0]); // beta_{z2}
 
-  Length room_x = ((CuboidRoom*)room_)->dimensions().x();
-  Length room_y = ((CuboidRoom*)room_)->dimensions().y();
-  Length room_z = ((CuboidRoom*)room_)->dimensions().z();
-
-  rir_ = mcl::Zeros<sal::Sample>(rir_length_);
-
-  Time rir_time = ((Time)rir_length_) / ((Time)sampling_frequency_);
+  Length room_x = room.dimensions().x();
+  Length room_y = room.dimensions().y();
+  Length room_z = room.dimensions().z();
+  mcl::SetToZero(rir_);
+  const size_t rir_length = rir_.size();
+  
+  Time rir_time = ((Time)rir_length) / ((Time)sampling_frequency_);
   Int n1 = (Int)floor(rir_time / (((Length)room_x) * 2.0)) + 1;
   Int n2 = (Int)floor(rir_time / (((Length)room_y) * 2.0)) + 1;
   Int n3 = (Int)floor(rir_time / (((Length)room_z) * 2.0)) + 1;
 
   Int max_num_images = 8 * (2 * n1 + 1) * (2 * n2 + 1) * (2 * n3 + 1);
 
-  images_delay_.reserve(max_num_images);
-  images_position_.reserve(max_num_images);
-  images_int_delay_filter_.reserve(max_num_images);
-  images_frac_delay_filter_.reserve(max_num_images);
+  images_delay_ = mcl::Vector<Time>(max_num_images);
+  images_position_ = mcl::Vector<Point>(max_num_images);
+//  images_int_delay_filter_.reserve(max_num_images);
+//  images_frac_delay_filter_.reserve(max_num_images);
 
   mcl::RandomGenerator randn_gen;
   mcl::Vector<sal::Length> rand_delays;
 
-  Int k;
   bool randomisation = (mcl::IsEqual(random_distance_, 0.0)) ? false : true;
   if (randomisation)
   {
@@ -105,9 +98,9 @@ void Ism::CalculateRir()
         randn_gen.Rand(max_num_images),
         2.0 * top_limit),
       -top_limit);
-    k = 0;
   }
 
+  size_t k = 0;
   for (Int mx = -n1; mx <= n1; ++mx)
   {
     for (Int my = -n2; my <= n2; ++my)
@@ -121,9 +114,9 @@ void Ism::CalculateRir()
             for (Int pz = 0; pz <= 1; ++pz)
             {
               Point image_position =
-                ((CuboidRoom*)room_)->ImageSourcePosition
+                room.ImageSourcePosition
                 (
-                  source_->position(),
+                  source.position(),
                   mx,
                   my,
                   mz,
@@ -135,32 +128,34 @@ void Ism::CalculateRir()
                 mcl::Subtract
                 (
                   image_position,
-                  microphone_->position()).norm() / SOUND_SPEED;
+                  receiver.position()).norm() / SOUND_SPEED;
 
               if (randomisation)
               {
-                delay += rand_delays.at(k++);
+                delay += rand_delays[k];
               }
 
               if (round(delay * sampling_frequency_) < 0 ||
-                round(delay * sampling_frequency_) >= rir_length_)
+                round(delay * sampling_frequency_) >= rir_length)
               {
                 continue;
               }
 
-              Sample gid = Pow(beta.GetElement(0, 0), Abs((Sample)mx - px)) *
-                Pow(beta.GetElement(1, 0), Abs((Sample)mx)) *
-                Pow(beta.GetElement(0, 1), Abs((Sample)my - py)) *
-                Pow(beta.GetElement(1, 1), Abs((Sample)my)) *
-                Pow(beta.GetElement(0, 2), Abs((Sample)mz - pz)) *
-                Pow(beta.GetElement(1, 2), Abs((Sample)mz));
+              T gid = Pow(beta.GetElement(0, 0), Abs((T)mx - px)) *
+                Pow(beta.GetElement(1, 0), Abs((T)mx)) *
+                Pow(beta.GetElement(0, 1), Abs((T)my - py)) *
+                Pow(beta.GetElement(1, 1), Abs((T)my)) *
+                Pow(beta.GetElement(0, 2), Abs((T)mz - pz)) *
+                Pow(beta.GetElement(1, 2), Abs((T)mz));
 
-              Sample attenuation = gid / (delay * sampling_frequency_);
+              T attenuation = gid / (delay * sampling_frequency_);
 
-              images_position_.push_back(image_position);
-              images_delay_.push_back(delay);
+              images_position_[k] = (image_position);
+              images_delay_[k] = (delay);
 
               WriteSample(delay, attenuation);
+              
+              k++;
             }
           }
         }
@@ -170,22 +165,23 @@ void Ism::CalculateRir()
 }
 
 
-void Ism::WriteSample(
-  const sal::Time& delay,
-  const sal::Sample& attenuation)
+template<typename T>
+void Ism<T>::WriteSample(
+  const Time delay,
+  const T attenuation)
 {
   sal::Time delay_norm = delay * sampling_frequency_;
   Int id_round = mcl::RoundToInt(delay_norm);
-  Int rir_length = rir_.size();
+  size_t rir_length = rir_.size();
 
   switch (interpolation_)
   {
   case none:
   {
-    rir_.at(id_round) += attenuation;
-    images_int_delay_filter_.push_back(sal::DelayFilter(id_round, id_round));
-    images_frac_delay_filter_.push_back(
-      mcl::DigitalFilter<T>::GainFilter(attenuation));
+    rir_[id_round] += attenuation;
+//    images_int_delay_filter_.push_back(sal::DelayFilter(id_round, id_round));
+//    images_frac_delay_filter_.push_back(
+//      mcl::DigitalFilter<T>::GainFilter(attenuation));
     break;
   }
   case peterson:
@@ -196,7 +192,7 @@ void Ism::WriteSample(
 
     sal::Time tau = ((sal::Time)delay_norm) / sampling_frequency_;
 
-    mcl::Vector<sal::Sample> filter_coefficients;
+    mcl::Vector<T> filter_coefficients;
     sal::Int integer_delay = (Int)floor(
       sampling_frequency_ * (-T_w / 2.0 + tau));
     for (Int n = integer_delay + 1;
@@ -209,7 +205,7 @@ void Ism::WriteSample(
       }
 
       sal::Time t = ((sal::Time)n) / sampling_frequency_ - tau;
-      sal::Sample low_pass = 1.0 / 2.0 * (1.0 + cos(2.0 * PI * t / T_w)) *
+      T low_pass = 1.0 / 2.0 * (1.0 + cos(2.0 * PI * t / T_w)) *
         sin(2.0 * PI * f_c * t) / (2.0 * PI * f_c * t);
 
       // If low_pass is nan it means that t=0 and sinc(0)=1
@@ -218,18 +214,18 @@ void Ism::WriteSample(
         low_pass = 1.0;
       }
 
-      filter_coefficients.push_back(attenuation * low_pass);
-      rir_.at(n) += attenuation * low_pass;
+//      filter_coefficients.push_back(attenuation * low_pass);
+      rir_[n] += attenuation * low_pass;
     }
 
-    sal::Int nneg_integer_delay = (integer_delay < 0) ? 0 : integer_delay;
-    images_int_delay_filter_.push_back
-    (
-      sal::DelayFilter
-      (
-        nneg_integer_delay,
-        nneg_integer_delay));
-    images_frac_delay_filter_.push_back(mcl::DigitalFilter<T>(filter_coefficients));
+//    sal::Int nneg_integer_delay = (integer_delay < 0) ? 0 : integer_delay;
+//    images_int_delay_filter_.push_back
+//    (
+//      sal::DelayFilter
+//      (
+//        nneg_integer_delay,
+//        nneg_integer_delay));
+//    images_frac_delay_filter_.push_back(mcl::DigitalFilter<T>(filter_coefficients));
 
     break;
   }
@@ -237,13 +233,12 @@ void Ism::WriteSample(
 }
 
 
-void Ism::Update()
+template<typename T>
+void Ism<T>::Update(
+  const CuboidRoom<T>& room,
+  const Source& source,
+  const Receiver<T>& receiver)
 {
-  modified_ = true;
-  rir_.clear();
-  images_delay_.clear();
-  images_position_.clear();
-  images_int_delay_filter_.clear();
-  images_frac_delay_filter_.clear();
+  CalculateRir(room, source, receiver);
 }
 } // namespace sal

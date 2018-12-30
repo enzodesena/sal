@@ -21,7 +21,7 @@
 #include "freefieldsimulation.hpp"
 //#include "wavhandler.hpp"
 #include "cipicdir.hpp"
-//#include "ism.hpp"
+#include "ism.hpp"
 #include "cuboidroom.hpp"
 //#include "fdtd.hpp"
 #include "riranalysis.hpp"
@@ -42,6 +42,7 @@
 #include "salutilities_test.ipp"
 #include "freefieldsimulation_test.ipp"
 #include "cuboidroom_test.ipp"
+#include "ism_test.ipp"
 
 int main(
   int argc,
@@ -60,7 +61,7 @@ int main(
     sal::PropagationLineTest();
     sal::FreeFieldSimTest();
     sal::CuboidRoom<sal::Sample>::Test();
-  //  sal::Ism::Test();
+    sal::Ism<sal::Sample>::Test();
     sal::RirAnalysisTest();
     sal::TripletHandlerTest();
   //  sal::Fdtd::Test();

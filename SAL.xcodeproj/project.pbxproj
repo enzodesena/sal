@@ -315,21 +315,21 @@
 		57A156E51593462300AA6445 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				57F13C0B2084D31C002CC480 /* audiobuffer_test.ipp */,
-				5778113B20600B5A004B9C6F /* cuboidroom_test.ipp */,
-				5778113D20600B5A004B9C6F /* fdtd_test.ipp */,
-				5778113A20600B5A004B9C6F /* ism_test.ipp */,
 				57B4EF861CD81AB400134991 /* ambisonics_test.ipp */,
+				57F13C0B2084D31C002CC480 /* audiobuffer_test.ipp */,
 				57B4EF871CD81AB400134991 /* cipicdirectivity_test.ipp */,
+				5778113B20600B5A004B9C6F /* cuboidroom_test.ipp */,
 				57B4EF881CD81AB400134991 /* delayfilter_test.ipp */,
+				5778113D20600B5A004B9C6F /* fdtd_test.ipp */,
 				57B4EF891CD81AB400134991 /* freefieldsimulation_test.ipp */,
+				5778113A20600B5A004B9C6F /* ism_test.ipp */,
 				57B4EF8A1CD81AB400134991 /* kemarmic_test.ipp */,
+				57B4EF8E1CD81AB400134991 /* propagationline_test.ipp */,
 				57B4EF8B1CD81AB400134991 /* receiver_test.ipp */,
 				57B4EF8C1CD81AB400134991 /* receiverarray_test.ipp */,
 				5778113920600B5A004B9C6F /* riranalysis_test.ipp */,
-				57B4EF8E1CD81AB400134991 /* propagationline_test.ipp */,
-				57B4EF901CD81AB400134991 /* sphericalheadmic_test.ipp */,
 				5787B4F0208031060068C104 /* salutilities_test.ipp */,
+				57B4EF901CD81AB400134991 /* sphericalheadmic_test.ipp */,
 				5778113C20600B5A004B9C6F /* tdbem_test.ipp */,
 			);
 			name = test;
