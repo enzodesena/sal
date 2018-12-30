@@ -35,162 +35,178 @@ bool CuboidRoom<T>::IsPointInRoom(
       point.z(), dimensions_.z() - origin_position_.z() - wall_distance);
 }
 
-
 template<typename T>
-mcl::Vector<Point> CuboidRoom<T>::GetBoundaryPoints(
+Point CuboidRoom<T>::GetBoundaryPoint(
+  const size_t wall_id,
   const Point& source_point,
   const Point& mic_point) const noexcept
 {
-  // These points are normalised such that they are between 0<x<Lx etc...
   Point shifted_source_point = mcl::Subtract(
     source_point, origin_position_);
   Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
-  mcl::Vector<Point> reflection_points(6);
-
-  reflection_points[0] = ReflectionPoint(
-    kX1, shifted_source_point, shifted_mic_point);
-  reflection_points[1] = ReflectionPoint(
-    kX2, shifted_source_point, shifted_mic_point);
-  reflection_points[2] = ReflectionPoint(
-    kY1, shifted_source_point, shifted_mic_point);
-  reflection_points[3] = ReflectionPoint(
-    kY2, shifted_source_point, shifted_mic_point);
-  reflection_points[4] = ReflectionPoint(
-    kZ1, shifted_source_point, shifted_mic_point);
-  reflection_points[5] = ReflectionPoint(
-    kZ2, shifted_source_point, shifted_mic_point);
-
-  ASSERT(mcl::IsEqual(reflection_points[0].x(), 0.0));
-  ASSERT(mcl::IsEqual(reflection_points[1].x(), dimensions_.x()));
-  ASSERT(mcl::IsEqual(reflection_points[2].y(), 0.0));
-  ASSERT(mcl::IsEqual(reflection_points[3].y(), dimensions_.y()));
-  ASSERT(mcl::IsEqual(reflection_points[4].z(), 0.0));
-  ASSERT(mcl::IsEqual(reflection_points[5].z(), dimensions_.z()));
-
-//  if (boundary_set_type_ == kFirstAndSecondOrder)
-//  {
-//    Point a_kX2 = IntersectionPoint
-//    (
-//      kX2,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
-//    Point a_kY1 = IntersectionPoint
-//    (
-//      kY1,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
-//    if (IsPointInRoom(a_kX2, VERY_SMALL))
-//    {
-//      ASSERT(!IsPointInRoom(a_kY1, VERY_SMALL));
-//      reflection_points.push_back(a_kX2);
-//    }
-//    else
-//    {
-//      ASSERT(!IsPointInRoom(a_kX2, VERY_SMALL));
-//      reflection_points.push_back(a_kY1);
-//    }
-//
-//    Point b_kX2 = IntersectionPoint
-//    (
-//      kX2,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
-//    Point b_kY2 = IntersectionPoint
-//    (
-//      kY2,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
-//    if (IsPointInRoom(b_kX2, VERY_SMALL))
-//    {
-//      ASSERT(!IsPointInRoom(b_kY2, VERY_SMALL));
-//      reflection_points.push_back(b_kX2);
-//    }
-//    else
-//    {
-//      ASSERT(!IsPointInRoom(b_kX2, VERY_SMALL));
-//      reflection_points.push_back(b_kY2);
-//    }
-//
-//    Point c_kX1 = IntersectionPoint
-//    (
-//      kX1,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
-//    Point c_kY2 = IntersectionPoint
-//    (
-//      kY2,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
-//    if (IsPointInRoom(c_kX1, VERY_SMALL))
-//    {
-//      ASSERT(!IsPointInRoom(c_kY2, VERY_SMALL));
-//      reflection_points.push_back(c_kX1);
-//    }
-//    else
-//    {
-//      ASSERT(!IsPointInRoom(c_kX1, VERY_SMALL));
-//      reflection_points.push_back(c_kY2);
-//    }
-//
-//    Point d_kX1 = IntersectionPoint
-//    (
-//      kX1,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
-//    Point d_kY1 = IntersectionPoint
-//    (
-//      kY1,
-//      dimensions_,
-//      shifted_mic_point,
-//      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
-//    if (IsPointInRoom(d_kX1, VERY_SMALL))
-//    {
-//      ASSERT(!IsPointInRoom(d_kY1, VERY_SMALL));
-//      reflection_points.push_back(d_kX1);
-//    }
-//    else
-//    {
-//      ASSERT(!IsPointInRoom(d_kX1, VERY_SMALL));
-//      reflection_points.push_back(d_kY1);
-//    }
-//  }
-
-  for (Int i = 0; i < (Int)reflection_points.size(); ++i)
-  {
-    reflection_points[i] = mcl::Sum(reflection_points[i], origin_position_);
-  }
-
-  ASSERT(mcl::IsEqual(reflection_points[0].x(), origin_position_.x()));
-  ASSERT(
-    mcl::IsEqual(
-      reflection_points[1].x(), dimensions_.x() + origin_position_.x()));
-  ASSERT(mcl::IsEqual(reflection_points[2].y(), origin_position_.y()));
-  ASSERT(
-    mcl::IsEqual(
-      reflection_points[3].y(), dimensions_.y() + origin_position_.y()));
-  ASSERT(mcl::IsEqual(reflection_points[4].z(), origin_position_.z()));
-  ASSERT(
-    mcl::IsEqual(
-      reflection_points[5].z(), dimensions_.z() + origin_position_.z()));
-
-  return reflection_points;
+  
+  Point reflection_point = ReflectionPoint(
+    wall_id, shifted_source_point, shifted_mic_point);
+  
+  return mcl::Sum(reflection_point, origin_position_);
 }
 
+//template<typename T>
+//mcl::Vector<Point> CuboidRoom<T>::GetBoundaryPoints(
+//  const Point& source_point,
+//  const Point& mic_point) const noexcept
+//{
+//  // These points are normalised such that they are between 0<x<Lx etc...
+//  Point shifted_source_point = mcl::Subtract(
+//    source_point, origin_position_);
+//  Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
+//  mcl::Vector<Point> reflection_points(6);
+//
+//  reflection_points[0] = ReflectionPoint(
+//    kX1, shifted_source_point, shifted_mic_point);
+//  reflection_points[1] = ReflectionPoint(
+//    kX2, shifted_source_point, shifted_mic_point);
+//  reflection_points[2] = ReflectionPoint(
+//    kY1, shifted_source_point, shifted_mic_point);
+//  reflection_points[3] = ReflectionPoint(
+//    kY2, shifted_source_point, shifted_mic_point);
+//  reflection_points[4] = ReflectionPoint(
+//    kZ1, shifted_source_point, shifted_mic_point);
+//  reflection_points[5] = ReflectionPoint(
+//    kZ2, shifted_source_point, shifted_mic_point);
+//
+//  ASSERT(mcl::IsEqual(reflection_points[0].x(), 0.0));
+//  ASSERT(mcl::IsEqual(reflection_points[1].x(), dimensions_.x()));
+//  ASSERT(mcl::IsEqual(reflection_points[2].y(), 0.0));
+//  ASSERT(mcl::IsEqual(reflection_points[3].y(), dimensions_.y()));
+//  ASSERT(mcl::IsEqual(reflection_points[4].z(), 0.0));
+//  ASSERT(mcl::IsEqual(reflection_points[5].z(), dimensions_.z()));
+//
+////  if (boundary_set_type_ == kFirstAndSecondOrder)
+////  {
+////    Point a_kX2 = IntersectionPoint
+////    (
+////      kX2,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
+////    Point a_kY1 = IntersectionPoint
+////    (
+////      kY1,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 1, 0, 0, 1, 1, 0));
+////    if (IsPointInRoom(a_kX2, VERY_SMALL))
+////    {
+////      ASSERT(!IsPointInRoom(a_kY1, VERY_SMALL));
+////      reflection_points.push_back(a_kX2);
+////    }
+////    else
+////    {
+////      ASSERT(!IsPointInRoom(a_kX2, VERY_SMALL));
+////      reflection_points.push_back(a_kY1);
+////    }
+////
+////    Point b_kX2 = IntersectionPoint
+////    (
+////      kX2,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
+////    Point b_kY2 = IntersectionPoint
+////    (
+////      kY2,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 1, 1, 0, 1, 1, 0));
+////    if (IsPointInRoom(b_kX2, VERY_SMALL))
+////    {
+////      ASSERT(!IsPointInRoom(b_kY2, VERY_SMALL));
+////      reflection_points.push_back(b_kX2);
+////    }
+////    else
+////    {
+////      ASSERT(!IsPointInRoom(b_kX2, VERY_SMALL));
+////      reflection_points.push_back(b_kY2);
+////    }
+////
+////    Point c_kX1 = IntersectionPoint
+////    (
+////      kX1,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
+////    Point c_kY2 = IntersectionPoint
+////    (
+////      kY2,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 0, 1, 0, 1, 1, 0));
+////    if (IsPointInRoom(c_kX1, VERY_SMALL))
+////    {
+////      ASSERT(!IsPointInRoom(c_kY2, VERY_SMALL));
+////      reflection_points.push_back(c_kX1);
+////    }
+////    else
+////    {
+////      ASSERT(!IsPointInRoom(c_kX1, VERY_SMALL));
+////      reflection_points.push_back(c_kY2);
+////    }
+////
+////    Point d_kX1 = IntersectionPoint
+////    (
+////      kX1,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
+////    Point d_kY1 = IntersectionPoint
+////    (
+////      kY1,
+////      dimensions_,
+////      shifted_mic_point,
+////      ImageSourcePosition(shifted_source_point, 0, 0, 0, 1, 1, 0));
+////    if (IsPointInRoom(d_kX1, VERY_SMALL))
+////    {
+////      ASSERT(!IsPointInRoom(d_kY1, VERY_SMALL));
+////      reflection_points.push_back(d_kX1);
+////    }
+////    else
+////    {
+////      ASSERT(!IsPointInRoom(d_kX1, VERY_SMALL));
+////      reflection_points.push_back(d_kY1);
+////    }
+////  }
+//
+//  for (Int i = 0; i < (Int)reflection_points.size(); ++i)
+//  {
+//    reflection_points[i] = mcl::Sum(reflection_points[i], origin_position_);
+//  }
+//
+//  ASSERT(mcl::IsEqual(reflection_points[0].x(), origin_position_.x()));
+//  ASSERT(
+//    mcl::IsEqual(
+//      reflection_points[1].x(), dimensions_.x() + origin_position_.x()));
+//  ASSERT(mcl::IsEqual(reflection_points[2].y(), origin_position_.y()));
+//  ASSERT(
+//    mcl::IsEqual(
+//      reflection_points[3].y(), dimensions_.y() + origin_position_.y()));
+//  ASSERT(mcl::IsEqual(reflection_points[4].z(), origin_position_.z()));
+//  ASSERT(
+//    mcl::IsEqual(
+//      reflection_points[5].z(), dimensions_.z() + origin_position_.z()));
+//
+//  return reflection_points;
+//}
 
+
+template<typename T>
 mcl::Vector<mcl::DigitalFilter<T>>
 CuboidRoom<T>::GetBoundaryFilters(
   const Point& source_point,
   const Point& mic_point) const noexcept
 {
-  mcl::Vector<mcl::DigitalFilter<T>> boundary_filters(wall_filters_);
-
+  return wall_filters_;
+//  mcl::Vector<mcl::DigitalFilter<T>> boundary_filters(wall_filters_);
 //  if (boundary_set_type_ == kFirstAndSecondOrder)
 //  {
 //    Point a_kX2 = IntersectionPoint
@@ -253,12 +269,12 @@ CuboidRoom<T>::GetBoundaryFilters(
 //      boundary_filters.push_back(boundary_filters[kY1]);
 //    }
 //  }
-  return boundary_filters;
+//  return boundary_filters;
 }
 
 
 template<typename T>
-mcl::Int CuboidRoom<T>::num_boundary_points() const noexcept
+size_t CuboidRoom<T>::num_boundary_points() const noexcept
 {
   switch (boundary_set_type_)
   {
@@ -379,10 +395,10 @@ Time CuboidRoom<T>::SabineRt60() const
   {
     // Assert that all of them are simple gain filters
     // TODO: Implement for frequency dependent ones
-    ASSERT(wall_filters()[i].B().size() == 1);
-    ASSERT(wall_filters()[i].A().size() == 1);
-    ASSERT(mcl::IsEqual(wall_filters()[i].A()[0], 1.0));
-    Sample beta = wall_filters()[i].B()[0];
+    ASSERT(GetWallFilters()[i].GetNumeratorCoeffs().size() == 1);
+    ASSERT(GetWallFilters()[i].GetDenominatorCoeffs().size() == 1);
+    ASSERT(mcl::IsEqual(GetWallFilters()[i].GetDenominatorCoeffs()[0], 1.0));
+    Sample beta = GetWallFilters()[i].GetNumeratorCoeffs()[0];
     Sample alpha = 1.0 - pow(beta, 2.0);
 
     Length area;

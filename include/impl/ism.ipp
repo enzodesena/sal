@@ -63,14 +63,14 @@ void Ism::Run(
 void Ism::CalculateRir()
 {
   mcl::Matrix<Sample> beta(2, 3);
-  mcl::Vector<mcl::IirFilter> filters = room_->wall_filters();
-  beta.SetElement(0, 0, filters[0].B()[0]); // beta_{x1}
-  beta.SetElement(0, 1, filters[2].B()[0]); // beta_{y1}
-  beta.SetElement(0, 2, filters[4].B()[0]); // beta_{z1}
+  mcl::Vector<mcl::IirFilter> filters = room_->GetWallFilters();
+  beta.SetElement(0, 0, filters[0].GetNumeratorCoeffs()[0]); // beta_{x1}
+  beta.SetElement(0, 1, filters[2].GetNumeratorCoeffs()[0]); // beta_{y1}
+  beta.SetElement(0, 2, filters[4].GetNumeratorCoeffs()[0]); // beta_{z1}
 
-  beta.SetElement(1, 0, filters[1].B()[0]); // beta_{x2}
-  beta.SetElement(1, 1, filters[3].B()[0]); // beta_{y2}
-  beta.SetElement(1, 2, filters[5].B()[0]); // beta_{z2}
+  beta.SetElement(1, 0, filters[1].GetNumeratorCoeffs()[0]); // beta_{x2}
+  beta.SetElement(1, 1, filters[3].GetNumeratorCoeffs()[0]); // beta_{y2}
+  beta.SetElement(1, 2, filters[5].GetNumeratorCoeffs()[0]); // beta_{z2}
 
   Length room_x = ((CuboidRoom*)room_)->dimensions().x();
   Length room_y = ((CuboidRoom*)room_)->dimensions().y();

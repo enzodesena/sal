@@ -11,7 +11,6 @@
 #include "vector.hpp"
 #include "point.hpp"
 #include "digitalfilter.hpp"
-#include "room.hpp"
 #include "comparisonop.hpp"
 #include "salutilities.hpp"
 
@@ -27,22 +26,30 @@ enum CuboidWallId
   kZ2
 };
 
+enum BoundarySetType
+{
+  kFirstOrder,
+  kFirstAndSecondOrder
+};
+
 template<typename T>
-class CuboidRoom : public Room<T>
+class CuboidRoom
 {
 public:
   // The room filter is *not* an injected dependency. The software will do lots
   // of copies of the object.
   CuboidRoom(
-    Length x,
-    Length y,
-    Length z,
-    const mcl::Vector<mcl::DigitalFilter<T>>& filter_prototypes)
-    : Room<T>(filter_prototypes)
+    const Length x,
+    const Length y,
+    const Length z,
+    const mcl::Vector<mcl::DigitalFilter<T>>& filter_prototypes,
+    const BoundarySetType boundary_set_type = kFirstOrder)
+    : wall_filters_(filter_prototypes)
     , dimensions_(Triplet(x, y, z))
     , origin_position_(Triplet(0, 0, 0))
+    , boundary_set_type_(boundary_set_type)
   {
-    if ((Int)filter_prototypes.size() != num_faces())
+    if (filter_prototypes.size() != num_faces())
     {
       ASSERT(false);
     }
@@ -50,13 +57,15 @@ public:
 
 
   CuboidRoom(
-    Length x,
-    Length y,
-    Length z,
-    const mcl::DigitalFilter<T>& filter_prototype)
-    : Room<T>(mcl::Vector<mcl::DigitalFilter<T>>(6, filter_prototype))
+    const Length x,
+    const Length y,
+    const Length z,
+    const mcl::DigitalFilter<T>& filter_prototype,
+    const BoundarySetType boundary_set_type = kFirstOrder)
+    : wall_filters_(mcl::Vector<mcl::DigitalFilter<T>>(6, filter_prototype))
     , dimensions_(Triplet(x, y, z))
     , origin_position_(Triplet(0, 0, 0))
+    , boundary_set_type_(boundary_set_type)
   {
   }
 
@@ -71,25 +80,33 @@ public:
   CuboidRoom(
     const Triplet& room_dimensions,
     const Triplet& origin_position,
-    const mcl::DigitalFilter<T>& filter_prototype)
-    : Room<T>(mcl::Vector<mcl::DigitalFilter<T>>(6, filter_prototype))
+    const mcl::DigitalFilter<T>& filter_prototype,
+    const BoundarySetType boundary_set_type = kFirstOrder)
+    : wall_filters_(mcl::Vector<mcl::DigitalFilter<T>>(6, filter_prototype))
     , dimensions_(room_dimensions)
     , origin_position_(origin_position)
+    , boundary_set_type_(boundary_set_type)
   {
   }
 
 
-  mcl::Vector<Point>
-  GetBoundaryPoints(
+  const mcl::Vector<mcl::DigitalFilter<T>>& GetWallFilters() const
+  {
+    return wall_filters_;
+  }
+
+  Point
+  GetBoundaryPoint(
+    const size_t wall_id,
     const Point& source,
-    const Point& destination) const noexcept override;
+    const Point& destination) const noexcept;
 
   mcl::Vector<mcl::DigitalFilter<T>>
   GetBoundaryFilters(
     const Point& source_point,
-    const Point& mic_point) const noexcept override;
+    const Point& mic_point) const noexcept;
 
-  mcl::Int num_boundary_points() const noexcept override;
+  size_t num_boundary_points() const noexcept;
 
   Point ImageSourcePosition(
     const Point& source_position,
@@ -123,13 +140,13 @@ public:
   }
 
 
-  Int num_faces() const noexcept override
+  size_t num_faces() const noexcept
   {
     return 6;
   }
 
 
-  Length max_distance() const noexcept override
+  Length max_distance() const noexcept
   {
     return dimensions_.norm();
   }
@@ -140,9 +157,9 @@ public:
   bool
   IsPointInRoom(
     const Point& point,
-    Length precision = VERY_SMALL) const noexcept override;
+    Length precision = VERY_SMALL) const noexcept;
 
-  std::string ShapeDescription() const noexcept override;
+  std::string ShapeDescription() const noexcept;
 
 
   virtual ~CuboidRoom()
@@ -186,6 +203,10 @@ private:
     Triplet dimensions,
     const Point& observation_pos,
     const Point& image_pos) noexcept;
+  
+  // Member variables
+  mcl::Vector<mcl::DigitalFilter<T>> wall_filters_;
+  BoundarySetType boundary_set_type_;
 };
 } // namespace sal
 

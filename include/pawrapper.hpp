@@ -50,7 +50,7 @@ public:
   static void PrintDevicesInfo();
   static size_t NumOutputChannels(
     size_t out_dev_id);
-  static mcl::Vector<mcl::size_t> SelectChannelIds(
+  static mcl::Vector<size_t> SelectChannelIds(
     size_t num_loudspeakers,
     size_t out_dev_id);
 
