@@ -11,27 +11,17 @@
 
 namespace sal
 {
-using sal::Source;
-using sal::Microphone;
-using sal::Time;
-using sal::Length;
-using sal::Sample;
-using sal::Int;
-using mcl::Point;
-using sal::Int;
-
-
-TdBem::TdBem
+template<typename T>
+TdBem<T>::TdBem
 (
-  Room * const room,
-  Source * const source,
-  Microphone * const microphone,
-             const Time sampling_frequency,
-             const Length spatial_sampling_period,
-             const Sample specific_acoustic_impedance)
-  : room_(room)
-  , source_(source)
-  , microphone_(microphone)
+  const CuboidRoom<T>& room,
+  const Source& source,
+  const Receiver<T>& receiver,
+  const Time sampling_frequency,
+  const Length spatial_sampling_period,
+  const T specific_acoustic_impedance)
+  : source_position_(source.position())
+  , receiver_position_(receiver.position())
   , sampling_frequency_(sampling_frequency)
   , spatial_sampling_period_(spatial_sampling_period)
   , specific_acoustic_impedance_(specific_acoustic_impedance)
@@ -51,8 +41,8 @@ TdBem::TdBem
   // Precalculate distances
   distance_los_ = Distance
   (
-    microphone_->position(),
-    source_->position());
+    microphone_position_,
+    source_position_);
   for (Int i = 0; i < num_elements_; ++i)
   {
     distances_source_.push_back
@@ -60,14 +50,14 @@ TdBem::TdBem
       mcl::Distance
       (
         points_[i],
-        source_->position()));
+        source_position_));
     all_distances.push_back(distances_source_[i]);
     distances_mic_.push_back
     (
       mcl::Distance
       (
         points_[i],
-        microphone_->position()));
+        microphone_position_));
     all_distances.push_back(distances_mic_[i]);
 
     // Precalculate distances between points
@@ -84,22 +74,22 @@ TdBem::TdBem
     }
   }
 
-  mcl::Vector<sal::Sample> all_weights;
+  mcl::Vector<T> all_weights;
 
   for (Int i = 0; i < num_elements_; ++i)
   {
-    weights_current_.push_back(mcl::Vector<sal::Sample>(num_elements_, 0.0));
-    weights_previous_.push_back(mcl::Vector<sal::Sample>(num_elements_, 0.0));
+    weights_current_.push_back(mcl::Vector<T>(num_elements_, 0.0));
+    weights_previous_.push_back(mcl::Vector<T>(num_elements_, 0.0));
     for (Int j = 0; j < num_elements_; ++j)
     {
       if (i == j)
       {
         continue;
       }
-      sal::Sample dr_dn = CalculateDrDn(
+      T dr_dn = CalculateDrDn(
         points_[i], points_[j], normal_vectors_[j]);
 
-      Sample weight_current = CalculateWeightCurrent
+      T weight_current = CalculateWeightCurrent
       (
         dr_dn,
         distances_[i][j],
@@ -110,7 +100,7 @@ TdBem::TdBem
       weights_current_[i][j] = weight_current;
       all_weights.push_back(weight_current);
 
-      Sample weight_previous = CalculateWeightPrevious
+      T weight_previous = CalculateWeightPrevious
       (
         dr_dn,
         distances_[i][j],
@@ -122,9 +112,9 @@ TdBem::TdBem
       all_weights.push_back(weight_previous);
     }
 
-    sal::Sample dr_dn = CalculateDrDn
+    T dr_dn = CalculateDrDn
     (
-      microphone_->position(),
+      microphone_position_,
       points_[i],
       normal_vectors_[i]);
     weights_mic_current_.push_back
@@ -175,13 +165,14 @@ TdBem::TdBem
 }
 
 
-Sample TdBem::CalculateWeightCurrent(
-  Sample dr_dn,
+template<typename T>
+T TdBem<T>::CalculateWeightCurrent(
+  T dr_dn,
   Length distance,
   Length sound_speed,
   Time sampling_frequency,
   Length spatial_sampling_period,
-  Sample specific_acoustic_impedance)
+  T specific_acoustic_impedance)
 {
   return (dr_dn / pow(distance, 2.0) +
       dr_dn / (distance * sound_speed / sampling_frequency) +
@@ -191,13 +182,14 @@ Sample TdBem::CalculateWeightCurrent(
 }
 
 
-Sample TdBem::CalculateWeightPrevious(
-  Sample dr_dn,
+template<typename T>
+T TdBem<T>::CalculateWeightPrevious(
+  T dr_dn,
   Length distance,
   Length sound_speed,
   Time sampling_frequency,
   Length spatial_sampling_period,
-  Sample specific_acoustic_impedance)
+  T specific_acoustic_impedance)
 {
   return -(dr_dn - 1.0 / specific_acoustic_impedance) /
     (distance * sound_speed / sampling_frequency) *
@@ -205,7 +197,8 @@ Sample TdBem::CalculateWeightPrevious(
 }
 
 
-Sample TdBem::CalculateDrDn(
+template<typename T>
+T TdBem<T>::CalculateDrDn(
   Point point_x,
   Point point_y,
   Point normal_y)
@@ -217,7 +210,8 @@ Sample TdBem::CalculateDrDn(
 }
 
 
-void TdBem::CalculatePoints()
+template<typename T>
+void TdBem<T>::CalculatePoints()
 {
   // TODO: implement for other types of room
   ASSERT(dynamic_cast<CuboidRoom*>(room_) != nullptr);
@@ -311,16 +305,17 @@ void TdBem::CalculatePoints()
 }
 
 
-void TdBem::Run(
+template<typename T>
+void TdBem<T>::Run(
   const MonoBuffer& input_buffer,
   Buffer& output_buffer)
 {
   ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
   MonoBuffer& mono_output_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
-  mcl::Matrix<sal::Sample> boundary_pressure(0, 0);
+  mcl::Matrix<T> boundary_pressure(0, 0);
   if (log_)
   {
-    boundary_pressure = mcl::Matrix<sal::Sample>
+    boundary_pressure = mcl::Matrix<T>
     (
       num_elements_,
       input_buffer.num_samples());
@@ -333,11 +328,11 @@ void TdBem::Run(
     {
       std::cout << "Running TDBEM sample n. " << k << std::endl;
     }
-    source_delay_line_.Write(input_buffer.GetSample(sample_id));
+    source_delay_line_.Write(input_buffer.GetT(sample_id));
 
     for (Int i = 0; i < num_elements_; ++i)
     {
-      sal::Sample pressure = 0.0;
+      T pressure = 0.0;
       // Line of sight to boundary point
       pressure += source_delay_line_.FractionalReadAt
         (
@@ -371,7 +366,7 @@ void TdBem::Run(
     for (Int i = 0; i < num_elements_; ++i)
     {
       Time delay = distances_mic_[i] * sampling_frequency_ / SOUND_SPEED;
-      Sample pressure = (weights_mic_current_[i] * pressures_[i].
+      T pressure = (weights_mic_current_[i] * pressures_[i].
           FractionalReadAt(delay) +
           weights_mic_previous_[i] * pressures_[i].FractionalReadAt(delay + 1.0)
         )
@@ -388,7 +383,7 @@ void TdBem::Run(
       (
         source_delay_line_.FractionalReadAt(los_delay) / (4.0 * PI *
           distance_los_)),
-      source_->position(),
+      source_position_,
       num_elements_,
       mono_output_buffer);
 
@@ -408,7 +403,8 @@ void TdBem::Run(
 }
 
 
-void TdBem::WriteOutPoints(
+template<typename T>
+void TdBem<T>::WriteOutPoints(
   const std::string file_name)
 {
   mcl::Matrix<sal::Length> output(num_elements_, 6);

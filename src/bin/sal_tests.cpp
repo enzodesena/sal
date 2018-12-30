@@ -73,7 +73,7 @@ int main(
 #endif
   
   //  sal::TdBem::SimulationTime();
-  //  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
+    std::cout<<"FDTD speed: "<<sal::Fdtd<sal::Sample>::SimulationTime()<<" s\n";
 
   return 0;
 }
