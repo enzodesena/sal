@@ -18,7 +18,7 @@
 #include "ambisonics.hpp"
 #include "delayfilter.hpp"
 #include "propagationline.hpp"
-//#include "freefieldsimulation.hpp"
+#include "freefieldsimulation.hpp"
 //#include "wavhandler.hpp"
 #include "cipicdir.hpp"
 //#include "ism.hpp"
@@ -39,6 +39,8 @@
 #include "riranalysis_test.ipp"
 #include "propagationline_test.ipp"
 #include "ambisonics_test.ipp"
+#include "salutilities_test.ipp"
+#include "freefieldsimulation_test.ipp"
 
 int main(
   int argc,
@@ -55,11 +57,11 @@ int main(
     sal::ReceiverArrayTest();
     sal::DelayFilterTest();
     sal::PropagationLineTest();
-  //  sal::FreeFieldSim::Test();
+    sal::FreeFieldSimTest();
   //  sal::CuboidRoom::Test();
   //  sal::Ism::Test();
     sal::RirAnalysisTest();
-  //  sal::TripletHandler::Test();
+    sal::TripletHandlerTest();
   //  sal::Fdtd::Test();
 
   std::cout << "All tests succeded!\n";

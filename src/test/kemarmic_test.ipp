@@ -36,7 +36,7 @@ inline bool KemarMicTest()
     KemarDirectivity<Sample>(44100.0, kemar_path),
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
-  StereoBuffer<Sample> stream_i(impulse_response_length);
+  Buffer<Sample> stream_i(2, impulse_response_length);
 
   mic_i.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), stream_i);
 
@@ -75,7 +75,7 @@ inline bool KemarMicTest()
     KemarDirectivity<Sample>(44100.0, kemar_path),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0, 1, PI / 2.0));
-  StereoBuffer<Sample> stream_o(impulse_response_length);
+  Buffer<Sample> stream_o(2, impulse_response_length);
 
   mic_o.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_o);
   ASSERT(mcl::IsApproximatelyEqual(cmp_imp_front_left, stream_o.GetChannelReference(Channel::kLeft), SMALL));
@@ -92,7 +92,7 @@ inline bool KemarMicTest()
       HeadRefOrientation::y_facing),
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
-  StereoBuffer<Sample> stream_ia(impulse_response_length);
+  Buffer<Sample> stream_ia(2, impulse_response_length);
   mic_ia.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_ia);
   ASSERT
   (
@@ -127,7 +127,7 @@ inline bool KemarMicTest()
     KemarDirectivity<Sample>(44100.0, kemar_path),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
-  StereoBuffer<Sample> stream_m(impulse_response_length);
+  Buffer<Sample> stream_m(2, impulse_response_length);
 
   mic_m.ReceiveAdd(impulse, Point(-1.0, 0.0, 0.0), stream_m);
   ASSERT(mcl::IsApproximatelyEqual(stream_m.GetChannelReference(Channel::kLeft), cmp_imp_up_left, SMALL));
@@ -177,7 +177,7 @@ inline bool KemarMicTest()
     KemarDirectivity<Sample>(44100.0, kemar_path),
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
-  StereoBuffer<Sample> stream_p(impulse_response_length);
+  Buffer<Sample> stream_p(2, impulse_response_length);
 
   mic_p.ReceiveAdd(impulse, Point(0.0, -1.0, 0.0), stream_p);
 
@@ -196,7 +196,7 @@ inline bool KemarMicTest()
       HeadRefOrientation::y_facing),
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
-  StereoBuffer<Sample> stream_pa(impulse_response_length);
+  Buffer<Sample> stream_pa(2, impulse_response_length);
   mic_pa.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), stream_pa);
   ASSERT
   (
@@ -221,7 +221,7 @@ inline bool KemarMicTest()
     KemarDirectivity<Sample>(44100.0, kemar_path),
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
-  StereoBuffer<Sample> stream_r(impulse_response_length);
+  Buffer<Sample> stream_r(2, impulse_response_length);
   stream_r.ResetSamples();
   mic_r.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_r);
 
@@ -254,7 +254,7 @@ inline bool KemarMicTest()
     KemarDirectivity<Sample>(44100.0, kemar_path),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
-  StereoBuffer<Sample> stream_t(impulse_response_length);
+  Buffer<Sample> stream_t(2, impulse_response_length);
 
   mic_t.ReceiveAdd(impulse, Point(0.0, 0.0, -1.0), stream_t);
 
@@ -286,7 +286,7 @@ inline bool KemarMicTest()
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity(),
     3);
-  StereoBuffer<Sample> stream_u(impulse_response_length);
+  Buffer<Sample> stream_u(2, impulse_response_length);
 
   mic_u.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), 0, stream_u);
 

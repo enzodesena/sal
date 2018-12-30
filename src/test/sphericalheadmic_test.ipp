@@ -85,7 +85,7 @@ inline bool SphericalHeadMicTest()
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
    
-  StereoBuffer<Sample> stream_a(impulse.size());
+  Buffer<Sample> stream_a(2, impulse.size());
 
   Length distance(2.0);
 
@@ -147,7 +147,7 @@ inline bool SphericalHeadMicTest()
       sampling_frequency),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0, 1, 0));
-  StereoBuffer<Sample> stream_b(impulse.size());
+  Buffer<Sample> stream_b(2, impulse.size());
 
   // Point in front of face.
   Point point_front(distance, 0.0, 0.0);

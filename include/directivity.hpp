@@ -39,6 +39,8 @@ public:
     const Point& point,
     Buffer<T>& output) noexcept = 0;
   
+  virtual size_t GetNumChannels() const noexcept = 0;
+  
   virtual void ResetState() noexcept = 0;
 };
 
@@ -62,6 +64,11 @@ public:
       GetDirectivity(point),
       output.begin(Channel::kMono),
       output.begin(Channel::kMono));
+  }
+  
+  size_t GetNumChannels() const noexcept override
+  {
+    return 1;
   }
   
   void ResetState() noexcept override
@@ -216,6 +223,10 @@ public:
     self_->ReceiveAdd_(input, point, output);
   }
 
+  size_t GetNumChannels() const noexcept
+  {
+    return self_->GetNumChannels_();
+  }
 
   void ResetState() noexcept
   {
@@ -230,8 +241,9 @@ private:
     virtual void ReceiveAdd_(
       const mcl::Vector<T>& input,
       const Point& point,
-      Buffer<T>& output) = 0;
-    virtual void Reset_() = 0;
+      Buffer<T>& output) noexcept = 0;
+    virtual size_t GetNumChannels_() const noexcept = 0;
+    virtual void Reset_() noexcept = 0;
     virtual std::unique_ptr<DirectivityConcept> copy_() = 0;
   };
 
@@ -260,6 +272,12 @@ private:
       Buffer<T>& output) noexcept override
     {
       data_.ReceiveAdd(input, point, output);
+    }
+    
+    
+    size_t GetNumChannels_() const noexcept override
+    {
+      return data_.GetNumChannels();
     }
 
 

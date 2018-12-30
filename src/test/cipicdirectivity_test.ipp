@@ -35,7 +35,7 @@ inline bool CipicMicTest()
     CipicDirectivity<Sample>(cipic_path, CipicDirectivity<Sample>::DataType::kWav),
     Point(0.0, 0.0, 0.0),
     Quaternion::Identity());
-  StereoBuffer<Sample> stream_i(impulse_response_length);
+  Buffer<Sample> stream_i(2, impulse_response_length);
 
   mic_i.ReceiveAdd(impulse, Point(1.0, 0.0, 0.0), stream_i);
 
@@ -57,7 +57,7 @@ inline bool CipicMicTest()
     CipicDirectivity<Sample>(cipic_path, CipicDirectivity<Sample>::DataType::kWav),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0.0, 1, PI / 2.0));
-  StereoBuffer<Sample> output_buffer_b(impulse_response_length);
+  Buffer<Sample> output_buffer_b(2, impulse_response_length);
   mic_o.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), output_buffer_b);
   ASSERT(IsEqual(output_buffer_b.GetChannelReference(Channel::kLeft), cmp_imp_front_left));
 
@@ -78,7 +78,7 @@ inline bool CipicMicTest()
     CipicDirectivity<Sample>(cipic_path, CipicDirectivity<Sample>::DataType::kWav),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
-  StereoBuffer<Sample> stream_m(impulse_response_length);
+  Buffer<Sample> stream_m(2, impulse_response_length);
 
   mic_m.ReceiveAdd(impulse, Point(-1.0, 0.0, 0.0), stream_m);
   ASSERT(IsEqual(stream_m.GetChannelReference(Channel::kLeft), cmp_imp_up_left));
@@ -160,7 +160,7 @@ inline bool CipicMicTest()
     CipicDirectivity<Sample>(cipic_path, CipicDirectivity<Sample>::DataType::kWav),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0.0, 1, 0.0));
-  StereoBuffer<Sample> stream_p(impulse_response_length);
+  Buffer<Sample> stream_p(2, impulse_response_length);
 
   // The cipic database has no entry at 90deg. All sources at 80deg azimuth
   // are equally distant.
@@ -253,7 +253,7 @@ inline bool CipicMicTest()
     CipicDirectivity<Sample>(cipic_path, CipicDirectivity<Sample>::DataType::kWav),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 0.0, 1, 0.0));
-  StereoBuffer<Sample> stream_r(impulse_response_length);
+  Buffer<Sample> stream_r(2, impulse_response_length);
 
   mic_r.ReceiveAdd(impulse, Point(0.0, 1.0, 0.0), stream_r);
   ASSERT(mcl::IsApproximatelyEqual(stream_r.GetChannelReference(Channel::kLeft), cmp_imp_left_left));
@@ -313,7 +313,7 @@ inline bool CipicMicTest()
     CipicDirectivity<Sample>(cipic_path, CipicDirectivity<Sample>::DataType::kWav),
     Point(0.0, 0.0, 0.0),
     mcl::AxAng2Quat<Length>(0, 1, 0, -PI / 2.0));
-  StereoBuffer<Sample> stream_t(impulse_response_length);
+  Buffer<Sample> stream_t(2, impulse_response_length);
 
   mic_t.ReceiveAdd(impulse, Point(0.0, 0.0, -1.0), stream_t);
 

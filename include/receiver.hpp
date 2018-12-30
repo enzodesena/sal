@@ -68,6 +68,8 @@ public:
   void SetBypass(
     bool bypass) noexcept;
 
+  size_t GetNumChannels() const noexcept;
+  
   /**
    We need to
    keep track of the wave_id because some microphones (e.g. kemar) need

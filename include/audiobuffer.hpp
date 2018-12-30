@@ -21,32 +21,24 @@ namespace sal
 template<typename T>
 class Buffer
 {
-private:
-  mcl::Vector<mcl::Vector<T>> data_;
-  size_t num_channels_;
-  size_t num_samples_;
-
-  mcl::Vector<T> temporary_vector_; // Support vector for filter operation
-
-  Buffer& buffer_reference_ = *this;
-  bool owns_data_;
-
-
-  void AllocateMemory();
-
-
 public:
   /** Constructs a multichannel buffer. */
   Buffer(
     const size_t num_channels,
     const size_t num_samples);
 
-  Buffer();
+  Buffer() noexcept;
   
-  virtual size_t num_channels() const noexcept;
+  size_t num_channels() const noexcept;
 
-  virtual size_t num_samples() const noexcept;
+  size_t num_samples() const noexcept;
 
+  mcl::Vector<T>& operator[](
+    const size_t index) noexcept;
+
+  const mcl::Vector<T>& operator[](
+    const size_t index) const noexcept;
+  
   T GetSample(
     size_t channel_id,
     size_t sample_id) const noexcept;
@@ -95,121 +87,87 @@ public:
    same type and have the same number of channels
    and samples (checked only through debugging asserts).
    */
-  virtual void AddSamples(
+  void AddSamples(
     const Buffer& other_buffer) noexcept;
 
-  void PrintData();
+  void PrintData() noexcept;
 
   /** Resets all the values to zero. */
-  virtual void ResetSamples() noexcept;
-
-  Buffer(
-    const Buffer& other);
-
-  /** Copy assignment operator. If you are trying to assign the object onto
-   itself, this operator has no effect. Also, there is no effect if you try
-   to assign a buffer that is referencing itself. For
-   instance, if A is a buffer that owns the data, and B is a buffer that
-   refers to A's data, then the assignment A = B has no effect. */
-  Buffer& operator=(
-    const Buffer& other);
-};
-
-
-template<typename T>
-class MonoBuffer : public Buffer<T>
-{
-public:
-  using Channel::kMono;
-
-  explicit MonoBuffer(
-    const size_t num_samples) noexcept;
-
-  void SetSample(
-    const size_t sample_id,
-    const T sample_value) noexcept;
-
-  using Buffer<T>::SetSamples;
-
-  void SetSamples(
-    const size_t from_sample_id,
-    const size_t num_samples,
-    const T* samples) noexcept;
-
-  T GetSample(
-    const size_t sample_id) const noexcept;
-
-  static MonoBuffer Unary(
-    const T sample) noexcept;
-
-  using Buffer<T>::AddSamples;
-
+  void ResetSamples() noexcept;
+  
+  
+  /** Constructs a multichannel buffer as a reference to another multichannel
+   buffer. If constructed in this way, this object will not own the data.
+   
+   @param[in] data_referenced the data structure which we are referencing to.
+   @param[in] first_element_index index of the first sample
+   @param[in] size the number of samples for the data structure
+   we are referencing to.
+   */
+  friend Buffer MakeBufferReference(
+    Buffer& buffer,
+    const size_t first_sample_index = 0,
+    size_t num_samples = std::numeric_limits<size_t>::max(),
+    const size_t first_channel_index = 0,
+    size_t num_channels = std::numeric_limits<size_t>::max()) noexcept
+  {
+    num_samples =
+      (num_samples < std::numeric_limits<size_t>::max())
+      ? num_samples
+      : buffer.num_samples();
+    num_channels =
+      (num_channels < std::numeric_limits<size_t>::max())
+      ? num_channels
+      : buffer.num_channels();
+    ASSERT(num_samples <= buffer.num_samples());
+    ASSERT(num_channels <= buffer.num_channels());
+    return std::move(
+      Buffer
+      (
+        buffer,
+        first_sample_index,
+        num_samples,
+        first_channel_index,
+        num_channels));
+  }
+  
+  /** Constructs a multichannel buffer as a reference to a set of vectors.
+   
+   @param[in] data the set of vectors. The
+    size of each vector has to be the same.
+   */
+  static Buffer MakeBufferReference(
+    mcl::Vector<mcl::Vector<T>>& data) noexcept
+  {
+    return std::move(Buffer(data));
+  }
+  
 private:
-  // We use in case of the MonoBuffer(Sample* data_referenced, const size_t num_samples)
-  // constructor. We need this because taking &data_referenced as the T**
-  // would be taking the address of a temporary.
-  T* data_referenced_;
-};
-
-
-template<typename T>
-class StereoBuffer : public Buffer<T>
-{
-public:
-  StereoBuffer(
-    const size_t num_samples) noexcept;
-
-  void SetLeftSample(
-    const size_t sample_id,
-    const T sample_value) noexcept;
-  
-  void SetRightSample(
-    const size_t sample_id,
-    const T sample_value) noexcept;
-
-  T GetLeftSample(
-    const size_t sample_id) const noexcept;
-
-  T GetRightSample(
-    const size_t sample_id) const noexcept;
-};
-
-
-template<typename T>
-class BFormatBuffer : public Buffer<T>
-{
-public:
-  BFormatBuffer(
-    const size_t max_degree,
-    const size_t num_samples);
-
-  void SetSample(
-    const Int degree,
-    const size_t order,
-    const size_t sample_id,
-    const T& sample_value) noexcept;
-
-  using Buffer<T>::AddSamples;
-
-  void AddSamples(
-    const Int degree,
-    const size_t order,
-    const size_t from_sample_id,
+/** This implements the corresponding `MakeBufferReference` method.
+  The reason why it was preferred to make this constructor private is to
+  force clients to use the more explicit MakeBufferReference to make sure
+  the client understand it is dealing with a reference.
+ */
+  Buffer(
+    Buffer& buffer_referenced,
+    const size_t first_sample_index,
     const size_t num_samples,
-    const T* samples);
+    const size_t first_channel_index,
+    const size_t num_channels);
 
-  T GetSample(
-    const Int degree,
-    const size_t order,
-    const size_t sample_id) const noexcept;
+/** This implements the corresponding `MakeBufferReference` method.
+  The reason why it was preferred to make this constructor private is to
+  force clients to use the more explicit MakeBufferReference to make sure
+  the client understand it is dealing with a reference.
+ */
+  Buffer(
+    mcl::Vector<mcl::Vector<T>>& data);
   
-  static size_t GetChannelId(
-    const Int degree,
-    const size_t order);
-
-  static size_t GetNumChannels(
-    const size_t max_degree) noexcept;
+  // Member variables
+  mcl::Vector<mcl::Vector<T>> data_;
 };
+
+
 } // End namespace
 
 #include "audiobuffer.ipp"

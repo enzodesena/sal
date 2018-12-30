@@ -17,6 +17,12 @@
 namespace sal
 {
 template<typename T>
+size_t AmbisonicsDir<T>::GetNumChannels() const noexcept
+{
+  return AmbisonicsDir<T>::GetNumChannels(order_);
+}
+  
+template<typename T>
 void AmbisonicsDir<T>::ReceiveAdd(
   const mcl::Vector<T>& input,
   const Point& point,

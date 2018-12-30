@@ -51,6 +51,8 @@ public:
   void ResetState() noexcept override
   {
   }
+  
+  size_t GetNumChannels() const noexcept override;
 
   static size_t GetNumChannels(
     const size_t order) noexcept;

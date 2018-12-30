@@ -22,6 +22,7 @@ Receiver<T>::Receiver(
   , directivity_instances_(max_num_incoming_waves, directivity_prototype)
   , bypass_(false)
 {
+  ASSERT(max_num_incoming_waves >= 1);
 }
 
 
@@ -70,6 +71,11 @@ void Receiver<T>::SetBypass(
   bypass_ = bypass;
 }
 
+template<typename T>
+size_t Receiver<T>::GetNumChannels() const noexcept
+{
+  return directivity_instances_[0].GetNumChannels();
+}
 
 template<typename T>
 void Receiver<T>::ReceiveAdd(

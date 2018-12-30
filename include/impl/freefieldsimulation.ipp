@@ -14,9 +14,10 @@
 
 namespace sal
 {
-FreeFieldSim::FreeFieldSim(
-  mcl::Vector<Microphone*> microphones,
-  mcl::Vector<Source*> sources,
+template<typename T>
+FreeFieldSim<T>::FreeFieldSim(
+  const mcl::Vector<Receiver<T>>& microphones,
+  const mcl::Vector<Source>& sources,
   const Time sampling_frequency,
   const Length sound_speed)
 {
@@ -24,54 +25,58 @@ FreeFieldSim::FreeFieldSim(
 }
 
 
-FreeFieldSim::FreeFieldSim(
-  Microphone* microphone,
-  mcl::Vector<Source*> sources,
+template<typename T>
+FreeFieldSim<T>::FreeFieldSim(
+  const Receiver<T>& microphone,
+  const mcl::Vector<Source>& sources,
   const Time sampling_frequency,
   const Length sound_speed)
 {
   Init
   (
-    mcl::Unarymcl::Vector<Microphone*>(microphone),
+    mcl::UnaryVector<Receiver<T>>(microphone),
     sources,
     sampling_frequency,
     sound_speed);
 }
 
 
-FreeFieldSim::FreeFieldSim(
-  mcl::Vector<Microphone*> microphones,
-  Source* source,
+template<typename T>
+FreeFieldSim<T>::FreeFieldSim(
+  const mcl::Vector<Receiver<T>>& microphones,
+  const Source& source,
   const Time sampling_frequency,
   const Length sound_speed)
 {
   Init
   (
     microphones,
-    mcl::Unarymcl::Vector<Source*>(source),
+    mcl::UnaryVector<Source>(source),
     sampling_frequency,
     sound_speed);
 }
 
 
-FreeFieldSim::FreeFieldSim(
-  Microphone* microphone,
-  Source* source,
+template<typename T>
+FreeFieldSim<T>::FreeFieldSim(
+  const Receiver<T>& microphone,
+  const Source& source,
   const Time sampling_frequency,
   const Length sound_speed)
 {
   Init
   (
-    mcl::Unarymcl::Vector<Microphone*>(microphone),
-    mcl::Unarymcl::Vector<Source*>(source),
+    mcl::UnaryVector<Receiver<T>>(microphone),
+    mcl::UnaryVector<Source>(source),
     sampling_frequency,
     sound_speed);
 }
 
 
-void FreeFieldSim::Init(
-  mcl::Vector<Microphone*> microphones,
-  mcl::Vector<Source*> sources,
+template<typename T>
+void FreeFieldSim<T>::Init(
+  const mcl::Vector<Receiver<T>>& microphones,
+  const mcl::Vector<Source>& sources,
   const Time sampling_frequency,
   const Length sound_speed)
 {
@@ -79,157 +84,110 @@ void FreeFieldSim::Init(
   sources_ = sources;
   sampling_frequency_ = sampling_frequency;
   sound_speed_ = sound_speed;
-  const Int num_microphones = (Int)receivers_.size();
-  const Int num_sources = sources_.size();
+  const size_t num_microphones = receivers_.size();
+  const size_t num_sources = sources_.size();
+  Length max_distance = MaximumDistance(receivers_, sources_);
+  Length min_distance = MinimumDistance(receivers_, sources_);
 
-  propagation_lines_ = std::vector<mcl::Vector<PropagationLine*>>(num_sources);
+  propagation_lines_ = mcl::Vector<mcl::Vector<PropagationLine<T>>>(num_sources);
 
   // Define the propagation lines
-  for (Int source_i = 0; source_i < num_sources; ++source_i)
+  for (size_t source_i = 0; source_i < sources_.size(); ++source_i)
   {
-    Source* source = sources_[source_i];
-    propagation_lines_[source_i] = mcl::Vector<PropagationLine*>(
-      num_microphones);
-
-    for (Int mic_i = 0; mic_i < num_microphones; ++mic_i)
+    propagation_lines_[source_i] = mcl::Vector<PropagationLine<T>>
+    (
+      num_microphones,
+      PropagationLine<T>(min_distance, sampling_frequency, max_distance));
+    for (size_t mic_i = 0; mic_i < receivers_.size(); ++mic_i)
     {
-      Microphone* microphone = receivers_[mic_i];
-
-      Length distance = Distance(source->position(), microphone->position());
-
-      propagation_lines_[source_i][mic_i] =
-        new PropagationLine(distance, sampling_frequency);
-    }
-  }
-  // Allocate temporary buffers
-  AllocateTempBuffers(DEFAULT_MAX_BUFFER);
-}
-
-
-void FreeFieldSim::AllocateTempBuffers(
-  const Int num_samples)
-{
-  temp_buffers_ = std::vector<mcl::Vector<MonoBuffer*>>(sources_.size());
-  for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
-  {
-    temp_buffers_[source_i] = mcl::Vector<MonoBuffer*
-    >((Int)receivers_.size());
-    for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
-    {
-      temp_buffers_[source_i][mic_i] = new MonoBuffer(num_samples);
+      Length distance = Distance(sources_[source_i].position(), receivers_[mic_i].position());
+      propagation_lines_[source_i][mic_i].SetDistance(distance);
     }
   }
 }
 
 
-void FreeFieldSim::DeallocateTempBuffers()
+
+
+
+template<typename T>
+void FreeFieldSim<T>::Run(
+  const Buffer<T>& input,
+  Buffer<T>& output) noexcept
 {
-  for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
+  const size_t num_input_samples = input.num_samples();
+  const size_t num_output_sampels = output.num_samples();
+  ASSERT(input.num_channels() == sources_.size());
+  ASSERT(output.num_channels() == receivers_.size());
+
+  for (size_t sample_id = 0; sample_id < num_output_sampels; ++sample_id)
   {
-    for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
+    for (size_t source_i = 0; source_i < sources_.size(); ++source_i)
     {
-      delete temp_buffers_[source_i][mic_i];
-    }
-  }
-  temp_buffers_ = std::vector<mcl::Vector<MonoBuffer*>>();
-}
-
-
-FreeFieldSim::~FreeFieldSim()
-{
-  for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
-  {
-    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
-    {
-      delete propagation_lines_[source_i][mic_i];
-    }
-  }
-
-  DeallocateTempBuffers();
-}
-
-
-void FreeFieldSim::Run(
-  mcl::Vector<MonoBuffer*> input_buffers,
-  const Int num_output_samples,
-  mcl::Vector<Buffer*> output_buffers)
-{
-  if (num_output_samples > temp_buffers_[0][0]->num_samples())
-  {
-    // This would ideally not happen as it is not lock-free
-    DeallocateTempBuffers();
-    AllocateTempBuffers(num_output_samples);
-  }
-
-  for (Int sample_id = 0; sample_id < num_output_samples; ++sample_id)
-  {
-    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
-    {
-      for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
+      size_t first_channel_id = 0;
+      for (size_t mic_i = 0; mic_i < receivers_.size(); ++mic_i)
       {
-        Sample next_input_sample =
-          (sample_id < input_buffers[source_i]->num_samples()) ?
-            input_buffers[source_i]->GetSample(sample_id) :
-            0.0;
-        propagation_lines_[source_i][mic_i]->Write(next_input_sample);
-        Sample next_output_sample = propagation_lines_[source_i][mic_i]->Read();
-        temp_buffers_[source_i][mic_i]->SetSample(
-          sample_id, next_output_sample);
+        T next_input_sample =
+          (sample_id < num_input_samples)
+          ? input.GetSample(source_i, sample_id)
+          : T(0.0);
+        propagation_lines_[source_i][mic_i].Write(next_input_sample);
+        T next_output_sample = propagation_lines_[source_i][mic_i].Read();
+        
+        Buffer<T> temp = MakeBufferReference
+        (
+          output,
+          sample_id, 1,
+          first_channel_id, 1);
+        receivers_[mic_i].ReceiveAdd
+        (
+          mcl::UnaryVector<Sample>(next_output_sample),
+          sources_[source_i].position(),
+          source_i,
+          temp);
+        first_channel_id += receivers_[mic_i].GetNumChannels();
       }
     }
 
     // Pass to next time sample (tick propagation lines).
     Tick();
   }
-
-  // Write to microphones
-  for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
-  {
-    for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
-    {
-      receivers_[mic_i]->AddPlaneWave
-      (
-        temp_buffers_[source_i][mic_i]->GetReadPointer(),
-        num_output_samples,
-        sources_[source_i]->position(),
-        source_i,
-        *(output_buffers[mic_i]));
-    }
-  }
 }
 
 
-void FreeFieldSim::Tick()
+template<typename T>
+void FreeFieldSim<T>::Tick()
 {
-  for (Int mic_i = 0; mic_i < (Int)receivers_.size(); ++mic_i)
+  for (size_t mic_i = 0; mic_i < receivers_.size(); ++mic_i)
   {
-    for (Int source_i = 0; source_i < (Int)sources_.size(); ++source_i)
+    for (size_t source_i = 0; source_i < sources_.size(); ++source_i)
     {
-      propagation_lines_[source_i][mic_i]->Tick();
+      propagation_lines_[source_i][mic_i].Tick();
     }
   }
 }
 
 
+template<typename T>
 mcl::Vector<Length>
-FreeFieldSim::AllDistances(
-  const mcl::Vector<Microphone*>& microphones,
-  const mcl::Vector<Source*>& sources)
+FreeFieldSim<T>::AllDistances(
+  const mcl::Vector<Receiver<T>>& microphones,
+  const mcl::Vector<Source>& sources)
 {
-  const Int num_microphones = microphones.size();
-  const Int num_sources = sources.size();
+  const size_t num_microphones = microphones.size();
+  const size_t num_sources = sources.size();
 
-  mcl::Vector<Length> distances;
-  for (Int mic_index = 0; mic_index < num_microphones; ++mic_index)
+  mcl::Vector<Length> distances(num_microphones*num_sources);
+  size_t k = 0;
+  for (size_t mic_index = 0; mic_index < num_microphones; ++mic_index)
   {
-    for (Int source_index = 0; source_index < num_sources; ++source_index)
+    for (size_t source_index = 0; source_index < num_sources; ++source_index)
     {
-      distances.push_back
-      (
+      distances[k++] =
         Distance
         (
-          microphones[mic_index]->position(),
-          sources[source_index]->position()));
+          microphones[mic_index].position(),
+         sources[source_index].position());
     }
   }
 
@@ -237,17 +195,19 @@ FreeFieldSim::AllDistances(
 }
 
 
-Length FreeFieldSim::MinimumDistance(
-  const mcl::Vector<Microphone*>& microphones,
-  const mcl::Vector<Source*>& sources)
+template<typename T>
+Length FreeFieldSim<T>::MinimumDistance(
+  const mcl::Vector<Receiver<T>>& microphones,
+  const mcl::Vector<Source>& sources)
 {
   return mcl::Min(AllDistances(microphones, sources));
 }
 
 
-Length FreeFieldSim::MaximumDistance(
-  const mcl::Vector<Microphone*>& microphones,
-  const mcl::Vector<Source*>& sources)
+template<typename T>
+Length FreeFieldSim<T>::MaximumDistance(
+  const mcl::Vector<Receiver<T>>& microphones,
+  const mcl::Vector<Source>& sources)
 {
   return mcl::Max(AllDistances(microphones, sources));
 }

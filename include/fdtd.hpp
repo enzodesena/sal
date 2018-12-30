@@ -8,8 +8,7 @@
  Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef SAL_FDTD_H
-#define SAL_FDTD_H
+#pragma once
 
 #include "cuboidroom.hpp"
 #include "source.hpp"
@@ -100,5 +99,3 @@ public:
   static Time SimulationTime();
 };
 } // namespace raily
-
-#endif

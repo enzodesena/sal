@@ -1,5 +1,4 @@
 /*
- simulation.h
  Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
@@ -11,13 +10,11 @@
  
  */
 
-#ifndef SAL_SIMULATION_H
-#define SAL_SIMULATION_H
-
-#define DEFAULT_MAX_BUFFER 10
+#pragma once
 
 #include "source.hpp"
 #include "saltypes.hpp"
+#include "source.hpp"
 #include "point.hpp"
 #include "receiver.hpp"
 #include "propagationline.hpp"
@@ -26,78 +23,71 @@
 
 namespace sal
 {
+template<typename T>
 class FreeFieldSim
 {
 public:
   FreeFieldSim(
-    mcl::Vector<Microphone*> microphones,
-    mcl::Vector<Source*> sources,
-    Time sampling_frequency,
-    Length sound_speed);
+    const mcl::Vector<Receiver<T>>& microphones,
+    const mcl::Vector<Source>& sources,
+    const Time sampling_frequency,
+    const Length sound_speed);
 
   FreeFieldSim(
-    Microphone* microphones,
-    mcl::Vector<Source*> sources,
-    Time sampling_frequency,
-    Length sound_speed);
+    const Receiver<T>& microphones,
+    const mcl::Vector<Source>& sources,
+    const Time sampling_frequency,
+    const Length sound_speed);
 
   FreeFieldSim(
-    mcl::Vector<Microphone*> microphones,
-    Source* sources,
-    Time sampling_frequency,
-    Length sound_speed);
+    const mcl::Vector<Receiver<T>>& microphones,
+    const Source& sources,
+    const Time sampling_frequency,
+    const Length sound_speed);
 
   FreeFieldSim(
-    Microphone* microphones,
-    Source* sources,
-    Time sampling_frequency,
-    Length sound_speed);
+    const Receiver<T>& microphones,
+    const Source& sources,
+    const Time sampling_frequency,
+    const Length sound_speed);
 
   void Init(
-    mcl::Vector<Microphone*> microphones,
-    mcl::Vector<Source*> sources,
-    Time sampling_frequency,
-    Length sound_speed);
+    const mcl::Vector<Receiver<T>>& microphones,
+    const mcl::Vector<Source>& sources,
+    const Time sampling_frequency,
+    const Length sound_speed);
 
   void Run(
-    mcl::Vector<MonoBuffer*> input_buffers,
-    Int num_output_samples,
-    mcl::Vector<Buffer*> output_buffers);
+    const Buffer<T>& input_buffer,
+    Buffer<T>& output_buffers) noexcept;
 
-  void AllocateTempBuffers(
-    Int num_samples);
-  void DeallocateTempBuffers();
-
-  ~FreeFieldSim();
-
-  static bool Test();
 private:
 
   void Tick();
 
   /** Returns the minimum distance between any source and any microphone. */
   static Length MinimumDistance(
-    const mcl::Vector<Microphone*>& microphones,
-    const mcl::Vector<Source*>& sources);
+    const mcl::Vector<Receiver<T>>& microphones,
+    const mcl::Vector<Source>& sources);
 
   /** Returns the maximum distance between any source and any microphone. */
   static Length MaximumDistance(
-    const mcl::Vector<Microphone*>& microphones,
-    const mcl::Vector<Source*>& sources);
+    const mcl::Vector<Receiver<T>>& microphones,
+    const mcl::Vector<Source>& sources);
 
   static mcl::Vector<Length>
   AllDistances(
-    const mcl::Vector<Microphone*>& microphones,
-    const mcl::Vector<Source*>& sources);
+    const mcl::Vector<Receiver<T>>& microphones,
+    const mcl::Vector<Source>& sources);
 
-  std::vector<mcl::Vector<PropagationLine*>> propagation_lines_;
-  std::vector<mcl::Vector<MonoBuffer*>> temp_buffers_;
+  mcl::Vector<mcl::Vector<PropagationLine<T>>> propagation_lines_;
 
-  mcl::Vector<Microphone*> receivers_;
-  mcl::Vector<Source*> sources_;
+  mcl::Vector<Receiver<T>> receivers_;
+  mcl::Vector<Source> sources_;
   Time sampling_frequency_;
   Speed sound_speed_;
 };
 } // namespace sal
 
-#endif
+
+#include "freefieldsimulation.ipp"

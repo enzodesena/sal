@@ -45,6 +45,11 @@ public:
     : reference_orientation_(reference_orientation)
   {
   }
+  
+  size_t GetNumChannels() const noexcept override
+  {
+    return 2;
+  }
 };
 
 template<typename T>

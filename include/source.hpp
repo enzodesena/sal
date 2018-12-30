@@ -21,6 +21,8 @@ namespace sal
 class Source
 {
 public:
+  Source() noexcept;
+  
   Source(
     const Point&) noexcept;
 
@@ -32,6 +34,10 @@ public:
 private:
   Triplet position_;
 };
+
+Source::Source() noexcept
+{
+}
 
 Source::Source(
   const Point& position) noexcept

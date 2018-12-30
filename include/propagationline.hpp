@@ -12,7 +12,7 @@
 #include "point.hpp"
 #include "digitalfilter.hpp"
 #include "salconstants.hpp"
-#include "rampsmoother.h"
+#include "rampsmoother.hpp"
 #include "salutilities.hpp"
 
 namespace sal
