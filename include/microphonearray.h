@@ -125,19 +125,32 @@ public:
    the case, then you need to use the AddPlaneWave of the underlying microphone
    objects directly.
    */
-  virtual void AddPlaneWaveRelative(const Sample* input_data,
-                                    const Int num_samples,
-                                    const mcl::Point& point,
-                                    const Int wave_id,
-                                    Buffer& output_buffer) noexcept {
+  virtual void AddPlaneWave(const Sample* input_data,
+                            const Int num_samples,
+                            const mcl::Point& point,
+                            const Int wave_id,
+                            Buffer& output_buffer) noexcept {
     Int num_microphones((Int)microphones_.size());
     for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
       MonoBuffer referencing_buffer(output_buffer, mic_i);
       // Each microphone will push in his own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
-      microphones_[mic_i]->AddPlaneWaveRelative(input_data, num_samples, point,
-                                                wave_id, referencing_buffer);
+      microphones_[mic_i]->AddPlaneWave(input_data, num_samples, point,
+                                        wave_id, referencing_buffer);
     }
+  }
+  
+  virtual void AddPlaneWaveRelative(const Sample* input_data,
+                                    const Int num_samples,
+                                    const mcl::Point& point,
+                                    const Int wave_id,
+                                    Buffer& output_buffer) noexcept {
+    // This method can't be called directly (should call AddPlaneWave instead.
+    // That's because the relative point needs to be calculated with respect
+    // to each microphone individually. If you could call
+    // AddPlaneWaveRelative directly, on the other hand, it would carry out
+    // the same rotation for all of them.
+    ASSERT(false);
   }
 protected:
   std::vector<Microphone*> microphones_;

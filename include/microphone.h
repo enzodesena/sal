@@ -104,11 +104,11 @@ public:
                     const Int wave_id,
                     Buffer& output_buffer) noexcept;
   
-  void AddPlaneWave(const Sample* input_data,
-                    const Int num_samples,
-                    const mcl::Point& point,
-                    const Int wave_id,
-                    Buffer& output_buffer) noexcept;
+  virtual void AddPlaneWave(const Sample* input_data,
+                            const Int num_samples,
+                            const mcl::Point& point,
+                            const Int wave_id,
+                            Buffer& output_buffer) noexcept;
   
   virtual bool IsCoincident() const noexcept = 0;
   
