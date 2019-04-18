@@ -24,9 +24,27 @@
 
 namespace sal {
 
-std::vector<Angle> UniformAngles(const Int num_microphones,
-                                 const Angle first_element_heading);
+enum class RotationDirection {
+  kClockwise,
+  kCounterclockwise
+};
 
+template<class T>
+std::vector<T> UniformAngles(const Int num_elements,
+                             const T first_element_heading,
+                             const RotationDirection direction = RotationDirection::kCounterclockwise) noexcept {
+  std::vector<T> angles(num_elements);
+  T separation = 2.0*PI/((Angle) num_elements);
+  if (direction == RotationDirection::kClockwise) {
+    separation = -separation;
+  }
+  
+  for (Int i=0; i<num_elements; ++i) {
+    angles[i] = first_element_heading + separation * ((T) i);
+  }
+  return angles;
+}
+  
   
 template<class T, class V>
 std::vector<V> ConvertToType(std::vector<T> vector) {
