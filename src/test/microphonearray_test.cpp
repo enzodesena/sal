@@ -31,7 +31,7 @@ bool MicrophoneArrayTest() {
                                             mcl::Quaternion::Identity(),
                                             mic_prototype,
                                             array_radius,
-                                            UniformAngles(num_microphones, 0));
+                                            UniformAngles<Angle>(num_microphones, 0));
 
   ASSERT(mcl::IsEqual(microphone_array_a.position(), Point(0.0,0.0,1.5)));
   
@@ -57,7 +57,7 @@ bool MicrophoneArrayTest() {
                                             mcl::AxAng2Quat(0, 0, 1, PI/2.0),
                                             mic_prototype,
                                             array_radius,
-                                            UniformAngles(num_microphones, 0));
+                                            UniformAngles<Angle>(num_microphones, 0));
   
   std::vector<Microphone*> microphones_b = microphone_array_b.GetMicrophonePointers();
   
@@ -76,7 +76,7 @@ bool MicrophoneArrayTest() {
                                             mcl::AxAng2Quat(0, 0, 1, PI/2.0),
                                             mic_prototype,
                                             array_radius,
-                                            UniformAngles(num_microphones, 0));
+                                            UniformAngles<Angle>(num_microphones, 0));
   
   std::vector<Microphone*> microphones_c = microphone_array_c.GetMicrophonePointers();
   

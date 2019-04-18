@@ -34,7 +34,7 @@ std::vector<T> UniformAngles(const Int num_elements,
                              const T first_element_heading,
                              const RotationDirection direction = RotationDirection::kCounterclockwise) noexcept {
   std::vector<T> angles(num_elements);
-  T separation = 2.0*PI/((Angle) num_elements);
+  T separation = (T) 2.0*PI/((Angle) num_elements);
   if (direction == RotationDirection::kClockwise) {
     separation = -separation;
   }
