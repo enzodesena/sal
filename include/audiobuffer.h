@@ -185,6 +185,20 @@ public:
     }
   }
   
+  void SetFrame(const Int channel_id,
+                const Int frame_id,
+                const Int frame_length,
+                const Signal& signal) {
+    for (mcl::Int n=0; n<num_samples(); ++n) {
+      mcl::Int index = frame_id*frame_length + n;
+      if (index < (mcl::Int) signal.size()) {
+        SetSample(channel_id, n, signal[index]);
+      } else {
+        SetSample(channel_id, n, 0.0);
+      }
+    }
+  }
+  
   
   void PrintData() {
     for (int chan_id=0; chan_id<num_channels_; ++chan_id) {
@@ -319,6 +333,12 @@ public:
                   const Sample* samples) noexcept {
     Buffer::SetSamples(kMonoChannel, from_sample_id, num_samples,
                                    samples);
+  }
+  
+  void SetFrame(const Int frame_id,
+                const Int frame_length,
+                const Signal& signal) {
+    Buffer::SetFrame(0, frame_id, frame_length, signal);
   }
   
   inline Sample GetSample(const Int sample_id) const noexcept {
