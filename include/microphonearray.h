@@ -211,15 +211,15 @@ public:
     mcl::Point position(this->position());
     std::vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
 
-    mcl::AxAng axang = mcl::Quat2AxAng(orientation);
     for (mcl::Int i=0; i<(Int)angles_.size(); ++i) {
-      mcl::Quaternion q = mcl::AxAng2Quat(axang.x, axang.y, axang.z,
-                                          axang.angle + angles_[i]);
-
+      Angle mic_angle = (this->handedness_ == mcl::Handedness::kRightHanded) ? angles_[i] : -angles_[i];
       mcl::Point relative_position = mcl::QuatRotate(orientation,
                                                      mcl::Subtract(positions[i],
-                                                                   position));
+                                                                   position),
+                                                     this->handedness_);
       this->microphones_[i]->SetPosition(mcl::Sum(relative_position, position));
+      
+      mcl::Quaternion q = mcl::QuatMultiply(orientation, mcl::AxAng2Quat(0.0, 0.0, 1.0, mic_angle));
       this->microphones_[i]->SetOrientation(q);
     }
   }

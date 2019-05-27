@@ -154,9 +154,10 @@ public:
 private:
   mcl::Triplet position_;
   mcl::Quaternion orientation_;
-  mcl::Handedness handedness_;
   
   friend class MicrophoneArray;
+protected:
+  mcl::Handedness handedness_;
 };
 
 class StereoMicrophone : public Microphone {
