@@ -1,0 +1,67 @@
+# Spatial Audio Library (SAL)
+
+Spatial Audio Library (SAL) is a C++ library containing a number of (I hope useful) objects for spatial audio. These include an interactive HRTF filter (supporting both measured Kemar database and Duda’s spherical head model), Ambisonics encoders and decoders, WAV handling routines (both read and write) etc..
+
+This library requires linking with the other C++ library of mine MCL (see desena.org). If you use Xcode, like I do, it should (hopefully) all run smoothly.
+
+The whole library works based on the concept of streams. Unfortunately, I haven’t had time to write a proper user guide yet. For the time being, I am afraid you’ll have to rely on the source code comments and the code itself, which I hope is quite self-explanatory. A useful source of information is the unit-testing files (directory test/) included in the distribution. 
+
+The library was written following Google's C++ style guide:
+http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
+
+
+## Examples
+
+A sample of how to use the library is:
+
+```
+const UInt N = 2; // Ambisonics order
+  
+// Position an ambisonics microphone in 0,0,0
+AmbisonicsMic mic_a(Point(0.0,0.0,0.0), 0.0, 0.0, 0.0, N);
+BFormatStream* stream_a = mic_a.stream();
+  
+// Record a single sound sample for a source in 
+// the direction of Point(1.0, 0.0, 0.0)
+// (as described in the documentation, the propagation delay
+// is not included in the microphone object)
+Sample sample = 0.3;
+mic_a.RecordPlaneWave(sample, Point(1.0, 0.0, 0.0));
+// Record a second sample (automatically advances the entire simulation by one sample)
+mic_a.RecordPlaneWave(0.5, Point(1.0, 0.0, 0.0));
+
+// Print to screen the 0th degree and 0th order component of the first sample
+std::cout<<stream_a->Pull(0, 0)<<std::endl;
+// Print to screen the 0th degree and 0th order component of the second sample
+std::cout<<stream_a->Pull(0, 0)<<std::endl;
+```
+
+
+
+## Running the tests
+
+Open XCode and run the SAL_test target.
+
+
+## Authors
+
+* **Enzo De Sena** - [desena.org](https://desena.org)
+
+
+## License
+
+Copyright (c) 2016-2019, Enzo De Sena
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    * Use is for nonprofit educational purposes or for nonprofit research purposes only.
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+    * Neither the author nor the names of any contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Please notice that this is not a standard 3-clause BSD license, due to the first condition above (nonprofit use).
+
