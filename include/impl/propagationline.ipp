@@ -269,7 +269,7 @@ PropagationLine<T>::GetAirFilter(
     4.2813, 5.4556, 6.9519, 8.8587, 11.288,
     14.384, 18.33, 23.357, 29.764, 37.927,
     48.329, 61.585, 78.476, 100
-  };
+  }; 
 
   size_t filter_index =
     mcl::MinIndex
