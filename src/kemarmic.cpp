@@ -4,14 +4,17 @@
  Copyright (c) 2015, Enzo De Sena
  All rights reserved.
  
- Authors: Enzo De Sena, enzodesena@me.com
+ Authors: Enzo De Sena, enzodesena@gmail.com
  
  */
 
 #include "kemarmic.h"
 #include "point.h"
+#include "butter.h"
 #include "salconstants.h"
-#include "exception.h"
+#include "vectorop.h"
+#include <fstream>
+#include <algorithm>
 
 #ifdef _WIN32
   #define sprintf(...) sprintf_s(__VA_ARGS__)
@@ -28,51 +31,166 @@ namespace sal {
 KemarMic::KemarMic(const Point& position,
                    const Quaternion orientation,
                    const std::string directory,
-                   const UInt num_samples,
-                   const UInt update_length,
-                   const HeadRefOrientation reference_orientation) :
+                   const Int num_samples,
+                   const Int update_length,
+                   const HeadRefOrientation reference_orientation,
+                   const Time sampling_frequency) :
           DatabaseBinauralMic(position, orientation, update_length,
                               reference_orientation) {
             
-  num_measurements_ = {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
-  elevations_ = {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
+  num_measurements_ = GetNumMeasurements();
+  elevations_ = GetElevations();
             
-  hrtf_database_right_ = Load(right_ear, directory, num_samples);
-  hrtf_database_left_ = Load(left_ear, directory, num_samples);
+  if (directory.length() == 0) {
+    hrtf_database_right_ = LoadEmbedded(right_ear);
+    hrtf_database_left_ = LoadEmbedded(left_ear);
+  } else {
+    hrtf_database_right_ = Load(right_ear, directory);
+    hrtf_database_left_ = Load(left_ear, directory);
+  }
+  
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+            
+            // This is the sampling frequency that will actually be used
+  Time used_sampling_frequency;
+  Int used_num_samples;
+            
+  
+  used_sampling_frequency = 44100.0;
+  used_num_samples = kFullBrirLength;
+  // Do nothing as the database is already 44100.0
+            
+  
+  if (used_num_samples != kFullBrirLength) {
+    for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+      for (Int j=0; j<num_measurements[i]; ++j) {
+        hrtf_database_right_[i][j] = mcl::ZeroPad<Sample>(hrtf_database_right_[i][j], used_num_samples);
+        hrtf_database_left_[i][j] = mcl::ZeroPad<Sample>(hrtf_database_left_[i][j], used_num_samples);
+      }
+    }
+  }
 }
   
+Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetNumMeasurements() noexcept {
+  return {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
+}
 
-std::vector<std::vector<Signal> >
-  KemarMic::Load(const Ear ear, const std::string directory,
-                 const UInt num_samples) {
-  std::vector<std::vector<Signal> > hrtf_database;
-          
-  for (UInt i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
-    // Initialise vector
-    hrtf_database.push_back(std::vector<Signal>(num_measurements_[i]));
+Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetElevations() noexcept {
+  return {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
+}
+  
+Int KemarMic::RoundToInt(mcl::Real input) {
+  Int output = static_cast<int>(input);
+  output += (input-output >= 0.5) - (input-output <= -0.5);
+  return output;
+}
+
+bool KemarMic::IsDatabaseAvailable(const std::string directory) {
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
+  
+  for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     
-    Angle resolution = 360.0 / num_measurements_[i];
-    Angle elevation = elevations_[i];
-    UInt num_measurement = (UInt) floor(((Angle) num_measurements_[i])/2.0)+1;
+    Angle resolution = 360.0 / num_measurements[i];
+    Angle elevation = elevations[i];
+    Int num_measurement = (UInt) floor(((Angle) num_measurements[i])/2.0)+1;
     
-    for (UInt j=0; j<num_measurement; ++j) {
-      Angle angle = (Int) round(j * resolution);
-      
-      char file_name[1000];
-      char directory_name[1000];
-      char file_path[1000];
-      sprintf(directory_name, "/elev%d/", (int)elevation);
-      
-      sprintf(file_name, "H%de%03da.dat", (int)elevation, (int)angle);
-      
-      strcpy(file_path, directory.c_str());
-      strcat(file_path, directory_name);
-      strcat(file_path, file_name);
+    for (Int j=0; j<num_measurement; ++j) {
+      Angle angle = RoundToInt(j * resolution);
       
       std::ifstream file;
+      file.open (GetFilePath(elevation, angle, directory),
+                 std::ios::in | std::ios::binary | std::ios::ate);
+      if (! file.good()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
+                                  const std::string directory) noexcept {
+  char file_name[1000];
+  char directory_name[1000];
+  char file_path[1000];
+  sprintf(directory_name, "/elev%d/", (int)elevation);
+  
+  sprintf(file_name, "H%de%03da.dat", (int)elevation, (int)angle);
+  
+  strcpy(file_path, directory.c_str());
+  strcat(file_path, directory_name);
+  strcat(file_path, file_name);
+  return std::string(file_path);
+}
+  
+  
+  //  sal::KemarMic::PrintParsedDatabase(sal::right_ear, "pss/sal/hrtfs/kemar",
+  //                                     sal::KemarMic::kFullBrirLength, "h");
+  //  sal::KemarMic::PrintParsedDatabase(sal::right_ear, "pss/sal/hrtfs/kemar",
+  //                      sal::KemarMic::kFullBrirLength, "hr");
+  
+void
+KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
+                              const Int num_samples, std::string variable_name) {
+  std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
+  
+  for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
+    for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
+      printf("{%d,%d,", (int) i, (int) j);
+      for (Int sample_id=0; sample_id<(Int)hrtf_database[i][j].size(); ++sample_id) {
+        printf("%.4E", hrtf_database[i][j][sample_id]);
+        if (sample_id < (Int)hrtf_database[i][j].size()-1) { printf(","); }
+      }
+      printf("}, \n");
+    }
+  }
+}
+  
+std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
+  std::vector<std::vector<Signal> > hrtf_database;
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  
+  for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+    // Initialise vector
+    hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
+    for (Int j=0; j<num_measurements[i]; ++j) {
+      hrtf_database[i].push_back(Signal(FULL_LENGTH_KEMAR));
+    }
+  }
+  
+  LoadEmbeddedData(ear, hrtf_database);
+  
+  return hrtf_database;
+}
+  
+  
+  
+std::vector<std::vector<Signal> >
+  KemarMic::Load(const Ear ear, const std::string directory) {
+  std::vector<std::vector<Signal> > hrtf_database;
+  
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
+  
+  for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
+    // Initialise vector
+    hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
+    
+    Angle resolution = 360.0 / num_measurements[i];
+    Angle elevation = elevations[i];
+    Int num_measurement = (UInt) floor(((Angle) num_measurements[i])/2.0)+1;
+    
+    for (Int j=0; j<num_measurement; ++j) {
+      Angle angle = RoundToInt(j * resolution);
       
-      file.open (file_path, std::ios::in | std::ios::binary | std::ios::ate);
-      if (! file.good()) { throw(mcl::Exception("Kemar lib not found.")); }
+      std::ifstream file;
+      file.open (GetFilePath(elevation, angle, directory),
+                 std::ios::in | std::ios::binary | std::ios::ate);
+      if (! file.good()) {
+//        mcl::Logger::GetInstance().LogErrorToCerr("Kemar lib not found.");
+        assert(false);
+      }
       long size = (long) file.tellg();
       assert(sizeof(short) == 2);
       short* data = new short[size/2];
@@ -92,15 +210,11 @@ std::vector<std::vector<Signal> >
       assert(size%2 == 0);
       assert((size/2)%2 == 0);
       
-      if (num_samples > 0) {
-        size = num_samples;
-      }
-      
       for (Int k=0; k<size; k+=2) {
-        UInt ipsilateral_index = j;
-        UInt contralateral_index = (UInt)
-                ((((Int) num_measurements_[i]) -
-                  ((Int) j)) % (Int) num_measurements_[i]);
+        Int ipsilateral_index = j;
+        Int contralateral_index = (UInt)
+                ((((Int) num_measurements[i]) -
+                  ((Int) j)) % (Int) num_measurements[i]);
         
         if (ear == right_ear) {
           hrtf_database[i][ipsilateral_index].
@@ -131,24 +245,24 @@ std::vector<std::vector<Signal> >
 
 
   
-UInt KemarMic::FindElevationIndex(Angle elevation) {
-  Int elevation_index = (Int) round(elevation/10.0) + 4;
+Int KemarMic::FindElevationIndex(Angle elevation) {
+  Int elevation_index = RoundToInt(elevation/10.0) + 4;
   if (elevation_index < 0) {
     return 0;
   } else if (elevation_index > 13) {
-    return 13; 
+    return 13;
   } else {
     return (UInt) elevation_index;
   }
 }
 
-UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
-  const UInt num_measurements[] =
+Int KemarMic::FindAzimuthIndex(Angle azimuth, Int elevation_index) {
+  const Int num_measurements[] =
           {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
   
   Angle angular_resolution = 360.0 /
           ((Angle) num_measurements[elevation_index]);
-  UInt azimuth_index = (UInt) round(azimuth/angular_resolution);
+  Int azimuth_index = RoundToInt(azimuth/angular_resolution);
   
   if (azimuth_index == num_measurements[elevation_index]) { azimuth_index = 0; }
   
@@ -156,7 +270,7 @@ UInt KemarMic::FindAzimuthIndex(Angle azimuth, UInt elevation_index) {
 }
   
 
-Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
+Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
   // For forward looking direction, Azimuth = 0 and elevation =0
   Point norm_point = Normalized(point);
   Angle elevation = (asin((double) norm_point.z())) / PI * 180.0;
@@ -164,12 +278,12 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
   Angle azimuth;
   
   switch (reference_orientation_) {
-    case standard:
+    case HeadRefOrientation::standard:
       azimuth = atan((double) norm_point.y()/norm_point.x())/PI*180.0;
       if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
       if (norm_point.x() < 0.0) { azimuth += 180.0; }
       break;
-    case y_z:
+    case HeadRefOrientation::y_z:
       azimuth = -atan((double) norm_point.x()/norm_point.y())/PI*180.0;
       if (mcl::IsNan(azimuth)) { azimuth = 0.0; } // Conventionally, if x=y=0 then azimuth is taken as 0
       if (norm_point.y() < 0.0) { azimuth += 180.0; }
@@ -182,11 +296,25 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) {
   
   azimuth = mcl::Mod(azimuth, 360.0);
   
+  if (std::isnan(elevation)) {
+    elevation = 0.0;
+//    mcl::Logger::GetInstance().LogError("The elevation of a sound source "
+//          "appears to be NAN (possibily due to coincident sound source and "
+//          "observation point). Reverting to a %f elevation. ", elevation);
+  }
+  
+  if (std::isnan(azimuth)) {
+    azimuth = 0.0;
+//    mcl::Logger::GetInstance().LogError("The azimuth of a sound source "
+//          "appears to be NAN (possibily due to coincident sound source and "
+//          "observation point). Reverting to a %f azimuth.", azimuth);
+  }
+    
   assert((elevation >= (-90.0-VERY_SMALL)) & (elevation <= (90.0+VERY_SMALL)));
   assert((azimuth >= (0.0-VERY_SMALL)) & (azimuth <= (360.0+VERY_SMALL)));
   
-  UInt elevation_index = FindElevationIndex(elevation);
-  UInt azimuth_index = FindAzimuthIndex(azimuth, elevation_index);
+  Int elevation_index = FindElevationIndex(elevation);
+  Int azimuth_index = FindAzimuthIndex(azimuth, elevation_index);
   
   if (ear == left_ear) {
     return hrtf_database_left_[elevation_index][azimuth_index];
