@@ -10,6 +10,8 @@
 #include "vectorop.h"
 #include "mcltypes.h"
 #include <vector>
+#include <numeric>
+#include <functional>
 
 #if defined(MCL_APPLE_ACCELERATE)
   #include <Accelerate/Accelerate.h>
@@ -64,7 +66,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
   return FilterAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
-#endif
+//#endif
 }
   
 
@@ -156,18 +158,20 @@ void FirFilter::Filter(const Real* __restrict input_data,
 #endif
 }
   
+#define UNLIKELY(x) __builtin_expect(x, false)
 
 Real FirFilter::FilterStraight(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
-  Real result = 0.0;
-  Int index = (Int) counter_;
+  Real result = std::inner_product(delay_line_.begin()+counter_,
+                                   delay_line_.end(),
+                                   coefficients_.begin(),
+                                   0.0);
+  result = std::inner_product(coefficients_.begin()+length_-counter_,
+                              coefficients_.end(),
+                              delay_line_.begin(),
+                              result);
   
-  for (int i=0; i<length_; ++i) {
-    result += coefficients_[i] * delay_line_[index++];
-    if (index >= length_) { index = 0; }
-  }
-  
-  if (--counter_ < 0) { counter_ = length_-1; }
+  if (UNLIKELY(--counter_ < 0)) { counter_ = length_-1; }
   
   return result;
 }

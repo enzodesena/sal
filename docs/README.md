@@ -1,3 +1,5 @@
+# Matlab C++ Library (MCL)
+
 MCL is a C++ library that implements many of Matlab's functions. The library 
 is written so as to minimise the time needed to port Matlab code to C++. 
 The  main point of departure between the two is that c++ requires the definition 
@@ -6,8 +8,11 @@ Furthermore, vectors start from 0 instead of 1.
 The library has been written following Google's C++ style guide:
 http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
 
+## Examples
+
 A sample of how to use the library is:
 
+```
 std::vector<Real> my_vector_a;
 my_vector_a = Zeros<Real>(3);                   // my_vector_a = zeros(3,1);
 my_vector_a[0] = 2.5;                           // my_vector_a(1) = 2.5;
@@ -49,7 +54,32 @@ my_vector_rceps = RCeps(my_vector);            // my_vector_rceps = rceps(my_vec
 
 std::vector<Complex> my_vector_hilbert;
 my_vector_hilbert = Hilbert(my_vector);        // my_vector_hilbert = hilbert(my_vector);
+```
 
 
+## Running the tests
 
-Enzo De Sena
+Open XCode and run the MCL_test target.
+
+
+## Authors
+
+* **Enzo De Sena** - [desena.org](https://desena.org)
+
+
+## License
+
+Copyright (c) 2016-2019, Enzo De Sena
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    * Use is for nonprofit educational purposes or for nonprofit research purposes only.
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+    * Neither the author nor the names of any contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Please notice that this is not a standard 3-clause BSD license, due to the first condition above (nonprofit use).

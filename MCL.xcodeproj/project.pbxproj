@@ -163,6 +163,7 @@
 		573F9FA01662799800929EE2 /* matrixop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrixop.cpp; path = src/matrixop.cpp; sourceTree = "<group>"; };
 		5741B505241B190800A6E779 /* MCL_test (with SH) */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "MCL_test (with SH)"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5741B520241B192D00A6E779 /* libMCL (with SH).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libMCL (with SH).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5741B521241B1C1A00A6E779 /* mcl_benchmark.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = mcl_benchmark.cpp; path = src/bin/mcl_benchmark.cpp; sourceTree = "<group>"; };
 		575737C51CFD07C6008E46CD /* quaternion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = quaternion.cpp; path = src/quaternion.cpp; sourceTree = "<group>"; };
 		576B25781CF9DFD200673FC0 /* quaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = quaternion.h; path = include/quaternion.h; sourceTree = "<group>"; };
 		5778D80915B616260015AAC9 /* digitalfilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = digitalfilter.h; path = include/digitalfilter.h; sourceTree = "<group>"; };
@@ -351,6 +352,7 @@
 		57A1566015933C5200AA6445 /* bin */ = {
 			isa = PBXGroup;
 			children = (
+				5741B521241B1C1A00A6E779 /* mcl_benchmark.cpp */,
 				57B4EF6C1CD8174E00134991 /* mcl_test.cpp */,
 			);
 			name = bin;
