@@ -66,7 +66,7 @@ Real FirFilter::Filter(Real input_sample) noexcept {
   return FilterAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
-//#endif
+#endif
 }
   
 
