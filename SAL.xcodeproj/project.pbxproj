@@ -1209,7 +1209,6 @@
 					"DEBUG=1",
 					"__DIR__=\\\"$(SRCROOT)/\\\"",
 					"$(inherited)",
-					"MCL_LOAD_BOOST=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
@@ -1245,7 +1244,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"__DIR__=\\\"$(SRCROOT)/\\\"",
 					"$(inherited)",
-					"MCL_LOAD_BOOST=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;

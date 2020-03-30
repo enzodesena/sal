@@ -535,6 +535,8 @@ public:
         return 0;
       }
     }
+    ASSERT(false);
+    return 0;
   }
   
   static Int GetNumChannels(const Int max_order) {
