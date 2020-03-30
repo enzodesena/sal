@@ -1209,6 +1209,7 @@
 					"DEBUG=1",
 					"__DIR__=\\\"$(SRCROOT)/\\\"",
 					"$(inherited)",
+					"MCL_LOAD_BOOST=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
@@ -1244,6 +1245,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"__DIR__=\\\"$(SRCROOT)/\\\"",
 					"$(inherited)",
+					"MCL_LOAD_BOOST=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
@@ -1294,10 +1296,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"MCL_LOAD_BOOST=0",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1359,7 +1358,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					DNDEBUG,
-					"MCL_LOAD_BOOST=0",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
