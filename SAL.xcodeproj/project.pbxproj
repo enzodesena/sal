@@ -67,6 +67,7 @@
 		5741B563241B1DAA00A6E779 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
 		57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
 		57444D2B1B1776A400EC31F4 /* cipicmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57444D281B1776A400EC31F4 /* cipicmic.cpp */; };
+		574F50052432147100A5D790 /* libMCL (with SH).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5741B529241B1D1900A6E779 /* libMCL (with SH).a */; };
 		5759540F174123EE0015B9A0 /* ambisonics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F7B3C015D3DF0500D4E64A /* ambisonics.cpp */; };
 		57595410174123EE0015B9A0 /* freefieldsimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578E967215D128820094FBBE /* freefieldsimulation.cpp */; };
 		5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
@@ -154,7 +155,6 @@
 		57B053E01D6B031500202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
 		57B053E11D6B031500202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
 		57B053E21D6B031500202654 /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053DF1D6B031500202654 /* libportaudio.a */; };
-		57B053F71D6B03B000202654 /* libMCL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053ED1D6B039100202654 /* libMCL.a */; };
 		57B053F81D6B03B300202654 /* libMCLiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B053EF1D6B039100202654 /* libMCLiOS.a */; };
 		57B054791D6B361300202654 /* pawrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CE72B91C9583FC00149808 /* pawrapper.cpp */; };
 		57B0547A1D6B361300202654 /* microphonearray_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8C1CD81AB400134991 /* microphonearray_test.cpp */; };
@@ -227,6 +227,13 @@
 			remoteGlobalIDString = 57A157151593475000AA6445;
 			remoteInfo = MCL;
 		};
+		574F50032432143800A5D790 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5741B506241B192D00A6E779;
+			remoteInfo = "MCL (with SH)";
+		};
 		57AA6157205C9D290044A3A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
@@ -254,13 +261,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 572A877E19C070ED00F62F8F;
 			remoteInfo = MCLiOS;
-		};
-		57B053F21D6B039B00202654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57A157151593475000AA6445;
-			remoteInfo = MCL;
 		};
 		57B053F41D6B039E00202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -445,7 +445,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57B053F71D6B03B000202654 /* libMCL.a in Frameworks */,
+				574F50052432147100A5D790 /* libMCL (with SH).a in Frameworks */,
 				57B053DD1D6B030A00202654 /* libsndfile.a in Frameworks */,
 				57B053E11D6B031500202654 /* libportaudio.a in Frameworks */,
 			);
@@ -771,7 +771,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				57B053F31D6B039B00202654 /* PBXTargetDependency */,
+				574F50042432143800A5D790 /* PBXTargetDependency */,
 			);
 			name = "SAL (with SH)";
 			productName = SAT;
@@ -1096,15 +1096,15 @@
 			name = MCL;
 			targetProxy = 5741B564241B1DB500A6E779 /* PBXContainerItemProxy */;
 		};
+		574F50042432143800A5D790 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "MCL (with SH)";
+			targetProxy = 574F50032432143800A5D790 /* PBXContainerItemProxy */;
+		};
 		57AA6156205C9D290044A3A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MCL;
 			targetProxy = 57AA6157205C9D290044A3A9 /* PBXContainerItemProxy */;
-		};
-		57B053F31D6B039B00202654 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MCL;
-			targetProxy = 57B053F21D6B039B00202654 /* PBXContainerItemProxy */;
 		};
 		57B053F51D6B039E00202654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

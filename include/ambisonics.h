@@ -43,7 +43,7 @@ public:
    upwards.
    */
   AmbisonicsMic(const mcl::Point& position, mcl::Quaternion orientation,
-                Int order, HoaNormalisation normalisation = sqrt2,
+                Int order, HoaNormalisation normalisation = HoaNormalisation::sqrt2,
                 HoaOrdering ordering = HoaOrdering::Acn) :
           Microphone(position, orientation),
           order_(order), normalisation_convention_(normalisation),
