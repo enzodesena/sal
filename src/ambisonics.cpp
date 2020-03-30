@@ -28,54 +28,60 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
   const Angle phi = point.phi();
   const Sample sqrt_2 = mcl::Sqrt(2.0);
   
-  switch (convention_) {
+  switch (normalisation_convention_) {
     case sqrt2: {
       // Zero-th component
-      output_buffer.AddSamples(BFormatBuffer::GetChannelId(0, 0),
+      output_buffer.AddSamples(HoaBuffer::GetChannelId(0, 0, ordering_convention_),
                                0, num_samples, input_data);
       
       for (Int i=1; i<=order_; ++i) {
         // TODO: add 3D components
-        output_buffer.MultiplyAddSamples(BFormatBuffer::GetChannelId(i, 1),
+        output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(i, 1, ordering_convention_),
                                          0, num_samples, input_data,
                                          sqrt_2*cos(((Angle) i)*phi));
-        output_buffer.MultiplyAddSamples(BFormatBuffer::GetChannelId(i, -1),
+        output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(i, -1, ordering_convention_),
                                          0, num_samples, input_data,
                                          sqrt_2*sin(((Angle) i)*phi));
       }
       break;
     }
       
-#ifdef MCL_LOAD_BOOST
-    case N3D: {
+#if MCL_LOAD_BOOST
+    case Sn3d:
+    case N3d: {
       // Precompute for performance gain
       const Angle theta = point.theta();
       const Sample sqrt_4pi = mcl::Sqrt(4.0*PI);
       
       // Zero-th component
-      stream_.Add(0, 0, 1.0*sample);
+      output_buffer.AddSamples(HoaBuffer::GetChannelId(0, 0, ordering_convention_), 0, num_samples, input_data);
       
-      for (Int degree_n=1; degree_n<=order_; ++degree_n) {
-        for (Int order_m=0; order_m<=degree_n; ++order_m) {
-          mcl::Complex spherical_harmonic =
-              mcl::Pow(-1.0, (mcl::Real) order_m) *
-              (order_m==0 ? 1.0 : sqrt_2) *
-              sqrt_4pi *
-              mcl::SphericalHarmonic(degree_n, mcl::Abs(order_m), theta, phi);
+      for (Int order_n=1; order_n<=order_; ++order_n) {
+        for (Int degree_m=0; degree_m<=order_n; ++degree_m) {
           
-          stream_.Add(degree_n, -order_m,
-                      Multiply<sal::Sample>(signal, mcl::ImagPart(spherical_harmonic)));
-          stream_.Add(degree_n, order_m,
-                      Multiply<sal::Sample>(signal, mcl::RealPart(spherical_harmonic)));
+          mcl::Complex spherical_harmonic = mcl::SphericalHarmonic(order_n, (mcl::Int) mcl::Abs(degree_m), theta, phi);
+          mcl::Complex normalisation = mcl::Pow(-1.0, (mcl::Real) degree_m) *
+                (degree_m==0 ? 1.0 : sqrt_2) *
+                sqrt_4pi; // This is N3d normalisation
+          
+          if (normalisation_convention_ == Sn3d) {
+            normalisation = normalisation / sqrt(2.0*((mcl::Real) order_n)+1.0);
+          }
+          
+          mcl::Complex weight = spherical_harmonic * normalisation;
+          
+          output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(order_n, -degree_m, ordering_convention_), 0, num_samples, input_data, mcl::ImagPart(weight));
+          output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(order_n, degree_m, ordering_convention_), 0, num_samples, input_data, mcl::RealPart(weight));
+          
           // The order of the two statements above is not random, since the case
-          // order_m equals zero should give back the non-zero cosine term,
+          // degree_m equals zero should give back the non-zero cosine term,
           // i.e. the one corresponding to the real part.
         }
       }
       break;
     }
 #endif
-      
+    case Fuma:
     default: {
       ASSERT(false);
       break;
@@ -102,7 +108,8 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        const bool near_field_correction,
                                        const Length loudspeakers_distance,
                                        const Time sampling_frequency,
-                                       const Speed sound_speed) :
+                                       const Speed sound_speed,
+                                       const HoaOrdering ordering_convention) :
           energy_decoding_(energy_decoding),
           loudspeaker_angles_(loudspeaker_angles),
           num_loudspeakers_(loudspeaker_angles.size()),
@@ -110,6 +117,7 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
           loudspeakers_distance_(loudspeakers_distance),
           sampling_frequency_(sampling_frequency),
           order_(order),
+          ordering_convention_(ordering_convention),
           mode_matching_matrix_(mcl::Matrix<Sample>(2*order+1,
                                                     loudspeaker_angles.size())),
           max_energy_matrix_(mcl::Matrix<Sample>(2*order+1,
@@ -197,12 +205,12 @@ AmbisonicsHorizDec::GetFrame(const Int order, const Int sample_id,
   
   std::vector<Sample> output;
   output.reserve(2*order+1);
-  output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(0, 0),
+  output.push_back(buffer.GetSample(HoaBuffer::GetChannelId(0, 0, ordering_convention_),
                                     sample_id));
   for (Int i=1; i<=order; ++i) {
-    output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(i, 1),
+    output.push_back(buffer.GetSample(HoaBuffer::GetChannelId(i, 1, ordering_convention_),
                                       sample_id));
-    output.push_back(buffer.GetSample(BFormatBuffer::GetChannelId(i, -1),
+    output.push_back(buffer.GetSample(HoaBuffer::GetChannelId(i, -1, ordering_convention_),
                                       sample_id));
   }
   return output;

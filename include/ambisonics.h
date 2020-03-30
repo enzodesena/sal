@@ -24,10 +24,13 @@
 
 namespace sal {
 
-enum AmbisonicsConvention {
+enum HoaNormalisation {
   sqrt2,
-  N3D
+  N3d,
+  Sn3d,
+  Fuma
 };
+
 
 class AmbisonicsMic : public Microphone {
 public:
@@ -40,14 +43,16 @@ public:
    upwards.
    */
   AmbisonicsMic(const mcl::Point& position, mcl::Quaternion orientation,
-                Int order, AmbisonicsConvention convention = sqrt2) :
+                Int order, HoaNormalisation normalisation = sqrt2,
+                HoaOrdering ordering = HoaOrdering::Acn) :
           Microphone(position, orientation),
-          order_(order), convention_(convention) {}
+          order_(order), normalisation_convention_(normalisation),
+          ordering_convention_(ordering) {}
   
   bool IsCoincident() const noexcept { return true; }
   
   Int num_channels() const noexcept {
-    return BFormatBuffer::GetNumChannels(order_);
+    return HoaBuffer::GetNumChannels(order_);
   }
   
   static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
@@ -63,7 +68,8 @@ public:
 private:
   
   const Int order_;
-  AmbisonicsConvention convention_;
+  HoaNormalisation normalisation_convention_;
+  HoaOrdering ordering_convention_;
 };
 
   
@@ -96,7 +102,8 @@ public:
                      const bool near_field_correction,
                      const Length loudspeakers_distance,
                      const Time sampling_frequency,
-                     const Speed sound_speed);
+                     const Speed sound_speed,
+                     const HoaOrdering ordering_convention = HoaOrdering::Acn);
   
   virtual void Decode(const Buffer& input_buffer,
                       Buffer& output_buffer);
@@ -127,8 +134,8 @@ private:
     return (Sample) cos(((Angle) index)*PI/(2.0*((Angle) order)+2.0));
   }
   
-  static std::vector<Sample> GetFrame(const Int order, const Int sample_id,
-                                      const Buffer& buffer);
+  std::vector<Sample> GetFrame(const Int order, const Int sample_id,
+                               const Buffer& buffer);
   
   /**
    Produces the near field correction
@@ -163,6 +170,7 @@ private:
   bool energy_decoding_;
   // Ambisonics order
   Int order_;
+  HoaOrdering ordering_convention_;
   
   // One filter per component
   std::vector<mcl::IirFilter> nfc_filters_;

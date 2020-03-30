@@ -19,6 +19,26 @@ namespace sal {
 bool AmbisonicsMic::Test() {
   using mcl::IsEqual;
   
+  ASSERT(HoaBuffer::GetChannelId(0, 0, HoaOrdering::Fuma) == 0);
+  ASSERT(HoaBuffer::GetChannelId(1, 1, HoaOrdering::Fuma) == 1);
+  ASSERT(HoaBuffer::GetChannelId(1, -1, HoaOrdering::Fuma) == 2);
+  ASSERT(HoaBuffer::GetChannelId(1, 0, HoaOrdering::Fuma) == 3);
+  ASSERT(HoaBuffer::GetChannelId(2, 0, HoaOrdering::Fuma) == 4);
+  ASSERT(HoaBuffer::GetChannelId(2, 1, HoaOrdering::Fuma) == 5);
+  ASSERT(HoaBuffer::GetChannelId(2, -1, HoaOrdering::Fuma) == 6);
+  ASSERT(HoaBuffer::GetChannelId(2, 2, HoaOrdering::Fuma) == 7);
+  ASSERT(HoaBuffer::GetChannelId(2, -2, HoaOrdering::Fuma) == 8);
+  
+  ASSERT(HoaBuffer::GetChannelId(0, 0, HoaOrdering::Acn) == 0);
+  ASSERT(HoaBuffer::GetChannelId(1, -1, HoaOrdering::Acn) == 1);
+  ASSERT(HoaBuffer::GetChannelId(1, 0, HoaOrdering::Acn) == 2);
+  ASSERT(HoaBuffer::GetChannelId(1, 1, HoaOrdering::Acn) == 3);
+  ASSERT(HoaBuffer::GetChannelId(2, -2, HoaOrdering::Acn) == 4);
+  ASSERT(HoaBuffer::GetChannelId(2, -1, HoaOrdering::Acn) == 5);
+  ASSERT(HoaBuffer::GetChannelId(2, 0, HoaOrdering::Acn) == 6);
+  ASSERT(HoaBuffer::GetChannelId(2, 1, HoaOrdering::Acn) == 7);
+  ASSERT(HoaBuffer::GetChannelId(2, 2, HoaOrdering::Acn) == 8);
+  
   // TODO: Only testing for 2nd order
   
   // Testing Ambisonics encoding
@@ -26,79 +46,95 @@ bool AmbisonicsMic::Test() {
   
   AmbisonicsMic mic_a(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
                       N);
-  BFormatBuffer stream_a(N, 1);
+  HoaBuffer buffer_a(N, 1);
   
   Sample sample = 0.3;
   mic_a.AddPlaneWave(MonoBuffer::Unary(sample),
-                     Point(1.0, 0.0, 0.0), stream_a);
+                     Point(1.0, 0.0, 0.0), buffer_a);
   
-  ASSERT(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
-  ASSERT(IsEqual(stream_a.GetSample(1, 1, 0), sample*1.414213562373095));
-  ASSERT(IsEqual(stream_a.GetSample(1, -1, 0), sample*0.0));
-  ASSERT(IsEqual(stream_a.GetSample(2, 1, 0), sample*1.414213562373095));
-  ASSERT(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
+  ASSERT(IsEqual(buffer_a.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(buffer_a.GetSample(1, 1, 0), sample*1.414213562373095));
+  ASSERT(IsEqual(buffer_a.GetSample(1, -1, 0), sample*0.0));
+  ASSERT(IsEqual(buffer_a.GetSample(2, 1, 0), sample*1.414213562373095));
+  ASSERT(IsEqual(buffer_a.GetSample(2, -1, 0), sample*0.0));
   mic_a.Reset();
-  stream_a.Reset();
+  buffer_a.Reset();
   
-  mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0), stream_a);
-  ASSERT(IsEqual(stream_a.GetSample(0, 0, 0), sample*1.000000000000000));
-  ASSERT(IsEqual(stream_a.GetSample(1, -1, 0), sample*1.414213562373095));
-  ASSERT(IsEqual(stream_a.GetSample(1, 1, 0), sample*0.0));
-  ASSERT(IsEqual(stream_a.GetSample(2, 1, 0), sample*(-1.414213562373095)));
-  ASSERT(IsEqual(stream_a.GetSample(2, -1, 0), sample*0.0));
+  mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0), buffer_a);
+  ASSERT(IsEqual(buffer_a.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(buffer_a.GetSample(1, -1, 0), sample*1.414213562373095));
+  ASSERT(IsEqual(buffer_a.GetSample(1, 1, 0), sample*0.0));
+  ASSERT(IsEqual(buffer_a.GetSample(2, 1, 0), sample*(-1.414213562373095)));
+  ASSERT(IsEqual(buffer_a.GetSample(2, -1, 0), sample*0.0));
   
-#ifdef MCL_LOAD_BOOST
+#if MCL_LOAD_BOOST
+  std::cout<<"Running Boost-dependent Ambisonics tests"<<std::endl;
+    
   // Testing Ambisonics encoding
   const Int N_b = 3; // Ambisonics order
-  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), N_b, N3D);
-  BFormatStream* stream_b = mic_b.stream();
+  AmbisonicsMic mic_b(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0), N_b, HoaNormalisation::N3d, HoaOrdering::Acn);
   
-  
+  HoaBuffer buffer_b(N_b, 1);
   sample = 0.5;
-  mic_b.AddPlaneWave(sample, Point(1.0, 0.0, 0.0));
+  mic_b.AddPlaneWave(sample, Point(1.0, 0.0, 0.0), buffer_b);
   
   // theta and phi are the spherical coordinates in the reference system of:
   // http://ambisonics.ch/standards/channels/
   // theta is the azimuth angle (angle formed with x-axis)
   // phi is the elevation angle (angle formed with the xy-plane)
-  Angle theta = 0;
+  Angle theta = -PI/2.0;
   Angle phi = 0;
   
-  ASSERT(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
-  ASSERT(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
-  ASSERT(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
-  ASSERT(IsEqual(stream_b->Pull(1, -1), sample*cos(phi)*sin(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(buffer_b.GetSample(1, 1, 0), sample*sqrt(3.0)*cos(phi)*cos(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(1, 0, 0), sample*sqrt(3.0)*sin(phi)));
+  ASSERT(IsEqual(buffer_b.GetSample(1, -1, 0), sample*sqrt(3.0)*cos(phi)*sin(theta)));
          
-  ASSERT(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
-  ASSERT(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
-  ASSERT(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
-  ASSERT(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
-  ASSERT(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 2, 0), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 1, 0), sample*sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 0, 0), sample*sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, -1, 0), sample*sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, -2, 0), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
   
-  ASSERT(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
-  ASSERT(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*(5*pow(sin(phi),2.0)-1.0)*cos(phi)));
-  ASSERT(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, 3, 0), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, -2, 0), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, 1, 0), sample*mcl::Sqrt(21.0/8.0)*(5*pow(sin(phi),2.0)-1.0)*cos(phi)*cos(theta)));
   
+  buffer_b.Reset();
   sample = 0.2;
-  mic_b.AddPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)));
+  mic_b.AddPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)), buffer_b);
   
-  theta = PI/4.0;
+  theta = PI/4.0-PI/2.0; // Here the -PI/2.0 is to consider the head rotation along the y axis.
   phi = PI/4.0;
   
-  ASSERT(IsEqual(stream_b->Pull(0, 0), sample*1.000000000000000));
-  ASSERT(IsEqual(stream_b->Pull(1, 1), sample*mcl::Sqrt(3.0)*cos(phi)*cos(theta)));
-  ASSERT(IsEqual(stream_b->Pull(1, 0), sample*sqrt(3.0)*sin(phi)));
-  ASSERT(IsEqual(stream_b->Pull(1, -1), sample*sqrt(3.0)*cos(phi)*sin(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(buffer_b.GetSample(1, 1, 0), sample*sqrt(3.0)*cos(phi)*cos(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(1, 0, 0), sample*sqrt(3.0)*sin(phi)));
+  ASSERT(IsEqual(buffer_b.GetSample(1, -1, 0), sample*sqrt(3.0)*cos(phi)*sin(theta)));
   
-  ASSERT(IsEqual(stream_b->Pull(2, 2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
-  ASSERT(IsEqual(stream_b->Pull(2, 1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
-  ASSERT(IsEqual(stream_b->Pull(2, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
-  ASSERT(IsEqual(stream_b->Pull(2, -1), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
-  ASSERT(IsEqual(stream_b->Pull(2, -2), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 2, 0), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*cos(2.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 1, 0), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*cos(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 0, 0), sample*mcl::Sqrt(5.0)/2.0*(3.0*pow(sin(phi),2.0)-1.0)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, -1, 0), sample*mcl::Sqrt(15.0)/2.0*sin(2.0*phi)*sin(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(2, -2, 0), sample*mcl::Sqrt(15.0)/2.0*(pow(cos(phi),2.0))*sin(2.0*theta)));
   
-  ASSERT(IsEqual(stream_b->Pull(3, -2), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
-  ASSERT(IsEqual(stream_b->Pull(3, 1), sample*mcl::Sqrt(21.0/8.0)*cos(phi)*(5.0*pow(sin(phi),2.0)-1.0)*cos(theta)));
-  ASSERT(IsEqual(stream_b->Pull(3, 3), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, -2, 0), sample*mcl::Sqrt(105.0)/2.0*(pow(cos(phi),2.0))*sin(phi)*sin(2.0*theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, 1, 0), sample*mcl::Sqrt(21.0/8.0)*cos(phi)*(5.0*pow(sin(phi),2.0)-1.0)*cos(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, 3, 0), sample*mcl::Sqrt(35.0/8.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  
+  
+  
+  
+  // SN3D weighting
+  buffer_b.Reset();
+  AmbisonicsMic mic_c(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0), N_b, HoaNormalisation::Sn3d, HoaOrdering::Acn);
+  
+  mic_c.AddPlaneWave(sample, Point(0.5, 0.5, 1.0/sqrt(2.0)), buffer_b);
+  
+  ASSERT(IsEqual(buffer_b.GetSample(0, 0, 0), sample*1.000000000000000));
+  ASSERT(IsEqual(buffer_b.GetSample(2, 1, 0), sample*sqrt(15.0)/2.0/sqrt(5.0)*sin(2.0*phi)*cos(theta)));
+  ASSERT(IsEqual(buffer_b.GetSample(3, 3, 0), sample*mcl::Sqrt(35.0/8.0)/sqrt(7.0)*pow(cos(phi),3.0)*cos(3.0*theta)));
+  
 #endif  
 
   return true;
@@ -229,7 +265,7 @@ bool AmbisonicsHorizDec::Test() {
                                1.0, //loudspeakers_distance,
                                1.0, // sampling_frequency,
                                SOUND_SPEED);
-  BFormatBuffer bformat_buffer(order, 1);
+  HoaBuffer bformat_buffer(order, 1);
   Buffer output_buffer(loudspeaker_angles.size(), 1);
   
   for (Int theta_index=0; theta_index<num_theta; ++theta_index) {
@@ -276,7 +312,7 @@ bool AmbisonicsHorizDec::Test() {
   
   AmbisonicsMic mic_b(Point(0.0,0.0,0.0), Quaternion::Identity(), 2);
   const Int num_samples = 4;
-  BFormatBuffer stream_b(order, num_samples);
+  HoaBuffer stream_b(order, num_samples);
   Buffer output_b(loudspeaker_angles.size(), num_samples);
   
   AmbisonicsHorizDec decoder_b(order,

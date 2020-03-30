@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "57A156C41593457600AA6445"
-               BuildableName = "SAL_test"
-               BlueprintName = "SAL test"
+               BlueprintIdentifier = "5741B52E241B1D9700A6E779"
+               BuildableName = "SAL test (with SH)"
+               BlueprintName = "SAL test (with SH)"
                ReferencedContainer = "container:SAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,15 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57A156C41593457600AA6445"
-            BuildableName = "SAL_test"
-            BlueprintName = "SAL test"
-            ReferencedContainer = "container:SAL.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
       </Testables>
    </TestAction>
@@ -45,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "${PROJECT_DIR}"
+      customWorkingDirectory = "/Users/enzodesena/repos/SDN/libs/pss/pss/sal"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -54,9 +45,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57A156C41593457600AA6445"
-            BuildableName = "SAL_test"
-            BlueprintName = "SAL test"
+            BlueprintIdentifier = "5741B52E241B1D9700A6E779"
+            BuildableName = "SAL test (with SH)"
+            BlueprintName = "SAL test (with SH)"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,9 +62,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57A156C41593457600AA6445"
-            BuildableName = "SAL_test"
-            BlueprintName = "SAL test"
+            BlueprintIdentifier = "5741B52E241B1D9700A6E779"
+            BuildableName = "SAL test (with SH)"
+            BlueprintName = "SAL test (with SH)"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -448,63 +448,98 @@ public:
   virtual ~StereoBuffer() {}
 };
   
+
+
+enum class HoaOrdering {
+  Fuma,
+  Acn
+} ;
   
-class BFormatBuffer : public Buffer {
+class HoaBuffer : public Buffer {
+private:
+  HoaOrdering ordering_;
+  
 public:
-  BFormatBuffer(const Int max_degree, const Int num_samples) :
-      Buffer(GetNumChannels(max_degree), num_samples) {}
+  HoaBuffer(const Int max_degree, const Int num_samples, const HoaOrdering ordering = HoaOrdering::Acn) :
+      Buffer(GetNumChannels(max_degree), num_samples),
+      ordering_(ordering) {}
   
-  inline void SetSample(const Int degree, const Int order, const Int sample_id,
+  inline void SetSample(const Int order, const Int degree, const Int sample_id,
                         const Sample& sample_value) noexcept {
-    Buffer::SetSample(GetChannelId(degree, order),
+    Buffer::SetSample(GetChannelId(order, degree, ordering_),
                                   sample_id, sample_value);
   }
   
   using Buffer::AddSamples;
   
-  void AddSamples(const Int degree, const Int order,
+  void AddSamples(const Int order, const Int degree,
                   const Int from_sample_id,
                   const Int num_samples,
                   const Sample* samples) {
-    Buffer::AddSamples(GetChannelId(degree, order),
+    Buffer::AddSamples(GetChannelId(order, degree, ordering_),
                                    from_sample_id, num_samples, samples);
   }
   
   /** This first multiplies all the input samples by a certain constant
    and then adds the result to the samples in the buffer. */
-  void MultiplyAddSamples(const Int degree, const Int order,
+  void MultiplyAddSamples(const Int order, const Int degree,
                           const Int from_sample_id,
                           const Int num_samples,
                           const Sample* samples,
                           const Sample constant) noexcept {
-    Buffer::MultiplyAddSamples(GetChannelId(degree, order),
+    Buffer::MultiplyAddSamples(GetChannelId(order, degree, ordering_),
                                from_sample_id, num_samples,
                                samples, constant);
   }
   
-  inline Sample GetSample(const Int degree, const Int order,
+  inline Sample GetSample(const Int order, const Int degree,
                           const Int sample_id) const noexcept {
-    return Buffer::GetSample(GetChannelId(degree, order), sample_id);
+    return Buffer::GetSample(GetChannelId(order, degree, ordering_), sample_id);
   }
   
-  static Int GetChannelId(const Int degree, const Int order) {
-    ASSERT(degree >= 0);
-    ASSERT(order <= std::abs(degree));
-    Int centre_index = 0;
-    for (Int degree_id = 0; degree_id <= degree; ++degree_id) {
-      centre_index = centre_index + 2*degree_id;
+  static Int GetChannelId(const Int order, const Int degree, const HoaOrdering ordering) {
+    ASSERT(order >= 0);
+    ASSERT(degree <= std::abs(order));
+    
+    switch (ordering) {
+      case HoaOrdering::Acn: {
+        return order*order + order + degree;
+      }
+      case HoaOrdering::Fuma: {
+        // see https://en.wikipedia.org/wiki/Ambisonic_data_exchange_format
+        if (order == 0) {
+          return 0;
+        } else if (order == 1) {
+          if (degree == 1) {
+            return 1;
+          } else if (degree == -1) {
+            return 2;
+          } else if (degree == 0) {
+            return 3;
+          }
+        } else {
+          const Int center_index = order*order;
+          Int channel_id = center_index;
+          Int this_degree = 0;
+          while (this_degree != degree) {
+            this_degree = (this_degree > 0) ? -this_degree : abs(this_degree)+1;
+            channel_id++;
+          }
+          return channel_id;
+        }
+        
+        break;
+      }
+      default: {
+        ASSERT(false);
+        return 0;
+      }
     }
-    // 0 + 2*0 = 0 OK
-    // 0 + 2*1 = 2 OK
-    // 2 + 2*2 = 6 OK
-    // 6 + 2*3 = 12 OK
-    ASSERT(centre_index + order >= 0);
-    return centre_index + order;
   }
   
-  static Int GetNumChannels(const Int max_degree) {
-    ASSERT(max_degree > 0);
-    return (max_degree+1)*(max_degree+1); // (N+1)^2
+  static Int GetNumChannels(const Int max_order) {
+    ASSERT(max_order > 0);
+    return (max_order+1)*(max_order+1); // (N+1)^2
   }
 };
   
