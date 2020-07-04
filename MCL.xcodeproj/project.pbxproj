@@ -796,7 +796,7 @@
 					"NO_AUTOTOOLS_BUILD=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /opt/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/include/;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -823,7 +823,7 @@
 					"$(inherited)",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /opt/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/include/;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -858,7 +858,7 @@
 				);
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /opt/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/include/;
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -896,7 +896,7 @@
 				);
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = /opt/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/include/;
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
