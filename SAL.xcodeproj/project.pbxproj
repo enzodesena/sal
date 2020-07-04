@@ -1311,9 +1311,9 @@
 					"$(PROJECT_DIR)/portaudio/include",
 					"$(PROJECT_DIR)/mcl/butter/include",
 					"$(PROJECT_DIR)/mcl/kissfft/include",
-					"$(PROJECT_DIR)/boost/libs/lockfree/include",
+					/usr/local/include/boost/libs/lockfree/include,
 					"$(PROJECT_DIR)/portaudio/include",
-					"$(PROJECT_DIR)/boost",
+					/usr/local/include/,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/portaudio/lib",
@@ -1372,9 +1372,9 @@
 					"$(PROJECT_DIR)/portaudio/include",
 					"$(PROJECT_DIR)/mcl/butter/include",
 					"$(PROJECT_DIR)/mcl/kissfft/include",
-					"$(PROJECT_DIR)/boost/libs/lockfree/include",
+					/usr/local/include/boost/libs/lockfree/include,
 					"$(PROJECT_DIR)/portaudio/include",
-					"$(PROJECT_DIR)/boost",
+					/usr/local/include/,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/portaudio/lib",
