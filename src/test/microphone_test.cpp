@@ -13,6 +13,7 @@
 #include "signal.h"
 #include "kemarmic.h"
 #include "sphericalheadmic.h"
+#include "bypassmic.h"
 
 using mcl::Point;
 using mcl::Quaternion;
@@ -78,6 +79,18 @@ bool Microphone::Test() {
   GainMic mic_v(Point(0.0,0.0,0.0), 0.5);
   ASSERT(IsEqual(mic_v.RecordPlaneWave(-1.0,Point(1.0,0.0,2.0)),-0.5));
   ASSERT(IsEqual(mic_v.RecordPlaneWave(-2.0,Point(1.0,3.0,2.0)),-1.0));
+  
+  //////////////////////////////////
+  // BypassMic tests                //
+  //////////////////////////////////
+  BypassMic mic_z(Point(0,0,0), 3);
+  Buffer output_buffer(3, 1);
+  mic_z.AddPlaneWave(0.2, Point(1.0,1.0,1.0), 0, output_buffer);
+  mic_z.AddPlaneWave(0.5, Point(1.0,1.0,1.0), 0, output_buffer);
+  mic_z.AddPlaneWave(0.3, Point(1.0,1.0,1.0), 1, output_buffer);
+  ASSERT(IsEqual(output_buffer.GetSample(0, 0), 0.7));
+  ASSERT(IsEqual(output_buffer.GetSample(1, 0), 0.3));
+  ASSERT(IsEqual(output_buffer.GetSample(2, 0), 0.0));
   
   return true;
 }
