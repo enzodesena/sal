@@ -1148,8 +1148,8 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
-				GCC_OPTIMIZATION_LEVEL = fast;
-				GCC_UNROLL_LOOPS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_UNROLL_LOOPS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = (
@@ -1184,7 +1184,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1491,7 +1491,7 @@
 					"$(inherited)",
 					"MCL_LOAD_BOOST=1",
 				);
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = (
@@ -1522,7 +1522,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = NO;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"MCL_LOAD_BOOST=1",
