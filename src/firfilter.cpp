@@ -158,7 +158,11 @@ void FirFilter::Filter(const Real* __restrict input_data,
 #endif
 }
   
-#define UNLIKELY(x) __builtin_expect(x, false)
+#ifdef _MSC_VER // If compiling under Visual Studio
+ #define UNLIKELY(x) x // Visual studio does not seem to support __builtin_expect, so bypass
+#else
+ #define UNLIKELY(x) __builtin_expect(x, false)
+#endif
 
 Real FirFilter::FilterStraight(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
