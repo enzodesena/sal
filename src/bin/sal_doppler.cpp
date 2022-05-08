@@ -8,8 +8,10 @@
  
  */
 
-
+#ifdef LOAD_PA_WRAPPER
 #include "pawrapper.h"
+#endif
+
 #include "matrixop.h"
 #include "propagationline.h"
 #include <unistd.h>

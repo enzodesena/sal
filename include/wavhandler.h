@@ -37,4 +37,4 @@ static void Write(const StereoSignal& stereo_signals,
   
 } // namespace sal
 
-#endif
+#endif // SAL_WAVHANDLER_H

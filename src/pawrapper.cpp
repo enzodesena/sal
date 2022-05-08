@@ -9,6 +9,7 @@
  */
 
 #include "pawrapper.h"
+#ifdef LOAD_PA_WRAPPER
 
 namespace sal {
   
@@ -133,3 +134,5 @@ PaWrapper::~PaWrapper() {
 }
   
 } // namespace sal
+
+#endif //LOAD_PA_WRAPPER

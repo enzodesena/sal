@@ -9,7 +9,10 @@
  */
 
 
+#ifdef LOAD_PA_WRAPPER
 #include "pawrapper.h"
+#endif
+
 #include <unistd.h>
 
 using namespace sal;

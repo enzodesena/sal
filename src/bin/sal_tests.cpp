@@ -36,7 +36,7 @@ int main(int argc, char * const argv[]) {
   sal::AmbisonicsHorizDec::Test();
   sal::Microphone::Test();
   sal::KemarMic::Test();
-  sal::CipicMic::Test();
+//  sal::CipicMic::Test();
   sal::SphericalHeadMic::Test();
   sal::MicrophoneArrayTest();
   sal::DelayFilter::Test();
