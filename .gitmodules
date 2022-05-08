@@ -2,3 +2,6 @@
 	path = mcl
 	url = http://pub.git.desena.org/mcl.git
 	branch = master
+[submodule "AudioFile"]
+	path = AudioFile
+	url = git@github.com:adamstark/AudioFile.git
