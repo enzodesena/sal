@@ -4,4 +4,4 @@
 	branch = master
 [submodule "AudioFile"]
 	path = AudioFile
-	url = git@github.com:adamstark/AudioFile.git
+	url = https://github.com/adamstark/AudioFile.git
