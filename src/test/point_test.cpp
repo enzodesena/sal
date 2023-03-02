@@ -214,6 +214,18 @@ bool PointTest() {
   
   
   
+  Point cross_a = CrossProduct(Point(4, -2, 1), Point(1, -1, 3));
+  ASSERT(IsEqual(cross_a, Point(-5, -11, -2)));
+    
+  Point cross_b = CrossProduct(Point(-2,1,2), Point(-1,0,-2));
+  ASSERT(IsEqual(cross_b, Point(-2, -6, 1)));
+  
+  Point cross_c = CrossProduct(Point(10,1,2), Point(-1,5,-2));
+  ASSERT(IsEqual(cross_c, Point(-12, 18, 51)));
+  
+  Point cross_d = CrossProduct(Point(-1,-1,-1), Point(1,1,1));
+  ASSERT(IsEqual(cross_d, Point(0,0,0)));
+  
   return true;
 }
 

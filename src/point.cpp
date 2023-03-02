@@ -102,6 +102,12 @@ Real DotProduct(Point point_a, Point point_b) noexcept {
   return point_a.x()*point_b.x()+point_a.y()*point_b.y()+point_a.z()*point_b.z();
 }
 
+Point CrossProduct(Point vector_a, Point vector_b) noexcept {
+  return Point(vector_a.y()*vector_b.z()-vector_a.z()*vector_b.y(),
+               vector_a.z()*vector_b.x()-vector_a.x()*vector_b.z(),
+               vector_a.x()*vector_b.y()-vector_a.y()*vector_b.x());
+}
+
 // Returns the angle formed betwee two directions
 Real AngleBetweenDirections(Real theta_a, Real phi_a,
                                     Real theta_b, Real phi_b) noexcept {

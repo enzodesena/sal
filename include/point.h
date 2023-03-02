@@ -82,6 +82,10 @@ Point Rotate(const Point&, Real phi,
                      Real theta, Real psi) noexcept;
 
 Real DotProduct(Point, Point) noexcept;
+
+/** Returns a Point (i.e. 3D vector) corresponding to the cross product
+ of two Points (i.e. 3D vectors). Uses the right-hand rule. */
+Point CrossProduct(Point, Point) noexcept;
 Real Distance(Point, Point) noexcept;
 Real Theta(Point, Point) noexcept;
 Real Phi(Point, Point) noexcept;
