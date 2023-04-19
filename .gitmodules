@@ -1,7 +1,7 @@
 [submodule "mcl"]
 	path = mcl
-	url = https://github.com/enzodesena/mcl.git
+	url = git@github.com:enzodesena/mcl.git
 	branch = master
 [submodule "AudioFile"]
 	path = AudioFile
-	url = https://github.com/adamstark/AudioFile.git
+	url = git@github.com:adamstark/AudioFile.git
