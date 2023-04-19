@@ -1,6 +1,6 @@
 [submodule "mcl"]
 	path = mcl
-	url = http://pub.git.desena.org/mcl.git
+	url = https://github.com/enzodesena/mcl.git
 	branch = master
 [submodule "AudioFile"]
 	path = AudioFile
