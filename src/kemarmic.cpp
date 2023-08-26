@@ -127,9 +127,10 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
   char file_name[1000];
   char directory_name[1000];
   char file_path[1000];
-  sprintf(directory_name, "/elev%d/", (int)elevation);
   
-  sprintf(file_name, "H%de%03da.dat", (int)elevation, (int)angle);
+  snprintf(directory_name, 20, "/elev%d/", (int)elevation);
+  
+  snprintf(file_name, 20, "H%de%03da.dat", (int)elevation, (int)angle);
   
   strcpy(file_path, directory.c_str());
   strcat(file_path, directory_name);
@@ -143,9 +144,8 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
   //  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "pss/sal/hrtfs/kemar",
   //                      sal::KemarMic::kFullBrirLength, "hr");
   
-void
-KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
-                              const Int num_samples, std::string variable_name) {
+void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
+                                   const Int num_samples, std::string variable_name) {
   std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
   
   for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
