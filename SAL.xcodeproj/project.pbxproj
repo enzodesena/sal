@@ -152,6 +152,11 @@
 		57CE72CB1C95AD5700149808 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72C81C95AD3F00149808 /* AudioUnit.framework */; };
 		57CE72CD1C95AD6900149808 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72CC1C95AD6900149808 /* AudioToolbox.framework */; };
 		57CE72D01C95AD8C00149808 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CE72CE1C95AD7600149808 /* Carbon.framework */; };
+		57D6D29A2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */; };
+		57D6D29B2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */; };
+		57D6D29C2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */; };
+		57D6D29D2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */; };
+		57D6D29E2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */; };
 		57D7EB601625CE5A00771188 /* sphericalmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 578751E715AE01590008761C /* sphericalmic.cpp */; };
 		57F13C0E20853C0B002CC480 /* sal_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF841CD81A8D00134991 /* sal_tests.cpp */; };
 		57F13C1120853C21002CC480 /* binauralmic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C2C7A71B1739A600B7F58C /* binauralmic.cpp */; };
@@ -340,6 +345,7 @@
 		57CE72C81C95AD3F00149808 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		57CE72CC1C95AD6900149808 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		57CE72CE1C95AD7600149808 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kemardiffusedata.cpp; path = hrtfs/kemar_diffuse/kemardiffusedata.cpp; sourceTree = "<group>"; };
 		57F13C0B2084D31C002CC480 /* audiobuffer_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = audiobuffer_test.cpp; path = src/test/audiobuffer_test.cpp; sourceTree = "<group>"; };
 		57F13C0D2084D53F002CC480 /* audiobuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = audiobuffer.h; path = include/audiobuffer.h; sourceTree = "<group>"; };
 		57F7B3BF15D3DE7000D4E64A /* ambisonics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ambisonics.h; path = include/ambisonics.h; sourceTree = "<group>"; };
@@ -533,6 +539,7 @@
 		57A156FA1593465600AA6445 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57D6D2972A9BBFB200815BC7 /* kemardiffusedata.cpp */,
 				57C5E6A62A9B706C00BEFCB5 /* kemarcompactdata.cpp */,
 				57B053E41D6B039100202654 /* MCL.xcodeproj */,
 				57B4EFAB1CD81D5D00134991 /* libsndfile */,
@@ -817,6 +824,7 @@
 				5722E2431C9ECB49007FCF59 /* delayfilter.cpp in Sources */,
 				5778113220600683004B9C6F /* fdtd.cpp in Sources */,
 				5778112920600683004B9C6F /* tdbem.cpp in Sources */,
+				57D6D29E2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -827,6 +835,7 @@
 				57C5E6AB2A9B7A7500BEFCB5 /* kemarcompactdata.cpp in Sources */,
 				5741B532241B1D9700A6E779 /* ambisonics.cpp in Sources */,
 				5741B533241B1D9700A6E779 /* kemarmic_test.cpp in Sources */,
+				57D6D29B2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */,
 				5741B534241B1D9700A6E779 /* microphone.cpp in Sources */,
 				5741B535241B1D9700A6E779 /* sal_tests.cpp in Sources */,
 				5741B536241B1D9700A6E779 /* microphone_test.cpp in Sources */,
@@ -870,6 +879,7 @@
 				57C5E6A82A9B7A2E00BEFCB5 /* kemarcompactdata.cpp in Sources */,
 				578EB0B720863130006F06B8 /* ambisonics.cpp in Sources */,
 				576C17DD20856F5F00EFBACE /* kemarmic_test.cpp in Sources */,
+				57D6D29A2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */,
 				57F13C1320853C2A002CC480 /* microphone.cpp in Sources */,
 				57F13C0E20853C0B002CC480 /* sal_tests.cpp in Sources */,
 				576C17D320853C7F00EFBACE /* microphone_test.cpp in Sources */,
@@ -923,6 +933,7 @@
 				5722E2421C9ECB49007FCF59 /* delayfilter.cpp in Sources */,
 				5778112E20600683004B9C6F /* riranalysis.cpp in Sources */,
 				57895F6216304F18002C962B /* propagationline.cpp in Sources */,
+				57D6D29D2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */,
 				5778113120600683004B9C6F /* fdtd.cpp in Sources */,
 				5778112520600683004B9C6F /* ism.cpp in Sources */,
 				5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */,
@@ -938,6 +949,7 @@
 			files = (
 				57C5E6A52A9A860E00BEFCB5 /* sal_print_kemar.cpp in Sources */,
 				57C5E6752A9A85E800BEFCB5 /* ambisonics.cpp in Sources */,
+				57D6D29C2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */,
 				57C5E6772A9A85E800BEFCB5 /* microphone.cpp in Sources */,
 				57C5E67A2A9A85E800BEFCB5 /* tdbem.cpp in Sources */,
 				57C5E67B2A9A85E800BEFCB5 /* binauralmic.cpp in Sources */,

@@ -204,9 +204,9 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
 //    case kEmbeddedFullDataset:
 //      LoadEmbeddedFullData(ear, hrtf_database);
 //      break;
-//    case kEmbeddedDiffuseDataset:
-//      LoadEmbeddedDiffuseData(ear, hrtf_database);
-//      break;
+    case kDiffuseDataset:
+      LoadEmbeddedDiffuseData(ear, hrtf_database);
+      break;
 #endif
     default:
       ASSERT(false);

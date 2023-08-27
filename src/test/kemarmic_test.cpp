@@ -252,20 +252,74 @@ bool KemarMic::Test() {
   ASSERT(IsEqual(cmp_u_left_b, output_u_b_left));
   ASSERT(IsEqual(cmp_u_right_b, output_u_b_right));
   
-//  KemarMic mic_l(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-//                 "",
-//                 kFullBrirLength,
-//                 0,
-//                 HeadRefOrientation::standard,
-//                 24000);
+
   
-  // Testing frontal direction
-//  KemarMic mic_k(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(), kEmbeddedFullDataset);
-//  StereoBuffer stream_i(impulse_response_length);
-//  
-//  
-//  mic_i.AddPlaneWave(impulse, Point(1.0,0.0,0.0), stream_i);
-//  
+  // Testing diffuse dataset
+  KemarMic mic_diffuse(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(), kDiffuseDataset);
+  StereoBuffer stream_diffuse(impulse_response_length);
+
+  mic_diffuse.AddPlaneWave(impulse, Point(0.0,0.0,1.0), stream_diffuse);
+  
+  Signal cmp_diffuse_up_left_ear = {-3,6,-23,39,-68,102,-143,205,-178,2419,3925,5019,-2985,-11161,4587,8199,2124,4031,4318,3512,2529,-65,-3018,-1360,-1597,-2303,-1786,-1785,-804,-329,-84,-694,196,-77,-528,-613,-1038,-1042,-824,100,141,116,-301,-756,-1180,-1056,-525,-121,-181,-278,-355,-499,-127,-37,-246,-473,-717,-456,-208,-10,-146,-647,-796,-467,-268,-234,47,-286,-379,-316,-484,-653,-829,-794,-567,-600,-835,-584,-139,-85,-278,-272,-235,-288,-421,-340,-155,-53,-90,-271,-404,-273,-37,48,-125,-439,-492,-282,-46,50,-21,-39,27,39,93,91,51,-54,-121,-73,-6,69,89,53,11,2,44,109,134,92,40,14,11,81,131,106,46,34};
+  
+  ASSERT(IsEqual(stream_diffuse.GetLeftReadPointer(), mcl::Multiply(cmp_diffuse_up_left_ear, normalising_value)));
+  ASSERT(IsEqual(stream_diffuse.GetRightReadPointer(), mcl::Multiply(cmp_diffuse_up_left_ear, normalising_value)));
+  
+  Angle elevation = 40.0 / 180.0 * PI;
+  Angle azimuth = 77.0 / 180.0 * PI;
+  mic_diffuse.Reset();
+  stream_diffuse.Reset();
+  // The minus for azimuth is because for our reference system, a positive azimuth angle is to the left of the person, while for kemar is on the right
+  mic_diffuse.AddPlaneWave(impulse, Point(cos(-azimuth)*cos(elevation), sin(-azimuth)*cos(elevation), sin(elevation)), stream_diffuse);
+  
+  Signal cmp_diffuse_elevation_40_azimuth_77_left_ear = {1,2,2,2,2,3,1,3,1,0,1,2,2,1,2,-3,6,1,10,-9,13,-16,24,-9,26,-37,457,1140,1379,84,-4082,-2932,915,3198,4760,2980,1622,1258,872,989,1427,1096,619,388,-130,-98,-179,-335,-346,-276,-276,-231,-428,-557,7,-239,-427,-422,-441,-699,-787,-340,-342,-421,-467,-414,-438,-299,-154,-425,-569,-457,-544,-649,-534,-496,-541,-672,-702,-587,-468,-455,-434,-401,-441,-457,-480,-427,-413,-424,-460,-535,-524,-476,-438,-395,-321,-275,-241,-219,-191,-164,-170,-200,-249,-261,-209,-132,-103,-111,-114,-108,-85,-65,-34,-36,-62,-74,-63,-25,-12,-11,-44,-99,-109,-72,-11,12};
+  
+  Signal cmp_diffuse_elevation_40_azimuth_77_right_ear = {23,-69,97,-167,245,-355,495,-736,4268,9963,2867,-21935,-16659,20230,11812,12247,9962,-2069,2451,1655,4907,-1679,-3551,-5170,-3461,-3178,-3914,-303,-2968,-1606,-2291,176,-344,426,40,-1111,-41,-441,-529,-1673,-753,-913,-144,-375,-244,-233,-969,-116,388,55,-815,-659,-373,-931,-696,-1003,-1235,-1544,-1221,-747,-452,-302,-298,-42,-395,-418,-335,-140,-296,-478,-716,-518,-202,-77,-180,-149,-58,-118,-182,-189,-13,-18,-102,-202,-235,-124,37,102,62,-99,-182,-209,-48,-32,-37,-115,-91,-100,-41,73,108,140,-19,-145,-153,-76,-25,79,21,-66,-147,-78,35,94,62,-24,-17,53,147,231,205,114,86,93,110,140,170,172};
+  
+  ASSERT(IsEqual(stream_diffuse.GetLeftReadPointer(), mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_left_ear, normalising_value)));
+  ASSERT(IsEqual(stream_diffuse.GetRightReadPointer(), mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear, normalising_value)));
+  
+  mic_diffuse.Reset();
+  stream_diffuse.Reset();
+  // Check for the other side (hence `azimuth` is positive here)
+  mic_diffuse.AddPlaneWave(impulse, Point(cos(azimuth)*cos(elevation), sin(azimuth)*cos(elevation), sin(elevation)), stream_diffuse);
+  ASSERT(IsEqual(stream_diffuse.GetLeftReadPointer(), mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear, normalising_value)));
+  ASSERT(IsEqual(stream_diffuse.GetRightReadPointer(), mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_left_ear, normalising_value)));
+  
+  
+  
+  
+  // Testing compact dataset
+  KemarMic mic_compact(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(), kCompactDataset);
+  StereoBuffer stream_compact(impulse_response_length);
+
+  mic_compact.AddPlaneWave(impulse, Point(0.0,0.0,1.0), stream_compact);
+  
+  Signal cmp_compact_up_left_ear = {5,-16,26,-41,63,-81,119,-73,2020,4378,5862,-903,-11453,-1186,9080,4800,2577,4817,4371,2144,575,-3634,-5593,-3944,-3191,-4101,-3272,-1131,-482,514,1269,2172,1956,1147,1256,990,-222,-780,134,460,257,-481,-1587,-2274,-1906,-1100,-432,-2,355,547,419,651,931,678,145,-284,-374,-347,-98,-141,-816,-1128,-690,-358,-272,105,75,-125,-120,-96,-275,-592,-607,-361,-364,-647,-563,-77,190,92,42,0,-123,-222,-170,-55,59,53,-195,-453,-387,-120,23,-107,-440,-607,-424,-74,136,51,-75,-11,93,170,173,79,-115,-263,-269,-222,-146,-100,-138,-198,-199,-118,6,70,29,-59,-127,-124,-20,69,38,-69,-132,-141};
+  
+  ASSERT(IsEqual(stream_compact.GetLeftReadPointer(), mcl::Multiply(cmp_compact_up_left_ear, normalising_value)));
+  ASSERT(IsEqual(stream_compact.GetRightReadPointer(), mcl::Multiply(cmp_compact_up_left_ear, normalising_value)));
+  
+  elevation = 40.0 / 180.0 * PI;
+  azimuth = 77.0 / 180.0 * PI;
+  mic_compact.Reset();
+  stream_compact.Reset();
+  // The minus for azimuth is because for our reference system, a positive azimuth angle is to the left of the person, while for kemar is on the right
+  mic_compact.AddPlaneWave(impulse, Point(cos(-azimuth)*cos(elevation), sin(-azimuth)*cos(elevation), sin(elevation)), stream_compact);
+  
+  Signal cmp_compact_elevation_40_azimuth_77_left_ear = {1,1,1,1,2,1,2,0,-1,0,1,2,0,1,-3,3,3,9,-5,7,-9,14,0,18,-25,378,1172,1643,548,-3654,-4390,-408,3323,5308,4375,2582,1574,1229,974,618,73,-445,-791,-1147,-1241,-1374,-1380,-1125,-563,-57,98,88,216,785,797,438,254,280,-93,-630,-575,-580,-697,-600,-379,-341,-177,74,-99,-281,-69,11,-193,-218,-167,-276,-443,-466,-396,-320,-283,-259,-226,-201,-177,-227,-240,-210,-202,-252,-332,-339,-311,-312,-295,-207,-106,-28,13,16,-6,-33,-60,-114,-158,-155,-131,-132,-137,-109,-72,-51,-46,-38,-50,-70,-79,-89,-86,-83,-77,-87,-127,-157,-156,-125,-93,-57};
+  
+  Signal cmp_compact_elevation_40_azimuth_77_right_ear = {-45,54,-103,148,-210,282,-439,3392,10351,6478,-18606,-24451,11017,19796,14070,11854,3061,-384,1677,5820,-4030,-10225,-8506,-7117,-7193,-5437,-2574,-3967,-1387,1474,4091,2852,3386,4949,3037,1785,1476,347,-1523,-1252,-2156,-3171,-3151,-1957,-1144,-1196,-134,1041,1140,452,722,1273,632,286,-297,-1362,-1947,-1331,-941,-951,-553,-320,-159,-49,218,290,207,21,-25,-328,-408,20,240,-95,-274,-150,-193,-236,-54,95,-90,-233,-208,-135,37,246,206,-57,-259,-258,-217,-31,19,-171,-393,-318,-138,-45,-70,-141,-115,-125,-94,-21,-22,-117,-127,-142,-157,-181,-158,-143,-152,-153,-141,-105,-67,-17,32,28,11,37,48,5,-37,-56,-64,-46};
+  
+  ASSERT(IsEqual(stream_compact.GetLeftReadPointer(), mcl::Multiply(cmp_compact_elevation_40_azimuth_77_left_ear, normalising_value)));
+  ASSERT(IsEqual(stream_compact.GetRightReadPointer(), mcl::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear, normalising_value)));
+  
+  mic_compact.Reset();
+  stream_compact.Reset();
+  // Check for the other side (hence `azimuth` is positive here)
+  mic_compact.AddPlaneWave(impulse, Point(cos(azimuth)*cos(elevation), sin(azimuth)*cos(elevation), sin(elevation)), stream_compact);
+  ASSERT(IsEqual(stream_compact.GetLeftReadPointer(), mcl::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear, normalising_value)));
+  ASSERT(IsEqual(stream_compact.GetRightReadPointer(), mcl::Multiply(cmp_compact_elevation_40_azimuth_77_left_ear, normalising_value)));
   
   return true;
 }
