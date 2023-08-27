@@ -11,7 +11,8 @@
 #ifndef SAL_KEMARMIC_H
 #define SAL_KEMARMIC_H
 
-#define FULL_LENGTH_KEMAR 128
+#define MAX_LENGTH_KEMAR 512
+#define COMPACT_LENGTH_KEMAR 128
 #define NUM_ELEVATIONS_KEMAR 14
 #define NORMALISING_VALUE_KEMAR 30000.0
 
@@ -51,6 +52,26 @@ public:
                                   const Int num_samples,
                                   std::string variable_name);
   
+  
+  enum EmbeddedDatasetType {
+    kCompactDataset,
+    kFullDataset,
+    kDiffuseDataset
+  };
+  
+  // TODO: turn the following two structs into a single struct
+  struct KemarData {
+    Int elevation_id;
+    Int azimuth_id;
+    Sample data[MAX_LENGTH_KEMAR];
+  };
+  
+  struct KemarDataCompact {
+    Int elevation_id;
+    Int azimuth_id;
+    Sample data[COMPACT_LENGTH_KEMAR];
+  };
+  
   static bool Test();
 private:
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
@@ -59,10 +80,17 @@ private:
   std::vector<std::vector<Signal> > Load(const Ear ear,
                                          const std::string directory);
   
-  static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear);
+  static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear,
+                                                        const EmbeddedDatasetType dataset_type);
   
-  static void LoadEmbeddedData(const Ear ear,
-                               std::vector<std::vector<Signal> >& data);
+  
+  // TODO: these methods are identical except for the variables they load
+  static void LoadEmbeddedCompactData(const Ear ear,
+                                      std::vector<std::vector<Signal> >& data);
+  static void LoadEmbeddedFullData(const Ear ear,
+                                   std::vector<std::vector<Signal> >& data);
+  static void LoadEmbeddedDiffuseData(const Ear ear,
+                                      std::vector<std::vector<Signal> >& data);
   
   /**
    Returns the elevation index for kemar database for elevation in azimuth.
@@ -85,14 +113,16 @@ private:
   
   static std::string GetFilePath(const Angle elevation, const Angle angle,
                                  const std::string directory) noexcept;
+  
 };
   
+
+
+
+
 
   
 } // namespace sal
 
-//#ifndef DO_NOT_LOAD_EMBEDDED_KEMAR
-//  #include "kemarmicdata.h"
-//#endif
 
 #endif

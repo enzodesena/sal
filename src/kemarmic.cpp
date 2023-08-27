@@ -42,8 +42,8 @@ KemarMic::KemarMic(const Point& position,
   elevations_ = GetElevations();
             
   if (directory.length() == 0) {
-    hrtf_database_right_ = LoadEmbedded(kRightEar);
-    hrtf_database_left_ = LoadEmbedded(kLeftEar);
+    hrtf_database_right_ = LoadEmbedded(kRightEar, kCompactDataset);
+    hrtf_database_left_ = LoadEmbedded(kLeftEar, kCompactDataset);
   } else {
     hrtf_database_right_ = Load(kRightEar, directory);
     hrtf_database_left_ = Load(kLeftEar, directory);
@@ -90,14 +90,17 @@ KemarMic::KemarMic(const Point& position,
   }
 }
   
+
 Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetNumMeasurements() noexcept {
   return {56,60,72,72,72,72,72,60,56,45,36,24,12,1};
 }
+
 
 Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetElevations() noexcept {
   return {-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90};
 }
   
+
 bool KemarMic::IsDatabaseAvailable(const std::string directory) {
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
@@ -122,6 +125,7 @@ bool KemarMic::IsDatabaseAvailable(const std::string directory) {
   return true;
 }
 
+
 std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
                                   const std::string directory) noexcept {
   char file_name[1000];
@@ -139,11 +143,6 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
 }
   
   
-  //  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "pss/sal/hrtfs/kemar",
-  //                                     sal::KemarMic::kFullBrirLength, "h");
-  //  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "pss/sal/hrtfs/kemar",
-  //                      sal::KemarMic::kFullBrirLength, "hr");
-  
 void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
                                    const Int num_samples, std::string variable_name) {
   std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
@@ -159,8 +158,11 @@ void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
     }
   }
 }
+
+
   
-std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
+std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
+                                                         const EmbeddedDatasetType dataset_type) {
   std::vector<std::vector<Signal> > hrtf_database;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   
@@ -168,15 +170,14 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear) {
     // Initialise vector
     hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
     for (Int j=0; j<num_measurements[i]; ++j) {
-      hrtf_database[i].push_back(Signal(FULL_LENGTH_KEMAR));
+      hrtf_database[i].push_back(Signal(MAX_LENGTH_KEMAR));
     }
   }
   
-  LoadEmbeddedData(ear, hrtf_database);
+  LoadEmbeddedCompactData(ear, hrtf_database);
   
   return hrtf_database;
 }
-  
   
   
 std::vector<std::vector<Signal> >
@@ -256,8 +257,6 @@ std::vector<std::vector<Signal> >
 }
   
 
-
-  
 Int KemarMic::FindElevationIndex(Angle elevation) {
   Int elevation_index = mcl::RoundToInt(elevation/10.0) + 4;
   if (elevation_index < 0) {
@@ -268,6 +267,7 @@ Int KemarMic::FindElevationIndex(Angle elevation) {
     return (UInt) elevation_index;
   }
 }
+
 
 Int KemarMic::FindAzimuthIndex(Angle azimuth, Int elevation_index) {
   const Int num_measurements[] =
