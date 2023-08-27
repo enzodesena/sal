@@ -30,9 +30,20 @@ namespace sal {
 class KemarMic : public DatabaseBinauralMic {
 public:
   enum DatasetType {
-    kCompactDataset, // Using DB-061 (standard pinna)
-    kFullDataset, // Using DB-061 (standard pinna)
-    kDiffuseDataset, // Using DB-061 (standard pinna)
+    // kCompactDataset: 128 samples long, loudspeaker response equalised, standard pinna (DB-061)
+    // As it stands, it has no ear canal eq or diffuse/free field eq
+    // It therefore needs either an headphone inverse filter, or free-field equalisation
+    kCompactDataset,
+    // kDiffuseDataset: 128 samples long, diffuse field equalised, standard pinna (DB-061)
+    // This is already equalised for everything that doesn't change with angle,
+    // therefore, ear canal, loudspeaker response, etc
+    // This is ready to be played back over headphones.
+    kDiffuseDataset,
+    // kFullDataset: 512 samples long, raw HRTF, standard pinna (DB-061)
+    // As it stands, it has no ear canal eq, diffuse/free field eq, or loudspeaker response
+    // The following needs either an headphone inverse filter, or free-field equalisation
+    // in addition to loudspeaker response equalisation
+    kFullDataset,
     kDirectoryCompact, // Either for "compact" directory or "diffuse" directory
     kDirectoryLeft, // Full with DB-061 (standard pinna)
     kDirectoryRight // Full with DB-065 (large red pinna)
