@@ -30,6 +30,7 @@ namespace sal {
 
 KemarMic::KemarMic(const Point& position,
                    const Quaternion orientation,
+                   const DatasetType dataset_type,
                    const std::string directory,
                    const Int num_samples,
                    const Int update_length,
@@ -41,9 +42,10 @@ KemarMic::KemarMic(const Point& position,
   num_measurements_ = GetNumMeasurements();
   elevations_ = GetElevations();
             
-  if (directory.length() == 0) {
-    hrtf_database_right_ = LoadEmbedded(kRightEar, kCompactDataset);
-    hrtf_database_left_ = LoadEmbedded(kLeftEar, kCompactDataset);
+    
+  if (dataset_type != kDirectory) {
+    hrtf_database_right_ = LoadEmbedded(kRightEar, dataset_type);
+    hrtf_database_left_ = LoadEmbedded(kLeftEar, dataset_type);
   } else {
     hrtf_database_right_ = Load(kRightEar, directory);
     hrtf_database_left_ = Load(kLeftEar, directory);
@@ -51,10 +53,10 @@ KemarMic::KemarMic(const Point& position,
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
             
-            // This is the sampling frequency that will actually be used
+  // This is the sampling frequency that will actually be used
   Time used_sampling_frequency;
   Int used_num_samples;
-            
+  
   if (sampling_frequency > 33075.0) {
     used_sampling_frequency = 44100.0;
     used_num_samples = kFullBrirLength;
@@ -72,7 +74,7 @@ KemarMic::KemarMic(const Point& position,
       }
     }
   }
-            
+  
   if (! mcl::IsEqual(sampling_frequency, 22050.0) && ! mcl::IsEqual(sampling_frequency, 44100.0)) {
     mcl::Logger::GetInstance().LogError("The sampling frequency (%f) is not supported for "
                                         "the Kemar mic. Using %f instead.",
@@ -142,16 +144,15 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
   return std::string(file_path);
 }
   
-  
-void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
-                                   const Int num_samples, std::string variable_name) {
+
+void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory, const Int num_samples) {
   std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
   
   for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
     for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
       printf("{%d,%d,", (int) i, (int) j);
       for (Int sample_id=0; sample_id<(Int)hrtf_database[i][j].size(); ++sample_id) {
-        printf("%.4E", hrtf_database[i][j][sample_id]);
+        printf("%d", static_cast<int>(hrtf_database[i][j][sample_id]*NORMALISING_VALUE_KEMAR));
         if (sample_id < (Int)hrtf_database[i][j].size()-1) { printf(","); }
       }
       printf("}, \n");
@@ -159,23 +160,41 @@ void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
   }
 }
 
-
   
 std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
-                                                         const EmbeddedDatasetType dataset_type) {
+                                                         const DatasetType dataset_type) {
   std::vector<std::vector<Signal> > hrtf_database;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  
+  const Int num_samples = (dataset_type == kEmbeddedCompactDataset) ? COMPACT_LENGTH_KEMAR : MAX_LENGTH_KEMAR;
   
   for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
     hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
     for (Int j=0; j<num_measurements[i]; ++j) {
-      hrtf_database[i].push_back(Signal(MAX_LENGTH_KEMAR));
+      hrtf_database[i].push_back(Signal(num_samples));
     }
   }
   
-  LoadEmbeddedCompactData(ear, hrtf_database);
   
+  switch (dataset_type) {
+#ifndef DO_NOT_LOAD_EMBEDDED_KEMAR
+    case kEmbeddedCompactDataset:
+      LoadEmbeddedCompactData(ear, hrtf_database);
+      break;
+//    case kEmbeddedFullDataset:
+//      LoadEmbeddedFullData(ear, hrtf_database);
+//      break;
+//    case kEmbeddedDiffuseDataset:
+//      LoadEmbeddedDiffuseData(ear, hrtf_database);
+//      break;
+#endif
+    default:
+      ASSERT(false);
+  }
+  
+  mcl::IirFilter normalising_filter = mcl::GainFilter(1.0/NORMALISING_VALUE_KEMAR);
+  mcl::FilterAll(hrtf_database, &normalising_filter);
   return hrtf_database;
 }
   

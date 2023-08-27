@@ -14,7 +14,7 @@
 #define MAX_LENGTH_KEMAR 512
 #define COMPACT_LENGTH_KEMAR 128
 #define NUM_ELEVATIONS_KEMAR 14
-#define NORMALISING_VALUE_KEMAR 30000.0
+#define NORMALISING_VALUE_KEMAR 32768.0 // This is 2^15 (16 bit in two's complement)
 
 #include <map>
 #include <vector>
@@ -29,6 +29,13 @@ namespace sal {
 
 class KemarMic : public DatabaseBinauralMic {
 public:
+  enum DatasetType {
+    kEmbeddedCompactDataset,
+    kEmbeddedFullDataset,
+    kEmbeddedDiffuseDataset,
+    kDirectory
+  };
+  
   /** 
    Constructs a Kemar microphone opject. 
    `directory` contains the hrtf database.
@@ -37,6 +44,7 @@ public:
    */
   KemarMic(const mcl::Point& position,
            const mcl::Quaternion orientation,
+           const DatasetType dataset_type = kEmbeddedDiffuseDataset,
            const std::string directory = "",
            const Int num_samples = kFullBrirLength,
            const Int update_length = 0,
@@ -49,15 +57,7 @@ public:
   
   static void PrintParsedDatabase(const Ear ear,
                                   const std::string directory,
-                                  const Int num_samples,
-                                  std::string variable_name);
-  
-  
-  enum EmbeddedDatasetType {
-    kCompactDataset,
-    kFullDataset,
-    kDiffuseDataset
-  };
+                                  const Int num_samples);
   
   // TODO: turn the following two structs into a single struct
   struct KemarData {
@@ -81,8 +81,7 @@ private:
                                          const std::string directory);
   
   static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear,
-                                                        const EmbeddedDatasetType dataset_type);
-  
+                                                        const DatasetType dataset_type);
   
   // TODO: these methods are identical except for the variables they load
   static void LoadEmbeddedCompactData(const Ear ear,
@@ -115,11 +114,6 @@ private:
                                  const std::string directory) noexcept;
   
 };
-  
-
-
-
-
 
   
 } // namespace sal

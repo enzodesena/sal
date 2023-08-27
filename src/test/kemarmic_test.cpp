@@ -21,8 +21,6 @@ namespace sal {
 bool KemarMic::Test() {
   using mcl::IsEqual;
   
-  const std::string kemar_path = std::string("");
-  
   const Int impulse_response_length = 128;
   
   MonoBuffer impulse(impulse_response_length);
@@ -33,8 +31,7 @@ bool KemarMic::Test() {
   
   
   // Testing frontal direction
-  KemarMic mic_i(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path);
+  KemarMic mic_i(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(), kEmbeddedCompactDataset);
   StereoBuffer stream_i(impulse_response_length);
   
   
@@ -57,11 +54,12 @@ bool KemarMic::Test() {
   ASSERT(IsEqual(stream_i.GetLeftReadPointer(),
                  stream_i.GetRightReadPointer(),
                  impulse_response_length));
+  
   ASSERT(IsEqual(cmp_imp_front_left, stream_i.GetLeftReadPointer()));
   
   
   KemarMic mic_o(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0),
-                 kemar_path);
+                 kEmbeddedCompactDataset);
   StereoBuffer stream_o(impulse_response_length);
   
   mic_o.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_o);
@@ -69,7 +67,7 @@ bool KemarMic::Test() {
   
   // Testing frontal direction for reference point at y-axis
   KemarMic mic_ia(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                  kemar_path, kFullBrirLength, 0, HeadRefOrientation::y_z);
+                  kEmbeddedCompactDataset, "", kFullBrirLength, 0, HeadRefOrientation::y_z);
   StereoBuffer stream_ia(impulse_response_length);
   mic_ia.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_ia);
   ASSERT(mcl::IsEqual(cmp_imp_front_left,
@@ -91,7 +89,7 @@ bool KemarMic::Test() {
   cmp_imp_up_left = mcl::Multiply(cmp_imp_up_left, normalising_value);
   
   
-  KemarMic mic_m(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), kemar_path);
+  KemarMic mic_m(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0), kEmbeddedCompactDataset);
   StereoBuffer stream_m(impulse_response_length);
   
   mic_m.AddPlaneWave(impulse, Point(-1.0,0.0,0.0), stream_m);
@@ -128,7 +126,7 @@ bool KemarMic::Test() {
   
   
   KemarMic mic_p(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path);
+                 kEmbeddedCompactDataset);
   StereoBuffer stream_p(impulse_response_length);
   
   mic_p.AddPlaneWave(impulse, Point(0.0,-1.0,0.0), stream_p);
@@ -138,7 +136,7 @@ bool KemarMic::Test() {
   
   // Case for a source to the right (90deg) of the kemar with reference on the y axis
   KemarMic mic_pa(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path, kFullBrirLength, 0, HeadRefOrientation::y_z);
+                 kEmbeddedCompactDataset, "", kFullBrirLength, 0, HeadRefOrientation::y_z);
   StereoBuffer stream_pa(impulse_response_length);
   mic_pa.AddPlaneWave(impulse, Point(1.0,0.0,0.0), stream_pa);
   ASSERT(mcl::IsEqual(cmp_imp_right_left,
@@ -157,7 +155,7 @@ bool KemarMic::Test() {
   
   
   KemarMic mic_r(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path);
+                 kEmbeddedCompactDataset);
   StereoBuffer stream_r(impulse_response_length);
   
   mic_r.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_r);
@@ -181,7 +179,7 @@ bool KemarMic::Test() {
   cmp_imp_back = mcl::Multiply(cmp_imp_back, normalising_value);
   
   KemarMic mic_t(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,1,0,-PI/2.0),
-                 kemar_path);
+                 kEmbeddedCompactDataset);
   StereoBuffer stream_t(impulse_response_length);
   
   mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
@@ -213,7 +211,7 @@ bool KemarMic::Test() {
   
   // Testing multiple wave_ids with signals
   KemarMic mic_u(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                 kemar_path);
+                 kEmbeddedCompactDataset);
   StereoBuffer stream_u(impulse_response_length);
   
   mic_u.AddPlaneWave(impulse, Point(1.0,0.0,0.0), 0, stream_u);
