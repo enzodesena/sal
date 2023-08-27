@@ -201,9 +201,9 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
     case kCompactDataset:
       LoadEmbeddedCompactData(ear, hrtf_database);
       break;
-//    case kEmbeddedFullDataset:
-//      LoadEmbeddedFullData(ear, hrtf_database);
-//      break;
+    case kFullDataset:
+      LoadEmbeddedFullData(ear, hrtf_database);
+      break;
     case kDiffuseDataset:
       LoadEmbeddedDiffuseData(ear, hrtf_database);
       break;
@@ -286,7 +286,9 @@ KemarMic::Load(const Ear ear, const std::string directory, const DatasetType dat
         Int ipsilateral_index = j;
         Int contralateral_index = (UInt) ((((Int) num_measurements[i]) - ((Int) j)) % (Int) num_measurements[i]);
         
-        Int azimuth_index = ((dataset_type == kDirectoryLeft && ear == kLeftEar) || (dataset_type == kDirectoryRight && ear == kRightEar)) ?
+        // The reason why the the left/right ears are flipped is due to the difference
+        // between reference systems in Kemar dataset and this software (I think..)
+        Int azimuth_index = ((dataset_type == kDirectoryLeft && ear == kRightEar) || (dataset_type == kDirectoryRight && ear == kLeftEar)) ?
         ipsilateral_index : contralateral_index;
         
         for (Int k=0; k<size; k++) {
