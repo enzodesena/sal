@@ -320,4 +320,17 @@ std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
   return output;
 }
   
+
+void FilterAll(std::vector<std::vector<Real> >& array_of_signals, DigitalFilter* filter) {
+  std::for_each(array_of_signals.begin(), array_of_signals.end(),
+                [filter](std::vector<Real>& signal){filter->Reset(); signal = filter->Filter(signal);});
+  filter->Reset();
+}
+
+void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, DigitalFilter* filter) {
+  std::for_each(matrix_of_signals.begin(), matrix_of_signals.end(),
+                [filter](std::vector<std::vector<Real> >& array_of_signals){FilterAll(array_of_signals, filter);});
+}
+
+
 } // namespace mcl

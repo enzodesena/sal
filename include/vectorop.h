@@ -13,6 +13,7 @@
 #include "mcltypes.h"
 #include "elementaryop.h"
 #include "basicop.h"
+#include "digitalfilter.h"
 #include "matrixop.h"
 #include <vector>
 #include <iostream>
@@ -478,6 +479,12 @@ std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
   
 std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept;
   
+/** Filters all signals in a vector of signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
+void FilterAll(std::vector<std::vector<Real> >& array_of_signals, DigitalFilter* filter);
+
+/** Filters all signals in a vector of vectors signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
+void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, DigitalFilter* filter);
+
 } /**< namespace mcl */
 
 #endif
