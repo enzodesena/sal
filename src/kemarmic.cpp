@@ -31,11 +31,11 @@ namespace sal {
 KemarMic::KemarMic(const Point& position,
                    const Quaternion orientation,
                    const DatasetType dataset_type,
-                   const std::string directory,
                    const Int num_samples,
                    const Int update_length,
                    const HeadRefOrientation reference_orientation,
-                   const Time sampling_frequency) :
+                   const Time sampling_frequency,
+                   const std::string directory) :
           DatabaseBinauralMic(position, orientation, update_length,
                               reference_orientation) {
             
@@ -43,12 +43,12 @@ KemarMic::KemarMic(const Point& position,
   elevations_ = GetElevations();
             
     
-  if (dataset_type != kDirectory) {
+  if (dataset_type != kDirectoryCompact && dataset_type != kDirectoryLeft && dataset_type != kDirectoryRight) {
     hrtf_database_right_ = LoadEmbedded(kRightEar, dataset_type);
     hrtf_database_left_ = LoadEmbedded(kLeftEar, dataset_type);
   } else {
-    hrtf_database_right_ = Load(kRightEar, directory);
-    hrtf_database_left_ = Load(kLeftEar, directory);
+    hrtf_database_right_ = Load(kRightEar, directory, dataset_type);
+    hrtf_database_left_ = Load(kLeftEar, directory, dataset_type);
   }
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
@@ -103,7 +103,7 @@ Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetElevations() noexcept {
 }
   
 
-bool KemarMic::IsDatabaseAvailable(const std::string directory) {
+bool KemarMic::IsDatabaseAvailable(const std::string directory, const DatasetType dataset_type) {
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
   
@@ -117,7 +117,7 @@ bool KemarMic::IsDatabaseAvailable(const std::string directory) {
       Angle angle = mcl::RoundToInt(j * resolution);
       
       std::ifstream file;
-      file.open (GetFilePath(elevation, angle, directory),
+      file.open (GetFilePath(elevation, angle, directory, dataset_type),
                  std::ios::in | std::ios::binary | std::ios::ate);
       if (! file.good()) {
         return false;
@@ -129,14 +129,30 @@ bool KemarMic::IsDatabaseAvailable(const std::string directory) {
 
 
 std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
-                                  const std::string directory) noexcept {
+                                  const std::string directory,
+                                  const DatasetType dataset_type) noexcept {
   char file_name[1000];
   char directory_name[1000];
   char file_path[1000];
+  char preamble_char;
   
+  switch (dataset_type) {
+    case kDirectoryCompact:
+      preamble_char = 'H';
+      break;
+    case kDirectoryLeft:
+      preamble_char = 'L';
+      break;
+    case kDirectoryRight:
+      preamble_char = 'R';
+      break;
+    default:
+      ASSERT(false);
+      break;
+  }
   snprintf(directory_name, 20, "/elev%d/", (int)elevation);
   
-  snprintf(file_name, 20, "H%de%03da.dat", (int)elevation, (int)angle);
+  snprintf(file_name, 20, "%c%de%03da.dat", preamble_char, (int)elevation, (int)angle);
   
   strcpy(file_path, directory.c_str());
   strcat(file_path, directory_name);
@@ -145,8 +161,11 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
 }
   
 
-void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory, const Int num_samples) {
-  std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory);
+void KemarMic::PrintParsedDatabase(const Ear ear,
+                                   const std::string directory,
+                                   const DatasetType dataset_type,
+                                   const Int num_samples) {
+  std::vector<std::vector<Signal> > hrtf_database = KemarMic::Load(ear, directory, dataset_type);
   
   for (Int i=0; i<(Int)hrtf_database.size(); ++i) {
     for (Int j=0; j<(Int)hrtf_database[i].size(); ++j) {
@@ -166,7 +185,7 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
   std::vector<std::vector<Signal> > hrtf_database;
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
   
-  const Int num_samples = (dataset_type == kEmbeddedCompactDataset) ? COMPACT_LENGTH_KEMAR : MAX_LENGTH_KEMAR;
+  const Int num_samples = (dataset_type == kCompactDataset) ? COMPACT_LENGTH_KEMAR : MAX_LENGTH_KEMAR;
   
   for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
@@ -179,7 +198,7 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
   
   switch (dataset_type) {
 #ifndef DO_NOT_LOAD_EMBEDDED_KEMAR
-    case kEmbeddedCompactDataset:
+    case kCompactDataset:
       LoadEmbeddedCompactData(ear, hrtf_database);
       break;
 //    case kEmbeddedFullDataset:
@@ -200,7 +219,9 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
   
   
 std::vector<std::vector<Signal> >
-  KemarMic::Load(const Ear ear, const std::string directory) {
+KemarMic::Load(const Ear ear, const std::string directory, const DatasetType dataset_type) {
+  bool dataset_is_compact = (dataset_type == kDirectoryCompact);
+  
   std::vector<std::vector<Signal> > hrtf_database;
   
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
@@ -210,15 +231,15 @@ std::vector<std::vector<Signal> >
     // Initialise vector
     hrtf_database.push_back(std::vector<Signal>(num_measurements[i]));
     
-    Angle resolution = 360.0 / num_measurements[i];
-    Angle elevation = elevations[i];
-    Int num_measurement = (UInt) floor(((Angle) num_measurements[i])/2.0)+1;
+    const Angle resolution = 360.0 / num_measurements[i];
+    const Angle elevation = elevations[i];
+    const Int num_measurement = dataset_is_compact ? ((Int) floor(((Angle) num_measurements[i])/2.0)+1) : num_measurements[i];
     
     for (Int j=0; j<num_measurement; ++j) {
       Angle angle = mcl::RoundToInt(j * resolution);
       
       std::ifstream file;
-      file.open (GetFilePath(elevation, angle, directory),
+      file.open (GetFilePath(elevation, angle, directory, dataset_type),
                  std::ios::in | std::ios::binary | std::ios::ate);
       if (! file.good()) {
         mcl::Logger::GetInstance().LogErrorToCerr("Kemar lib not found.");
@@ -238,33 +259,38 @@ std::vector<std::vector<Signal> >
       }
       
       file.close();
-      
       size = size / 2; // Length in number of samples
       ASSERT(size%2 == 0);
       ASSERT((size/2)%2 == 0);
       
-      for (Int k=0; k<size; k+=2) {
+      if (dataset_is_compact) { // If the data is "compact", then left and right channels are interleaved
+        for (Int k=0; k<size; k+=2) {
+          Int ipsilateral_index = j;
+          Int contralateral_index = (UInt) ((((Int) num_measurements[i]) - ((Int) j)) % (Int) num_measurements[i]);
+          
+          if (ear == kRightEar) {
+            hrtf_database[i][ipsilateral_index].push_back(data[k]/NORMALISING_VALUE_KEMAR);
+            // In the two cases for azimuth = 0, and azimuth = 180 the signals at
+            // left and right ears are equal.
+            if (ipsilateral_index != contralateral_index) {
+              hrtf_database[i][contralateral_index].push_back(data[k+1]/NORMALISING_VALUE_KEMAR);
+            }
+          } else {
+            hrtf_database[i][ipsilateral_index].push_back(data[k+1]/NORMALISING_VALUE_KEMAR);
+            if (ipsilateral_index != contralateral_index) {
+              hrtf_database[i][contralateral_index].push_back(data[k]/NORMALISING_VALUE_KEMAR);
+            }
+          }
+        }
+      } else {
         Int ipsilateral_index = j;
-        Int contralateral_index = (UInt)
-                ((((Int) num_measurements[i]) -
-                  ((Int) j)) % (Int) num_measurements[i]);
+        Int contralateral_index = (UInt) ((((Int) num_measurements[i]) - ((Int) j)) % (Int) num_measurements[i]);
         
-        if (ear == kRightEar) {
-          hrtf_database[i][ipsilateral_index].
-                  push_back(data[k]/NORMALISING_VALUE_KEMAR);
-          // In the two cases for azimuth = 0, and azimuth = 180 the signals at
-          // left and right ears are equal.
-          if (ipsilateral_index != contralateral_index) {
-            hrtf_database[i][contralateral_index].
-                    push_back(data[k+1]/NORMALISING_VALUE_KEMAR);
-          }
-        } else {
-          hrtf_database[i][ipsilateral_index].
-                    push_back(data[k+1]/NORMALISING_VALUE_KEMAR);
-          if (ipsilateral_index != contralateral_index) {
-            hrtf_database[i][contralateral_index].
-                    push_back(data[k]/NORMALISING_VALUE_KEMAR);
-          }
+        Int azimuth_index = ((dataset_type == kDirectoryLeft && ear == kLeftEar) || (dataset_type == kDirectoryRight && ear == kRightEar)) ?
+        ipsilateral_index : contralateral_index;
+        
+        for (Int k=0; k<size; k++) {
+          hrtf_database[i][azimuth_index].push_back(data[k]/NORMALISING_VALUE_KEMAR);
         }
       }
       

@@ -29,12 +29,20 @@
 #include <vector>
 
 int main(int argc, char * const argv[]) {
+
+//  sal::KemarMic::PrintParsedDatabase(sal::kLeftEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_compact",
+//                                     sal::KemarMic::kDirectoryCompact, sal::KemarMic::kFullBrirLength);
+//  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_compact",
+//                                     sal::KemarMic::kDirectoryCompact, sal::KemarMic::kFullBrirLength);
+
+  sal::KemarMic::PrintParsedDatabase(sal::kLeftEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_diffuse",
+                                     sal::KemarMic::kDirectoryCompact, sal::KemarMic::kFullBrirLength);
+//  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_diffuse",
+//                                     sal::KemarMic::kDirectoryCompact, sal::KemarMic::kFullBrirLength);
   
-  //  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "pss/sal/hrtfs/kemar",
-  //                                     sal::KemarMic::kFullBrirLength);
-  
-  sal::KemarMic::PrintParsedDatabase(sal::kLeftEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_compact",
-                                     sal::KemarMic::kFullBrirLength);
-  
+//  sal::KemarMic::PrintParsedDatabase(sal::kLeftEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_full",
+//                                     sal::KemarMic::kDirectoryLeft, sal::KemarMic::kFullBrirLength);
+//  sal::KemarMic::PrintParsedDatabase(sal::kRightEar, "/Users/enzodesena/repos/sal/hrtfs/kemar_diffuse",
+//                                     sal::KemarMic::kFullBrirLength);
   return 0;
 }

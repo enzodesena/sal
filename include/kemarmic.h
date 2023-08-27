@@ -30,10 +30,12 @@ namespace sal {
 class KemarMic : public DatabaseBinauralMic {
 public:
   enum DatasetType {
-    kEmbeddedCompactDataset,
-    kEmbeddedFullDataset,
-    kEmbeddedDiffuseDataset,
-    kDirectory
+    kCompactDataset, // Using DB-061 (standard pinna)
+    kFullDataset, // Using DB-061 (standard pinna)
+    kDiffuseDataset, // Using DB-061 (standard pinna)
+    kDirectoryCompact, // Either for "compact" directory or "diffuse" directory
+    kDirectoryLeft, // Full with DB-061 (standard pinna)
+    kDirectoryRight // Full with DB-065 (large red pinna)
   };
   
   /** 
@@ -44,19 +46,21 @@ public:
    */
   KemarMic(const mcl::Point& position,
            const mcl::Quaternion orientation,
-           const DatasetType dataset_type = kEmbeddedDiffuseDataset,
-           const std::string directory = "",
+           const DatasetType dataset_type = kDiffuseDataset,
            const Int num_samples = kFullBrirLength,
            const Int update_length = 0,
            const HeadRefOrientation reference_orientation = HeadRefOrientation::standard,
-           const Time sampling_frequency = 44100.0);
+           const Time sampling_frequency = 44100.0,
+           const std::string directory = "");
   
   static const int kFullBrirLength = -1;
   
-  static bool IsDatabaseAvailable(const std::string directory);
+  static bool IsDatabaseAvailable(const std::string directory,
+                                  const DatasetType dataset_type);
   
   static void PrintParsedDatabase(const Ear ear,
                                   const std::string directory,
+                                  const DatasetType dataset_type,
                                   const Int num_samples);
   
   // TODO: turn the following two structs into a single struct
@@ -78,7 +82,8 @@ private:
   
   static
   std::vector<std::vector<Signal> > Load(const Ear ear,
-                                         const std::string directory);
+                                         const std::string directory,
+                                         const DatasetType dataset_type);
   
   static std::vector<std::vector<Signal> > LoadEmbedded(const Ear ear,
                                                         const DatasetType dataset_type);
@@ -111,7 +116,8 @@ private:
   Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations_;
   
   static std::string GetFilePath(const Angle elevation, const Angle angle,
-                                 const std::string directory) noexcept;
+                                 const std::string directory,
+                                 const DatasetType dataset_type) noexcept;
   
 };
 
