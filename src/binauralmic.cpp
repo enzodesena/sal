@@ -99,15 +99,8 @@ BinauralMic(position, orientation, update_length, reference_orientation) {}
 
 
 void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {
-  filter->Reset();
-  for (Int i=0; i<(Int)hrtf_database_right_.size(); ++i) {
-    for (Int j=0; j<(Int)hrtf_database_right_[i].size(); ++j) {
-      hrtf_database_right_[i][j] = filter->Filter(hrtf_database_right_[i][j]);
-      filter->Reset();
-      hrtf_database_left_[i][j] = filter->Filter(hrtf_database_left_[i][j]);
-      filter->Reset();
-    }
-  }
+  mcl::FilterAll(hrtf_database_right_, filter);
+  mcl::FilterAll(hrtf_database_left_, filter);
 }
   
 } // namespace sal
