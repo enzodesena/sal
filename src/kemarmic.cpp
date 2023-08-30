@@ -134,7 +134,7 @@ std::string KemarMic::GetFilePath(const Angle elevation, const Angle angle,
   char file_name[1000];
   char directory_name[1000];
   char file_path[1000];
-  char preamble_char;
+  char preamble_char = '0';
   
   switch (dataset_type) {
     case kDirectoryCompact:
