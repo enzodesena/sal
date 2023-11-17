@@ -108,13 +108,13 @@ bool AreAllSmallerOrEqual(const std::vector<Real>& vector_a,
 }
 
 bool IsEqual(Complex num_a, Complex num_b, Real precision) {
-  return (std::fabs(num_a.real() - num_b.real()) < precision) &
-  (std::fabs(num_a.imag() - num_b.imag()) < precision);
+  return (std::fabs(num_a.real() - num_b.real()) < precision) &&
+    (std::fabs(num_a.imag() - num_b.imag()) < precision);
 }
 
 bool IsEqual(const Quaternion& q_a, const Quaternion& q_b) {
-  return IsEqual(q_a.w(), q_b.w()) & IsEqual(q_a.x(), q_b.x()) &
-  IsEqual(q_a.y(), q_b.y()) & IsEqual(q_a.z(), q_b.z());
+  return IsEqual(q_a.w(), q_b.w()) && IsEqual(q_a.x(), q_b.x()) &&
+    IsEqual(q_a.y(), q_b.y()) && IsEqual(q_a.z(), q_b.z());
 }
 
 
@@ -153,8 +153,8 @@ bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b) {
 bool IsEqual(const Point& point_a, const Point& point_b,
              const Real precision) {
   return mcl::IsEqual(point_a.x(), point_b.x(), precision) &&
-  mcl::IsEqual(point_a.y(), point_b.y(), precision) &&
-  mcl::IsEqual(point_a.z(), point_b.z(), precision);
+    mcl::IsEqual(point_a.y(), point_b.y(), precision) &&
+    mcl::IsEqual(point_a.z(), point_b.z(), precision);
 }
 
   
