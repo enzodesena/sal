@@ -15,6 +15,7 @@
 #include "comparisonop.h"
 #include <vector>
 #include <cassert>
+#include <algorithm>vect
 
 #ifdef MCL_APPLE_ACCELERATE
   #include <Accelerate/Accelerate.h>
