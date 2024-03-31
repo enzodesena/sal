@@ -110,18 +110,18 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(const Int order,
                                        const Time sampling_frequency,
                                        const Speed sound_speed,
                                        const HoaOrdering ordering_convention) :
-          energy_decoding_(energy_decoding),
           loudspeaker_angles_(loudspeaker_angles),
           num_loudspeakers_(loudspeaker_angles.size()),
           near_field_correction_(near_field_correction),
           loudspeakers_distance_(loudspeakers_distance),
-          sampling_frequency_(sampling_frequency),
+          energy_decoding_(energy_decoding),
           order_(order),
           ordering_convention_(ordering_convention),
           mode_matching_matrix_(mcl::Matrix<Sample>(2*order+1,
                                                     loudspeaker_angles.size())),
           max_energy_matrix_(mcl::Matrix<Sample>(2*order+1,
-                                                 loudspeaker_angles.size())) {
+                                                 loudspeaker_angles.size())),
+          sampling_frequency_(sampling_frequency) {
   
   using mcl::IirFilter;
             
