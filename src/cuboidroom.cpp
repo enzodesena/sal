@@ -29,9 +29,9 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
   return std::isgreaterequal(point.x(), origin_position_.x() + wall_distance) &&
          std::isgreaterequal(point.y(), origin_position_.y() + wall_distance) &&
          std::isgreaterequal(point.z(), origin_position_.z() + wall_distance) &&
-         std::islessequal(point.x(), dimensions_.x() -  origin_position_.x() - wall_distance) &&
-         std::islessequal(point.y(), dimensions_.y() -  origin_position_.y() - wall_distance) &&
-         std::islessequal(point.z(), dimensions_.z() -  origin_position_.z() - wall_distance);
+         std::islessequal(point.x(), origin_position_.x() + dimensions_.x() - wall_distance) &&
+         std::islessequal(point.y(), origin_position_.y() + dimensions_.y() - wall_distance) &&
+         std::islessequal(point.z(), origin_position_.z() + dimensions_.z() - wall_distance);
 }
 
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(const Point& source_point,
