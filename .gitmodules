@@ -5,3 +5,6 @@
 [submodule "AudioFile"]
 	path = AudioFile
 	url = git@github.com:adamstark/AudioFile.git
+[submodule "libmysofa"]
+	path = libmysofa
+	url = git@github.com:enzodesena/libmysofa.git
