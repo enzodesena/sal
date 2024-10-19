@@ -13,6 +13,7 @@
 #include "microphonearray.h"
 #include "sphericalheadmic.h"
 #include "kemarmic.h"
+#include "sofamic.h"
 #include "ambisonics.h"
 #include "delayfilter.h"
 #include "propagationline.h"
@@ -36,6 +37,7 @@ int main(int argc, char * const argv[]) {
   sal::AmbisonicsHorizDec::Test();
   sal::Microphone::Test();
   sal::KemarMic::Test();
+  sal::SofaMic::Test();
 //  sal::CipicMic::Test();
   sal::SphericalHeadMic::Test();
   sal::MicrophoneArrayTest();

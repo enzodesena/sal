@@ -83,8 +83,11 @@
 		575B0C872CC3D6E7002D0917 /* spherical.c in Sources */ = {isa = PBXBuildFile; fileRef = 575B0BF92CC3D62E002D0917 /* spherical.c */; };
 		575B0C882CC3D6E7002D0917 /* tools.c in Sources */ = {isa = PBXBuildFile; fileRef = 575B0BFB2CC3D62E002D0917 /* tools.c */; };
 		575B0C892CC3D6E7002D0917 /* speex_resampler.c in Sources */ = {isa = PBXBuildFile; fileRef = 575B0BFF2CC3D62E002D0917 /* speex_resampler.c */; };
-		575B0C8A2CC3D835002D0917 /* liblibmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 575B0C722CC3D6C3002D0917 /* liblibmysofa.a */; };
 		575B0C8B2CC3D83C002D0917 /* liblibmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 575B0C722CC3D6C3002D0917 /* liblibmysofa.a */; };
+		575B0C932CC3DFB3002D0917 /* sofamic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B0C922CC3DFB3002D0917 /* sofamic_test.cpp */; };
+		575B0C952CC3E04C002D0917 /* sofamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B0C942CC3E04C002D0917 /* sofamic.cpp */; };
+		575B0C962CC3E04C002D0917 /* sofamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B0C942CC3E04C002D0917 /* sofamic.cpp */; };
+		575B0CA22CC3ED80002D0917 /* liblibmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 575B0C722CC3D6C3002D0917 /* liblibmysofa.a */; };
 		5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
 		576C17D120853C7D00EFBACE /* audiobuffer_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F13C0B2084D31C002CC480 /* audiobuffer_test.cpp */; };
 		576C17D320853C7F00EFBACE /* microphone_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.cpp */; };
@@ -226,6 +229,13 @@
 			remoteGlobalIDString = 5741B506241B192D00A6E779;
 			remoteInfo = "MCL (with SH)";
 		};
+		575B0CA02CC3ED78002D0917 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57A156BC1593457600AA6445 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 575B0C712CC3D6C3002D0917;
+			remoteInfo = libmysofa;
+		};
 		57B053EA1D6B039100202654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 57B053E41D6B039100202654 /* MCL.xcodeproj */;
@@ -356,6 +366,10 @@
 		575B0C172CC3D62E002D0917 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		575B0C182CC3D62E002D0917 /* config.h.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = config.h.in; sourceTree = "<group>"; };
 		575B0C722CC3D6C3002D0917 /* liblibmysofa.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibmysofa.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		575B0C8F2CC3DDAD002D0917 /* sofamic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sofamic.h; path = include/sofamic.h; sourceTree = "<group>"; };
+		575B0C922CC3DFB3002D0917 /* sofamic_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sofamic_test.cpp; sourceTree = "<group>"; };
+		575B0C942CC3E04C002D0917 /* sofamic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sofamic.cpp; sourceTree = "<group>"; };
+		575B0C992CC3EC29002D0917 /* libmysofa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysofa.a; path = ../../repos_others/libmysofa/build/src/libmysofa.a; sourceTree = "<group>"; };
 		5768D6231639CFFB00F557B8 /* wavhandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavhandler.cpp; path = src/wavhandler.cpp; sourceTree = "<group>"; };
 		5778111E20600683004B9C6F /* ism.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ism.cpp; path = src/ism.cpp; sourceTree = "<group>"; };
 		5778112020600683004B9C6F /* tdbem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tdbem.cpp; path = src/tdbem.cpp; sourceTree = "<group>"; };
@@ -445,7 +459,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				575B0C8A2CC3D835002D0917 /* liblibmysofa.a in Frameworks */,
+				575B0CA22CC3ED80002D0917 /* liblibmysofa.a in Frameworks */,
 				5741B556241B1D9700A6E779 /* libMCL (with SH).a in Frameworks */,
 				5741B558241B1D9700A6E779 /* Carbon.framework in Frameworks */,
 				5741B559241B1D9700A6E779 /* AudioToolbox.framework in Frameworks */,
@@ -503,6 +517,7 @@
 		5741B52C241B1D6900A6E779 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				575B0C992CC3EC29002D0917 /* libmysofa.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -640,6 +655,7 @@
 				57CE72B91C9583FC00149808 /* pawrapper.cpp */,
 				57895F5D16304F18002C962B /* propagationline.cpp */,
 				5778112220600683004B9C6F /* riranalysis.cpp */,
+				575B0C942CC3E04C002D0917 /* sofamic.cpp */,
 				578A62251D89346200233890 /* source.cpp */,
 				578751E715AE01590008761C /* sphericalmic.cpp */,
 				5778112020600683004B9C6F /* tdbem.cpp */,
@@ -675,6 +691,7 @@
 				5713F76E15F38C4800AF1DE2 /* salconstants.h */,
 				5719A9AD15B57CCC000AD692 /* saltypes.h */,
 				57C94CC4204F851100471213 /* salutilities.h */,
+				575B0C8F2CC3DDAD002D0917 /* sofamic.h */,
 				57A156F51593464300AA6445 /* source.h */,
 				578ABE0115ACA8BB00966F2E /* sphericalheadmic.h */,
 				57781137206006D1004B9C6F /* tdbem.h */,
@@ -712,6 +729,7 @@
 				5778113920600B5A004B9C6F /* riranalysis_test.cpp */,
 				57B4EF901CD81AB400134991 /* sphericalheadmic_test.cpp */,
 				5787B4F0208031060068C104 /* salutilities_test.cpp */,
+				575B0C922CC3DFB3002D0917 /* sofamic_test.cpp */,
 				5778113C20600B5A004B9C6F /* tdbem_test.cpp */,
 			);
 			name = test;
@@ -855,6 +873,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				575B0CA12CC3ED78002D0917 /* PBXTargetDependency */,
 				5741B52F241B1D9700A6E779 /* PBXTargetDependency */,
 			);
 			name = "SAL test (with SH)";
@@ -1050,9 +1069,11 @@
 			files = (
 				57C5E6AB2A9B7A7500BEFCB5 /* kemarcompactdata.cpp in Sources */,
 				5741B532241B1D9700A6E779 /* ambisonics.cpp in Sources */,
+				575B0C932CC3DFB3002D0917 /* sofamic_test.cpp in Sources */,
 				5741B533241B1D9700A6E779 /* kemarmic_test.cpp in Sources */,
 				57D6D29B2A9BBFB200815BC7 /* kemardiffusedata.cpp in Sources */,
 				5741B534241B1D9700A6E779 /* microphone.cpp in Sources */,
+				575B0C962CC3E04C002D0917 /* sofamic.cpp in Sources */,
 				5741B535241B1D9700A6E779 /* sal_tests.cpp in Sources */,
 				5741B536241B1D9700A6E779 /* microphone_test.cpp in Sources */,
 				5741B537241B1D9700A6E779 /* tdbem.cpp in Sources */,
@@ -1183,6 +1204,7 @@
 				5778113120600683004B9C6F /* fdtd.cpp in Sources */,
 				5778112520600683004B9C6F /* ism.cpp in Sources */,
 				5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */,
+				575B0C952CC3E04C002D0917 /* sofamic.cpp in Sources */,
 				5778112820600683004B9C6F /* tdbem.cpp in Sources */,
 				57C2C7A91B1739A600B7F58C /* binauralmic.cpp in Sources */,
 				57444D2A1B1776A400EC31F4 /* cipicmic.cpp in Sources */,
@@ -1235,6 +1257,11 @@
 			isa = PBXTargetDependency;
 			name = "MCL (with SH)";
 			targetProxy = 574F50032432143800A5D790 /* PBXContainerItemProxy */;
+		};
+		575B0CA12CC3ED78002D0917 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 575B0C712CC3D6C3002D0917 /* libmysofa */;
+			targetProxy = 575B0CA02CC3ED78002D0917 /* PBXContainerItemProxy */;
 		};
 		57B053F51D6B039E00202654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1514,6 +1541,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/libmysofa/src/**",
 					"$(PROJECT_DIR)/mcl/include",
 					"$(PROJECT_DIR)/AudioFile",
 					"$(PROJECT_DIR)/mcl/butter/include",
@@ -1522,7 +1550,6 @@
 					/usr/local/include/,
 					"$(PROJECT_DIR)/include/",
 					"$(PROJECT_DIR)/portaudio/include/",
-					"$(PROJECT_DIR)/libmysofa/src",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/portaudio/lib",
@@ -1581,6 +1608,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/libmysofa/src/**",
 					"$(PROJECT_DIR)/mcl/include",
 					"$(PROJECT_DIR)/AudioFile",
 					"$(PROJECT_DIR)/mcl/butter/include",
@@ -1589,7 +1617,6 @@
 					/usr/local/include/,
 					"$(PROJECT_DIR)/include/",
 					"$(PROJECT_DIR)/portaudio/include/",
-					"$(PROJECT_DIR)/libmysofa/src",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/portaudio/lib",
