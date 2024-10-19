@@ -30,10 +30,6 @@ class BinauralMicInstance;
 
 class BinauralMic : public StereoMicrophone {
 public:
-  /**
-   Constructs a Kemar microphone opject.
-   `directory` contains the hrtf database.
-   */
   BinauralMic(const mcl::Point& position,
               const mcl::Quaternion orientation,
               const Int update_length,
