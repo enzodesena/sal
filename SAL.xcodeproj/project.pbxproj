@@ -87,7 +87,7 @@
 		575B0C932CC3DFB3002D0917 /* sofamic_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B0C922CC3DFB3002D0917 /* sofamic_test.cpp */; };
 		575B0C952CC3E04C002D0917 /* sofamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B0C942CC3E04C002D0917 /* sofamic.cpp */; };
 		575B0C962CC3E04C002D0917 /* sofamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B0C942CC3E04C002D0917 /* sofamic.cpp */; };
-		575B0CA22CC3ED80002D0917 /* liblibmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 575B0C722CC3D6C3002D0917 /* liblibmysofa.a */; };
+		575B0CCE2CC3F15D002D0917 /* liblibmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 575B0C722CC3D6C3002D0917 /* liblibmysofa.a */; };
 		5768D6251639CFFB00F557B8 /* wavhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5768D6231639CFFB00F557B8 /* wavhandler.cpp */; };
 		576C17D120853C7D00EFBACE /* audiobuffer_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F13C0B2084D31C002CC480 /* audiobuffer_test.cpp */; };
 		576C17D320853C7F00EFBACE /* microphone_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B4EF8B1CD81AB400134991 /* microphone_test.cpp */; };
@@ -229,7 +229,7 @@
 			remoteGlobalIDString = 5741B506241B192D00A6E779;
 			remoteInfo = "MCL (with SH)";
 		};
-		575B0CA02CC3ED78002D0917 /* PBXContainerItemProxy */ = {
+		575B0CCC2CC3F156002D0917 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 57A156BC1593457600AA6445 /* Project object */;
 			proxyType = 1;
@@ -459,7 +459,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				575B0CA22CC3ED80002D0917 /* liblibmysofa.a in Frameworks */,
+				575B0CCE2CC3F15D002D0917 /* liblibmysofa.a in Frameworks */,
 				5741B556241B1D9700A6E779 /* libMCL (with SH).a in Frameworks */,
 				5741B558241B1D9700A6E779 /* Carbon.framework in Frameworks */,
 				5741B559241B1D9700A6E779 /* AudioToolbox.framework in Frameworks */,
@@ -873,7 +873,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				575B0CA12CC3ED78002D0917 /* PBXTargetDependency */,
+				575B0CCD2CC3F156002D0917 /* PBXTargetDependency */,
 				5741B52F241B1D9700A6E779 /* PBXTargetDependency */,
 			);
 			name = "SAL test (with SH)";
@@ -1258,10 +1258,10 @@
 			name = "MCL (with SH)";
 			targetProxy = 574F50032432143800A5D790 /* PBXContainerItemProxy */;
 		};
-		575B0CA12CC3ED78002D0917 /* PBXTargetDependency */ = {
+		575B0CCD2CC3F156002D0917 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 575B0C712CC3D6C3002D0917 /* libmysofa */;
-			targetProxy = 575B0CA02CC3ED78002D0917 /* PBXContainerItemProxy */;
+			targetProxy = 575B0CCC2CC3F156002D0917 /* PBXContainerItemProxy */;
 		};
 		57B053F51D6B039E00202654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -32,7 +32,7 @@ public:
           const Int update_length = 0);
   
   static bool Test();
-  
+  static bool Test(const mcl::Point& source_point, const Signal& cmp_left, const Signal& cmp_right);
   virtual ~SofaMic();
 private:
   

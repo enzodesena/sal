@@ -56,3 +56,4 @@ src/targets/.dirstamp
 stamp-h1
 test/.deps/
 test/.dirstamp
+hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa
