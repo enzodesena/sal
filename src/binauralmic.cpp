@@ -39,12 +39,11 @@ void BinauralMic::SetBypass(bool bypass) noexcept {
   bypass_ = bypass;
 }
 
+
 void BinauralMic::CreateInstanceIfNotExist(const Int wave_id) noexcept {
   // If there is no instance associated to the given wave_id then create
   if (instances_.count(wave_id) == 0) {
-    instances_.insert(std::make_pair(wave_id,
-                                          BinauralMicInstance(this,
-                                                              update_length_)));
+    instances_.insert(std::make_pair(wave_id, BinauralMicInstance(this, update_length_)));
   }
 }
 
@@ -58,13 +57,13 @@ void BinauralMic::Reset() noexcept {
   }
 }
 
+
 BinauralMic::BinauralMic(const Point& position,
                          const Quaternion orientation,
                          const Int update_length,
                          const HeadRefOrientation reference_orientation) :
         StereoMicrophone(position, orientation), update_length_(update_length),
         bypass_(false), reference_orientation_(reference_orientation) {}
-
 
 
 // Use signals with 44100 sampling frequency!!!
@@ -79,6 +78,7 @@ void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_data,
                                  input_data, filter_right_);
 }
 
+
 void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
   if (! IsEqual(point, previous_point_)) {
     // Update cache variables
@@ -90,6 +90,7 @@ void BinauralMicInstance::UpdateFilter(const Point& point) noexcept {
                                       update_length_);
   }
 }
+
 
 DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
                                          const Quaternion orientation,
