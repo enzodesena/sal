@@ -29,7 +29,8 @@ public:
           const mcl::Quaternion orientation,
           const std::string sofa_filename,
           const Time sampling_frequency,
-          const Int update_length = 0);
+          const Int update_length = 0,
+          const HeadRefOrientation reference_orientation = HeadRefOrientation::standard);
   
   static bool Test();
   static bool Test(const mcl::Point& source_point, const Signal& cmp_left, const Signal& cmp_right);

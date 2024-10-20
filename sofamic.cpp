@@ -23,8 +23,9 @@ SofaMic::SofaMic(const Point position,
                  const Quaternion orientation,
                  const std::string sofa_filename,
                  const Time sampling_frequency,
-                 const Int update_length) :
-          BinauralMic(position, orientation, update_length),
+                 const Int update_length,
+                 const HeadRefOrientation reference_orientation) :
+          BinauralMic(position, orientation, update_length, reference_orientation),
           hrtf_(NULL) {
   int err;
 
