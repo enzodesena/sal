@@ -96,6 +96,14 @@ typedef std::complex<Real> Complex; /**< Complex type */
 #endif
 
 
+typedef std::complex<Real> Complex;
+
+#if MCL_DATA_TYPE_DOUBLE
+    static const Complex imaginary_unit(0.0, 1.0);
+#else
+    static const Complex imaginary_unit(0.0f, 1.0f);
+#endif
+
 /** Singleton class carrying information about the runtime environment */
 class RuntimeArchInfo {
 public:
