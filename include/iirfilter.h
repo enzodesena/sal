@@ -63,8 +63,15 @@ public:
   void SetNumeratorCoefficient(const Int coeff_id,
                                const Real value) noexcept;
   
-  inline void SetDenominatorCoefficient(const Int coeff_id,
-                                        const Real value) noexcept;
+  void SetDenominatorCoefficient(const Int coeff_id, const Real value) noexcept;
+  
+  /**
+  * Returns the filter response at given frequencies
+  *
+  * @param frequencies The frequencies at which to calculate the response
+  * @return The frequency response of the filter
+  */
+  std::vector<Real> GetFrequencyResponse(const std::vector<Real>& frequencies, const Real sampling_frequency) const;
   
   /** Returns the forward coefficients */
   std::vector<Real> B() const;

@@ -13,7 +13,7 @@
 #include <limits>
 
 namespace mcl {
-  
+
 Real IirFilter::GetNumeratorCoefficient(const Int coeff_id) const noexcept {
   ASSERT(coeff_id>=0 && coeff_id<=order());
   return B_[coeff_id]*A0_;
@@ -160,6 +160,28 @@ Real IirFilter::Filter(Real input) noexcept {
   output += v*B_[0];
   
   return output;
+}
+
+
+std::vector<Real> IirFilter::GetFrequencyResponse(const std::vector<Real>& frequencies,
+                                                  const Real sampling_frequency) const {
+  Real omega;
+  Complex e;
+  std::vector<Real> magnitudes(frequencies.size(), 0.0);
+  for (size_t i = 0; i < frequencies.size(); i++) {
+    omega = 2.0 * PI * frequencies[i] / sampling_frequency;
+    Complex num = B_[0];
+    Complex den = 1.0;
+
+    for (int j = 1; j <= order(); j++) {
+      e = std::exp(-((Real)j) * imaginary_unit * omega);
+      num += B_[j] * e;
+      den += A_[j] * e;
+    }
+
+    magnitudes[i] = 20 * std::log10(std::abs(num / den));
+  }
+  return magnitudes;
 }
   
 void IirFilter::Reset() {
