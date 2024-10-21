@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5712F7832CC64C1600F3E67D /* peakingfilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F7822CC64C1600F3E67D /* peakingfilters.cpp */; };
+		5712F7842CC64C1600F3E67D /* peakingfilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F7822CC64C1600F3E67D /* peakingfilters.cpp */; };
+		5712F7852CC64C1600F3E67D /* peakingfilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F7822CC64C1600F3E67D /* peakingfilters.cpp */; };
+		5712F7862CC64C1600F3E67D /* peakingfilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F7822CC64C1600F3E67D /* peakingfilters.cpp */; };
+		5712F7872CC64C1600F3E67D /* peakingfilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F7822CC64C1600F3E67D /* peakingfilters.cpp */; };
+		5712F78C2CC64C9300F3E67D /* graphiceq_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78B2CC64C9300F3E67D /* graphiceq_test.cpp */; };
+		5712F78D2CC64C9300F3E67D /* graphiceq_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78B2CC64C9300F3E67D /* graphiceq_test.cpp */; };
+		5712F78F2CC64CA000F3E67D /* graphiceq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78E2CC64CA000F3E67D /* graphiceq.cpp */; };
+		5712F7902CC64CA000F3E67D /* graphiceq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78E2CC64CA000F3E67D /* graphiceq.cpp */; };
+		5712F7912CC64CA000F3E67D /* graphiceq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78E2CC64CA000F3E67D /* graphiceq.cpp */; };
+		5712F7922CC64CA000F3E67D /* graphiceq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78E2CC64CA000F3E67D /* graphiceq.cpp */; };
+		5712F7932CC64CA000F3E67D /* graphiceq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712F78E2CC64CA000F3E67D /* graphiceq.cpp */; };
 		571F9A5817955B160059A90D /* statisticsop.h in Headers */ = {isa = PBXBuildFile; fileRef = 571F9A5717955B160059A90D /* statisticsop.h */; };
 		571F9A5B17955BD60059A90D /* statisticsop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5917955BD60059A90D /* statisticsop.cpp */; };
 		571F9A5C17955BD60059A90D /* statisticsop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571F9A5917955BD60059A90D /* statisticsop.cpp */; };
@@ -149,6 +161,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5712F76F2CC57B4B00F3E67D /* graphiceq.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = graphiceq.h; path = include/graphiceq.h; sourceTree = "<group>"; };
+		5712F7822CC64C1600F3E67D /* peakingfilters.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = peakingfilters.cpp; path = src/peakingfilters.cpp; sourceTree = "<group>"; };
+		5712F78B2CC64C9300F3E67D /* graphiceq_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = graphiceq_test.cpp; path = src/test/graphiceq_test.cpp; sourceTree = "<group>"; };
+		5712F78E2CC64CA000F3E67D /* graphiceq.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = graphiceq.cpp; path = src/graphiceq.cpp; sourceTree = "<group>"; };
 		571D455020B867B50009A84D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = constants.h; path = include/constants.h; sourceTree = "<group>"; };
 		571F9A5717955B160059A90D /* statisticsop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = statisticsop.h; path = include/statisticsop.h; sourceTree = "<group>"; };
 		571F9A5917955BD60059A90D /* statisticsop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop.cpp; path = src/statisticsop.cpp; sourceTree = "<group>"; };
@@ -315,6 +331,7 @@
 				572B38811B4B84AE004C0DFD /* maxgradientfilter.h */,
 				57BA700E15B43B07002F077F /* elementaryop.h */,
 				5778D80A15B616260015AAC9 /* firfilter.h */,
+				5712F76F2CC57B4B00F3E67D /* graphiceq.h */,
 				5778D80B15B616260015AAC9 /* iirfilter.h */,
 				57BA700215B4263D002F077F /* mcltypes.h */,
 				57BA6FFE15B421F5002F077F /* matrixop.h */,
@@ -337,6 +354,7 @@
 				57B4EF6F1CD8177900134991 /* comparisonop_test.cpp */,
 				57B4EF701CD8177900134991 /* digitalfilter_test.cpp */,
 				57B4EF711CD8177900134991 /* elementaryop_test.cpp */,
+				5712F78B2CC64C9300F3E67D /* graphiceq_test.cpp */,
 				57B4EF721CD8177900134991 /* matrixop_test.cpp */,
 				57FE67CE1CFB7A4D00E3CB2A /* point_test.cpp */,
 				57B4EF731CD8177900134991 /* pointwiseop_test.cpp */,
@@ -388,6 +406,8 @@
 				57EAE5C118AA8148001DC4D4 /* dataop.cpp */,
 				57BA700F15B43B64002F077F /* elementaryop.cpp */,
 				5778D80D15B616320015AAC9 /* firfilter.cpp */,
+				5712F78E2CC64CA000F3E67D /* graphiceq.cpp */,
+				5712F7822CC64C1600F3E67D /* peakingfilters.cpp */,
 				5778D80E15B616320015AAC9 /* iirfilter.cpp */,
 				573F9FA01662799800929EE2 /* matrixop.cpp */,
 				57BA6FFF15B42297002F077F /* pointwiseop.cpp */,
@@ -538,7 +558,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 57B8B2201593398E0030B619 /* Build configuration list for PBXProject "MCL" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -575,11 +595,13 @@
 				57301BD01D6B01A800D6F5B0 /* kiss_fft.c in Sources */,
 				572A876E19C070ED00F62F8F /* transformop.cpp in Sources */,
 				575737C81CFD07C6008E46CD /* quaternion.cpp in Sources */,
+				5712F7862CC64C1600F3E67D /* peakingfilters.cpp in Sources */,
 				57FE67CC1CFB794300E3CB2A /* point.cpp in Sources */,
 				572A876F19C070ED00F62F8F /* basicop.cpp in Sources */,
 				572A877019C070ED00F62F8F /* firfilter.cpp in Sources */,
 				572A877119C070ED00F62F8F /* iirfilter.cpp in Sources */,
 				572A877319C070ED00F62F8F /* dataop.cpp in Sources */,
+				5712F7912CC64CA000F3E67D /* graphiceq.cpp in Sources */,
 				57301BCC1D6B01A000D6F5B0 /* butter.cpp in Sources */,
 				572A877419C070ED00F62F8F /* randomop.cpp in Sources */,
 				572A877519C070ED00F62F8F /* matrixop.cpp in Sources */,
@@ -596,6 +618,7 @@
 				5741B4E4241B190800A6E779 /* pointwiseop.cpp in Sources */,
 				5741B4E5241B190800A6E779 /* butter.cpp in Sources */,
 				5741B4E6241B190800A6E779 /* vectorop.cpp in Sources */,
+				5712F78C2CC64C9300F3E67D /* graphiceq_test.cpp in Sources */,
 				5741B4E7241B190800A6E779 /* elementaryop.cpp in Sources */,
 				5741B4E8241B190800A6E779 /* elementaryop_test.cpp in Sources */,
 				5741B4E9241B190800A6E779 /* random_test.cpp in Sources */,
@@ -608,6 +631,7 @@
 				5741B4F0241B190800A6E779 /* digitalfilter_test.cpp in Sources */,
 				5741B4F1241B190800A6E779 /* vectorop_test.cpp in Sources */,
 				5741B4F2241B190800A6E779 /* quaternion.cpp in Sources */,
+				5712F7922CC64CA000F3E67D /* graphiceq.cpp in Sources */,
 				5741B4F3241B190800A6E779 /* basicop_test.cpp in Sources */,
 				5741B4F4241B190800A6E779 /* basicop.cpp in Sources */,
 				5741B4F5241B190800A6E779 /* transformop_test.cpp in Sources */,
@@ -616,6 +640,7 @@
 				5741B4F8241B190800A6E779 /* quaternion_test.cpp in Sources */,
 				5741B4F9241B190800A6E779 /* randomop.cpp in Sources */,
 				5741B4FA241B190800A6E779 /* point.cpp in Sources */,
+				5712F7842CC64C1600F3E67D /* peakingfilters.cpp in Sources */,
 				5741B4FB241B190800A6E779 /* matrixop.cpp in Sources */,
 				5741B4FC241B190800A6E779 /* statisticsop.cpp in Sources */,
 				5741B4FD241B190800A6E779 /* pointwiseop_test.cpp in Sources */,
@@ -629,6 +654,7 @@
 			files = (
 				5741B508241B192D00A6E779 /* pointwiseop.cpp in Sources */,
 				5741B509241B192D00A6E779 /* vectorop.cpp in Sources */,
+				5712F7902CC64CA000F3E67D /* graphiceq.cpp in Sources */,
 				5741B50A241B192D00A6E779 /* elementaryop.cpp in Sources */,
 				5741B50B241B192D00A6E779 /* comparisonop.cpp in Sources */,
 				5741B50C241B192D00A6E779 /* kiss_fft.c in Sources */,
@@ -639,6 +665,7 @@
 				5741B511241B192D00A6E779 /* firfilter.cpp in Sources */,
 				5741B512241B192D00A6E779 /* iirfilter.cpp in Sources */,
 				5741B513241B192D00A6E779 /* dataop.cpp in Sources */,
+				5712F7832CC64C1600F3E67D /* peakingfilters.cpp in Sources */,
 				5741B514241B192D00A6E779 /* butter.cpp in Sources */,
 				5741B515241B192D00A6E779 /* randomop.cpp in Sources */,
 				5741B516241B192D00A6E779 /* matrixop.cpp in Sources */,
@@ -652,6 +679,7 @@
 			files = (
 				57BA700115B42297002F077F /* pointwiseop.cpp in Sources */,
 				57BA700D15B42BBD002F077F /* vectorop.cpp in Sources */,
+				5712F7932CC64CA000F3E67D /* graphiceq.cpp in Sources */,
 				57BA701115B43B64002F077F /* elementaryop.cpp in Sources */,
 				57BA701515B43C61002F077F /* comparisonop.cpp in Sources */,
 				57301BCF1D6B01A800D6F5B0 /* kiss_fft.c in Sources */,
@@ -662,6 +690,7 @@
 				5778D81015B616320015AAC9 /* firfilter.cpp in Sources */,
 				5778D81215B616320015AAC9 /* iirfilter.cpp in Sources */,
 				57EAE5C318AA8148001DC4D4 /* dataop.cpp in Sources */,
+				5712F7852CC64C1600F3E67D /* peakingfilters.cpp in Sources */,
 				57301BCB1D6B01A000D6F5B0 /* butter.cpp in Sources */,
 				57B71D15162DD231003411BA /* randomop.cpp in Sources */,
 				573F9FA31662799800929EE2 /* matrixop.cpp in Sources */,
@@ -678,6 +707,7 @@
 				57BA700015B42297002F077F /* pointwiseop.cpp in Sources */,
 				57301BCA1D6B01A000D6F5B0 /* butter.cpp in Sources */,
 				57BA700C15B42BBD002F077F /* vectorop.cpp in Sources */,
+				5712F78D2CC64C9300F3E67D /* graphiceq_test.cpp in Sources */,
 				57BA701015B43B64002F077F /* elementaryop.cpp in Sources */,
 				57B4EF7B1CD8177900134991 /* elementaryop_test.cpp in Sources */,
 				57B4EF7E1CD8177900134991 /* random_test.cpp in Sources */,
@@ -690,6 +720,7 @@
 				57B4EF7A1CD8177900134991 /* digitalfilter_test.cpp in Sources */,
 				57B4EF811CD8177900134991 /* vectorop_test.cpp in Sources */,
 				575737C61CFD07C6008E46CD /* quaternion.cpp in Sources */,
+				5712F78F2CC64CA000F3E67D /* graphiceq.cpp in Sources */,
 				57B4EF781CD8177900134991 /* basicop_test.cpp in Sources */,
 				57BA701C15B492D5002F077F /* basicop.cpp in Sources */,
 				57B4EF801CD8177900134991 /* transformop_test.cpp in Sources */,
@@ -698,6 +729,7 @@
 				57FE67C81CFB61EE00E3CB2A /* quaternion_test.cpp in Sources */,
 				57B71D14162DD231003411BA /* randomop.cpp in Sources */,
 				57FE67CA1CFB794300E3CB2A /* point.cpp in Sources */,
+				5712F7872CC64C1600F3E67D /* peakingfilters.cpp in Sources */,
 				573F9FA21662799800929EE2 /* matrixop.cpp in Sources */,
 				571F9A5B17955BD60059A90D /* statisticsop.cpp in Sources */,
 				57B4EF7D1CD8177900134991 /* pointwiseop_test.cpp in Sources */,
@@ -736,7 +768,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = MCLiOS;
@@ -771,7 +803,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = MCLiOS;
@@ -804,7 +836,7 @@
 					/opt/homebrew/opt/boost/include/,
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -838,7 +870,7 @@
 					/opt/homebrew/opt/boost/include/,
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -880,7 +912,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = NO;
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -922,7 +954,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -964,7 +996,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = NO;
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1005,7 +1037,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1043,6 +1075,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -1102,6 +1135,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1152,7 +1186,7 @@
 					/opt/local/include/,
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1185,7 +1219,7 @@
 					/opt/local/include/,
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

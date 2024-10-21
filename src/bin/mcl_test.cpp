@@ -15,6 +15,7 @@
 #include "firfilter.h"
 #include "randomop.h"
 #include "iirfilter.h"
+#include "graphiceq.h"
 
 
 
@@ -34,6 +35,7 @@ int main (int argc, char * const argv[]) {
   ComparisonOpTest();
   PointTest();
   IirFilter::Test();
+  GraphicEq::Test();
   RandomGenerator::Test();
   std::cout<<"All tests succeded!\n";
 #else

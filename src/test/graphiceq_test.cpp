@@ -11,7 +11,7 @@
 
 namespace mcl {
   
-bool GraphicEQ::GraphicEqTest() {
+bool GraphicEq::Test() noexcept {
   
   
   return true;
