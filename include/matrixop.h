@@ -147,7 +147,7 @@ public:
   }
   
   /** Returns the raw data */
-  std::vector<std::vector<T> > data() noexcept { return data_; }
+  std::vector<std::vector<T> > data() const noexcept { return data_; }
   
   /**
    Reads a matrix. Elements have to be separated by tabs and there
@@ -275,9 +275,12 @@ Matrix<T> Multiply(const Matrix<T>& matrix_a,
   return output;
 }
   
+
+/** Carries out the mulitplication between  matrix_a * vector, where vector is a column vector.
+ The output is also a column vector. */
 template<class T>
 std::vector<T> Multiply(const Matrix<T>& matrix_a,
-                                const std::vector<T>& vector) noexcept {
+                        const std::vector<T>& vector) noexcept {
   ASSERT(matrix_a.num_columns() == (Int)vector.size());
   Matrix<T> temp_input((Int) vector.size(), 1);
   temp_input.SetColumn(0, vector);
@@ -288,6 +291,63 @@ std::vector<T> Multiply(const Matrix<T>& matrix_a,
   return temp_output.GetColumn(0);
 }
   
+
+/** Carries out the mulitplication between vector * matrix_a, where vector is a row vector.
+ The output is also a row vector. */
+template<class T>
+std::vector<T> Multiply(const std::vector<T>& vector,
+                        const Matrix<T>& matrix_a) noexcept {
+ASSERT(matrix_a.num_rows() == (Int)vector.size());
+Matrix<T> temp_input(1, (Int) vector.size());
+temp_input.SetRow(0, vector);
+Matrix<T> temp_output = Multiply(temp_input, matrix_a);
+ASSERT(temp_output.num_rows() == 1);
+ASSERT(temp_output.num_columns() == (Int)vector.size());
+
+return temp_output.GetRow(0);
+}
+
+template<class T>
+Matrix<T> Inverse(const Matrix<T>& matrix_a) {
+  size_t rows = matrix_a.num_rows();
+  size_t cols = matrix_a.num_columns();
+  ASSERT(rows == cols);
+  std::vector<std::vector<T> > data = matrix_a.data();
+  
+  // Create the augmented matrix [A|I]
+  for (size_t i = 0; i < rows; i++) {
+    data[i].resize(2 * cols, 0.0);
+    data[i][cols + i] = 1.0;
+  }
+
+  // Perform row operations
+  for (size_t i = 0; i < rows; i++) {
+    // Divide row by pivot
+    Real pivot = data[i][i];
+    for (size_t j = 0; j < 2 * cols; j++) {
+      data[i][j] /= pivot;
+    }
+    
+    // Eliminate other rows
+    for (size_t j = 0; j < rows; j++)
+    {
+      if (j != i) {
+        Real factor = data[j][i];
+        for (size_t k = 0; k < 2 * cols; k++) {
+          data[j][k] -= factor * data[i][k];
+        }
+      }
+    }
+  }
+
+  // Remove the identity matrix
+  for (size_t i = 0; i < rows; i++) {
+    data[i].erase(data[i].begin(), data[i].begin() + cols);
+    data[i].shrink_to_fit();
+  }
+  return mcl::Matrix(data);
+}
+
   
 /** 
  Extract the maximum value of the matrix. Equivalent to Matlab's

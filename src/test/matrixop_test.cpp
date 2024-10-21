@@ -98,6 +98,13 @@ bool MatrixOpTest() {
   ASSERT(IsEqual(mult_matrix_b_e.GetElement(2, 0), 4.0));
   ASSERT(IsEqual(mult_matrix_b_e.GetElement(2, 1), 6.0));
   
+  // Testing inverse matrix
+  Matrix<Real> matrix_e_inverse = Inverse(matrix_e);
+  ASSERT(IsEqual(matrix_e_inverse.GetElement(0, 0), -0.6));
+  ASSERT(IsEqual(matrix_e_inverse.GetElement(0, 1), 0.2));
+  ASSERT(IsEqual(matrix_e_inverse.GetElement(1, 0), 0.4));
+  ASSERT(IsEqual(matrix_e_inverse.GetElement(1, 1), 0.2));
+  
   // Testing matrix-vector multiplication
   std::vector<Real> vector_a(2);
   vector_a[0] = -3.0;
