@@ -28,6 +28,7 @@ SofaMic::SofaMic(const Point position,
           BinauralMic(position, orientation, update_length, reference_orientation),
           hrtf_(NULL) {
   int err;
+  // TODO: Still need to implement reference_orientation for orientations other than standard
 
   hrtf_ = mysofa_open(sofa_filename.c_str(), (int) sampling_frequency, &filter_length_, &err);
             
