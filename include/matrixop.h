@@ -146,6 +146,24 @@ public:
     output_file.close();
   }
   
+  /** Same as Save(...), but before saving converts decimal numbers (assumed to be in
+   the range -1, 1) to integers using the formula: scaledx=int(x^(`bit_precision`-1)-1)).
+   If `bit_precision`=14, this is essentially writing out in a number representation equivalent
+   to 24 bit WAV file. */
+  void SaveIntegerFormat(std::string file_name, mcl::Int bit_precision = 24) {
+    std::ofstream output_file;
+    output_file.open(file_name.c_str());
+    output_file<<std::fixed;
+    output_file<<std::setprecision(0);
+    for (Int i=0; i<num_rows_; ++i) {
+      for (Int j=0; j<num_columns_; ++j) {
+        output_file<<static_cast<int>(data_.at(i).at(j) * ((1 << (bit_precision-1)) - 1))<<" ";
+      }
+      output_file<<std::endl;
+    }
+    output_file.close();
+  }
+  
   /** Returns the raw data */
   std::vector<std::vector<T> > data() const noexcept { return data_; }
   
