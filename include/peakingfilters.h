@@ -29,7 +29,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  PeakHighShelf(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(2), mcl::Zeros<Real>(2)) {
+  PeakHighShelf(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -41,7 +41,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  PeakHighShelf(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(2), mcl::Zeros<Real>(2)) {
+  PeakHighShelf(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }
@@ -83,7 +83,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  PeakLowShelf(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(2), mcl::Zeros<Real>(2)) {
+  PeakLowShelf(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -95,7 +95,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  PeakLowShelf(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(2), mcl::Zeros<Real>(2)) {
+  PeakLowShelf(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }
@@ -137,7 +137,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  PeakingFilter(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(2), mcl::Zeros<Real>(2)) {
+  PeakingFilter(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -149,7 +149,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(2), mcl::Zeros<Real>(2)) {
+  PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }

@@ -165,6 +165,7 @@
 		5712F7822CC64C1600F3E67D /* peakingfilters.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = peakingfilters.cpp; path = src/peakingfilters.cpp; sourceTree = "<group>"; };
 		5712F78B2CC64C9300F3E67D /* graphiceq_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = graphiceq_test.cpp; path = src/test/graphiceq_test.cpp; sourceTree = "<group>"; };
 		5712F78E2CC64CA000F3E67D /* graphiceq.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = graphiceq.cpp; path = src/graphiceq.cpp; sourceTree = "<group>"; };
+		5712F79C2CC8160500F3E67D /* peakingfilters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = peakingfilters.h; path = include/peakingfilters.h; sourceTree = "<group>"; };
 		571D455020B867B50009A84D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = constants.h; path = include/constants.h; sourceTree = "<group>"; };
 		571F9A5717955B160059A90D /* statisticsop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = statisticsop.h; path = include/statisticsop.h; sourceTree = "<group>"; };
 		571F9A5917955BD60059A90D /* statisticsop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = statisticsop.cpp; path = src/statisticsop.cpp; sourceTree = "<group>"; };
@@ -335,6 +336,7 @@
 				5778D80B15B616260015AAC9 /* iirfilter.h */,
 				57BA700215B4263D002F077F /* mcltypes.h */,
 				57BA6FFE15B421F5002F077F /* matrixop.h */,
+				5712F79C2CC8160500F3E67D /* peakingfilters.h */,
 				57FE67CD1CFB795800E3CB2A /* point.h */,
 				57BA6FFC15B41B55002F077F /* pointwiseop.h */,
 				576B25781CF9DFD200673FC0 /* quaternion.h */,

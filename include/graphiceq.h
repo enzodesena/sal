@@ -112,6 +112,8 @@ public:
     high_shelf_.Reset();
   }
   
+  virtual void Reset();
+  
   static bool Test() noexcept;
 private:
   /**

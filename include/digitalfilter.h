@@ -57,8 +57,7 @@ public:
   virtual std::vector<Real> Filter(const Real input) = 0;
   
   /** Returns the output of the filter bank for a given input. */
-  virtual std::vector<std::vector<Real> >
-  Filter(const std::vector<Real>& input) = 0;
+  virtual std::vector<std::vector<Real> > Filter(const std::vector<Real>& input) = 0;
   
   /** Resets the state of the filter */
   virtual void Reset() = 0;

@@ -363,7 +363,7 @@ Matrix<T> Inverse(const Matrix<T>& matrix_a) {
     data[i].erase(data[i].begin(), data[i].begin() + cols);
     data[i].shrink_to_fit();
   }
-  return mcl::Matrix(data);
+  return mcl::Matrix<T>(data);
 }
 
   

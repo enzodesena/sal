@@ -31,6 +31,7 @@ GraphicEq::GraphicEq(const std::vector<Real>& fc, const Real Q, const Real sampl
     valid_(false) {
   InitFilters(fc, Q, sampling_frequency);
   InitMatrix(fc, sampling_frequency);
+      
 }
 
 GraphicEq::GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) :
@@ -47,6 +48,7 @@ GraphicEq::GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc,
     valid_(false) {
   InitFilters(fc, Q, sampling_frequency);
   InitMatrix(fc, sampling_frequency);
+  InitParameters(gain);
 }
 
 void GraphicEq::InitFilters(const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) {
@@ -113,7 +115,7 @@ void GraphicEq::SetGain(const std::vector<Real>& gain) {
     return;
 
   last_input_ = gain;
-  if (IsEqual(gain, 0)) {
+  if (IsEqual(gain, 0.0)) {
     std::fill(input_gain_.begin(), input_gain_.end(), 0.0);
     target_gain_[0] = 0;
   } else {
@@ -199,6 +201,11 @@ void GraphicEq::Filter(const Real* input_data, const Int num_samples, Real* outp
       UpdateParameters();
     }
   }
+}
+
+void GraphicEq::Reset() {
+  // Implement me!
+  ASSERT(false);
 }
   
 } // namespace mcl

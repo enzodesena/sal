@@ -185,5 +185,17 @@ bool IsEqual(const std::vector<Real> input_data_b,
   return IsEqual(input_data_a, input_data_b.data(), input_data_b.size(),
                  precision);
 }
+
+
+bool IsEqual(const std::vector<Real> input_data_a,
+             const Real input_data_b,
+             Real precision) {
+for (size_t i=0; i < input_data_a.size(); ++i) {
+  if (! IsEqual(input_data_a[i], input_data_b, precision)) {
+    return false;
+  }
+}
+return true;
+}
   
 } // namespace mcl

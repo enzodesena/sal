@@ -68,6 +68,9 @@ bool IsEqual(const Real* input_data_a, const std::vector<Real> input_data_b,
 bool IsEqual(const std::vector<Real> input_data_b, const Real* input_data_a,
              Real precision = VERY_SMALL);
   
+bool IsEqual(const std::vector<Real> input_data_a, const Real input_data_b,
+             Real precision = VERY_SMALL);
+
 /** Returns true if num is nan */
 bool IsNan(Real num);
 

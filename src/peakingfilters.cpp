@@ -61,8 +61,8 @@ void PeakLowShelf::UpdateGain(const Real g)
   SetDenominatorCoefficient(2, (v1 + v4 - v5) * GetDenominatorCoefficient(0));
 
   SetNumeratorCoefficient(0, A * (v1 - v4 + v5) * GetDenominatorCoefficient(0));
-  SetNumeratorCoefficient(0, 2.0 * A * (v2 - v3) * GetDenominatorCoefficient(0));
-  SetNumeratorCoefficient(0, A * (v1 - v4 - v5) * GetDenominatorCoefficient(0));
+  SetNumeratorCoefficient(1, 2.0 * A * (v2 - v3) * GetDenominatorCoefficient(0));
+  SetNumeratorCoefficient(2, A * (v1 - v4 - v5) * GetDenominatorCoefficient(0));
 }
 
 
@@ -85,8 +85,8 @@ void PeakingFilter::UpdateGain(const Real g)
   SetDenominatorCoefficient(2, (1 - v2) * GetDenominatorCoefficient(0));
 
   SetNumeratorCoefficient(0, (1 + v1) * GetDenominatorCoefficient(0));
-  SetNumeratorCoefficient(0, GetDenominatorCoefficient(1));
-  SetNumeratorCoefficient(0, (1 - v1) * GetDenominatorCoefficient(0));
+  SetNumeratorCoefficient(1, GetDenominatorCoefficient(1));
+  SetNumeratorCoefficient(2, (1 - v1) * GetDenominatorCoefficient(0));
 }
 
   
