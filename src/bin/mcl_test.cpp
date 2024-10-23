@@ -35,6 +35,9 @@ int main (int argc, char * const argv[]) {
   ComparisonOpTest();
   PointTest();
   IirFilter::Test();
+  IirFilter::PeakingFilterTest();
+  IirFilter::PeakHighShelfTest();
+  IirFilter::PeakLowShelfTest();
   GraphicEq::Test();
   RandomGenerator::Test();
   std::cout<<"All tests succeded!\n";

@@ -155,9 +155,9 @@ std::vector<Real> Imag(const std::vector<Complex>& input) noexcept;
  Returns the point-wise poser to exponent.
  Equivalent to Matlab's vector.^exponent
  */
-std::vector<Real> Pow(const std::vector<Real>& vector,
-                              Real exponent) noexcept;
+std::vector<Real> Pow(const std::vector<Real>& vector, const Real exponent) noexcept;
 
+std::vector<Real> Pow(const Real exponent, const std::vector<Real>& vector) noexcept;
 
 /** Equivalent to Matlab's abs(vector) */
 std::vector<Real> Abs(const std::vector<Real>& input) noexcept;

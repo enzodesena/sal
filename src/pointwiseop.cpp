@@ -100,7 +100,7 @@ std::vector<Complex> Conj(const std::vector<Complex>& vector) noexcept {
 
 
 
-std::vector<Real> Pow(const std::vector<Real>& vector, Real exponent) noexcept {
+std::vector<Real> Pow(const std::vector<Real>& vector, const Real exponent) noexcept {
   std::vector<Real> output(vector.size());
   for (Int i=0; i<(Int)vector.size(); ++i) { 
     output[i] = Pow(vector[i], exponent);
@@ -108,6 +108,14 @@ std::vector<Real> Pow(const std::vector<Real>& vector, Real exponent) noexcept {
   return output;
 }
 
+
+std::vector<Real> Pow(const Real exponent, const std::vector<Real>& vector) noexcept {
+  std::vector<Real> output(vector.size());
+  for (Int i=0; i<(Int)vector.size(); ++i) {
+    output[i] = Pow(exponent, vector[i]);
+  }
+  return output;
+}
 
 std::vector<Real> HalfWave(const std::vector<Real>& input) noexcept {
   std::vector<Real> output = Zeros<Real>(input.size());

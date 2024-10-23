@@ -14,17 +14,34 @@
 
 namespace mcl {
 
-Real IirFilter::GetNumeratorCoefficient(const Int coeff_id) const noexcept {
-  ASSERT(coeff_id>=0 && coeff_id<=order());
-  return B_[coeff_id]*A0_;
+void IirFilter::SetNumeratorCoefficient(const size_t coeff_id, const Real value) noexcept {
+  // Store a normalised version
+  B_.at(coeff_id) = value/A0_;
 }
-  
-void IirFilter::SetNumeratorCoefficient(const Int coeff_id,
-                                          const Real value) noexcept {
-  ASSERT(coeff_id >= 0 && coeff_id<=order());
-  B_[coeff_id] = value/A0_;
+
+void IirFilter::SetDenominatorCoefficient(const size_t coeff_id, const Real value) noexcept {
+  if (coeff_id == 0) {
+    // Store a normalised version
+    A0_ = value;
+    A_[0] = value;
+    B_ = Multiply(B_, 1.0/A0_);
+    A_ = Multiply(A_, 1.0/A0_);
+  } else {
+    // Store a normalised version
+    A_.at(coeff_id) = value/A0_;
+  }
 }
-  
+
+Real IirFilter::GetNumeratorCoefficient(const size_t coeff_id) const noexcept {
+  // Return the non-normalised version
+  return B_.at(coeff_id) * A0_;
+}
+
+Real IirFilter::GetDenominatorCoefficient(const size_t coeff_id) const noexcept {
+  // Return the non-normalised version
+  return A_.at(coeff_id) * A0_;
+}
+
 std::vector<Real> IirFilter::B() const {
   // Return the non-normalised version
   return Multiply(B_, A0_);
@@ -35,49 +52,55 @@ std::vector<Real> IirFilter::A() const {
   return Multiply(A_, A0_);
 }
 
+
+void IirFilter::SetCoefficients(const std::vector<Real>& B, const std::vector<Real>& A) noexcept {
+  // TODO: implement case where length changes.
+  ASSERT(B_.size() == B.size());
+  ASSERT(A_.size() == A.size());
+
+  for (size_t i=0; i < B.size(); ++i) {
+    SetDenominatorCoefficient(i, A[i]);
+    SetNumeratorCoefficient(i, B[i]);
+  }
+}
+
+void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
+  const size_t filter_order = order();
+  assert(filter_order == other_filter.order());
+
+  for (size_t i=0; i<=filter_order; ++i) {
+    SetNumeratorCoefficient(i, other_filter.GetNumeratorCoefficient(i));
+    SetDenominatorCoefficient(i, other_filter.GetDenominatorCoefficient(i));
+  }
+}
+
+  
+
+
 // Constructor
 IirFilter::IirFilter() :
-  B_(mcl::UnaryVector<Real>(1.0)), A_(mcl::UnaryVector<Real>(1.0)) {
-  Int size = B_.size();
-  state_ = new Real[size];
-  for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
+  B_(mcl::UnaryVector<Real>(1.0)), A_(mcl::UnaryVector<Real>(1.0)), A0_(1.0) {
+  state_ = std::vector<Real>(B_.size(), 0.0);
 }
   
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) : 
-          B_(B), A_(A) {
+          B_(B), A_(A), A0_(1.0) {
   // TODO: implement also for B.size != A.size
   ASSERT(B.size() == A.size());
   ASSERT(B.size() >= 1);
-  
-  A0_ = A[0];
-  if (! IsEqual(A[0], 1.0, std::numeric_limits<Real>::epsilon())) {
-    B_ = Multiply(B, (Real) 1.0 / A[0]);
-    A_ = Multiply(A, (Real) 1.0 / A[0]);
-  }
-  
-  
-  Int size = B.size();
-  state_ = new Real[size];
-  for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
+            
+  SetCoefficients(B, A);
+  state_ = std::vector<Real>(B.size(), 0.0);
 }
 
 // Copy constructor
 IirFilter::IirFilter(const IirFilter& copy) :
-          B_(copy.B_), A_(copy.A_), A0_(copy.A0_) {
-  Int size = B_.size();
-  state_ = new Real[size];
-  for (Int i=0; i<size; ++i) {
-    state_[i] = copy.state_[i];
-  }
-}
+          B_(copy.B_), A_(copy.A_), A0_(copy.A0_), state_(copy.state_) {}
 
 // Assignment constructor
 IirFilter& IirFilter::operator= (const IirFilter& other) {
   if (this != &other) {
-    Int size = other.B_.size();
-    delete [] state_;
-    state_ = new Real[size];
-    for (Int i=0; i<size; ++i) { state_[i] = other.state_[i]; }
+    state_ = other.state_;
     B_ = other.B_;
     A_ = other.A_;
     A0_ = other.A0_;
@@ -85,46 +108,14 @@ IirFilter& IirFilter::operator= (const IirFilter& other) {
   return *this;
 }
 
-IirFilter::~IirFilter() { delete [] state_; }
+IirFilter::~IirFilter() {}
 
-Int IirFilter::order() const noexcept {
+size_t IirFilter::order() const noexcept {
   return Max(B_.size(), A_.size())-1;
 }
 
-Real IirFilter::GetDenominatorCoefficient(const Int coeff_id) const noexcept {
-  return A_.at(coeff_id);
-}
-  
-void IirFilter::SetCoefficients(const std::vector<Real>& B,
-                                 const std::vector<Real>& A) noexcept {
-  // TODO: implement case where length changes.
-  ASSERT(B_.size() == B.size());
-  ASSERT(A_.size() == A.size());
-  
-  B_ = B;
-  A_ = A;
-  A0_ = A[0];
-}
-  
-void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
-  const Int filter_order = order();
-  assert(filter_order == other_filter.order());
-  
-  for (Int i=0; i<=filter_order; ++i) {
-    SetNumeratorCoefficient(i, other_filter.GetNumeratorCoefficient(i));
-    SetDenominatorCoefficient(i, other_filter.GetDenominatorCoefficient(i));
-  }
-}
-  
-  
-void IirFilter::SetDenominatorCoefficient(const Int coeff_id,
-                                            const Real value) noexcept {
-  ASSERT(coeff_id >= 0 &&coeff_id<(Int)A_.size());
-  A_[coeff_id] = value;
-  if (coeff_id == 0) { A0_ = value; }
-}
 
-void IirFilter::Filter(const Real* input_data, const Int num_samples,
+void IirFilter::Filter(const Real* input_data, const size_t num_samples,
                        Real* output_data) noexcept {
   if (B_.size() == 1) {
     Multiply(input_data, num_samples, B_[0], output_data);
@@ -138,7 +129,7 @@ Real IirFilter::Filter(Real input) noexcept {
   Real v = input; // The temporary value in the recursive branch.
   Real output(0.0);
   
-  Int size = B_.size();
+  size_t size = B_.size();
   
   // Speed up return for simple gain filters
   if (size == 1) { return v*B_[0]; }
@@ -146,12 +137,12 @@ Real IirFilter::Filter(Real input) noexcept {
   // The index i in both loops refers to the branch in the classic plot of a 
   // direct form II, with the highest branch (the one multiplied by b(0) only)
   // being i=0.
-  for (Int i=1; i<size; ++i) { 
+  for (size_t i=1; i<size; ++i) { 
     v += state_[i-1]*(-A_[i]);
     output += state_[i-1]*B_[i];
   }
   
-  for (Int i=(size-1); i>=1; --i) {
+  for (size_t i=(size-1); i>=1; --i) {
     state_[i] = state_[i-1];
   }
   
@@ -173,7 +164,7 @@ std::vector<Real> IirFilter::GetFrequencyResponse(const std::vector<Real>& frequ
     Complex num = B_[0];
     Complex den = 1.0;
 
-    for (int j = 1; j <= order(); j++) {
+    for (size_t j = 1; j <= order(); j++) {
       e = std::exp(-((Real)j) * imaginary_unit * omega);
       num += B_[j] * e;
       den += A_[j] * e;
@@ -185,8 +176,8 @@ std::vector<Real> IirFilter::GetFrequencyResponse(const std::vector<Real>& frequ
 }
   
 void IirFilter::Reset() {
-  const Int size = B_.size();
-  for (Int i=0; i<size; ++i) { state_[i] = 0.0; }
+  const size_t size = B_.size();
+  for (size_t i=0; i<size; ++i) { state_[i] = 0.0; }
 }
 
 
@@ -204,7 +195,7 @@ IirFilter IdenticalFilter() { return GainFilter(1.0); }
 
 IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
   // TODO: implement for frequencies other than 44100
-  if (! IsEqual(sampling_frequency, 44100)) {
+  if (! IsEqual(sampling_frequency, 44100) && wall_type != kRigid) {
     mcl::Logger::GetInstance().LogError("Attempting to use a wall filter "
         "designed for 44100 Hz sampling frequency with a sampling frequency "
         "of %f Hz. The filter response will be inaccurate.", sampling_frequency);
@@ -298,9 +289,9 @@ IirFilter PinkifierFilter() {
 
   
 std::vector<Real> IirFilterBank::Filter(const Real input) {
-  const Int N = filters_.size();
+  const size_t N = filters_.size();
   std::vector<Real> outputs(N);
-  for (Int i=0; i<N; ++i) {
+  for (size_t i=0; i<N; ++i) {
     outputs[i] = filters_[i].Filter(input);
   }
   return outputs;
@@ -309,9 +300,9 @@ std::vector<Real> IirFilterBank::Filter(const Real input) {
   
 std::vector<std::vector<Real> >
 IirFilterBank::Filter(const std::vector<Real>& input) {
-  const Int N = filters_.size();
+  const size_t N = filters_.size();
   std::vector<std::vector<Real> > outputs(N);
-  for (Int i=0; i<N; ++i) {
+  for (size_t i=0; i<N; ++i) {
     outputs[i] = filters_[i].Filter(input);
   }
   return outputs;
@@ -319,8 +310,8 @@ IirFilterBank::Filter(const std::vector<Real>& input) {
 
   
 void IirFilterBank::Reset() {
-  const Int N = filters_.size();
-  for (Int i=0; i<N; ++i) {
+  const size_t N = filters_.size();
+  for (size_t i=0; i<N; ++i) {
     filters_[i].Reset();
   }
 }

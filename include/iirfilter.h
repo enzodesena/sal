@@ -38,13 +38,13 @@ public:
    */
   virtual Real Filter(const Real input) noexcept;
   
-  virtual void Filter(const Real* input_data, const Int num_samples,
+  virtual void Filter(const Real* input_data, const size_t num_samples,
                       Real* output_data) noexcept;
   
   using DigitalFilter::Filter;
   
   /** Returns the order of the filter. */
-  Int order() const noexcept;
+  size_t order() const noexcept;
   
   /** 
    Updates the filter coefficients. May cause articafts if the coefficients are
@@ -56,14 +56,14 @@ public:
   /** Sets the coefficients as identical to those of another filter. */
   void SetCoefficients(const IirFilter& filter) noexcept;
   
-  Real GetNumeratorCoefficient(const Int coeff_id) const noexcept;
+  Real GetNumeratorCoefficient(const size_t coeff_id) const noexcept;
   
-  Real GetDenominatorCoefficient(const Int coeff_id) const noexcept;
+  Real GetDenominatorCoefficient(const size_t coeff_id) const noexcept;
   
-  void SetNumeratorCoefficient(const Int coeff_id,
+  void SetNumeratorCoefficient(const size_t coeff_id,
                                const Real value) noexcept;
   
-  void SetDenominatorCoefficient(const Int coeff_id, const Real value) noexcept;
+  void SetDenominatorCoefficient(const size_t coeff_id, const Real value) noexcept;
   
   /**
   * Returns the filter response at given frequencies
@@ -83,6 +83,10 @@ public:
   
   /** Tests */
   static bool Test();
+  static bool PeakingFilterTest() noexcept;
+  static bool PeakHighShelfTest() noexcept;
+  static bool PeakLowShelfTest() noexcept;
+  
   
   /** Assignment operator */
   IirFilter & operator= (const IirFilter &);
@@ -100,7 +104,7 @@ private:
   // normalisation while keeping the internal representation normalised
   Real A0_;
   
-  Real* state_;
+  std::vector<Real> state_;
 };
   
 /** Filter bank abstract class */

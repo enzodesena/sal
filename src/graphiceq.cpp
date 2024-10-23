@@ -17,22 +17,6 @@ namespace mcl {
   
 constexpr Real EPS = 0.0000001;
 
-GraphicEq::GraphicEq(const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) :
-    num_filters_(((int)fc.size()) + 2),
-    low_shelf_((fc[0] / 2.0) * sqrt(fc[0] / (fc[0] / 2.0)), Q, sampling_frequency),
-    high_shelf_(fc[num_filters_ - 3] * sqrt((2.0 * fc[num_filters_ - 3]) / fc[num_filters_ - 3]), Q, sampling_frequency),
-    db_gain_(num_filters_),
-    input_gain_(num_filters_),
-    target_gain_(num_filters_ + 1),
-    current_gain_(num_filters_ + 1),
-    last_input_(fc.size()),
-    mat_(num_filters_, num_filters_),
-    equal_(false),
-    valid_(false) {
-  InitFilters(fc, Q, sampling_frequency);
-  InitMatrix(fc, sampling_frequency);
-      
-}
 
 GraphicEq::GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) :
     num_filters_(((int)fc.size()) + 2),
@@ -131,12 +115,13 @@ void GraphicEq::SetGain(const std::vector<Real>& gain) {
 
     std::transform(db_gain_.begin(), db_gain_.end(), db_gain_.begin(), [](double x) { return std::log10(x); });
     Real mean_db_gain = Sum(db_gain_) / ((Real)db_gain_.size());
-    target_gain_[0] = mcl::Pow(mean_db_gain, 10.0); // 10 ^ mean(db_gain_);
+    target_gain_[0] = mcl::Pow(10.0, mean_db_gain); // 10 ^ mean(db_gain_);
     std::transform(db_gain_.begin(), db_gain_.end(), db_gain_.begin(), [mean_db_gain](double x) { return x - mean_db_gain; }); // db_gain_ - mean(db_gain_);
 
     input_gain_ = mcl::Multiply(db_gain_, mat_);
-    input_gain_ = mcl::Pow(input_gain_, 10.0);
+    input_gain_ = mcl::Pow(10.0, input_gain_);
   }
+  
   for (int i = 0; i < num_filters_; i++)
     target_gain_[i + 1] = input_gain_[i];
 
@@ -174,8 +159,7 @@ Real GraphicEq::Filter(const Real input) noexcept {
     out = high_shelf_.Filter(out);
     out *= current_gain_[0];
     return out;
-  }
-  else {
+  } else {
     return 0.0;
   }
 }
