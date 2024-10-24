@@ -86,7 +86,7 @@ public:
   static bool PeakingFilterTest() noexcept;
   static bool PeakHighShelfTest() noexcept;
   static bool PeakLowShelfTest() noexcept;
-  
+  static bool GraphicEqTest() noexcept;
   
   /** Assignment operator */
   IirFilter & operator= (const IirFilter &);
@@ -199,7 +199,44 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
 
 /** Returns a pinkifier filter */
 IirFilter PinkifierFilter();
-  
+
+
+/**
+* Initialises a 2nd order high shelf filter with a given cut off frequency and shelf gain
+*
+* @param fc The cut off frequency of the filter
+* @param g The shelf gain of the filter (linear)
+* @param Q The quality factor of the filter
+* @param sample_rate The sample rate for calculating filter coefficients
+*/
+IirFilter PeakHighShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate);
+
+/**
+* Initialises a 2nd order low shelf filter with a given cut off frequency and shelf gain
+*
+* @param fc The cut off frequency of the filter
+* @param g The shelf gain of the filter (linear)
+* @param Q The quality factor of the filter
+* @param sample_rate The sample rate for calculating filter coefficients
+*/
+IirFilter PeakLowShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate);
+
+/**
+* Initialises a  2nd order peaking filter with a given cut off frequency and gain
+*
+* @param fc The center frequency of the filter
+* @param g The gain of the filter (linear)
+* @param Q The quality factor of the filter
+* @param sample_rate The sample rate for calculating filter coefficients
+*/
+IirFilter PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate);
+
+IirFilter GraphicEqFilter(const std::vector<Real>& gain, const std::vector<Real>& fc, const Real Q, const Real sampling_frequency);
+
+IirFilter SeriesFilter(const IirFilter& filter_a, const IirFilter& filter_b);
+
+IirFilter SeriesFilter(const std::vector<IirFilter>& filters);
+
 } // namespace mcl
 
 #endif

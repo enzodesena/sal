@@ -91,7 +91,7 @@ bool IirFilter::Test() {
   IirFilter filter_l(B_d, A_d);
   ASSERT(IsEqual(B_d, filter_l.B()));
   ASSERT(IsEqual(A_d, filter_l.A()));
-  
+
   std::vector<Real> signal_d = mcl::Zeros<Real>(4);
   signal_d[0] = 0.989949493661167;
   std::vector<Real> signal_d_out_cmp(4);
@@ -180,7 +180,31 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(octave_a.A(), octave_a_den_cmp));
   
   
+  // Testing series of IIR filters
+  octave_a.Reset();
+  butter_b.Reset();
+  IirFilter combined_a = SeriesFilter(octave_a, butter_b);
+  assert(IsEqual(butter_b.Filter(octave_a.Filter(input_a)), combined_a.Filter(input_a)));
+  
+  octave_a.Reset();
+  butter_a.Reset();
+  butter_b.Reset();
+  std::vector<IirFilter> filters;
+  filters.push_back(octave_a);
+  filters.push_back(butter_b);
+  filters.push_back(butter_a);
+  IirFilter combined_b = SeriesFilter(filters);
+  assert(IsEqual(butter_a.Filter(butter_b.Filter(octave_a.Filter(input_a))), combined_b.Filter(input_a)));
+  
+  octave_a.Reset();
+  butter_a.Reset();
+  butter_b.Reset();
+  combined_b.Reset();
+  assert(IsEqual(butter_b.Filter(octave_a.Filter(butter_a.Filter(input_a))), combined_b.Filter(input_a)));
+
+  
   // Testing iir filter bank
+  octave_a.Reset();
   IirFilterBank octave_bank_a = OctaveFilterBank(3, 1, 4000.0, 44100.0);
   ASSERT(IsEqual(octave_bank_a.Filter(1.25)[0], octave_a.Filter(1.25)));
   ASSERT(IsEqual(octave_bank_a.Filter(0.25)[0], octave_a.Filter(0.25)));

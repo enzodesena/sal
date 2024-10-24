@@ -107,7 +107,7 @@ public:
   */
   inline void ClearBuffers() {
     low_shelf_.Reset();
-    for (PeakingFilter& filter : peaking_filters_)
+    for (Peaking& filter : peaking_filters_)
       filter.Reset();
     high_shelf_.Reset();
   }
@@ -147,7 +147,7 @@ private:
   */
   PeakLowShelf low_shelf_;
   PeakHighShelf high_shelf_;
-  std::vector<PeakingFilter> peaking_filters_;
+  std::vector<Peaking> peaking_filters_;
 
   /**
   * Gain matrix

@@ -38,7 +38,7 @@ int main (int argc, char * const argv[]) {
   IirFilter::PeakingFilterTest();
   IirFilter::PeakHighShelfTest();
   IirFilter::PeakLowShelfTest();
-  GraphicEq::Test();
+  IirFilter::GraphicEqTest();
   RandomGenerator::Test();
   std::cout<<"All tests succeded!\n";
 #else

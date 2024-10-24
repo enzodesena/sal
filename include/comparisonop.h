@@ -41,7 +41,9 @@ bool IsEqual(const std::vector<T>& vector_a, const std::vector<T>& vector_b,
     return false;
   
   for (Int i=0; i<(Int)(Int)vector_a.size(); ++i) {
-    if (! IsEqual(vector_a[i], vector_b[i], precision))
+    T element_a(vector_a[i]);
+    T element_b(vector_b[i]);
+    if (! IsEqual(element_a, element_b, precision))
       return false;
   }
   return true;
