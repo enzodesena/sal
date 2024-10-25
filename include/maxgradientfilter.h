@@ -37,6 +37,10 @@ public:
     previous_output_ = 0.0;
   }
   
+  virtual std::unique_ptr<DigitalFilter> Clone() const {
+    return std::make_unique<MaxGradientFilter>(*this);
+  }
+  
 private:
   Real max_gradient_;
   Real previous_output_;

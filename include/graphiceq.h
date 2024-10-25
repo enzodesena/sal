@@ -107,12 +107,15 @@ public:
   */
   inline void ClearBuffers() {
     low_shelf_.Reset();
-    for (Peaking& filter : peaking_filters_)
+    for (PeakingFilter& filter : peaking_filters_)
       filter.Reset();
     high_shelf_.Reset();
   }
   
+  void PrintCoefficients();
+  
   virtual void Reset();
+  virtual std::unique_ptr<DigitalFilter> Clone() const;
   
   static bool Test() noexcept;
 private:
@@ -147,7 +150,7 @@ private:
   */
   PeakLowShelf low_shelf_;
   PeakHighShelf high_shelf_;
-  std::vector<Peaking> peaking_filters_;
+  std::vector<PeakingFilter> peaking_filters_;
 
   /**
   * Gain matrix

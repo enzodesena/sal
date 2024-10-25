@@ -37,7 +37,7 @@ GraphicEq::GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc,
 
 void GraphicEq::InitFilters(const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) {
   for (int i = 0; i < num_filters_ - 2; i++)
-    peaking_filters_.push_back(Peaking(fc[i], Q, sampling_frequency));
+    peaking_filters_.push_back(PeakingFilter(fc[i], Q, sampling_frequency));
 }
 
 void GraphicEq::InitMatrix(const std::vector<Real>& fc, const Real sampling_frequency) {
@@ -65,7 +65,7 @@ void GraphicEq::InitMatrix(const std::vector<Real>& fc, const Real sampling_freq
 
   j++;
 
-  for (Peaking& filter : peaking_filters_) {
+  for (PeakingFilter& filter : peaking_filters_) {
     filter.UpdateGain(p);
     out = filter.GetFrequencyResponse(f, sampling_frequency);
     filter.UpdateGain(1.0);
@@ -129,6 +129,27 @@ void GraphicEq::SetGain(const std::vector<Real>& gain) {
     equal_ = false;
 }
 
+void GraphicEq::PrintCoefficients() {
+  
+  Matrix<Real> num_parameters(num_filters_+1, 3);
+  num_parameters.SetRow(0, low_shelf_.B());
+  num_parameters.SetRow(1, high_shelf_.B());
+  
+  Matrix<Real> den_parameters(num_filters_+1, 3);
+  den_parameters.SetRow(0, low_shelf_.A());
+  den_parameters.SetRow(1, high_shelf_.A());
+  
+  int i=2;
+  for (PeakingFilter& filter : peaking_filters_) {
+    num_parameters.SetRow(i, filter.B());
+    den_parameters.SetRow(i++, filter.A());
+  }
+  num_parameters.SetRow(i, {current_gain_[0], 0.0, 0.0});
+  den_parameters.SetRow(i, {1, 0.0, 0.0});
+  Print(num_parameters);
+  Print(den_parameters);
+}
+
 void GraphicEq::UpdateParameters()
 {
   int i = 1;
@@ -136,7 +157,7 @@ void GraphicEq::UpdateParameters()
   low_shelf_.UpdateGain(current_gain_[i]);
   i++;
 
-  for (Peaking& filter : peaking_filters_) {
+  for (PeakingFilter& filter : peaking_filters_) {
     filter.UpdateGain(current_gain_[i]);
     i++;
   }
@@ -154,7 +175,7 @@ Real GraphicEq::Filter(const Real input) noexcept {
   if (valid_) {
     Real out = input;
     out = low_shelf_.Filter(out);
-    for (Peaking& filter : peaking_filters_)
+    for (PeakingFilter& filter : peaking_filters_)
       out = filter.Filter(out);
     out = high_shelf_.Filter(out);
     out *= current_gain_[0];
@@ -190,6 +211,11 @@ void GraphicEq::Filter(const Real* input_data, const Int num_samples, Real* outp
 void GraphicEq::Reset() {
   // Implement me!
   ASSERT(false);
+}
+
+
+std::unique_ptr<DigitalFilter> GraphicEq::Clone() const {
+  return std::make_unique<GraphicEq>(*this);
 }
   
 } // namespace mcl

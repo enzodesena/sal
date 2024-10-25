@@ -67,6 +67,7 @@ public:
   
   static void SpeedTests();
   
+  virtual std::unique_ptr<DigitalFilter> Clone() const;
   virtual ~FirFilter() {}
   
 private:

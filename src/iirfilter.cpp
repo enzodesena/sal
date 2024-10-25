@@ -75,7 +75,9 @@ void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
 }
 
   
-
+std::unique_ptr<DigitalFilter> IirFilter::Clone() const {
+  return std::make_unique<IirFilter>(*this);
+}
 
 // Constructor
 IirFilter::IirFilter() :
@@ -93,22 +95,6 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A) :
   state_ = std::vector<Real>(B.size(), 0.0);
 }
 
-// Copy constructor
-IirFilter::IirFilter(const IirFilter& copy) :
-          B_(copy.B_), A_(copy.A_), A0_(copy.A0_), state_(copy.state_) {}
-
-// Assignment constructor
-IirFilter& IirFilter::operator= (const IirFilter& other) {
-  if (this != &other) {
-    state_ = other.state_;
-    B_ = other.B_;
-    A_ = other.A_;
-    A0_ = other.A0_;
-  }
-  return *this;
-}
-
-IirFilter::~IirFilter() {}
 
 size_t IirFilter::order() const noexcept {
   return Max(B_.size(), A_.size())-1;
@@ -289,169 +275,169 @@ IirFilter PinkifierFilter() {
 
 
 
-IirFilter PeakHighShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate) {
-  Real omega = 2.0 * PI * fc / ((Real) sample_rate);
-  Real cosOmega = cos(omega);
-  Real alpha = sin(omega) / Q;
-  Real Avalue = sqrt(g);
-  Real v1 = Avalue + 1.0;
-  Real v2 = Avalue - 1.0;
-  Real v3 = v1 * cosOmega;
-  Real v4 = v2 * cosOmega;
-  Real v5 = sqrt(Avalue) * alpha; // 2 * sqrt(A) * alpha
-
-  Real a0 = 1.0 / (v1 - v4 + v5); // a[0] isn't used in GetOutput
-  Real a1 = (2.0 * (v2 - v3)) * a0;
-  Real a2 = (v1 - v4 - v5) * a0;
-
-  Real b0 = Avalue * (v1 + v4 + v5) * a0;
-  Real b1 = -2.0 * Avalue * (v2 + v3) * a0;
-  Real b2 = Avalue * (v1 + v4 - v5) * a0;
-  
-  std::vector<Real> A = {1.0, a1, a2};
-  std::vector<Real> B = {b0, b1, b2};
-  return IirFilter(B, A);
-}
-
-IirFilter PeakLowShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate) {
-  Real omega = 2.0 * PI * fc / sample_rate;
-  Real cosOmega = cos(omega);
-  Real alpha = sin(omega) / Q; // sin(omega) / (2 * Q) (factor of two cancelled out)
-  
-  Real Avalue = sqrt(g);
-  Real v1 = Avalue + 1.0;
-  Real v2 = Avalue - 1.0;
-  Real v3 = v1 * cosOmega;
-  Real v4 = v2 * cosOmega;
-  Real v5 = sqrt(Avalue) * alpha; // 2 * sqrt(A) * alpha
-
-  Real a0 = 1.0 / (v1 + v4 + v5); // a[0] isn't used in GetOutput
-  Real a1 = (-2.0 * (v2 + v3)) * a0;
-  Real a2 = (v1 + v4 - v5) * a0;
-
-  Real b0 = Avalue * (v1 - v4 + v5) * a0;
-  Real b1 = 2.0 * Avalue * (v2 - v3) * a0;
-  Real b2 = Avalue * (v1 - v4 - v5) * a0;
-  
-  std::vector<Real> A = {1.0, a1, a2};
-  std::vector<Real> B = {b0, b1, b2};
-  return IirFilter(B, A);
-}
-
-IirFilter PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate) {
-  Real omega = 2.0 * PI * fc / ((Real) sample_rate);
-  Real cosOmega = -2.0 * cos(omega);
-  Real alpha = sin(omega) / (2.0 * Q);
-  Real Avalue = sqrt(g);
-  Real v1 = alpha * Avalue;
-  Real v2 = alpha / Avalue;
-  
-  Real a0 = 1.0 / (1 + v2); // a[0] isn't used in GetOutput
-  Real a1 = cosOmega * a0;
-  Real a2 = (1 - v2) * a0;
-
-  Real b0 = (1 + v1) * a0;
-  Real b1 = a1;
-  Real b2 = (1 - v1) * a0;
-  
-  std::vector<Real> A = {1.0, a1, a2};
-  std::vector<Real> B = {b0, b1, b2};
-  return IirFilter(B, A);
-}
-
-
-
-IirFilter GraphicEqFilter(const std::vector<Real>& gain, const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) {
-  
-  const size_t num_filters = fc.size() + 2;
-  const Real peak_low_shelf_fc = (fc[0] / 2.0)* sqrt(fc[0] / (fc[0] / 2.0));
-  const Real peak_high_shelf_fc = fc[num_filters - 3] * sqrt((2.0 * fc[num_filters - 3]) / fc[num_filters - 3]);
-  const Real EPS = 0.0000001;
-  
-  Matrix<Real> mat(num_filters, num_filters);
-  std::vector<Real> input_gain(num_filters, 0.0);
-  std::vector<Real> target_gain(num_filters + 1, 0.0);
-  std::vector<Real> current_gain(num_filters + 1, 0.0);
-  std::vector<Real> db_gain(num_filters, 0.0);
-  
-  std::vector<Real> f = std::vector<Real>(num_filters, 0.0);
-
-  f[0] = fc[0] / 2.0;
-  for (size_t i = 1; i < num_filters - 1; i++)
-    f[i] = fc[i - 1];
-  f[num_filters - 1] = 2.0 * fc[num_filters - 3];
-
-  
-  Real pdb = 6.0;
-  Real p = pow(10.0, pdb / 20.0);
-
-  
-  // Calculate matrix
-  std::vector<Real> out = std::vector<Real>(f.size(), 0.0);
-  int j = 0;
-  
-  IirFilter temp_filter = PeakLowShelfFilter(peak_low_shelf_fc, p, Q, sampling_frequency);
-  out = temp_filter.GetFrequencyResponse(f, sampling_frequency);
-
-  for (size_t i = 0; i < out.size(); i++) {
-    mat.SetElement(j, i, mat.GetElement(j, i)+out[i]);
-  }
-    
-  j++;
-
-  for (size_t i = 0; i < num_filters - 2; i++) {
-    IirFilter temp_filter = PeakingFilter(fc[i], p, Q, sampling_frequency);
-    
-    out = temp_filter.GetFrequencyResponse(f, sampling_frequency);
-
-    for (size_t i = 0; i < out.size(); i++)
-      mat.SetElement(j, i, mat.GetElement(j, i)+out[i]);
-    j++;
-  }
-
-  IirFilter temp_filter_high = PeakHighShelfFilter(peak_high_shelf_fc, p, Q, sampling_frequency);
-  out = temp_filter_high.GetFrequencyResponse(f, sampling_frequency);
-
-  for (size_t i = 0; i < out.size(); i++) {
-    mat.SetElement(j, i, mat.GetElement(j, i)+out[i]);
-  }
-  
-  mat = Inverse(mat);
-  mat = Multiply(mat, pdb);
-  
-  
-  // when dB is used here. Factors of 20 are cancelled out.
-  Real g = (gain[0] + gain[1]) / 2.0;
-  db_gain[0] = std::max(g, EPS); // Prevent log10(0)
-
-  for (size_t i = 1; i < num_filters - 1; i++)
-    db_gain[i] = std::max(gain[i - 1], EPS); // Prevent log10(0)
-
-  g = (gain[num_filters - 4] + gain[num_filters - 3]) / 2.0;
-  db_gain[num_filters - 1] = std::max(g, EPS); // Prevent log10(0)
-
-  std::transform(db_gain.begin(), db_gain.end(), db_gain.begin(), [](double x) { return std::log10(x); });
-  Real mean_db_gain = Sum(db_gain) / ((Real)db_gain.size());
-  target_gain[0] = mcl::Pow(10.0, mean_db_gain); // 10 ^ mean(db_gain);
-  std::transform(db_gain.begin(), db_gain.end(), db_gain.begin(), [mean_db_gain](double x) { return x - mean_db_gain; }); // db_gain - mean(db_gain);
-
-  input_gain = mcl::Multiply(db_gain, mat);
-  input_gain = mcl::Pow(10.0, input_gain);
-  
-  for (size_t i = 0; i < num_filters; i++)
-    target_gain[i + 1] = input_gain[i];
-  
-  // Create filters
-  std::vector<IirFilter> all_filters;
-  all_filters.push_back(PeakLowShelfFilter(peak_low_shelf_fc, target_gain[1], Q, sampling_frequency));
-  for (size_t i = 0; i < fc.size(); i++) {
-    all_filters.push_back(PeakingFilter(fc[i], target_gain[i+2], Q, sampling_frequency));
-  }
-  all_filters.push_back(PeakHighShelfFilter(peak_high_shelf_fc, target_gain[num_filters], Q, sampling_frequency));
-  all_filters.push_back(GainFilter(target_gain[0]));
-  
-  return SeriesFilter(all_filters);
-}
+//IirFilter PeakHighShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate) {
+//  Real omega = 2.0 * PI * fc / ((Real) sample_rate);
+//  Real cosOmega = cos(omega);
+//  Real alpha = sin(omega) / Q;
+//  Real Avalue = sqrt(g);
+//  Real v1 = Avalue + 1.0;
+//  Real v2 = Avalue - 1.0;
+//  Real v3 = v1 * cosOmega;
+//  Real v4 = v2 * cosOmega;
+//  Real v5 = sqrt(Avalue) * alpha; // 2 * sqrt(A) * alpha
+//
+//  Real a0 = 1.0 / (v1 - v4 + v5); // a[0] isn't used in GetOutput
+//  Real a1 = (2.0 * (v2 - v3)) * a0;
+//  Real a2 = (v1 - v4 - v5) * a0;
+//
+//  Real b0 = Avalue * (v1 + v4 + v5) * a0;
+//  Real b1 = -2.0 * Avalue * (v2 + v3) * a0;
+//  Real b2 = Avalue * (v1 + v4 - v5) * a0;
+//  
+//  std::vector<Real> A = {1.0, a1, a2};
+//  std::vector<Real> B = {b0, b1, b2};
+//  return IirFilter(B, A);
+//}
+//
+//IirFilter PeakLowShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate) {
+//  Real omega = 2.0 * PI * fc / sample_rate;
+//  Real cosOmega = cos(omega);
+//  Real alpha = sin(omega) / Q; // sin(omega) / (2 * Q) (factor of two cancelled out)
+//  
+//  Real Avalue = sqrt(g);
+//  Real v1 = Avalue + 1.0;
+//  Real v2 = Avalue - 1.0;
+//  Real v3 = v1 * cosOmega;
+//  Real v4 = v2 * cosOmega;
+//  Real v5 = sqrt(Avalue) * alpha; // 2 * sqrt(A) * alpha
+//
+//  Real a0 = 1.0 / (v1 + v4 + v5); // a[0] isn't used in GetOutput
+//  Real a1 = (-2.0 * (v2 + v3)) * a0;
+//  Real a2 = (v1 + v4 - v5) * a0;
+//
+//  Real b0 = Avalue * (v1 - v4 + v5) * a0;
+//  Real b1 = 2.0 * Avalue * (v2 - v3) * a0;
+//  Real b2 = Avalue * (v1 - v4 - v5) * a0;
+//  
+//  std::vector<Real> A = {1.0, a1, a2};
+//  std::vector<Real> B = {b0, b1, b2};
+//  return IirFilter(B, A);
+//}
+//
+//IirFilter PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate) {
+//  Real omega = 2.0 * PI * fc / ((Real) sample_rate);
+//  Real cosOmega = -2.0 * cos(omega);
+//  Real alpha = sin(omega) / (2.0 * Q);
+//  Real Avalue = sqrt(g);
+//  Real v1 = alpha * Avalue;
+//  Real v2 = alpha / Avalue;
+//  
+//  Real a0 = 1.0 / (1 + v2); // a[0] isn't used in GetOutput
+//  Real a1 = cosOmega * a0;
+//  Real a2 = (1 - v2) * a0;
+//
+//  Real b0 = (1 + v1) * a0;
+//  Real b1 = a1;
+//  Real b2 = (1 - v1) * a0;
+//  
+//  std::vector<Real> A = {1.0, a1, a2};
+//  std::vector<Real> B = {b0, b1, b2};
+//  return IirFilter(B, A);
+//}
+//
+//
+//
+//IirFilter GraphicEqFilter(const std::vector<Real>& gain, const std::vector<Real>& fc, const Real Q, const Real sampling_frequency) {
+//  
+//  const size_t num_filters = fc.size() + 2;
+//  const Real peak_low_shelf_fc = (fc[0] / 2.0)* sqrt(fc[0] / (fc[0] / 2.0));
+//  const Real peak_high_shelf_fc = fc[num_filters - 3] * sqrt((2.0 * fc[num_filters - 3]) / fc[num_filters - 3]);
+//  const Real EPS = 0.0000001;
+//  
+//  Matrix<Real> mat(num_filters, num_filters);
+//  std::vector<Real> input_gain(num_filters, 0.0);
+//  std::vector<Real> target_gain(num_filters + 1, 0.0);
+//  std::vector<Real> current_gain(num_filters + 1, 0.0);
+//  std::vector<Real> db_gain(num_filters, 0.0);
+//  
+//  std::vector<Real> f = std::vector<Real>(num_filters, 0.0);
+//
+//  f[0] = fc[0] / 2.0;
+//  for (size_t i = 1; i < num_filters - 1; i++)
+//    f[i] = fc[i - 1];
+//  f[num_filters - 1] = 2.0 * fc[num_filters - 3];
+//
+//  
+//  Real pdb = 6.0;
+//  Real p = pow(10.0, pdb / 20.0);
+//
+//  
+//  // Calculate matrix
+//  std::vector<Real> out = std::vector<Real>(f.size(), 0.0);
+//  int j = 0;
+//  
+//  IirFilter temp_filter = PeakLowShelfFilter(peak_low_shelf_fc, p, Q, sampling_frequency);
+//  out = temp_filter.GetFrequencyResponse(f, sampling_frequency);
+//
+//  for (size_t i = 0; i < out.size(); i++) {
+//    mat.SetElement(j, i, mat.GetElement(j, i)+out[i]);
+//  }
+//    
+//  j++;
+//
+//  for (size_t i = 0; i < num_filters - 2; i++) {
+//    IirFilter temp_filter = PeakingFilter(fc[i], p, Q, sampling_frequency);
+//    
+//    out = temp_filter.GetFrequencyResponse(f, sampling_frequency);
+//
+//    for (size_t i = 0; i < out.size(); i++)
+//      mat.SetElement(j, i, mat.GetElement(j, i)+out[i]);
+//    j++;
+//  }
+//
+//  IirFilter temp_filter_high = PeakHighShelfFilter(peak_high_shelf_fc, p, Q, sampling_frequency);
+//  out = temp_filter_high.GetFrequencyResponse(f, sampling_frequency);
+//
+//  for (size_t i = 0; i < out.size(); i++) {
+//    mat.SetElement(j, i, mat.GetElement(j, i)+out[i]);
+//  }
+//  
+//  mat = Inverse(mat);
+//  mat = Multiply(mat, pdb);
+//  
+//  
+//  // when dB is used here. Factors of 20 are cancelled out.
+//  Real g = (gain[0] + gain[1]) / 2.0;
+//  db_gain[0] = std::max(g, EPS); // Prevent log10(0)
+//
+//  for (size_t i = 1; i < num_filters - 1; i++)
+//    db_gain[i] = std::max(gain[i - 1], EPS); // Prevent log10(0)
+//
+//  g = (gain[num_filters - 4] + gain[num_filters - 3]) / 2.0;
+//  db_gain[num_filters - 1] = std::max(g, EPS); // Prevent log10(0)
+//
+//  std::transform(db_gain.begin(), db_gain.end(), db_gain.begin(), [](double x) { return std::log10(x); });
+//  Real mean_db_gain = Sum(db_gain) / ((Real)db_gain.size());
+//  target_gain[0] = mcl::Pow(10.0, mean_db_gain); // 10 ^ mean(db_gain);
+//  std::transform(db_gain.begin(), db_gain.end(), db_gain.begin(), [mean_db_gain](double x) { return x - mean_db_gain; }); // db_gain - mean(db_gain);
+//
+//  input_gain = mcl::Multiply(db_gain, mat);
+//  input_gain = mcl::Pow(10.0, input_gain);
+//  
+//  for (size_t i = 0; i < num_filters; i++)
+//    target_gain[i + 1] = input_gain[i];
+//  
+//  // Create filters
+//  std::vector<IirFilter> all_filters;
+//  all_filters.push_back(GainFilter(target_gain[0]));
+//  all_filters.push_back(PeakLowShelfFilter(peak_low_shelf_fc, target_gain[1], Q, sampling_frequency));
+//  for (size_t i = 0; i < fc.size(); i++) {
+//    all_filters.push_back(PeakingFilter(fc[i], target_gain[i+2], Q, sampling_frequency));
+//  }
+//  all_filters.push_back(PeakHighShelfFilter(peak_high_shelf_fc, target_gain[num_filters], Q, sampling_frequency));
+//  
+//  return SeriesFilter(all_filters);
+//}
 
 
 

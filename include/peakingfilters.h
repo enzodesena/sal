@@ -128,7 +128,7 @@ private:
 /**
 * Class that implements a 2nd order peaking IIR filter (used by GraphicEQ)
 */
-class Peaking : public IirFilter {
+class PeakingFilter : public IirFilter {
 public:
   /**
   * Constructor that initialises an 2nd order peaking filter with a given cut off frequency
@@ -137,7 +137,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  Peaking(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+  PeakingFilter(const Real fc, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -149,7 +149,7 @@ public:
   * @param Q The quality factor of the filter
   * @param sample_rate The sample rate for calculating filter coefficients
   */
-  Peaking(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+  PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate) : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }
@@ -157,7 +157,7 @@ public:
   /**
   * Default deconstructor
   */
-  ~Peaking() {};
+  ~PeakingFilter() {};
 
   /**
   * Updates the gain of the peaking filter

@@ -73,14 +73,14 @@ void PeakLowShelf::UpdateGain(const Real g) {
 }
 
 
-void Peaking::SetParameters(const Real fc, const Real Q, const int sample_rate) {
+void PeakingFilter::SetParameters(const Real fc, const Real Q, const int sample_rate) {
   Real omega = 2.0 * PI * fc / ((Real) sample_rate);
   cosOmega = -2.0 * cos(omega);
   alpha = sin(omega) / (2.0 * Q);
 }
 
 
-void Peaking::UpdateGain(const Real g) {
+void PeakingFilter::UpdateGain(const Real g) {
   Real Avalue = sqrt(g);
   Real v1 = alpha * Avalue;
   Real v2 = alpha / Avalue;
