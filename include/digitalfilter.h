@@ -16,15 +16,15 @@
 namespace mcl {
   
 /** Digital filter abstract class */
-class DigitalFilter {
+class Filter {
 public:
   
   virtual void ProcessBlock(const Real* input_data, const Int num_samples,
                       Real* output_data) noexcept {
-    FilterSerial(input_data, num_samples, output_data);
+    ProcessBlockSerial(input_data, num_samples, output_data);
   }
   
-  void FilterSerial(const Real* input_data, const Int num_samples,
+  void ProcessBlockSerial(const Real* input_data, const Int num_samples,
                     Real* output_data) noexcept {
     ASSERT(num_samples>=0);
     ASSERT(input_data);
@@ -47,7 +47,7 @@ public:
   /** Resets the state of the filter */
   virtual void Reset() = 0;
   
-  virtual ~DigitalFilter() {};
+  virtual ~Filter() {};
 };
   
 /** Filter bank abstract class */

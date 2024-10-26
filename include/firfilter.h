@@ -17,7 +17,7 @@
 
 namespace mcl {
 /** FIR Filter */
-class FirFilter : public DigitalFilter {
+class FirFilter : public Filter {
 public:
   /** Constructs a default FIR filter, i.e. identical filter */
   FirFilter() noexcept;
@@ -37,7 +37,7 @@ public:
   virtual void ProcessBlock(const Real* __restrict input_data, const Int num_samples,
                       Real* __restrict output_data) noexcept;
   
-  using DigitalFilter::ProcessBlock;
+  using Filter::ProcessBlock;
   
   /** 
    Updates the filter coefficients. You can set how long it takes to 
@@ -125,7 +125,7 @@ private:
 };
   
   
-class GainFilter : public DigitalFilter {
+class GainFilter : public Filter {
 public:
   GainFilter(const Real gain) : gain_(gain) {}
   
@@ -143,7 +143,7 @@ private:
   Real gain_;
 };
 
-class IdenticalFilter : public DigitalFilter {
+class IdenticalFilter : public Filter {
 public:
   IdenticalFilter() {}
   

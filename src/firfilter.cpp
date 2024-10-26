@@ -215,7 +215,7 @@ void FirFilter::ProcessBlockAppleDsp(const Real* __restrict input_data,
                                const Int num_samples,
                                Real* __restrict output_data) noexcept {
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
-    FilterSerial(input_data, num_samples, output_data);
+    ProcessBlockSerial(input_data, num_samples, output_data);
     return;
   }
   

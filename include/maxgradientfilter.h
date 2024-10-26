@@ -15,7 +15,7 @@
 
 namespace mcl {
   
-class MaxGradientFilter : public DigitalFilter {
+class MaxGradientFilter : public Filter {
 public:
   MaxGradientFilter(Real max_gradient) :
   max_gradient_(max_gradient), previous_output_(0.0) {}

@@ -17,7 +17,7 @@ namespace mcl {
 
   
 /** IIR Filter */
-class IirFilter : public DigitalFilter {
+class IirFilter : public Filter {
 public:
   /** Constructs a default filter, i.e. identical filter*/
   IirFilter();
@@ -41,7 +41,7 @@ public:
   virtual void ProcessBlock(const Real* input_data, const size_t num_samples,
                       Real* output_data) noexcept;
   
-  using DigitalFilter::ProcessBlock;
+  using Filter::ProcessBlock;
   
   /** Returns the order of the filter. */
   size_t order() const noexcept;

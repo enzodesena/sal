@@ -24,7 +24,7 @@ namespace mcl {
 /**
 * Class that implements a graphic equaliser
 */
-class GraphicEq : public DigitalFilter {
+class GraphicEq : public Filter {
 public:
   /**
   * Constructor that initialises the GraphicEq with given frequency bands, Q factor and sample rate

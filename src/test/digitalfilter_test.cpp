@@ -363,7 +363,7 @@ bool FirFilter::Test() {
   
   FirFilter filter_lb(impulse_resp_b);
   std::vector<Real> cmp_lb(input_b.size(), 0.0);
-  filter_lb.FilterSerial(input_b.data(), input_b.size(), cmp_lb.data());
+  filter_lb.ProcessBlockSerial(input_b.data(), input_b.size(), cmp_lb.data());
   ASSERT(IsEqual(output_b_cmp, cmp_lb));
   
   std::vector<Real> input_c = {0.8147, 0.9058, 0.1270, 0.9134, 0.6324, 0.0975, 0.2785, 0.5469, 0.9575, 0.9649, 0.1576, 0.9706, 0.9572, 0.4854, 0.8003, 0.1419, 0.4218, 0.9157, 0.7922, 0.9595};

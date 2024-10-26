@@ -480,10 +480,10 @@ std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
 std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept;
   
 /** Filters all signals in a vector of signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
-void FilterAll(std::vector<std::vector<Real> >& array_of_signals, DigitalFilter* filter);
+void FilterAll(std::vector<std::vector<Real> >& array_of_signals, Filter* filter);
 
 /** Filters all signals in a vector of vectors signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
-void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, DigitalFilter* filter);
+void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, Filter* filter);
 
 } /**< namespace mcl */
 

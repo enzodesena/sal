@@ -322,13 +322,13 @@ std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
 }
   
 
-void FilterAll(std::vector<std::vector<Real> >& array_of_signals, DigitalFilter* filter) {
+void FilterAll(std::vector<std::vector<Real> >& array_of_signals, Filter* filter) {
   std::for_each(array_of_signals.begin(), array_of_signals.end(),
                 [filter](std::vector<Real>& signal){filter->Reset(); signal = filter->ProcessBlock(signal);});
   filter->Reset();
 }
 
-void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, DigitalFilter* filter) {
+void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, Filter* filter) {
   std::for_each(matrix_of_signals.begin(), matrix_of_signals.end(),
                 [filter](std::vector<std::vector<Real> >& array_of_signals){FilterAll(array_of_signals, filter);});
 }

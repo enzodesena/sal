@@ -101,7 +101,7 @@ void IirFilter::ProcessBlock(const Real* input_data, const size_t num_samples,
   if (B_.size() == 1) {
     Multiply(input_data, num_samples, B_[0], output_data);
   } else {
-    FilterSerial(input_data, num_samples, output_data);
+    ProcessBlockSerial(input_data, num_samples, output_data);
   }
 }
   
