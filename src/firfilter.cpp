@@ -311,11 +311,6 @@ void FirFilter::UpdateCoefficients() noexcept {
 }
   
 
-std::unique_ptr<DigitalFilter> FirFilter::Clone() const {
-  return std::make_unique<FirFilter>(*this);
-}
-
-
 } // namespace mcl
 
 

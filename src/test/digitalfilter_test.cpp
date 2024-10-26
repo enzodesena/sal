@@ -102,15 +102,6 @@ bool IirFilter::Test() {
   std::vector<Real> output_d = filter_l.Filter(signal_d);
   ASSERT(IsEqual(output_d, signal_d_out_cmp));
   
-  // Check clone
-  filter_l.Reset();
-  std::unique_ptr<DigitalFilter> filter_l_clone = filter_l.Clone();
-  ASSERT(IsEqual(filter_l_clone->Filter(signal_d), signal_d_out_cmp));
-  
-  // Check that clone clones also the state
-  filter_l.Filter(signal_d); // Fill with some new state
-  std::unique_ptr<DigitalFilter> filter_l_clone_2 = filter_l.Clone();
-  ASSERT(IsEqual(filter_l_clone_2->Filter(signal_d), filter_l.Filter(signal_d)));
   
   // Testing Reset()
   filter_l.Reset();

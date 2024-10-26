@@ -44,8 +44,6 @@ public:
     return output;
   }
   
-  virtual std::unique_ptr<DigitalFilter> Clone() const = 0;
-  
   /** Resets the state of the filter */
   virtual void Reset() = 0;
   

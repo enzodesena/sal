@@ -74,11 +74,6 @@ void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
   }
 }
 
-  
-std::unique_ptr<DigitalFilter> IirFilter::Clone() const {
-  return std::make_unique<IirFilter>(*this);
-}
-
 // Constructor
 IirFilter::IirFilter() :
   B_(mcl::UnaryVector<Real>(1.0)), A_(mcl::UnaryVector<Real>(1.0)), A0_(1.0) {

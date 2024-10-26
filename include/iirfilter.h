@@ -88,8 +88,6 @@ public:
   static bool PeakLowShelfTest() noexcept;
   static bool GraphicEqTest() noexcept;
   
-  /** Clone */
-  virtual std::unique_ptr<DigitalFilter> Clone() const;
 private:
   std::vector<Real> B_;
   std::vector<Real> A_;

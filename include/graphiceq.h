@@ -115,7 +115,6 @@ public:
   void PrintCoefficients();
   
   virtual void Reset();
-  virtual std::unique_ptr<DigitalFilter> Clone() const;
   
   static bool Test() noexcept;
 private:

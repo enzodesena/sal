@@ -213,10 +213,6 @@ void GraphicEq::Reset() {
   ASSERT(false);
 }
 
-
-std::unique_ptr<DigitalFilter> GraphicEq::Clone() const {
-  return std::make_unique<GraphicEq>(*this);
-}
   
 } // namespace mcl
 
