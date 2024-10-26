@@ -23,10 +23,8 @@
 
 namespace mcl {
   
-void Multiply(const Real* input_data,
-                      const Int num_samples,
-                      const Real gain,
-                      Real* output_data) noexcept {
+void Multiply(std::span<const Real> input_data, const Real gain, std::span<Real> output_data) noexcept {
+  size_t num_samples = input_data.size();
 #if defined(MCL_APPLE_ACCELERATE_MMA) && MCL_APPLE_ACCELERATE_MMA
   #ifdef MCL_DATA_TYPE_DOUBLE
   vDSP_vmulD(input_data, 1,
@@ -40,7 +38,7 @@ void Multiply(const Real* input_data,
             num_samples);
   #endif
 #else
-  for (Int i=0; i<num_samples; ++i) { output_data[i] = input_data[i]*gain; }
+  for (size_t i=0; i<num_samples; ++i) { output_data[i] = input_data[i]*gain; }
 #endif
 }
   
@@ -322,15 +320,22 @@ std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
 }
   
 
-void FilterAll(std::vector<std::vector<Real> >& array_of_signals, Filter* filter) {
-  std::for_each(array_of_signals.begin(), array_of_signals.end(),
-                [filter](std::vector<Real>& signal){filter->Reset(); signal = filter->ProcessBlock(signal);});
-  filter->Reset();
+void ProcessAll(Filter& filter, const std::vector<std::vector<Real> >& input_signals, std::vector<std::vector<Real> >& output_signals) {
+  filter.Reset();
+  for (size_t i=0; i<input_signals.size(); ++i) {
+    filter.ProcessBlock(input_signals[i], output_signals[i]);
+    filter.Reset();
+  }
 }
 
-void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, Filter* filter) {
-  std::for_each(matrix_of_signals.begin(), matrix_of_signals.end(),
-                [filter](std::vector<std::vector<Real> >& array_of_signals){FilterAll(array_of_signals, filter);});
+void FilterAll(Filter& filter, std::vector<std::vector<std::vector<Real> > >& matrix_of_input_signals, std::vector<std::vector<std::vector<Real> > >& matrix_of_output_signals) {
+  filter.Reset();
+  for (size_t i=0; i<matrix_of_input_signals.size(); ++i) {
+    for (size_t j=0; j<matrix_of_input_signals[i].size(); ++j) {
+      filter.ProcessBlock(matrix_of_input_signals[i][j], matrix_of_output_signals[i][j]);
+      filter.Reset();
+    }
+  }
 }
 
 

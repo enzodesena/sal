@@ -10,6 +10,7 @@
 #define MCL_DIGITALFILTER_H
 
 #include <vector>
+#include <span>
 
 #include "mcltypes.h"
 
@@ -19,17 +20,12 @@ namespace mcl {
 class Filter {
 public:
   
-  virtual void ProcessBlock(const Real* input_data, const Int num_samples,
-                      Real* output_data) noexcept {
-    ProcessBlockSerial(input_data, num_samples, output_data);
+  virtual void ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
+    ProcessBlockSerial(input_data, output_data);
   }
   
-  void ProcessBlockSerial(const Real* input_data, const Int num_samples,
-                    Real* output_data) noexcept {
-    ASSERT(num_samples>=0);
-    ASSERT(input_data);
-    ASSERT(output_data);
-    for (Int i=0; i<num_samples; ++i) {
+  void ProcessBlockSerial(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
+    for (size_t i=0; i<input_data.size(); ++i) {
       output_data[i] = ProcessSample(input_data[i]);
     }
   }
@@ -37,34 +33,27 @@ public:
   /** Returns the output of the filter for an input equal to `input` . */
   virtual Real ProcessSample(const Real input) noexcept = 0;
   
-  /** Returns the output of the filter for an input signal equal to `input`. */
-  std::vector<Real> ProcessBlock(const std::vector<Real>& input) noexcept {
-    std::vector<Real> output(input.size(), 0.0);
-    ProcessBlock(input.data(), input.size(), output.data());
-    return output;
-  }
-  
   /** Resets the state of the filter */
   virtual void Reset() = 0;
-  
-  virtual ~Filter() {};
 };
   
 /** Filter bank abstract class */
 class FilterBank {
 public:
   /** Returns the output of the filter bank for an input equal to `input`. Hello world! */
-  virtual std::vector<Real> ProcessSample(const Real input) = 0;
+  virtual void ProcessSample(const Real input_data, std::span<Real> output_data) = 0;
   
   /** Returns the output of the filter bank for a given input. */
-  virtual std::vector<std::vector<Real> > ProcessBlock(const std::vector<Real>& input) = 0;
+  virtual void ProcessBlock(std::span<const Real> input_data, std::span<std::span<Real> > output_data) {
+    for (size_t i=0; i<input_data.size(); ++i) {
+      ProcessSample(input_data[i], output_data[i]);
+    }
+  }
   
   /** Resets the state of the filter */
   virtual void Reset() = 0;
   
   virtual Int num_filters() = 0;
-  
-  virtual ~FilterBank() {};
 };
   
   

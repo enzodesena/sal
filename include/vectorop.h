@@ -72,16 +72,12 @@ std::vector<T> Multiply(const std::vector<T>& vector,
 }
   
   
-void Multiply(const Real* input_data,
-                      const Int num_samples,
-                      const Real gain,
-                      Real* output_data) noexcept;
-  
-template<>
-inline std::vector<Real> Multiply(const std::vector<Real>& input,
-                                          const Real gain) noexcept {
+void Multiply(std::span<const Real> input_data, const Real gain, std::span<Real> output_data) noexcept;
+
+
+inline std::vector<Real> Multiply(std::span<const Real> input, const Real gain) noexcept {
   std::vector<Real> output(input.size());
-  Multiply(input.data(), input.size(), gain, output.data());
+  Multiply(input, gain, output);
   return output;
 }
   
@@ -479,11 +475,11 @@ std::vector<Real> OverlapAdd(const std::vector<std::vector<Real> >& frames,
   
 std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept;
   
-/** Filters all signals in a vector of signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
-void FilterAll(std::vector<std::vector<Real> >& array_of_signals, Filter* filter);
-
-/** Filters all signals in a vector of vectors signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
-void FilterAll(std::vector<std::vector<std::vector<Real> > >& matrix_of_signals, Filter* filter);
+///** Filters all signals in a vector of signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
+void ProcessAll(Filter& filter, const std::vector<std::vector<Real> >& input_signals, std::vector<std::vector<Real> >& output_signals);
+//
+///** Filters all signals in a vector of vectors signals through a given filter. Prior to every signal, the filter state is reset, and it is also resetted at the end. */
+void FilterAll(Filter& filter, std::vector<std::vector<std::vector<Real> > >& matrix_of_input_signals, std::vector<std::vector<std::vector<Real> > >& matrix_of_output_signals);
 
 } /**< namespace mcl */
 

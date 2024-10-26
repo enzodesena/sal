@@ -704,25 +704,27 @@ bool VectorOpTest() {
   
   // Filter all
   std::vector<std::vector<Real> > set_of_signals_a = {frames_a_1_cmp, frames_a_2_cmp};
+  std::vector<std::vector<Real> > set_of_output_signals_a = set_of_signals_a;
   std::vector<Real> impulse(2);
   impulse[0] = 1.0;
   impulse[1] = -1.0;
   FirFilter filter_a(impulse);
-  FilterAll(set_of_signals_a, &filter_a);
+  ProcessAll(filter_a, set_of_signals_a, set_of_output_signals_a);
   std::vector<Real> filter_all_1_cmp = {0.2000,   -0.2000,    0.3000,   -1.7000,    4.1000};
   std::vector<Real> filter_all_2_cmp = {0.2000,   -1.0000,    2.5000,   -3.7000,    5.2000,   -6.4000,    5.9000};
-  ASSERT(IsEqual(set_of_signals_a[0], filter_all_1_cmp));
-  ASSERT(IsEqual(set_of_signals_a[1], filter_all_2_cmp));
+  ASSERT(IsEqual(set_of_output_signals_a[0], filter_all_1_cmp));
+  ASSERT(IsEqual(set_of_output_signals_a[1], filter_all_2_cmp));
   
   set_of_signals_a = {frames_a_1_cmp, frames_a_2_cmp}; // Resets the first set
   std::vector<std::vector<Real> > set_of_signals_b = {frames_a_2_cmp, frames_a_4_cmp};
-  std::vector<std::vector<std::vector<Real> > > set_of_sets_of_signals = {set_of_signals_a, set_of_signals_b};
-  FilterAll(set_of_sets_of_signals, &filter_a);
+  std::vector<std::vector<std::vector<Real> > > set_of_sets_of_input_signals = {set_of_signals_a, set_of_signals_b};
+  std::vector<std::vector<std::vector<Real> > > set_of_sets_of_output_signals = set_of_sets_of_input_signals;
+  FilterAll(filter_a, set_of_sets_of_input_signals, set_of_sets_of_output_signals);
   std::vector<Real> filter_all_4_cmp = {0.2000,   -1.0000,    1.7000,   -0.9000,    0.8000,   -2.8000,    3.8000,   -1.8000,    1.4000,   -4.6000,    5.9000};
-  ASSERT(IsEqual(set_of_sets_of_signals[0][0], filter_all_1_cmp));
-  ASSERT(IsEqual(set_of_sets_of_signals[0][1], filter_all_2_cmp));
-  ASSERT(IsEqual(set_of_sets_of_signals[1][0], filter_all_2_cmp));
-  ASSERT(IsEqual(set_of_sets_of_signals[1][1], filter_all_4_cmp));
+  ASSERT(IsEqual(set_of_sets_of_output_signals[0][0], filter_all_1_cmp));
+  ASSERT(IsEqual(set_of_sets_of_output_signals[0][1], filter_all_2_cmp));
+  ASSERT(IsEqual(set_of_sets_of_output_signals[1][0], filter_all_2_cmp));
+  ASSERT(IsEqual(set_of_sets_of_output_signals[1][1], filter_all_4_cmp));
   
   return true;
 }

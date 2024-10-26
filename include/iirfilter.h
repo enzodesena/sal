@@ -38,8 +38,7 @@ public:
    */
   virtual Real ProcessSample(const Real input) noexcept;
   
-  virtual void ProcessBlock(const Real* input_data, const size_t num_samples,
-                      Real* output_data) noexcept;
+  virtual void ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept;
   
   using Filter::ProcessBlock;
   
@@ -110,73 +109,14 @@ public:
   
   virtual Int num_filters() noexcept { return filters_.size(); }
   
-  /** Returns the output of the filter bank for an input equal to `input`. */
-  virtual std::vector<Real> ProcessSample(const Real input);
   
-  /** Returns the output of the filter bank for a given input. */
-  virtual std::vector<std::vector<Real> >
-  ProcessBlock(const std::vector<Real>& input);
+  /** Returns the output of the filter bank for an input equal to `input`. */
+  virtual void ProcessSample(const Real input, std::span<Real> output_data);
   
   /** Resets the state of the filter */
   virtual void Reset();
 };
   
-//
-//  /** Implements a first-order IIR low-pass filter with a given decay constant. */
-//  class RampSmoothingFilter : public DigitalFilter {
-//  public:
-//    
-//    /**
-//     @param[in] ramp_samples number of samples after which the value is
-//     to 1/e away from target value. */
-//    RampSmoothingFilter(const Real ramp_samples) noexcept {
-//      ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_samples, 0),
-//                          "Decay constant cannot be negative ");
-//      
-//      
-//    }
-//    
-//    virtual Real Filter(const Real input) noexcept {
-//      return filter_.Filter(input);
-//    }
-//    
-//    using DigitalFilter::Filter;
-//    
-//    virtual void Reset() noexcept { filter_.Reset(); }
-//    
-//    
-//  private:
-//  };
-//  
-///** Implements a first-order IIR low-pass filter with a given decay constant. */
-//class LowPassSmoothingFilter : public DigitalFilter {
-//public:
-//  
-//  /**
-//   @param[in] ramp_samples number of samples after which the value is
-//   to 1/e away from target value. */
-//  LowPassSmoothingFilter(const Real ramp_samples) noexcept {
-//    ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_samples, 0),
-//                        "Decay constant cannot be negative ");
-//    
-//    Real a1 = exp(-1.0/ramp_samples);
-//    Real b0 = 1.0 - a1;
-//    filter_ = IirFilter(mcl::BinaryVector(b0, 0.0),
-//                        mcl::BinaryVector(1.0, -a1));
-//  }
-//  
-//  virtual Real Filter(const Real input) noexcept {
-//    return filter_.Filter(input);
-//  }
-//  
-//  using DigitalFilter::Filter;
-//  
-//  virtual void Reset() noexcept { filter_.Reset(); }
-//  
-//  
-//private:
-//  IirFilter filter_;
-//};
   
 /** Constructs a filter for which output==input always. */
 IirFilter IdenticalFilter();
@@ -191,39 +131,6 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
 
 /** Returns a pinkifier filter */
 IirFilter PinkifierFilter();
-
-//
-///**
-//* Initialises a 2nd order high shelf filter with a given cut off frequency and shelf gain
-//*
-//* @param fc The cut off frequency of the filter
-//* @param g The shelf gain of the filter (linear)
-//* @param Q The quality factor of the filter
-//* @param sample_rate The sample rate for calculating filter coefficients
-//*/
-//IirFilter PeakHighShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate);
-//
-///**
-//* Initialises a 2nd order low shelf filter with a given cut off frequency and shelf gain
-//*
-//* @param fc The cut off frequency of the filter
-//* @param g The shelf gain of the filter (linear)
-//* @param Q The quality factor of the filter
-//* @param sample_rate The sample rate for calculating filter coefficients
-//*/
-//IirFilter PeakLowShelfFilter(const Real fc, const Real g, const Real Q, const int sample_rate);
-//
-///**
-//* Initialises a  2nd order peaking filter with a given cut off frequency and gain
-//*
-//* @param fc The center frequency of the filter
-//* @param g The gain of the filter (linear)
-//* @param Q The quality factor of the filter
-//* @param sample_rate The sample rate for calculating filter coefficients
-//*/
-//IirFilter PeakingFilter(const Real fc, const Real g, const Real Q, const int sample_rate);
-//
-//IirFilter GraphicEqFilter(const std::vector<Real>& gain, const std::vector<Real>& fc, const Real Q, const Real sampling_frequency);
 
 IirFilter SeriesFilter(const IirFilter& filter_a, const IirFilter& filter_b);
 

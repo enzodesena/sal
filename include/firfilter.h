@@ -10,6 +10,7 @@
 #define MCL_FIRFILTER_H
 
 #include <vector>
+#include <span>
 
 #include "mcltypes.h"
 #include "digitalfilter.h"
@@ -19,11 +20,8 @@ namespace mcl {
 /** FIR Filter */
 class FirFilter : public Filter {
 public:
-  /** Constructs a default FIR filter, i.e. identical filter */
-  FirFilter() noexcept;
-  
   /** Constructs an FIR filter with impulse response B. */
-  FirFilter(const std::vector<Real> B) noexcept;
+  FirFilter(const std::vector<Real> B = std::vector<Real>(1, 1.0), const size_t max_input_length = 1 << 14) noexcept;
   
   /** 
    Returns the output of the filter for an input equal to `input`.
@@ -34,8 +32,7 @@ public:
    */
   virtual Real ProcessSample(const Real input_sample) noexcept;
   
-  virtual void ProcessBlock(const Real* __restrict input_data, const Int num_samples,
-                      Real* __restrict output_data) noexcept;
+  virtual void ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept;
   
   using Filter::ProcessBlock;
   
@@ -72,36 +69,32 @@ public:
 private:
 #ifdef MCL_APPLE_ACCELERATE
   Real ProcessSampleAppleDsp(Real input_sample) noexcept;
-  void ProcessBlockAppleDsp(const Real* __restrict input_data, const Int num_samples,
-                      Real* __restrict output_data) noexcept;
+  void ProcessBlockAppleDsp(std::span<const Real> input_data, std::span<Real> output_data) noexcept;
 #endif
   
-  template<class T>
-  void GetExtendedInput(const Real* __restrict input_data, const Int num_samples,
-                        T* __restrict extended_input_data) {
+  void GetExtendedInput(std::span<const Real> input_data, std::span<Real> extended_input_data) {
+    size_t num_samples = input_data.size();
     
     // Stage 1
-    for (Int i=0; i<counter_; ++i) {
+    for (size_t i=0; i<(size_t)counter_; ++i) {
       extended_input_data[i] = delay_line_[counter_-i-1];
     }
     
     // Stage 2
     // Starting from counter_ in padded_data
     // Ending in counter_+(length_-counter_-1)
-    for (Int i=counter_; i<(length_-1); ++i) {
+    for (size_t i=counter_; i<(length_-1); ++i) {
       extended_input_data[i] = delay_line_[length_-1-(i-counter_)];
     }
     
     // Stage 3
     // Append input signal
-    for (Int i=(length_-1); i<(length_-1+num_samples); ++i) {
+    for (size_t i=(length_-1); i<(length_-1+num_samples); ++i) {
       extended_input_data[i] = input_data[i-(length_-1)];
     }
   }
   
   Real ProcessSampleStraight(Real input_sample) noexcept;
-  
-  std::vector<Real> ProcessBlockSequential(const std::vector<Real>& input) noexcept;
   
   /** Method called to slowly update the filter coefficients. It is called
    every time one of the Filter method is called and is activated only
@@ -111,8 +104,9 @@ private:
   
   std::vector<Real> impulse_response_;
   std::vector<Real> impulse_response_old_;
-  Int update_index_;
-  Int update_length_;
+  std::vector<Real> temp_buffer_;
+  size_t update_index_;
+  size_t update_length_;
   
   bool updating_;
   
@@ -121,7 +115,7 @@ private:
   std::vector<Real> coefficients_;
   std::vector<Real> delay_line_;
   Int counter_;
-  Int length_;
+  size_t length_;
 };
   
   
@@ -133,9 +127,8 @@ public:
     return input*gain_;
   }
   
-  virtual void ProcessBlock(const Real* input_data, const Int num_samples,
-                      Real* output_data) noexcept {
-    Multiply(input_data, num_samples, gain_, output_data);
+  virtual void ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
+    Multiply(input_data, gain_, output_data);
   }
   
   virtual void Reset() {}
@@ -151,9 +144,8 @@ public:
     return input;
   }
   
-  virtual void ProcessBlock(const Real* input_data, const Int num_samples,
-                      Real* output_data) noexcept {
-    for (Int i=0; i<num_samples; ++i) {
+  virtual void ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
+    for (size_t i=0; i<input_data.size(); ++i) {
       output_data[i] = input_data[i];
     }
   }

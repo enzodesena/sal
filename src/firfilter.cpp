@@ -38,21 +38,15 @@ std::vector<Real> FirFilter::impulse_response() noexcept {
                            impulse_response_.end());
 }
   
-FirFilter::FirFilter() noexcept :
-        impulse_response_(mcl::UnaryVector<Real>(1.0)),
-        impulse_response_old_(mcl::UnaryVector<Real>(1.0)),
-        update_index_(0), update_length_(0), updating_(false),
-        coefficients_(mcl::UnaryVector<Real>(1.0)),
-        counter_(0), length_(1) {
-  delay_line_.assign(1, 0.0);
-}
   
-FirFilter::FirFilter(std::vector<Real> B) noexcept :
+FirFilter::FirFilter(std::vector<Real> B, const size_t max_input_length) noexcept :
         impulse_response_(B),
         impulse_response_old_(B),
         update_index_(0), update_length_(0), updating_(false),
         coefficients_(B),
-        counter_(B.size()-1), length_(B.size()) {
+        counter_(B.size()-1),
+        length_(B.size()),
+        temp_buffer_(std::vector(max_input_length+B.size(), 0.0)) {
   delay_line_.assign(length_, 0.0);
 }
 
@@ -70,20 +64,20 @@ Real FirFilter::ProcessSample(Real input_sample) noexcept {
 }
   
 
-void FirFilter::ProcessBlock(const Real* __restrict input_data,
-                       const Int num_samples,
-                       Real* __restrict output_data) noexcept {
+void FirFilter::ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
+  ASSERT(input_data.size() == output_data.size());
+  size_t num_samples = input_data.size();
   if (updating_) { UpdateCoefficients(); }
   if (length_ == 1) {
     delay_line_[0] = input_data[num_samples-1];
-    mcl::Multiply(input_data, num_samples, coefficients_[0], output_data);
+    mcl::Multiply(input_data, coefficients_[0], output_data);
     return;
   }
 #if defined(MCL_APPLE_ACCELERATE)
-  ProcessBlockAppleDsp(input_data, num_samples, output_data);
+  ProcessBlockAppleDsp(input_data, output_data);
 #elif defined(MCL_AVX_ACCELERATE) || defined(MCL_NEON_ACCELERATE)
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
-    FilterSerial(input_data, num_samples, output_data);
+    ProcessBlockSerial(input_data, output_data);
     return;
   } else {
 #if defined(MCL_ENVWINDOWS) // defined(MCL_AVX_ACCELERATE)
@@ -91,14 +85,14 @@ void FirFilter::ProcessBlock(const Real* __restrict input_data,
     // Here we check whether they AVX supported or not, and in that case
     // we filter serially.
     if (! RuntimeArchInfo::GetInstance().IsAvxSupported()) {
-      FilterSerial(input_data, num_samples, output_data);
+      ProcessBlockSerial(input_data, output_data);
       return;
     }
 #endif
     
-    MCL_STACK_ALLOCATE(float, extended_input_data, num_samples+length_-1); // TODO: handle stack overflow
-    MCL_STACK_ALLOCATE(float, output_data_float, num_samples); // TODO: handle stack overflow
-    GetExtendedInput<float>(input_data, num_samples, extended_input_data);
+    MCL_STACK_ALLOCATE(float, extended_input_data, num_samples+length_-1); // TODO: this does not compile now because VLAs are incompatible with std::span.
+    MCL_STACK_ALLOCATE(float, output_data_float, num_samples);
+    GetExtendedInput<float>(input_data, extended_input_data);
     
 #ifdef MCL_AVX_ACCELERATE
     const Int batch_size = 8;
@@ -154,7 +148,7 @@ void FirFilter::ProcessBlock(const Real* __restrict input_data,
     counter_ = length_-1;
   }
 #else // defined(MCL_NO_ACCELERATE)
-  FilterSerial(input_data, num_samples, output_data);
+  FilterSerial(input_data, output_data);
 #endif
 }
   
@@ -195,7 +189,7 @@ Real FirFilter::ProcessSampleAppleDsp(Real input_sample) noexcept {
            &delay_line_[counter_],
            length_-counter_, result_a);
   
-  for (Int i=0; i<length_-counter_; i++) { result += result_a[i]; }
+  for (size_t i=0; i<length_-counter_; i++) { result += result_a[i]; }
   
   if (counter_ > 0) {
     Real result_b[counter_];
@@ -203,7 +197,7 @@ Real FirFilter::ProcessSampleAppleDsp(Real input_sample) noexcept {
              &delay_line_[0],
              counter_, result_b);
     
-    for (Int i=0; i<counter_; i++) { result += result_b[i]; }
+    for (size_t i=0; i<(size_t)counter_; i++) { result += result_b[i]; }
   }
   
   if (--counter_ < 0) { counter_ = length_-1; }
@@ -211,31 +205,30 @@ Real FirFilter::ProcessSampleAppleDsp(Real input_sample) noexcept {
   return result;
 }
   
-void FirFilter::ProcessBlockAppleDsp(const Real* __restrict input_data,
-                               const Int num_samples,
-                               Real* __restrict output_data) noexcept {
+void FirFilter::ProcessBlockAppleDsp(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
+  size_t num_samples = input_data.size();
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
-    ProcessBlockSerial(input_data, num_samples, output_data);
+    ProcessBlockSerial(input_data, output_data);
     return;
   }
   
-  MCL_STACK_ALLOCATE(mcl::Real, padded_data, num_samples+length_-1); // TODO: handle stack overflow
-  GetExtendedInput(input_data, num_samples, padded_data);
+  ASSERT(temp_buffer_.size() >= num_samples+length_-1);
+  GetExtendedInput(input_data, temp_buffer_);
   
 #if MCL_DATA_TYPE_DOUBLE
-  vDSP_convD(padded_data, 1,
+  vDSP_convD(temp_buffer_.data(), 1,
              coefficients_.data()+length_-1, -1,
-             output_data, 1,
+             output_data.data(), 1,
              num_samples, length_);
 #else // Type is float
-  vDSP_conv(padded_data, 1,
+  vDSP_conv(temp_buffer_.data(), 1,
             coefficients_.data()+length_-1, -1,
-            output_data, 1,
+            output_data.data(), 1,
             num_samples, length_);
 #endif
   
   // Reorganise state for the next run
-  for (Int i=0; i<length_; ++i) {
+  for (size_t i=0; i<length_; ++i) {
     delay_line_[i] = input_data[num_samples-1-i];
   }
   
@@ -263,7 +256,7 @@ void FirFilter::SetImpulseResponse(const std::vector<Real>& impulse_response,
   
 
   
-  if ((Int)impulse_response.size() != length_) {
+  if (impulse_response.size() != length_) {
     // If the impulse response changes length, then reset everything.
     length_ = impulse_response.size();
     delay_line_.assign(length_, 0.0);
@@ -295,7 +288,7 @@ void FirFilter::UpdateCoefficients() noexcept {
   ASSERT(impulse_response_.size() == coefficients_.size());
   Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
   Real weight_old = 1.0f-weight_new;
-  Multiply(impulse_response_.data(), impulse_response_.size(), weight_new, coefficients_.data());
+  Multiply(impulse_response_, weight_new, coefficients_);
   MultiplyAdd(impulse_response_old_.data(), weight_old,
               coefficients_.data(), impulse_response_.size(),
               coefficients_.data());
