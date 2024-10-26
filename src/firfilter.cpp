@@ -290,9 +290,9 @@ void FirFilter::UpdateCoefficients() noexcept {
   Real weight_new = ((Real)update_index_+1)/((Real)update_length_+1);
   Real weight_old = 1.0f-weight_new;
   Multiply(impulse_response_, weight_new, coefficients_);
-  MultiplyAdd(impulse_response_old_.data(), weight_old,
-              coefficients_.data(), impulse_response_.size(),
-              coefficients_.data());
+  MultiplyAdd(impulse_response_old_, weight_old,
+              coefficients_,
+              coefficients_);
   // The above is a lock-free equivalent version to
   // coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
   //                          mcl::Multiply(impulse_response_old_, weight_old));

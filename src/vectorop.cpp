@@ -42,25 +42,28 @@ void Multiply(std::span<const Real> input_data, const Real gain, std::span<Real>
 #endif
 }
   
-void MultiplyAdd(const Real* input_data_mult, const Real gain,
-                 const Real* input_data_add, const Int num_samples,
-                 Real* output_data) noexcept {
+
+void MultiplyAdd(std::span<const Real> input_data_mult,
+                 const Real gain,
+                 std::span<const Real> input_data_add,
+                 std::span<Real> output_data) noexcept {
+  const size_t num_samples = input_data_mult.size();
 #if defined(MCL_APPLE_ACCELERATE_MMA) && MCL_APPLE_ACCELERATE_MMA
   #ifdef MCL_DATA_TYPE_DOUBLE
-  vDSP_vmaD(input_data_mult, 1,
+  vDSP_vmaD(input_data_mult.data(), 1,
             &gain, 0,
-            input_data_add, 1,
-            output_data, 1,
+            input_data_add.data(), 1,
+            output_data.data(), 1,
             num_samples);
   #else
-  vDSP_vma(input_data_mult, 1,
+  vDSP_vma(input_data_mult.data(), 1,
            &gain, 0,
-           input_data_add, 1,
-           output_data, 1,
+           input_data_add.data(), 1,
+           output_data.data(), 1,
            num_samples);
   #endif
 #else
-  for (Int i=0; i<num_samples; ++i) {
+  for (size_t i=0; i<num_samples; ++i) {
     output_data[i] = input_data_mult[i]*gain + input_data_add[i];
   }
 #endif

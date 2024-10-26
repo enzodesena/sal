@@ -16,6 +16,7 @@
 
 #include "mcltypes.h"
 #include "quaternion.h"
+#include <span>
 #include <vector>
 
 namespace mcl {
@@ -41,14 +42,28 @@ bool IsEqual(const std::vector<T>& vector_a, const std::vector<T>& vector_b,
     return false;
   
   for (Int i=0; i<(Int)(Int)vector_a.size(); ++i) {
-    T element_a(vector_a[i]);
-    T element_b(vector_b[i]);
-    if (! IsEqual(element_a, element_b, precision))
+    if (! IsEqual(vector_a[i], vector_b[i], precision))
       return false;
   }
   return true;
 }
 
+template<class T>
+bool IsEqual(std::span<const T> vector_a, std::span<const T> vector_b,
+             Real precision = VERY_SMALL) noexcept {
+  if ((Int)vector_a.size() != (Int)vector_b.size())
+    return false;
+  
+  for (Int i=0; i<(Int)(Int)vector_a.size(); ++i) {
+    if (! IsEqual(vector_a[i], vector_b[i], precision))
+      return false;
+  }
+  return true;
+}
+
+
+bool IsEqual(std::span<const Real> vector_a, std::span<const Real> vector_b,
+             Real precision = VERY_SMALL) noexcept;
 
 bool IsEqual(const std::vector<Int>& vector_a, const std::vector<Int>& vector_b);
 

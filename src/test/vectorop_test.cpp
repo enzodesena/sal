@@ -548,8 +548,8 @@ bool VectorOpTest() {
   vector_bc[2] = -0.5;
   vector_bc[3] = -0.0;
   std::vector<Real> vector_bb_result(4);
-  MultiplyAdd(vector_ba.data(), 0.5, vector_bc.data(), 4,
-              vector_bb_result.data());
+  MultiplyAdd(vector_ba, 0.5, vector_bc,
+              vector_bb_result);
   std::vector<Real> vector_bb_result_cmp(4);
   vector_bb_result_cmp[0] = -1.2*0.5+0.0;
   vector_bb_result_cmp[1] = 2.3*0.5+1.0;

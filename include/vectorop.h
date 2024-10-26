@@ -84,11 +84,10 @@ inline std::vector<Real> Multiply(std::span<const Real> input, const Real gain) 
 /** This calculates the multiplication of a vector (`input_data_mult`)
  by a constant (`gain`), and then adds the resulting vector to
  another vector (`input_data_add'). */
-void MultiplyAdd(const Real* input_data_mult,
-                         const Real gain,
-                         const Real* input_data_add,
-                         const Int num_samples,
-                         Real* output_data) noexcept;
+void MultiplyAdd(std::span<const Real> input_data_mult,
+                 const Real gain,
+                 std::span<const Real> input_data_add,
+                 std::span<Real> output_data) noexcept;
   
   
 /** 

@@ -130,6 +130,18 @@ bool IsEqual(const std::vector<Int>& vector_a,
   return true;
 }
 
+bool IsEqual(std::span<const Real> vector_a, std::span<const Real> vector_b,
+             Real precision) noexcept {
+  if ((Int)vector_a.size() != (Int)vector_b.size())
+    return false;
+  
+  for (Int i=0; i<(Int)(Int)vector_a.size(); ++i) {
+    if (! IsEqual(vector_a[i], vector_b[i], precision))
+      return false;
+  }
+  return true;
+}
+
 bool IsReal(const std::vector<Complex>& input) {
   const Int size = input.size();
   for (Int i=0; i<size; ++i) {
