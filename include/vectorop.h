@@ -24,8 +24,8 @@ namespace mcl {
   
 /** Equivalent to Matlab's length(input). */
 template<class T>
-Int Length(const std::vector<T>& input) noexcept {
-  return (UInt) input.size();
+size_t Length(const std::vector<T>& input) noexcept {
+  return input.size();
 }
 
 

@@ -183,21 +183,22 @@ Real FirFilter::ProcessSampleAppleDsp(Real input_sample) noexcept {
   
   delay_line_[counter_] = input_sample;
   Real result = 0.0;
+
   
-  MCL_STACK_ALLOCATE(mcl::Real, result_a, length_-counter_); // TODO: handle stack overflow
-  Multiply(&coefficients_[0],
-           &delay_line_[counter_],
-           length_-counter_, result_a);
+  ASSERT(temp_buffer_.size() >= length_-counter_);
+  Multiply(coefficients_,
+           std::span(delay_line_.begin() + counter_, length_-counter_),
+           temp_buffer_);
   
-  for (size_t i=0; i<length_-counter_; i++) { result += result_a[i]; }
+  for (size_t i=0; i<length_-counter_; i++) { result += temp_buffer_[i]; }
   
   if (counter_ > 0) {
-    Real result_b[counter_];
-    Multiply(&coefficients_[length_-counter_],
-             &delay_line_[0],
-             counter_, result_b);
+    ASSERT(temp_buffer_.size() >= (size_t)counter_);
+    Multiply(std::span(coefficients_.begin() + length_-counter_, counter_),
+             delay_line_,
+             temp_buffer_);
     
-    for (size_t i=0; i<(size_t)counter_; i++) { result += result_b[i]; }
+    for (size_t i=0; i<(size_t)counter_; i++) { result += temp_buffer_[i]; }
   }
   
   if (--counter_ < 0) { counter_ = length_-1; }

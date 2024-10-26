@@ -12,6 +12,7 @@
 #include <cassert>
 #include "mcltypes.h"
 #include <vector>
+#include <span>
 #include <limits>
 
 namespace mcl {
@@ -32,10 +33,7 @@ std::vector<T> Add(const std::vector<T>& vector_a,
   return output;
 }
   
-void Add(const Real* input_data_a,
-                 const Real* input_data_b,
-                 Int num_samples,
-                 Real* output_data) noexcept;
+void Add(std::span<const Real> input_a, std::span<const Real> input_b, std::span<Real> output)  noexcept;
 
 
 template<>
@@ -44,8 +42,7 @@ inline std::vector<Real> Add(const std::vector<Real>& vector_a,
   ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<Real> output((Int)vector_a.size());
-  Add(vector_a.data(), vector_b.data(), (Int)vector_a.size(),
-      output.data());
+  Add(vector_a, vector_b, output);
   return output;
 }
   
@@ -92,8 +89,8 @@ std::vector<T> Multiply(const std::vector<T>& vector_a,
   return output;
 }
 
-void Multiply(const Real* input_data_a, const Real* input_data_b,
-              Int num_samples, Real* output_data) noexcept;
+void Multiply(std::span<const Real> input_a, std::span<const Real> input_b,
+              std::span<Real> output) noexcept;
   
   
 template<>
@@ -102,8 +99,7 @@ inline std::vector<Real> Multiply(const std::vector<Real>& vector_a,
   ASSERT(vector_a.size() == vector_b.size());
   
   std::vector<Real> output((Int)vector_a.size());
-  Multiply(vector_a.data(), vector_b.data(), (Int)vector_a.size(),
-           output.data());
+  Multiply(vector_a, vector_b, output);
   return output;
 }
   

@@ -18,48 +18,48 @@
 namespace mcl {
 
   
-void Multiply(const Real* input_data_a,
-              const Real* input_data_b,
-              Int num_samples,
-              Real* output_data) noexcept {
+void Multiply(std::span<const Real> input_a,
+              std::span<const Real> input_b,
+              std::span<Real> output) noexcept {
+  const size_t num_samples = input_a.size();
 #ifdef MCL_APPLE_ACCELERATE
   #if MCL_DATA_TYPE_DOUBLE
-  vDSP_vmulD(input_data_a, 1,
-             input_data_b, 1,
-             output_data, 1,
+  vDSP_vmulD(input_a.data(), 1,
+             input_b.data(), 1,
+             output.data(), 1,
              num_samples);
   #else
-  vDSP_vmul(input_data_a, 1,
-            input_data_b, 1,
-            output_data, 1,
+  vDSP_vmul(input_a.data(), 1,
+            input_b.data(), 1,
+            output.data(), 1,
             num_samples);
   #endif
 #else
-  for (Int i=0; i<num_samples; ++i) {
-    output_data[i] = input_data_a[i]*input_data_b[i];
+  for (size_t i=0; i<num_samples; ++i) {
+    output[i] = input_a[i]*input_b[i];
   }
 #endif
 }
   
-void Add(const Real* input_data_a,
-                 const Real* input_data_b,
-                 Int num_samples,
-                 Real* output_data) noexcept {
+void Add(std::span<const Real> input_a,
+         std::span<const Real> input_b,
+         std::span<Real> output) noexcept {
+  const size_t num_samples = input_a.size();
 #ifdef MCL_APPLE_ACCELERATE
   #if MCL_DATA_TYPE_DOUBLE
-    vDSP_vaddD(input_data_a, 1,
-               input_data_b, 1,
-               output_data, 1,
+    vDSP_vaddD(input_a.data(), 1,
+               input_b.data(), 1,
+               output.data(), 1,
                num_samples);
   #else
-    vDSP_vadd(input_data_a, 1,
-              input_data_b, 1,
-              output_data, 1,
+    vDSP_vadd(input_a.data(), 1,
+              input_b.data(), 1,
+              output.data(), 1,
               num_samples);
   #endif
 #else
-  for (Int i=0; i<num_samples; ++i) {
-    output_data[i] = input_data_a[i]+input_data_b[i];
+  for (size_t i=0; i<num_samples; ++i) {
+    output[i] = input_a[i]+input_b[i];
   }
 #endif
 }
