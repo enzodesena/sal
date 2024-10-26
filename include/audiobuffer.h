@@ -150,7 +150,7 @@ public:
     ASSERT(from_sample_id >= 0);
     ASSERT(num_samples >= 0);
     ASSERT((from_sample_id+num_samples) <= num_samples_);
-    filter.Filter(samples, num_samples, temporary_vector_.data());
+    filter.ProcessBlock(samples, num_samples, temporary_vector_.data());
     mcl::Add(temporary_vector_.data(),
              &(data_[channel_id][from_sample_id]), num_samples,
              &(data_[channel_id][from_sample_id]));

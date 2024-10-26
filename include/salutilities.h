@@ -271,11 +271,11 @@ public:
                              mcl::BinaryVector<mcl::Real>(1.0, -a1));
   }
   
-  virtual mcl::Real Filter(const mcl::Real input) noexcept {
-    return filter_.Filter(input);
+  virtual mcl::Real ProcessSample(const mcl::Real input) noexcept {
+    return filter_.ProcessSample(input);
   }
   
-  using mcl::DigitalFilter::Filter;
+  using mcl::DigitalFilter::ProcessSample;
   
   virtual void Reset() noexcept { filter_.Reset(); }
   

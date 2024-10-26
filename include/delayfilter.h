@@ -115,7 +115,7 @@ public:
   DelayFilter& operator= (const DelayFilter&);
   DelayFilter (const DelayFilter&);
   
-  virtual mcl::Real Filter(const mcl::Real input) noexcept;
+  virtual mcl::Real ProcessSample(const mcl::Real input) noexcept;
   
   static bool Test();
 protected:

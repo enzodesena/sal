@@ -128,7 +128,7 @@ sal::Length PropagationLine::distance() const noexcept {
   
 void PropagationLine::Write(const sal::Sample& sample) noexcept {
   if (air_filters_active_) {
-    delay_filter_.Write(air_filter_.Filter(sample));
+    delay_filter_.Write(air_filter_.ProcessSample(sample));
   } else {
     delay_filter_.Write(sample);
   }
@@ -141,7 +141,7 @@ void PropagationLine::Write(const Sample* samples,
   if (air_filters_active_) {
     ASSERT(num_samples < MCL_MAX_VLA_LENGTH);
     MCL_STACK_ALLOCATE(Sample, temp_samples, num_samples); // TODO: handle stack overflow
-    air_filter_.Filter(samples, num_samples, temp_samples);
+    air_filter_.ProcessBlock(samples, num_samples, temp_samples);
     delay_filter_.Write(temp_samples, num_samples);
   } else {
     delay_filter_.Write(samples, num_samples);

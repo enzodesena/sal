@@ -258,12 +258,12 @@ bool DelayFilter::Test() {
   
   // Testing DelayLine with Filter
   DelayFilter delay_filter_e = DelayFilter(0, 100);
-  ASSERT(IsEqual(delay_filter_e.Filter(0.0), 0.0));
-  ASSERT(IsEqual(delay_filter_e.Filter(0.2), 0.2));
+  ASSERT(IsEqual(delay_filter_e.ProcessSample(0.0), 0.0));
+  ASSERT(IsEqual(delay_filter_e.ProcessSample(0.2), 0.2));
   delay_filter_e.SetLatency(1);
   delay_filter_e.Reset();
-  ASSERT(IsEqual(delay_filter_e.Filter(1.0), 0.0));
-  ASSERT(IsEqual(delay_filter_e.Filter(0.0), 1.0));
+  ASSERT(IsEqual(delay_filter_e.ProcessSample(1.0), 0.0));
+  ASSERT(IsEqual(delay_filter_e.ProcessSample(0.0), 1.0));
   
   DelayFilter delay_filter_f(1, 4);
   delay_filter_f.Write(1.0);
