@@ -36,12 +36,12 @@ public:
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real Filter(const Real input) noexcept;
+  virtual Real ProcessSample(const Real input) noexcept;
   
-  virtual void Filter(const Real* input_data, const size_t num_samples,
+  virtual void ProcessBlock(const Real* input_data, const size_t num_samples,
                       Real* output_data) noexcept;
   
-  using DigitalFilter::Filter;
+  using DigitalFilter::ProcessBlock;
   
   /** Returns the order of the filter. */
   size_t order() const noexcept;
@@ -111,11 +111,11 @@ public:
   virtual Int num_filters() noexcept { return filters_.size(); }
   
   /** Returns the output of the filter bank for an input equal to `input`. */
-  virtual std::vector<Real> Filter(const Real input);
+  virtual std::vector<Real> ProcessSample(const Real input);
   
   /** Returns the output of the filter bank for a given input. */
   virtual std::vector<std::vector<Real> >
-  Filter(const std::vector<Real>& input);
+  ProcessBlock(const std::vector<Real>& input);
   
   /** Resets the state of the filter */
   virtual void Reset();

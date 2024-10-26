@@ -40,7 +40,7 @@ static void FirFilterSequentialBenchmark(benchmark::State& state) {
     
     for (size_t i=0; i<batch_size; ++i)
     {
-      output[i] = fir_filter.Filter(input[i]);
+      output[i] = fir_filter.ProcessSample(input[i]);
     }
     benchmark::ClobberMemory(); // Force output to be written to memory.
   }
@@ -70,7 +70,7 @@ static void FirFilterBenchmark(benchmark::State& state) {
     input = random_generator.Rand(batch_size);
     state.ResumeTiming();
     
-    fir_filter.Filter(input.data(), input.size(), output.data());
+    fir_filter.ProcessBlock(input.data(), input.size(), output.data());
     benchmark::ClobberMemory(); // Force output to be written to memory.
   }
 }
@@ -98,7 +98,7 @@ static void IirFilterBenchmark(benchmark::State& state) {
     input = rand();
     state.ResumeTiming();
     
-    output = iir_filter.Filter(input);
+    output = iir_filter.ProcessSample(input);
     benchmark::ClobberMemory(); // Force output to be written to memory.
   }
 }

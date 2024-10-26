@@ -32,12 +32,12 @@ public:
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real Filter(const Real input_sample) noexcept;
+  virtual Real ProcessSample(const Real input_sample) noexcept;
   
-  virtual void Filter(const Real* __restrict input_data, const Int num_samples,
+  virtual void ProcessBlock(const Real* __restrict input_data, const Int num_samples,
                       Real* __restrict output_data) noexcept;
   
-  using DigitalFilter::Filter;
+  using DigitalFilter::ProcessBlock;
   
   /** 
    Updates the filter coefficients. You can set how long it takes to 
@@ -71,8 +71,8 @@ public:
   
 private:
 #ifdef MCL_APPLE_ACCELERATE
-  Real FilterAppleDsp(Real input_sample) noexcept;
-  void FilterAppleDsp(const Real* __restrict input_data, const Int num_samples,
+  Real ProcessSampleAppleDsp(Real input_sample) noexcept;
+  void ProcessBlockAppleDsp(const Real* __restrict input_data, const Int num_samples,
                       Real* __restrict output_data) noexcept;
 #endif
   
@@ -99,9 +99,9 @@ private:
     }
   }
   
-  Real FilterStraight(Real input_sample) noexcept;
+  Real ProcessSampleStraight(Real input_sample) noexcept;
   
-  std::vector<Real> FilterSequential(const std::vector<Real>& input) noexcept;
+  std::vector<Real> ProcessBlockSequential(const std::vector<Real>& input) noexcept;
   
   /** Method called to slowly update the filter coefficients. It is called
    every time one of the Filter method is called and is activated only
@@ -129,11 +129,11 @@ class GainFilter : public DigitalFilter {
 public:
   GainFilter(const Real gain) : gain_(gain) {}
   
-  virtual Real Filter(const Real input) noexcept {
+  virtual Real ProcessSample(const Real input) noexcept {
     return input*gain_;
   }
   
-  virtual void Filter(const Real* input_data, const Int num_samples,
+  virtual void ProcessBlock(const Real* input_data, const Int num_samples,
                       Real* output_data) noexcept {
     Multiply(input_data, num_samples, gain_, output_data);
   }
@@ -147,11 +147,11 @@ class IdenticalFilter : public DigitalFilter {
 public:
   IdenticalFilter() {}
   
-  virtual Real Filter(const Real input) noexcept {
+  virtual Real ProcessSample(const Real input) noexcept {
     return input;
   }
   
-  virtual void Filter(const Real* input_data, const Int num_samples,
+  virtual void ProcessBlock(const Real* input_data, const Int num_samples,
                       Real* output_data) noexcept {
     for (Int i=0; i<num_samples; ++i) {
       output_data[i] = input_data[i];

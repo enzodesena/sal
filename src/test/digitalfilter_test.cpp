@@ -20,10 +20,10 @@ namespace mcl {
 
 bool IirFilter::Test() {
   IirFilter filter_a = IdenticalFilter();
-  ASSERT(IsEqual(filter_a.Filter(1.2), 1.2));
+  ASSERT(IsEqual(filter_a.ProcessSample(1.2), 1.2));
   
   IirFilter filter_b = GainFilter(0.76);
-  ASSERT(IsEqual(filter_b.Filter(1.2), 0.912));
+  ASSERT(IsEqual(filter_b.ProcessSample(1.2), 0.912));
   
   std::vector<Real> B;
   std::vector<Real> A;
@@ -38,28 +38,28 @@ bool IirFilter::Test() {
   
   IirFilter filter_c(B,A);
   
-  ASSERT(IsEqual(filter_c.Filter(1.2), 0.912));
-  ASSERT(IsEqual(filter_c.Filter(0.2), -3.064));
-  ASSERT(IsEqual(filter_c.Filter(0.5), 0.13824));
-  ASSERT(IsEqual(filter_c.Filter(-1.2), 0.11184));
-  ASSERT(IsEqual(filter_c.Filter(0.0), 7.226124799999999999999999999999));
-  ASSERT(IsEqual(filter_c.Filter(0.0), 2.251659199999999999999999999999));
+  ASSERT(IsEqual(filter_c.ProcessSample(1.2), 0.912));
+  ASSERT(IsEqual(filter_c.ProcessSample(0.2), -3.064));
+  ASSERT(IsEqual(filter_c.ProcessSample(0.5), 0.13824));
+  ASSERT(IsEqual(filter_c.ProcessSample(-1.2), 0.11184));
+  ASSERT(IsEqual(filter_c.ProcessSample(0.0), 7.226124799999999999999999999999));
+  ASSERT(IsEqual(filter_c.ProcessSample(0.0), 2.251659199999999999999999999999));
   
   IirFilter filter_d = WallFilter(kCarpetPile, 44100);
-  ASSERT(IsEqual(filter_d.Filter(1.0), 0.562666833756030));
-  ASSERT(IsEqual(filter_d.Filter(0.5), 0.315580130841020));
+  ASSERT(IsEqual(filter_d.ProcessSample(1.0), 0.562666833756030));
+  ASSERT(IsEqual(filter_d.ProcessSample(0.5), 0.315580130841020));
   
   IirFilter filter_e = WallFilter(kCarpetCotton, 44100);
-  ASSERT(IsEqual(filter_e.Filter(1.0), 0.687580695329600));
-  ASSERT(IsEqual(filter_e.Filter(0.5), 0.322032066558733));
+  ASSERT(IsEqual(filter_e.ProcessSample(1.0), 0.687580695329600));
+  ASSERT(IsEqual(filter_e.ProcessSample(0.5), 0.322032066558733));
   
   IirFilter filter_f = WallFilter(kWallBricks, 44100);
-  ASSERT(IsEqual(filter_f.Filter(1.0), 0.978495798553620));
-  ASSERT(IsEqual(filter_f.Filter(0.5), 0.490594444043047));
+  ASSERT(IsEqual(filter_f.ProcessSample(1.0), 0.978495798553620));
+  ASSERT(IsEqual(filter_f.ProcessSample(0.5), 0.490594444043047));
   
   IirFilter filter_g = WallFilter(kCeilingTile, 44100);
-  ASSERT(IsEqual(filter_g.Filter(1.0), 0.168413736374283));
-  ASSERT(IsEqual(filter_g.Filter(0.5), 0.151668254946940));
+  ASSERT(IsEqual(filter_g.ProcessSample(1.0), 0.168413736374283));
+  ASSERT(IsEqual(filter_g.ProcessSample(0.5), 0.151668254946940));
   
   
   std::vector<Real> input_a(4);
@@ -70,7 +70,7 @@ bool IirFilter::Test() {
   
   // Testing pinkifier filter
   IirFilter pinkifier = PinkifierFilter();
-  std::vector<Real> output_e = pinkifier.Filter(input_a);
+  std::vector<Real> output_e = pinkifier.ProcessBlock(input_a);
   std::vector<Real> output_e_cmp(input_a.size());
   output_e_cmp[0] = 0.600000000000000;
   output_e_cmp[1] = -3.152233220000000;
@@ -99,13 +99,13 @@ bool IirFilter::Test() {
   signal_d_out_cmp[1] = -0.011459974617699;
   signal_d_out_cmp[2] = -0.011370929428126;
   signal_d_out_cmp[3] = -0.011282404149780;
-  std::vector<Real> output_d = filter_l.Filter(signal_d);
+  std::vector<Real> output_d = filter_l.ProcessBlock(signal_d);
   ASSERT(IsEqual(output_d, signal_d_out_cmp));
   
   
   // Testing Reset()
   filter_l.Reset();
-  ASSERT(IsEqual(filter_l.Filter(0.0), 0.0));
+  ASSERT(IsEqual(filter_l.ProcessSample(0.0), 0.0));
   
   std::vector<Real> impulse_resp_2(3);
   impulse_resp_2[0] = 0.2;
@@ -113,9 +113,9 @@ bool IirFilter::Test() {
   impulse_resp_2[2] = 2.5;
   
   FirFilter filter_m(impulse_resp_2);
-  ASSERT(! IsEqual(filter_m.Filter(1.0), 0.0));
+  ASSERT(! IsEqual(filter_m.ProcessSample(1.0), 0.0));
   filter_m.Reset();
-  ASSERT(IsEqual(filter_m.Filter(0.0), 0.0));
+  ASSERT(IsEqual(filter_m.ProcessSample(0.0), 0.0));
   
   
   // Testing butterworth filter
@@ -157,8 +157,8 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(butter_b.A(), butter_b_den_cmp));
   
   IirFilter filter_i;
-  ASSERT(IsEqual(filter_i.Filter(1.2), 1.2));
-  ASSERT(IsEqual(filter_i.Filter(-0.2), -0.2));
+  ASSERT(IsEqual(filter_i.ProcessSample(1.2), 1.2));
+  ASSERT(IsEqual(filter_i.ProcessSample(-0.2), -0.2));
   
   // Testing octave filter
   IirFilter octave_a = OctaveFilter(3, 4000.0, 44100.0);
@@ -185,7 +185,7 @@ bool IirFilter::Test() {
   octave_a.Reset();
   butter_b.Reset();
   IirFilter combined_a = SeriesFilter(octave_a, butter_b);
-  assert(IsEqual(butter_b.Filter(octave_a.Filter(input_a)), combined_a.Filter(input_a)));
+  assert(IsEqual(butter_b.ProcessBlock(octave_a.ProcessBlock(input_a)), combined_a.ProcessBlock(input_a)));
   
   octave_a.Reset();
   butter_a.Reset();
@@ -195,38 +195,38 @@ bool IirFilter::Test() {
   filters.push_back(butter_b);
   filters.push_back(butter_a);
   IirFilter combined_b = SeriesFilter(filters);
-  assert(IsEqual(butter_a.Filter(butter_b.Filter(octave_a.Filter(input_a))), combined_b.Filter(input_a)));
+  assert(IsEqual(butter_a.ProcessBlock(butter_b.ProcessBlock(octave_a.ProcessBlock(input_a))), combined_b.ProcessBlock(input_a)));
   
   octave_a.Reset();
   butter_a.Reset();
   butter_b.Reset();
   combined_b.Reset();
-  assert(IsEqual(butter_b.Filter(octave_a.Filter(butter_a.Filter(input_a))), combined_b.Filter(input_a)));
+  assert(IsEqual(butter_b.ProcessBlock(octave_a.ProcessBlock(butter_a.ProcessBlock(input_a))), combined_b.ProcessBlock(input_a)));
 
   
   // Testing iir filter bank
   octave_a.Reset();
   IirFilterBank octave_bank_a = OctaveFilterBank(3, 1, 4000.0, 44100.0);
-  ASSERT(IsEqual(octave_bank_a.Filter(1.25)[0], octave_a.Filter(1.25)));
-  ASSERT(IsEqual(octave_bank_a.Filter(0.25)[0], octave_a.Filter(0.25)));
-  ASSERT(IsEqual(octave_bank_a.Filter(5.0)[0], octave_a.Filter(5.0)));
-  ASSERT(octave_bank_a.Filter(1.25).size() == 1);
+  ASSERT(IsEqual(octave_bank_a.ProcessSample(1.25)[0], octave_a.ProcessSample(1.25)));
+  ASSERT(IsEqual(octave_bank_a.ProcessSample(0.25)[0], octave_a.ProcessSample(0.25)));
+  ASSERT(IsEqual(octave_bank_a.ProcessSample(5.0)[0], octave_a.ProcessSample(5.0)));
+  ASSERT(octave_bank_a.ProcessSample(1.25).size() == 1);
   ASSERT(octave_bank_a.num_filters() == 1);
   
   IirFilterBank octave_bank_b = OctaveFilterBank(3, 2, 2000.0, 44100.0);
   octave_a.Reset();
-  ASSERT(IsEqual(octave_bank_b.Filter(1.25)[1], octave_a.Filter(1.25)));
-  ASSERT(IsEqual(octave_bank_b.Filter(0.25)[1], octave_a.Filter(0.25)));
-  ASSERT(IsEqual(octave_bank_b.Filter(5.0)[1], octave_a.Filter(5.0)));
-  ASSERT(octave_bank_b.Filter(1.25).size() == 2);
+  ASSERT(IsEqual(octave_bank_b.ProcessSample(1.25)[1], octave_a.ProcessSample(1.25)));
+  ASSERT(IsEqual(octave_bank_b.ProcessSample(0.25)[1], octave_a.ProcessSample(0.25)));
+  ASSERT(IsEqual(octave_bank_b.ProcessSample(5.0)[1], octave_a.ProcessSample(5.0)));
+  ASSERT(octave_bank_b.ProcessSample(1.25).size() == 2);
   ASSERT(octave_bank_b.num_filters() == 2);
   
   octave_a.Reset();
   octave_bank_b.Reset();
-  ASSERT(IsEqual(octave_bank_b.Filter(1.25)[1], octave_a.Filter(1.25)));
-  ASSERT(IsEqual(octave_bank_b.Filter(0.25)[1], octave_a.Filter(0.25)));
-  ASSERT(IsEqual(octave_bank_b.Filter(5.0)[1], octave_a.Filter(5.0)));
-  ASSERT(octave_bank_b.Filter(1.25).size() == 2);
+  ASSERT(IsEqual(octave_bank_b.ProcessSample(1.25)[1], octave_a.ProcessSample(1.25)));
+  ASSERT(IsEqual(octave_bank_b.ProcessSample(0.25)[1], octave_a.ProcessSample(0.25)));
+  ASSERT(IsEqual(octave_bank_b.ProcessSample(5.0)[1], octave_a.ProcessSample(5.0)));
+  ASSERT(octave_bank_b.ProcessSample(1.25).size() == 2);
 
   return true;
 }
@@ -243,21 +243,21 @@ bool FirFilter::Test() {
   Real output_lasplita_a[3];
   std::vector<Real> cmp_lasplita_a = { 0.1, 0.4, 1.0 };
 #ifdef MCL_APPLE_ACCELERATE
-  filter_lasplita.FilterAppleDsp(&input.data()[0], 3, output_lasplita_a);
+  filter_lasplita.ProcessBlockAppleDsp(&input.data()[0], 3, output_lasplita_a);
   ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
 #endif
 
   Real output_lasplita_b[4];
   std::vector<Real> cmp_lasplita_b = { 1.6, 2.2, 2.8, 3.4 };
 #ifdef MCL_APPLE_ACCELERATE
-  filter_lasplita.FilterAppleDsp(&input.data()[3], 4, output_lasplita_b);
+  filter_lasplita.ProcessBlockAppleDsp(&input.data()[3], 4, output_lasplita_b);
   ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
 #endif
   
   filter_lasplita.Reset();
-  filter_lasplita.Filter(&input.data()[0], 3, output_lasplita_a);
+  filter_lasplita.ProcessBlock(&input.data()[0], 3, output_lasplita_a);
   ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
-  filter_lasplita.Filter(&input.data()[3], 4, output_lasplita_b);
+  filter_lasplita.ProcessBlock(&input.data()[3], 4, output_lasplita_b);
   ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
   
   
@@ -274,7 +274,7 @@ bool FirFilter::Test() {
   
   FirFilter filter_a;
   filter_a.SetImpulseResponse(impulse_resp);
-  std::vector<Real> output_aa_cmp = filter_a.Filter(impulse);
+  std::vector<Real> output_aa_cmp = filter_a.ProcessBlock(impulse);
   ASSERT(IsEqual(output_aa_cmp, impulse_resp));
   
   FirFilter filter_b(impulse_resp);
@@ -290,64 +290,64 @@ bool FirFilter::Test() {
   output_a_cmp[2] = 2.9700;
   output_a_cmp[3] = -8.8500;
   std::vector<Real> output_a;
-  output_a = filter_b.Filter(input_a);
+  output_a = filter_b.ProcessBlock(input_a);
   ASSERT(IsEqual(output_a, output_a_cmp));
   
   FirFilter filter_c(impulse_resp);
-  ASSERT(IsEqual(filter_c.Filter(0.6), 0.1200));
-  ASSERT(IsEqual(filter_c.Filter(-3.5), -0.7600));
+  ASSERT(IsEqual(filter_c.ProcessSample(0.6), 0.1200));
+  ASSERT(IsEqual(filter_c.ProcessSample(-3.5), -0.7600));
   
   FirFilter filter_ca(impulse_resp);
 #ifdef MCL_APPLE_ACCELERATE
-  ASSERT(IsEqual(filter_ca.FilterAppleDsp(0.6), 0.1200));
-  ASSERT(IsEqual(filter_ca.FilterAppleDsp(-3.5), -0.7600));
+  ASSERT(IsEqual(filter_ca.ProcessSampleAppleDsp(0.6), 0.1200));
+  ASSERT(IsEqual(filter_ca.ProcessSampleAppleDsp(-3.5), -0.7600));
 #endif
   
   FirFilter filter_cb(impulse_resp);
-  ASSERT(IsEqual(filter_cb.FilterStraight(0.6), 0.1200));
-  ASSERT(IsEqual(filter_cb.FilterStraight(-3.5), -0.7600));
+  ASSERT(IsEqual(filter_cb.ProcessSampleStraight(0.6), 0.1200));
+  ASSERT(IsEqual(filter_cb.ProcessSampleStraight(-3.5), -0.7600));
   
   FirFilter filter_cd(impulse_resp);
 #ifdef MCL_APPLE_ACCELERATE
-  ASSERT(IsEqual(filter_cd.FilterAppleDsp(0.6), 0.1200));
-  ASSERT(IsEqual(filter_cd.FilterStraight(-3.5), -0.7600));
+  ASSERT(IsEqual(filter_cd.ProcessSampleAppleDsp(0.6), 0.1200));
+  ASSERT(IsEqual(filter_cd.ProcessSampleStraight(-3.5), -0.7600));
 #endif
   
   FirFilter filter_ce(impulse_resp);
-  ASSERT(IsEqual(filter_ce.FilterStraight(0.6), 0.1200));
+  ASSERT(IsEqual(filter_ce.ProcessSampleStraight(0.6), 0.1200));
 #ifdef MCL_APPLE_ACCELERATE
-  ASSERT(IsEqual(filter_ce.FilterAppleDsp(-3.5), -0.7600));
+  ASSERT(IsEqual(filter_ce.ProcessSampleAppleDsp(-3.5), -0.7600));
 #endif
 
   // Testing copy constructor
   FirFilter filter_d = filter_c;
-  ASSERT(IsEqual(filter_d.Filter(5.6), 2.9700));
-  ASSERT(IsEqual(filter_d.Filter(2.3), -8.8500));
+  ASSERT(IsEqual(filter_d.ProcessSample(5.6), 2.9700));
+  ASSERT(IsEqual(filter_d.ProcessSample(2.3), -8.8500));
   
-  ASSERT(IsEqual(filter_c.Filter(5.6), 2.9700));
-  ASSERT(IsEqual(filter_c.Filter(2.3), -8.8500));
+  ASSERT(IsEqual(filter_c.ProcessSample(5.6), 2.9700));
+  ASSERT(IsEqual(filter_c.ProcessSample(2.3), -8.8500));
   
   
   FirFilter filter_i;
-  ASSERT(IsEqual(filter_i.Filter(1.2), 1.2));
-  ASSERT(IsEqual(filter_i.Filter(-0.2), -0.2));
+  ASSERT(IsEqual(filter_i.ProcessSample(1.2), 1.2));
+  ASSERT(IsEqual(filter_i.ProcessSample(-0.2), -0.2));
   
   std::vector<Real> impulse_resp_b = {0.1, 0.3, -0.2, 1.2, -4.5, 0.0, -2.1, -1.2};
   FirFilter filter_l(impulse_resp_b);
   std::vector<Real> input_b = {0.3377, 0.9001, 0.3692, 0.1112, 0.7803, 0.3897, 0.2417, 0.4039, 0.0965, 0.1320, 0.9421, 0.9561};
   std::vector<Real> output_b_cmp = {0.033770000000000, 0.191320000000000, 0.239410000000000, 0.347100000000000, -0.401980000000000, -3.356590000000000, -2.252110000000000, -1.824530000000000, -4.816670000000000, -2.178800000000000, -2.260530000000000, -3.104640000000000};
-  std::vector<Real> output_b = filter_l.Filter(input_b);
+  std::vector<Real> output_b = filter_l.ProcessBlock(input_b);
   ASSERT(IsEqual(output_b_cmp, output_b));
   
   filter_l.Reset();
   for (Int i=0; i<(Int)input_b.size(); ++i) {
-    ASSERT(mcl::IsEqual(filter_l.Filter(input_b[i]), output_b_cmp[i]));
+    ASSERT(mcl::IsEqual(filter_l.ProcessSample(input_b[i]), output_b_cmp[i]));
   }
   
 #ifdef MCL_APPLE_ACCELERATE
   FirFilter filter_la(impulse_resp_b);
   Real cmp_la[input_b.size()];
-  filter_la.FilterAppleDsp(input_b.data(), input_b.size(), cmp_la);
+  filter_la.ProcessBlockAppleDsp(input_b.data(), input_b.size(), cmp_la);
   ASSERT(IsEqual(output_b_cmp, cmp_la));
 #endif
   
@@ -355,9 +355,9 @@ bool FirFilter::Test() {
   Real cmp_lasplit_a[4];
   Real cmp_lasplit_b[8];
 #ifdef MCL_APPLE_ACCELERATE
-  filter_lasplit.FilterAppleDsp(&input_b.data()[0], 4, cmp_lasplit_a);
+  filter_lasplit.ProcessBlockAppleDsp(&input_b.data()[0], 4, cmp_lasplit_a);
   ASSERT(IsEqual(&output_b_cmp.data()[0], cmp_lasplit_a, 4));
-  filter_lasplit.FilterAppleDsp(&input_b.data()[4], 8, cmp_lasplit_b);
+  filter_lasplit.ProcessBlockAppleDsp(&input_b.data()[4], 8, cmp_lasplit_b);
   ASSERT(IsEqual(&output_b_cmp.data()[4], cmp_lasplit_b, 8));
 #endif
   
@@ -370,7 +370,7 @@ bool FirFilter::Test() {
   std::vector<Real> impulse_resp_c = {0.6948, 0.3171, 0.9502, 0.0344, 0.4387, 0.3816, 0.7655, 0.7952, 0.1869, 0.4898, 0.4456, 0.6463, 0.7094, 0.7547, 0.2760, 0.6797};
   FirFilter filter_m(impulse_resp_c);
   std::vector<Real> output_c_cmp = {0.566053560000000, 0.887691210000000, 1.149596720000000, 1.563618860000000, 1.238274470000000, 1.848822500000000, 1.881767519999999, 2.373108650000000, 2.702443100000000, 3.155909820000000, 3.544349419999999, 3.760939330000000, 3.860796740000000, 5.071760400000001, 5.228588220000000, 5.070855620000001, 5.216075850000000, 4.336750739999999, 5.636061180000000,5.665156830000000};
-  std::vector<Real> output_c = filter_m.Filter(input_c);
+  std::vector<Real> output_c = filter_m.ProcessBlock(input_c);
   ASSERT(IsEqual(output_c_cmp, output_c));
   
   
@@ -378,24 +378,24 @@ bool FirFilter::Test() {
   filter_m.Reset();
   std::vector<Real> input_c_sub_a(input_c.begin(), input_c.begin()+16);
   std::vector<Real> output_c_cmp_sub_a(output_c_cmp.begin(), output_c_cmp.begin()+16);
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c_sub_a), output_c_cmp_sub_a));
+  ASSERT(mcl::IsEqual(filter_m.ProcessBlock(input_c_sub_a), output_c_cmp_sub_a));
   
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c[16]), output_c_cmp[16]));
+  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[16]), output_c_cmp[16]));
   
   std::vector<Real> input_c_sub_b(input_c.begin()+17, input_c.end());
   std::vector<Real> output_c_cmp_sub_b(output_c_cmp.begin()+17, output_c_cmp.end());
-  std::vector<Real> output_c_sub_b = filter_m.Filter(input_c_sub_b);
+  std::vector<Real> output_c_sub_b = filter_m.ProcessBlock(input_c_sub_b);
   ASSERT(mcl::IsEqual(output_c_sub_b, output_c_cmp_sub_b));
   
   //
   filter_m.Reset();
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c[0]), output_c_cmp[0]));
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c[1]), output_c_cmp[1]));
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c[2]), output_c_cmp[2]));
+  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[0]), output_c_cmp[0]));
+  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[1]), output_c_cmp[1]));
+  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[2]), output_c_cmp[2]));
   std::vector<Real> input_c_sub_ab(input_c.begin()+3, input_c.begin()+19);
   std::vector<Real> output_c_cmp_sub_ab(output_c_cmp.begin()+3, output_c_cmp.begin()+19);
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c_sub_ab), output_c_cmp_sub_ab));
-  ASSERT(mcl::IsEqual(filter_m.Filter(input_c[19]), output_c_cmp[19]));
+  ASSERT(mcl::IsEqual(filter_m.ProcessBlock(input_c_sub_ab), output_c_cmp_sub_ab));
+  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[19]), output_c_cmp[19]));
   
   
   //
@@ -403,32 +403,32 @@ bool FirFilter::Test() {
   FirFilter filter_k(impulse_response_k);
   std::vector<Real> input_k = input_c;
   std::vector<Real> output_k_cmp = {0.663736090000000, 1.475910520000000, 1.027407440000000, 1.718367160000000, 2.701277000000000, 1.457092690000000, 1.310138610000000, 1.865475550000000, 1.799813030000000, 2.038904730000000, 1.799667500000000, 2.276484260000000, 3.165878180000000, 2.139907940000000, 2.199456410000000, 2.390277390000000, 1.622509220000000, 2.184069510000000, 2.164136180000000, 2.090582990000000};
-  ASSERT(mcl::IsEqual(filter_k.Filter(input_k), output_k_cmp));
+  ASSERT(mcl::IsEqual(filter_k.ProcessBlock(input_k), output_k_cmp));
   
   //
   filter_k.Reset();
   for (Int i=0; i<(Int)input_c.size()-1; ++i) {
-    ASSERT(IsEqual(filter_k.Filter(input_k[i]), output_k_cmp[i]));
+    ASSERT(IsEqual(filter_k.ProcessSample(input_k[i]), output_k_cmp[i]));
   }
   
   //
   filter_k.Reset();
-  ASSERT(IsEqual(filter_k.Filter(input_k[0]), output_k_cmp[0]));
-  ASSERT(IsEqual(filter_k.Filter(input_k[1]), output_k_cmp[1]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[0]), output_k_cmp[0]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[1]), output_k_cmp[1]));
   std::vector<Real> input_k_sub_a = std::vector<Real>(input_k.begin()+2,
                                                       input_k.begin()+7);
   std::vector<Real> output_k_cmp_sub_a = std::vector<Real>(output_k_cmp.begin()+2,
                                                            output_k_cmp.begin()+7);
-  std::vector<Real> output_k_sub_a = filter_k.Filter(input_k_sub_a);
+  std::vector<Real> output_k_sub_a = filter_k.ProcessBlock(input_k_sub_a);
   ASSERT(IsEqual(output_k_sub_a, output_k_cmp_sub_a));
   
-  ASSERT(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+7,
+  ASSERT(IsEqual(filter_k.ProcessBlock(std::vector<Real>(input_k.begin()+7,
                                                    input_k.begin()+9)),
                  std::vector<Real>(output_k_cmp.begin()+7,
                                    output_k_cmp.begin()+9)));
-  ASSERT(IsEqual(filter_k.Filter(input_k[9]), output_k_cmp[9]));
-  ASSERT(IsEqual(filter_k.Filter(input_k[10]), output_k_cmp[10]));
-  ASSERT(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+11,
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[9]), output_k_cmp[9]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[10]), output_k_cmp[10]));
+  ASSERT(IsEqual(filter_k.ProcessBlock(std::vector<Real>(input_k.begin()+11,
                                                    input_k.begin()+20)),
                  std::vector<Real>(output_k_cmp.begin()+11,
                                    output_k_cmp.begin()+20)));
@@ -436,49 +436,49 @@ bool FirFilter::Test() {
   
   //
   filter_k.Reset();
-  ASSERT(IsEqual(filter_k.Filter(input_k[0]), output_k_cmp[0]));
-  ASSERT(IsEqual(filter_k.Filter(input_k[1]), output_k_cmp[1]));
-  ASSERT(IsEqual(filter_k.Filter(input_k[2]), output_k_cmp[2]));
-  ASSERT(IsEqual(filter_k.Filter(input_k[3]), output_k_cmp[3]));
-  ASSERT(IsEqual(filter_k.Filter(input_k[4]), output_k_cmp[4]));
-  ASSERT(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+5,
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[0]), output_k_cmp[0]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[1]), output_k_cmp[1]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[2]), output_k_cmp[2]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[3]), output_k_cmp[3]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[4]), output_k_cmp[4]));
+  ASSERT(IsEqual(filter_k.ProcessBlock(std::vector<Real>(input_k.begin()+5,
                                                    input_k.begin()+10)),
                  std::vector<Real>(output_k_cmp.begin()+5,
                                    output_k_cmp.begin()+10)));
-  ASSERT(IsEqual(filter_k.Filter(input_k[10]), output_k_cmp[10]));
-  ASSERT(IsEqual(filter_k.Filter(std::vector<Real>(input_k.begin()+11,
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[10]), output_k_cmp[10]));
+  ASSERT(IsEqual(filter_k.ProcessBlock(std::vector<Real>(input_k.begin()+11,
                                                    input_k.begin()+19)),
                  std::vector<Real>(output_k_cmp.begin()+11,
                                    output_k_cmp.begin()+19)));
-  ASSERT(IsEqual(filter_k.Filter(input_k[19]), output_k_cmp[19]));
+  ASSERT(IsEqual(filter_k.ProcessSample(input_k[19]), output_k_cmp[19]));
   
   
   // Testing slow ipdate of filter
   FirFilter filter_t(mcl::UnaryVector<Real>(1.0));
-  ASSERT(IsEqual(filter_t.Filter(0.76), 0.76));
-  ASSERT(IsEqual(filter_t.Filter(1.0), 1.0));
+  ASSERT(IsEqual(filter_t.ProcessSample(0.76), 0.76));
+  ASSERT(IsEqual(filter_t.ProcessSample(1.0), 1.0));
   filter_t.SetImpulseResponse(mcl::UnaryVector<Real>(0.3), 1);
-  ASSERT(IsEqual(filter_t.Filter(1.0), 0.5*1.0+0.5*0.3));
-  ASSERT(IsEqual(filter_t.Filter(1.0), 0.3));
+  ASSERT(IsEqual(filter_t.ProcessSample(1.0), 0.5*1.0+0.5*0.3));
+  ASSERT(IsEqual(filter_t.ProcessSample(1.0), 0.3));
 
   
   //
   MaxGradientFilter filter_y(1.0);
-  ASSERT(IsEqual(filter_y.Filter(0.0), 0.0));
-  ASSERT(IsEqual(filter_y.Filter(1.0), 1.0));
-  ASSERT(IsEqual(filter_y.Filter(0.0), 0.0));
-  ASSERT(IsEqual(filter_y.Filter(-1.0), -1.0));
-  ASSERT(IsEqual(filter_y.Filter(-3.0), -2.0));
-  ASSERT(IsEqual(filter_y.Filter(-3.0), -3.0));
-  ASSERT(IsEqual(filter_y.Filter(1.5), -2.0));
-  ASSERT(IsEqual(filter_y.Filter(1.5), -1.0));
-  ASSERT(IsEqual(filter_y.Filter(1.5), 0.0));
-  ASSERT(IsEqual(filter_y.Filter(1.5), 1.0));
-  ASSERT(IsEqual(filter_y.Filter(1.5), 1.5));
-  ASSERT(IsEqual(filter_y.Filter(-1.5), 0.5));
-  ASSERT(IsEqual(filter_y.Filter(-1.5), -0.5));
-  ASSERT(IsEqual(filter_y.Filter(-2.5), -1.5));
-  ASSERT(IsEqual(filter_y.Filter(-2.5), -2.5));
+  ASSERT(IsEqual(filter_y.ProcessSample(0.0), 0.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(1.0), 1.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(0.0), 0.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(-1.0), -1.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(-3.0), -2.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(-3.0), -3.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(1.5), -2.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(1.5), -1.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(1.5), 0.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(1.5), 1.0));
+  ASSERT(IsEqual(filter_y.ProcessSample(1.5), 1.5));
+  ASSERT(IsEqual(filter_y.ProcessSample(-1.5), 0.5));
+  ASSERT(IsEqual(filter_y.ProcessSample(-1.5), -0.5));
+  ASSERT(IsEqual(filter_y.ProcessSample(-2.5), -1.5));
+  ASSERT(IsEqual(filter_y.ProcessSample(-2.5), -2.5));
   
   
   return true;
@@ -494,7 +494,7 @@ void FirFilter::SpeedTests() {
   
   clock_t launch=clock();
   for (Int i = 0; i<20; i++) {
-    fir_filter.Filter(mcl::GetSegment(input, i, 2205));
+    fir_filter.ProcessBlock(mcl::GetSegment(input, i, 2205));
   }
   clock_t done=clock();
   
@@ -503,7 +503,7 @@ void FirFilter::SpeedTests() {
   
   launch=clock();
   for (Int i=0; i<(Int)input.size(); ++i) {
-    fir_filter.Filter(input[i]);
+    fir_filter.ProcessSample(input[i]);
   }
   done=clock();
   
@@ -514,7 +514,7 @@ void FirFilter::SpeedTests() {
   
   launch=clock();
   for (Int i = 0; i<20; i++) {
-    fir_filter_b.Filter(mcl::GetSegment(input, i, 2205));
+    fir_filter_b.ProcessBlock(mcl::GetSegment(input, i, 2205));
   }
   done=clock();
   
@@ -523,7 +523,7 @@ void FirFilter::SpeedTests() {
   
   launch=clock();
   for (Int i=0; i<(Int)input.size(); ++i) {
-    fir_filter_b.Filter(input[i]);
+    fir_filter_b.ProcessSample(input[i]);
   }
   done=clock();
   

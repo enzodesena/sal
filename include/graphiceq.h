@@ -91,7 +91,7 @@ public:
   * @param input The input to the GraphicEq
   * @return The output of the GraphicEq
   */
-  virtual Real Filter(const Real input) noexcept;
+  virtual Real ProcessSample(const Real input) noexcept;
 
   /**
   * Processes an input buffer and updates the output buffer
@@ -100,7 +100,7 @@ public:
   * @param output_data The output buffer
   * @param num_samples The number of frames in the buffer
   */
-  virtual void Filter(const Real* input_data, const Int num_samples, Real* output_data) noexcept;
+  virtual void ProcessBlock(const Real* input_data, const Int num_samples, Real* output_data) noexcept;
 
   /**
   * Resets the filter buffers

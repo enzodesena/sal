@@ -171,13 +171,13 @@ void GraphicEq::UpdateParameters()
   }
 }
 
-Real GraphicEq::Filter(const Real input) noexcept {
+Real GraphicEq::ProcessSample(const Real input) noexcept {
   if (valid_) {
     Real out = input;
-    out = low_shelf_.Filter(out);
+    out = low_shelf_.ProcessSample(out);
     for (PeakingFilter& filter : peaking_filters_)
-      out = filter.Filter(out);
-    out = high_shelf_.Filter(out);
+      out = filter.ProcessSample(out);
+    out = high_shelf_.ProcessSample(out);
     out *= current_gain_[0];
     return out;
   } else {
@@ -185,10 +185,10 @@ Real GraphicEq::Filter(const Real input) noexcept {
   }
 }
 
-void GraphicEq::Filter(const Real* input_data, const Int num_samples, Real* output_data) noexcept {
+void GraphicEq::ProcessBlock(const Real* input_data, const Int num_samples, Real* output_data) noexcept {
   if (equal_) {
     for (size_t i = 0; i < (size_t) num_samples; i++) {
-      output_data[i] = Filter(input_data[i]);
+      output_data[i] = ProcessSample(input_data[i]);
     }
   }
   else if (IsEqual(current_gain_, target_gain_)) {
@@ -196,10 +196,10 @@ void GraphicEq::Filter(const Real* input_data, const Int num_samples, Real* outp
     equal_ = true;
     UpdateParameters();
     for (size_t i = 0; i < (size_t) num_samples; i++)
-      output_data[i] = Filter(input_data[i]);
+      output_data[i] = ProcessSample(input_data[i]);
   } else {
     for (size_t i = 0; i < (size_t) num_samples; i++) {
-      output_data[i] = Filter(input_data[i]);
+      output_data[i] = ProcessSample(input_data[i]);
       // TODO: implement Lerp
 //      Lerp(current_gain_, target_gain_, lerpFactor);
       current_gain_ = target_gain_;

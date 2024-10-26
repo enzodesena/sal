@@ -96,7 +96,7 @@ size_t IirFilter::order() const noexcept {
 }
 
 
-void IirFilter::Filter(const Real* input_data, const size_t num_samples,
+void IirFilter::ProcessBlock(const Real* input_data, const size_t num_samples,
                        Real* output_data) noexcept {
   if (B_.size() == 1) {
     Multiply(input_data, num_samples, B_[0], output_data);
@@ -106,7 +106,7 @@ void IirFilter::Filter(const Real* input_data, const size_t num_samples,
 }
   
   
-Real IirFilter::Filter(Real input) noexcept {
+Real IirFilter::ProcessSample(Real input) noexcept {
   Real v = input; // The temporary value in the recursive branch.
   Real output(0.0);
   
@@ -452,22 +452,22 @@ IirFilter SeriesFilter(const std::vector<IirFilter>& filters) {
 
 
   
-std::vector<Real> IirFilterBank::Filter(const Real input) {
+std::vector<Real> IirFilterBank::ProcessSample(const Real input) {
   const size_t N = filters_.size();
   std::vector<Real> outputs(N);
   for (size_t i=0; i<N; ++i) {
-    outputs[i] = filters_[i].Filter(input);
+    outputs[i] = filters_[i].ProcessSample(input);
   }
   return outputs;
 }
 
   
 std::vector<std::vector<Real> >
-IirFilterBank::Filter(const std::vector<Real>& input) {
+IirFilterBank::ProcessBlock(const std::vector<Real>& input) {
   const size_t N = filters_.size();
   std::vector<std::vector<Real> > outputs(N);
   for (size_t i=0; i<N; ++i) {
-    outputs[i] = filters_[i].Filter(input);
+    outputs[i] = filters_[i].ProcessBlock(input);
   }
   return outputs;
 }

@@ -56,21 +56,21 @@ FirFilter::FirFilter(std::vector<Real> B) noexcept :
   delay_line_.assign(length_, 0.0);
 }
 
-Real FirFilter::Filter(Real input_sample) noexcept {
+Real FirFilter::ProcessSample(Real input_sample) noexcept {
   if (updating_) { UpdateCoefficients(); }
   if (length_ == 1) {
     delay_line_[0] = input_sample;
     return input_sample*coefficients_[0];
   }
 #ifdef MCL_APPLE_ACCELERATE
-  return FilterAppleDsp(input_sample);
+  return ProcessSampleAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
 #endif
 }
   
 
-void FirFilter::Filter(const Real* __restrict input_data,
+void FirFilter::ProcessBlock(const Real* __restrict input_data,
                        const Int num_samples,
                        Real* __restrict output_data) noexcept {
   if (updating_) { UpdateCoefficients(); }
@@ -80,7 +80,7 @@ void FirFilter::Filter(const Real* __restrict input_data,
     return;
   }
 #if defined(MCL_APPLE_ACCELERATE)
-  FilterAppleDsp(input_data, num_samples, output_data);
+  ProcessBlockAppleDsp(input_data, num_samples, output_data);
 #elif defined(MCL_AVX_ACCELERATE) || defined(MCL_NEON_ACCELERATE)
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {
     FilterSerial(input_data, num_samples, output_data);
@@ -164,7 +164,7 @@ void FirFilter::Filter(const Real* __restrict input_data,
  #define UNLIKELY(x) __builtin_expect(x, false)
 #endif
 
-Real FirFilter::FilterStraight(Real input_sample) noexcept {
+Real FirFilter::ProcessSampleStraight(Real input_sample) noexcept {
   delay_line_[counter_] = input_sample;
   Real result = std::inner_product(delay_line_.begin()+counter_,
                                    delay_line_.end(),
@@ -182,9 +182,9 @@ Real FirFilter::FilterStraight(Real input_sample) noexcept {
   
   
 #ifdef MCL_APPLE_ACCELERATE
-Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
+Real FirFilter::ProcessSampleAppleDsp(Real input_sample) noexcept {
   if (length_-counter_ > MCL_MAX_VLA_LENGTH) {
-    return FilterStraight(input_sample);
+    return ProcessSampleStraight(input_sample);
   }
   
   delay_line_[counter_] = input_sample;
@@ -211,7 +211,7 @@ Real FirFilter::FilterAppleDsp(Real input_sample) noexcept {
   return result;
 }
   
-void FirFilter::FilterAppleDsp(const Real* __restrict input_data,
+void FirFilter::ProcessBlockAppleDsp(const Real* __restrict input_data,
                                const Int num_samples,
                                Real* __restrict output_data) noexcept {
   if (num_samples < length_ || (num_samples+length_-1) > MCL_MAX_VLA_LENGTH) {

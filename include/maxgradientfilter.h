@@ -20,7 +20,7 @@ public:
   MaxGradientFilter(Real max_gradient) :
   max_gradient_(max_gradient), previous_output_(0.0) {}
   
-  virtual Real Filter(const Real input) noexcept {
+  virtual Real ProcessSample(const Real input) noexcept {
     Real output;
     if (mcl::Abs(previous_output_-input) < max_gradient_) {
       output = input;

@@ -324,7 +324,7 @@ std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
 
 void FilterAll(std::vector<std::vector<Real> >& array_of_signals, DigitalFilter* filter) {
   std::for_each(array_of_signals.begin(), array_of_signals.end(),
-                [filter](std::vector<Real>& signal){filter->Reset(); signal = filter->Filter(signal);});
+                [filter](std::vector<Real>& signal){filter->Reset(); signal = filter->ProcessBlock(signal);});
   filter->Reset();
 }
 
