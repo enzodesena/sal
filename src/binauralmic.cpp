@@ -99,7 +99,7 @@ DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
 BinauralMic(position, orientation, update_length, reference_orientation) {}
 
 
-void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {
+void DatabaseBinauralMic::FilterAll(mcl::Filter* filter) {
   mcl::FilterAll(hrtf_database_right_, filter);
   mcl::FilterAll(hrtf_database_left_, filter);
 }

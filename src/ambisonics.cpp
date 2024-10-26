@@ -241,7 +241,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
     // Near-field correcting
     if (near_field_correction_) {
       for (Int i=0; i<(2*order_+1); ++i) {
-        bformat_frame[i] = nfc_filters_[i].Filter(bformat_frame[i]);
+        bformat_frame[i] = nfc_filters_[i].ProcessSample(bformat_frame[i]);
       }
     }
     
@@ -269,8 +269,8 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
       //  out_high = filter(B_HF, A_HF, G_format_high, [], 2);
       //  out_nfc = out_low + out_high;
       for (Int i=0; i<num_loudspeakers_; ++i) {
-        output[i] = crossover_filters_low_[i].Filter(output[i]) +
-                    crossover_filters_high_[i].Filter(output_high[i]);
+        output[i] = crossover_filters_low_[i].ProcessSample(output[i]) +
+                    crossover_filters_high_[i].ProcessSample(output_high[i]);
       }
     }
     

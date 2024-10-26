@@ -93,7 +93,7 @@ public:
    Filters all responses by `filter`. Useful for instance for including
    an inverse headphone filter
    */
-  void FilterAll(mcl::DigitalFilter* filter);
+  void FilterAll(mcl::Filter* filter);
   
   virtual ~DatabaseBinauralMic() {}
 protected:

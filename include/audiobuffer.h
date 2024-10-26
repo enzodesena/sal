@@ -145,12 +145,12 @@ public:
                         const Int from_sample_id,
                         const Int num_samples,
                         const Sample* samples,
-                        mcl::DigitalFilter& filter) noexcept {
+                        mcl::Filter& filter) noexcept {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(from_sample_id >= 0);
     ASSERT(num_samples >= 0);
     ASSERT((from_sample_id+num_samples) <= num_samples_);
-    filter.Filter(samples, num_samples, temporary_vector_.data());
+    filter.ProcessBlock(samples, num_samples, temporary_vector_.data());
     mcl::Add(temporary_vector_.data(),
              &(data_[channel_id][from_sample_id]), num_samples,
              &(data_[channel_id][from_sample_id]));
@@ -425,7 +425,7 @@ public:
   void FilterAddSamplesLeft(const Int from_sample_id,
                             const Int num_samples,
                             const Sample* samples,
-                            mcl::DigitalFilter& filter) noexcept {
+                            mcl::Filter& filter) noexcept {
     Buffer::FilterAddSamples(kLeftChannel, from_sample_id,
                                          num_samples, samples, filter);
   }
@@ -433,7 +433,7 @@ public:
   void FilterAddSamplesRight(const Int from_sample_id,
                              const Int num_samples,
                              const Sample* samples,
-                             mcl::DigitalFilter& filter) noexcept {
+                             mcl::Filter& filter) noexcept {
     Buffer::FilterAddSamples(kRightChannel, from_sample_id,
                                          num_samples, samples, filter);
   }

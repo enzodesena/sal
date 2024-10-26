@@ -256,7 +256,7 @@ private:
 
   
 /** Implements a first-order IIR low-pass filter with a given decay constant. */
-class LowPassSmoothingFilter : public mcl::DigitalFilter {
+class LowPassSmoothingFilter : public mcl::Filter {
 public:
   /**
    @param[in] ramp_samples number of samples after which the value is
@@ -271,11 +271,11 @@ public:
                              mcl::BinaryVector<mcl::Real>(1.0, -a1));
   }
   
-  virtual mcl::Real Filter(const mcl::Real input) noexcept {
-    return filter_.Filter(input);
+  virtual mcl::Real ProcessSample(const mcl::Real input) noexcept {
+    return filter_.ProcessSample(input);
   }
   
-  using mcl::DigitalFilter::Filter;
+  using mcl::Filter::ProcessSample;
   
   virtual void Reset() noexcept { filter_.Reset(); }
   
