@@ -30,7 +30,7 @@ class MicrophoneArray : public Microphone {
  public:
   MicrophoneArray(const dsp::Point& position,
                   const dsp::Quaternion& orientation,
-                  std::vector<std::unique_ptr<MonoMic>>&& microphones)
+                  std::vector<std::shared_ptr<MonoMic>> microphones)
       : Microphone(position, orientation),
         microphones_(std::move(microphones)) {}
 
@@ -82,13 +82,21 @@ class MicrophoneArray : public Microphone {
 
   Int num_channels() const noexcept { return microphones_.size(); }
 
-  const MonoMic& GetConstMicrophoneRef(
+  const MonoMic& GetMicrophoneRef(
       const size_t microphone_id) const noexcept {
     return *microphones_[microphone_id];
   }
 
   MonoMic& GetMicrophoneRef(const size_t microphone_id) noexcept {
     return *microphones_[microphone_id];
+  }
+  
+  std::shared_ptr<MonoMic> GetMicrophonePtr(const size_t microphone_id) noexcept {
+    return microphones_[microphone_id];
+  }
+  
+  std::vector<std::shared_ptr<MonoMic>>& GetMicrophonePtrs() noexcept {
+    return microphones_;
   }
 
   Int num_microphones() const noexcept { return microphones_.size(); }
@@ -130,7 +138,7 @@ class MicrophoneArray : public Microphone {
   }
 
  protected:
-  std::vector<std::unique_ptr<MonoMic>> microphones_;
+  std::vector<std::shared_ptr<MonoMic>> microphones_;
 };
 
 /** This object creates a microphone array based on a microphone prototype.
@@ -148,9 +156,9 @@ class UniformArray : public MicrophoneArray {
                         MicrophoneFactory(mic_prototype, num_microphones)) {}
 
  private:
-  std::vector<std::unique_ptr<MonoMic>> MicrophoneFactory(
+  std::vector<std::shared_ptr<MonoMic>> MicrophoneFactory(
       const T& mic_prototype, const size_t num_microphones) {
-    std::vector<std::unique_ptr<MonoMic>> output;
+    std::vector<std::shared_ptr<MonoMic>> output;
     output.reserve(num_microphones);
     for (size_t i = 0; i < num_microphones; ++i) {
       output.emplace_back(std::make_unique<T>(mic_prototype));
