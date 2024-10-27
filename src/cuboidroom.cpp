@@ -287,7 +287,7 @@ Time CuboidRoom::SabineRt60() const {
     Sample beta = wall_filters()[i].B()[0];
     Sample alpha = 1.0 - pow(beta, 2.0);
 
-    Length area;
+    Length area = NAN;
     switch (i) {
       case 0:    // x_1
       case 1: {  // x_2

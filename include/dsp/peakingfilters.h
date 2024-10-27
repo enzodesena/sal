@@ -67,7 +67,7 @@ class PeakHighShelf : public IirFilter {
   /**
    * Sets the cut off frequency of the high shelf filter
    *
-   * @param fs The cut off frequency of the filter
+   * @param sample_rate The cut off frequency of the filter
    * @param Q The quality factor of the filter
    */
   void SetParameters(const Real fc, const Real Q, const int sample_rate);
@@ -125,7 +125,7 @@ class PeakLowShelf : public IirFilter {
   /**
    * Sets the cut off frequency of the low shelf filter
    *
-   * @param fs The cut off frequency of the filter
+   * @param sample_rate The cut off frequency of the filter
    * @param Q The quality factor of the filter
    */
   void SetParameters(const Real fc, const Real Q, const int sample_rate);
@@ -184,7 +184,7 @@ class PeakingFilter : public IirFilter {
   /**
    * Sets the center frequency of the peaking filter
    *
-   * @param fs The center frequency of the filter
+   * @param sample_rate The center frequency of the filter
    * @param Q The quality factor of the filter
    */
   void SetParameters(const Real fc, const Real Q, const int sample_rate);

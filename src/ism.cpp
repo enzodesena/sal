@@ -85,14 +85,13 @@ void Ism::CalculateRir() {
   mcl::RandomGenerator randn_gen;
   std::vector<sal::Length> rand_delays;
 
-  Int k;
+  Int k = 0;
   bool randomisation = (mcl::IsEqual(random_distance_, 0.0)) ? false : true;
   if (randomisation) {
     sal::Time top_limit = random_distance_;
     rand_delays = mcl::Add(mcl::Multiply<sal::Time>(
                                randn_gen.Rand(max_num_images), 2.0 * top_limit),
                            -top_limit);
-    k = 0;
   }
 
   for (Int mx = -n1; mx <= n1; ++mx) {

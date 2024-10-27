@@ -94,7 +94,7 @@ class MemorylessMonoMic : public MemorylessMic, public MonoMic {
   }
 
  private:
-  virtual Sample GetDirectivity(const mcl::Point& point) = 0;
+  virtual Sample GetDirectivity(const mcl::Point& point) override = 0;
 };
 
 class GainMic : public MemorylessMonoMic {

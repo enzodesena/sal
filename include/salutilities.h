@@ -174,7 +174,6 @@ class RampSmoother {
    next values coming out of the smoother, and adds the result to
    an input-output array (`input_output_data`).
    @param[in] input_data The input data to multiply by.
-   @param[in] num_samples The number of samples to be handled.
    @param[in,out] input_output_data The data onto which we will add the result
    of the multiplication. */
   void GetNextValuesMultiplyAdd(std::span<const Sample> input_data,

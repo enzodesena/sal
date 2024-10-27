@@ -67,8 +67,7 @@ class DelayFilter : public mcl::Filter {
                                   : *(read_index + max_latency_ + 1);
   }
 
-  /** Read the next `num_samples` samples.
-   @param[in] num_samples the number of samples to be read.
+  /** Read the next few samples (the number of samples is equal to the length of `output_data` span).
    @param[out] output_data the array where to write these samples. */
   void Read(std::span<Sample> output_data) const noexcept;
 

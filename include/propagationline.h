@@ -80,7 +80,6 @@ class PropagationLine {
   }
 
   /** Returns a set of `num_samples` samples and writes them into `output_data`.
-   @param[in] num_samples the number of samples to read.
    @param[out] output_data the output array*/
   void Read(std::span<Sample> output_data) const noexcept;
 

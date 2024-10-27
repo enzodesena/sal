@@ -32,7 +32,6 @@ class GraphicEq : public Filter {
    *
    * @param fc The filter band center frequencies
    * @param Q The Q factor for the filters
-   * @param sample_rate The sample rate for calculating the filter coefficients
    */
   GraphicEq(const std::vector<Real>& fc, const Real Q,
             const Real sampling_frequency);
@@ -44,7 +43,6 @@ class GraphicEq : public Filter {
    * @param gain The gain for each filter band
    * @param fc The filter band center frequencies
    * @param Q The Q factor for the filters
-   * @param sample_rate The sample rate for calculating the filter coefficients
    */
   GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc,
             const Real Q, const Real sampling_frequency);
@@ -65,7 +63,7 @@ class GraphicEq : public Filter {
    * Interpolates between the current and target gains and updates the filter
    * parameters
    *
-   * @param lerpFactor The linear interpolation factor
+   * @param lerp_factor The linear interpolation factor
    */
   inline void UpdateParameters(const Real lerp_factor) {
     if (equal_) {
@@ -86,7 +84,7 @@ class GraphicEq : public Filter {
   /**
    * Sets the current gain of the filter bank
    *
-   * @param gain The new gains for each filter band
+   * @param gains The new gains for each filter band
    */
   void SetGain(const std::vector<Real>& gains);
 
@@ -134,7 +132,7 @@ class GraphicEq : public Filter {
    *
    * @param fc The filter band center frequencies
    * @param Q The Q factor
-   * @param sample_rate The sample rate for calculating the filter coefficients
+   * @param sampling_frequency The sample rate for calculating the filter coefficients
    */
   void InitFilters(const std::vector<Real>& fc, const Real Q,
                    const Real sampling_frequency);
