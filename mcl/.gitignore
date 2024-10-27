@@ -1,0 +1,53 @@
+# Mac OS X
+*.DS_Store
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+# Generated files
+*.o
+*.pyc
+
+#Python modules
+MANIFEST
+dist/
+build/
+
+# Backup files
+*~.nib
+\#*#
+.#*
+*.o
+*.DS_Store
+MCL.xcodeproj/project.xcworkspace/xcshareddata/
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+compile
+config.h
+config.h.in
+config.h.in~
+config.log
+config.status
+configure
+depcomp
+install-sh
+libmcl.a
+mcltest
+missing
+src/.deps/
+src/.dirstamp
+src/lib/.deps/
+src/lib/.dirstamp
+src/targets/.deps/
+src/targets/.dirstamp
+stamp-h1
+test/.deps/
+test/.dirstamp
