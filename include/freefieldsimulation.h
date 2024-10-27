@@ -53,9 +53,8 @@ public:
             const Time sampling_frequency,
             const Length sound_speed);
   
-  void Run(std::vector<MonoBuffer*> input_buffers,
-           const Int num_output_samples,
-           std::vector<Buffer*> output_buffers);
+  void ProcessBlock(const std::vector<std::unique_ptr<MonoBuffer> >& input_buffers,
+           std::vector<std::unique_ptr<Buffer >>& output_buffers);
   
   void AllocateTempBuffers(const Int num_samples);
   void DeallocateTempBuffers();

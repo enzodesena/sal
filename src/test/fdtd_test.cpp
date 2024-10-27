@@ -25,7 +25,7 @@ bool Fdtd::Test() {
                                 Nt,
                                 Fdtd::CreateGeometry(Nx, Ny, Nz),
                                 10,
-                                s.GetReadPointer(),
+                                s.GetReadView(),
                                 1.0/sqrt(3.0),
                                 3, 3, 3, // source
                                 4, 4, 4); // microphone
@@ -78,7 +78,7 @@ sal::Time Fdtd::SimulationTime() {
              Nt,
              Fdtd::CreateGeometry(Nx, Ny, Nz),
              10,
-             s.GetReadPointer(),
+             s.GetReadView(),
              1.0/sqrt(3.0),
              3, 3, 3, // source
              4, 4, 4); // microphone

@@ -56,7 +56,7 @@ public:
       sal::Int rir_length,
       const sal::Time sampling_frequency);
   
-  void Run(const Sample* input_data, const Int num_samples,
+  void ProcessBlock(std::span<const Sample> input_data,
            Buffer& output_buffer);
   
   // Triggers a self-update of the network. Has to be called after microphone,

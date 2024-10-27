@@ -42,19 +42,16 @@ Ism::Ism(Room* const room,
   {}
   
   
-  
-  
-void Ism::Run(const Sample* input_data, const Int num_samples,
+void Ism::ProcessBlock(std::span<const Sample> input_data,
               Buffer& output_buffer) {
   if (modified_) { Ism::CalculateRir(); }
   
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni()) {
     mcl::FirFilter filter(rir_);
-    assert(num_samples<MCL_MAX_VLA_LENGTH);
-    Sample temp[num_samples];
-    filter.ProcessBlock(input_data, num_samples, temp);
-    microphone_->AddPlaneWave(temp, num_samples, mcl::Point(0,0,0), output_buffer);
+    std::vector<Sample> temp(input_data.size());
+    filter.ProcessBlock(input_data, temp);
+    microphone_->AddPlaneWave(temp, mcl::Point(0,0,0), output_buffer);
   } else {
     ASSERT(false);
   }

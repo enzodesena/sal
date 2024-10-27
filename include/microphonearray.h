@@ -33,10 +33,9 @@ class MicrophoneArray : public Microphone {
 public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
-                  const std::vector<Microphone*>& microphones) :
-      Microphone(position, orientation), microphones_(microphones) {}
+                  std::vector<std::unique_ptr<MonoMic> >&& microphones) :
+      Microphone(position, orientation), microphones_(std::move(microphones)) {}
 
-  
   /**
    This method will move all the internal microphones to a new position.
    The relative positions of the different microphones will stay unchanged.
@@ -45,7 +44,7 @@ public:
     mcl::Point position_delta(position.x()-this->position().x(),
                               position.y()-this->position().y(),
                               position.z()-this->position().z());
-    for (Int i=0; i<(Int)microphones_.size(); ++i) {
+    for (size_t i=0; i<microphones_.size(); ++i) {
       mcl::Point old_mic_position = microphones_[i]->position();
       mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
                                   old_mic_position.y()+position_delta.y(),
@@ -87,24 +86,12 @@ public:
     return microphones_.size();
   }
 
-  const Microphone* GetConstMicrophonePointer(const Int microphone_id) const noexcept {
-    return microphones_.at(microphone_id);
+  const MonoMic& GetConstMicrophoneRef(const size_t microphone_id) const noexcept {
+    return *microphones_[microphone_id];
   }
   
-  Microphone* GetMicrophonePointer(const Int microphone_id) noexcept {
-    return microphones_.at(microphone_id);
-  }
-  
-  std::vector<Microphone*> GetMicrophonePointers() const noexcept {
-    return microphones_;
-  }
-  
-  std::vector<const Microphone*> GetConstMicrophonePointers() const noexcept {
-    std::vector<const Microphone*> microphones(num_microphones());
-    for (Int i=0; i<num_microphones(); ++i) {
-      microphones[i] = (const Microphone*) microphones_[i];
-    }
-    return microphones;
+  MonoMic& GetMicrophoneRef(const size_t microphone_id) noexcept {
+    return *microphones_[microphone_id];
   }
 
   Int num_microphones() const noexcept {
@@ -112,8 +99,6 @@ public:
   }
   
   static bool Test();
-
-  virtual ~MicrophoneArray() {}
 
 
   /**
@@ -125,25 +110,23 @@ public:
    the case, then you need to use the AddPlaneWave of the underlying microphone
    objects directly.
    */
-  virtual void AddPlaneWave(const Sample* input_data,
-                            const Int num_samples,
+  virtual void AddPlaneWave(std::span<const Sample> input_data,
                             const mcl::Point& point,
-                            const Int wave_id,
+                            const size_t wave_id,
                             Buffer& output_buffer) noexcept {
-    Int num_microphones((Int)microphones_.size());
-    for (Int mic_i=0; mic_i<num_microphones; ++mic_i) {
-      MonoBuffer referencing_buffer(output_buffer, mic_i);
-      // Each microphone will push in his own mono stream. The multichannel
+    for (size_t i=0; i<microphones_.size(); ++i) {
+      // Each microphone will push in its own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
-      microphones_[mic_i]->AddPlaneWave(input_data, num_samples, point,
-                                        wave_id, referencing_buffer);
+      
+      std::span<Sample> output_data = output_buffer.GetWriteView(i);
+
+      microphones_[i]->AddPlaneWave(input_data, point, wave_id, output_data);
     }
   }
   
-  virtual void AddPlaneWaveRelative(const Sample* input_data,
-                                    const Int num_samples,
+  virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
                                     const mcl::Point& point,
-                                    const Int wave_id,
+                                    const size_t wave_id,
                                     Buffer& output_buffer) noexcept {
     // This method can't be called directly (should call AddPlaneWave instead.
     // That's because the relative point needs to be calculated with respect
@@ -153,7 +136,7 @@ public:
     ASSERT(false);
   }
 protected:
-  std::vector<Microphone*> microphones_;
+  std::vector<std::unique_ptr<MonoMic> > microphones_;
 };
 
   
@@ -168,24 +151,21 @@ public:
   UniformArray(const mcl::Point& position,
                const mcl::Quaternion& orientation,
                const T& mic_prototype,
-               const mcl::Int num_microphones) :
-  MicrophoneArray(position, orientation,
-                  MicrophoneFactory(mic_prototype, num_microphones)) {}
-  
-  virtual ~UniformArray() {
-    for (Int i=0; i<(Int) microphones_.size(); ++i) { delete microphones_[i]; }
-  }
-  
+               const mcl::Int num_microphones)
+    // Directly initialize the base class in the initializer list
+    : MicrophoneArray(position, orientation, MicrophoneFactory(mic_prototype, num_microphones)) {}
 private:
-  std::vector<Microphone*>
-  MicrophoneFactory(const T& mic_prototype, const Int num_microphones) {
-    std::vector<Microphone*> output(num_microphones);
-    for (Int i=0; i<num_microphones; ++i) {
-      output[i] = new T(mic_prototype);
+  std::vector<std::unique_ptr<MonoMic>>
+  MicrophoneFactory(const T& mic_prototype, const size_t num_microphones) {
+    std::vector<std::unique_ptr<MonoMic>> output;
+    output.reserve(num_microphones);
+    for (size_t i=0; i<num_microphones; ++i) {
+      output.emplace_back(std::make_unique<T>(mic_prototype));
     }
     return output;
   }
 };
+
 
 /**
  This generates a microphone array centered in position, with radius

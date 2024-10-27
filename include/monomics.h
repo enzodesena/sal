@@ -15,6 +15,8 @@
 #include "salconstants.h"
 #include "microphone.h"
 #include "vectorop.h"
+#include <span>
+#include <type_traits>
 
 
 
@@ -31,15 +33,38 @@ public:
                          const mcl::Point& point,
                          const Int& wave_id = 0) noexcept {
     MonoBuffer output_buffer(1);
-    AddPlaneWave(&input_sample, 1, point, wave_id, output_buffer);
+    Microphone::AddPlaneWave(std::span<const Sample>(&input_sample, 1), point, wave_id, output_buffer);
     return output_buffer.GetSample(0);
   }
   
-  bool IsCoincident() const noexcept { return true; }
+  void AddPlaneWave(std::span<const Sample> input_data,
+                    const mcl::Point& point,
+                    const size_t wave_id,
+                    std::span<Sample> output_data) noexcept {
+    this->AddPlaneWaveRelative(input_data,
+                               GetRelativePoint(point),
+                               wave_id,
+                               output_data);
+  }
   
-  Int num_channels() const noexcept { return 1; }
-
-  virtual ~MonoMic() {}
+  // This needs to be implemented if you want to be able to use this as part of a microphone array
+  virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
+                                    const mcl::Point& point,
+                                    const size_t wave_id,
+                                    std::span<Sample> output_data) noexcept = 0;
+  
+  // This is provided so that you only need to implement the method above (i.e. the one with an output span)
+  void AddPlaneWaveRelative(std::span<const Sample> input_data,
+                                    const mcl::Point& point,
+                                    const size_t wave_id,
+                                    Buffer& output_buffer) noexcept override {
+    static_assert(std::is_base_of<Buffer, MonoBuffer>::value);
+    AddPlaneWaveRelative(input_data, point, wave_id, output_buffer.GetWriteView(Buffer::kMonoChannel));
+  }
+  
+  bool IsCoincident() const noexcept override { return true; }
+  
+  Int num_channels() const noexcept override { return 1; }
 };
   
   
@@ -47,8 +72,6 @@ class MemorylessMic : virtual public Microphone {
 public:
   MemorylessMic(mcl::Point position, mcl::Quaternion orientation) :
       Microphone(position, orientation) {}
-  
-  virtual ~MemorylessMic() {}
 private:
   virtual Sample GetDirectivity(const mcl::Point& point) = 0;
 };
@@ -61,19 +84,17 @@ public:
   
   virtual ~MemorylessMonoMic() {}
   
-  virtual void AddPlaneWaveRelative(const Sample* input_data,
-                                    const Int num_samples,
-                                    const mcl::Point& point,
-                                    const Int /* wave_id */, 
-                                    Buffer& output_buffer) noexcept {
-    ASSERT(output_buffer.num_channels() >= 1);
-    ASSERT(num_samples <= output_buffer.num_samples());
+  void AddPlaneWaveRelative(std::span<const Sample> input_data,
+                            const mcl::Point& point,
+                            const size_t /* wave_id */,
+                            std::span<Sample> output_data) noexcept override {
+    const size_t num_samples = input_data.size();
+    ASSERT(output_data.size() >= num_samples);
     
     mcl::MultiplyAdd(input_data,
                      GetDirectivity(point),
-                     output_buffer.GetReadPointer(Buffer::kMonoChannel),
-                     num_samples,
-                     output_buffer.GetWritePointer(Buffer::kMonoChannel));
+                     output_data,
+                     output_data);
   }
   
 private:
@@ -91,8 +112,6 @@ public:
   
   virtual bool IsOmni() const noexcept { return true; }
   
-  virtual ~GainMic() {}
-  
 private:
   virtual Sample GetDirectivity(const mcl::Point& /* point */) {
     return gain_;
@@ -107,8 +126,6 @@ public:
   OmniMic(mcl::Point position) :
         Microphone(position, mcl::Quaternion::Identity()),
         GainMic(position, (Sample) 1.0) {}
-  
-  virtual ~OmniMic() {}
 };
   
 
@@ -124,8 +141,6 @@ public:
           Microphone(position, orientation),
           MemorylessMonoMic(position, orientation),
           coefficients_(coefficients) {}
-  
-  virtual ~TrigMic() {}
 private:
   virtual Sample GetDirectivity(const mcl::Point& point) {
     Angle phi = AngleBetweenPoints(point,
@@ -153,8 +168,6 @@ public:
       Microphone(position, orientation),
       MemorylessMonoMic(position, orientation),
       base_angle_(base_angle) {}
-  
-  virtual ~TanMic() {}
 private:
   virtual Sample GetDirectivity(const mcl::Point& point) {
     Angle phi = AngleBetweenPoints(point, mcl::Point(1.0, 0.0, 0.0));

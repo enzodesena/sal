@@ -27,9 +27,9 @@ bool FreeFieldSim::Test() {
   MonoBuffer input_buffer_b(num_samples);
   input_buffer_b.SetSample(0, 0.5);
   
-  std::vector<MonoBuffer*> input_buffers;
-  input_buffers.push_back(&input_buffer_a);
-  input_buffers.push_back(&input_buffer_b);
+  std::vector<std::unique_ptr<MonoBuffer> > input_buffers;
+  input_buffers.emplace_back(std::make_unique<MonoBuffer>(input_buffer_a));
+  input_buffers.emplace_back(std::make_unique<MonoBuffer>(input_buffer_b));
   
   Source source_a(Point(-one_sample_space, 0.0, 0.0));
   Source source_b(Point(3*one_sample_space, 0.0, 0.0));
@@ -50,12 +50,12 @@ bool FreeFieldSim::Test() {
   microphones[0] = &mic_a;
   microphones[1] = &mic_b;
   
-  std::vector<Buffer*> output_buffers;
-  output_buffers.push_back(&output_stream_a);
-  output_buffers.push_back(&output_stream_b);
+  std::vector<std::unique_ptr<Buffer> > output_buffers;
+  output_buffers.emplace_back(std::make_unique<Buffer>(output_stream_a));
+  output_buffers.emplace_back(std::make_unique<Buffer>(output_stream_b));
   
   FreeFieldSim sim(microphones, sources, sampling_frequency, SOUND_SPEED);
-  sim.Run(input_buffers, num_output_samples, output_buffers);
+  sim.ProcessBlock(input_buffers, output_buffers);
   
   std::vector<Sample> output_mic_0_cmp = mcl::Zeros<Sample>(4);
   output_mic_0_cmp[1] = 0.5;
@@ -63,8 +63,8 @@ bool FreeFieldSim::Test() {
   std::vector<Sample> output_mic_1_cmp = mcl::Zeros<Sample>(4);
   output_mic_1_cmp[2] = 0.5/2.0+0.5/2.0;
   
-  ASSERT(mcl::IsEqual(output_mic_0_cmp, output_stream_a.GetReadPointer()));
-  ASSERT(mcl::IsEqual(output_mic_1_cmp, output_stream_b.GetReadPointer()));
+  ASSERT(mcl::IsEqual(output_mic_0_cmp, output_buffers[0]->GetReadView(Buffer::kMonoChannel)));
+  ASSERT(mcl::IsEqual(output_mic_1_cmp, output_buffers[1]->GetReadView(Buffer::kMonoChannel)));
   
   return true;
 }

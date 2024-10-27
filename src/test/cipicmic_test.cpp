@@ -51,14 +51,14 @@ bool CipicMic::Test() {
   Signal cmp_imp_front_left(imp_front_left,
                             imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
   cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
-  ASSERT(IsEqual(stream_i.GetLeftReadPointer(), cmp_imp_front_left));
+  ASSERT(IsEqual(stream_i.GetLeftReadView(), cmp_imp_front_left));
   
   
   CipicMic mic_o(Point(0.0,0.0,0.0), mcl::AxAng2Quat(0,0,1,PI/2.0),
                  cipic_path, wav);
   StereoBuffer output_buffer_b(impulse_response_length);
   mic_o.AddPlaneWave(impulse, Point(0.0,1.0,0.0), output_buffer_b);
-  ASSERT(IsEqual(output_buffer_b.GetLeftReadPointer(), cmp_imp_front_left));
+  ASSERT(IsEqual(output_buffer_b.GetLeftReadView(), cmp_imp_front_left));
   
   
   // Testing upward direction
@@ -79,7 +79,7 @@ bool CipicMic::Test() {
   StereoBuffer stream_m(impulse_response_length);
   
   mic_m.AddPlaneWave(impulse, Point(-1.0,0.0,0.0), stream_m);
-  ASSERT(IsEqual(stream_m.GetLeftReadPointer(), cmp_imp_up_left));
+  ASSERT(IsEqual(stream_m.GetLeftReadView(), cmp_imp_up_left));
   
   
   
@@ -166,8 +166,8 @@ bool CipicMic::Test() {
   // I put the source slightly forward (in x direction) so that I know
   // that the one with 0 elevation will be selected.
   mic_p.AddPlaneWave(impulse, Point(0.001,-1.0,0.0), stream_p);
-  ASSERT(IsEqual(stream_p.GetLeftReadPointer(), cmp_imp_right_left));
-  ASSERT(IsEqual(stream_p.GetRightReadPointer(), cmp_imp_right_right));
+  ASSERT(IsEqual(stream_p.GetLeftReadView(), cmp_imp_right_left));
+  ASSERT(IsEqual(stream_p.GetRightReadView(), cmp_imp_right_right));
   
   
   // Case for a source to the left (-90deg) of the kemar.
@@ -256,8 +256,8 @@ bool CipicMic::Test() {
   StereoBuffer stream_r(impulse_response_length);
   
   mic_r.AddPlaneWave(impulse, Point(0.0,1.0,0.0), stream_r);
-  ASSERT(mcl::IsEqual(stream_r.GetLeftReadPointer(), cmp_imp_left_left));
-  ASSERT(mcl::IsEqual(stream_r.GetRightReadPointer(), cmp_imp_left_right));
+  ASSERT(mcl::IsEqual(stream_r.GetLeftReadView(), cmp_imp_left_left));
+  ASSERT(mcl::IsEqual(stream_r.GetRightReadView(), cmp_imp_left_right));
   
   
   
@@ -319,39 +319,39 @@ bool CipicMic::Test() {
   
   mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
   
-  ASSERT(mcl::IsEqual(cmp_imp_back_left, stream_t.GetLeftReadPointer()));
-  ASSERT(mcl::IsEqual(cmp_imp_back_right, stream_t.GetRightReadPointer()));
+  ASSERT(mcl::IsEqual(cmp_imp_back_left, stream_t.GetLeftReadView()));
+  ASSERT(mcl::IsEqual(cmp_imp_back_right, stream_t.GetRightReadView()));
   
   // Testing reset
   stream_t.Reset();
   mic_t.AddPlaneWave(MonoBuffer::Unary(1.0), Point(0.0,0.0,-1.0), stream_t);
-  ASSERT(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
-  ASSERT(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_t.GetLeftReadView()[0], 0.0));
+  ASSERT(! IsEqual(stream_t.GetRightReadView()[0], 0.0));
   
   stream_t.Reset();
   mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_t);
-  ASSERT(! IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
-  ASSERT(! IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_t.GetLeftReadView()[0], 0.0));
+  ASSERT(! IsEqual(stream_t.GetRightReadView()[0], 0.0));
   
   stream_t.Reset();
   mic_t.Reset();
   mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_t);
-  ASSERT(IsEqual(stream_t.GetLeftReadPointer()[0], 0.0));
-  ASSERT(IsEqual(stream_t.GetRightReadPointer()[0], 0.0));
+  ASSERT(IsEqual(stream_t.GetLeftReadView()[0], 0.0));
+  ASSERT(IsEqual(stream_t.GetRightReadView()[0], 0.0));
   
   // Testing bypass
   stream_t.Reset();
   mic_t.SetBypass(false);
   mic_t.SetBypass(true);
   mic_t.AddPlaneWave(MonoBuffer::Unary(1.2), Point(0.0,0.0,-1.0), stream_t);
-  ASSERT(IsEqual(stream_t.GetLeftReadPointer()[0], 1.2));
-  ASSERT(IsEqual(stream_t.GetRightReadPointer()[0], 1.2));
+  ASSERT(IsEqual(stream_t.GetLeftReadView()[0], 1.2));
+  ASSERT(IsEqual(stream_t.GetRightReadView()[0], 1.2));
   
   stream_t.Reset();
   mic_t.SetBypass(false);
   mic_t.AddPlaneWave(impulse, Point(0.0,0.0,-1.0), stream_t);
-  ASSERT(mcl::IsEqual(stream_t.GetLeftReadPointer(), cmp_imp_back_left));
-  ASSERT(mcl::IsEqual(stream_t.GetRightReadPointer(), cmp_imp_back_right));
+  ASSERT(mcl::IsEqual(stream_t.GetLeftReadView(), cmp_imp_back_left));
+  ASSERT(mcl::IsEqual(stream_t.GetRightReadView(), cmp_imp_back_right));
   
   
   return true;

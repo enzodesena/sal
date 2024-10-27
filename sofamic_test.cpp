@@ -44,8 +44,8 @@ bool SofaMic::Test(const mcl::Point& source_point, const Signal& cmp_left, const
   std::transform(cmp_right.begin(), cmp_right.end(), cmp_right_normalised.begin(),
                  [norm_constant](Sample val) { return val * norm_constant; });
   
-  ASSERT(mcl::IsEqual(buffer.GetLeftReadPointer(), cmp_left_normalised));
-  ASSERT(mcl::IsEqual(buffer.GetRightReadPointer(), cmp_right_normalised));
+  ASSERT(mcl::IsEqual(buffer.GetLeftReadView(), cmp_left_normalised));
+  ASSERT(mcl::IsEqual(buffer.GetRightReadView(), cmp_right_normalised));
   return true;
 }
 

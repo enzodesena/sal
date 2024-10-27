@@ -66,7 +66,7 @@ KemarMic::KemarMic(const Point& position,
     used_num_samples = 64;
     // Downsample the database by a factor 2
     mcl::IirFilter filter = mcl::Butter(10, 0.001, 0.45);
-    FilterAll(&filter);
+    FilterAll(filter);
     for (Int i=0; i<NUM_ELEVATIONS_KEMAR; ++i) {
       for (Int j=0; j<num_measurements[i]; ++j) {
         hrtf_database_right_[i][j] = mcl::Downsample(hrtf_database_right_[i][j], 2);
@@ -213,7 +213,7 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(const Ear ear,
   }
   
   mcl::IirFilter normalising_filter = mcl::GainFilter(1.0/NORMALISING_VALUE_KEMAR);
-  mcl::FilterAll(hrtf_database, &normalising_filter);
+  mcl::FilterAll(normalising_filter, hrtf_database, hrtf_database);
   return hrtf_database;
 }
   

@@ -119,20 +119,20 @@ FreeFieldSim::~FreeFieldSim() {
   
   DeallocateTempBuffers();
 }
-  
-void FreeFieldSim::Run(std::vector<MonoBuffer*> input_buffers,
-                       const Int num_output_samples,
-                       std::vector<Buffer*> output_buffers) {
-  
+
+
+void FreeFieldSim::ProcessBlock(const std::vector<std::unique_ptr<MonoBuffer> >& input_buffers,
+                                std::vector<std::unique_ptr<Buffer> >& output_buffers) {
+  const size_t num_output_samples = output_buffers[0]->num_samples();
   if (num_output_samples > temp_buffers_[0][0]->num_samples()) {
     // This would ideally not happen as it is not lock-free
     DeallocateTempBuffers();
     AllocateTempBuffers(num_output_samples);
   }
   
-  for (Int sample_id=0; sample_id<num_output_samples; ++sample_id) {
-    for (Int source_i=0; source_i<(Int)sources_.size(); ++source_i) {
-      for (Int mic_i=0; mic_i<(Int)microphones_.size(); ++mic_i) {
+  for (size_t sample_id=0; sample_id<num_output_samples; ++sample_id) {
+    for (size_t source_i=0; source_i<sources_.size(); ++source_i) {
+      for (size_t mic_i=0; mic_i<microphones_.size(); ++mic_i) {
         Sample next_input_sample =
             (sample_id < input_buffers[source_i]->num_samples()) ?
             input_buffers[source_i]->GetSample(sample_id) : 0.0;
@@ -149,8 +149,7 @@ void FreeFieldSim::Run(std::vector<MonoBuffer*> input_buffers,
   // Write to microphones
   for (Int source_i=0; source_i<(Int)sources_.size(); ++source_i) {
     for (Int mic_i=0; mic_i<(Int)microphones_.size(); ++mic_i) {
-      microphones_[mic_i]->AddPlaneWave(temp_buffers_[source_i][mic_i]->GetReadPointer(),
-                                        num_output_samples,
+      microphones_[mic_i]->AddPlaneWave(std::span<const Sample>(temp_buffers_[source_i][mic_i]->GetReadView().begin(), num_output_samples),
                                         sources_[source_i]->position(), source_i,
                                         *(output_buffers[mic_i]));
     }
@@ -176,7 +175,7 @@ FreeFieldSim::AllDistances(const std::vector<Microphone*>& microphones,
   for (Int mic_index=0; mic_index<num_microphones; ++mic_index) {
     for (Int source_index=0; source_index<num_sources; ++source_index) {
       distances.push_back(Distance(microphones[mic_index]->position(),
-                                          sources[source_index]->position()));
+                                    sources[source_index]->position()));
     }
   }
   

@@ -80,7 +80,7 @@ bool TripletHandler::Test() {
                             2.0);  // ramp time
   Sample output_samples[5];
   Sample output_samples_cmp[5] = { 1.5, 2.0, 2.0, 2.0, };
-  smoother.GetNextValuesMultiply(input_samples, 4, output_samples);
+  smoother.GetNextValuesMultiply(input_samples, output_samples);
   assert(IsEqual(output_samples, output_samples_cmp, 4));
   
   

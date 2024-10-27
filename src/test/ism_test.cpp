@@ -57,7 +57,7 @@ bool Ism::Test() {
   
   Ism ism(&room, &source, &mic, none, 9, sampling_frequency);
   MonoBuffer test_rir(impulse.num_samples());
-  ism.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
+  ism.ProcessBlock(impulse.GetReadView(), test_rir);
   
   std::vector<Sample> cmp = mcl::Zeros<Sample>(9);
   
@@ -99,7 +99,7 @@ bool Ism::Test() {
 //  0
 //  0.3675
 //  0.1118
-  ASSERT(mcl::IsEqual(cmp, test_rir.GetReadPointer()));
+  ASSERT(mcl::IsEqual(cmp, test_rir.GetReadView()));
   
   
   
@@ -128,7 +128,7 @@ bool Ism::Test() {
   
   Ism isma(&room_absorption, &source, &mic, none, 9, sampling_frequency);
   test_rir.Reset();
-  isma.Run(impulse.GetReadPointer(), impulse.num_samples(), test_rir);
+  isma.ProcessBlock(impulse.GetReadView(), test_rir);
   
   std::vector<Sample> cmpa = mcl::Zeros<Sample>(9);
   
@@ -170,7 +170,7 @@ bool Ism::Test() {
 //  0.1085
 //  0.0289
   
-  ASSERT(mcl::IsEqual(cmpa, test_rir.GetReadPointer()));
+  ASSERT(mcl::IsEqual(cmpa, test_rir.GetReadView()));
   
   // Testing peterson
   // TODO: complete this test.

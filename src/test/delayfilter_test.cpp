@@ -275,7 +275,7 @@ bool DelayFilter::Test() {
   samples[1] = 1.0;
   samples[2] = 2.0;
   samples[3] = 3.0;
-  delay_filter_f.Write(samples, 4);
+  delay_filter_f.Write(samples);
   delay_filter_f.Tick(1);
   ASSERT(IsEqual(delay_filter_f.Read(), 0.0));
   delay_filter_f.Tick(1);
@@ -304,9 +304,9 @@ bool DelayFilter::Test() {
   delay_filter_g.Reset();
   Int stride = 2;
   for (Int i=0; i<num_samples; i+=stride) {
-    delay_filter_g.Write(&input_samples[i], stride);
-    Sample cmp_samples[stride];
-    delay_filter_g.Read(stride, cmp_samples);
+    delay_filter_g.Write(std::span(input_samples.begin()+i, stride));
+    std::vector<Sample> cmp_samples(stride);
+    delay_filter_g.Read(cmp_samples);
     ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
     delay_filter_g.Tick(stride);
   }
@@ -315,9 +315,9 @@ bool DelayFilter::Test() {
   DelayFilter delay_filter_h(latency, 5);
   stride = 3;
   for (Int i=0; (i+stride)<num_samples; i+=stride) {
-    delay_filter_h.Write(&input_samples[i], stride);
-    Sample cmp_samples[stride];
-    delay_filter_h.Read(stride, cmp_samples);
+    delay_filter_h.Write(std::span(input_samples.begin()+i, stride));
+    std::vector<Sample> cmp_samples(stride);
+    delay_filter_h.Read(cmp_samples);
     
     ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
     delay_filter_h.Tick(stride);

@@ -36,7 +36,7 @@ private:
                       sal::Int Nt,
                       std::vector<std::vector<std::vector<sal::Int> > > G,
                       sal::Sample xi,
-                      const Sample* signal,
+                      std::span<const Sample> signal,
                       sal::Sample lmb,
                       sal::Int position_x,
                       sal::Int position_y,

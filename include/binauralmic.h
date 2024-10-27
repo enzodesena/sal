@@ -46,13 +46,9 @@ public:
   
   Int num_channels() const noexcept { return 2; }
   
-  virtual ~BinauralMic() {}
-  
-  
-  virtual void AddPlaneWaveRelative(const Sample* signal,
-                                    const Int num_samples,
+  virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
                                     const mcl::Point& point,
-                                    const Int wave_id,
+                                    const size_t wave_id,
                                     Buffer& output_buffer) noexcept;
   
 private:
@@ -63,7 +59,7 @@ private:
    is facing directly ahead of the head. */
   virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept = 0;
   
-  void CreateInstanceIfNotExist(const Int wave_id) noexcept;
+  void CreateInstanceIfNotExist(const size_t wave_id) noexcept;
   
   std::map<UInt, BinauralMicInstance> instances_;
   
@@ -74,9 +70,7 @@ private:
   bool bypass_;
   
   friend class BinauralMicInstance;
-  
 protected:
-  
   HeadRefOrientation reference_orientation_;
 };
 
@@ -93,9 +87,7 @@ public:
    Filters all responses by `filter`. Useful for instance for including
    an inverse headphone filter
    */
-  void FilterAll(mcl::DigitalFilter* filter);
-  
-  virtual ~DatabaseBinauralMic() {}
+  void FilterAll(mcl::Filter& filter);
 protected:
   // Database
   std::vector<std::vector<Signal> > hrtf_database_right_;
@@ -108,16 +100,17 @@ protected:
 class BinauralMicInstance {
 private:
   BinauralMicInstance(BinauralMic* base_mic, sal::Int update_length,
-                      const HeadRefOrientation reference_orientation = HeadRefOrientation::standard) :
+                      const HeadRefOrientation reference_orientation = HeadRefOrientation::standard,
+                      const size_t max_input_size = 1 << 14) :
   previous_point_(mcl::Point(NAN, NAN, NAN)),
   base_mic_(base_mic),
   filter_left_(mcl::FirFilter::GainFilter(1.0)),
   filter_right_(mcl::FirFilter::GainFilter(1.0)),
   update_length_(update_length),
-  reference_orientation_(reference_orientation) {}
+  reference_orientation_(reference_orientation),
+  scratch_vector_(max_input_size, 0.0) {}
   
-  void AddPlaneWaveRelative(const Sample* input_data,
-                            const Int num_samples,
+  void AddPlaneWaveRelative(std::span<const Sample> input_data,
                             const mcl::Point& point,
                             Buffer& output_buffer) noexcept;
   
@@ -136,6 +129,8 @@ private:
   mcl::FirFilter filter_right_;
   sal::Int update_length_;
   HeadRefOrientation reference_orientation_;
+  
+  std::vector<Sample> scratch_vector_;
   
   friend class BinauralMic;
 };

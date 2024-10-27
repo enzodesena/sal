@@ -46,32 +46,29 @@ void Microphone::SetOrientation(const mcl::Quaternion& orientation) noexcept {
 void Microphone::AddPlaneWave(const Sample input_sample,
                               const mcl::Point& point,
                               Buffer& output_buffer) noexcept {
-  AddPlaneWave(&input_sample, 1, point, output_buffer);
+  AddPlaneWave(std::span(&input_sample, 1), point, output_buffer);
 }
   
-void Microphone::AddPlaneWave(const Sample* input_data,
-                              const Int num_samples,
+void Microphone::AddPlaneWave(std::span<const Sample> input_data,
                               const mcl::Point& point,
                               Buffer& output_buffer) noexcept {
-  AddPlaneWave(input_data, num_samples, point, 0, output_buffer);
+  AddPlaneWave(input_data, point, 0, output_buffer);
 }
   
 void Microphone::AddPlaneWave(const Sample input_sample,
                               const mcl::Point& point,
-                              const Int wave_id,
+                              const size_t wave_id,
                               Buffer& output_buffer) noexcept {
-  AddPlaneWave(&input_sample, 1, point, wave_id, output_buffer);
+  AddPlaneWave(std::span(&input_sample, 1), point, wave_id, output_buffer);
 }
   
 
-void Microphone::AddPlaneWave(const Sample* input_data,
-                              const Int num_samples,
+void Microphone::AddPlaneWave(std::span<const Sample> input_data,
                               const Point& point,
-                              const Int wave_id,
+                              const size_t wave_id,
                               Buffer& output_buffer) noexcept {
-  ASSERT(output_buffer.num_samples() >= num_samples);
+  ASSERT(output_buffer.num_samples() >= input_data.size());
   this->AddPlaneWaveRelative(input_data,
-                             num_samples,
                              GetRelativePoint(point),
                              wave_id,
                              output_buffer);
@@ -85,18 +82,17 @@ void Microphone::AddPlaneWave(const MonoBuffer& input_buffer,
   
 void Microphone::AddPlaneWave(const MonoBuffer& input_buffer,
                               const Point& point,
-                              const Int wave_id,
+                              const size_t wave_id,
                               Buffer& output_buffer) noexcept {
-  AddPlaneWave(input_buffer.GetReadPointer(),
-               input_buffer.num_samples(),
+  AddPlaneWave(input_buffer.GetReadView(),
                point, wave_id, output_buffer);
 }
 
 void Microphone::AddPlaneWaveRelative(const MonoBuffer& signal,
                                       const mcl::Point& point,
-                                      const Int wave_id,
+                                      const size_t wave_id,
                                       Buffer& output_buffer) noexcept {
-  AddPlaneWaveRelative(signal.GetReadPointer(), signal.num_samples(),
+  AddPlaneWaveRelative(signal.GetReadView(),
                        point, wave_id, output_buffer);
 }
 
@@ -126,6 +122,19 @@ Point Microphone::GetRelativePoint(const Point& point) const noexcept {
   
   
   
+BypassMic::BypassMic(Point position, Int num_channels) noexcept :
+        sal::Microphone(position, mcl::Quaternion::Identity()),
+        num_channels_(num_channels) {}
+
   
+void BypassMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
+                                     const mcl::Point& point,
+                                     const size_t wave_id,
+                                     sal::Buffer& output_buffer) noexcept {
+  ASSERT(wave_id >= 0);
+  if (wave_id < output_buffer.num_channels()) {
+    mcl::Add(input_data, output_buffer.GetReadView(wave_id), output_buffer.GetWriteView(wave_id));
+  }
+}
   
 } // namespace sal

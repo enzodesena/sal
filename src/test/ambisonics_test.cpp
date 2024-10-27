@@ -360,11 +360,11 @@ bool AmbisonicsHorizDec::Test() {
   output_4_cmp[2] =  -0.017379369470917;
   output_4_cmp[3] =  -0.016125504574487;
   
-  ASSERT(IsEqual(output_b.GetReadPointer(0), output_0_cmp));
-  ASSERT(IsEqual(output_b.GetReadPointer(1), output_1_cmp));
-  ASSERT(IsEqual(output_b.GetReadPointer(2), output_2_cmp));
-  ASSERT(IsEqual(output_b.GetReadPointer(3), output_3_cmp));
-  ASSERT(IsEqual(output_b.GetReadPointer(4), output_4_cmp));
+  ASSERT(IsEqual(output_b.GetReadView(0), output_0_cmp));
+  ASSERT(IsEqual(output_b.GetReadView(1), output_1_cmp));
+  ASSERT(IsEqual(output_b.GetReadView(2), output_2_cmp));
+  ASSERT(IsEqual(output_b.GetReadView(3), output_3_cmp));
+  ASSERT(IsEqual(output_b.GetReadView(4), output_4_cmp));
   
   return true;
 }

@@ -75,8 +75,7 @@ public:
                     const mcl::Point& point,
                     Buffer& output_buffer) noexcept;
   
-  void AddPlaneWave(const Sample* input_data,
-                    const Int num_samples,
+  void AddPlaneWave(std::span<const Sample> input_data,
                     const mcl::Point& point,
                     Buffer& output_buffer) noexcept;
   
@@ -96,18 +95,17 @@ public:
    */
   void AddPlaneWave(const MonoBuffer& input_buffer,
                     const mcl::Point& point,
-                    const Int wave_id,
+                    const size_t wave_id,
                     Buffer& output_buffer) noexcept;
   
   void AddPlaneWave(const Sample input_sample,
                     const mcl::Point& point,
-                    const Int wave_id,
+                    const size_t wave_id,
                     Buffer& output_buffer) noexcept;
   
-  virtual void AddPlaneWave(const Sample* input_data,
-                            const Int num_samples,
+  virtual void AddPlaneWave(std::span<const Sample> input_data,
                             const mcl::Point& point,
-                            const Int wave_id,
+                            const size_t wave_id,
                             Buffer& output_buffer) noexcept;
   
   virtual bool IsCoincident() const noexcept = 0;
@@ -124,12 +122,9 @@ public:
   
   static bool Test();
   
-  virtual ~Microphone() {}
-  
-  
   virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
                                     const mcl::Point& point,
-                                    const Int wave_id,
+                                    const size_t wave_id,
                                     Buffer& output_buffer) noexcept;
   
   /**
@@ -145,12 +140,12 @@ public:
    Other choices could be made, as long as the conventions are kept at
    higher levels.
    */
-  virtual void AddPlaneWaveRelative(const Sample* input_data,
-                                    const Int num_samples,
+  virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
                                     const mcl::Point& point,
-                                    const Int wave_id,
+                                    const size_t wave_id,
                                     Buffer& output_buffer) noexcept = 0;
   
+  virtual ~Microphone() {}
 private:
   mcl::Triplet position_;
   mcl::Quaternion orientation_;
@@ -164,8 +159,30 @@ class StereoMicrophone : public Microphone {
 public:
   StereoMicrophone(mcl::Point position, mcl::Quaternion orientation) :
       Microphone(position, orientation) {}
+};
+
+/** This microphone copies whatever is coming in to respective channels. */
+class BypassMic final : public sal::Microphone {
+public:
+  /**
+   Constructs a bypass microphone object.
+   
+   @param[in] position The position in space of the microphone.
+   */
+  BypassMic(mcl::Point position, sal::Int num_channels) noexcept;
   
-  virtual ~StereoMicrophone() {}
+  /** Returns whether or not the microphone is a coincident microphone. */
+  virtual bool IsCoincident() const noexcept { return true; }
+  
+  virtual sal::Int num_channels() const noexcept { return num_channels_; }
+  
+  virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
+                                    const mcl::Point& point,
+                                    const size_t wave_id,
+                                    sal::Buffer& output_buffer) noexcept;
+  
+private:
+  sal::Int num_channels_;
 };
   
 } // namespace sal

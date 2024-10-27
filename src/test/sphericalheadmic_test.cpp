@@ -80,7 +80,7 @@ bool SphericalHeadMic::Test() {
   output_ipsilateral[3] = 0.0952699695904199;
   output_ipsilateral[4] = 0.0210966838072453;
   output_ipsilateral[5] = 1.2271276500375;
-  ASSERT(IsEqual(stream_a.GetLeftReadPointer(), output_ipsilateral));
+  ASSERT(IsEqual(stream_a.GetLeftReadView(), output_ipsilateral));
   
   
   // Trying now contralateral case (right ear output due to the
@@ -92,7 +92,7 @@ bool SphericalHeadMic::Test() {
   output_contralateral[3] = -0.17029879934648;
   output_contralateral[4] = 0.019246147618618;
   output_contralateral[5] = 0.091776572646393;
-  ASSERT(IsEqual(stream_a.GetRightReadPointer(), output_contralateral));
+  ASSERT(IsEqual(stream_a.GetRightReadView(), output_contralateral));
   
   // ASSERT(IsEqual(mic_a_left.ImpulseResponse(point_line_left), output_a_cmp));
   
@@ -105,8 +105,8 @@ bool SphericalHeadMic::Test() {
   // this test.
   stream_a.Reset();
   mic_a.AddPlaneWave(impulse, point_line_right, stream_a);
-  ASSERT(IsEqual(stream_a.GetRightReadPointer(), output_ipsilateral));
-  ASSERT(IsEqual(stream_a.GetLeftReadPointer(), output_contralateral));
+  ASSERT(IsEqual(stream_a.GetRightReadView(), output_ipsilateral));
+  ASSERT(IsEqual(stream_a.GetLeftReadView(), output_contralateral));
   
   
   SphericalHeadMic mic_b(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
@@ -120,8 +120,8 @@ bool SphericalHeadMic::Test() {
   Point point_front(distance, 0.0, 0.0);
   
   mic_b.AddPlaneWave(impulse, point_front, stream_b);
-  ASSERT(IsEqual(stream_b.GetLeftReadPointer(),
-                 stream_b.GetRightReadPointer(), impulse.num_samples()));
+  ASSERT(IsEqual(stream_b.GetLeftReadView(),
+                 stream_b.GetRightReadView(), impulse.num_samples()));
   
   
   std::vector<Sample> output_frontal(6);
@@ -132,24 +132,24 @@ bool SphericalHeadMic::Test() {
   output_frontal[4] = 0.093428452743537;
   output_frontal[5] = -0.12911852945215;
   
-  ASSERT(IsEqual(stream_b.GetLeftReadPointer(), output_frontal));
+  ASSERT(IsEqual(stream_b.GetLeftReadView(), output_frontal));
   
   // Testing reset
   stream_b.Reset();
   mic_b.AddPlaneWave(MonoBuffer::Unary(1.0), Point(0.0,0.0,-1.0), stream_b);
-  ASSERT(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
-  ASSERT(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetLeftReadView()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetRightReadView()[0], 0.0));
   
   stream_b.Reset();
   mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_b);
-  ASSERT(! IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
-  ASSERT(! IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetLeftReadView()[0], 0.0));
+  ASSERT(! IsEqual(stream_b.GetRightReadView()[0], 0.0));
   
   stream_b.Reset();
   mic_b.Reset();
   mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0,0.0,-1.0), stream_b);
-  ASSERT(IsEqual(stream_b.GetLeftReadPointer()[0], 0.0));
-  ASSERT(IsEqual(stream_b.GetRightReadPointer()[0], 0.0));
+  ASSERT(IsEqual(stream_b.GetLeftReadView()[0], 0.0));
+  ASSERT(IsEqual(stream_b.GetRightReadView()[0], 0.0));
   
   return true;
 }

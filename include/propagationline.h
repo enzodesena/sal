@@ -47,7 +47,8 @@ public:
                   const sal::InterpolationType = sal::InterpolationType::kRounding,
                   const bool air_filters_active = false,
                   const bool allow_attenuation_larger_than_one = false,
-                  const sal::Length reference_distance = kOneSampleDistance) noexcept;
+                  const sal::Length reference_distance = kOneSampleDistance,
+                  const size_t max_expected_input = 1 << 14) noexcept;
   
   /** Returns the multiplicative attenuation of the propagation line */
   sal::Sample attenuation() const noexcept;
@@ -68,7 +69,7 @@ public:
   
   void Write(const sal::Sample &sample) noexcept;
   
-  void Write(const Sample* samples, const Int num_samples) noexcept;
+  void Write(std::span<const Sample> input_data) noexcept;
   
   /** Returns the current read sample */
   inline sal::Sample Read() const noexcept {
@@ -82,7 +83,7 @@ public:
   /** Returns a set of `num_samples` samples and writes them into `output_data`.
    @param[in] num_samples the number of samples to read.
    @param[out] output_data the output array*/
-  void Read(const Int num_samples, Sample* output_data) const noexcept;
+  void Read(std::span<Sample> output_data) const noexcept;
   
   void Tick() noexcept;
   
@@ -117,6 +118,7 @@ private:
   sal::InterpolationType interpolation_type_;
   RampSmoother attenuation_smoother_;
   RampSmoother latency_smoother_;
+  std::vector<Sample> scratch_vector_;
   
   void Update() noexcept;
   sal::Time ComputeLatency(const sal::Length) noexcept;

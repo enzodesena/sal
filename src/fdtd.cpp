@@ -24,8 +24,6 @@ using sal::Time;
 using sal::Sample;
 
 namespace sal {
-
-
   
 Fdtd::Fdtd(Room* const room,
            Source* const source,
@@ -44,7 +42,7 @@ sal::Signal Fdtd::RunFdtd(Int Nx, Int Ny, Int Nz,
                           Int Nt,
                           std::vector<std::vector<std::vector<sal::Int> > > G,
                           Sample xi,
-                          const Sample* signal,
+                          std::span<const Sample> signal,
                           Sample lmb,
                           Int pos_s_x, Int pos_s_y, Int pos_s_z,
                           Int pos_m_x, Int pos_m_y, Int pos_m_z) {
@@ -120,7 +118,7 @@ void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
                        input_buffer.num_samples(),
                        CreateGeometry(Nx, Ny, Nz),
                        xi_,
-                       input_buffer.GetReadPointer(),
+                       input_buffer.GetReadView(),
                        lmb_,
                        pos_s_x, pos_s_y, pos_s_z,
                        pos_m_x, pos_m_y, pos_m_z);

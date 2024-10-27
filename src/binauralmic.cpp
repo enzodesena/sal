@@ -18,18 +18,20 @@ using mcl::Quaternion;
 
 namespace sal {
 
-void BinauralMic::AddPlaneWaveRelative(const Sample* input_data,
-                                       const Int num_samples,
+void BinauralMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
                                        const mcl::Point& point,
-                                       const Int wave_id,
+                                       const size_t wave_id,
                                        Buffer& output_buffer) noexcept {
-  if (!bypass_) {
-    CreateInstanceIfNotExist(wave_id);
-    instances_.at(wave_id).AddPlaneWaveRelative(input_data, num_samples, point,
-                                                output_buffer);
+  if (bypass_) {
+    mcl::Add(input_data,
+             output_buffer.GetReadView(Buffer::kLeftChannel),
+             output_buffer.GetWriteView(Buffer::kLeftChannel));
+   mcl::Add(input_data,
+            output_buffer.GetReadView(Buffer::kRightChannel),
+            output_buffer.GetWriteView(Buffer::kRightChannel));
   } else {
-    output_buffer.AddSamples(Buffer::kLeftChannel, 0, num_samples, input_data);
-    output_buffer.AddSamples(Buffer::kRightChannel, 0, num_samples, input_data);
+    CreateInstanceIfNotExist(wave_id);
+    instances_.at(wave_id).AddPlaneWaveRelative(input_data, point, output_buffer);
   }
 }
   
@@ -40,7 +42,7 @@ void BinauralMic::SetBypass(bool bypass) noexcept {
 }
 
 
-void BinauralMic::CreateInstanceIfNotExist(const Int wave_id) noexcept {
+void BinauralMic::CreateInstanceIfNotExist(const size_t wave_id) noexcept {
   // If there is no instance associated to the given wave_id then create
   if (instances_.count(wave_id) == 0) {
     instances_.insert(std::make_pair(wave_id, BinauralMicInstance(this, update_length_)));
@@ -66,16 +68,18 @@ BinauralMic::BinauralMic(const Point& position,
         bypass_(false), reference_orientation_(reference_orientation) {}
 
 
-// Use signals with 44100 sampling frequency!!!
-void BinauralMicInstance::AddPlaneWaveRelative(const Sample* input_data,
-                                               const Int num_samples,
+void BinauralMicInstance::AddPlaneWaveRelative(std::span<const Sample> input_data,
                                                const mcl::Point& point,
                                                Buffer& output_buffer) noexcept {
   UpdateFilter(point);
-  output_buffer.FilterAddSamples(Buffer::kLeftChannel, 0, num_samples,
-                                 input_data, filter_left_);
-  output_buffer.FilterAddSamples(Buffer::kRightChannel, 0, num_samples,
-                                 input_data, filter_right_);
+  
+  filter_left_.ProcessBlock(input_data, scratch_vector_);
+  mcl::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kLeftChannel),
+           output_buffer.GetWriteView(Buffer::kLeftChannel));
+  
+  filter_right_.ProcessBlock(input_data, scratch_vector_);
+  mcl::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kRightChannel),
+           output_buffer.GetWriteView(Buffer::kRightChannel));
 }
 
 
@@ -99,9 +103,9 @@ DatabaseBinauralMic::DatabaseBinauralMic(const Point& position,
 BinauralMic(position, orientation, update_length, reference_orientation) {}
 
 
-void DatabaseBinauralMic::FilterAll(mcl::DigitalFilter* filter) {
-  mcl::FilterAll(hrtf_database_right_, filter);
-  mcl::FilterAll(hrtf_database_left_, filter);
+void DatabaseBinauralMic::FilterAll(mcl::Filter& filter) {
+  mcl::FilterAll(filter, hrtf_database_right_, hrtf_database_right_);
+  mcl::FilterAll(filter, hrtf_database_left_, hrtf_database_left_);
 }
   
 } // namespace sal

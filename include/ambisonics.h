@@ -18,7 +18,6 @@
 #include "microphone.h"
 #include "point.h"
 #include "decoder.h"
-#include "microphonearray.h"
 #include "salconstants.h"
 #include "iirfilter.h"
 
@@ -58,13 +57,11 @@ public:
   static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
   
   static bool Test();
-  virtual void AddPlaneWaveRelative(const Sample* input_data,
-                                    const Int num_samples,
+  virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
                                     const mcl::Point& point,
-                                    const Int wave_id,
+                                    const size_t wave_id,
                                     Buffer& output_buffer) noexcept;
-  
-  
+
 private:
   
   const Int order_;
@@ -108,13 +105,9 @@ public:
   virtual void Decode(const Buffer& input_buffer,
                       Buffer& output_buffer);
   
-  
   static bool Test();
-
-  virtual ~AmbisonicsHorizDec() {}
   
 private:
-  
   static mcl::Matrix<Sample>
   ModeMatchingDec(Int order, const std::vector<Angle>& loudspeaker_angles);
   

@@ -165,18 +165,17 @@ public:
    next values coming out of the smoother, and writes the result into
    an output array (`output_data`).
    @param[in] input_data The input data.
-   @param[in] num_samples The number of samples.
    @param[out] output_data The output array (data already there will be
    overwritten. */
-  void GetNextValuesMultiply(const Sample* input_data,
-                             const Int num_samples,
-                             Sample* output_data) noexcept {
+  void GetNextValuesMultiply(std::span<const Sample> input_data,
+                             std::span<Sample> output_data) noexcept {
+    const size_t num_samples = input_data.size();
     if (IsUpdating()) {
-      for (Int i=0; i<num_samples; ++i) {
+      for (size_t i=0; i<num_samples; ++i) {
         output_data[i] = input_data[i]*GetNextValue();
       }
     } else {
-      mcl::Multiply(input_data, num_samples, target_value_, output_data);
+      mcl::Multiply(input_data, target_value_, output_data);
     }
   }
   
@@ -187,15 +186,15 @@ public:
    @param[in] num_samples The number of samples to be handled.
    @param[in,out] input_output_data The data onto which we will add the result
    of the multiplication. */
-  void GetNextValuesMultiplyAdd(const Sample* input_data,
-                                const Int num_samples,
-                                Sample* input_output_data) noexcept {
+  void GetNextValuesMultiplyAdd(std::span<const Sample> input_data,
+                                std::span<Sample> input_output_data) noexcept {
+    const size_t num_samples = input_data.size();
     if (IsUpdating()) {
-      for (Int i=0; i<num_samples; ++i) {
+      for (size_t i=0; i<num_samples; ++i) {
         input_output_data[i] += input_data[i]*GetNextValue();
       }
     } else {
-      for (Int i=0; i<num_samples; ++i) {
+      for (size_t i=0; i<num_samples; ++i) {
         input_output_data[i] += input_data[i]*target_value_;
       }
     }
@@ -203,16 +202,16 @@ public:
   
   /** Does the same as GetNextValuesAndMultiply, but without modifying the
    object. */
-  void PredictNextValuesAndMultiply(const Sample* input_data,
-                                    const Int num_samples,
-                                    Sample* output_data) const noexcept {
+  void PredictNextValuesAndMultiply(std::span<const Sample> input_data,
+                                    std::span<Sample> output_data) const noexcept {
+    const size_t num_samples = input_data.size();
     if (IsUpdating()) {
       RampSmoother temp(*this); // Create a copy of itself that we will discard.
-      for (Int i=0; i<num_samples; ++i) {
+      for (size_t i=0; i<num_samples; ++i) {
         output_data[i] = input_data[i]*temp.GetNextValue();
       }
     } else {
-      mcl::Multiply(input_data, num_samples, target_value_, output_data);
+      mcl::Multiply(input_data, target_value_, output_data);
     }
   }
   
@@ -256,7 +255,7 @@ private:
 
   
 /** Implements a first-order IIR low-pass filter with a given decay constant. */
-class LowPassSmoothingFilter : public mcl::DigitalFilter {
+class LowPassSmoothingFilter : public mcl::Filter {
 public:
   /**
    @param[in] ramp_samples number of samples after which the value is
@@ -275,7 +274,7 @@ public:
     return filter_.ProcessSample(input);
   }
   
-  using mcl::DigitalFilter::ProcessSample;
+  using mcl::Filter::ProcessSample;
   
   virtual void Reset() noexcept { filter_.Reset(); }
   

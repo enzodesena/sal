@@ -14,6 +14,7 @@
 #include "matrixop.h"
 #include "salutilities.h"
 #include <cstdlib>
+#include <span>
 
 using sal::Length;
 using sal::Time;
@@ -29,7 +30,8 @@ PropagationLine::PropagationLine(const Length distance,
                                  const sal::InterpolationType interpolation_type,
                                  const bool air_filters_active,
                                  const bool allow_gain,
-                                 const sal::Length reference_distance) noexcept :
+                                 const sal::Length reference_distance,
+                                 const size_t max_expected_input_size) noexcept :
         sampling_frequency_(sampling_frequency),
         delay_filter_(DelayFilter(mcl::RoundToInt(ComputeLatency(distance)),
                                   mcl::RoundToInt(ComputeLatency(max_distance)))),
@@ -44,7 +46,8 @@ PropagationLine::PropagationLine(const Length distance,
         air_filter_(mcl::FirFilter(GetAirFilter(distance))),
         interpolation_type_(interpolation_type),
         attenuation_smoother_(RampSmoother(current_attenuation_, sampling_frequency)),
-        latency_smoother_(RampSmoother(current_latency_, sampling_frequency)) {
+        latency_smoother_(RampSmoother(current_latency_, sampling_frequency)),
+        scratch_vector_(max_expected_input_size, 0.0) {
   ASSERT_WITH_MESSAGE(std::isgreaterequal(sampling_frequency, 0.0),
                       "The sampling frequency cannot be negative.");
   ASSERT_WITH_MESSAGE(std::isgreaterequal(max_distance, 0.0),
@@ -134,46 +137,41 @@ void PropagationLine::Write(const sal::Sample& sample) noexcept {
   }
 }
   
-void PropagationLine::Write(const Sample* samples,
-                            const Int num_samples) noexcept {
-  ASSERT(num_samples > 0);
-  
+void PropagationLine::Write(std::span<const Sample> input_data) noexcept {
+  size_t num_samples = input_data.size();
   if (air_filters_active_) {
-    ASSERT(num_samples < MCL_MAX_VLA_LENGTH);
-    MCL_STACK_ALLOCATE(Sample, temp_samples, num_samples); // TODO: handle stack overflow
-    air_filter_.ProcessBlock(samples, num_samples, temp_samples);
-    delay_filter_.Write(temp_samples, num_samples);
+    ASSERT(scratch_vector_.size() >= num_samples);
+    air_filter_.ProcessBlock(input_data, scratch_vector_);
+    delay_filter_.Write(std::span<const Sample>(scratch_vector_.begin(), num_samples));
   } else {
-    delay_filter_.Write(samples, num_samples);
+    delay_filter_.Write(input_data);
   }
 }
 
-void PropagationLine::Read(const Int num_samples,
-                           Sample* output_data) const noexcept {
-  ASSERT(num_samples > 0);
-  
+void PropagationLine::Read(std::span<Sample> output_data) const noexcept {
+  size_t num_samples = output_data.size();
   if (interpolation_type_ == sal::InterpolationType::kRounding &&
       ! attenuation_smoother_.IsUpdating() && ! latency_smoother_.IsUpdating()) {
-    delay_filter_.Read(num_samples, output_data);
-    mcl::Multiply(output_data, num_samples, current_attenuation_, output_data);
+    delay_filter_.Read(output_data);
+    mcl::Multiply(output_data, current_attenuation_, output_data);
   } else {
     output_data[0] = Read();
     
     if (num_samples > 1) {
       // Create a temporary we can discard
-      RampSmoother temp_attenuation(attenuation_smoother_);
+      RampSmoother temp_attenuation(attenuation_smoother_); // I believe this doesn't heap allocate (TODO: double check please)
       RampSmoother temp_latency(latency_smoother_);
       
       if (interpolation_type_ == sal::InterpolationType::kLinear) {
-        for (Int i=1; i<num_samples; ++i) {
+        for (size_t i=1; i<num_samples; ++i) {
           output_data[i] = delay_filter_.FractionalReadAt(temp_latency.GetNextValue() - ((Time) i))
               * temp_attenuation.GetNextValue();
         }
       } else {
-        for (Int i=1; i<num_samples; ++i) {
+        for (size_t i=1; i<num_samples; ++i) {
           output_data[i] = delay_filter_.ReadAt((mcl::RoundToInt(temp_latency.GetNextValue())) - i);
         }
-        temp_attenuation.GetNextValuesMultiply(&output_data[1], num_samples-1, &output_data[1]);
+        temp_attenuation.GetNextValuesMultiply(std::span(output_data.begin()+1, num_samples-1), std::span(output_data.begin()+1, num_samples-1));
       }
     }
   }

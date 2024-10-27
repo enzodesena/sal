@@ -20,7 +20,7 @@
 
 namespace sal {
   
-class DelayFilter : public mcl::DigitalFilter {
+class DelayFilter : public mcl::Filter {
   
 public:
   /**
@@ -38,7 +38,7 @@ public:
    */
   inline void Write(const Sample sample) noexcept { *write_index_ = sample; }
   
-  void Write(const Sample* samples, const Int num_samples) noexcept;
+  void Write(std::span<const Sample> input_data) noexcept;
   
   /** Resets the state of the filter */
   virtual void Reset() noexcept;
@@ -69,7 +69,7 @@ public:
   /** Read the next `num_samples` samples.
    @param[in] num_samples the number of samples to be read.
    @param[out] output_data the array where to write these samples. */
-  void Read(const Int num_samples, Sample* output_data) const noexcept;
+  void Read(std::span<Sample> output_data) const noexcept;
   
   inline Sample FractionalReadAt(const Time fractional_delay_tap) const noexcept {
 #ifndef NOLOGGING

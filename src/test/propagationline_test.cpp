@@ -139,23 +139,22 @@ bool PropagationLine::Test() {
   prop_line_c.Reset();
   Int stride = 2;
   for (Int i=0; i<num_samples; i+=stride) {
-    prop_line_c.Write(&input_samples[i], stride);
-    Sample cmp_samples[stride];
-    prop_line_c.Read(stride, cmp_samples);
-    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    prop_line_c.Write(std::span(input_samples.begin()+i, stride));
+    std::vector<Sample> cmp_samples(stride);
+    prop_line_c.Read(cmp_samples);
+    ASSERT(IsEqual(cmp_samples, std::span(output_samples.begin()+i, stride)));
     prop_line_c.Tick(stride);
   }
   
   prop_line_c.Reset();
   stride = 3;
   for (Int i=0; (i+stride)<num_samples; i+=stride) {
-    prop_line_c.Write(&input_samples[i], stride);
-    Sample cmp_samples[stride];
-    prop_line_c.Read(stride, cmp_samples);
-    ASSERT(IsEqual(cmp_samples, &output_samples[i], stride));
+    prop_line_c.Write(std::span(input_samples.begin()+i, stride));
+    std::vector<Sample> cmp_samples(stride);
+    prop_line_c.Read(cmp_samples);
+    ASSERT(IsEqual(cmp_samples, std::span(output_samples.begin()+i, stride)));
     prop_line_c.Tick(stride);
   }
-  
   
   return true;
 }

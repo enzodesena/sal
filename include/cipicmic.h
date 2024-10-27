@@ -49,8 +49,6 @@ public:
   
   static bool Test();
   
-  ~CipicMic() {}
-  
   
 private:
   static std::vector<std::vector<Signal> > Load(const Ear ear,

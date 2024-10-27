@@ -89,8 +89,8 @@ void DelayFilter::Tick(const Int num_samples) noexcept {
   ASSERT(read_index_ >= start_ && read_index_ <= end_);
 }
   
-void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
-  ASSERT(num_samples >= 0);
+void DelayFilter::Write(std::span<const Sample> input_data) noexcept {
+  const size_t num_samples = input_data.size();
   if (num_samples > (max_latency_-latency_+1)) {
     Logger::GetInstance().
     LogError("Writing more samples (%d) than max_latency-latency+1 (%d)."
@@ -100,9 +100,9 @@ void DelayFilter::Write(const Sample* samples, const Int num_samples) noexcept {
   }
   
   Sample* write_index = write_index_;
-  for (Int i=0; i<num_samples; ++i) {
+  for (size_t i=0; i<num_samples; ++i) {
     ASSERT(write_index >= start_ && write_index <= end_);
-    *(write_index++) = samples[i];
+    *(write_index++) = input_data[i];
     if (write_index > end_) {
       write_index = start_;
     }
@@ -134,18 +134,16 @@ Int DelayFilter::latency() const noexcept { return latency_; }
 
 Int DelayFilter::max_latency() const noexcept { return max_latency_; }
 
-void DelayFilter::Read(const Int num_samples,
-                       Sample* output_data) const noexcept {
-  if (num_samples > max_latency_) {
+void DelayFilter::Read(std::span<Sample> output_data) const noexcept {
+  if (output_data.size() > (size_t) max_latency_) {
     Logger::GetInstance().
     LogError("Trying to read a number of samples (%d) larger than the latency "
              "of the delay line (%d). This operation will go ahead, but it "
              "means you will be reading samples that haven't been written yet.",
-             num_samples, latency_);
+             output_data.size(), latency_);
   }
-  
   Sample* read_index = read_index_;
-  for (Int i=0; i<num_samples; ++i) {
+  for (size_t i=0; i<output_data.size(); ++i) {
     ASSERT(read_index >= start_ && read_index <= end_);
     output_data[i] = *(read_index++);
     if (read_index > end_) {

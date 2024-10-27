@@ -19,29 +19,34 @@ using mcl::Multiply;
 
 namespace sal {
 
-void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
-                                         const Int num_samples,
+void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
                                          const mcl::Point& point,
-                                         const Int wave_id,
+                                         const size_t wave_id,
                                          Buffer& output_buffer) noexcept {
   // Precompute for performance gain
   const Angle phi = point.phi();
   const Sample sqrt_2 = mcl::Sqrt(2.0);
+  ASSERT(output_buffer.num_samples() >= input_data.size());
   
   switch (normalisation_convention_) {
     case sqrt2: {
       // Zero-th component
-      output_buffer.AddSamples(HoaBuffer::GetChannelId(0, 0, ordering_convention_),
-                               0, num_samples, input_data);
+      
+      mcl::Add(input_data,
+               output_buffer.GetReadView(HoaBuffer::GetChannelId(0, 0, ordering_convention_)),
+               output_buffer.GetWriteView(HoaBuffer::GetChannelId(0, 0, ordering_convention_)));
       
       for (Int i=1; i<=order_; ++i) {
         // TODO: add 3D components
-        output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(i, 1, ordering_convention_),
-                                         0, num_samples, input_data,
-                                         sqrt_2*cos(((Angle) i)*phi));
-        output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(i, -1, ordering_convention_),
-                                         0, num_samples, input_data,
-                                         sqrt_2*sin(((Angle) i)*phi));
+        mcl::MultiplyAdd(input_data,
+                         sqrt_2*cos(((Angle) i)*phi),
+                         output_buffer.GetReadView(HoaBuffer::GetChannelId(i, 1, ordering_convention_)),
+                         output_buffer.GetWriteView(HoaBuffer::GetChannelId(i, 1, ordering_convention_)));
+        
+        mcl::MultiplyAdd(input_data,
+                         sqrt_2*sin(((Angle) i)*phi),
+                         output_buffer.GetReadView(HoaBuffer::GetChannelId(i, -1, ordering_convention_)),
+                         output_buffer.GetWriteView(HoaBuffer::GetChannelId(i, -1, ordering_convention_)));
       }
       break;
     }
@@ -54,7 +59,9 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
       const Sample sqrt_4pi = mcl::Sqrt(4.0*PI);
       
       // Zero-th component
-      output_buffer.AddSamples(HoaBuffer::GetChannelId(0, 0, ordering_convention_), 0, num_samples, input_data);
+      mcl::Add(input_data,
+               output_buffer.GetReadView(HoaBuffer::GetChannelId(0, 0, ordering_convention_)),
+               output_buffer.GetWriteView(HoaBuffer::GetChannelId(0, 0, ordering_convention_)));
       
       for (Int order_n=1; order_n<=order_; ++order_n) {
         for (Int degree_m=0; degree_m<=order_n; ++degree_m) {
@@ -70,8 +77,15 @@ void AmbisonicsMic::AddPlaneWaveRelative(const Sample* input_data,
           
           mcl::Complex weight = spherical_harmonic * normalisation;
           
-          output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(order_n, -degree_m, ordering_convention_), 0, num_samples, input_data, mcl::ImagPart(weight));
-          output_buffer.MultiplyAddSamples(HoaBuffer::GetChannelId(order_n, degree_m, ordering_convention_), 0, num_samples, input_data, mcl::RealPart(weight));
+          mcl::MultiplyAdd(input_data,
+                           mcl::ImagPart(weight),
+                           output_buffer.GetReadView(HoaBuffer::GetChannelId(order_n, -degree_m, ordering_convention_)),
+                           output_buffer.GetWriteView(HoaBuffer::GetChannelId(order_n, -degree_m, ordering_convention_)));
+          
+          mcl::MultiplyAdd(input_data,
+                           mcl::RealPart(weight),
+                           output_buffer.GetReadView(HoaBuffer::GetChannelId(order_n, degree_m, ordering_convention_)),
+                           output_buffer.GetWriteView(HoaBuffer::GetChannelId(order_n, degree_m, ordering_convention_)));
           
           // The order of the two statements above is not random, since the case
           // degree_m equals zero should give back the non-zero cosine term,
@@ -234,7 +248,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
   ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
   
   // Cache for speed
-  for (Int sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
+  for (size_t sample_id = 0; sample_id<input_buffer.num_samples(); ++sample_id) {
     std::vector<Sample> bformat_frame = GetFrame(order_, sample_id,
                                                  input_buffer);
     
