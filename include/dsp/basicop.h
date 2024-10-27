@@ -12,7 +12,7 @@
 #include <limits>
 #include <vector>
 
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "pointwiseop.h"
 
 using std::vector;

@@ -9,7 +9,7 @@
 #ifndef SAL_DSP_POINT_H
 #define SAL_DSP_POINT_H
 
-#include "mcltypes.h"
+#include "dsptypes.h"
 
 namespace sal {
 

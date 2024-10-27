@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "kissfft.hh"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "pointwiseop.h"
 #include "transformop.h"
 #include "vectorop.h"

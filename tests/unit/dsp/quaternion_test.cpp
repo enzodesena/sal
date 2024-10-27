@@ -10,7 +10,7 @@
 
 #include "comparisonop.h"
 #include "constants.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "point.h"
 #include "quaternion.h"
 #include "vectorop.h"

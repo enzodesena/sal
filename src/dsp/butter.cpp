@@ -15,7 +15,7 @@
 #include <vector>
 
 #include "butter.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 
 namespace sal {
 

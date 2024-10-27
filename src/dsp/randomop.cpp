@@ -9,7 +9,7 @@
 #include <cassert>
 #include <vector>
 
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "randomop.h"
 
 namespace sal {

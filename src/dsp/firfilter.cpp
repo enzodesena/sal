@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "firfilter.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "vectorop.h"
 
 #if defined(SAL_DSP_APPLE_ACCELERATE)

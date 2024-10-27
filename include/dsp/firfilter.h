@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "digitalfilter.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "vectorop.h"
 
 namespace sal {

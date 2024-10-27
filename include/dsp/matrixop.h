@@ -18,7 +18,7 @@
 #include "basicop.h"
 #include "comparisonop.h"
 #include "elementaryop.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 
 #if SAL_DSP_LOAD_EIGEN
 #include <Eigen/Dense>

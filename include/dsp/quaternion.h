@@ -14,7 +14,7 @@
 #include <cassert>
 
 #include "constants.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "point.h"
 
 namespace sal {

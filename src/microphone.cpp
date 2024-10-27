@@ -8,7 +8,7 @@
 
  */
 
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "microphone.h"
 #include "quaternion.h"
 

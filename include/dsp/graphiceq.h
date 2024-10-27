@@ -15,7 +15,7 @@
 
 #include "digitalfilter.h"
 #include "matrixop.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "peakingfilters.h"
 #include "vectorop.h"
 

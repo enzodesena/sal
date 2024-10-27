@@ -15,7 +15,7 @@
 
 #include "audiobuffer.h"
 #include "decoder.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "portaudio.h"
 #include "salconstants.h"
 #include "saltypes.h"

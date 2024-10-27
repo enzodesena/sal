@@ -10,7 +10,7 @@
 
 #include "comparisonop.h"
 #include "firfilter.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "vectorop.h"
 
 namespace sal {

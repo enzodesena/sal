@@ -14,7 +14,7 @@
 #define SAL_ARRAY_H
 
 #include "salconstants.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 
 namespace sal {
 

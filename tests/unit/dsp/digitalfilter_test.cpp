@@ -13,7 +13,7 @@
 #include "firfilter.h"
 #include "iirfilter.h"
 #include "maxgradientfilter.h"
-#include "mcltypes.h"
+#include "dsptypes.h"
 #include "randomop.h"
 #include "vectorop.h"
 
