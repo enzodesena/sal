@@ -3,19 +3,19 @@
  Spatial Audio Library (SAL)
  Copyright (c) 2011, Enzo De Sena
  All rights reserved.
- 
+
  Authors: Enzo De Sena, enzodesena@gmail.com
- 
+
  This file contains several types, macros and supporting classes definitions.
- 
+
  */
 
 #ifndef SAL_TYPES_H
 #define SAL_TYPES_H
 
 #include <vector>
-#include "mcltypes.h"
 
+#include "mcltypes.h"
 
 namespace sal {
 
@@ -27,33 +27,22 @@ typedef mcl::Real Angle;
 typedef mcl::Int UInt;
 typedef mcl::Int Int;
 
-  
 typedef std::vector<Sample> Signal;
-  
+
 struct StereoSignal {
   Signal left;
   Signal right;
 };
-  
-  
-enum Ear {
-  kLeftEar,
-  kRightEar
-};
 
+enum Ear { kLeftEar, kRightEar };
 
 enum class InterpolationType {
   kRounding, /** Rounds the latency to the nearest integer. */
-  kLinear, /** Applies fractional delays with linear interpolation.
-            It reduces audible clicks, but can cause low-pass
-            effect. */
+  kLinear,   /** Applies fractional delays with linear interpolation.
+              It reduces audible clicks, but can cause low-pass
+              effect. */
 };
 
-  
-  
-} // namespace sal
-
-
-
+}  // namespace sal
 
 #endif

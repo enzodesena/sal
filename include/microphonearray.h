@@ -11,15 +11,12 @@
 #ifndef SAL_MICROPHONEARRAY_H
 #define SAL_MICROPHONEARRAY_H
 
-
 #include "microphone.h"
-#include "point.h"
-#include "source.h"
-#include "microphone.h"
-#include "saltypes.h"
-#include "salconstants.h"
 #include "monomics.h"
+#include "point.h"
 #include "salconstants.h"
+#include "saltypes.h"
+#include "source.h"
 
 namespace sal {
 
@@ -30,35 +27,34 @@ namespace sal {
  each one's stream. Alternatively, the object also has a multichannel stream
  object, which contains pointers to the individual streams. */
 class MicrophoneArray : public Microphone {
-public:
+ public:
   MicrophoneArray(const mcl::Point& position,
                   const mcl::Quaternion& orientation,
-                  std::vector<std::unique_ptr<MonoMic> >&& microphones) :
-      Microphone(position, orientation), microphones_(std::move(microphones)) {}
+                  std::vector<std::unique_ptr<MonoMic>>&& microphones)
+      : Microphone(position, orientation),
+        microphones_(std::move(microphones)) {}
 
   /**
    This method will move all the internal microphones to a new position.
    The relative positions of the different microphones will stay unchanged.
    */
   virtual void SetPosition(const mcl::Point& position) noexcept {
-    mcl::Point position_delta(position.x()-this->position().x(),
-                              position.y()-this->position().y(),
-                              position.z()-this->position().z());
-    for (size_t i=0; i<microphones_.size(); ++i) {
+    mcl::Point position_delta(position.x() - this->position().x(),
+                              position.y() - this->position().y(),
+                              position.z() - this->position().z());
+    for (size_t i = 0; i < microphones_.size(); ++i) {
       mcl::Point old_mic_position = microphones_[i]->position();
-      mcl::Point new_mic_position(old_mic_position.x()+position_delta.x(),
-                                  old_mic_position.y()+position_delta.y(),
-                                  old_mic_position.z()+position_delta.z());
+      mcl::Point new_mic_position(old_mic_position.x() + position_delta.x(),
+                                  old_mic_position.y() + position_delta.y(),
+                                  old_mic_position.z() + position_delta.z());
       microphones_[i]->SetPosition(new_mic_position);
     }
-    
+
     Microphone::SetPosition(position);
   }
-  
-  
 
   void SetOrientation(const mcl::Quaternion& orientation) noexcept {
-    for (Int i=0; i<(Int)microphones_.size(); ++i) {
+    for (Int i = 0; i < (Int)microphones_.size(); ++i) {
       microphones_[i]->SetOrientation(orientation);
     }
     orientation_ = orientation;
@@ -71,35 +67,33 @@ public:
   bool IsCoincident() const noexcept {
     const Int num_microphones = (Int)microphones_.size();
 
-    if (num_microphones == 0 || num_microphones == 1) { return true; }
+    if (num_microphones == 0 || num_microphones == 1) {
+      return true;
+    }
 
     mcl::Point position(microphones_[0]->position());
-    for (Int i=1; i<num_microphones; ++i) {
-      if (! IsEqual(microphones_[i]->position(), position)) {
+    for (Int i = 1; i < num_microphones; ++i) {
+      if (!IsEqual(microphones_[i]->position(), position)) {
         return false;
       }
     }
     return true;
   }
-  
-  Int num_channels() const noexcept {
-    return microphones_.size();
-  }
 
-  const MonoMic& GetConstMicrophoneRef(const size_t microphone_id) const noexcept {
+  Int num_channels() const noexcept { return microphones_.size(); }
+
+  const MonoMic& GetConstMicrophoneRef(
+      const size_t microphone_id) const noexcept {
     return *microphones_[microphone_id];
   }
-  
+
   MonoMic& GetMicrophoneRef(const size_t microphone_id) noexcept {
     return *microphones_[microphone_id];
   }
 
-  Int num_microphones() const noexcept {
-    return microphones_.size();
-  }
-  
-  static bool Test();
+  Int num_microphones() const noexcept { return microphones_.size(); }
 
+  static bool Test();
 
   /**
    Simulates the output of the microphone array to a source in the direction
@@ -111,19 +105,18 @@ public:
    objects directly.
    */
   virtual void AddPlaneWave(std::span<const Sample> input_data,
-                            const mcl::Point& point,
-                            const size_t wave_id,
+                            const mcl::Point& point, const size_t wave_id,
                             Buffer& output_buffer) noexcept {
-    for (size_t i=0; i<microphones_.size(); ++i) {
+    for (size_t i = 0; i < microphones_.size(); ++i) {
       // Each microphone will push in its own mono stream. The multichannel
       // stream is merely a vector of pointers to the individual mono streams
-      
+
       std::span<Sample> output_data = output_buffer.GetWriteView(i);
 
       microphones_[i]->AddPlaneWave(input_data, point, wave_id, output_data);
     }
   }
-  
+
   virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
                                     const mcl::Point& point,
                                     const size_t wave_id,
@@ -135,37 +128,36 @@ public:
     // the same rotation for all of them.
     ASSERT(false);
   }
-protected:
-  std::vector<std::unique_ptr<MonoMic> > microphones_;
+
+ protected:
+  std::vector<std::unique_ptr<MonoMic>> microphones_;
 };
 
-  
 /** This object creates a microphone array based on a microphone prototype.
  So, for instance, you can take an omnimic, and create an array of N omni mics.
  This class is a parent for more specific classes, e.g. a circular array etc.
  This class simply creates N copies of the mic_prototype and repositions them
  in the set `position`, with given `orientation` and `handedness`. */
-template<class T>
+template <class T>
 class UniformArray : public MicrophoneArray {
-public:
-  UniformArray(const mcl::Point& position,
-               const mcl::Quaternion& orientation,
-               const T& mic_prototype,
-               const mcl::Int num_microphones)
-    // Directly initialize the base class in the initializer list
-    : MicrophoneArray(position, orientation, MicrophoneFactory(mic_prototype, num_microphones)) {}
-private:
-  std::vector<std::unique_ptr<MonoMic>>
-  MicrophoneFactory(const T& mic_prototype, const size_t num_microphones) {
+ public:
+  UniformArray(const mcl::Point& position, const mcl::Quaternion& orientation,
+               const T& mic_prototype, const mcl::Int num_microphones)
+      // Directly initialize the base class in the initializer list
+      : MicrophoneArray(position, orientation,
+                        MicrophoneFactory(mic_prototype, num_microphones)) {}
+
+ private:
+  std::vector<std::unique_ptr<MonoMic>> MicrophoneFactory(
+      const T& mic_prototype, const size_t num_microphones) {
     std::vector<std::unique_ptr<MonoMic>> output;
     output.reserve(num_microphones);
-    for (size_t i=0; i<num_microphones; ++i) {
+    for (size_t i = 0; i < num_microphones; ++i) {
       output.emplace_back(std::make_unique<T>(mic_prototype));
     }
     return output;
   }
 };
-
 
 /**
  This generates a microphone array centered in position, with radius
@@ -174,54 +166,54 @@ private:
  first_element_heading=0, means that the first microphone is
  at (position.x() + radius, position.y(), position.z()).
  */
-template<class T>
+template <class T>
 class CircularArray : public UniformArray<T> {
-public:
-  CircularArray(const mcl::Point& position,
-                const mcl::Quaternion& orientation,
-                const T& mic_prototype,
-                const Length radius,
-                const std::vector<Angle>& angles) :
-        UniformArray<T>(position, orientation, mic_prototype, angles.size()),
-      radius_(radius), angles_(angles) {
+ public:
+  CircularArray(const mcl::Point& position, const mcl::Quaternion& orientation,
+                const T& mic_prototype, const Length radius,
+                const std::vector<Angle>& angles)
+      : UniformArray<T>(position, orientation, mic_prototype, angles.size()),
+        radius_(radius),
+        angles_(angles) {
     SetOrientation(orientation);
   }
 
   virtual void SetOrientation(const mcl::Quaternion& orientation) noexcept {
     mcl::Point position(this->position());
-    std::vector<mcl::Point> positions = GetPositions(position, radius_, angles_);
+    std::vector<mcl::Point> positions =
+        GetPositions(position, radius_, angles_);
 
-    for (mcl::Int i=0; i<(Int)angles_.size(); ++i) {
-      Angle mic_angle = (this->handedness_ == mcl::Handedness::kRightHanded) ? angles_[i] : -angles_[i];
-      mcl::Point relative_position = mcl::QuatRotate(orientation,
-                                                     mcl::Subtract(positions[i],
-                                                                   position),
-                                                     this->handedness_);
+    for (mcl::Int i = 0; i < (Int)angles_.size(); ++i) {
+      Angle mic_angle = (this->handedness_ == mcl::Handedness::kRightHanded)
+                            ? angles_[i]
+                            : -angles_[i];
+      mcl::Point relative_position =
+          mcl::QuatRotate(orientation, mcl::Subtract(positions[i], position),
+                          this->handedness_);
       this->microphones_[i]->SetPosition(mcl::Sum(relative_position, position));
-      
-      mcl::Quaternion q = mcl::QuatMultiply(orientation, mcl::AxAng2Quat(0.0, 0.0, 1.0, mic_angle));
+
+      mcl::Quaternion q = mcl::QuatMultiply(
+          orientation, mcl::AxAng2Quat(0.0, 0.0, 1.0, mic_angle));
       this->microphones_[i]->SetOrientation(q);
     }
   }
 
-private:
+ private:
   Length radius_;
   std::vector<Angle> angles_;
 
-  static std::vector<mcl::Point> GetPositions(const mcl::Point& position,
-                                              const Length radius,
-                                              const std::vector<Angle>& angles) {
+  static std::vector<mcl::Point> GetPositions(
+      const mcl::Point& position, const Length radius,
+      const std::vector<Angle>& angles) {
     std::vector<mcl::Point> positions(angles.size());
-    for (Int i=0; i<(Int)angles.size(); ++i) {
-      positions[i] = mcl::Point(radius*cos(angles[i])+position.x(),
-                                radius*sin(angles[i])+position.y(),
-                                position.z());
+    for (Int i = 0; i < (Int)angles.size(); ++i) {
+      positions[i] =
+          mcl::Point(radius * cos(angles[i]) + position.x(),
+                     radius * sin(angles[i]) + position.y(), position.z());
     }
     return positions;
   }
 };
-
-
 
 /**
  This generates a stereophonic microphone array centered in position,
@@ -229,32 +221,27 @@ private:
  element is at angle 0, i.e.
  at (position.x() + radius, position.y(), position.z()).
  */
-template<class T>
+template <class T>
 class StereoMic : public CircularArray<T> {
-public:
-  StereoMic(const mcl::Point& position,
-            const mcl::Quaternion& orientation,
-            const T& mic_prototype,
-            const Length radius,
-            const Angle base_angle,
-            const Angle center_angle) :
-  CircularArray<T>(position, orientation,
-                   mic_prototype, radius,
-                   StereoAngles(base_angle, center_angle)) {}
+ public:
+  StereoMic(const mcl::Point& position, const mcl::Quaternion& orientation,
+            const T& mic_prototype, const Length radius, const Angle base_angle,
+            const Angle center_angle)
+      : CircularArray<T>(position, orientation, mic_prototype, radius,
+                         StereoAngles(base_angle, center_angle)) {}
 
-private:
+ private:
   static std::vector<Angle> StereoAngles(const Angle base_angle,
                                          const Angle center_angle) {
     std::vector<Angle> angles(2);
-    angles[0] = center_angle-base_angle/2.0;
-    angles[1] = center_angle+base_angle/2.0;
+    angles[0] = center_angle - base_angle / 2.0;
+    angles[1] = center_angle + base_angle / 2.0;
     return angles;
   }
 };
 
-
 bool MicrophoneArrayTest();
 
-} // namespace sal
+}  // namespace sal
 
 #endif

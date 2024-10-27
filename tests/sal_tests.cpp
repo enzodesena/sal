@@ -3,44 +3,41 @@
  Spatial Audio Library (SAL)
  Copyright (c) 2012, Enzo De Sena
  All rights reserved.
- 
+
  Authors: Enzo De Sena, enzodesena@gmail.com
- 
+
  */
 
-
-#include "audiobuffer.h"
-#include "microphone.h"
-#include "monomics.h"
-#include "kemarmic.h"
-#include "sphericalheadmic.h"
-#include "sofamic.h"
-#include "microphonearray.h"
-#include "ambisonics.h"
-#include "delayfilter.h"
-#include "propagationline.h"
-#include "freefieldsimulation.h"
-#include "cuboidroom.h"
-#include "ism.h"
-#include "fdtd.h"
-#include "riranalysis.h"
-#include "tdbem.h"
-#include "wavhandler.h"
-#include "matrixop.h"
-#include "vectorop.h"
-#include "transformop.h"
-#include "statisticsop.h"
-#include "firfilter.h"
-#include "randomop.h"
-#include "iirfilter.h"
-#include "graphiceq.h"
-#include <vector>
 #include <iostream>
+#include <vector>
 
-//#include "cipicmic.h"
+#include "ambisonics.h"
+#include "audiobuffer.h"
+#include "cuboidroom.h"
+#include "delayfilter.h"
+#include "fdtd.h"
+#include "firfilter.h"
+#include "freefieldsimulation.h"
+#include "graphiceq.h"
+#include "iirfilter.h"
+#include "ism.h"
+#include "kemarmic.h"
+#include "matrixop.h"
+#include "microphone.h"
+#include "microphonearray.h"
+#include "monomics.h"
+#include "propagationline.h"
+#include "randomop.h"
+#include "riranalysis.h"
+#include "sofamic.h"
+#include "sphericalheadmic.h"
+#include "statisticsop.h"
+#include "tdbem.h"
+#include "transformop.h"
+#include "vectorop.h"
+#include "wavhandler.h"
 
-int main(int argc, char * const argv[]) {
-  
+int main(int argc, char* const argv[]) {
 #ifndef NDEBUG
   mcl::FirFilter::Test();
   mcl::Quaternion::Test();
@@ -59,8 +56,8 @@ int main(int argc, char * const argv[]) {
   mcl::IirFilter::PeakLowShelfTest();
   mcl::IirFilter::GraphicEqTest();
   mcl::RandomGenerator::Test();
-  std::cout<<"All DSP tests succeded!\n";
-  
+  std::cout << "All DSP tests succeded!\n";
+
   sal::Buffer::Test();
   sal::Microphone::Test();
   sal::KemarMic::Test();
@@ -78,14 +75,15 @@ int main(int argc, char * const argv[]) {
   sal::RirAnalysis::Test();
   sal::TripletHandler::Test();
 
-  std::cout<<"All SAL tests succeded!\n";
+  std::cout << "All SAL tests succeded!\n";
 #else
-  std::cout<<"Not running tests since NDEBUG is defined and asserts are ignored.\n";
+  std::cout
+      << "Not running tests since NDEBUG is defined and asserts are ignored.\n";
 #endif
-  
+
   mcl::FirFilter::SpeedTests();
   sal::TdBem::SimulationTime();
-  std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
-    
+  std::cout << "FDTD speed: " << sal::Fdtd::SimulationTime() << " s\n";
+
   return 0;
 }

@@ -46,7 +46,6 @@
 				sal_tests.cpp,
 				unit/ambisonics_test.cpp,
 				unit/audiobuffer_test.cpp,
-				unit/cipicmic_test.cpp,
 				unit/cuboidroom_test.cpp,
 				unit/delayfilter_test.cpp,
 				unit/dsp/basicop_test.cpp,
@@ -82,7 +81,6 @@
 			membershipExceptions = (
 				ambisonics.cpp,
 				binauralmic.cpp,
-				cipicmic.cpp,
 				cuboidroom.cpp,
 				delayfilter.cpp,
 				dsp/basicop.cpp,

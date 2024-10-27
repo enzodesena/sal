@@ -2,7 +2,7 @@
  MCL
  Copyright (c) 2012-18, Enzo De Sena
  All rights reserved.
- 
+
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
@@ -14,15 +14,15 @@
 namespace mcl {
 
 class Triplet {
-public:
+ public:
   /** Constructs a `Point` with all coordinates set to zero. */
   Triplet() noexcept;
-  
+
   /** Constructor with explicit definition of all coordinates. */
   Triplet(Real x, Real y, Real z) noexcept;
-  
+
   bool Equals(const Triplet& other_point) const noexcept;
-  
+
   // Getter methods.
   Real x() const noexcept { return x_; }
   Real y() const noexcept { return y_; }
@@ -35,27 +35,25 @@ public:
   /** Returns the norm of the vector, or, in other words, the distance
    of the point from the origin (0,0,0) */
   Real norm() const noexcept;
-  
+
   /** Returns the angle formed with the z-axis */
   Real theta() const noexcept;
-  
+
   /** Returns the angle formed between the projection on the x-y axis and
    the x-axis */
   Real phi() const noexcept;
-  
+
   /** Modifies the point (i.e. vector) such that its norm is equal to 1. */
   void Normalize() noexcept;
 
-private:
+ private:
   Real x_;
   Real y_;
   Real z_;
 };
-  
-  
-  
+
 typedef Triplet Point;
-  
+
 /**
  Rotates the reference system about the x-axis with the right-hand rule.
  e.g. RotateAboutX(Point(0.0,1.0,0.0), pi/2) == Point(0.0,0.0,1.0)
@@ -78,8 +76,7 @@ Point RotateAboutZ(const Point&, Real) noexcept;
  Rotates the reference system with euler angles. Convention is ZYX with
  angles phi, theta and psi, respectively.
  */
-Point Rotate(const Point&, Real phi,
-                     Real theta, Real psi) noexcept;
+Point Rotate(const Point&, Real phi, Real theta, Real psi) noexcept;
 
 Real DotProduct(Point, Point) noexcept;
 
@@ -89,8 +86,8 @@ Point CrossProduct(Point, Point) noexcept;
 Real Distance(Point, Point) noexcept;
 Real Theta(Point, Point) noexcept;
 Real Phi(Point, Point) noexcept;
-Real AngleBetweenDirections(Real theta_a, Real phi_a,
-                                   Real theta_b, Real phi_b) noexcept;
+Real AngleBetweenDirections(Real theta_a, Real phi_a, Real theta_b,
+                            Real phi_b) noexcept;
 Real AngleBetweenPoints(Point, Point) noexcept;
 
 /**
@@ -98,7 +95,7 @@ Real AngleBetweenPoints(Point, Point) noexcept;
  has a distance of `distance` from `point_a`
  */
 Point PointOnLine(const Point point_a, const Point point_b,
-                          const Real distance) noexcept;
+                  const Real distance) noexcept;
 
 /** Sums the coordinates of `point_a` and `point_b` */
 Point Sum(const Point point_a, const Point point_b) noexcept;
@@ -124,7 +121,7 @@ Point PointSpherical(Real r, Real theta, Real phi) noexcept;
  normal to the plane `plane_normal_vector`.
  */
 Point Projection(const Point& vector,
-                         const Point& plane_normal_vector) noexcept;
+                 const Point& plane_normal_vector) noexcept;
 
 /**
  Returns a new point that is a normalized (norm == 1) version of `point`.
@@ -150,8 +147,8 @@ Point IntersectionPlaneLine(const Point& line_point,
                             const Point& plane_normal) noexcept;
 
 /**
- Returns whther or not an intersection between a plane and a line exists. 
- The line is identified by a point on a line, line_point, 
+ Returns whther or not an intersection between a plane and a line exists.
+ The line is identified by a point on a line, line_point,
  and the direction of the line,
  line_direction (every point on the line can be expressed as
  p=d line_point+line_direction, with d any scalar).
@@ -163,10 +160,9 @@ bool IntersectionPlaneLineExists(const Point& line_point,
                                  const Point& line_direction,
                                  const Point& plane_point,
                                  const Point& plane_normal) noexcept;
-  
+
 bool PointTest();
-  
-  
-} // namespace mcl
+
+}  // namespace mcl
 
 #endif
