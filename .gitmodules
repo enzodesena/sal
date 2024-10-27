@@ -4,6 +4,6 @@
 [submodule "libmysofa"]
 	path = libs/libmysofa
 	url = git@github.com:enzodesena/libmysofa.git
-[submodule "libs/boost"]
-	path = libs/boost
-	url = git@github.com:boostorg/boost.git
+[submodule "libs/math"]
+	path = libs/math
+	url = git@github.com:boostorg/math.git
