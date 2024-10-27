@@ -93,7 +93,6 @@
 				dsp/firfilter.cpp,
 				dsp/graphiceq.cpp,
 				dsp/iirfilter.cpp,
-				dsp/kiss_fft.c,
 				dsp/matrixop.cpp,
 				dsp/peakingfilters.cpp,
 				dsp/point.cpp,
