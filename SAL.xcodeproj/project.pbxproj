@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		57C87C752CCE5594002D3951 /* liblibmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C87C512CCE5532002D3951 /* liblibmysofa.a */; };
+		57C87C752CCE5594002D3951 /* libmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C87C512CCE5532002D3951 /* libmysofa.a */; };
 		57C87C7B2CCE55D4002D3951 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C87C7A2CCE55D4002D3951 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,14 +34,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		57A4C6E52CCE76FD0017248F /* liblibsal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibsal.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		57C87C512CCE5532002D3951 /* liblibmysofa.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibmysofa.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57A4C6E52CCE76FD0017248F /* libsal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsal.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57C87C512CCE5532002D3951 /* libmysofa.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmysofa.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		57C87C7A2CCE55D4002D3951 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		57ECCF9F2CCE530800A4D733 /* SAL Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SAL Tests"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		57A4C6F12CCE772E0017248F /* Exceptions for "libs" folder in "libsal" target */ = {
+		57A4C6F12CCE772E0017248F /* Exceptions for "libs" folder in "sal" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				kissfft/src/kiss_fft.c,
@@ -66,9 +66,9 @@
 				libmysofa/src/hrtf/tools.c,
 				libmysofa/src/resampler/speex_resampler.c,
 			);
-			target = 57A4C6E42CCE76FD0017248F /* libsal */;
+			target = 57A4C6E42CCE76FD0017248F /* sal */;
 		};
-		57A4C72A2CCE77540017248F /* Exceptions for "src" folder in "libsal" target */ = {
+		57A4C72A2CCE77540017248F /* Exceptions for "src" folder in "sal" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ambisonics.cpp,
@@ -106,16 +106,16 @@
 				tdbem.cpp,
 				wavhandler.cpp,
 			);
-			target = 57A4C6E42CCE76FD0017248F /* libsal */;
+			target = 57A4C6E42CCE76FD0017248F /* sal */;
 		};
-		57A4C72C2CCE77590017248F /* Exceptions for "resources" folder in "libsal" target */ = {
+		57A4C72C2CCE77590017248F /* Exceptions for "resources" folder in "sal" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				hrtfs/kemar_compact/kemarcompactdata.cpp,
 				hrtfs/kemar_diffuse/kemardiffusedata.cpp,
 				hrtfs/kemar_full/kemarfulldata.cpp,
 			);
-			target = 57A4C6E42CCE76FD0017248F /* libsal */;
+			target = 57A4C6E42CCE76FD0017248F /* sal */;
 		};
 		57C87C162CCE5409002D3951 /* Exceptions for "tests" folder in "SAL Tests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -193,7 +193,7 @@
 			);
 			target = 57ECCF9E2CCE530800A4D733 /* SAL Tests */;
 		};
-		57C87C712CCE557A002D3951 /* Exceptions for "libs" folder in "libmysofa" target */ = {
+		57C87C712CCE557A002D3951 /* Exceptions for "libs" folder in "mysofa" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				libmysofa/src/hdf/btree.c,
@@ -217,7 +217,7 @@
 				libmysofa/src/hrtf/tools.c,
 				libmysofa/src/resampler/speex_resampler.c,
 			);
-			target = 57C87C502CCE5532002D3951 /* libmysofa */;
+			target = 57C87C502CCE5532002D3951 /* mysofa */;
 		};
 		57C87C772CCE55A8002D3951 /* Exceptions for "resources" folder in "SAL Tests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -231,7 +231,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		57A4C7072CCE77480017248F /* Exceptions for "libs" folder in "Compile Sources" phase from "libsal" target */ = {
+		57A4C7072CCE77480017248F /* Exceptions for "libs" folder in "Compile Sources" phase from "sal" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 57A4C6E22CCE76FD0017248F /* Sources */;
 			membershipExceptions = (
@@ -253,7 +253,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				57C87C4C2CCE5445002D3951 /* Exceptions for "src" folder in "SAL Tests" target */,
-				57A4C72A2CCE77540017248F /* Exceptions for "src" folder in "libsal" target */,
+				57A4C72A2CCE77540017248F /* Exceptions for "src" folder in "sal" target */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -262,7 +262,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				57C87C772CCE55A8002D3951 /* Exceptions for "resources" folder in "SAL Tests" target */,
-				57A4C72C2CCE77590017248F /* Exceptions for "resources" folder in "libsal" target */,
+				57A4C72C2CCE77590017248F /* Exceptions for "resources" folder in "sal" target */,
 			);
 			path = resources;
 			sourceTree = "<group>";
@@ -270,9 +270,9 @@
 		57C87BDF2CCE53EA002D3951 /* libs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				57C87C712CCE557A002D3951 /* Exceptions for "libs" folder in "libmysofa" target */,
-				57A4C6F12CCE772E0017248F /* Exceptions for "libs" folder in "libsal" target */,
-				57A4C7072CCE77480017248F /* Exceptions for "libs" folder in "Compile Sources" phase from "libsal" target */,
+				57C87C712CCE557A002D3951 /* Exceptions for "libs" folder in "mysofa" target */,
+				57A4C6F12CCE772E0017248F /* Exceptions for "libs" folder in "sal" target */,
+				57A4C7072CCE77480017248F /* Exceptions for "libs" folder in "Compile Sources" phase from "sal" target */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -304,7 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57C87C7B2CCE55D4002D3951 /* Accelerate.framework in Frameworks */,
-				57C87C752CCE5594002D3951 /* liblibmysofa.a in Frameworks */,
+				57C87C752CCE5594002D3951 /* libmysofa.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,8 +336,8 @@
 			isa = PBXGroup;
 			children = (
 				57ECCF9F2CCE530800A4D733 /* SAL Tests */,
-				57C87C512CCE5532002D3951 /* liblibmysofa.a */,
-				57A4C6E52CCE76FD0017248F /* liblibsal.a */,
+				57C87C512CCE5532002D3951 /* libmysofa.a */,
+				57A4C6E52CCE76FD0017248F /* libsal.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -362,9 +362,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		57A4C6E42CCE76FD0017248F /* libsal */ = {
+		57A4C6E42CCE76FD0017248F /* sal */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57A4C6ED2CCE76FD0017248F /* Build configuration list for PBXNativeTarget "libsal" */;
+			buildConfigurationList = 57A4C6ED2CCE76FD0017248F /* Build configuration list for PBXNativeTarget "sal" */;
 			buildPhases = (
 				57A4C6E12CCE76FD0017248F /* Headers */,
 				57A4C6E22CCE76FD0017248F /* Sources */,
@@ -374,16 +374,16 @@
 			);
 			dependencies = (
 			);
-			name = libsal;
+			name = sal;
 			packageProductDependencies = (
 			);
 			productName = libsal;
-			productReference = 57A4C6E52CCE76FD0017248F /* liblibsal.a */;
+			productReference = 57A4C6E52CCE76FD0017248F /* libsal.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		57C87C502CCE5532002D3951 /* libmysofa */ = {
+		57C87C502CCE5532002D3951 /* mysofa */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57C87C592CCE5532002D3951 /* Build configuration list for PBXNativeTarget "libmysofa" */;
+			buildConfigurationList = 57C87C592CCE5532002D3951 /* Build configuration list for PBXNativeTarget "mysofa" */;
 			buildPhases = (
 				57C87C4D2CCE5532002D3951 /* Headers */,
 				57C87C4E2CCE5532002D3951 /* Sources */,
@@ -393,11 +393,11 @@
 			);
 			dependencies = (
 			);
-			name = libmysofa;
+			name = mysofa;
 			packageProductDependencies = (
 			);
 			productName = libmysofa;
-			productReference = 57C87C512CCE5532002D3951 /* liblibmysofa.a */;
+			productReference = 57C87C512CCE5532002D3951 /* libmysofa.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		57ECCF9E2CCE530800A4D733 /* SAL Tests */ = {
@@ -455,8 +455,8 @@
 			projectRoot = "";
 			targets = (
 				57ECCF9E2CCE530800A4D733 /* SAL Tests */,
-				57C87C502CCE5532002D3951 /* libmysofa */,
-				57A4C6E42CCE76FD0017248F /* libsal */,
+				57C87C502CCE5532002D3951 /* mysofa */,
+				57A4C6E42CCE76FD0017248F /* sal */,
 			);
 		};
 /* End PBXProject section */
@@ -488,7 +488,7 @@
 /* Begin PBXTargetDependency section */
 		57C87C732CCE558F002D3951 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 57C87C502CCE5532002D3951 /* libmysofa */;
+			target = 57C87C502CCE5532002D3951 /* mysofa */;
 			targetProxy = 57C87C722CCE558F002D3951 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -697,7 +697,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		57A4C6ED2CCE76FD0017248F /* Build configuration list for PBXNativeTarget "libsal" */ = {
+		57A4C6ED2CCE76FD0017248F /* Build configuration list for PBXNativeTarget "sal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57A4C6EE2CCE76FD0017248F /* Debug */,
@@ -706,7 +706,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		57C87C592CCE5532002D3951 /* Build configuration list for PBXNativeTarget "libmysofa" */ = {
+		57C87C592CCE5532002D3951 /* Build configuration list for PBXNativeTarget "mysofa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57C87C5A2CCE5532002D3951 /* Debug */,

@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "57C87C502CCE5532002D3951"
-               BuildableName = "liblibmysofa.a"
-               BlueprintName = "libmysofa"
+               BuildableName = "libmysofa.a"
+               BlueprintName = "mysofa"
                ReferencedContainer = "container:SAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "57C87C502CCE5532002D3951"
-            BuildableName = "liblibmysofa.a"
-            BlueprintName = "libmysofa"
+            BuildableName = "libmysofa.a"
+            BlueprintName = "mysofa"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
