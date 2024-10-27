@@ -82,8 +82,7 @@ class Microphone {
                     Buffer& output_buffer) noexcept;
 
   /**
-   We need to
-   keep track of the wave_id because some microphones (e.g. kemar) need
+   We need to keep track of the wave_id because some microphones (e.g. kemar) need
    to do some filtering on the signal longer than one sample.
    The function Tick tells the microphone to advance in time.
    The microphone objects need to keep track of each plane wave. Hence,

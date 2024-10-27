@@ -37,6 +37,11 @@ class MonoMic : virtual public Microphone {
   }
 
   void AddPlaneWave(std::span<const Sample> input_data, const dsp::Point& point,
+                    std::span<Sample> output_data) noexcept {
+    this->AddPlaneWaveRelative(input_data, GetRelativePoint(point), 0, output_data);
+  }
+  
+  void AddPlaneWave(std::span<const Sample> input_data, const dsp::Point& point,
                     const size_t wave_id,
                     std::span<Sample> output_data) noexcept {
     this->AddPlaneWaveRelative(input_data, GetRelativePoint(point), wave_id,
