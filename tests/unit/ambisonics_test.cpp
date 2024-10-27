@@ -168,7 +168,8 @@ bool AmbisonicsMic::Test() {
   ASSERT(IsEqual(buffer_b.GetSample(3, 3, 0),
                  sample * dsp::Sqrt(35.0 / 8.0) / sqrt(7.0) *
                      pow(cos(phi), 3.0) * cos(3.0 * theta)));
-
+#else
+  std::cout << "Not Running Boost-dependent Ambisonics tests (SAL_DSP_LOAD_BOOST is not set)" << std::endl;
 #endif
 
   return true;
