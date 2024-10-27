@@ -7,3 +7,4 @@
 [submodule "libs/math"]
 	path = libs/math
 	url = git@github.com:boostorg/math.git
+	shallow = true
