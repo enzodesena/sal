@@ -19,13 +19,13 @@
 
 namespace sal {
 
-typedef mcl::Real Sample;
-typedef mcl::Real Time;
-typedef mcl::Real Speed;
-typedef mcl::Real Length;
-typedef mcl::Real Angle;
-typedef mcl::Int UInt;
-typedef mcl::Int Int;
+typedef dsp::Real Sample;
+typedef dsp::Real Time;
+typedef dsp::Real Speed;
+typedef dsp::Real Length;
+typedef dsp::Real Angle;
+typedef dsp::Int UInt;
+typedef dsp::Int Int;
 
 typedef std::vector<Sample> Signal;
 

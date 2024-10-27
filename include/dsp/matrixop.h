@@ -24,7 +24,9 @@
 #include <Eigen/Dense>
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 // Forward declaration
 std::vector<std::string> Split(const std::string& string, char delim) noexcept;
@@ -134,7 +136,7 @@ class Matrix {
 
   /** Writes the matrix to a file. The optional parameter `precision` sets
    the number of decimal positions in the output file*/
-  void Save(std::string file_name, mcl::Int precision = 5) {
+  void Save(std::string file_name, dsp::Int precision = 5) {
     std::ofstream output_file;
     output_file.open(file_name.c_str());
     output_file << std::fixed;
@@ -153,7 +155,7 @@ class Matrix {
    scaledx=int(x^(`bit_precision`-1)-1)). If `bit_precision`=14, this is
    essentially writing out in a number representation equivalent to 24 bit WAV
    file. */
-  void SaveIntegerFormat(std::string file_name, mcl::Int bit_precision = 24) {
+  void SaveIntegerFormat(std::string file_name, dsp::Int bit_precision = 24) {
     std::ofstream output_file;
     output_file.open(file_name.c_str());
     output_file << std::fixed;
@@ -365,7 +367,7 @@ Matrix<T> Inverse(const Matrix<T>& matrix_a) {
     data[i].erase(data[i].begin(), data[i].begin() + cols);
     data[i].shrink_to_fit();
   }
-  return mcl::Matrix<T>(data);
+  return dsp::Matrix<T>(data);
 }
 
 /**
@@ -410,6 +412,8 @@ bool IsEqual(const Matrix<T>& matrix_a, const Matrix<T>& matrix_b) noexcept {
 
 bool MatrixOpTest();
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

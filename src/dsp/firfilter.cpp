@@ -32,7 +32,9 @@
 #define ALIGNED(n) __attribute__((aligned(n)))
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 std::vector<Real> FirFilter::impulse_response() noexcept {
   return std::vector<Real>(impulse_response_.begin(), impulse_response_.end());
@@ -76,7 +78,7 @@ void FirFilter::ProcessBlock(std::span<const Real> input_data,
   }
   if (length_ == 1) {
     delay_line_[0] = input_data[num_samples - 1];
-    mcl::Multiply(input_data, coefficients_[0], output_data);
+    dsp::Multiply(input_data, coefficients_[0], output_data);
     return;
   }
 #if defined(MCL_APPLE_ACCELERATE)
@@ -263,7 +265,7 @@ void FirFilter::Reset() noexcept {
 
 void FirFilter::SetImpulseResponse(const std::vector<Real>& impulse_response,
                                    const Int update_length) noexcept {
-  if (mcl::IsEqual(impulse_response, impulse_response_)) {
+  if (dsp::IsEqual(impulse_response, impulse_response_)) {
     return;
   }
 
@@ -302,8 +304,8 @@ void FirFilter::UpdateCoefficients() noexcept {
   Multiply(impulse_response_, weight_new, coefficients_);
   MultiplyAdd(impulse_response_old_, weight_old, coefficients_, coefficients_);
   // The above is a lock-free equivalent version to
-  // coefficients_ = mcl::Add(mcl::Multiply(impulse_response_, weight_new),
-  //                          mcl::Multiply(impulse_response_old_, weight_old));
+  // coefficients_ = dsp::Add(dsp::Multiply(impulse_response_, weight_new),
+  //                          dsp::Multiply(impulse_response_old_, weight_old));
 
   if (update_index_ == update_length_) {
     updating_ = false;
@@ -312,4 +314,6 @@ void FirFilter::UpdateCoefficients() noexcept {
   }
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

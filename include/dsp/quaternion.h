@@ -17,7 +17,9 @@
 #include "mcltypes.h"
 #include "point.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** Enum describing the angles ordering convention for Euler angles */
 enum EulerOrder { zxz, xyx, yzy, zyz, xzx, yxy, xyz, yzx, zxy, xzy, zyx, yxz };
@@ -96,6 +98,8 @@ Real Quat2EulZ(const Quaternion q, const EulerOrder order = zyx) noexcept;
 
 Quaternion QuatInverse(const Quaternion q) noexcept;
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

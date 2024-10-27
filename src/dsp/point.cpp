@@ -12,7 +12,9 @@
 #include "comparisonop.h"
 #include "point.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 Triplet::Triplet() noexcept {}
 
@@ -205,4 +207,6 @@ Point IntersectionPlaneLine(const Point& line_point,
   }
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

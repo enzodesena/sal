@@ -14,7 +14,9 @@
 #include "peakingfilters.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 void PeakHighShelf::SetParameters(const Real fc, const Real Q,
                                   const int sample_rate) {
@@ -96,4 +98,6 @@ void PeakingFilter::UpdateGain(const Real g) {
   std::vector<Real> B = {b0, b1, b2};
   SetCoefficients(B, A);
 }
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

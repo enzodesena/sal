@@ -25,19 +25,19 @@ namespace sal {
  */
 class SofaMic : public BinauralMic {
  public:
-  SofaMic(const mcl::Point position, const mcl::Quaternion orientation,
+  SofaMic(const dsp::Point position, const dsp::Quaternion orientation,
           const std::string sofa_filename, const Time sampling_frequency,
           const Int update_length = 0,
           const HeadRefOrientation reference_orientation =
               HeadRefOrientation::standard);
 
   static bool Test();
-  static bool Test(const mcl::Point& source_point, const Signal& cmp_left,
+  static bool Test(const dsp::Point& source_point, const Signal& cmp_left,
                    const Signal& cmp_right);
   virtual ~SofaMic();
 
  private:
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
+  virtual Signal GetBrir(const Ear ear, const dsp::Point& point) noexcept;
 
   int filter_length_;
 

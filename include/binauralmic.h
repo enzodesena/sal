@@ -33,7 +33,7 @@ class BinauralMicInstance;
 
 class BinauralMic : public StereoMicrophone {
  public:
-  BinauralMic(const mcl::Point& position, const mcl::Quaternion orientation,
+  BinauralMic(const dsp::Point& position, const dsp::Quaternion orientation,
               const Int update_length,
               const HeadRefOrientation reference_orientation =
                   HeadRefOrientation::standard);
@@ -52,7 +52,7 @@ class BinauralMic : public StereoMicrophone {
   Int num_channels() const noexcept { return 2; }
 
   virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
-                                    const mcl::Point& point,
+                                    const dsp::Point& point,
                                     const size_t wave_id,
                                     Buffer& output_buffer) noexcept;
 
@@ -61,7 +61,7 @@ class BinauralMic : public StereoMicrophone {
    The head is assumed to be positioned lying on the z-axis and facing
    the positive x-direction. E.g. a point on the positive x-axis
    is facing directly ahead of the head. */
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept = 0;
+  virtual Signal GetBrir(const Ear ear, const dsp::Point& point) noexcept = 0;
 
   void CreateInstanceIfNotExist(const size_t wave_id) noexcept;
 
@@ -81,8 +81,8 @@ class BinauralMic : public StereoMicrophone {
 
 class DatabaseBinauralMic : public BinauralMic {
  public:
-  DatabaseBinauralMic(const mcl::Point& position,
-                      const mcl::Quaternion orientation,
+  DatabaseBinauralMic(const dsp::Point& position,
+                      const dsp::Quaternion orientation,
                       const Int update_length,
                       const HeadRefOrientation reference_orientation =
                           HeadRefOrientation::standard);
@@ -91,7 +91,7 @@ class DatabaseBinauralMic : public BinauralMic {
    Filters all responses by `filter`. Useful for instance for including
    an inverse headphone filter
    */
-  void FilterAll(mcl::Filter& filter);
+  void FilterAll(dsp::Filter& filter);
 
  protected:
   // Database
@@ -105,19 +105,19 @@ class BinauralMicInstance {
                       const HeadRefOrientation reference_orientation =
                           HeadRefOrientation::standard,
                       const size_t max_input_size = 1 << 14)
-      : previous_point_(mcl::Point(NAN, NAN, NAN)),
+      : previous_point_(dsp::Point(NAN, NAN, NAN)),
         base_mic_(base_mic),
-        filter_left_(mcl::FirFilter::GainFilter(1.0)),
-        filter_right_(mcl::FirFilter::GainFilter(1.0)),
+        filter_left_(dsp::FirFilter::GainFilter(1.0)),
+        filter_right_(dsp::FirFilter::GainFilter(1.0)),
         update_length_(update_length),
         reference_orientation_(reference_orientation),
         scratch_vector_(max_input_size, 0.0) {}
 
   void AddPlaneWaveRelative(std::span<const Sample> input_data,
-                            const mcl::Point& point,
+                            const dsp::Point& point,
                             Buffer& output_buffer) noexcept;
 
-  void UpdateFilter(const mcl::Point& point) noexcept;
+  void UpdateFilter(const dsp::Point& point) noexcept;
 
   /**
    The microphone object is called for every sample, while the position
@@ -125,11 +125,11 @@ class BinauralMicInstance {
    stored so that we don't need to update the filter coefficients at every
    sample, but only when something changes.
    */
-  mcl::Point previous_point_;
+  dsp::Point previous_point_;
 
   BinauralMic* base_mic_;
-  mcl::FirFilter filter_left_;
-  mcl::FirFilter filter_right_;
+  dsp::FirFilter filter_left_;
+  dsp::FirFilter filter_right_;
   sal::Int update_length_;
   HeadRefOrientation reference_orientation_;
 

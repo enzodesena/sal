@@ -14,10 +14,10 @@
 
 namespace sal {
 
-using mcl::Int;
-using mcl::IsLargerOrEqual;
-using mcl::IsSmallerOrEqual;
-using mcl::Point;
+using sal::dsp::Int;
+using sal::dsp::IsLargerOrEqual;
+using sal::dsp::IsSmallerOrEqual;
+using sal::dsp::Point;
 using sal::Int;
 using sal::Length;
 using sal::Sample;
@@ -39,9 +39,9 @@ bool CuboidRoom::IsPointInRoom(const Point& point,
 std::vector<Point> CuboidRoom::CalculateBoundaryPoints(
     const Point& source_point, const Point& mic_point) const noexcept {
   // These points are normalised such that they are between 0<x<Lx etc...
-  mcl::Point shifted_source_point =
-      mcl::Subtract(source_point, origin_position_);
-  mcl::Point shifted_mic_point = mcl::Subtract(mic_point, origin_position_);
+  dsp::Point shifted_source_point =
+      dsp::Subtract(source_point, origin_position_);
+  dsp::Point shifted_mic_point = dsp::Subtract(mic_point, origin_position_);
   std::vector<Point> reflection_points(6);
 
   reflection_points[0] =
@@ -57,12 +57,12 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(
   reflection_points[5] =
       ReflectionPoint(kZ2, shifted_source_point, shifted_mic_point);
 
-  ASSERT(mcl::IsEqual(reflection_points[0].x(), 0.0));
-  ASSERT(mcl::IsEqual(reflection_points[1].x(), dimensions_.x()));
-  ASSERT(mcl::IsEqual(reflection_points[2].y(), 0.0));
-  ASSERT(mcl::IsEqual(reflection_points[3].y(), dimensions_.y()));
-  ASSERT(mcl::IsEqual(reflection_points[4].z(), 0.0));
-  ASSERT(mcl::IsEqual(reflection_points[5].z(), dimensions_.z()));
+  ASSERT(dsp::IsEqual(reflection_points[0].x(), 0.0));
+  ASSERT(dsp::IsEqual(reflection_points[1].x(), dimensions_.x()));
+  ASSERT(dsp::IsEqual(reflection_points[2].y(), 0.0));
+  ASSERT(dsp::IsEqual(reflection_points[3].y(), dimensions_.y()));
+  ASSERT(dsp::IsEqual(reflection_points[4].z(), 0.0));
+  ASSERT(dsp::IsEqual(reflection_points[5].z(), dimensions_.z()));
 
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 = IntersectionPoint(
@@ -123,25 +123,25 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(
   }
 
   for (Int i = 0; i < (Int)reflection_points.size(); ++i) {
-    reflection_points[i] = mcl::Sum(reflection_points[i], origin_position_);
+    reflection_points[i] = dsp::Sum(reflection_points[i], origin_position_);
   }
 
-  ASSERT(mcl::IsEqual(reflection_points[0].x(), origin_position_.x()));
-  ASSERT(mcl::IsEqual(reflection_points[1].x(),
+  ASSERT(dsp::IsEqual(reflection_points[0].x(), origin_position_.x()));
+  ASSERT(dsp::IsEqual(reflection_points[1].x(),
                       dimensions_.x() + origin_position_.x()));
-  ASSERT(mcl::IsEqual(reflection_points[2].y(), origin_position_.y()));
-  ASSERT(mcl::IsEqual(reflection_points[3].y(),
+  ASSERT(dsp::IsEqual(reflection_points[2].y(), origin_position_.y()));
+  ASSERT(dsp::IsEqual(reflection_points[3].y(),
                       dimensions_.y() + origin_position_.y()));
-  ASSERT(mcl::IsEqual(reflection_points[4].z(), origin_position_.z()));
-  ASSERT(mcl::IsEqual(reflection_points[5].z(),
+  ASSERT(dsp::IsEqual(reflection_points[4].z(), origin_position_.z()));
+  ASSERT(dsp::IsEqual(reflection_points[5].z(),
                       dimensions_.z() + origin_position_.z()));
 
   return reflection_points;
 }
 
-std::vector<mcl::IirFilter> CuboidRoom::GetBoundaryFilters(
+std::vector<dsp::IirFilter> CuboidRoom::GetBoundaryFilters(
     const Point& source_point, const Point& mic_point) const noexcept {
-  std::vector<mcl::IirFilter> boundary_filters(wall_filters_);
+  std::vector<dsp::IirFilter> boundary_filters(wall_filters_);
 
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 =
@@ -183,7 +183,7 @@ std::vector<mcl::IirFilter> CuboidRoom::GetBoundaryFilters(
   return boundary_filters;
 }
 
-mcl::Int CuboidRoom::num_boundary_points() const noexcept {
+dsp::Int CuboidRoom::num_boundary_points() const noexcept {
   switch (boundary_set_type_) {
     case kFirstOrder:
       return 6;
@@ -193,7 +193,7 @@ mcl::Int CuboidRoom::num_boundary_points() const noexcept {
       break;
     default:
       ASSERT(false);
-      return (mcl::UInt)NAN;
+      return (dsp::UInt)NAN;
       break;
   }
 }
@@ -235,8 +235,8 @@ Point CuboidRoom::IntersectionPoint(const CuboidWallId wall_id,
       ASSERT(false);
   }
 
-  return mcl::IntersectionPlaneLine(observation_pos,
-                                    mcl::Subtract(image_pos, observation_pos),
+  return dsp::IntersectionPlaneLine(observation_pos,
+                                    dsp::Subtract(image_pos, observation_pos),
                                     plane_point, plane_normal);
 }
 
@@ -283,7 +283,7 @@ Time CuboidRoom::SabineRt60() const {
     // TODO: Implement for frequency dependent ones
     ASSERT(wall_filters()[i].B().size() == 1);
     ASSERT(wall_filters()[i].A().size() == 1);
-    ASSERT(mcl::IsEqual(wall_filters()[i].A()[0], 1.0));
+    ASSERT(dsp::IsEqual(wall_filters()[i].A()[0], 1.0));
     Sample beta = wall_filters()[i].B()[0];
     Sample alpha = 1.0 - pow(beta, 2.0);
 
@@ -312,7 +312,7 @@ Time CuboidRoom::SabineRt60() const {
   return 0.161 * volume / weighted_area;
 }
 
-mcl::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
+dsp::Point CuboidRoom::ImageSourcePosition(const Point& source_position,
                                            const Int mx, const Int my,
                                            const Int mz, const Int px,
                                            const Int py,

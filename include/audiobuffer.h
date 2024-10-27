@@ -19,7 +19,7 @@
 
 namespace sal {
 
-using mcl::Int;
+using sal::dsp::Int;
 
 class MonoBuffer;
 
@@ -130,7 +130,7 @@ class Buffer {
     ASSERT(input_buffer_a.num_samples() == output_buffer.num_samples());
     for (size_t chan_id = 0; chan_id < input_buffer_a.num_channels();
          ++chan_id) {
-      mcl::Add(input_buffer_a.GetReadView(chan_id),
+      dsp::Add(input_buffer_a.GetReadView(chan_id),
                input_buffer_b.GetReadView(chan_id),
                output_buffer.GetWriteView(chan_id));
     }
@@ -156,7 +156,7 @@ class Buffer {
 //    ASSERT(from_sample_id >= 0);
 //    ASSERT((from_sample_id+samples.size()) <= (size_t) num_samples_);
 //
-//    mcl::Add(samples,
+//    dsp::Add(samples,
 //             std::span<Sample>(data_[channel_id].begin() + from_sample_id,
 //             samples.size()), std::span<Sample>(data_[channel_id].begin() +
 //             from_sample_id, samples.size()));
@@ -173,7 +173,7 @@ class Buffer {
 //    ASSERT(from_sample_id >= 0);
 //    ASSERT(num_samples >= 0);
 //    ASSERT((from_sample_id+num_samples) <= num_samples_);
-//    mcl::MultiplyAdd(samples, constant, &(data_[channel_id][from_sample_id]),
+//    dsp::MultiplyAdd(samples, constant, &(data_[channel_id][from_sample_id]),
 //                     num_samples, &(data_[channel_id][from_sample_id]));
 //  }
 //
@@ -181,13 +181,13 @@ class Buffer {
 //                        const Int from_sample_id,
 //                        const Int num_samples,
 //                        const Sample* samples,
-//                        mcl::Filter& filter) noexcept {
+//                        dsp::Filter& filter) noexcept {
 //    ASSERT(channel_id >= 0 && channel_id < num_channels());
 //    ASSERT(from_sample_id >= 0);
 //    ASSERT(num_samples >= 0);
 //    ASSERT((from_sample_id+num_samples) <= num_samples_);
 //    filter.ProcessBlock(samples, temporary_vector_.data());
-//    mcl::Add(temporary_vector_.data(),
+//    dsp::Add(temporary_vector_.data(),
 //             &(data_[channel_id][from_sample_id]), num_samples,
 //             &(data_[channel_id][from_sample_id]));
 //  }
@@ -202,7 +202,7 @@ class Buffer {
 //    ASSERT(num_samples() == buffer.num_samples());
 //
 //    for (Int chan_id = 0; chan_id<num_channels(); ++chan_id) {
-//      mcl::Add(GetReadView(chan_id),
+//      dsp::Add(GetReadView(chan_id),
 //               buffer.GetReadView(chan_id),
 //               num_samples(),
 //               GetWriteView(chan_id));
@@ -213,9 +213,9 @@ class Buffer {
 //                const Int frame_id,
 //                const Int frame_length,
 //                const Signal& signal) {
-//    for (mcl::Int n=0; n<num_samples(); ++n) {
-//      mcl::Int index = frame_id*frame_length + n;
-//      if (index < (mcl::Int) signal.size()) {
+//    for (dsp::Int n=0; n<num_samples(); ++n) {
+//      dsp::Int index = frame_id*frame_length + n;
+//      if (index < (dsp::Int) signal.size()) {
 //        SetSample(channel_id, n, signal[index]);
 //      } else {
 //        SetSample(channel_id, n, 0.0);
@@ -332,7 +332,7 @@ class StereoBuffer : public Buffer {
   //  void FilterAddSamplesLeft(const Int from_sample_id,
   //                            const Int num_samples,
   //                            const Sample* samples,
-  //                            mcl::Filter& filter) noexcept {
+  //                            dsp::Filter& filter) noexcept {
   //    Buffer::FilterAddSamples(kLeftChannel, from_sample_id,
   //                                         num_samples, samples, filter);
   //  }
@@ -340,7 +340,7 @@ class StereoBuffer : public Buffer {
   //  void FilterAddSamplesRight(const Int from_sample_id,
   //                             const Int num_samples,
   //                             const Sample* samples,
-  //                             mcl::Filter& filter) noexcept {
+  //                             dsp::Filter& filter) noexcept {
   //    Buffer::FilterAddSamples(kRightChannel, from_sample_id,
   //                                         num_samples, samples, filter);
   //  }

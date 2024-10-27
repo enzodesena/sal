@@ -1,7 +1,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** Enum describing whether we are using a right handed or left handed
  reference system. */
@@ -27,5 +29,7 @@ enum WallType {
                   alpha = 0 for all frequencies */
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 #endif /* CONSTANTS_H */

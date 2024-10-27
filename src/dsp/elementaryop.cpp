@@ -16,7 +16,9 @@
 #include <boost/math/special_functions/spherical_harmonic.hpp>
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 Real Pow(Real input, Real exponent) {
   return (Real)pow((double)input, (double)exponent);
@@ -141,4 +143,6 @@ Complex SphericalHarmonic(Int n, Int m, Real theta, Real phi) {
 }
 #endif
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

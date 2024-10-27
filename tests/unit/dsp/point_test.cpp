@@ -12,11 +12,13 @@
 #include "comparisonop.h"
 #include "point.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool PointTest() {
   const Real pi = 4 * atan(1);
-  using mcl::IsEqual;
+  using sal::dsp::IsEqual;
 
   Point point_a(0.0, 0.0, 1.0);
   ASSERT(point_a.Equals(Point(0.0, 0.0, 1.0)));
@@ -261,4 +263,6 @@ bool PointTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

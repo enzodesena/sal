@@ -13,7 +13,9 @@
 #include "elementaryop.h"
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool ElementaryOpTest() {
   ASSERT(Fix(0.2) == 0);
@@ -139,4 +141,6 @@ bool ElementaryOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

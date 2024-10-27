@@ -14,25 +14,25 @@
 #include "ambisonics.h"
 #include "matrixop.h"
 
-using mcl::Multiply;
-using mcl::Point;
+using sal::dsp::Multiply;
+using sal::dsp::Point;
 
 namespace sal {
 
 void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
-                                         const mcl::Point& point,
+                                         const dsp::Point& point,
                                          const size_t wave_id,
                                          Buffer& output_buffer) noexcept {
   // Precompute for performance gain
   const Angle phi = point.phi();
-  const Sample sqrt_2 = mcl::Sqrt(2.0);
+  const Sample sqrt_2 = dsp::Sqrt(2.0);
   ASSERT(output_buffer.num_samples() >= input_data.size());
 
   switch (normalisation_convention_) {
     case sqrt2: {
       // Zero-th component
 
-      mcl::Add(input_data,
+      dsp::Add(input_data,
                output_buffer.GetReadView(
                    HoaBuffer::GetChannelId(0, 0, ordering_convention_)),
                output_buffer.GetWriteView(
@@ -40,13 +40,13 @@ void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
 
       for (Int i = 1; i <= order_; ++i) {
         // TODO: add 3D components
-        mcl::MultiplyAdd(input_data, sqrt_2 * cos(((Angle)i) * phi),
+        dsp::MultiplyAdd(input_data, sqrt_2 * cos(((Angle)i) * phi),
                          output_buffer.GetReadView(HoaBuffer::GetChannelId(
                              i, 1, ordering_convention_)),
                          output_buffer.GetWriteView(HoaBuffer::GetChannelId(
                              i, 1, ordering_convention_)));
 
-        mcl::MultiplyAdd(input_data, sqrt_2 * sin(((Angle)i) * phi),
+        dsp::MultiplyAdd(input_data, sqrt_2 * sin(((Angle)i) * phi),
                          output_buffer.GetReadView(HoaBuffer::GetChannelId(
                              i, -1, ordering_convention_)),
                          output_buffer.GetWriteView(HoaBuffer::GetChannelId(
@@ -60,10 +60,10 @@ void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
     case N3d: {
       // Precompute for performance gain
       const Angle theta = point.theta();
-      const Sample sqrt_4pi = mcl::Sqrt(4.0 * PI);
+      const Sample sqrt_4pi = dsp::Sqrt(4.0 * PI);
 
       // Zero-th component
-      mcl::Add(input_data,
+      dsp::Add(input_data,
                output_buffer.GetReadView(
                    HoaBuffer::GetChannelId(0, 0, ordering_convention_)),
                output_buffer.GetWriteView(
@@ -71,26 +71,26 @@ void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
 
       for (Int order_n = 1; order_n <= order_; ++order_n) {
         for (Int degree_m = 0; degree_m <= order_n; ++degree_m) {
-          mcl::Complex spherical_harmonic = mcl::SphericalHarmonic(
-              order_n, (mcl::Int)mcl::Abs(degree_m), theta, phi);
-          mcl::Complex normalisation = mcl::Pow(-1.0, (mcl::Real)degree_m) *
+          dsp::Complex spherical_harmonic = dsp::SphericalHarmonic(
+              order_n, (dsp::Int)dsp::Abs(degree_m), theta, phi);
+          dsp::Complex normalisation = dsp::Pow(-1.0, (dsp::Real)degree_m) *
                                        (degree_m == 0 ? 1.0 : sqrt_2) *
                                        sqrt_4pi;  // This is N3d normalisation
 
           if (normalisation_convention_ == Sn3d) {
             normalisation =
-                normalisation / sqrt(2.0 * ((mcl::Real)order_n) + 1.0);
+                normalisation / sqrt(2.0 * ((dsp::Real)order_n) + 1.0);
           }
 
-          mcl::Complex weight = spherical_harmonic * normalisation;
+          dsp::Complex weight = spherical_harmonic * normalisation;
 
-          mcl::MultiplyAdd(input_data, mcl::ImagPart(weight),
+          dsp::MultiplyAdd(input_data, dsp::ImagPart(weight),
                            output_buffer.GetReadView(HoaBuffer::GetChannelId(
                                order_n, -degree_m, ordering_convention_)),
                            output_buffer.GetWriteView(HoaBuffer::GetChannelId(
                                order_n, -degree_m, ordering_convention_)));
 
-          mcl::MultiplyAdd(input_data, mcl::RealPart(weight),
+          dsp::MultiplyAdd(input_data, dsp::RealPart(weight),
                            output_buffer.GetReadView(HoaBuffer::GetChannelId(
                                order_n, degree_m, ordering_convention_)),
                            output_buffer.GetWriteView(HoaBuffer::GetChannelId(
@@ -112,9 +112,9 @@ void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
   }
 }
 
-std::vector<mcl::Real> AmbisonicsMic::HorizontalEncoding(Int order,
+std::vector<dsp::Real> AmbisonicsMic::HorizontalEncoding(Int order,
                                                          Angle theta) {
-  std::vector<mcl::Real> output;
+  std::vector<dsp::Real> output;
   output.reserve(2 * order + 1);
   output.push_back(1.0);
   for (Int i = 1; i <= order; ++i) {
@@ -138,11 +138,11 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(
       order_(order),
       ordering_convention_(ordering_convention),
       mode_matching_matrix_(
-          mcl::Matrix<Sample>(2 * order + 1, loudspeaker_angles.size())),
+          dsp::Matrix<Sample>(2 * order + 1, loudspeaker_angles.size())),
       max_energy_matrix_(
-          mcl::Matrix<Sample>(2 * order + 1, loudspeaker_angles.size())),
+          dsp::Matrix<Sample>(2 * order + 1, loudspeaker_angles.size())),
       sampling_frequency_(sampling_frequency) {
-  using mcl::IirFilter;
+  using sal::dsp::IirFilter;
 
   if (near_field_correction_) {
     // One filter per order per loudspeaker (inner is per loudspeaker, so that
@@ -176,10 +176,10 @@ AmbisonicsHorizDec::AmbisonicsHorizDec(
   max_energy_matrix_ = MaxEnergyDec(order_, loudspeaker_angles_);
 }
 
-mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(
+dsp::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(
     Int order, const std::vector<Angle>& loudspeaker_angles) {
-  using mcl::Matrix;
-  using mcl::Multiply;
+  using sal::dsp::Matrix;
+  using sal::dsp::Multiply;
   const Int num_loudspeakers = loudspeaker_angles.size();
 
   Matrix<Sample> temp(2 * order + 1, num_loudspeakers);
@@ -196,10 +196,10 @@ mcl::Matrix<Sample> AmbisonicsHorizDec::ModeMatchingDec(
   return Multiply(Transpose(temp), (Sample)1.0 / ((Sample)2 * order + 1));
 }
 
-mcl::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(
+dsp::Matrix<Sample> AmbisonicsHorizDec::MaxEnergyDec(
     Int order, const std::vector<Angle>& loudspeaker_angles) {
   // TODO: Implement for non-regular loudspeaker arrays.
-  mcl::Matrix<Sample> decoding_matrix(2 * order + 1, 2 * order + 1);
+  dsp::Matrix<Sample> decoding_matrix(2 * order + 1, 2 * order + 1);
   decoding_matrix.SetElement(0, 0, MaxEnergyDecWeight(0, order));
   Int k = 1;
   for (Int i = 1; i <= order; ++i) {
@@ -265,7 +265,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
     //  G_format_low = M_d*amb_nfc_filter(B_format, loudspeakers_distance, Fs,
     //  c);
     std::vector<Sample> output =
-        mcl::Multiply(mode_matching_matrix_, bformat_frame);
+        dsp::Multiply(mode_matching_matrix_, bformat_frame);
     if (energy_decoding_) {
       // Maximum energy decoding at high frequency
       //  // Ambisonics decoding (max r_e)
@@ -274,8 +274,8 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
       //  G = amb_re_weights_matrix(g);
       //  G_format_high = M_d*G*B_format;
       std::vector<Sample> output_high =
-          mcl::Multiply(mode_matching_matrix_,
-                        mcl::Multiply(max_energy_matrix_, bformat_frame));
+          dsp::Multiply(mode_matching_matrix_,
+                        dsp::Multiply(max_energy_matrix_, bformat_frame));
 
       // Cross-fading high and low
       //  // Generate output
@@ -296,7 +296,7 @@ void AmbisonicsHorizDec::Decode(const Buffer& input_buffer,
   }
 }
 
-mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
+dsp::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
     const Time cut_off_frequency, const Time sampling_frequency) {
   Sample k = tan(PI * cut_off_frequency / sampling_frequency);
 
@@ -315,10 +315,10 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterLow(
   // a2 = (k^2-2*k+1)/(k^2+2*k+1);
   a[2] = (pow(k, 2.0) - 2.0 * k + 1.0) / (pow(k, 2.0) + 2.0 * k + 1.0);
 
-  return mcl::IirFilter(b_lf, a);
+  return dsp::IirFilter(b_lf, a);
 }
 
-mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
+dsp::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
     const Time cut_off_frequency, const Time sampling_frequency) {
   Sample k = tan(PI * cut_off_frequency / sampling_frequency);
 
@@ -331,20 +331,20 @@ mcl::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
 
   // I add a minus here so that the output of the two filter will need to be
   // added, rather than subtracted as described in the paper.
-  b_hf = mcl::Multiply(b_hf, (Sample)-1.0);
+  b_hf = dsp::Multiply(b_hf, (Sample)-1.0);
 
   // The denominator of the high frequency filter is the same as the low one.
-  mcl::IirFilter filter_low(
+  dsp::IirFilter filter_low(
       CrossoverFilterLow(cut_off_frequency, sampling_frequency));
 
-  return mcl::IirFilter(b_hf, filter_low.A());
+  return dsp::IirFilter(b_hf, filter_low.A());
 }
 
 // Near-field correction filters as described in
 // "Spatial Sound Encoding Including Near Field Effect: Introducing
 // Length Coding Filters and a Viable, New Ambisonic Format" by
 // J. Daniel, AES 23rd, Int. Conf., 2003.
-mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
+dsp::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
                                              const Length loudspeaker_distance,
                                              const Time sampling_frequency,
                                              const Length sound_speed) {
@@ -352,14 +352,14 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
   if (order > 6) {
     ASSERT(false);
   }
-  using mcl::Complex;
-  using mcl::Conj;
-  using mcl::Multiply;
-  using mcl::Ones;
-  using mcl::Poly;
-  using mcl::Prod;
-  using mcl::Real;
-  using mcl::RealPart;
+  using sal::dsp::Complex;
+  using sal::dsp::Conj;
+  using sal::dsp::Multiply;
+  using sal::dsp::Ones;
+  using sal::dsp::Poly;
+  using sal::dsp::Prod;
+  using sal::dsp::Real;
+  using sal::dsp::RealPart;
 
   std::vector<Complex> X_Mq;
   switch (order) {
@@ -419,10 +419,10 @@ mcl::IirFilter AmbisonicsHorizDec::NFCFilter(const Int order,
     temp_2[i] = (Complex(1.0, 0.0) - X_Mq[i] / Complex(a, 0.0));
   }
 
-  std::vector<Real> B = mcl::RealPart(mcl::Poly(mcl::Ones(order)));
+  std::vector<Real> B = dsp::RealPart(dsp::Poly(dsp::Ones(order)));
   std::vector<Real> A = RealPart(Multiply(Poly(temp_1), Prod(temp_2)));
 
-  return mcl::IirFilter(B, A);
+  return dsp::IirFilter(B, A);
 }
 
 }  // namespace sal

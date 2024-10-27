@@ -12,14 +12,14 @@
 #include "salconstants.h"
 #include "sphericalheadmic.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
 bool SphericalHeadMic::Test() {
-  using mcl::Complex;
-  using mcl::IsEqual;
+  using sal::dsp::Complex;
+  using sal::dsp::IsEqual;
 
   ASSERT(IsEqual(Sphere(0.09, 2.5, PI / 2, 500, 343, 0.0001),
                  Complex(0.948745443360044, -0.077722752497006)));
@@ -33,10 +33,10 @@ bool SphericalHeadMic::Test() {
   ASSERT(IsEqual(Sphere(0.15, 100.0, PI, 130.0, 330.0, 0.00012),
                  Complex(0.855026629580043, 0.533944979396686)));
 
-  std::vector<mcl::Real> hrir_a = GenerateImpulseResponse(
+  std::vector<dsp::Real> hrir_a = GenerateImpulseResponse(
       0.09, 2, PI / 4.0, 343, 0.0001, 6, 40000.0, false);
 
-  std::vector<mcl::Real> hrir_a_cmp(6);
+  std::vector<dsp::Real> hrir_a_cmp(6);
   hrir_a_cmp[0] = -0.422751207729102;
   hrir_a_cmp[1] = 1.25968413581477;
   hrir_a_cmp[2] = 0.274433385673422;
@@ -52,7 +52,7 @@ bool SphericalHeadMic::Test() {
 
   Angle ears_angle(100.0 / 180.0 * PI);
   SphericalHeadMic mic_a(Point(0.0, 0.0, 0.0),
-                         mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
+                         dsp::AxAng2Quat(0, 1, 0, -PI / 2.0),
                          ears_angle,  // ears angle
                          0.09,        // sphere radius
                          6,           // impulse response length
@@ -103,7 +103,7 @@ bool SphericalHeadMic::Test() {
   ASSERT(IsEqual(stream_a.GetRightReadView(), output_ipsilateral));
   ASSERT(IsEqual(stream_a.GetLeftReadView(), output_contralateral));
 
-  SphericalHeadMic mic_b(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  SphericalHeadMic mic_b(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                          ears_angle,  // ears angle
                          0.09,        // sphere radius
                          6,           // impulse response length

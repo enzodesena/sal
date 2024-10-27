@@ -61,7 +61,7 @@ class KemarMic : public DatabaseBinauralMic {
    With `num_samples` you can choose the length of the
    BRIR. If set to zero yields the entire BRIR.
    */
-  KemarMic(const mcl::Point& position, const mcl::Quaternion orientation,
+  KemarMic(const dsp::Point& position, const dsp::Quaternion orientation,
            const DatasetType dataset_type = kDiffuseDataset,
            const Int num_samples = kFullBrirLength, const Int update_length = 0,
            const HeadRefOrientation reference_orientation =
@@ -94,7 +94,7 @@ class KemarMic : public DatabaseBinauralMic {
   static bool Test();
 
  private:
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
+  virtual Signal GetBrir(const Ear ear, const dsp::Point& point) noexcept;
 
   static std::vector<std::vector<Signal> > Load(const Ear ear,
                                                 const std::string directory,
@@ -123,11 +123,11 @@ class KemarMic : public DatabaseBinauralMic {
    */
   Int FindAzimuthIndex(Angle azimuth, Int elevation_index);
 
-  static Array<mcl::Int, NUM_ELEVATIONS_KEMAR> GetNumMeasurements() noexcept;
-  static Array<mcl::Int, NUM_ELEVATIONS_KEMAR> GetElevations() noexcept;
+  static Array<dsp::Int, NUM_ELEVATIONS_KEMAR> GetNumMeasurements() noexcept;
+  static Array<dsp::Int, NUM_ELEVATIONS_KEMAR> GetElevations() noexcept;
 
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations_;
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> num_measurements_;
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> elevations_;
 
   static std::string GetFilePath(const Angle elevation, const Angle angle,
                                  const std::string directory,

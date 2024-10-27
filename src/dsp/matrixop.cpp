@@ -9,7 +9,9 @@
 #include "comparisonop.h"
 #include "matrixop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept {
   Matrix<Real> output(input.num_rows(), input.num_columns());
@@ -55,4 +57,6 @@ EigOutput Eig(const Matrix<Real>& matrix) {
 }
 #endif
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

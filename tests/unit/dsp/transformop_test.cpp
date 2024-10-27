@@ -13,7 +13,9 @@
 #include "transformop.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool TransformOpTest() {
   std::vector<Complex> vector_a(3);
@@ -230,4 +232,6 @@ bool TransformOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

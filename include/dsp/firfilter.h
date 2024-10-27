@@ -16,7 +16,9 @@
 #include "mcltypes.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 /** FIR Filter */
 class FirFilter : public Filter {
  public:
@@ -157,6 +159,8 @@ class IdenticalFilter : public Filter {
   virtual void Reset() {}
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

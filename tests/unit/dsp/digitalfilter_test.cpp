@@ -17,7 +17,9 @@
 #include "randomop.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool IirFilter::Test() {
   IirFilter filter_a = IdenticalFilter();
@@ -90,7 +92,7 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(B_d, filter_l.B()));
   ASSERT(IsEqual(A_d, filter_l.A()));
 
-  std::vector<Real> signal_d = mcl::Zeros<Real>(4);
+  std::vector<Real> signal_d = dsp::Zeros<Real>(4);
   signal_d[0] = 0.989949493661167;
   std::vector<Real> signal_d_out_cmp(4);
   signal_d_out_cmp[0] = 0.984197179938686;
@@ -117,7 +119,7 @@ bool IirFilter::Test() {
 
   // Testing butterworth filter
   IirFilter butter_a = Butter(3, 0.2, 0.45);
-  std::vector<Real> butter_a_num_cmp = mcl::Zeros<Real>(7);
+  std::vector<Real> butter_a_num_cmp = dsp::Zeros<Real>(7);
   butter_a_num_cmp[0] = 0.031689343849711;
   butter_a_num_cmp[2] = -0.095068031549133;
   butter_a_num_cmp[4] = 0.095068031549133;
@@ -136,7 +138,7 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(butter_a.A(), butter_a_den_cmp));
 
   IirFilter butter_b = Butter(2, 0.12, 0.79);
-  std::vector<Real> butter_b_num_cmp = mcl::Zeros<Real>(5);
+  std::vector<Real> butter_b_num_cmp = dsp::Zeros<Real>(5);
   butter_b_num_cmp[0] = 0.469043625796947;
   butter_b_num_cmp[2] = -0.938087251593893;
   butter_b_num_cmp[4] = 0.469043625796947;
@@ -157,7 +159,7 @@ bool IirFilter::Test() {
 
   // Testing octave filter
   IirFilter octave_a = OctaveFilter(3, 4000.0, 44100.0);
-  std::vector<Real> octave_a_num_cmp = mcl::Zeros<Real>(7);
+  std::vector<Real> octave_a_num_cmp = dsp::Zeros<Real>(7);
   octave_a_num_cmp[0] = 0.005020133201471;
   octave_a_num_cmp[2] = -0.015060399604412;
   octave_a_num_cmp[4] = 0.015060399604412;
@@ -236,7 +238,7 @@ bool IirFilter::Test() {
 }
 
 bool FirFilter::Test() {
-  using mcl::IsEqual;
+  using sal::dsp::IsEqual;
 
   std::vector<Real> ir = {0.1, 0.2, 0.3};
   FirFilter filter_lasplita(ir);
@@ -350,7 +352,7 @@ bool FirFilter::Test() {
 
   filter_l.Reset();
   for (Int i = 0; i < (Int)input_b.size(); ++i) {
-    ASSERT(mcl::IsEqual(filter_l.ProcessSample(input_b[i]), output_b_cmp[i]));
+    ASSERT(dsp::IsEqual(filter_l.ProcessSample(input_b[i]), output_b_cmp[i]));
   }
 
   // #ifdef MCL_APPLE_ACCELERATE
@@ -404,30 +406,30 @@ bool FirFilter::Test() {
                                        output_c_cmp.begin() + 16);
   std::vector<Real> filter_m_output(input_c_sub_a.size());
   filter_m.ProcessBlock(input_c_sub_a, filter_m_output);
-  ASSERT(mcl::IsEqual(filter_m_output, output_c_cmp_sub_a));
+  ASSERT(dsp::IsEqual(filter_m_output, output_c_cmp_sub_a));
 
-  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[16]), output_c_cmp[16]));
+  ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[16]), output_c_cmp[16]));
 
   std::vector<Real> input_c_sub_b(input_c.begin() + 17, input_c.end());
   std::vector<Real> output_c_cmp_sub_b(output_c_cmp.begin() + 17,
                                        output_c_cmp.end());
   std::vector<Real> output_c_sub_b(input_c_sub_b.size());
   filter_m.ProcessBlock(input_c_sub_b, output_c_sub_b);
-  ASSERT(mcl::IsEqual(output_c_sub_b, output_c_cmp_sub_b));
+  ASSERT(dsp::IsEqual(output_c_sub_b, output_c_cmp_sub_b));
 
   //
   filter_m.Reset();
-  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[0]), output_c_cmp[0]));
-  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[1]), output_c_cmp[1]));
-  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[2]), output_c_cmp[2]));
+  ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[0]), output_c_cmp[0]));
+  ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[1]), output_c_cmp[1]));
+  ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[2]), output_c_cmp[2]));
   std::vector<Real> input_c_sub_ab(input_c.begin() + 3, input_c.begin() + 19);
   std::vector<Real> output_c_cmp_sub_ab(output_c_cmp.begin() + 3,
                                         output_c_cmp.begin() + 19);
 
   std::vector<Real> output_c_sub_ab(input_c_sub_ab.size());
   filter_m.ProcessBlock(input_c_sub_ab, output_c_sub_ab);
-  ASSERT(mcl::IsEqual(output_c_sub_ab, output_c_cmp_sub_ab));
-  ASSERT(mcl::IsEqual(filter_m.ProcessSample(input_c[19]), output_c_cmp[19]));
+  ASSERT(dsp::IsEqual(output_c_sub_ab, output_c_cmp_sub_ab));
+  ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[19]), output_c_cmp[19]));
 
   //
   std::vector<Real> impulse_response_k = {0.8147, 0.9058, 0.1270, 0.9134,
@@ -444,7 +446,7 @@ bool FirFilter::Test() {
       2.164136180000000, 2.090582990000000};
   std::vector<Real> output_k(input_k.size());
   filter_k.ProcessBlock(input_k, output_k);
-  ASSERT(mcl::IsEqual(output_k, output_k_cmp));
+  ASSERT(dsp::IsEqual(output_k, output_k_cmp));
 
   //
   filter_k.Reset();
@@ -502,10 +504,10 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(filter_k.ProcessSample(input_k[19]), output_k_cmp[19]));
 
   // Testing slow ipdate of filter
-  FirFilter filter_t(mcl::UnaryVector<Real>(1.0));
+  FirFilter filter_t(dsp::UnaryVector<Real>(1.0));
   ASSERT(IsEqual(filter_t.ProcessSample(0.76), 0.76));
   ASSERT(IsEqual(filter_t.ProcessSample(1.0), 1.0));
-  filter_t.SetImpulseResponse(mcl::UnaryVector<Real>(0.3), 1);
+  filter_t.SetImpulseResponse(dsp::UnaryVector<Real>(0.3), 1);
   ASSERT(IsEqual(filter_t.ProcessSample(1.0), 0.5 * 1.0 + 0.5 * 0.3));
   ASSERT(IsEqual(filter_t.ProcessSample(1.0), 0.3));
 
@@ -531,7 +533,7 @@ bool FirFilter::Test() {
 }
 
 void FirFilter::SpeedTests() {
-  mcl::RandomGenerator random_generator;
+  dsp::RandomGenerator random_generator;
 
   std::vector<Real> impulse_response = random_generator.Rand(1024);
   FirFilter fir_filter(impulse_response);
@@ -540,7 +542,7 @@ void FirFilter::SpeedTests() {
 
   clock_t launch = clock();
   for (Int i = 0; i < 20; i++) {
-    fir_filter.ProcessBlock(mcl::GetSegment(input, i, 2205),
+    fir_filter.ProcessBlock(dsp::GetSegment(input, i, 2205),
                             output_to_be_ignored);
   }
   clock_t done = clock();
@@ -562,7 +564,7 @@ void FirFilter::SpeedTests() {
 
   launch = clock();
   for (Int i = 0; i < 20; i++) {
-    fir_filter_b.ProcessBlock(mcl::GetSegment(input, i, 2205),
+    fir_filter_b.ProcessBlock(dsp::GetSegment(input, i, 2205),
                               output_to_be_ignored);
   }
   done = clock();
@@ -580,4 +582,6 @@ void FirFilter::SpeedTests() {
             << (done - launch) / ((Real)CLOCKS_PER_SEC) * 100 << "% \n";
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

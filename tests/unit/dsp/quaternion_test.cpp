@@ -15,7 +15,9 @@
 #include "quaternion.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 bool Quaternion::Test() {
   Quaternion q(0.1, 0.2, 0.3, 0.4);
   ASSERT(IsEqual(q.w(), 0.1));
@@ -98,4 +100,6 @@ bool Quaternion::Test() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

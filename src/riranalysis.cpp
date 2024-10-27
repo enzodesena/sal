@@ -14,12 +14,12 @@ namespace sal {
 std::vector<sal::Sample> RirAnalysis::EnergyDecayCurve(
     std::vector<sal::Sample> rir) {
   // cs = cumsum(fliplr(h.^2));
-  std::vector<sal::Sample> cs = mcl::CumSum(mcl::Flip(mcl::Pow(rir, 2.0)));
+  std::vector<sal::Sample> cs = dsp::CumSum(dsp::Flip(dsp::Pow(rir, 2.0)));
 
   // edc = 10*log10(fliplr(cs./cs(end)));
-  return mcl::Multiply<sal::Sample>(
-      mcl::Log10(
-          mcl::Flip(mcl::Multiply<sal::Sample>(cs, 1.0 / cs[cs.size() - 1]))),
+  return dsp::Multiply<sal::Sample>(
+      dsp::Log10(
+          dsp::Flip(dsp::Multiply<sal::Sample>(cs, 1.0 / cs[cs.size() - 1]))),
       10.0);
 }
 

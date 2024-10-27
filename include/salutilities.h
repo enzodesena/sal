@@ -45,13 +45,13 @@ std::vector<T> UniformAngles(
 template <class T, class V>
 std::vector<V> ConvertToType(std::vector<T> vector) {
   std::vector<V> new_vector(vector.size());
-  for (mcl::Int i = 0; i < (Int)vector.size(); ++i) {
+  for (dsp::Int i = 0; i < (Int)vector.size(); ++i) {
     new_vector[i] = (V)vector[i];
   }
   return new_vector;
 }
 
-typedef mcl::Point Triplet;
+typedef dsp::Point Triplet;
 
 /** */
 class TripletHandler {
@@ -104,7 +104,7 @@ class TripletHandler {
 
   bool HasReachedTarget() const noexcept { return has_reached_target_; }
 
-  mcl::Point value() const noexcept { return current_triplet_; }
+  dsp::Point value() const noexcept { return current_triplet_; }
 
   static bool Test();
 
@@ -166,7 +166,7 @@ class RampSmoother {
         output_data[i] = input_data[i] * GetNextValue();
       }
     } else {
-      mcl::Multiply(input_data, target_value_, output_data);
+      dsp::Multiply(input_data, target_value_, output_data);
     }
   }
 
@@ -203,7 +203,7 @@ class RampSmoother {
         output_data[i] = input_data[i] * temp.GetNextValue();
       }
     } else {
-      mcl::Multiply(input_data, target_value_, output_data);
+      dsp::Multiply(input_data, target_value_, output_data);
     }
   }
 
@@ -213,7 +213,7 @@ class RampSmoother {
                       const Time ramp_time) noexcept {
     ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_time, 0.0),
                         "Ramp time cannot be negative ");
-    if ((mcl::RoundToInt(ramp_time * sampling_frequency_)) == 0) {
+    if ((dsp::RoundToInt(ramp_time * sampling_frequency_)) == 0) {
       target_value_ = target_value;
       current_value_ = target_value;
       countdown_ = 0;
@@ -222,7 +222,7 @@ class RampSmoother {
 
     if (std::islessgreater(target_value, target_value_)) {
       const Int num_update_samples =
-          mcl::RoundToInt(ramp_time * sampling_frequency_);
+          dsp::RoundToInt(ramp_time * sampling_frequency_);
       countdown_ = num_update_samples;
       target_value_ = target_value;
 
@@ -246,31 +246,31 @@ class RampSmoother {
 };
 
 /** Implements a first-order IIR low-pass filter with a given decay constant. */
-class LowPassSmoothingFilter : public mcl::Filter {
+class LowPassSmoothingFilter : public dsp::Filter {
  public:
   /**
    @param[in] ramp_samples number of samples after which the value is
    to 1/e away from target value. */
-  LowPassSmoothingFilter(const mcl::Real ramp_samples) noexcept {
+  LowPassSmoothingFilter(const dsp::Real ramp_samples) noexcept {
     ASSERT_WITH_MESSAGE(std::isgreaterequal(ramp_samples, 0),
                         "Decay constant cannot be negative.");
 
-    mcl::Real a1 = exp(-1.0 / ramp_samples);
-    mcl::Real b0 = 1.0 - a1;
-    filter_ = mcl::IirFilter(mcl::BinaryVector<mcl::Real>(b0, 0.0),
-                             mcl::BinaryVector<mcl::Real>(1.0, -a1));
+    dsp::Real a1 = exp(-1.0 / ramp_samples);
+    dsp::Real b0 = 1.0 - a1;
+    filter_ = dsp::IirFilter(dsp::BinaryVector<dsp::Real>(b0, 0.0),
+                             dsp::BinaryVector<dsp::Real>(1.0, -a1));
   }
 
-  virtual mcl::Real ProcessSample(const mcl::Real input) noexcept {
+  virtual dsp::Real ProcessSample(const dsp::Real input) noexcept {
     return filter_.ProcessSample(input);
   }
 
-  using mcl::Filter::ProcessSample;
+  using sal::dsp::Filter::ProcessSample;
 
   virtual void Reset() noexcept { filter_.Reset(); }
 
  private:
-  mcl::IirFilter filter_;
+  dsp::IirFilter filter_;
 };
 
 template <typename T>

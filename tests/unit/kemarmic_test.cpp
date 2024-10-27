@@ -13,13 +13,13 @@
 #include "salconstants.h"
 #include "vectorop.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
 bool KemarMic::Test() {
-  using mcl::IsEqual;
+  using sal::dsp::IsEqual;
 
   const Int impulse_response_length = 128;
 
@@ -30,7 +30,7 @@ bool KemarMic::Test() {
   Sample normalising_value = sample / NORMALISING_VALUE_KEMAR;
 
   // Testing frontal direction
-  KemarMic mic_i(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_i(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                  kCompactDataset);
   StereoBuffer buffer_i(impulse_response_length);
 
@@ -53,25 +53,25 @@ bool KemarMic::Test() {
 
   Signal cmp_imp_front_left(
       imp_front_left, imp_front_left + sizeof(imp_front_left) / sizeof(Sample));
-  cmp_imp_front_left = mcl::Multiply(cmp_imp_front_left, normalising_value);
+  cmp_imp_front_left = dsp::Multiply(cmp_imp_front_left, normalising_value);
 
   ASSERT(IsEqual(buffer_i.GetLeftReadView(), buffer_i.GetRightReadView()));
 
   ASSERT(IsEqual(cmp_imp_front_left, buffer_i.GetLeftReadView()));
 
-  KemarMic mic_o(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 0, 1, PI / 2.0),
+  KemarMic mic_o(Point(0.0, 0.0, 0.0), dsp::AxAng2Quat(0, 0, 1, PI / 2.0),
                  kCompactDataset);
   StereoBuffer buffer_o(impulse_response_length);
 
   mic_o.AddPlaneWave(impulse, Point(0.0, 1.0, 0.0), buffer_o);
-  ASSERT(mcl::IsEqual(cmp_imp_front_left, buffer_o.GetLeftReadView()));
+  ASSERT(dsp::IsEqual(cmp_imp_front_left, buffer_o.GetLeftReadView()));
 
   // Testing frontal direction for reference point at y-axis
-  KemarMic mic_ia(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_ia(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                   kCompactDataset, kFullBrirLength, 0, HeadRefOrientation::y_z);
   StereoBuffer buffer_ia(impulse_response_length);
   mic_ia.AddPlaneWave(impulse, Point(0.0, 1.0, 0.0), buffer_ia);
-  ASSERT(mcl::IsEqual(cmp_imp_front_left, buffer_ia.GetLeftReadView()));
+  ASSERT(dsp::IsEqual(cmp_imp_front_left, buffer_ia.GetLeftReadView()));
 
   // Testing upward direction
   const Sample imp_up_left[] = {
@@ -91,9 +91,9 @@ bool KemarMic::Test() {
 
   Signal cmp_imp_up_left(imp_up_left,
                          imp_up_left + sizeof(imp_up_left) / sizeof(Sample));
-  cmp_imp_up_left = mcl::Multiply(cmp_imp_up_left, normalising_value);
+  cmp_imp_up_left = dsp::Multiply(cmp_imp_up_left, normalising_value);
 
-  KemarMic mic_m(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
+  KemarMic mic_m(Point(0.0, 0.0, 0.0), dsp::AxAng2Quat(0, 1, 0, -PI / 2.0),
                  kCompactDataset);
   StereoBuffer buffer_m(impulse_response_length);
 
@@ -117,7 +117,7 @@ bool KemarMic::Test() {
 
   Signal cmp_imp_right_left(
       imp_right_left, imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
-  cmp_imp_right_left = mcl::Multiply(cmp_imp_right_left, normalising_value);
+  cmp_imp_right_left = dsp::Multiply(cmp_imp_right_left, normalising_value);
 
   const Sample imp_right_right[] = {
       -335,  531,   -666,   11016, 14274, -20450, -14263, 12368, 6401,  -801,
@@ -137,44 +137,44 @@ bool KemarMic::Test() {
   Signal cmp_imp_right_right(
       imp_right_right,
       imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
-  cmp_imp_right_right = mcl::Multiply(cmp_imp_right_right, normalising_value);
+  cmp_imp_right_right = dsp::Multiply(cmp_imp_right_right, normalising_value);
 
-  KemarMic mic_p(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_p(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                  kCompactDataset);
   StereoBuffer buffer_p(impulse_response_length);
 
   mic_p.AddPlaneWave(impulse, Point(0.0, -1.0, 0.0), buffer_p);
 
-  ASSERT(mcl::IsEqual(buffer_p.GetLeftReadView(), cmp_imp_right_left));
-  ASSERT(mcl::IsEqual(buffer_p.GetRightReadView(), cmp_imp_right_right));
+  ASSERT(dsp::IsEqual(buffer_p.GetLeftReadView(), cmp_imp_right_left));
+  ASSERT(dsp::IsEqual(buffer_p.GetRightReadView(), cmp_imp_right_right));
 
   // Case for a source to the right (90deg) of the kemar with reference on the y
   // axis
-  KemarMic mic_pa(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_pa(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                   kCompactDataset, kFullBrirLength, 0, HeadRefOrientation::y_z);
   StereoBuffer buffer_pa(impulse_response_length);
   mic_pa.AddPlaneWave(impulse, Point(1.0, 0.0, 0.0), buffer_pa);
-  ASSERT(mcl::IsEqual(cmp_imp_right_left, buffer_pa.GetLeftReadView()));
-  ASSERT(mcl::IsEqual(cmp_imp_right_right, buffer_pa.GetRightReadView()));
+  ASSERT(dsp::IsEqual(cmp_imp_right_left, buffer_pa.GetLeftReadView()));
+  ASSERT(dsp::IsEqual(cmp_imp_right_right, buffer_pa.GetRightReadView()));
 
   // Case for a source to the left (-90deg) of the kemar.
   Signal cmp_imp_left_right(
       imp_right_left, imp_right_left + sizeof(imp_right_left) / sizeof(Sample));
-  cmp_imp_left_right = mcl::Multiply(cmp_imp_left_right, normalising_value);
+  cmp_imp_left_right = dsp::Multiply(cmp_imp_left_right, normalising_value);
 
   Signal cmp_imp_left_left(
       imp_right_right,
       imp_right_right + sizeof(imp_right_right) / sizeof(Sample));
-  cmp_imp_left_left = mcl::Multiply(cmp_imp_left_left, normalising_value);
+  cmp_imp_left_left = dsp::Multiply(cmp_imp_left_left, normalising_value);
 
-  KemarMic mic_r(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_r(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                  kCompactDataset);
   StereoBuffer buffer_r(impulse_response_length);
 
   mic_r.AddPlaneWave(impulse, Point(0.0, 1.0, 0.0), buffer_r);
 
-  ASSERT(mcl::IsEqual(buffer_r.GetLeftReadView(), cmp_imp_left_left));
-  ASSERT(mcl::IsEqual(buffer_r.GetRightReadView(), cmp_imp_left_right));
+  ASSERT(dsp::IsEqual(buffer_r.GetLeftReadView(), cmp_imp_left_left));
+  ASSERT(dsp::IsEqual(buffer_r.GetRightReadView(), cmp_imp_left_right));
 
   // Case for a source in the back
   const Sample imp_back[] = {
@@ -192,16 +192,16 @@ bool KemarMic::Test() {
       -143,  -108,  -50,  -25,  -76,   -124,  -110};
 
   Signal cmp_imp_back(imp_back, imp_back + sizeof(imp_back) / sizeof(Sample));
-  cmp_imp_back = mcl::Multiply(cmp_imp_back, normalising_value);
+  cmp_imp_back = dsp::Multiply(cmp_imp_back, normalising_value);
 
-  KemarMic mic_t(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
+  KemarMic mic_t(Point(0.0, 0.0, 0.0), dsp::AxAng2Quat(0, 1, 0, -PI / 2.0),
                  kCompactDataset);
   StereoBuffer buffer_t(impulse_response_length);
 
   mic_t.AddPlaneWave(impulse, Point(0.0, 0.0, -1.0), buffer_t);
 
-  ASSERT(mcl::IsEqual(buffer_t.GetLeftReadView(), cmp_imp_back));
-  ASSERT(mcl::IsEqual(buffer_t.GetRightReadView(), cmp_imp_back));
+  ASSERT(dsp::IsEqual(buffer_t.GetLeftReadView(), cmp_imp_back));
+  ASSERT(dsp::IsEqual(buffer_t.GetRightReadView(), cmp_imp_back));
 
   // Testing reset
   buffer_t.Reset();
@@ -222,7 +222,7 @@ bool KemarMic::Test() {
   ASSERT(IsEqual(buffer_t.GetRightReadView()[0], 0.0));
 
   // Testing multiple wave_ids with signals
-  KemarMic mic_u(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_u(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                  kCompactDataset);
   StereoBuffer buffer_u(impulse_response_length);
 
@@ -243,8 +243,8 @@ bool KemarMic::Test() {
   output_u_right = Signal(buffer_u.GetRightReadView().begin(),
                           buffer_u.GetRightReadView().end());
 
-  Signal cmp_u_left = mcl::Add(cmp_imp_front_left, cmp_imp_right_left);
-  Signal cmp_u_right = mcl::Add(cmp_imp_front_left, cmp_imp_right_right);
+  Signal cmp_u_left = dsp::Add(cmp_imp_front_left, cmp_imp_right_left);
+  Signal cmp_u_right = dsp::Add(cmp_imp_front_left, cmp_imp_right_right);
 
   ASSERT(IsEqual(cmp_u_left, output_u_left));
   ASSERT(IsEqual(cmp_u_right, output_u_right));
@@ -258,14 +258,14 @@ bool KemarMic::Test() {
   Signal output_u_b_right(buffer_u.GetRightReadView().begin(),
                           buffer_u.GetRightReadView().end());
 
-  Signal cmp_u_left_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_left);
-  Signal cmp_u_right_b = mcl::Add(cmp_imp_front_left, cmp_imp_left_right);
+  Signal cmp_u_left_b = dsp::Add(cmp_imp_front_left, cmp_imp_left_left);
+  Signal cmp_u_right_b = dsp::Add(cmp_imp_front_left, cmp_imp_left_right);
 
   ASSERT(IsEqual(cmp_u_left_b, output_u_b_left));
   ASSERT(IsEqual(cmp_u_right_b, output_u_b_right));
 
   // Testing diffuse dataset
-  KemarMic mic_diffuse(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_diffuse(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                        kDiffuseDataset);
   StereoBuffer buffer_diffuse(impulse_response_length);
 
@@ -286,9 +286,9 @@ bool KemarMic::Test() {
       14,    11,    81,     131,   106,   46,    34};
 
   ASSERT(IsEqual(buffer_diffuse.GetLeftReadView(),
-                 mcl::Multiply(cmp_diffuse_up_left_ear, normalising_value)));
+                 dsp::Multiply(cmp_diffuse_up_left_ear, normalising_value)));
   ASSERT(IsEqual(buffer_diffuse.GetRightReadView(),
-                 mcl::Multiply(cmp_diffuse_up_left_ear, normalising_value)));
+                 dsp::Multiply(cmp_diffuse_up_left_ear, normalising_value)));
 
   Angle elevation = 40.0 / 180.0 * PI;
   Angle azimuth = 77.0 / 180.0 * PI;
@@ -331,10 +331,10 @@ bool KemarMic::Test() {
       205,   114,    86,     93,    110,   140,   170,   172};
 
   ASSERT(IsEqual(buffer_diffuse.GetLeftReadView(),
-                 mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_left_ear,
+                 dsp::Multiply(cmp_diffuse_elevation_40_azimuth_77_left_ear,
                                normalising_value)));
   ASSERT(IsEqual(buffer_diffuse.GetRightReadView(),
-                 mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear,
+                 dsp::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
 
   mic_diffuse.Reset();
@@ -345,14 +345,14 @@ bool KemarMic::Test() {
                                  sin(azimuth) * cos(elevation), sin(elevation)),
                            buffer_diffuse);
   ASSERT(IsEqual(buffer_diffuse.GetLeftReadView(),
-                 mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear,
+                 dsp::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
   ASSERT(IsEqual(buffer_diffuse.GetRightReadView(),
-                 mcl::Multiply(cmp_diffuse_elevation_40_azimuth_77_left_ear,
+                 dsp::Multiply(cmp_diffuse_elevation_40_azimuth_77_left_ear,
                                normalising_value)));
 
   // Testing compact dataset
-  KemarMic mic_compact(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_compact(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                        kCompactDataset);
   StereoBuffer buffer_compact(impulse_response_length);
 
@@ -374,9 +374,9 @@ bool KemarMic::Test() {
       -127, -124,  -20,    69,    38,    -69,   -132,  -141};
 
   ASSERT(IsEqual(buffer_compact.GetLeftReadView(),
-                 mcl::Multiply(cmp_compact_up_left_ear, normalising_value)));
+                 dsp::Multiply(cmp_compact_up_left_ear, normalising_value)));
   ASSERT(IsEqual(buffer_compact.GetRightReadView(),
-                 mcl::Multiply(cmp_compact_up_left_ear, normalising_value)));
+                 dsp::Multiply(cmp_compact_up_left_ear, normalising_value)));
 
   elevation = 40.0 / 180.0 * PI;
   azimuth = 77.0 / 180.0 * PI;
@@ -420,10 +420,10 @@ bool KemarMic::Test() {
       11,     37,     48,    5,     -37,   -56,   -64,   -46};
 
   ASSERT(IsEqual(buffer_compact.GetLeftReadView(),
-                 mcl::Multiply(cmp_compact_elevation_40_azimuth_77_left_ear,
+                 dsp::Multiply(cmp_compact_elevation_40_azimuth_77_left_ear,
                                normalising_value)));
   ASSERT(IsEqual(buffer_compact.GetRightReadView(),
-                 mcl::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear,
+                 dsp::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
 
   mic_compact.Reset();
@@ -434,10 +434,10 @@ bool KemarMic::Test() {
                                  sin(azimuth) * cos(elevation), sin(elevation)),
                            buffer_compact);
   ASSERT(IsEqual(buffer_compact.GetLeftReadView(),
-                 mcl::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear,
+                 dsp::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
   ASSERT(IsEqual(buffer_compact.GetRightReadView(),
-                 mcl::Multiply(cmp_compact_elevation_40_azimuth_77_left_ear,
+                 dsp::Multiply(cmp_compact_elevation_40_azimuth_77_left_ear,
                                normalising_value)));
 
   // Testing full dataset
@@ -445,7 +445,7 @@ bool KemarMic::Test() {
   const Int long_impulse_response_length = 512;
   MonoBuffer long_impulse(long_impulse_response_length);
   long_impulse.SetSample(0, sample);
-  KemarMic mic_full(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  KemarMic mic_full(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
                     kFullDataset);
   StereoBuffer buffer_full(long_impulse_response_length);
 
@@ -506,9 +506,9 @@ bool KemarMic::Test() {
       -98,   -57};
 
   ASSERT(IsEqual(buffer_full.GetLeftReadView(),
-                 mcl::Multiply(cmp_full_up_left_ear, normalising_value)));
+                 dsp::Multiply(cmp_full_up_left_ear, normalising_value)));
   ASSERT(IsEqual(buffer_full.GetRightReadView(),
-                 mcl::Multiply(cmp_full_up_left_ear, normalising_value)));
+                 dsp::Multiply(cmp_full_up_left_ear, normalising_value)));
 
   elevation = 40.0 / 180.0 * PI;
   azimuth = 77.0 / 180.0 * PI;
@@ -625,10 +625,10 @@ bool KemarMic::Test() {
       55,    34};
 
   ASSERT(IsEqual(buffer_full.GetLeftReadView(),
-                 mcl::Multiply(cmp_full_elevation_40_azimuth_77_left_ear,
+                 dsp::Multiply(cmp_full_elevation_40_azimuth_77_left_ear,
                                normalising_value)));
   ASSERT(IsEqual(buffer_full.GetRightReadView(),
-                 mcl::Multiply(cmp_full_elevation_40_azimuth_77_right_ear,
+                 dsp::Multiply(cmp_full_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
 
   mic_full.Reset();
@@ -639,10 +639,10 @@ bool KemarMic::Test() {
                               sin(azimuth) * cos(elevation), sin(elevation)),
                         buffer_full);
   ASSERT(IsEqual(buffer_full.GetLeftReadView(),
-                 mcl::Multiply(cmp_full_elevation_40_azimuth_77_right_ear,
+                 dsp::Multiply(cmp_full_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
   ASSERT(IsEqual(buffer_full.GetRightReadView(),
-                 mcl::Multiply(cmp_full_elevation_40_azimuth_77_left_ear,
+                 dsp::Multiply(cmp_full_elevation_40_azimuth_77_left_ear,
                                normalising_value)));
 
   return true;

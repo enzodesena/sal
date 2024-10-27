@@ -15,7 +15,9 @@
 #include "iirfilter.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /**
  * Class that implements a 2nd order high shelf IIR filter (used by GraphicEQ)
@@ -31,7 +33,7 @@ class PeakHighShelf : public IirFilter {
    * @param sample_rate The sample rate for calculating filter coefficients
    */
   PeakHighShelf(const Real fc, const Real Q, const int sample_rate)
-      : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+      : IirFilter(dsp::Zeros<Real>(3), dsp::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -46,7 +48,7 @@ class PeakHighShelf : public IirFilter {
    */
   PeakHighShelf(const Real fc, const Real g, const Real Q,
                 const int sample_rate)
-      : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+      : IirFilter(dsp::Zeros<Real>(3), dsp::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }
@@ -90,7 +92,7 @@ class PeakLowShelf : public IirFilter {
    * @param sample_rate The sample rate for calculating filter coefficients
    */
   PeakLowShelf(const Real fc, const Real Q, const int sample_rate)
-      : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+      : IirFilter(dsp::Zeros<Real>(3), dsp::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -104,7 +106,7 @@ class PeakLowShelf : public IirFilter {
    * @param sample_rate The sample rate for calculating filter coefficients
    */
   PeakLowShelf(const Real fc, const Real g, const Real Q, const int sample_rate)
-      : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+      : IirFilter(dsp::Zeros<Real>(3), dsp::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }
@@ -148,7 +150,7 @@ class PeakingFilter : public IirFilter {
    * @param sample_rate The sample rate for calculating filter coefficients
    */
   PeakingFilter(const Real fc, const Real Q, const int sample_rate)
-      : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+      : IirFilter(dsp::Zeros<Real>(3), dsp::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
   }
 
@@ -163,7 +165,7 @@ class PeakingFilter : public IirFilter {
    */
   PeakingFilter(const Real fc, const Real g, const Real Q,
                 const int sample_rate)
-      : IirFilter(mcl::Zeros<Real>(3), mcl::Zeros<Real>(3)) {
+      : IirFilter(dsp::Zeros<Real>(3), dsp::Zeros<Real>(3)) {
     SetParameters(fc, Q, sample_rate);
     UpdateGain(g);
   }
@@ -193,6 +195,8 @@ class PeakingFilter : public IirFilter {
   Real alpha;
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

@@ -26,7 +26,7 @@ class CuboidRoom : public Room {
   // The room filter is *not* an injected dependency. The software will do lots
   // of copies of the object.
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const std::vector<mcl::IirFilter>& filter_prototypes)
+             const std::vector<dsp::IirFilter>& filter_prototypes)
       : Room(filter_prototypes),
         dimensions_(Triplet(x, y, z)),
         origin_position_(Triplet(0, 0, 0)) {
@@ -36,8 +36,8 @@ class CuboidRoom : public Room {
   }
 
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const mcl::IirFilter& filter_prototype)
-      : Room(std::vector<mcl::IirFilter>(6, filter_prototype)),
+             const dsp::IirFilter& filter_prototype)
+      : Room(std::vector<dsp::IirFilter>(6, filter_prototype)),
         dimensions_(Triplet(x, y, z)),
         origin_position_(Triplet(0, 0, 0)) {}
 
@@ -49,25 +49,25 @@ class CuboidRoom : public Room {
    @param[in] filter_prototype Prototype of the wall filter.
    */
   CuboidRoom(const Triplet& room_dimensions, const Triplet& origin_position,
-             const mcl::IirFilter& filter_prototype)
-      : Room(std::vector<mcl::IirFilter>(6, filter_prototype)),
+             const dsp::IirFilter& filter_prototype)
+      : Room(std::vector<dsp::IirFilter>(6, filter_prototype)),
         dimensions_(room_dimensions),
         origin_position_(origin_position) {}
 
-  virtual std::vector<mcl::Point> CalculateBoundaryPoints(
-      const mcl::Point& source, const mcl::Point& destination) const noexcept;
+  virtual std::vector<dsp::Point> CalculateBoundaryPoints(
+      const dsp::Point& source, const dsp::Point& destination) const noexcept;
 
-  virtual std::vector<mcl::IirFilter> GetBoundaryFilters(
-      const mcl::Point& source_point,
-      const mcl::Point& mic_point) const noexcept;
+  virtual std::vector<dsp::IirFilter> GetBoundaryFilters(
+      const dsp::Point& source_point,
+      const dsp::Point& mic_point) const noexcept;
 
-  virtual mcl::Int num_boundary_points() const noexcept;
+  virtual dsp::Int num_boundary_points() const noexcept;
 
-  mcl::Point ImageSourcePosition(const mcl::Point& source_position,
-                                 const mcl::Int mx, const mcl::Int my,
-                                 const mcl::Int mz, const mcl::Int px,
-                                 const mcl::Int py,
-                                 const mcl::Int pz) const noexcept;
+  dsp::Point ImageSourcePosition(const dsp::Point& source_position,
+                                 const dsp::Int mx, const dsp::Int my,
+                                 const dsp::Int mz, const dsp::Int px,
+                                 const dsp::Int py,
+                                 const dsp::Int pz) const noexcept;
 
   sal::Time SabineRt60() const;
 
@@ -90,7 +90,7 @@ class CuboidRoom : public Room {
   static bool Test();
 
   virtual bool IsPointInRoom(
-      const mcl::Point& point,
+      const dsp::Point& point,
       const sal::Length precision = VERY_SMALL) const noexcept;
 
   virtual std::string ShapeDescription() const noexcept;
@@ -117,19 +117,19 @@ class CuboidRoom : public Room {
   //
   // 4: floor
   // 5: ceiling
-  mcl::Point ReflectionPoint(const CuboidWallId face_index,
-                             const mcl::Point& source_pos,
-                             const mcl::Point& observation_pos) const;
+  dsp::Point ReflectionPoint(const CuboidWallId face_index,
+                             const dsp::Point& source_pos,
+                             const dsp::Point& observation_pos) const;
 
   // Dimensions of the cuboid
   Triplet dimensions_;
 
   Triplet origin_position_;
 
-  static mcl::Point IntersectionPoint(const CuboidWallId wall_id,
+  static dsp::Point IntersectionPoint(const CuboidWallId wall_id,
                                       const Triplet dimensions,
-                                      const mcl::Point& observation_pos,
-                                      const mcl::Point& image_pos) noexcept;
+                                      const dsp::Point& observation_pos,
+                                      const dsp::Point& image_pos) noexcept;
 };
 
 }  // namespace sal

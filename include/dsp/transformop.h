@@ -13,7 +13,9 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /**
  Performs the fft of the input signal.
@@ -83,6 +85,8 @@ std::vector<Real> XCorr(const std::vector<Real>& vector_a,
 
 bool TransformOpTest();
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

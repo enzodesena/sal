@@ -22,11 +22,11 @@ namespace sal {
 
 class Source {
  public:
-  Source(const mcl::Point&) noexcept;
+  Source(const dsp::Point&) noexcept;
 
-  mcl::Point position() const noexcept;
+  dsp::Point position() const noexcept;
 
-  void SetPosition(const mcl::Point& position) noexcept;
+  void SetPosition(const dsp::Point& position) noexcept;
 
  private:
   Triplet position_;

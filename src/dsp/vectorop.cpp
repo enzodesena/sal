@@ -22,7 +22,9 @@
 #include <Accelerate/Accelerate.h>
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 void Multiply(std::span<const Real> input_data, const Real gain,
               std::span<Real> output_data) noexcept {
@@ -347,4 +349,6 @@ void FilterAll(
   }
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

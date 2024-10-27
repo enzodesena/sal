@@ -13,12 +13,16 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** Writes the vector to a file. The separator is endline. */
 void Save(const std::vector<Real>& vector, const std::string& file_name,
-          const mcl::Int precision = 5);
+          const dsp::Int precision = 5);
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

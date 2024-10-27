@@ -13,7 +13,9 @@
 #include "pointwiseop.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool PointWiseOpTest() {
   std::vector<Complex> vector_a(3);
@@ -191,4 +193,6 @@ bool PointWiseOpTest() {
 
   return true;
 }
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

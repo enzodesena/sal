@@ -13,7 +13,9 @@
 #include "mcltypes.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool VectorOpTest() {
   std::vector<Complex> vector_a(3);
@@ -300,8 +302,8 @@ bool VectorOpTest() {
   poly_b_cmp[4] = Complex(-1.470000000000000, -1.036000000000000);
   ASSERT(IsEqual(poly_b, poly_b_cmp));
 
-  ASSERT(IsEqual(Poly(mcl::Zeros<Real>(0)), UnaryVector(Complex(1.0, 0.0))));
-  ASSERT(IsEqual(Poly(mcl::Zeros<Complex>(0)), UnaryVector(Complex(1.0, 0.0))));
+  ASSERT(IsEqual(Poly(dsp::Zeros<Real>(0)), UnaryVector(Complex(1.0, 0.0))));
+  ASSERT(IsEqual(Poly(dsp::Zeros<Complex>(0)), UnaryVector(Complex(1.0, 0.0))));
 
   // Testing CopyFrom
 
@@ -393,7 +395,7 @@ bool VectorOpTest() {
   vector_aa_cmp[2] = 2.5;
   ASSERT(IsEqual(vector_aa, vector_aa_cmp));
 
-  std::vector<Real> vector_ab = mcl::ColonOperator(-0.001, 0.00025, 0.001);
+  std::vector<Real> vector_ab = dsp::ColonOperator(-0.001, 0.00025, 0.001);
   std::vector<Real> vector_ab_cmp(9);
   vector_ab_cmp[0] = -0.001;
   vector_ab_cmp[1] = -0.00075;
@@ -591,7 +593,7 @@ bool VectorOpTest() {
   ASSERT(IsEqual(vector_cumsum_e, vector_cumsum_e_cmp));
 
   // Geomean
-  ASSERT(IsEqual(mcl::Geomean(vector_o), 2.189759569943945));
+  ASSERT(IsEqual(dsp::Geomean(vector_o), 2.189759569943945));
 
   // Inteleaves
   //  std::vector<Real> vector_e(4);
@@ -714,4 +716,6 @@ bool VectorOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

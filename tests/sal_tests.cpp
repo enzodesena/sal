@@ -39,23 +39,23 @@
 
 int main(int argc, char* const argv[]) {
 #ifndef NDEBUG
-  mcl::FirFilter::Test();
-  mcl::Quaternion::Test();
-  mcl::ElementaryOpTest();
-  mcl::BasicOpTest();
-  mcl::VectorOpTest();
-  mcl::PointWiseOpTest();
-  mcl::TransformOpTest();
-  mcl::MatrixOpTest();
-  mcl::StatisticsOpTest();
-  mcl::ComparisonOpTest();
-  mcl::PointTest();
-  mcl::IirFilter::Test();
-  mcl::IirFilter::PeakingFilterTest();
-  mcl::IirFilter::PeakHighShelfTest();
-  mcl::IirFilter::PeakLowShelfTest();
-  mcl::IirFilter::GraphicEqTest();
-  mcl::RandomGenerator::Test();
+  sal::dsp::FirFilter::Test();
+  sal::dsp::Quaternion::Test();
+  sal::dsp::ElementaryOpTest();
+  sal::dsp::BasicOpTest();
+  sal::dsp::VectorOpTest();
+  sal::dsp::PointWiseOpTest();
+  sal::dsp::TransformOpTest();
+  sal::dsp::MatrixOpTest();
+  sal::dsp::StatisticsOpTest();
+  sal::dsp::ComparisonOpTest();
+  sal::dsp::PointTest();
+  sal::dsp::IirFilter::Test();
+  sal::dsp::IirFilter::PeakingFilterTest();
+  sal::dsp::IirFilter::PeakHighShelfTest();
+  sal::dsp::IirFilter::PeakLowShelfTest();
+  sal::dsp::IirFilter::GraphicEqTest();
+  sal::dsp::RandomGenerator::Test();
   std::cout << "All DSP tests succeded!\n";
 
   sal::Buffer::Test();
@@ -81,7 +81,7 @@ int main(int argc, char* const argv[]) {
       << "Not running tests since NDEBUG is defined and asserts are ignored.\n";
 #endif
 
-  mcl::FirFilter::SpeedTests();
+  sal::dsp::FirFilter::SpeedTests();
   sal::TdBem::SimulationTime();
   std::cout << "FDTD speed: " << sal::Fdtd::SimulationTime() << " s\n";
 

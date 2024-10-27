@@ -10,7 +10,9 @@
 
 #include "comparisonop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool ComparisonOpTest() {
   ASSERT(IsEqual(0.2, 0.2));
@@ -93,4 +95,6 @@ bool ComparisonOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

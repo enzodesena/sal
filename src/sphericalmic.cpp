@@ -15,8 +15,8 @@
 #include "transformop.h"
 #include "vectorop.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
@@ -39,17 +39,17 @@ Angle SphericalHeadMic::GetTheta(const Point& point, const Angle& ears_angle,
 
   // Here we compute the angle between the direction of the ear and the
   // direction of the incoming wave.
-  Angle relative_angle = mcl::AngleBetweenDirections(
+  Angle relative_angle = dsp::AngleBetweenDirections(
       theta_ear, phi_ear, point.theta(), point.phi());
   return relative_angle;
 }
 
 // Ported from pseudo-code in R.O. Duda and W. L. Martens, "Range dependence
 // of the response of a spherical head model".
-mcl::Complex SphericalHeadMic::Sphere(Length a, Length r, Angle theta, Time f,
-                                      Time c, mcl::Real threshold) {
-  using mcl::Complex;
-  using mcl::Real;
+dsp::Complex SphericalHeadMic::Sphere(Length a, Length r, Angle theta, Time f,
+                                      Time c, dsp::Real threshold) {
+  using sal::dsp::Complex;
+  using sal::dsp::Real;
 
   Real x = cos(theta);
   Real mu = (2 * PI * f * a) / c;
@@ -121,25 +121,25 @@ Signal SphericalHeadMic::GetBrir(const Ear ear, const Point& point) noexcept {
 
 Signal SphericalHeadMic::GenerateImpulseResponse(
     Length sphere_radius, Length source_distance, Angle theta, Time sound_speed,
-    mcl::Real threshold, Int num_samples, Time sampling_frequency,
+    dsp::Real threshold, Int num_samples, Time sampling_frequency,
     bool minimum_phase) {
   // TODO: implement for the odd case.
   ASSERT(num_samples % 2 == 0);
 
-  using mcl::CircShift;
-  using mcl::Complex;
-  using mcl::Conj;
-  using mcl::Ifft;
-  using mcl::IsReal;
-  using mcl::Length;
-  using mcl::LinSpace;
-  using mcl::Real;
-  using mcl::RealPart;
-  using mcl::Zeros;
+  using sal::dsp::CircShift;
+  using sal::dsp::Complex;
+  using sal::dsp::Conj;
+  using sal::dsp::Ifft;
+  using sal::dsp::IsReal;
+  using sal::dsp::Length;
+  using sal::dsp::LinSpace;
+  using sal::dsp::Real;
+  using sal::dsp::RealPart;
+  using sal::dsp::Zeros;
 
   Int N = num_samples;
 
-  theta = mcl::Mod(theta, 2.0 * PI);
+  theta = dsp::Mod(theta, 2.0 * PI);
 
   // f = linspace(Fs/N, Fs/2, N/2-1);
   std::vector<Time> frequencies = LinSpace(sampling_frequency / ((Time)N),
@@ -176,7 +176,7 @@ Signal SphericalHeadMic::GenerateImpulseResponse(
   h = CircShift(h, -((Int)N) / 2);
 
   if (minimum_phase) {
-    h = mcl::MinPhase(h);
+    h = dsp::MinPhase(h);
 
     // Calculate delay due to propagation around the head
     Angle theta_0 = acos(sphere_radius / source_distance);
@@ -188,16 +188,16 @@ Signal SphericalHeadMic::GenerateImpulseResponse(
       // The minimum in this formula is due to the shortest path around the
       // head.
       distance = sqrt(pow(source_distance, 2.0) - pow(sphere_radius, 2.0)) +
-                 sphere_radius * mcl::Min<Real>(theta - theta_0,
+                 sphere_radius * dsp::Min<Real>(theta - theta_0,
                                                 (2.0 * PI - theta_0) - theta);
     }
     // Subract the distance between sphere and source
     distance = distance - (source_distance - sphere_radius);
     ASSERT(distance > 0.0);
     Int num_delay_tap =
-        mcl::RoundToInt(distance / sound_speed * sampling_frequency);
-    h = mcl::Concatenate(Zeros<Sample>(num_delay_tap),
-                         mcl::Subset(h, 0, num_samples - num_delay_tap - 1));
+        dsp::RoundToInt(distance / sound_speed * sampling_frequency);
+    h = dsp::Concatenate(Zeros<Sample>(num_delay_tap),
+                         dsp::Subset(h, 0, num_samples - num_delay_tap - 1));
     ASSERT((Int)h.size() == num_samples);
   }
 

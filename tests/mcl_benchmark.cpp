@@ -14,7 +14,9 @@
 #include "iirfilter.h"
 #include "randomop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 static void FirFilterSequentialBenchmark(benchmark::State& state) {
   const size_t filter_order = state.range(0);
@@ -94,6 +96,8 @@ static void IirFilterBenchmark(benchmark::State& state) {
 }
 BENCHMARK(IirFilterBenchmark)->RangeMultiplier(64)->Range(1, 1 << 10);
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 BENCHMARK_MAIN();

@@ -14,7 +14,9 @@
 #include "graphiceq.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 constexpr Real EPS = 0.0000001;
 
@@ -119,14 +121,14 @@ void GraphicEq::SetGain(const std::vector<Real>& gain) {
     std::transform(db_gain_.begin(), db_gain_.end(), db_gain_.begin(),
                    [](double x) { return std::log10(x); });
     Real mean_db_gain = Sum(db_gain_) / ((Real)db_gain_.size());
-    target_gain_[0] = mcl::Pow(10.0, mean_db_gain);  // 10 ^ mean(db_gain_);
+    target_gain_[0] = dsp::Pow(10.0, mean_db_gain);  // 10 ^ mean(db_gain_);
     std::transform(db_gain_.begin(), db_gain_.end(), db_gain_.begin(),
                    [mean_db_gain](double x) {
                      return x - mean_db_gain;
                    });  // db_gain_ - mean(db_gain_);
 
-    input_gain_ = mcl::Multiply(db_gain_, mat_);
-    input_gain_ = mcl::Pow(10.0, input_gain_);
+    input_gain_ = dsp::Multiply(db_gain_, mat_);
+    input_gain_ = dsp::Pow(10.0, input_gain_);
   }
 
   for (int i = 0; i < num_filters_; i++) target_gain_[i + 1] = input_gain_[i];
@@ -216,4 +218,6 @@ void GraphicEq::Reset() {
   ASSERT(false);
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

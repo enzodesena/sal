@@ -16,13 +16,17 @@
 
 using std::vector;
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** Returns the Pearson linear correlation between `vector_a` and `vector_b` */
 Real Corr(const std::vector<Real>& vector_a, const std::vector<Real>& vector_b);
 
 bool StatisticsOpTest();
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

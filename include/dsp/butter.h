@@ -15,7 +15,9 @@
 
 #include "iirfilter.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /**
  Construncts a bandpass butterworth filter. Equivalent to Matlab's
@@ -44,6 +46,8 @@ std::vector<double> ComputeNumCoeffs(int FilterOrder, double Lcutoff,
 std::vector<double> ComputeDenCoeffs(int FilterOrder, double Lcutoff,
                                      double Ucutoff);
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

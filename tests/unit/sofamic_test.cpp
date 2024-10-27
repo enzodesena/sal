@@ -12,12 +12,12 @@
 #include "salconstants.h"
 #include "sofamic.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
-bool SofaMic::Test(const mcl::Point& source_point, const Signal& cmp_left,
+bool SofaMic::Test(const dsp::Point& source_point, const Signal& cmp_left,
                    const Signal& cmp_right) {
   Time sampling_frequency(48000);
 
@@ -27,7 +27,7 @@ bool SofaMic::Test(const mcl::Point& source_point, const Signal& cmp_left,
   // If you want to run this test you need to download the file from
   // https://publications.rwth-aachen.de/record/807373
   // I decided not to include it in the repo since it is rather heavy (170 MB)
-  SofaMic mic(Point(0.0, 0.0, 0.0), mcl::Quaternion::Identity(),
+  SofaMic mic(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
               "resources/hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa",
               sampling_frequency);
   StereoBuffer buffer(impulse.num_samples());
@@ -47,8 +47,8 @@ bool SofaMic::Test(const mcl::Point& source_point, const Signal& cmp_left,
                  cmp_right_normalised.begin(),
                  [norm_constant](Sample val) { return val * norm_constant; });
 
-  ASSERT(mcl::IsEqual(buffer.GetLeftReadView(), cmp_left_normalised));
-  ASSERT(mcl::IsEqual(buffer.GetRightReadView(), cmp_right_normalised));
+  ASSERT(dsp::IsEqual(buffer.GetLeftReadView(), cmp_left_normalised));
+  ASSERT(dsp::IsEqual(buffer.GetRightReadView(), cmp_right_normalised));
   return true;
 }
 

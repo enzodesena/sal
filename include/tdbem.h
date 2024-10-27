@@ -28,9 +28,9 @@ class TdBem {
 
   std::vector<sal::Sample> rir_;
 
-  std::vector<mcl::Point> points_;  // Stores points on the bounduary
+  std::vector<dsp::Point> points_;  // Stores points on the bounduary
   sal::Int num_elements_;
-  std::vector<mcl::Point> normal_vectors_;
+  std::vector<dsp::Point> normal_vectors_;
   std::vector<std::vector<sal::Length> > distances_;
   std::vector<std::vector<sal::Sample> > weights_current_;
   std::vector<std::vector<sal::Sample> > weights_previous_;
@@ -62,8 +62,8 @@ class TdBem {
       sal::Time sampling_frequency, sal::Length spatial_sampling_period,
       sal::Sample specific_acoustic_impedance);
 
-  static sal::Sample CalculateDrDn(mcl::Point point_x, mcl::Point point_y,
-                                   mcl::Point normal_y);
+  static sal::Sample CalculateDrDn(dsp::Point point_x, dsp::Point point_y,
+                                   dsp::Point normal_y);
 
  public:
   TdBem(Room* const room, sal::Source* const source,

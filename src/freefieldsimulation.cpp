@@ -20,7 +20,7 @@
 #include "saltypes.h"
 #include "source.h"
 
-using mcl::Point;
+using sal::dsp::Point;
 
 namespace sal {
 
@@ -34,22 +34,22 @@ FreeFieldSim::FreeFieldSim(std::vector<Microphone*> microphones,
 FreeFieldSim::FreeFieldSim(Microphone* microphone, std::vector<Source*> sources,
                            const Time sampling_frequency,
                            const Length sound_speed) {
-  Init(mcl::UnaryVector<Microphone*>(microphone), sources, sampling_frequency,
+  Init(dsp::UnaryVector<Microphone*>(microphone), sources, sampling_frequency,
        sound_speed);
 }
 
 FreeFieldSim::FreeFieldSim(std::vector<Microphone*> microphones, Source* source,
                            const Time sampling_frequency,
                            const Length sound_speed) {
-  Init(microphones, mcl::UnaryVector<Source*>(source), sampling_frequency,
+  Init(microphones, dsp::UnaryVector<Source*>(source), sampling_frequency,
        sound_speed);
 }
 
 FreeFieldSim::FreeFieldSim(Microphone* microphone, Source* source,
                            const Time sampling_frequency,
                            const Length sound_speed) {
-  Init(mcl::UnaryVector<Microphone*>(microphone),
-       mcl::UnaryVector<Source*>(source), sampling_frequency, sound_speed);
+  Init(dsp::UnaryVector<Microphone*>(microphone),
+       dsp::UnaryVector<Source*>(source), sampling_frequency, sound_speed);
 }
 
 void FreeFieldSim::Init(std::vector<Microphone*> microphones,
@@ -182,13 +182,13 @@ std::vector<Length> FreeFieldSim::AllDistances(
 Length FreeFieldSim::MinimumDistance(
     const std::vector<Microphone*>& microphones,
     const std::vector<Source*>& sources) {
-  return mcl::Min(AllDistances(microphones, sources));
+  return dsp::Min(AllDistances(microphones, sources));
 }
 
 Length FreeFieldSim::MaximumDistance(
     const std::vector<Microphone*>& microphones,
     const std::vector<Source*>& sources) {
-  return mcl::Max(AllDistances(microphones, sources));
+  return dsp::Max(AllDistances(microphones, sources));
 }
 
 }  // namespace sal

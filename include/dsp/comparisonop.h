@@ -19,7 +19,9 @@
 #include "mcltypes.h"
 #include "quaternion.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool IsEqual(Real num_a, Real num_b, Real precision = VERY_SMALL);
 
@@ -107,6 +109,8 @@ std::vector<bool> IsInf(std::vector<Real> input);
 
 bool ComparisonOpTest();
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

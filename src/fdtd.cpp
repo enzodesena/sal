@@ -11,8 +11,8 @@
 #include "fdtd.h"
 #include "salconstants.h"
 
-using mcl::IirFilter;
-using mcl::Point;
+using sal::dsp::IirFilter;
+using sal::dsp::Point;
 using sal::Int;
 using sal::Length;
 using sal::Microphone;
@@ -92,23 +92,23 @@ void Fdtd::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
   double spatial_frequency =
       SOUND_SPEED / (curant_number * sampling_frequency_);
 
-  Int Nx = mcl::RoundToInt(dimensions.x() / spatial_frequency);
-  Int Ny = mcl::RoundToInt(dimensions.y() / spatial_frequency);
-  Int Nz = mcl::RoundToInt(dimensions.z() / spatial_frequency);
+  Int Nx = dsp::RoundToInt(dimensions.x() / spatial_frequency);
+  Int Ny = dsp::RoundToInt(dimensions.y() / spatial_frequency);
+  Int Nz = dsp::RoundToInt(dimensions.z() / spatial_frequency);
 
   Int pos_s_x =
-      mcl::RoundToInt(source_->position().x() / spatial_frequency) + 1;
+      dsp::RoundToInt(source_->position().x() / spatial_frequency) + 1;
   Int pos_s_y =
-      mcl::RoundToInt(source_->position().y() / spatial_frequency) + 1;
+      dsp::RoundToInt(source_->position().y() / spatial_frequency) + 1;
   Int pos_s_z =
-      mcl::RoundToInt(source_->position().z() / spatial_frequency) + 1;
+      dsp::RoundToInt(source_->position().z() / spatial_frequency) + 1;
 
   Int pos_m_x =
-      mcl::RoundToInt(microphone_->position().x() / spatial_frequency) + 1;
+      dsp::RoundToInt(microphone_->position().x() / spatial_frequency) + 1;
   Int pos_m_y =
-      mcl::RoundToInt(microphone_->position().y() / spatial_frequency) + 1;
+      dsp::RoundToInt(microphone_->position().y() / spatial_frequency) + 1;
   Int pos_m_z =
-      mcl::RoundToInt(microphone_->position().z() / spatial_frequency) + 1;
+      dsp::RoundToInt(microphone_->position().z() / spatial_frequency) + 1;
 
   rir_ =
       Fdtd::RunFdtd(Nx, Ny, Nz, input_buffer.num_samples(),

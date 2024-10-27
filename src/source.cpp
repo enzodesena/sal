@@ -13,7 +13,7 @@
 #include "saltypes.h"
 #include "source.h"
 
-using mcl::Point;
+using sal::dsp::Point;
 
 namespace sal {
 // This class represents an acoustic source. It plays back a signal and is

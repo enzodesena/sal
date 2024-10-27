@@ -13,7 +13,9 @@
 #include "iirfilter.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 void IirFilter::SetNumeratorCoefficient(const size_t coeff_id,
                                         const Real value) noexcept {
@@ -80,8 +82,8 @@ void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
 
 // Constructor
 IirFilter::IirFilter()
-    : B_(mcl::UnaryVector<Real>(1.0)),
-      A_(mcl::UnaryVector<Real>(1.0)),
+    : B_(dsp::UnaryVector<Real>(1.0)),
+      A_(dsp::UnaryVector<Real>(1.0)),
       A0_(1.0) {
   state_ = std::vector<Real>(B_.size(), 0.0);
 }
@@ -181,7 +183,7 @@ IirFilter IdenticalFilter() { return GainFilter(1.0); }
 IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
   // TODO: implement for frequencies other than 44100
   if (!IsEqual(sampling_frequency, 44100) && wall_type != kRigid) {
-    mcl::Logger::GetInstance().LogError(
+    dsp::Logger::GetInstance().LogError(
         "Attempting to use a wall filter "
         "designed for 44100 Hz sampling frequency with a sampling frequency "
         "of %f Hz. The filter response will be inaccurate.",
@@ -247,7 +249,7 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       break;
     }
     default: {
-      mcl::Logger::GetInstance().LogError(
+      dsp::Logger::GetInstance().LogError(
           "Unrecognised type of wall filter. Reverting to a completely "
           "absorptive one.");
       B.push_back(0.0);
@@ -307,4 +309,6 @@ void IirFilterBank::Reset() {
   }
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

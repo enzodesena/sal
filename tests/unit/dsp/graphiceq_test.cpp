@@ -9,7 +9,9 @@
 #include "graphiceq.h"
 #include "iirfilter.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool IirFilter::PeakingFilterTest() noexcept {
   // Peaking filter test
@@ -301,4 +303,6 @@ bool IirFilter::GraphicEqTest() noexcept {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

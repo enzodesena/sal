@@ -14,19 +14,19 @@
 #include "point.h"
 #include "salconstants.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
 void BinauralMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
-                                       const mcl::Point& point,
+                                       const dsp::Point& point,
                                        const size_t wave_id,
                                        Buffer& output_buffer) noexcept {
   if (bypass_) {
-    mcl::Add(input_data, output_buffer.GetReadView(Buffer::kLeftChannel),
+    dsp::Add(input_data, output_buffer.GetReadView(Buffer::kLeftChannel),
              output_buffer.GetWriteView(Buffer::kLeftChannel));
-    mcl::Add(input_data, output_buffer.GetReadView(Buffer::kRightChannel),
+    dsp::Add(input_data, output_buffer.GetReadView(Buffer::kRightChannel),
              output_buffer.GetWriteView(Buffer::kRightChannel));
   } else {
     CreateInstanceIfNotExist(wave_id);
@@ -67,16 +67,16 @@ BinauralMic::BinauralMic(const Point& position, const Quaternion orientation,
       reference_orientation_(reference_orientation) {}
 
 void BinauralMicInstance::AddPlaneWaveRelative(
-    std::span<const Sample> input_data, const mcl::Point& point,
+    std::span<const Sample> input_data, const dsp::Point& point,
     Buffer& output_buffer) noexcept {
   UpdateFilter(point);
 
   filter_left_.ProcessBlock(input_data, scratch_vector_);
-  mcl::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kLeftChannel),
+  dsp::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kLeftChannel),
            output_buffer.GetWriteView(Buffer::kLeftChannel));
 
   filter_right_.ProcessBlock(input_data, scratch_vector_);
-  mcl::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kRightChannel),
+  dsp::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kRightChannel),
            output_buffer.GetWriteView(Buffer::kRightChannel));
 }
 
@@ -98,9 +98,9 @@ DatabaseBinauralMic::DatabaseBinauralMic(
     : BinauralMic(position, orientation, update_length, reference_orientation) {
 }
 
-void DatabaseBinauralMic::FilterAll(mcl::Filter& filter) {
-  mcl::FilterAll(filter, hrtf_database_right_, hrtf_database_right_);
-  mcl::FilterAll(filter, hrtf_database_left_, hrtf_database_left_);
+void DatabaseBinauralMic::FilterAll(dsp::Filter& filter) {
+  dsp::FilterAll(filter, hrtf_database_right_, hrtf_database_right_);
+  dsp::FilterAll(filter, hrtf_database_left_, hrtf_database_left_);
 }
 
 }  // namespace sal

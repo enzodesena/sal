@@ -13,8 +13,8 @@
 #include "salconstants.h"
 #include "saltypes.h"
 
-using mcl::IsEqual;
-using mcl::Point;
+using sal::dsp::IsEqual;
+using sal::dsp::Point;
 using sal::Length;
 using sal::Sample;
 using sal::Time;
@@ -114,11 +114,11 @@ bool PropagationLine::Test() {
   const Int latency_samples = 3;
   const Int num_samples = 10;
   std::vector<Sample> input_samples =
-      mcl::ColonOperator(1.0, 1.0, (Sample)num_samples + 1);
-  std::vector<Sample> output_samples = mcl::Concatenate(
-      mcl::Zeros<Sample>(latency_samples),
-      mcl::Elements(input_samples, 0, num_samples - latency_samples));
-  output_samples = mcl::Multiply<sal::Sample>(output_samples, 1.0 / 3.0);
+      dsp::ColonOperator(1.0, 1.0, (Sample)num_samples + 1);
+  std::vector<Sample> output_samples = dsp::Concatenate(
+      dsp::Zeros<Sample>(latency_samples),
+      dsp::Elements(input_samples, 0, num_samples - latency_samples));
+  output_samples = dsp::Multiply<sal::Sample>(output_samples, 1.0 / 3.0);
   assert(input_samples.size() == output_samples.size());
 
   PropagationLine prop_line_c =

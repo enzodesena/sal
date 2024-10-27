@@ -14,7 +14,9 @@
 #include "randomop.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool RandomGenerator::Test() {
   RandomGenerator rand_gen;
@@ -53,10 +55,10 @@ bool RandomGenerator::Test() {
     rand_int_vector.push_back(output);
     num_occurrances.at(output - min_value)++;
   }
-  ASSERT(mcl::Min(rand_int_vector) >= min_value);
-  ASSERT(mcl::Max(rand_int_vector) <= max_value);
-  ASSERT(mcl::IsEqual(((Real)mcl::Min(num_occurrances)) / ((Real)num_samples),
-                      ((Real)mcl::Max(num_occurrances)) / ((Real)num_samples),
+  ASSERT(dsp::Min(rand_int_vector) >= min_value);
+  ASSERT(dsp::Max(rand_int_vector) <= max_value);
+  ASSERT(dsp::IsEqual(((Real)dsp::Min(num_occurrances)) / ((Real)num_samples),
+                      ((Real)dsp::Max(num_occurrances)) / ((Real)num_samples),
                       1.0E-2));
 
   // Test integer generator
@@ -70,13 +72,15 @@ bool RandomGenerator::Test() {
     rand_int_vector_b.push_back(output);
     num_occurrances_b.at(output - min_value_b)++;
   }
-  ASSERT(mcl::Min(rand_int_vector_b) >= min_value_b);
-  ASSERT(mcl::Max(rand_int_vector_b) <= max_value_b);
-  ASSERT(mcl::IsEqual(
-      ((Real)mcl::Min(num_occurrances_b)) / ((Real)num_samples_b),
-      ((Real)mcl::Max(num_occurrances_b)) / ((Real)num_samples_b), 1.0E-2));
+  ASSERT(dsp::Min(rand_int_vector_b) >= min_value_b);
+  ASSERT(dsp::Max(rand_int_vector_b) <= max_value_b);
+  ASSERT(dsp::IsEqual(
+      ((Real)dsp::Min(num_occurrances_b)) / ((Real)num_samples_b),
+      ((Real)dsp::Max(num_occurrances_b)) / ((Real)num_samples_b), 1.0E-2));
 
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

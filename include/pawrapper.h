@@ -40,7 +40,7 @@ class PaWrapper {
 
   static void PrintDevicesInfo();
   static Int NumOutputChannels(const Int out_dev_id);
-  static std::vector<mcl::Int> SelectChannelIds(const Int num_loudspeakers,
+  static std::vector<dsp::Int> SelectChannelIds(const Int num_loudspeakers,
                                                 const Int out_dev_id);
 
   ~PaWrapper();

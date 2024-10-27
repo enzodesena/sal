@@ -16,7 +16,9 @@
 #include <Accelerate/Accelerate.h>
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 void Multiply(std::span<const Real> input_a, std::span<const Real> input_b,
               std::span<Real> output) noexcept {
@@ -181,4 +183,6 @@ std::vector<Int> ConvertToInt(const std::vector<UInt>& vector) noexcept {
   return output;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

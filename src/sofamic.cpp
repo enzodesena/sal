@@ -15,8 +15,8 @@
 #include "transformop.h"
 #include "vectorop.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 

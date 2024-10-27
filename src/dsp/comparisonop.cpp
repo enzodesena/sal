@@ -24,7 +24,9 @@
 #endif
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool IsEqual(Real num_a, Real num_b, Real precision) {
   if (isnan(num_a) || isnan(num_b)) {
@@ -159,15 +161,15 @@ bool IsEqual(std::vector<Point> points_a, std::vector<Point> points_b) {
 }
 
 bool IsEqual(const Point& point_a, const Point& point_b, const Real precision) {
-  return mcl::IsEqual(point_a.x(), point_b.x(), precision) &&
-         mcl::IsEqual(point_a.y(), point_b.y(), precision) &&
-         mcl::IsEqual(point_a.z(), point_b.z(), precision);
+  return dsp::IsEqual(point_a.x(), point_b.x(), precision) &&
+         dsp::IsEqual(point_a.y(), point_b.y(), precision) &&
+         dsp::IsEqual(point_a.z(), point_b.z(), precision);
 }
 
 bool IsEqual(const Real* input_data_a, const Real* input_data_b,
              const Int num_samples, Real precision) {
   for (Int i = 0; i < num_samples; ++i) {
-    if (!mcl::IsEqual(input_data_a[i], input_data_b[i], precision)) {
+    if (!dsp::IsEqual(input_data_a[i], input_data_b[i], precision)) {
       return false;
     }
   }
@@ -196,4 +198,6 @@ bool IsEqual(const std::vector<Real> input_data_a, const Real input_data_b,
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

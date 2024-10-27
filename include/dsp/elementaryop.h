@@ -11,7 +11,9 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 template <class T>
 T Max(const T& scalar_a, const T& scalar_b) noexcept {
@@ -133,6 +135,8 @@ Real AssociatedLegendreP(Int n, Int m, Real x);
 Complex SphericalHarmonic(Int n, Int m, Real theta, Real phi);
 #endif
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

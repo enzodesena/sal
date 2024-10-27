@@ -13,7 +13,9 @@
 #include "mcltypes.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool BasicOpTest() {
   std::vector<Real> vector_d(4);
@@ -119,4 +121,6 @@ bool BasicOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

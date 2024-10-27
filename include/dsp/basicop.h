@@ -17,7 +17,9 @@
 
 using std::vector;
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /**
  Returns the index associated to the maximum value in the vector. The index
@@ -80,6 +82,8 @@ std::vector<Real> FindPeaks(
 
 bool BasicOpTest();
 
-}  // namespace mcl
+}  // namespace dsp
+
+}  // namespace sal
 
 #endif

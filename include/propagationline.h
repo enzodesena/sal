@@ -74,7 +74,7 @@ class PropagationLine {
       return delay_filter_.FractionalReadAt(current_latency_) *
              current_attenuation_;
     } else {
-      return delay_filter_.ReadAt(mcl::RoundToInt(current_latency_)) *
+      return delay_filter_.ReadAt(dsp::RoundToInt(current_latency_)) *
              current_attenuation_;
     }
   }
@@ -113,7 +113,7 @@ class PropagationLine {
   sal::Sample current_attenuation_;
   sal::Time current_latency_; /** Target latency [in samples]. */
   bool air_filters_active_;
-  mcl::FirFilter air_filter_;
+  dsp::FirFilter air_filter_;
   sal::InterpolationType interpolation_type_;
   RampSmoother attenuation_smoother_;
   RampSmoother latency_smoother_;

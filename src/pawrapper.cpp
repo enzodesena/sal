@@ -30,13 +30,13 @@ void PaWrapper::PrintDevicesInfo() {
   Terminate();
 }
 
-std::vector<mcl::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
+std::vector<dsp::Int> PaWrapper::SelectChannelIds(const Int num_loudspeakers,
                                                   const Int out_dev_id) {
   Init();
 
   const PaDeviceInfo* deviceInfo(Pa_GetDeviceInfo((int)out_dev_id));
   const Int max_num_channels(deviceInfo->maxOutputChannels);
-  std::vector<mcl::Int> channel_ids = std::vector<Int>(max_num_channels, -1);
+  std::vector<dsp::Int> channel_ids = std::vector<Int>(max_num_channels, -1);
   for (int i = 0; i < num_loudspeakers; ++i) {
     Int channel_id;
     std::cout << "Select channel id for mic n.: " << i << " (from 0 to "

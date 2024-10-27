@@ -12,7 +12,9 @@
 #include "digitalfilter.h"
 #include "elementaryop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 class MaxGradientFilter : public Filter {
  public:
@@ -21,7 +23,7 @@ class MaxGradientFilter : public Filter {
 
   virtual Real ProcessSample(const Real input) noexcept {
     Real output;
-    if (mcl::Abs(previous_output_ - input) < max_gradient_) {
+    if (dsp::Abs(previous_output_ - input) < max_gradient_) {
       output = input;
     } else if (previous_output_ < input) {
       output = previous_output_ + max_gradient_;
@@ -39,5 +41,7 @@ class MaxGradientFilter : public Filter {
   Real previous_output_;
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 #endif

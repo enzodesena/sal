@@ -12,7 +12,9 @@
 #include "mcltypes.h"
 #include "pointwiseop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 std::vector<Real> FindPeaks(const std::vector<Real>& vector,
                             const Real min_peak_height) {
@@ -43,4 +45,6 @@ Int MaxIndex<UInt>(const std::vector<UInt>& input) noexcept {
   return MinIndex(Opposite(ConvertToInt(input)));
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

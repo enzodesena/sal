@@ -1,7 +1,7 @@
 /*
  ambisonics_test.cpp
  Spatial Audio Library (SAL)
- Copyright (c) 2012, Enzo De Sena
+ Copyright (c) 2011-2024, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -11,13 +11,13 @@
 #include "ambisonics.h"
 #include "microphone.h"
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
 bool AmbisonicsMic::Test() {
-  using mcl::IsEqual;
+  using sal::dsp::IsEqual;
 
   ASSERT(HoaBuffer::GetChannelId(0, 0, HoaOrdering::Fuma) == 0);
   ASSERT(HoaBuffer::GetChannelId(1, 1, HoaOrdering::Fuma) == 1);
@@ -44,7 +44,7 @@ bool AmbisonicsMic::Test() {
   // Testing Ambisonics encoding
   const Int N = 2;  // Ambisonics order
 
-  AmbisonicsMic mic_a(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 1, 0, -PI / 2.0),
+  AmbisonicsMic mic_a(Point(0.0, 0.0, 0.0), dsp::AxAng2Quat(0, 1, 0, -PI / 2.0),
                       N);
   HoaBuffer buffer_a(N, 1);
 
@@ -71,7 +71,7 @@ bool AmbisonicsMic::Test() {
 
   // Testing Ambisonics encoding
   const Int N_b = 3;  // Ambisonics order
-  AmbisonicsMic mic_b(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 0, 1, PI / 2.0),
+  AmbisonicsMic mic_b(Point(0.0, 0.0, 0.0), dsp::AxAng2Quat(0, 0, 1, PI / 2.0),
                       N_b, HoaNormalisation::N3d, HoaOrdering::Acn);
 
   HoaBuffer buffer_b(N_b, 1);
@@ -94,7 +94,7 @@ bool AmbisonicsMic::Test() {
 
   ASSERT(IsEqual(
       buffer_b.GetSample(2, 2, 0),
-      sample * mcl::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*cos(2.0 * theta)));
+      sample * dsp::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*cos(2.0 * theta)));
   ASSERT(IsEqual(buffer_b.GetSample(2, 1, 0),
                  sample * sqrt(15.0) / 2.0 * sin(2.0 * phi) * cos(theta)));
   ASSERT(IsEqual(buffer_b.GetSample(2, 0, 0),
@@ -103,16 +103,16 @@ bool AmbisonicsMic::Test() {
                  sample * sqrt(15.0) / 2.0 * sin(2.0 * phi) * sin(theta)));
   ASSERT(IsEqual(
       buffer_b.GetSample(2, -2, 0),
-      sample * mcl::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*sin(2.0 * theta)));
+      sample * dsp::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*sin(2.0 * theta)));
 
   ASSERT(IsEqual(
       buffer_b.GetSample(3, 3, 0),
-      sample * mcl::Sqrt(35.0 / 8.0) * pow(cos(phi), 3.0) * cos(3.0 * theta)));
+      sample * dsp::Sqrt(35.0 / 8.0) * pow(cos(phi), 3.0) * cos(3.0 * theta)));
   ASSERT(IsEqual(buffer_b.GetSample(3, -2, 0),
-                 sample * mcl::Sqrt(105.0) / 2.0 *
+                 sample * dsp::Sqrt(105.0) / 2.0 *
                      (pow(cos(phi), 2.0))*sin(phi) * sin(2.0 * theta)));
   ASSERT(IsEqual(buffer_b.GetSample(3, 1, 0),
-                 sample * mcl::Sqrt(21.0 / 8.0) *
+                 sample * dsp::Sqrt(21.0 / 8.0) *
                      (5 * pow(sin(phi), 2.0) - 1.0) * cos(phi) * cos(theta)));
 
   buffer_b.Reset();
@@ -132,31 +132,31 @@ bool AmbisonicsMic::Test() {
 
   ASSERT(IsEqual(
       buffer_b.GetSample(2, 2, 0),
-      sample * mcl::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*cos(2.0 * theta)));
+      sample * dsp::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*cos(2.0 * theta)));
   ASSERT(IsEqual(buffer_b.GetSample(2, 1, 0),
-                 sample * mcl::Sqrt(15.0) / 2.0 * sin(2.0 * phi) * cos(theta)));
+                 sample * dsp::Sqrt(15.0) / 2.0 * sin(2.0 * phi) * cos(theta)));
   ASSERT(IsEqual(
       buffer_b.GetSample(2, 0, 0),
-      sample * mcl::Sqrt(5.0) / 2.0 * (3.0 * pow(sin(phi), 2.0) - 1.0)));
+      sample * dsp::Sqrt(5.0) / 2.0 * (3.0 * pow(sin(phi), 2.0) - 1.0)));
   ASSERT(IsEqual(buffer_b.GetSample(2, -1, 0),
-                 sample * mcl::Sqrt(15.0) / 2.0 * sin(2.0 * phi) * sin(theta)));
+                 sample * dsp::Sqrt(15.0) / 2.0 * sin(2.0 * phi) * sin(theta)));
   ASSERT(IsEqual(
       buffer_b.GetSample(2, -2, 0),
-      sample * mcl::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*sin(2.0 * theta)));
+      sample * dsp::Sqrt(15.0) / 2.0 * (pow(cos(phi), 2.0))*sin(2.0 * theta)));
 
   ASSERT(IsEqual(buffer_b.GetSample(3, -2, 0),
-                 sample * mcl::Sqrt(105.0) / 2.0 *
+                 sample * dsp::Sqrt(105.0) / 2.0 *
                      (pow(cos(phi), 2.0))*sin(phi) * sin(2.0 * theta)));
   ASSERT(IsEqual(buffer_b.GetSample(3, 1, 0),
-                 sample * mcl::Sqrt(21.0 / 8.0) * cos(phi) *
+                 sample * dsp::Sqrt(21.0 / 8.0) * cos(phi) *
                      (5.0 * pow(sin(phi), 2.0) - 1.0) * cos(theta)));
   ASSERT(IsEqual(
       buffer_b.GetSample(3, 3, 0),
-      sample * mcl::Sqrt(35.0 / 8.0) * pow(cos(phi), 3.0) * cos(3.0 * theta)));
+      sample * dsp::Sqrt(35.0 / 8.0) * pow(cos(phi), 3.0) * cos(3.0 * theta)));
 
   // SN3D weighting
   buffer_b.Reset();
-  AmbisonicsMic mic_c(Point(0.0, 0.0, 0.0), mcl::AxAng2Quat(0, 0, 1, PI / 2.0),
+  AmbisonicsMic mic_c(Point(0.0, 0.0, 0.0), dsp::AxAng2Quat(0, 0, 1, PI / 2.0),
                       N_b, HoaNormalisation::Sn3d, HoaOrdering::Acn);
 
   mic_c.AddPlaneWave(sample, Point(0.5, 0.5, 1.0 / sqrt(2.0)), buffer_b);
@@ -166,7 +166,7 @@ bool AmbisonicsMic::Test() {
       buffer_b.GetSample(2, 1, 0),
       sample * sqrt(15.0) / 2.0 / sqrt(5.0) * sin(2.0 * phi) * cos(theta)));
   ASSERT(IsEqual(buffer_b.GetSample(3, 3, 0),
-                 sample * mcl::Sqrt(35.0 / 8.0) / sqrt(7.0) *
+                 sample * dsp::Sqrt(35.0 / 8.0) / sqrt(7.0) *
                      pow(cos(phi), 3.0) * cos(3.0 * theta)));
 
 #endif
@@ -175,10 +175,10 @@ bool AmbisonicsMic::Test() {
 }
 
 bool AmbisonicsHorizDec::Test() {
-  using mcl::Complex;
-  using mcl::IirFilter;
-  using mcl::IsEqual;
-  using mcl::RealPart;
+  using sal::dsp::Complex;
+  using sal::dsp::IirFilter;
+  using sal::dsp::IsEqual;
+  using sal::dsp::RealPart;
 
   // Testing Crossover filters
   IirFilter filter_low(CrossoverFilterLow(380, 48000));
@@ -242,22 +242,22 @@ bool AmbisonicsHorizDec::Test() {
   ASSERT(IsEqual(filter_b.A()[1], -0.996111111111111));
 
   IirFilter filter_c = NFCFilter(0, R, Fs, c);
-  ASSERT(IsEqual(filter_c.B(), mcl::UnaryVector<Sample>(1.0)));
-  ASSERT(IsEqual(filter_c.A(), mcl::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.B(), dsp::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.A(), dsp::UnaryVector<Sample>(1.0)));
 
   // Testing loudspeaker placement
 
   const Int M = 5;  // num loudspeakers
   const Angle phi0 = 2.0 * PI / ((Angle)M);
   std::vector<Angle> loudspeaker_angles =
-      mcl::Multiply(mcl::ColonOperator<Angle>(0, M - 1), phi0);
+      dsp::Multiply(dsp::ColonOperator<Angle>(0, M - 1), phi0);
   ASSERT(IsEqual(loudspeaker_angles[0], 0.0));
   ASSERT(IsEqual(loudspeaker_angles[1], 1.256637061435917));
   ASSERT(IsEqual(loudspeaker_angles[4], 4.0 * 1.256637061435917));
 
   // Testing decoding matrix
 
-  mcl::Matrix<Sample> decoding_matrix =
+  dsp::Matrix<Sample> decoding_matrix =
       AmbisonicsHorizDec::ModeMatchingDec(2, loudspeaker_angles);
   ASSERT(decoding_matrix.num_columns() == 5);
   ASSERT(decoding_matrix.num_rows() == 5);
@@ -273,15 +273,15 @@ bool AmbisonicsHorizDec::Test() {
 
   // Testing Ambisonics mode-matching decoding
 
-  using mcl::ColonOperator;
-  using mcl::Cos;
-  using mcl::Multiply;
-  using mcl::Sum;
+  using sal::dsp::ColonOperator;
+  using sal::dsp::Cos;
+  using sal::dsp::Multiply;
+  using sal::dsp::Sum;
 
   const Int order = 2;
   const Int MM = 5;  // num loudspeakers
   const Int num_theta(100);
-  std::vector<Angle> thetas = mcl::LinSpace(0.0, 2.0 * PI, num_theta);
+  std::vector<Angle> thetas = dsp::LinSpace(0.0, 2.0 * PI, num_theta);
 
   AmbisonicsMic mic_a(Point(0.0, 0.0, 0.0), Quaternion::Identity(), order);
 
@@ -324,9 +324,9 @@ bool AmbisonicsHorizDec::Test() {
 
   // Testing ambisonics maximum energy vector decoding matrix
 
-  mcl::Matrix<Sample> max_re_dec =
+  dsp::Matrix<Sample> max_re_dec =
       AmbisonicsHorizDec::MaxEnergyDec(2, loudspeaker_angles);
-  mcl::Matrix<Sample> max_re_dec_cmp(5, 5);
+  dsp::Matrix<Sample> max_re_dec_cmp(5, 5);
   max_re_dec_cmp.SetElement(0, 0, 1.0);
   max_re_dec_cmp.SetElement(1, 1, cos(PI / (6.0)));
   max_re_dec_cmp.SetElement(2, 2, cos(PI / (6.0)));

@@ -16,7 +16,9 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 /**
  RandomGenerator class
  */
@@ -64,6 +66,8 @@ class RandomGenerator {
   std::uniform_real_distribution<double> distribution_uniform_;
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

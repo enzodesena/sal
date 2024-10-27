@@ -21,7 +21,7 @@
 
 namespace sal {
 
-class DelayFilter : public mcl::Filter {
+class DelayFilter : public dsp::Filter {
  public:
   /**
    Constructs a delay filter object with intial latency given by latency. A
@@ -53,7 +53,7 @@ class DelayFilter : public mcl::Filter {
   inline const Sample& ReadAt(const Int delay_tap) const noexcept {
 #ifndef NOLOGGING
     if (delay_tap > max_latency_) {
-      mcl::Logger::GetInstance().LogError(
+      dsp::Logger::GetInstance().LogError(
           "Trying to read at a delay tap (%d) larger than the maximum latency "
           "of the delay line (%d). Giving back the value at the maximum "
           "latency instead. ",
@@ -75,7 +75,7 @@ class DelayFilter : public mcl::Filter {
       const Time fractional_delay_tap) const noexcept {
 #ifndef NOLOGGING
     if (fractional_delay_tap >= (Time)max_latency_) {
-      mcl::Logger::GetInstance().LogError(
+      dsp::Logger::GetInstance().LogError(
           "Trying to read at a delay tap (%f) larger than the maximum latency "
           "of the delay line (%d). Giving back the value at the maximum "
           "latency instead. ",
@@ -117,7 +117,7 @@ class DelayFilter : public mcl::Filter {
   DelayFilter& operator=(const DelayFilter&);
   DelayFilter(const DelayFilter&);
 
-  virtual mcl::Real ProcessSample(const mcl::Real input) noexcept;
+  virtual dsp::Real ProcessSample(const dsp::Real input) noexcept;
 
   static bool Test();
 

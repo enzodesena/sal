@@ -12,8 +12,8 @@
 #include "comparisonop.h"
 #include "salutilities.h"
 
-using mcl::IsEqual;
-using mcl::Point;
+using sal::dsp::IsEqual;
+using sal::dsp::Point;
 
 namespace sal {
 

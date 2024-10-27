@@ -11,11 +11,11 @@
 namespace sal {
 
 bool CuboidRoom::Test() {
-  using mcl::GainFilter;
-  using mcl::IdenticalFilter;
-  using mcl::IirFilter;
-  using mcl::IsEqual;
-  using mcl::Point;
+  using sal::dsp::GainFilter;
+  using sal::dsp::IdenticalFilter;
+  using sal::dsp::IirFilter;
+  using sal::dsp::IsEqual;
+  using sal::dsp::Point;
 
   IirFilter filter = IdenticalFilter();
   CuboidRoom room(1.0, 1.0, 1.0, filter);
@@ -85,7 +85,7 @@ bool CuboidRoom::Test() {
   CuboidRoom room_sabine(edge, edge, edge, GainFilter(beta));
 
   Time rt60 = 0.161 * edge / (6.0 * alpha);
-  ASSERT(mcl::IsEqual(room_sabine.SabineRt60(), rt60));
+  ASSERT(dsp::IsEqual(room_sabine.SabineRt60(), rt60));
 
   // Testing Sabine formula with more complicated room
 
@@ -93,7 +93,7 @@ bool CuboidRoom::Test() {
   Length room_y = 2.0;
   Length room_z = 3.0;
 
-  std::vector<mcl::IirFilter> wall_filters;
+  std::vector<dsp::IirFilter> wall_filters;
   Sample alpha_x1 = 0.1;
   Sample beta_x1 = sqrt(1.0 - alpha_x1);
   wall_filters.push_back(GainFilter(beta_x1));
@@ -120,7 +120,7 @@ bool CuboidRoom::Test() {
                  room_x * room_z * (alpha_y1 + alpha_y2) +
                  room_x * room_y * (alpha_z1 + alpha_z2));
 
-  ASSERT(mcl::IsEqual(room_sabine_2.SabineRt60(), rt60_2));
+  ASSERT(dsp::IsEqual(room_sabine_2.SabineRt60(), rt60_2));
 
   return true;
 }

@@ -23,8 +23,8 @@
 #define strcat(...) strcat_s(__VA_ARGS__)
 #endif
 
-using mcl::Point;
-using mcl::Quaternion;
+using sal::dsp::Point;
+using sal::dsp::Quaternion;
 
 namespace sal {
 
@@ -47,7 +47,7 @@ KemarMic::KemarMic(const Point& position, const Quaternion orientation,
     hrtf_database_left_ = Load(kLeftEar, directory, dataset_type);
   }
 
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
 
   // This is the sampling frequency that will actually be used
   Time used_sampling_frequency;
@@ -61,21 +61,21 @@ KemarMic::KemarMic(const Point& position, const Quaternion orientation,
     used_sampling_frequency = 22050.0;
     used_num_samples = 64;
     // Downsample the database by a factor 2
-    mcl::IirFilter filter = mcl::Butter(10, 0.001, 0.45);
+    dsp::IirFilter filter = dsp::Butter(10, 0.001, 0.45);
     FilterAll(filter);
     for (Int i = 0; i < NUM_ELEVATIONS_KEMAR; ++i) {
       for (Int j = 0; j < num_measurements[i]; ++j) {
         hrtf_database_right_[i][j] =
-            mcl::Downsample(hrtf_database_right_[i][j], 2);
+            dsp::Downsample(hrtf_database_right_[i][j], 2);
         hrtf_database_left_[i][j] =
-            mcl::Downsample(hrtf_database_left_[i][j], 2);
+            dsp::Downsample(hrtf_database_left_[i][j], 2);
       }
     }
   }
 
-  if (!mcl::IsEqual(sampling_frequency, 22050.0) &&
-      !mcl::IsEqual(sampling_frequency, 44100.0)) {
-    mcl::Logger::GetInstance().LogError(
+  if (!dsp::IsEqual(sampling_frequency, 22050.0) &&
+      !dsp::IsEqual(sampling_frequency, 44100.0)) {
+    dsp::Logger::GetInstance().LogError(
         "The sampling frequency (%f) is not supported for "
         "the Kemar mic. Using %f instead.",
         sampling_frequency, used_sampling_frequency);
@@ -85,26 +85,26 @@ KemarMic::KemarMic(const Point& position, const Quaternion orientation,
     for (Int i = 0; i < NUM_ELEVATIONS_KEMAR; ++i) {
       for (Int j = 0; j < num_measurements[i]; ++j) {
         hrtf_database_right_[i][j] =
-            mcl::ZeroPad<Sample>(hrtf_database_right_[i][j], used_num_samples);
+            dsp::ZeroPad<Sample>(hrtf_database_right_[i][j], used_num_samples);
         hrtf_database_left_[i][j] =
-            mcl::ZeroPad<Sample>(hrtf_database_left_[i][j], used_num_samples);
+            dsp::ZeroPad<Sample>(hrtf_database_left_[i][j], used_num_samples);
       }
     }
   }
 }
 
-Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetNumMeasurements() noexcept {
+Array<dsp::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetNumMeasurements() noexcept {
   return {56, 60, 72, 72, 72, 72, 72, 60, 56, 45, 36, 24, 12, 1};
 }
 
-Array<mcl::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetElevations() noexcept {
+Array<dsp::Int, NUM_ELEVATIONS_KEMAR> KemarMic::GetElevations() noexcept {
   return {-40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90};
 }
 
 bool KemarMic::IsDatabaseAvailable(const std::string directory,
                                    const DatasetType dataset_type) {
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
 
   for (Int i = 0; i < NUM_ELEVATIONS_KEMAR; ++i) {
     Angle resolution = 360.0 / num_measurements[i];
@@ -112,7 +112,7 @@ bool KemarMic::IsDatabaseAvailable(const std::string directory,
     Int num_measurement = (UInt)floor(((Angle)num_measurements[i]) / 2.0) + 1;
 
     for (Int j = 0; j < num_measurement; ++j) {
-      Angle angle = mcl::RoundToInt(j * resolution);
+      Angle angle = dsp::RoundToInt(j * resolution);
 
       std::ifstream file;
       file.open(GetFilePath(elevation, angle, directory, dataset_type),
@@ -183,7 +183,7 @@ void KemarMic::PrintParsedDatabase(const Ear ear, const std::string directory,
 std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(
     const Ear ear, const DatasetType dataset_type) {
   std::vector<std::vector<Signal> > hrtf_database;
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
 
   const Int num_samples = (dataset_type == kCompactDataset)
                               ? COMPACT_LENGTH_KEMAR
@@ -213,9 +213,9 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(
       ASSERT(false);
   }
 
-  mcl::IirFilter normalising_filter =
-      mcl::GainFilter(1.0 / NORMALISING_VALUE_KEMAR);
-  mcl::FilterAll(normalising_filter, hrtf_database, hrtf_database);
+  dsp::IirFilter normalising_filter =
+      dsp::GainFilter(1.0 / NORMALISING_VALUE_KEMAR);
+  dsp::FilterAll(normalising_filter, hrtf_database, hrtf_database);
   return hrtf_database;
 }
 
@@ -226,8 +226,8 @@ std::vector<std::vector<Signal> > KemarMic::Load(
 
   std::vector<std::vector<Signal> > hrtf_database;
 
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
-  Array<mcl::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> num_measurements = GetNumMeasurements();
+  Array<dsp::Int, NUM_ELEVATIONS_KEMAR> elevations = GetElevations();
 
   for (Int i = 0; i < NUM_ELEVATIONS_KEMAR; ++i) {
     // Initialise vector
@@ -241,13 +241,13 @@ std::vector<std::vector<Signal> > KemarMic::Load(
             : num_measurements[i];
 
     for (Int j = 0; j < num_measurement; ++j) {
-      Angle angle = mcl::RoundToInt(j * resolution);
+      Angle angle = dsp::RoundToInt(j * resolution);
 
       std::ifstream file;
       file.open(GetFilePath(elevation, angle, directory, dataset_type),
                 std::ios::in | std::ios::binary | std::ios::ate);
       if (!file.good()) {
-        mcl::Logger::GetInstance().LogErrorToCerr("Kemar lib not found.");
+        dsp::Logger::GetInstance().LogErrorToCerr("Kemar lib not found.");
         ASSERT(false);
       }
       long size = (long)file.tellg();
@@ -323,7 +323,7 @@ std::vector<std::vector<Signal> > KemarMic::Load(
 }
 
 Int KemarMic::FindElevationIndex(Angle elevation) {
-  Int elevation_index = mcl::RoundToInt(elevation / 10.0) + 4;
+  Int elevation_index = dsp::RoundToInt(elevation / 10.0) + 4;
   if (elevation_index < 0) {
     return 0;
   } else if (elevation_index > 13) {
@@ -338,7 +338,7 @@ Int KemarMic::FindAzimuthIndex(Angle azimuth, Int elevation_index) {
                                   60, 56, 45, 36, 24, 12, 1};
 
   Angle angular_resolution = 360.0 / ((Angle)num_measurements[elevation_index]);
-  Int azimuth_index = mcl::RoundToInt(azimuth / angular_resolution);
+  Int azimuth_index = dsp::RoundToInt(azimuth / angular_resolution);
 
   if (azimuth_index == num_measurements[elevation_index]) {
     azimuth_index = 0;
@@ -357,7 +357,7 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
   switch (reference_orientation_) {
     case HeadRefOrientation::standard:
       azimuth = atan((double)norm_point.y() / norm_point.x()) / PI * 180.0;
-      if (mcl::IsNan(azimuth)) {
+      if (dsp::IsNan(azimuth)) {
         azimuth = 0.0;
       }  // Conventionally, if x=y=0 then azimuth is taken as 0
       if (norm_point.x() < 0.0) {
@@ -366,7 +366,7 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
       break;
     case HeadRefOrientation::y_z:
       azimuth = -atan((double)norm_point.x() / norm_point.y()) / PI * 180.0;
-      if (mcl::IsNan(azimuth)) {
+      if (dsp::IsNan(azimuth)) {
         azimuth = 0.0;
       }  // Conventionally, if x=y=0 then azimuth is taken as 0
       if (norm_point.y() < 0.0) {
@@ -378,11 +378,11 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
       break;
   }
 
-  azimuth = mcl::Mod(azimuth, 360.0);
+  azimuth = dsp::Mod(azimuth, 360.0);
 
   if (std::isnan(elevation)) {
     elevation = 0.0;
-    mcl::Logger::GetInstance().LogError(
+    dsp::Logger::GetInstance().LogError(
         "The elevation of a sound source "
         "appears to be NAN (possibily due to coincident sound source and "
         "observation point). Reverting to a %f elevation. ",
@@ -391,7 +391,7 @@ Signal KemarMic::GetBrir(const Ear ear, const Point& point) noexcept {
 
   if (std::isnan(azimuth)) {
     azimuth = 0.0;
-    mcl::Logger::GetInstance().LogError(
+    dsp::Logger::GetInstance().LogError(
         "The azimuth of a sound source "
         "appears to be NAN (possibily due to coincident sound source and "
         "observation point). Reverting to a %f azimuth.",

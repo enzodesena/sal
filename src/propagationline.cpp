@@ -32,8 +32,8 @@ PropagationLine::PropagationLine(
     const sal::Length reference_distance,
     const size_t max_expected_input_size) noexcept
     : sampling_frequency_(sampling_frequency),
-      delay_filter_(DelayFilter(mcl::RoundToInt(ComputeLatency(distance)),
-                                mcl::RoundToInt(ComputeLatency(max_distance)))),
+      delay_filter_(DelayFilter(dsp::RoundToInt(ComputeLatency(distance)),
+                                dsp::RoundToInt(ComputeLatency(max_distance)))),
       reference_distance_(isnan(reference_distance)
                               ? SOUND_SPEED / sampling_frequency
                               : reference_distance),
@@ -43,7 +43,7 @@ PropagationLine::PropagationLine(
                       : SanitiseAttenuation(ComputeAttenuation(distance))),
       current_latency_(ComputeLatency(distance)),
       air_filters_active_(air_filters_active),
-      air_filter_(mcl::FirFilter(GetAirFilter(distance))),
+      air_filter_(dsp::FirFilter(GetAirFilter(distance))),
       interpolation_type_(interpolation_type),
       attenuation_smoother_(
           RampSmoother(current_attenuation_, sampling_frequency)),
@@ -55,13 +55,13 @@ PropagationLine::PropagationLine(
                       "The maximum distance cannot be negative.");
 
   if (air_filters_active_) {
-    air_filter_ = mcl::FirFilter(GetAirFilter(distance));
+    air_filter_ = dsp::FirFilter(GetAirFilter(distance));
   }
 }
 
 Sample PropagationLine::SanitiseAttenuation(const sal::Sample attenuation) {
-  if (std::isgreater(mcl::Abs(attenuation), 1.0)) {
-    mcl::Logger::GetInstance().LogError(
+  if (std::isgreater(dsp::Abs(attenuation), 1.0)) {
+    dsp::Logger::GetInstance().LogError(
         "Attempting to set the attenuation of a propagation line to %f, "
         "which has modulus larger than 1. Clipping to 1 "
         "(+-, depending on sign). If you want to "
@@ -108,7 +108,7 @@ void PropagationLine::Tick() noexcept { Tick(1); }
 void PropagationLine::Tick(const Int num_samples) noexcept {
   current_attenuation_ = attenuation_smoother_.GetNextValue(num_samples);
   current_latency_ = latency_smoother_.GetNextValue(num_samples);
-  delay_filter_.SetLatency(mcl::RoundToInt(current_latency_));
+  delay_filter_.SetLatency(dsp::RoundToInt(current_latency_));
   delay_filter_.Tick(num_samples);
 }
 
@@ -151,7 +151,7 @@ void PropagationLine::Read(std::span<Sample> output_data) const noexcept {
   if (interpolation_type_ == sal::InterpolationType::kRounding &&
       !attenuation_smoother_.IsUpdating() && !latency_smoother_.IsUpdating()) {
     delay_filter_.Read(output_data);
-    mcl::Multiply(output_data, current_attenuation_, output_data);
+    dsp::Multiply(output_data, current_attenuation_, output_data);
   } else {
     output_data[0] = Read();
 
@@ -171,7 +171,7 @@ void PropagationLine::Read(std::span<Sample> output_data) const noexcept {
       } else {
         for (size_t i = 1; i < num_samples; ++i) {
           output_data[i] = delay_filter_.ReadAt(
-              (mcl::RoundToInt(temp_latency.GetNextValue()))-i);
+              (dsp::RoundToInt(temp_latency.GetNextValue()))-i);
         }
         temp_attenuation.GetNextValuesMultiply(
             std::span(output_data.begin() + 1, num_samples - 1),
@@ -188,7 +188,7 @@ std::vector<sal::Sample> PropagationLine::GetAirFilter(
                                         11.288, 14.384, 18.33,  23.357, 29.764,
                                         37.927, 48.329, 61.585, 78.476, 100};
 
-  Int filter_index = mcl::MinIndex(mcl::Abs(mcl::Subtract(
+  Int filter_index = dsp::MinIndex(dsp::Abs(dsp::Subtract(
       distances, std::vector<sal::Length>(distances.size(), distance))));
   switch (filter_index) {  // 70% humidity N=4
     case 0:

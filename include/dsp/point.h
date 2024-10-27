@@ -11,7 +11,9 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 class Triplet {
  public:
@@ -163,6 +165,8 @@ bool IntersectionPlaneLineExists(const Point& line_point,
 
 bool PointTest();
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

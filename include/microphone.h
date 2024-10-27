@@ -40,30 +40,30 @@ class Microphone {
    a Quaternion::Identical().
    Otherwise, if you want to rotate it around the z-axis (i.e. a
    rotation on the horizontal plane), then you should use
-   mcl::AxAng2Quat(0,0,1,angle) with angle in radians.
+   dsp::AxAng2Quat(0,0,1,angle) with angle in radians.
 
    Methods with wave_id as a parameter imply that the user should
    explicitly tell the mic to `Tick`, i.e. to inform it that we are working
    on a new sample. Methods without wave_id (i.e. assuming there
    is a single plane wave incoming) do this automatically.
    */
-  Microphone(mcl::Point position,
-             mcl::Quaternion orientation = mcl::Quaternion::Identity());
+  Microphone(dsp::Point position,
+             dsp::Quaternion orientation = dsp::Quaternion::Identity());
 
   /** Returns current position of the microphone */
-  mcl::Point position() const noexcept;
+  dsp::Point position() const noexcept;
 
   /** Set microphone position */
-  virtual void SetPosition(const mcl::Point& position) noexcept;
+  virtual void SetPosition(const dsp::Point& position) noexcept;
 
   /** Returns current orientation of the microphone */
-  mcl::Quaternion orientation() const noexcept;
+  dsp::Quaternion orientation() const noexcept;
 
   /** Set microphone orientation */
-  virtual void SetOrientation(const mcl::Quaternion& orientation) noexcept;
+  virtual void SetOrientation(const dsp::Quaternion& orientation) noexcept;
 
   /** Set handedness of reference system */
-  void SetHandedness(const mcl::Handedness handedness) noexcept;
+  void SetHandedness(const dsp::Handedness handedness) noexcept;
 
   /**
    We do not implement directly the case of a single plane wave because in
@@ -72,13 +72,13 @@ class Microphone {
    impinging on the microphone. For multiple plane waves, you need to
    explicitly specify the wave_id.
    */
-  void AddPlaneWave(const MonoBuffer& signal, const mcl::Point& point,
+  void AddPlaneWave(const MonoBuffer& signal, const dsp::Point& point,
                     Buffer& output_buffer) noexcept;
 
-  void AddPlaneWave(std::span<const Sample> input_data, const mcl::Point& point,
+  void AddPlaneWave(std::span<const Sample> input_data, const dsp::Point& point,
                     Buffer& output_buffer) noexcept;
 
-  void AddPlaneWave(const Sample input_sample, const mcl::Point& point,
+  void AddPlaneWave(const Sample input_sample, const dsp::Point& point,
                     Buffer& output_buffer) noexcept;
 
   /**
@@ -90,14 +90,14 @@ class Microphone {
    the first time it sees a new wave_id, it will allocate a new filter
    for it.
    */
-  void AddPlaneWave(const MonoBuffer& input_buffer, const mcl::Point& point,
+  void AddPlaneWave(const MonoBuffer& input_buffer, const dsp::Point& point,
                     const size_t wave_id, Buffer& output_buffer) noexcept;
 
-  void AddPlaneWave(const Sample input_sample, const mcl::Point& point,
+  void AddPlaneWave(const Sample input_sample, const dsp::Point& point,
                     const size_t wave_id, Buffer& output_buffer) noexcept;
 
   virtual void AddPlaneWave(std::span<const Sample> input_data,
-                            const mcl::Point& point, const size_t wave_id,
+                            const dsp::Point& point, const size_t wave_id,
                             Buffer& output_buffer) noexcept;
 
   virtual bool IsCoincident() const noexcept = 0;
@@ -107,7 +107,7 @@ class Microphone {
   virtual bool IsOmni() const noexcept { return false; }
 
   /** This method translates `point` in the reference system of the mic. */
-  mcl::Point GetRelativePoint(const mcl::Point& point) const noexcept;
+  dsp::Point GetRelativePoint(const dsp::Point& point) const noexcept;
 
   /** Resets the state of the microphone (if any). */
   virtual void Reset() noexcept {}
@@ -115,12 +115,12 @@ class Microphone {
   static bool Test();
 
   virtual void AddPlaneWaveRelative(const MonoBuffer& signal,
-                                    const mcl::Point& point,
+                                    const dsp::Point& point,
                                     const size_t wave_id,
                                     Buffer& output_buffer) noexcept;
 
   /**
-   This is implemented by the specific type of microphones. `mcl::Point` in this
+   This is implemented by the specific type of microphones. `dsp::Point` in this
    case is relative to the microphone reference system.
    This is the most important function of this object. This filters the
    sample `sample` as a function of the position from where the sound is
@@ -133,25 +133,25 @@ class Microphone {
    higher levels.
    */
   virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
-                                    const mcl::Point& point,
+                                    const dsp::Point& point,
                                     const size_t wave_id,
                                     Buffer& output_buffer) noexcept = 0;
 
   virtual ~Microphone() {}
 
  private:
-  mcl::Triplet position_;
-  mcl::Quaternion orientation_;
+  dsp::Triplet position_;
+  dsp::Quaternion orientation_;
 
   friend class MicrophoneArray;
 
  protected:
-  mcl::Handedness handedness_;
+  dsp::Handedness handedness_;
 };
 
 class StereoMicrophone : public Microphone {
  public:
-  StereoMicrophone(mcl::Point position, mcl::Quaternion orientation)
+  StereoMicrophone(dsp::Point position, dsp::Quaternion orientation)
       : Microphone(position, orientation) {}
 };
 
@@ -163,7 +163,7 @@ class BypassMic final : public sal::Microphone {
 
    @param[in] position The position in space of the microphone.
    */
-  BypassMic(mcl::Point position, sal::Int num_channels) noexcept;
+  BypassMic(dsp::Point position, sal::Int num_channels) noexcept;
 
   /** Returns whether or not the microphone is a coincident microphone. */
   virtual bool IsCoincident() const noexcept { return true; }
@@ -171,7 +171,7 @@ class BypassMic final : public sal::Microphone {
   virtual sal::Int num_channels() const noexcept { return num_channels_; }
 
   virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
-                                    const mcl::Point& point,
+                                    const dsp::Point& point,
                                     const size_t wave_id,
                                     sal::Buffer& output_buffer) noexcept;
 

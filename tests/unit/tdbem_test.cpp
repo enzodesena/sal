@@ -11,8 +11,8 @@
 
 namespace sal {
 
-using mcl::IirFilter;
-using mcl::Point;
+using sal::dsp::IirFilter;
+using sal::dsp::Point;
 using sal::Int;
 using sal::Length;
 using sal::Microphone;
@@ -33,7 +33,7 @@ bool TdBem::SimulationTime() {
 
   Source source(Point(1.23, 2.556, 0.856));
 
-  CuboidRoom room(5.23, 4.86, 2.1, mcl::GainFilter(1));
+  CuboidRoom room(5.23, 4.86, 2.1, dsp::GainFilter(1));
 
   clock_t launch = clock();
   TdBem tdbem(&room, &source, &mic, sampling_frequency, 0.2, 1000000.5);

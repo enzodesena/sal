@@ -26,7 +26,7 @@ namespace sal {
  */
 class SphericalHeadMic : public BinauralMic {
  public:
-  SphericalHeadMic(const mcl::Point position, const mcl::Quaternion orientation,
+  SphericalHeadMic(const dsp::Point position, const dsp::Quaternion orientation,
                    const Angle ears_angle, const Length sphere_radius,
                    const Int ir_length, const Time sampling_frequency,
                    const Int update_length = 0);
@@ -36,11 +36,11 @@ class SphericalHeadMic : public BinauralMic {
   virtual ~SphericalHeadMic() {}
 
  private:
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
+  virtual Signal GetBrir(const Ear ear, const dsp::Point& point) noexcept;
 
   /** For the various definitions see Duda's paper. */
-  static mcl::Complex Sphere(Length a, Length r, Angle theta, Time f, Time c,
-                             mcl::Real threshold);
+  static dsp::Complex Sphere(Length a, Length r, Angle theta, Time f, Time c,
+                             dsp::Real threshold);
 
   /**
    Generate the impulse response. theta is the angle in Duda's article
@@ -51,13 +51,13 @@ class SphericalHeadMic : public BinauralMic {
    */
   static Signal GenerateImpulseResponse(Length sphere_radius,
                                         Length source_distance, Angle theta,
-                                        Time sound_speed, mcl::Real threshold,
+                                        Time sound_speed, dsp::Real threshold,
                                         Int num_samples,
                                         Time sampling_frequency,
                                         bool minimum_phase = false);
 
   /** Calculates the angle in the reference system of the sphere. */
-  static Angle GetTheta(const mcl::Point& point, const Angle& ears_angle,
+  static Angle GetTheta(const dsp::Point& point, const Angle& ears_angle,
                         const Ear& ear);
 
   /**
@@ -84,7 +84,7 @@ class SphericalHeadMic : public BinauralMic {
   Time sound_speed_;
 
   /** This is the threshold of the sphere algorithm. */
-  mcl::Real alg_threshold_;
+  dsp::Real alg_threshold_;
 };
 
 }  // namespace sal

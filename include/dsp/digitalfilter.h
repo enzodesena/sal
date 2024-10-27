@@ -14,7 +14,9 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** Digital filter abstract class */
 class Filter {
@@ -60,6 +62,8 @@ class FilterBank {
   virtual Int num_filters() = 0;
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

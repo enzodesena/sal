@@ -1,7 +1,7 @@
 /*
  decoder
  Spatial Audio Library (SAL)
- Copyright (c) 2012, Enzo De Sena
+ Copyright (c) 2011-2024, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com

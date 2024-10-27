@@ -15,7 +15,9 @@
 #include "transformop.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 std::vector<Complex> Fft(const std::vector<Complex>& input,
                          Int n_point) noexcept {
@@ -177,4 +179,6 @@ std::vector<Real> XCorr(const std::vector<Real>& vector_a,
   return output;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

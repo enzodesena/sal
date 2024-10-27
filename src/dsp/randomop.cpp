@@ -12,7 +12,9 @@
 #include "mcltypes.h"
 #include "randomop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 RandomGenerator::RandomGenerator(unsigned int seed)
     : distribution_norm_(std::normal_distribution<double>(0.0, 1.0)),
@@ -55,4 +57,6 @@ Int RandomGenerator::RandInt(const Int& minimum, const Int& maximum) {
   return output;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

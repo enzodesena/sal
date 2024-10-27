@@ -13,7 +13,9 @@
 #include "statisticsop.h"
 #include "transformop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool StatisticsOpTest() {
   std::vector<Real> vector_a(4);
@@ -33,4 +35,6 @@ bool StatisticsOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

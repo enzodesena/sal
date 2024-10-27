@@ -12,7 +12,7 @@
 #include "microphone.h"
 #include "monomics.h"
 
-using mcl::Point;
+using sal::dsp::Point;
 
 namespace sal {
 
@@ -57,15 +57,15 @@ bool FreeFieldSim::Test() {
   FreeFieldSim sim(microphones, sources, sampling_frequency, SOUND_SPEED);
   sim.ProcessBlock(input_buffers, output_buffers);
 
-  std::vector<Sample> output_mic_0_cmp = mcl::Zeros<Sample>(4);
+  std::vector<Sample> output_mic_0_cmp = dsp::Zeros<Sample>(4);
   output_mic_0_cmp[1] = 0.5;
   output_mic_0_cmp[3] = 0.5 / 3.0;
-  std::vector<Sample> output_mic_1_cmp = mcl::Zeros<Sample>(4);
+  std::vector<Sample> output_mic_1_cmp = dsp::Zeros<Sample>(4);
   output_mic_1_cmp[2] = 0.5 / 2.0 + 0.5 / 2.0;
 
-  ASSERT(mcl::IsEqual(output_mic_0_cmp,
+  ASSERT(dsp::IsEqual(output_mic_0_cmp,
                       output_buffers[0]->GetReadView(Buffer::kMonoChannel)));
-  ASSERT(mcl::IsEqual(output_mic_1_cmp,
+  ASSERT(dsp::IsEqual(output_mic_1_cmp,
                       output_buffers[1]->GetReadView(Buffer::kMonoChannel)));
 
   return true;

@@ -75,7 +75,9 @@
 #include <intrin.h>
 #endif
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 #define MCL_DATA_TYPE_DOUBLE 1
 
@@ -213,6 +215,8 @@ class Logger {
   std::string log_output_file_;
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

@@ -11,7 +11,9 @@
 #include "elementaryop.h"
 #include "quaternion.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 Quaternion QuatConj(const Quaternion& q) noexcept {
   return Quaternion(q.w(), -q.x(), -q.y(), -q.z());
@@ -209,4 +211,6 @@ Quaternion QuatInverse(const Quaternion q) noexcept {
                     conj.z() / norm_sq);
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

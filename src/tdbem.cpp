@@ -11,7 +11,7 @@
 
 namespace sal {
 
-using mcl::Point;
+using sal::dsp::Point;
 using sal::Int;
 using sal::Length;
 using sal::Microphone;
@@ -41,10 +41,10 @@ TdBem::TdBem(Room* const room, Source* const source,
   // Precalculate distances
   distance_los_ = Distance(microphone_->position(), source_->position());
   for (Int i = 0; i < num_elements_; ++i) {
-    distances_source_.push_back(mcl::Distance(points_[i], source_->position()));
+    distances_source_.push_back(dsp::Distance(points_[i], source_->position()));
     all_distances.push_back(distances_source_[i]);
     distances_mic_.push_back(
-        mcl::Distance(points_[i], microphone_->position()));
+        dsp::Distance(points_[i], microphone_->position()));
     all_distances.push_back(distances_mic_[i]);
 
     // Precalculate distances between points
@@ -53,7 +53,7 @@ TdBem::TdBem(Room* const room, Source* const source,
       if (i == j) {
         continue;
       }
-      Length distance = mcl::Distance(points_[i], points_[j]);
+      Length distance = dsp::Distance(points_[i], points_[j]);
       distances_[i][j] = distance;
       all_distances.push_back(distance);
     }
@@ -104,13 +104,13 @@ TdBem::TdBem(Room* const room, Source* const source,
   }
 
   if (true) {
-    Length min_distance = mcl::Min(all_distances);
+    Length min_distance = dsp::Min(all_distances);
     std::cout << "Spatial sampling period: " << spatial_sampling_period
               << std::endl;
     std::cout << "Minimum distance: " << min_distance << std::endl;
 
-    std::cout << "Minimum weight: " << mcl::Min(all_weights) << std::endl;
-    std::cout << "Maximum weight: " << mcl::Max(all_weights) << std::endl;
+    std::cout << "Minimum weight: " << dsp::Min(all_weights) << std::endl;
+    std::cout << "Maximum weight: " << dsp::Max(all_weights) << std::endl;
   }
 }
 
@@ -137,7 +137,7 @@ Sample TdBem::CalculateWeightPrevious(Sample dr_dn, Length distance,
 }
 
 Sample TdBem::CalculateDrDn(Point point_x, Point point_y, Point normal_y) {
-  return mcl::DotProduct(mcl::Subtract(point_y, point_x), normal_y) /
+  return dsp::DotProduct(dsp::Subtract(point_y, point_x), normal_y) /
          Distance(point_y, point_x);
 }
 
@@ -149,7 +149,7 @@ void TdBem::CalculatePoints() {
   Length room_y = dimensions.y();
   Length room_z = dimensions.z();
 
-  std::vector<mcl::Point> boundary_points;
+  std::vector<dsp::Point> boundary_points;
   sal::Length sp = spatial_sampling_period_;
 
   // Points on surface parallel to xy plane
@@ -200,10 +200,10 @@ void TdBem::CalculatePoints() {
 void TdBem::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
   ASSERT(input_buffer.num_samples() == output_buffer.num_samples());
   MonoBuffer& mono_output_buffer = dynamic_cast<MonoBuffer&>(output_buffer);
-  mcl::Matrix<sal::Sample> boundary_pressure(0, 0);
+  dsp::Matrix<sal::Sample> boundary_pressure(0, 0);
   if (log_) {
     boundary_pressure =
-        mcl::Matrix<sal::Sample>(num_elements_, input_buffer.num_samples());
+        dsp::Matrix<sal::Sample>(num_elements_, input_buffer.num_samples());
   }
 
   Int k = 0;
@@ -272,7 +272,7 @@ void TdBem::Run(const MonoBuffer& input_buffer, Buffer& output_buffer) {
 }
 
 void TdBem::WriteOutPoints(const std::string file_name) {
-  mcl::Matrix<sal::Length> output(num_elements_, 6);
+  dsp::Matrix<sal::Length> output(num_elements_, 6);
   for (Int i = 0; i < num_elements_; ++i) {
     output.SetElement(i, 0, points_[i].x());
     output.SetElement(i, 1, points_[i].y());

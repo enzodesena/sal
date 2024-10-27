@@ -34,7 +34,7 @@ class AmbisonicsMic : public Microphone {
    if theta = 0.0. I am thinking of soundfield microphone, which is pointing
    upwards.
    */
-  AmbisonicsMic(const mcl::Point& position, mcl::Quaternion orientation,
+  AmbisonicsMic(const dsp::Point& position, dsp::Quaternion orientation,
                 Int order,
                 HoaNormalisation normalisation = HoaNormalisation::sqrt2,
                 HoaOrdering ordering = HoaOrdering::Acn)
@@ -49,11 +49,11 @@ class AmbisonicsMic : public Microphone {
     return HoaBuffer::GetNumChannels(order_);
   }
 
-  static std::vector<mcl::Real> HorizontalEncoding(Int order, Angle theta);
+  static std::vector<dsp::Real> HorizontalEncoding(Int order, Angle theta);
 
   static bool Test();
   virtual void AddPlaneWaveRelative(std::span<const Sample> input_data,
-                                    const mcl::Point& point,
+                                    const dsp::Point& point,
                                     const size_t wave_id,
                                     Buffer& output_buffer) noexcept;
 
@@ -98,14 +98,14 @@ class AmbisonicsHorizDec : public Decoder {
   static bool Test();
 
  private:
-  static mcl::Matrix<Sample> ModeMatchingDec(
+  static dsp::Matrix<Sample> ModeMatchingDec(
       Int order, const std::vector<Angle>& loudspeaker_angles);
 
   /**
    amb_re_weights_matrix produces the diagonal matrix of weights for energy
    vector maximization. E.g. diag(g0,g1,g1,g2,g2) for the N=2 2D case.
    */
-  static mcl::Matrix<Sample> MaxEnergyDec(
+  static dsp::Matrix<Sample> MaxEnergyDec(
       Int order, const std::vector<Angle>& loudspeaker_angles);
 
   /**
@@ -130,7 +130,7 @@ class AmbisonicsHorizDec : public Decoder {
    `sampling_frequency` is the sampling frequency (in Hz) and `sound_speed`
    the speed of sound (in m/s).
    */
-  static mcl::IirFilter NFCFilter(const Int order,
+  static dsp::IirFilter NFCFilter(const Int order,
                                   const Length loudspeaker_distance,
                                   const Time sampling_frequency,
                                   const Length sound_speed);
@@ -140,9 +140,9 @@ class AmbisonicsHorizDec : public Decoder {
    frequency Fc and sampling frequency Fs as descibed by A. Heller et al.,
    "Is My Decoder Ambisonic?", in AES 125th Convention.
    */
-  static mcl::IirFilter CrossoverFilterLow(const Time cut_off_frequency,
+  static dsp::IirFilter CrossoverFilterLow(const Time cut_off_frequency,
                                            const Time sampling_frequency);
-  static mcl::IirFilter CrossoverFilterHigh(const Time cut_off_frequency,
+  static dsp::IirFilter CrossoverFilterHigh(const Time cut_off_frequency,
                                             const Time sampling_frequency);
 
   std::vector<Angle> loudspeaker_angles_;
@@ -155,16 +155,16 @@ class AmbisonicsHorizDec : public Decoder {
   HoaOrdering ordering_convention_;
 
   // One filter per component
-  std::vector<mcl::IirFilter> nfc_filters_;
+  std::vector<dsp::IirFilter> nfc_filters_;
   // One filter per loudspeaker
-  std::vector<mcl::IirFilter> crossover_filters_high_;
-  std::vector<mcl::IirFilter> crossover_filters_low_;
+  std::vector<dsp::IirFilter> crossover_filters_high_;
+  std::vector<dsp::IirFilter> crossover_filters_low_;
 
   // Cache the decoding matrix (mode-matching) for performance purposes.
-  mcl::Matrix<Sample> mode_matching_matrix_;
+  dsp::Matrix<Sample> mode_matching_matrix_;
 
   // Cache the decoding matrix (maximum energy) for performance purposes.
-  mcl::Matrix<Sample> max_energy_matrix_;
+  dsp::Matrix<Sample> max_energy_matrix_;
 
   Time sampling_frequency_;
 };

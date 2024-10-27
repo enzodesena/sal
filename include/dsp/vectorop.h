@@ -18,7 +18,9 @@
 #include "matrixop.h"
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** Equivalent to Matlab's length(input). */
 template <class T>
@@ -470,6 +472,8 @@ void FilterAll(
     std::vector<std::vector<std::vector<Real> > >& matrix_of_input_signals,
     std::vector<std::vector<std::vector<Real> > >& matrix_of_output_signals);
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

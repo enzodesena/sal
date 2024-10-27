@@ -16,7 +16,9 @@
 
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /**
  Returns the point by point addition of the two vectors.
@@ -185,6 +187,8 @@ std::vector<Int> ConvertToInt(const std::vector<UInt>& vector) noexcept;
 
 bool PointWiseOpTest();
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

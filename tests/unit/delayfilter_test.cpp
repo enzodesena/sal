@@ -15,7 +15,7 @@
 namespace sal {
 
 bool DelayFilter::Test() {
-  using mcl::IsEqual;
+  using sal::dsp::IsEqual;
 
   DelayFilter delay_filter_a = DelayFilter(1, 100);
   delay_filter_a.Write(0.0);
@@ -284,10 +284,10 @@ bool DelayFilter::Test() {
   const Int num_samples = 10;
   const Int latency = 3;
   std::vector<Sample> input_samples =
-      mcl::ColonOperator(1.0, 1.0, (Sample)num_samples + 1);
+      dsp::ColonOperator(1.0, 1.0, (Sample)num_samples + 1);
   std::vector<Sample> output_samples =
-      mcl::Concatenate(mcl::Zeros<Sample>(latency),
-                       mcl::Elements(input_samples, 0, num_samples - latency));
+      dsp::Concatenate(dsp::Zeros<Sample>(latency),
+                       dsp::Elements(input_samples, 0, num_samples - latency));
   assert(input_samples.size() == output_samples.size());
 
   DelayFilter delay_filter_g(latency, 4);

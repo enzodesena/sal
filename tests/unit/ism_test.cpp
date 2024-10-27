@@ -12,10 +12,10 @@
 #include "salconstants.h"
 #include "source.h"
 
-using mcl::GainFilter;
-using mcl::IirFilter;
-using mcl::IsEqual;
-using mcl::Point;
+using sal::dsp::GainFilter;
+using sal::dsp::IirFilter;
+using sal::dsp::IsEqual;
+using sal::dsp::Point;
 using sal::Int;
 using sal::Length;
 using sal::Microphone;
@@ -51,33 +51,33 @@ bool Ism::Test() {
   MonoBuffer test_rir(impulse.num_samples());
   ism.ProcessBlock(impulse.GetReadView(), test_rir);
 
-  std::vector<Sample> cmp = mcl::Zeros<Sample>(9);
+  std::vector<Sample> cmp = dsp::Zeros<Sample>(9);
 
   cmp[2] = 1.0 / 2.0;
 
   Length cmp_1l = sqrt(pow(2.0, 2.0) + pow(2.0, 2.0));
-  Int cmp_1l_tap = mcl::RoundToInt(cmp_1l);
+  Int cmp_1l_tap = dsp::RoundToInt(cmp_1l);
   cmp[cmp_1l_tap] += 1.0 / cmp_1l;
 
   cmp[4] += 1.0 / 4.0;  // I-order bottom
   cmp[6] += 1.0 / 6.0;  // I-order top
 
   Length cmp_1r = sqrt(pow(2.0, 2.0) + pow(8.0, 2.0));
-  Int cmp_1r_tap = mcl::RoundToInt(cmp_1r);  // 8
+  Int cmp_1r_tap = dsp::RoundToInt(cmp_1r);  // 8
   cmp[cmp_1r_tap] += 1.0 / cmp_1r;
 
   Length cmp_2lb = sqrt(pow(2.0, 2.0) + pow(4.0, 2.0));
-  Int cmp_2lb_tap = mcl::RoundToInt(cmp_2lb);  // 4
+  Int cmp_2lb_tap = dsp::RoundToInt(cmp_2lb);  // 4
   cmp[cmp_2lb_tap] += 1.0 / cmp_2lb;
 
   Length cmp_2lt = sqrt(pow(2.0, 2.0) + pow(6.0, 2.0));
-  Int cmp_2lt_tap = mcl::RoundToInt(cmp_2lt);  // 6
+  Int cmp_2lt_tap = dsp::RoundToInt(cmp_2lt);  // 6
   cmp[cmp_2lt_tap] += 1.0 / cmp_2lt;
 
   cmp[8] += 1.0 / 8.0;  // II-order bottom
 
   Length cmp_3lb = sqrt(pow(8.0, 2.0) + pow(2.0, 2.0));
-  Int cmp_3lb_tap = mcl::RoundToInt(cmp_3lb);  // 4
+  Int cmp_3lb_tap = dsp::RoundToInt(cmp_3lb);  // 4
   cmp[cmp_3lb_tap] += 1.0 / cmp_3lb;
 
   //  0
@@ -89,7 +89,7 @@ bool Ism::Test() {
   //  0
   //  0.3675
   //  0.1118
-  ASSERT(mcl::IsEqual(cmp, test_rir.GetReadView()));
+  ASSERT(dsp::IsEqual(cmp, test_rir.GetReadView()));
 
   ////////////////////////////////////
   // Test with wall absorption      //
@@ -100,7 +100,7 @@ bool Ism::Test() {
   Sample beta_y1 = 1.0 / sqrt(5.0);
   Sample beta_y2 = 1.0 / sqrt(6.0);
 
-  std::vector<mcl::IirFilter> iir_filters;
+  std::vector<dsp::IirFilter> iir_filters;
   iir_filters.push_back(GainFilter(beta_x1));
   iir_filters.push_back(GainFilter(beta_x2));
   iir_filters.push_back(GainFilter(beta_y1));
@@ -117,33 +117,33 @@ bool Ism::Test() {
   test_rir.Reset();
   isma.ProcessBlock(impulse.GetReadView(), test_rir);
 
-  std::vector<Sample> cmpa = mcl::Zeros<Sample>(9);
+  std::vector<Sample> cmpa = dsp::Zeros<Sample>(9);
 
   cmpa[2] = 1.0 / 2.0;  // LOS
 
   Length cmpa_1l = sqrt(pow(2.0, 2.0) + pow(2.0, 2.0));
-  Int cmpa_1l_tap = mcl::RoundToInt(cmpa_1l);
+  Int cmpa_1l_tap = dsp::RoundToInt(cmpa_1l);
   cmpa[cmpa_1l_tap] += 1.0 / cmpa_1l * beta_x1;
 
   cmpa[4] += 1.0 / 4.0 * beta_y1;  // I-order bottom
   cmpa[6] += 1.0 / 6.0 * beta_y2;  // I-order top
 
   Length cmpa_1r = sqrt(pow(2.0, 2.0) + pow(8.0, 2.0));
-  Int cmpa_1r_tap = mcl::RoundToInt(cmpa_1r);  // 8
+  Int cmpa_1r_tap = dsp::RoundToInt(cmpa_1r);  // 8
   cmpa[cmpa_1r_tap] += 1.0 / cmpa_1r * beta_x2;
 
   Length cmpa_2lb = sqrt(pow(2.0, 2.0) + pow(4.0, 2.0));
-  Int cmpa_2lb_tap = mcl::RoundToInt(cmpa_2lb);  // 4
+  Int cmpa_2lb_tap = dsp::RoundToInt(cmpa_2lb);  // 4
   cmpa[cmpa_2lb_tap] += 1.0 / cmpa_2lb * beta_x1 * beta_y1;
 
   Length cmpa_2lt = sqrt(pow(2.0, 2.0) + pow(6.0, 2.0));
-  Int cmpa_2lt_tap = mcl::RoundToInt(cmpa_2lt);  // 6
+  Int cmpa_2lt_tap = dsp::RoundToInt(cmpa_2lt);  // 6
   cmpa[cmpa_2lt_tap] += 1.0 / cmpa_2lt * beta_x1 * beta_y2;
 
   cmpa[8] += 1.0 / 8.0 * beta_y1 * beta_y2;  // II-order bottom
 
   Length cmpa_3lb = sqrt(pow(8.0, 2.0) + pow(2.0, 2.0));
-  Int cmpa_3lb_tap = mcl::RoundToInt(cmpa_3lb);  // 4
+  Int cmpa_3lb_tap = dsp::RoundToInt(cmpa_3lb);  // 4
   cmpa[cmpa_3lb_tap] += 1.0 / cmpa_3lb * beta_y1 * beta_x1 * beta_y2;
 
   //  0
@@ -156,7 +156,7 @@ bool Ism::Test() {
   //  0.1085
   //  0.0289
 
-  ASSERT(mcl::IsEqual(cmpa, test_rir.GetReadView()));
+  ASSERT(dsp::IsEqual(cmpa, test_rir.GetReadView()));
 
   // Testing peterson
   // TODO: complete this test.
@@ -164,7 +164,7 @@ bool Ism::Test() {
   //  sampling_frequency); mic.Reset(); source.stream()->Reset();
   //  std::vector<sal::Sample> signal = {0.3, -0.5, 1.0, 0.0, 0.0, 0.0, 0.0,
   //  0.0, 0.0, 0.0}; source.stream()->Push(signal); ism_b.Run();
-  //  mcl::Print(mic.stream()->PullAll());
+  //  dsp::Print(mic.stream()->PullAll());
 
   return true;
 }

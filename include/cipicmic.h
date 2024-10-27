@@ -35,7 +35,7 @@ class CipicMic : public DatabaseBinauralMic {
    Constructs a Kemar microphone opject.
    `directory` contains the hrtf database.
    */
-  CipicMic(const mcl::Point& position, const mcl::Quaternion& orientation,
+  CipicMic(const dsp::Point& position, const dsp::Quaternion& orientation,
            const std::string& directory, const DataType data_type,
            const Int update_length = 0);
 
@@ -49,7 +49,7 @@ class CipicMic : public DatabaseBinauralMic {
       const Ear ear, const std::string& directory, const DataType data_type,
       const std::vector<sal::Angle>& azimuths);
 
-  virtual Signal GetBrir(const Ear ear, const mcl::Point& point) noexcept;
+  virtual Signal GetBrir(const Ear ear, const dsp::Point& point) noexcept;
 
   std::vector<sal::Angle> azimuths_;
 };

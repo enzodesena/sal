@@ -17,7 +17,9 @@
 #include "butter.h"
 #include "mcltypes.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 #define N \
   10  // The number of images which construct a time series for each pixel
@@ -56,8 +58,8 @@ IirFilterBank OctaveFilterBank(const Int order, const Int num_bands,
   Real current_frequency = starting_frequency;
   std::vector<IirFilter> filters;
   for (Int i = 0; i < num_bands; ++i) {
-    mcl::IirFilter octave_filter =
-        mcl::OctaveFilter(order, current_frequency, sampling_frequency);
+    dsp::IirFilter octave_filter =
+        dsp::OctaveFilter(order, current_frequency, sampling_frequency);
     filters.push_back(octave_filter);
     current_frequency = current_frequency * 2.0;
   }
@@ -239,4 +241,6 @@ std::vector<double> ComputeDenCoeffs(int FilterOrder, double Lcutoff,
   return DenomCoeffs;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

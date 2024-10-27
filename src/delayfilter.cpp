@@ -13,7 +13,7 @@
 #include "delayfilter.h"
 #include "salutilities.h"
 
-using mcl::Logger;
+using sal::dsp::Logger;
 using sal::Int;
 using sal::Sample;
 
@@ -168,9 +168,9 @@ void DelayFilter::Reset() noexcept {
   }
 }
 
-mcl::Real DelayFilter::ProcessSample(const mcl::Real input) noexcept {
+dsp::Real DelayFilter::ProcessSample(const dsp::Real input) noexcept {
   Write(input);
-  mcl::Real output = Read();
+  dsp::Real output = Read();
   Tick();
   return output;
 }

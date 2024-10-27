@@ -19,7 +19,9 @@
 #include "peakingfilters.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /**
  * Class that implements a graphic equaliser
@@ -181,6 +183,8 @@ class GraphicEq : public Filter {
   bool valid_;
 };
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif

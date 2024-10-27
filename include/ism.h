@@ -34,10 +34,10 @@ class Ism {
 
   std::vector<sal::Sample> rir_;
   std::vector<sal::Time> images_delay_;
-  std::vector<mcl::Point> images_position_;
+  std::vector<dsp::Point> images_position_;
 
   std::vector<sal::DelayFilter> images_int_delay_filter_;
-  std::vector<mcl::FirFilter> images_frac_delay_filter_;
+  std::vector<dsp::FirFilter> images_frac_delay_filter_;
 
   bool modified_;
 

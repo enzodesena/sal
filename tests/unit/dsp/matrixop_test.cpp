@@ -8,7 +8,9 @@
 
 #include "matrixop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 bool MatrixOpTest() {
   Matrix<Real> matrix_a(3, 2);
@@ -168,4 +170,6 @@ bool MatrixOpTest() {
   return true;
 }
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal

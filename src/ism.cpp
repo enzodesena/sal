@@ -9,10 +9,10 @@
 #include "randomop.h"
 #include "salconstants.h"
 
-using mcl::Abs;
-using mcl::IirFilter;
-using mcl::Point;
-using mcl::Pow;
+using sal::dsp::Abs;
+using sal::dsp::IirFilter;
+using sal::dsp::Point;
+using sal::dsp::Pow;
 using sal::Int;
 using sal::Length;
 using sal::Microphone;
@@ -43,10 +43,10 @@ void Ism::ProcessBlock(std::span<const Sample> input_data,
 
   // TODO: I still need to test the spatialised implementation
   if (microphone_->IsOmni()) {
-    mcl::FirFilter filter(rir_);
+    dsp::FirFilter filter(rir_);
     std::vector<Sample> temp(input_data.size());
     filter.ProcessBlock(input_data, temp);
-    microphone_->AddPlaneWave(temp, mcl::Point(0, 0, 0), output_buffer);
+    microphone_->AddPlaneWave(temp, dsp::Point(0, 0, 0), output_buffer);
   } else {
     ASSERT(false);
   }
@@ -54,8 +54,8 @@ void Ism::ProcessBlock(std::span<const Sample> input_data,
 
 /** Calculates the Rir. This is called by Run() before filtering. */
 void Ism::CalculateRir() {
-  mcl::Matrix<Sample> beta(2, 3);
-  std::vector<mcl::IirFilter> filters = room_->wall_filters();
+  dsp::Matrix<Sample> beta(2, 3);
+  std::vector<dsp::IirFilter> filters = room_->wall_filters();
   beta.SetElement(0, 0, filters[0].B()[0]);  // beta_{x1}
   beta.SetElement(0, 1, filters[2].B()[0]);  // beta_{y1}
   beta.SetElement(0, 2, filters[4].B()[0]);  // beta_{z1}
@@ -68,7 +68,7 @@ void Ism::CalculateRir() {
   Length room_y = ((CuboidRoom*)room_)->dimensions().y();
   Length room_z = ((CuboidRoom*)room_)->dimensions().z();
 
-  rir_ = mcl::Zeros<sal::Sample>(rir_length_);
+  rir_ = dsp::Zeros<sal::Sample>(rir_length_);
 
   Time rir_time = ((Time)rir_length_) / ((Time)sampling_frequency_);
   Int n1 = (Int)floor(rir_time / (((Length)room_x) * 2.0)) + 1;
@@ -82,14 +82,14 @@ void Ism::CalculateRir() {
   images_int_delay_filter_.reserve(max_num_images);
   images_frac_delay_filter_.reserve(max_num_images);
 
-  mcl::RandomGenerator randn_gen;
+  dsp::RandomGenerator randn_gen;
   std::vector<sal::Length> rand_delays;
 
   Int k = 0;
-  bool randomisation = (mcl::IsEqual(random_distance_, 0.0)) ? false : true;
+  bool randomisation = (dsp::IsEqual(random_distance_, 0.0)) ? false : true;
   if (randomisation) {
     sal::Time top_limit = random_distance_;
-    rand_delays = mcl::Add(mcl::Multiply<sal::Time>(
+    rand_delays = dsp::Add(dsp::Multiply<sal::Time>(
                                randn_gen.Rand(max_num_images), 2.0 * top_limit),
                            -top_limit);
   }
@@ -106,7 +106,7 @@ void Ism::CalculateRir() {
                                             py, pz);
 
               Time delay =
-                  mcl::Subtract(image_position, microphone_->position())
+                  dsp::Subtract(image_position, microphone_->position())
                       .norm() /
                   SOUND_SPEED;
 
@@ -142,7 +142,7 @@ void Ism::CalculateRir() {
 
 void Ism::WriteSample(const sal::Time& delay, const sal::Sample& attenuation) {
   sal::Time delay_norm = delay * sampling_frequency_;
-  Int id_round = mcl::RoundToInt(delay_norm);
+  Int id_round = dsp::RoundToInt(delay_norm);
   Int rir_length = rir_.size();
 
   switch (interpolation_) {
@@ -150,7 +150,7 @@ void Ism::WriteSample(const sal::Time& delay, const sal::Sample& attenuation) {
       rir_.at(id_round) += attenuation;
       images_int_delay_filter_.push_back(sal::DelayFilter(id_round, id_round));
       images_frac_delay_filter_.push_back(
-          mcl::FirFilter::GainFilter(attenuation));
+          dsp::FirFilter::GainFilter(attenuation));
       break;
     }
     case peterson: {
@@ -185,7 +185,7 @@ void Ism::WriteSample(const sal::Time& delay, const sal::Sample& attenuation) {
       sal::Int nneg_integer_delay = (integer_delay < 0) ? 0 : integer_delay;
       images_int_delay_filter_.push_back(
           sal::DelayFilter(nneg_integer_delay, nneg_integer_delay));
-      images_frac_delay_filter_.push_back(mcl::FirFilter(filter_coefficients));
+      images_frac_delay_filter_.push_back(dsp::FirFilter(filter_coefficients));
 
       break;
     }

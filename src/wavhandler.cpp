@@ -22,13 +22,13 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
 
   //  if (! (input_file = sf_open(file_name.c_str(), SFM_READ,
   //  &input_file_info))) {
-  //    mcl::Logger::GetInstance().LogErrorToCerr("Error : could not open
+  //    dsp::Logger::GetInstance().LogErrorToCerr("Error : could not open
   //    file."); assert(false);
   //  }
   //
   //  if (! sf_format_check (&input_file_info)) {
   //    sf_close (input_file);
-  //    mcl::Logger::GetInstance().LogErrorToCerr("Error : could not open
+  //    dsp::Logger::GetInstance().LogErrorToCerr("Error : could not open
   //    file."); assert(false);
   //  }
 
@@ -37,7 +37,7 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   int num_channels = audioFile.getNumChannels();
   int num_samples = audioFile.getNumSamplesPerChannel();
 
-  std::vector<Signal> signals(num_channels, mcl::Zeros<Sample>(num_samples));
+  std::vector<Signal> signals(num_channels, dsp::Zeros<Sample>(num_samples));
 
   for (int i = 0; i < num_samples; i += num_channels) {
     for (int channel = 0; channel < num_channels; ++channel) {

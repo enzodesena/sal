@@ -13,7 +13,9 @@
 #include "digitalfilter.h"
 #include "vectorop.h"
 
-namespace mcl {
+namespace sal {
+
+namespace dsp {
 
 /** IIR Filter */
 class IirFilter : public Filter {
@@ -135,6 +137,8 @@ IirFilter SeriesFilter(const IirFilter& filter_a, const IirFilter& filter_b);
 
 IirFilter SeriesFilter(const std::vector<IirFilter>& filters);
 
-}  // namespace mcl
+} // namespace dsp
+
+} // namespace sal
 
 #endif
