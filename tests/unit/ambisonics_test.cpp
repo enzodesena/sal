@@ -66,7 +66,7 @@ bool AmbisonicsMic::Test() {
   ASSERT(IsEqual(buffer_a.GetSample(2, 1, 0), sample * (-1.414213562373095)));
   ASSERT(IsEqual(buffer_a.GetSample(2, -1, 0), sample * 0.0));
 
-#if MCL_LOAD_BOOST
+#if SAL_DSP_LOAD_BOOST
   std::cout << "Running Boost-dependent Ambisonics tests" << std::endl;
 
   // Testing Ambisonics encoding

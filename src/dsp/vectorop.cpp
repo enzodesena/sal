@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -18,7 +18,7 @@
 #include "transformop.h"
 #include "vectorop.h"
 
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
 #include <Accelerate/Accelerate.h>
 #endif
 
@@ -29,8 +29,8 @@ namespace dsp {
 void Multiply(std::span<const Real> input_data, const Real gain,
               std::span<Real> output_data) noexcept {
   size_t num_samples = input_data.size();
-#if defined(MCL_APPLE_ACCELERATE_MMA) && MCL_APPLE_ACCELERATE_MMA
-#ifdef MCL_DATA_TYPE_DOUBLE
+#if defined(SAL_DSP_APPLE_ACCELERATE_MMA) && SAL_DSP_APPLE_ACCELERATE_MMA
+#ifdef SAL_DSP_DATA_TYPE_DOUBLE
   vDSP_vmulD(input_data, 1, &gain, 0, output_data, 1, num_samples);
 #else
   vDSP_vmul(input_data, 1, &gain, 0, output_data, 1, num_samples);
@@ -46,8 +46,8 @@ void MultiplyAdd(std::span<const Real> input_data_mult, const Real gain,
                  std::span<const Real> input_data_add,
                  std::span<Real> output_data) noexcept {
   const size_t num_samples = input_data_mult.size();
-#if defined(MCL_APPLE_ACCELERATE_MMA) && MCL_APPLE_ACCELERATE_MMA
-#ifdef MCL_DATA_TYPE_DOUBLE
+#if defined(SAL_DSP_APPLE_ACCELERATE_MMA) && SAL_DSP_APPLE_ACCELERATE_MMA
+#ifdef SAL_DSP_DATA_TYPE_DOUBLE
   vDSP_vmaD(input_data_mult.data(), 1, &gain, 0, input_data_add.data(), 1,
             output_data.data(), 1, num_samples);
 #else

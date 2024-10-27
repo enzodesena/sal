@@ -1,5 +1,5 @@
 /*
- MCL
+ Spatial Audio Library (SAL)
  Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
@@ -8,8 +8,8 @@
  Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef MCL_GRAPHICEQ_H
-#define MCL_GRAPHICEQ_H
+#ifndef SAL_DSP_GRAPHICEQ_H
+#define SAL_DSP_GRAPHICEQ_H
 
 #include <vector>
 

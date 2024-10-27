@@ -1,13 +1,13 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef MCL_FIRFILTER_H
-#define MCL_FIRFILTER_H
+#ifndef SAL_DSP_FIRFILTER_H
+#define SAL_DSP_FIRFILTER_H
 
 #include <span>
 #include <vector>
@@ -71,7 +71,7 @@ class FirFilter : public Filter {
   virtual ~FirFilter() {}
 
  private:
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   Real ProcessSampleAppleDsp(Real input_sample) noexcept;
   void ProcessBlockAppleDsp(std::span<const Real> input_data,
                             std::span<Real> output_data) noexcept;

@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -119,7 +119,7 @@ bool MatrixOpTest() {
   ASSERT(IsEqual(matrix_e, matrix_e));
   ASSERT(IsEqual(matrix_b, matrix_b));
 
-#if MCL_LOAD_EIGEN
+#if SAL_DSP_LOAD_EIGEN
   // Testing eigenvalues and eigenvectors
   EigOutput eig_e = Eig(matrix_e);
   ASSERT(eig_e.eigen_values.size() == 2);

@@ -55,7 +55,7 @@ void AmbisonicsMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
       break;
     }
 
-#if MCL_LOAD_BOOST
+#if SAL_DSP_LOAD_BOOST
     case Sn3d:
     case N3d: {
       // Precompute for performance gain

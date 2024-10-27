@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -8,8 +8,8 @@
 
 // This file contains definitions of matrix operations and classes
 
-#ifndef MCL_QUATERNION_H
-#define MCL_QUATERNION_H
+#ifndef SAL_DSP_QUATERNION_H
+#define SAL_DSP_QUATERNION_H
 
 #include <cassert>
 

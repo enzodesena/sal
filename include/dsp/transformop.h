@@ -1,13 +1,13 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef MCL_TRANSFORMOP_H
-#define MCL_TRANSFORMOP_H
+#ifndef SAL_DSP_TRANSFORMOP_H
+#define SAL_DSP_TRANSFORMOP_H
 
 #include <vector>
 

@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -12,7 +12,7 @@
 #include "elementaryop.h"
 #include "vectorop.h"
 
-#if MCL_LOAD_BOOST
+#if SAL_DSP_LOAD_BOOST
 #include <boost/math/special_functions/spherical_harmonic.hpp>
 #endif
 
@@ -129,7 +129,7 @@ Real LinearInterpolation(Real x0, Real y0, Real x1, Real y1, Real x) {
   return y0 + (x - x0) * m;
 }
 
-#if MCL_LOAD_BOOST
+#if SAL_DSP_LOAD_BOOST
 Real AssociatedLegendreP(Int n, Int m, Real x) {
   ASSERT(n >= 0);  // As in Matlab we don't accept n<0
   ASSERT(m >= 0);  // As in Matlab we don't accept m<0

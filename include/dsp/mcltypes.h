@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -8,8 +8,8 @@
 
 #include <assert.h>
 
-#ifndef MCL_MCLTYPES_H
-#define MCL_MCLTYPES_H
+#ifndef SAL_DSP_MCLTYPES_H
+#define SAL_DSP_MCLTYPES_H
 
 #ifndef PI
 #define PI 3.141592653589793238462643383279502884197169399375105820974944
@@ -26,52 +26,52 @@
 
 #if _WIN32 || _WIN64
 #if _WIN64
-#define MCL_ENV64BIT 1
+#define SAL_DSP_ENV64BIT 1
 #else
-#define MCL_ENV32BIT 1
+#define SAL_DSP_ENV32BIT 1
 #endif
 #elif __GNUC__
 #if __x86_64__ || __ppc64__
-#define MCL_ENV64BIT 1
+#define SAL_DSP_ENV64BIT 1
 #else
-#define MCL_ENV32BIT 1
+#define SAL_DSP_ENV32BIT 1
 #endif
 #endif
 
 #if _WIN32 || _WIN64
-#define MCL_ENVWINDOWS 1
+#define SAL_DSP_ENVWINDOWS 1
 #elif __APPLE__
-#define MCL_ENVAPPLE 1
+#define SAL_DSP_ENVAPPLE 1
 #elif __arm__ || __aarch64__  // Since this elif comes second, priority is given
                               // to APPLE descriptor
-#define MCL_ENVARM 1
+#define SAL_DSP_ENVARM 1
 #else
-#define MCL_ENVOTHER 1
+#define SAL_DSP_ENVOTHER 1
 #endif
 
-#ifdef MCL_ENVAPPLE
-#define MCL_APPLE_ACCELERATE 1
-#elif MCL_ENVARM
-#define MCL_NEON_ACCELERATE 1
-#elif MCL_ENVWINDOWS
-#define MCL_AVX_ACCELERATE 1
-#else  // MCL_ENVOTHER
-#define MCL_NO_ACCELERATE 1
+#ifdef SAL_DSP_ENVAPPLE
+#define SAL_DSP_APPLE_ACCELERATE 1
+#elif SAL_DSP_ENVARM
+#define SAL_DSP_NEON_ACCELERATE 1
+#elif SAL_DSP_ENVWINDOWS
+#define SAL_DSP_AVX_ACCELERATE 1
+#else  // SAL_DSP_ENVOTHER
+#define SAL_DSP_NO_ACCELERATE 1
 #endif
 
 // Exclude multiply and multiply-add as the compiler is able to do a better job
-#define MCL_APPLE_ACCELERATE_MMA 0
+#define SAL_DSP_APPLE_ACCELERATE_MMA 0
 
-#define MCL_MAX_VLA_LENGTH 16384
+#define SAL_DSP_MAX_VLA_LENGTH 16384
 
-#if MCL_ENVWINDOWS
-#define MCL_STACK_ALLOCATE(type, variable, size) \
+#if SAL_DSP_ENVWINDOWS
+#define SAL_DSP_STACK_ALLOCATE(type, variable, size) \
   type* variable = (type*)alloca((size) * sizeof(type));
 #else
-#define MCL_STACK_ALLOCATE(type, variable, size) type variable[(size)];
+#define SAL_DSP_STACK_ALLOCATE(type, variable, size) type variable[(size)];
 #endif
 
-#if MCL_ENVWINDOWS
+#if SAL_DSP_ENVWINDOWS
 #include <intrin.h>
 #endif
 
@@ -79,9 +79,9 @@ namespace sal {
 
 namespace dsp {
 
-#define MCL_DATA_TYPE_DOUBLE 1
+#define SAL_DSP_DATA_TYPE_DOUBLE 1
 
-#if MCL_DATA_TYPE_DOUBLE
+#if SAL_DSP_DATA_TYPE_DOUBLE
 typedef double Real; /**< Real type */
 #else
 typedef float Real; /**< Real type */
@@ -89,7 +89,7 @@ typedef float Real; /**< Real type */
 
 typedef std::complex<Real> Complex; /**< Complex type */
 
-#ifdef MCL_ENV64BIT
+#ifdef SAL_DSP_ENV64BIT
 typedef unsigned long long UInt; /**< Unsigned int type */
 typedef long long Int;           /**< Int type */
 #else                            // If it is 32 bits or unknown then...
@@ -99,7 +99,7 @@ typedef long Int;           /**< Int type */
 
 typedef std::complex<Real> Complex;
 
-#if MCL_DATA_TYPE_DOUBLE
+#if SAL_DSP_DATA_TYPE_DOUBLE
 static const Complex imaginary_unit(0.0, 1.0);
 #else
 static const Complex imaginary_unit(0.0f, 1.0f);
@@ -114,7 +114,7 @@ class RuntimeArchInfo {
   }
 
   bool IsAvxSupported() {
-#if defined(MCL_ENVWINDOWS)
+#if defined(SAL_DSP_ENVWINDOWS)
     if (!system_has_been_polled_) {
       int cpu_info[4];
       __cpuid(cpu_info, 0);

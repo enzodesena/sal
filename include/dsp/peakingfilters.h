@@ -1,5 +1,5 @@
 /*
- MCL
+ Spatial Audio Library (SAL)
  Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
@@ -8,8 +8,8 @@
  Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef MCL_PEAKINGFILTERS_H
-#define MCL_PEAKINGFILTERS_H
+#ifndef SAL_DSP_PEAKINGFILTERS_H
+#define SAL_DSP_PEAKINGFILTERS_H
 
 #include "constants.h"
 #include "iirfilter.h"

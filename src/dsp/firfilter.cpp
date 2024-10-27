@@ -1,5 +1,5 @@
 /*
- MCL
+ Spatial Audio Library (SAL)
  Copyright (c) 2012-18, Enzo De Sena
  All rights reserved.
 
@@ -14,19 +14,19 @@
 #include "mcltypes.h"
 #include "vectorop.h"
 
-#if defined(MCL_APPLE_ACCELERATE)
+#if defined(SAL_DSP_APPLE_ACCELERATE)
 #include <Accelerate/Accelerate.h>
-#elif defined(MCL_AVX_ACCELERATE)
+#elif defined(SAL_DSP_AVX_ACCELERATE)
 #include <immintrin.h>
 #include <pmmintrin.h>
 #include <xmmintrin.h>
 #endif
 
-#ifdef MCL_NEON_ACCELERATE
+#ifdef SAL_DSP_NEON_ACCELERATE
 #include "arm_neon.h"
 #endif
 
-#ifdef MCL_ENVWINDOWS
+#ifdef SAL_DSP_ENVWINDOWS
 #define ALIGNED(n) __declspec(align(n))
 #else
 #define ALIGNED(n) __attribute__((aligned(n)))
@@ -62,7 +62,7 @@ Real FirFilter::ProcessSample(Real input_sample) noexcept {
     delay_line_[0] = input_sample;
     return input_sample * coefficients_[0];
   }
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   return ProcessSampleAppleDsp(input_sample);
 #else
   return FilterStraight(input_sample);
@@ -81,15 +81,15 @@ void FirFilter::ProcessBlock(std::span<const Real> input_data,
     dsp::Multiply(input_data, coefficients_[0], output_data);
     return;
   }
-#if defined(MCL_APPLE_ACCELERATE)
+#if defined(SAL_DSP_APPLE_ACCELERATE)
   ProcessBlockAppleDsp(input_data, output_data);
-#elif defined(MCL_AVX_ACCELERATE) || defined(MCL_NEON_ACCELERATE)
+#elif defined(SAL_DSP_AVX_ACCELERATE) || defined(SAL_DSP_NEON_ACCELERATE)
   if (num_samples < length_ ||
-      (num_samples + length_ - 1) > MCL_MAX_VLA_LENGTH) {
+      (num_samples + length_ - 1) > SAL_DSP_MAX_VLA_LENGTH) {
     ProcessBlockSerial(input_data, output_data);
     return;
   } else {
-#if defined(MCL_ENVWINDOWS)  // defined(MCL_AVX_ACCELERATE)
+#if defined(SAL_DSP_ENVWINDOWS)  // defined(SAL_DSP_AVX_ACCELERATE)
     // Some Intel CPUs do not support AVX instructions.
     // Here we check whether they AVX supported or not, and in that case
     // we filter serially.
@@ -99,14 +99,14 @@ void FirFilter::ProcessBlock(std::span<const Real> input_data,
     }
 #endif
 
-    MCL_STACK_ALLOCATE(
+    SAL_DSP_STACK_ALLOCATE(
         float, extended_input_data,
         num_samples + length_ - 1);  // TODO: this does not compile now because
                                      // VLAs are incompatible with std::span.
-    MCL_STACK_ALLOCATE(float, output_data_float, num_samples);
+    SAL_DSP_STACK_ALLOCATE(float, output_data_float, num_samples);
     GetExtendedInput<float>(input_data, extended_input_data);
 
-#ifdef MCL_AVX_ACCELERATE
+#ifdef SAL_DSP_AVX_ACCELERATE
     const Int batch_size = 8;
     ALIGNED(16) __m256 input_frame;
     ALIGNED(16) __m256 coefficient;
@@ -123,7 +123,7 @@ void FirFilter::ProcessBlock(std::span<const Real> input_data,
       }
       _mm256_storeu_ps(output_data_float + n, accumulator);
     }
-#else  // MCL_NEON_ACCELERATE
+#else  // SAL_DSP_NEON_ACCELERATE
     const Int batch_size = 4;
     float32x4_t input_frame;
     float32x4_t coefficient;
@@ -161,7 +161,7 @@ void FirFilter::ProcessBlock(std::span<const Real> input_data,
     }
     counter_ = length_ - 1;
   }
-#else  // defined(MCL_NO_ACCELERATE)
+#else  // defined(SAL_DSP_NO_ACCELERATE)
   FilterSerial(input_data, output_data);
 #endif
 }
@@ -188,9 +188,9 @@ Real FirFilter::ProcessSampleStraight(Real input_sample) noexcept {
   return result;
 }
 
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
 Real FirFilter::ProcessSampleAppleDsp(Real input_sample) noexcept {
-  if (length_ - counter_ > MCL_MAX_VLA_LENGTH) {
+  if (length_ - counter_ > SAL_DSP_MAX_VLA_LENGTH) {
     return ProcessSampleStraight(input_sample);
   }
 
@@ -227,7 +227,7 @@ void FirFilter::ProcessBlockAppleDsp(std::span<const Real> input_data,
                                      std::span<Real> output_data) noexcept {
   size_t num_samples = input_data.size();
   if (num_samples < length_ ||
-      (num_samples + length_ - 1) > MCL_MAX_VLA_LENGTH) {
+      (num_samples + length_ - 1) > SAL_DSP_MAX_VLA_LENGTH) {
     ProcessBlockSerial(input_data, output_data);
     return;
   }
@@ -235,7 +235,7 @@ void FirFilter::ProcessBlockAppleDsp(std::span<const Real> input_data,
   ASSERT(temp_buffer_.size() >= num_samples + length_ - 1);
   GetExtendedInput(input_data, temp_buffer_);
 
-#if MCL_DATA_TYPE_DOUBLE
+#if SAL_DSP_DATA_TYPE_DOUBLE
   vDSP_convD(temp_buffer_.data(), 1, coefficients_.data() + length_ - 1, -1,
              output_data.data(), 1, num_samples, length_);
 #else  // Type is float

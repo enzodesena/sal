@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -23,7 +23,7 @@ Matrix<Real> RealPart(const Matrix<Complex>& input) noexcept {
   return output;
 }
 
-#if MCL_LOAD_EIGEN
+#if SAL_DSP_LOAD_EIGEN
 Eigen::MatrixXd ConvertToEigen(const Matrix<Real>& input) {
   Eigen::MatrixXd output(input.num_rows(), input.num_columns());
   for (Int i = 0; i < input.num_rows(); ++i) {

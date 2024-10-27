@@ -1,5 +1,5 @@
 /*
- MCL
+ Spatial Audio Library (SAL)
  Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 

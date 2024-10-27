@@ -1,13 +1,13 @@
 /*
- MCL
+ Spatial Audio Library (SAL)
  Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef MCL_BASICINFORMATION_H
-#define MCL_BASICINFORMATION_H
+#ifndef SAL_DSP_BASICINFORMATION_H
+#define SAL_DSP_BASICINFORMATION_H
 
 #include <limits>
 #include <vector>

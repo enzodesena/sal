@@ -1,13 +1,13 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
  */
 
-#ifndef MCL_MAXGRADIENTFILTER_H
-#define MCL_MAXGRADIENTFILTER_H
+#ifndef SAL_DSP_MAXGRADIENTFILTER_H
+#define SAL_DSP_MAXGRADIENTFILTER_H
 
 #include "digitalfilter.h"
 #include "elementaryop.h"

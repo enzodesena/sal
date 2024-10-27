@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -120,7 +120,7 @@ bool ElementaryOpTest() {
   ASSERT(RoundToInt(-0.2) == 0);
   ASSERT(RoundToInt(-3.6) == -4);
 
-#if MCL_LOAD_BOOST
+#if SAL_DSP_LOAD_BOOST
   ASSERT(IsEqual(AssociatedLegendreP(3, 0, 0.8), 0.08));
   ASSERT(IsEqual(AssociatedLegendreP(3, 1, 0.8), -1.980000000000001));
   ASSERT(IsEqual(AssociatedLegendreP(3, 2, 0.8), 4.320000000000000));

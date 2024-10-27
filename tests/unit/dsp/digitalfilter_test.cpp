@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -245,7 +245,7 @@ bool FirFilter::Test() {
   std::vector<Real> input = {1, 2, 3, 4, 5, 6, 7};
   Real output_lasplita_a[3];
   std::vector<Real> cmp_lasplita_a = {0.1, 0.4, 1.0};
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   filter_lasplita.ProcessBlockAppleDsp(std::span(input.begin(), 3),
                                        output_lasplita_a);
   ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
@@ -253,7 +253,7 @@ bool FirFilter::Test() {
 
   Real output_lasplita_b[4];
   std::vector<Real> cmp_lasplita_b = {1.6, 2.2, 2.8, 3.4};
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   filter_lasplita.ProcessBlockAppleDsp(std::span(input.begin() + 3, 4),
                                        output_lasplita_b);
   ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
@@ -303,7 +303,7 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(filter_c.ProcessSample(-3.5), -0.7600));
 
   FirFilter filter_ca(impulse_resp);
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   ASSERT(IsEqual(filter_ca.ProcessSampleAppleDsp(0.6), 0.1200));
   ASSERT(IsEqual(filter_ca.ProcessSampleAppleDsp(-3.5), -0.7600));
 #endif
@@ -313,14 +313,14 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(filter_cb.ProcessSampleStraight(-3.5), -0.7600));
 
   FirFilter filter_cd(impulse_resp);
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   ASSERT(IsEqual(filter_cd.ProcessSampleAppleDsp(0.6), 0.1200));
   ASSERT(IsEqual(filter_cd.ProcessSampleStraight(-3.5), -0.7600));
 #endif
 
   FirFilter filter_ce(impulse_resp);
   ASSERT(IsEqual(filter_ce.ProcessSampleStraight(0.6), 0.1200));
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   ASSERT(IsEqual(filter_ce.ProcessSampleAppleDsp(-3.5), -0.7600));
 #endif
 
@@ -355,7 +355,7 @@ bool FirFilter::Test() {
     ASSERT(dsp::IsEqual(filter_l.ProcessSample(input_b[i]), output_b_cmp[i]));
   }
 
-  // #ifdef MCL_APPLE_ACCELERATE
+  // #ifdef SAL_DSP_APPLE_ACCELERATE
   //   FirFilter filter_la(impulse_resp_b);
   //   Real cmp_la[input_b.size()];
   //   filter_la.ProcessBlockAppleDsp(input_b, cmp_la);
@@ -365,7 +365,7 @@ bool FirFilter::Test() {
   FirFilter filter_lasplit(impulse_resp_b);
   Real cmp_lasplit_a[4];
   Real cmp_lasplit_b[8];
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
   filter_lasplit.ProcessBlockAppleDsp(std::span(input_b.begin(), 4),
                                       cmp_lasplit_a);
   ASSERT(IsEqual(&output_b_cmp.data()[0], cmp_lasplit_a, 4));

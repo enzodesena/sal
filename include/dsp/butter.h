@@ -8,8 +8,8 @@
  "http://stackoverflow.com/questions/10373184/bandpass-butterworth-filter-implementation-in-c"
  */
 
-#ifndef MCL_BUTTER_H
-#define MCL_BUTTER_H
+#ifndef SAL_DSP_BUTTER_H
+#define SAL_DSP_BUTTER_H
 
 #include <vector>
 

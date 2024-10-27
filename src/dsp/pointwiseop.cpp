@@ -1,6 +1,6 @@
 /*
- MCL
- Copyright (c) 2012-18, Enzo De Sena
+ Spatial Audio Library (SAL)
+ Copyright (c) 2012-24, Enzo De Sena
  All rights reserved.
 
  Authors: Enzo De Sena, enzodesena@gmail.com
@@ -12,7 +12,7 @@
 #include "pointwiseop.h"
 #include "vectorop.h"
 
-#ifdef MCL_APPLE_ACCELERATE
+#ifdef SAL_DSP_APPLE_ACCELERATE
 #include <Accelerate/Accelerate.h>
 #endif
 
@@ -23,8 +23,8 @@ namespace dsp {
 void Multiply(std::span<const Real> input_a, std::span<const Real> input_b,
               std::span<Real> output) noexcept {
   const size_t num_samples = input_a.size();
-#ifdef MCL_APPLE_ACCELERATE
-#if MCL_DATA_TYPE_DOUBLE
+#ifdef SAL_DSP_APPLE_ACCELERATE
+#if SAL_DSP_DATA_TYPE_DOUBLE
   vDSP_vmulD(input_a.data(), 1, input_b.data(), 1, output.data(), 1,
              num_samples);
 #else
@@ -41,8 +41,8 @@ void Multiply(std::span<const Real> input_a, std::span<const Real> input_b,
 void Add(std::span<const Real> input_a, std::span<const Real> input_b,
          std::span<Real> output) noexcept {
   const size_t num_samples = input_a.size();
-#ifdef MCL_APPLE_ACCELERATE
-#if MCL_DATA_TYPE_DOUBLE
+#ifdef SAL_DSP_APPLE_ACCELERATE
+#if SAL_DSP_DATA_TYPE_DOUBLE
   vDSP_vaddD(input_a.data(), 1, input_b.data(), 1, output.data(), 1,
              num_samples);
 #else
