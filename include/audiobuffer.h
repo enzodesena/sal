@@ -30,24 +30,126 @@ class Buffer {
       : temporary_vector_(std::vector<Sample>(num_samples, 0.0)) {
     ASSERT(num_channels >= 0 && num_samples >= 0);
     data_.reserve(num_channels);
+    views_.reserve(num_channels);
     for (size_t chan_id = 0; chan_id < num_channels; ++chan_id) {
-      data_.push_back(std::vector<Sample>(num_samples));
+      data_.emplace_back(std::vector<Sample>(num_samples));
+      views_.emplace_back(data_[chan_id]);
     }
   }
 
   Buffer() : Buffer(0, 0) {}
 
-  virtual size_t num_channels() const noexcept { return data_.size(); }
+  // Copy constructor
+  Buffer(const Buffer& other)
+      : data_(other.data_), views_(other.views_), temporary_vector_(other.temporary_vector_) {
+    if (other.OwnsData()) {
+      for (size_t chan_id = 0; chan_id < data_.size(); ++chan_id) {
+        views_[chan_id] = std::span<Sample>(data_[chan_id]);
+      }
+    }
+  }
+  
+  /** Copy assignment operator. If you are trying to assign the object onto
+   itself, this operator has no effect. Also, there is no effect if you try
+   to assign a buffer that is referencing itself. For
+   instance, if A is a buffer that owns the data, and B is a buffer that
+   refers to A's data, then the assignment A = B has no effect. */
+  Buffer& operator=(const Buffer& other) {
+    if (this != &other) {
+      if (OwnsData() &&
+          num_channels() > 0 &&
+          other.num_channels() > 0 &&
+          other.views_[0].begin() == views_[0].begin()) { return *this; }
+      
+      temporary_vector_ = other.temporary_vector_;
+      views_.clear();
+      views_.reserve(other.views_.size());
+      if (other.OwnsData()) {
+        data_ = other.data_;
+        for (size_t chan_id = 0; chan_id < data_.size(); ++chan_id) {
+          views_.emplace_back(data_[chan_id]);
+        }
+      } else {
+        data_ = {};
+        views_ = other.views_;
+      }
+    }
+    return *this;
+  }
+  
+  // Move constructor
+  Buffer(Buffer&& other) noexcept
+      : data_(std::move(other.data_)),
+        views_(std::move(other.views_)),
+        temporary_vector_(std::move(other.temporary_vector_)) {
+    if (OwnsData()) {
+      // Re-establish views_ to reference the moved data_
+      for (size_t chan_id = 0; chan_id < data_.size(); ++chan_id) {
+        views_[chan_id] = std::span<Sample>(data_[chan_id]);
+      }
+    }
+    // If other doesn't own data, views_ is already correctly set to refer to
+    // external data.
+  }
+
+  // Move assignment operator
+  Buffer& operator=(Buffer&& other) noexcept {
+    if (this != &other) {
+      if (OwnsData() && num_channels() > 0 && other.num_channels() > 0 &&
+          other.views_[0].begin() == views_[0].begin()) {
+        return *this;
+      }
+
+      temporary_vector_ = std::move(other.temporary_vector_);
+      views_.clear();
+
+      if (other.OwnsData()) {
+        // Move data and set up views to point to our moved data_
+        data_ = std::move(other.data_);
+        other.views_ = {};
+        views_.reserve(data_.size());
+        for (size_t chan_id = 0; chan_id < data_.size(); ++chan_id) {
+          views_.emplace_back(data_[chan_id]); // Still copy again in case std::move(other.data_) didn't do its job properly
+        }
+      } else {
+        // Just move views_ if we're a non-owning view, and clear data_
+        data_ = {};
+        views_ = std::move(other.views_);
+      }
+    }
+    return *this;
+  }
+
+  
+  
+  // Creates a buffer that views external data
+  Buffer(std::vector<std::span<Sample>> external_data)
+      : views_(std::move(external_data)) {
+    ASSERT(data_.empty()); // Ensures that data_ is left empty to signify no ownership
+#ifndef NDEBUG
+    for (const auto& span : views_) {
+      ASSERT(!views_.empty() && span.size() == views_[0].size());
+    }
+#endif
+  }
+  
+  // Creates a mono buffer that views external data
+  Buffer(std::span<Sample> external_data)
+      : views_(std::vector<std::span<Sample>>(1, external_data)) {
+    ASSERT(data_.empty()); // Ensures that data_ is left empty to signify no ownership
+  }
+  
+  virtual size_t num_channels() const noexcept { return views_.size(); }
 
   virtual size_t num_samples() const noexcept {
-    return (num_channels() > 0) ? data_[0].size() : 0;
+    return (num_channels() > 0) ? views_[0].size() : 0;
   }
 
   inline Sample GetSample(size_t channel_id, size_t sample_id) const noexcept {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(sample_id >= 0 && sample_id < num_samples());
 
-    return data_[channel_id][sample_id];
+    return views_[channel_id][sample_id];
   }
 
   inline void SetSample(const size_t channel_id, const size_t sample_id,
@@ -55,28 +157,7 @@ class Buffer {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
     ASSERT(sample_id >= 0 && sample_id < num_samples());
 
-    data_[channel_id][sample_id] = sample;
-  }
-
-  /** Reassigns the values of a set of contigous samples in the buffer.
-
-   @param[in] channel_id The ID of the channel.
-   @param[in] from_sample_id The index of the first sample we want to modify.
-   @param[in] num_samples The number of samples we want to modify.
-   @param[in] samples The new samples.
-   */
-  void SetSamples(const size_t channel_id, const size_t from_sample_id,
-                  const size_t num_samples, const Sample* samples) noexcept {
-    ASSERT(channel_id >= 0 && channel_id < num_channels());
-
-    ASSERT(from_sample_id >= 0);
-    ASSERT(num_samples >= 0);
-    ASSERT((from_sample_id + num_samples) <= this->num_samples());
-
-    for (size_t sample_id = from_sample_id;
-         sample_id < (from_sample_id + num_samples); ++sample_id) {
-      data_[channel_id][sample_id] = samples[sample_id - from_sample_id];
-    }
+    views_[channel_id][sample_id] = sample;
   }
 
   void SetSamples(const Buffer& other) noexcept {
@@ -84,25 +165,29 @@ class Buffer {
     ASSERT(num_channels() == other.num_channels());
     for (size_t chan_id = 0; chan_id < num_channels(); ++chan_id) {
       for (size_t sample_id = 0; sample_id < num_samples(); ++sample_id) {
-        data_[chan_id][sample_id] = other.data_[chan_id][sample_id];
+        views_[chan_id][sample_id] = other.views_[chan_id][sample_id];
       }
     }
   }
 
   std::span<const Sample> GetReadView(const size_t channel_id) const noexcept {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
-    return std::span<const Sample>(data_[channel_id]);
+    return views_[channel_id];
   }
 
   std::span<Sample> GetWriteView(const size_t channel_id) noexcept {
     ASSERT(channel_id >= 0 && channel_id < num_channels());
-    return data_[channel_id];
+    return views_[channel_id];
+  }
+  
+  std::vector<std::span<Sample>> GetWriteViews() noexcept {
+    return views_;
   }
 
   void PrintData() {
     for (size_t chan_id = 0; chan_id < num_channels(); ++chan_id) {
       for (size_t sample_id = 0; sample_id < num_samples(); ++sample_id) {
-        std::cout << data_[chan_id][sample_id] << " ";
+        std::cout << views_[chan_id][sample_id] << " ";
       }
       std::cout << std::endl;
     }
@@ -112,9 +197,13 @@ class Buffer {
   virtual void Reset() noexcept {
     for (size_t chan_id = 0; chan_id < num_channels(); ++chan_id) {
       for (size_t sample_id = 0; sample_id < num_samples(); ++sample_id) {
-        data_[chan_id][sample_id] = 0.0;
+        views_[chan_id][sample_id] = 0.0;
       }
     }
+  }
+  
+  bool OwnsData() const noexcept {
+    return views_.size() == data_.size();
   }
 
   enum ChannelLabels { kMonoChannel = 0, kLeftChannel = 0, kRightChannel = 1 };
@@ -137,7 +226,8 @@ class Buffer {
   }
 
  private:
-  std::vector<std::vector<Sample> > data_;
+  std::vector<std::span<Sample>> views_; // If the buffer owns the data this points to data_
+  std::vector<std::vector<Sample>> data_; // If the buffer does not own the data, this is empty
   std::vector<Sample> temporary_vector_;  // Support vector for filter operation
 };
 
@@ -147,18 +237,13 @@ class MonoBuffer : public Buffer {
   explicit MonoBuffer(const Int num_samples) noexcept
       : Buffer(1, num_samples) {}
 
+  MonoBuffer(std::span<Sample> external_data) noexcept
+      : Buffer(external_data) {}
+  
   inline void SetSample(const Int sample_id,
                         const Sample sample_value) noexcept {
     Buffer::SetSample(kMonoChannel, sample_id, sample_value);
   }
-
-  using Buffer::SetSamples;
-
-  void SetSamples(const Int from_sample_id, const Int num_samples,
-                  const Sample* samples) noexcept {
-    Buffer::SetSamples(kMonoChannel, from_sample_id, num_samples, samples);
-  }
-
 
   inline Sample GetSample(const Int sample_id) const noexcept {
     return Buffer::GetSample(kMonoChannel, sample_id);
