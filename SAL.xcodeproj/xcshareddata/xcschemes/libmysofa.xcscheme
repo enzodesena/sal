@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "57ECCF9E2CCE530800A4D733"
-               BuildableName = "SAL Tests"
-               BlueprintName = "SAL Tests"
+               BlueprintIdentifier = "57C87C502CCE5532002D3951"
+               BuildableName = "liblibmysofa.a"
+               BlueprintName = "libmysofa"
                ReferencedContainer = "container:SAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -35,23 +35,11 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
-      useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/enzodesena/repos/sal"
+      useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      viewDebuggingEnabled = "No">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57ECCF9E2CCE530800A4D733"
-            BuildableName = "SAL Tests"
-            BlueprintName = "SAL Tests"
-            ReferencedContainer = "container:SAL.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
+      allowLocationSimulation = "YES">
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -59,16 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57ECCF9E2CCE530800A4D733"
-            BuildableName = "SAL Tests"
-            BlueprintName = "SAL Tests"
+            BlueprintIdentifier = "57C87C502CCE5532002D3951"
+            BuildableName = "liblibmysofa.a"
+            BlueprintName = "libmysofa"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
