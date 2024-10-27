@@ -27,7 +27,7 @@ bool SofaMic::Test(const mcl::Point& source_point, const Signal& cmp_left, const
   // https://publications.rwth-aachen.de/record/807373
   // I decided not to include it in the repo since it is rather heavy (170 MB)
   SofaMic mic(Point(0.0,0.0,0.0), mcl::Quaternion::Identity(),
-                "hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa",
+                "resources/hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa",
                 sampling_frequency);
   StereoBuffer buffer(impulse.num_samples());
   

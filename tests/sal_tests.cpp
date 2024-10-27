@@ -26,6 +26,14 @@
 #include "riranalysis.h"
 #include "tdbem.h"
 #include "wavhandler.h"
+#include "matrixop.h"
+#include "vectorop.h"
+#include "transformop.h"
+#include "statisticsop.h"
+#include "firfilter.h"
+#include "randomop.h"
+#include "iirfilter.h"
+#include "graphiceq.h"
 #include <vector>
 #include <iostream>
 
@@ -34,6 +42,25 @@
 int main(int argc, char * const argv[]) {
   
 #ifndef NDEBUG
+  mcl::FirFilter::Test();
+  mcl::Quaternion::Test();
+  mcl::ElementaryOpTest();
+  mcl::BasicOpTest();
+  mcl::VectorOpTest();
+  mcl::PointWiseOpTest();
+  mcl::TransformOpTest();
+  mcl::MatrixOpTest();
+  mcl::StatisticsOpTest();
+  mcl::ComparisonOpTest();
+  mcl::PointTest();
+  mcl::IirFilter::Test();
+  mcl::IirFilter::PeakingFilterTest();
+  mcl::IirFilter::PeakHighShelfTest();
+  mcl::IirFilter::PeakLowShelfTest();
+  mcl::IirFilter::GraphicEqTest();
+  mcl::RandomGenerator::Test();
+  std::cout<<"All DSP tests succeded!\n";
+  
   sal::Buffer::Test();
   sal::Microphone::Test();
   sal::KemarMic::Test();
@@ -43,7 +70,6 @@ int main(int argc, char * const argv[]) {
   sal::AmbisonicsMic::Test();
   sal::AmbisonicsHorizDec::Test();
   sal::DelayFilter::Test();
-////  sal::CipicMic::Test();
   sal::PropagationLine::Test();
   sal::FreeFieldSim::Test();
   sal::CuboidRoom::Test();
@@ -52,11 +78,12 @@ int main(int argc, char * const argv[]) {
   sal::RirAnalysis::Test();
   sal::TripletHandler::Test();
 
-  std::cout<<"All tests succeded!\n";
+  std::cout<<"All SAL tests succeded!\n";
 #else
   std::cout<<"Not running tests since NDEBUG is defined and asserts are ignored.\n";
 #endif
   
+  mcl::FirFilter::SpeedTests();
   sal::TdBem::SimulationTime();
   std::cout<<"FDTD speed: "<<sal::Fdtd::SimulationTime()<<" s\n";
     

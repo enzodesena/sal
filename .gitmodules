@@ -1,6 +1,9 @@
 [submodule "AudioFile"]
-	path = AudioFile
+	path = libs/AudioFile
 	url = git@github.com:adamstark/AudioFile.git
 [submodule "libmysofa"]
-	path = libmysofa
+	path = libs/libmysofa
 	url = git@github.com:enzodesena/libmysofa.git
+[submodule "libs/boost"]
+	path = libs/boost
+	url = git@github.com:boostorg/boost.git

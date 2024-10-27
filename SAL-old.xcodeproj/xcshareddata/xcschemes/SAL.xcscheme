@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1600"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5741B52E241B1D9700A6E779"
-               BuildableName = "SAL test (with SH)"
-               BlueprintName = "SAL test (with SH)"
+               BlueprintIdentifier = "57A1574415934AEC00AA6445"
+               BuildableName = "libSAL.a"
+               BlueprintName = "SAL"
                ReferencedContainer = "container:SAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,26 +31,24 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
-      useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/enzodesena/repos/sal/"
+      useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5741B52E241B1D9700A6E779"
-            BuildableName = "SAL test (with SH)"
-            BlueprintName = "SAL test (with SH)"
+            BlueprintIdentifier = "57A1574415934AEC00AA6445"
+            BuildableName = "libSAL.a"
+            BlueprintName = "SAL"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -58,16 +56,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5741B52E241B1D9700A6E779"
-            BuildableName = "SAL test (with SH)"
-            BlueprintName = "SAL test (with SH)"
+            BlueprintIdentifier = "57A1574415934AEC00AA6445"
+            BuildableName = "libSAL.a"
+            BlueprintName = "SAL"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
