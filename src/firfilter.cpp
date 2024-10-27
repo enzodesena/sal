@@ -65,7 +65,7 @@ Real FirFilter::ProcessSample(Real input_sample) noexcept {
   
 
 void FirFilter::ProcessBlock(std::span<const Real> input_data, std::span<Real> output_data) noexcept {
-  ASSERT(input_data.size() == output_data.size());
+  ASSERT(output_data.size() >= input_data.size());
   size_t num_samples = input_data.size();
   if (updating_) { UpdateCoefficients(); }
   if (length_ == 1) {
