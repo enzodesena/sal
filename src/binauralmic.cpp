@@ -72,11 +72,13 @@ void BinauralMicInstance::AddPlaneWaveRelative(
   UpdateFilter(point);
 
   filter_left_.ProcessBlock(input_data, scratch_vector_);
-  dsp::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kLeftChannel),
+  dsp::Add(output_buffer.GetReadView(Buffer::kLeftChannel), // Putting this first to ensure that the correct length is used
+           scratch_vector_,
            output_buffer.GetWriteView(Buffer::kLeftChannel));
 
   filter_right_.ProcessBlock(input_data, scratch_vector_);
-  dsp::Add(scratch_vector_, output_buffer.GetReadView(Buffer::kRightChannel),
+  dsp::Add(output_buffer.GetReadView(Buffer::kRightChannel),
+           scratch_vector_,
            output_buffer.GetWriteView(Buffer::kRightChannel));
 }
 

@@ -141,102 +141,11 @@ class Buffer {
   std::vector<Sample> temporary_vector_;  // Support vector for filter operation
 };
 
-//
-//  /** Adds samples to current sample values in the buffer.
-//
-//   @param[in] channel_id The ID of the channel.
-//   @param[in] from_sample_id The index of the first sample we want to modify.
-//   @param[in] num_samples The number of samples we want to modify.
-//   @param[in] samples The new samples.
-//   */
-//  void AddSamples(const Int channel_id,
-//                  const Int from_sample_id,
-//                  std::span<Sample> samples) noexcept {
-//    ASSERT(channel_id >= 0 && channel_id < num_channels());
-//    ASSERT(from_sample_id >= 0);
-//    ASSERT((from_sample_id+samples.size()) <= (size_t) num_samples_);
-//
-//    dsp::Add(samples,
-//             std::span<Sample>(data_[channel_id].begin() + from_sample_id,
-//             samples.size()), std::span<Sample>(data_[channel_id].begin() +
-//             from_sample_id, samples.size()));
-//  }
-//
-//  /** This method first multiplies all the input samples by a certain constant
-//   and then adds the result to the samples in the buffer. */
-//  void MultiplyAddSamples(const Int channel_id,
-//                          const Int from_sample_id,
-//                          const Int num_samples,
-//                          const Sample* samples,
-//                          const Sample constant) noexcept {
-//    ASSERT(channel_id >= 0 && channel_id < num_channels());
-//    ASSERT(from_sample_id >= 0);
-//    ASSERT(num_samples >= 0);
-//    ASSERT((from_sample_id+num_samples) <= num_samples_);
-//    dsp::MultiplyAdd(samples, constant, &(data_[channel_id][from_sample_id]),
-//                     num_samples, &(data_[channel_id][from_sample_id]));
-//  }
-//
-//  void FilterAddSamples(const Int channel_id,
-//                        const Int from_sample_id,
-//                        const Int num_samples,
-//                        const Sample* samples,
-//                        dsp::Filter& filter) noexcept {
-//    ASSERT(channel_id >= 0 && channel_id < num_channels());
-//    ASSERT(from_sample_id >= 0);
-//    ASSERT(num_samples >= 0);
-//    ASSERT((from_sample_id+num_samples) <= num_samples_);
-//    filter.ProcessBlock(samples, temporary_vector_.data());
-//    dsp::Add(temporary_vector_.data(),
-//             &(data_[channel_id][from_sample_id]), num_samples,
-//             &(data_[channel_id][from_sample_id]));
-//  }
-//  Sample** GetWritePointers() noexcept { return data_; }
-
-//  /** Adds all the samples from another buffer. The buffer has to be of the
-//   same type and have the same number of channels
-//   and samples (checked only through debugging asserts).
-//   */
-//  virtual void AddSamples(const Buffer& buffer) noexcept {
-//    ASSERT(num_channels() == buffer.num_channels());
-//    ASSERT(num_samples() == buffer.num_samples());
-//
-//    for (Int chan_id = 0; chan_id<num_channels(); ++chan_id) {
-//      dsp::Add(GetReadView(chan_id),
-//               buffer.GetReadView(chan_id),
-//               num_samples(),
-//               GetWriteView(chan_id));
-//    }
-//  }
-
-//  void SetFrame(const Int channel_id,
-//                const Int frame_id,
-//                const Int frame_length,
-//                const Signal& signal) {
-//    for (dsp::Int n=0; n<num_samples(); ++n) {
-//      dsp::Int index = frame_id*frame_length + n;
-//      if (index < (dsp::Int) signal.size()) {
-//        SetSample(channel_id, n, signal[index]);
-//      } else {
-//        SetSample(channel_id, n, 0.0);
-//      }
-//    }
-//  }
 
 class MonoBuffer : public Buffer {
  public:
   explicit MonoBuffer(const Int num_samples) noexcept
       : Buffer(1, num_samples) {}
-
-  //  /** This first multiplies all the input samples by a certain constant
-  //   and then adds the result to the samples in the buffer. */
-  //  void MultiplyAddSamples(const Int from_sample_id,
-  //                          const Int num_samples,
-  //                          const Sample* samples,
-  //                          const Sample constant) noexcept {
-  //    Buffer::MultiplyAddSamples(kMonoChannel, from_sample_id, num_samples,
-  //                               samples, constant);
-  //  }
 
   inline void SetSample(const Int sample_id,
                         const Sample sample_value) noexcept {
@@ -250,11 +159,6 @@ class MonoBuffer : public Buffer {
     Buffer::SetSamples(kMonoChannel, from_sample_id, num_samples, samples);
   }
 
-  //  void SetFrame(const Int frame_id,
-  //                const Int frame_length,
-  //                const Signal& signal) {
-  //    Buffer::SetFrame(0, frame_id, frame_length, signal);
-  //  }
 
   inline Sample GetSample(const Int sample_id) const noexcept {
     return Buffer::GetSample(kMonoChannel, sample_id);
@@ -273,15 +177,6 @@ class MonoBuffer : public Buffer {
     output.SetSample(0, sample);
     return output;
   }
-
-  //  using Buffer::AddSamples;
-  //
-  //  void AddSamples(const Int from_sample_id,
-  //                  const Int num_samples,
-  //                  const Sample* samples) noexcept {
-  //    Buffer::AddSamples(kMonoChannel, from_sample_id, num_samples,
-  //                                   samples);
-  //  }
 };
 
 class StereoBuffer : public Buffer {
@@ -322,35 +217,6 @@ class StereoBuffer : public Buffer {
     return Buffer::GetWriteView(kRightChannel);
   }
 
-  //  void AddSamplesLeft(const Sample* samples,
-  //                      const Int from_sample_id,
-  //                      const Int num_samples_to_add) noexcept {
-  //    Buffer::AddSamples(kLeftChannel, from_sample_id,
-  //                                   num_samples_to_add, samples);
-  //  }
-  //
-  //  void FilterAddSamplesLeft(const Int from_sample_id,
-  //                            const Int num_samples,
-  //                            const Sample* samples,
-  //                            dsp::Filter& filter) noexcept {
-  //    Buffer::FilterAddSamples(kLeftChannel, from_sample_id,
-  //                                         num_samples, samples, filter);
-  //  }
-  //
-  //  void FilterAddSamplesRight(const Int from_sample_id,
-  //                             const Int num_samples,
-  //                             const Sample* samples,
-  //                             dsp::Filter& filter) noexcept {
-  //    Buffer::FilterAddSamples(kRightChannel, from_sample_id,
-  //                                         num_samples, samples, filter);
-  //  }
-  //
-  //  void AddSamplesRight(const Sample* samples,
-  //                       const Int from_sample_id,
-  //                       const Int num_samples_to_add) noexcept {
-  //    Buffer::AddSamples(kRightChannel, from_sample_id,
-  //                                   num_samples_to_add, samples);
-  //  }
 };
 
 enum class HoaOrdering { Fuma, Acn };
@@ -370,27 +236,6 @@ class HoaBuffer : public Buffer {
                       sample_value);
   }
 
-  //  using Buffer::AddSamples;
-
-  //  void AddSamples(const Int order, const Int degree,
-  //                  const Int from_sample_id,
-  //                  const Int num_samples,
-  //                  const Sample* samples) {
-  //    Buffer::AddSamples(GetChannelId(order, degree, ordering_),
-  //                                   from_sample_id, num_samples, samples);
-  //  }
-  //
-  //  /** This first multiplies all the input samples by a certain constant
-  //   and then adds the result to the samples in the buffer. */
-  //  void MultiplyAddSamples(const Int order, const Int degree,
-  //                          const Int from_sample_id,
-  //                          const Int num_samples,
-  //                          const Sample* samples,
-  //                          const Sample constant) noexcept {
-  //    Buffer::MultiplyAddSamples(GetChannelId(order, degree, ordering_),
-  //                               from_sample_id, num_samples,
-  //                               samples, constant);
-  //  }
 
   inline Sample GetSample(const Int order, const Int degree,
                           const Int sample_id) const noexcept {

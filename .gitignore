@@ -2,6 +2,7 @@
 *sine_*
 *.DS_Store
 *current_latency.txt
+resources/hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa
 
 # Xcode
 *.pbxuser
