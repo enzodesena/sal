@@ -24,7 +24,7 @@ class FirFilter : public Filter {
  public:
   /** Constructs an FIR filter with impulse response B. */
   FirFilter(const std::vector<Real> B = std::vector<Real>(1, 1.0),
-            const size_t max_input_length = 1 << 14) noexcept;
+            const size_t max_input_length = 1 << 16) noexcept;
 
   /**
    Returns the output of the filter for an input equal to `input`.

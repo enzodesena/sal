@@ -104,7 +104,7 @@ class BinauralMicInstance {
   BinauralMicInstance(BinauralMic* base_mic, sal::Int update_length,
                       const HeadRefOrientation reference_orientation =
                           HeadRefOrientation::standard,
-                      const size_t max_input_size = 1 << 14)
+                      const size_t max_input_size = 1 << 16)
       : previous_point_(dsp::Point(NAN, NAN, NAN)),
         base_mic_(base_mic),
         filter_left_(dsp::FirFilter::GainFilter(1.0)),
