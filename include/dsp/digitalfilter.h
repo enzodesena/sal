@@ -18,27 +18,71 @@ namespace sal {
 
 namespace dsp {
 
-/** Digital filter abstract class */
 class Filter {
  public:
-  virtual void ProcessBlock(std::span<const Real> input_data,
-                            std::span<Real> output_data) noexcept {
-    ProcessBlockSerial(input_data, output_data);
+  template <typename FilterType>
+  Filter(FilterType x)
+      : self_(std::make_unique<FilterModel<FilterType>>(std::move(x))) {}
+
+  Filter(const Filter& x) : self_(x.self_->copy_()) {}
+
+  Filter(Filter&& x) noexcept = default;
+
+  Filter& operator=(const Filter& x) noexcept {
+    Filter tmp(x);
+    *this = std::move(tmp);  // Using move assignment operator
+    return *this;
   }
 
-  void ProcessBlockSerial(std::span<const Real> input_data,
-                          std::span<Real> output_data) noexcept {
-    for (size_t i = 0; i < input_data.size(); ++i) {
-      output_data[i] = ProcessSample(input_data[i]);
+  /** Move assignment operator */
+  Filter& operator=(Filter&& x) noexcept = default;
+
+  // Const version of ProcessBlock for read-only operations
+  void ProcessBlock(std::span<const Real> input, std::span<Real> output) const {
+    self_->ProcessBlock_(input, output);
+  }
+
+  // Non-const version of ProcessBlock for mutable operations
+  void ProcessBlock(std::span<const Real> input, std::span<Real> output) {
+    const_cast<FilterConcept&>(*self_).ProcessBlock_(input, output);
+  }
+  
+  void Reset() {
+    self_->Reset_();
+  }
+
+ private:
+  struct FilterConcept {
+    virtual ~FilterConcept() = default;
+    virtual void ProcessBlock_(std::span<const Real> input,
+                               std::span<Real> output) = 0;
+    virtual void Reset_() = 0;
+    virtual std::unique_ptr<FilterConcept> copy_() const = 0;
+  };
+
+  template <typename FilterType>
+  struct FilterModel final : FilterConcept {
+    FilterModel(FilterType x) : data_(std::move(x)) {}
+
+    std::unique_ptr<FilterConcept> copy_() const override {
+      return std::make_unique<FilterModel>(*this);
     }
-  }
 
-  /** Returns the output of the filter for an input equal to `input` . */
-  virtual Real ProcessSample(const Real input) noexcept = 0;
+    void ProcessBlock_(std::span<const Real> input,
+                       std::span<Real> output) override {
+      data_.ProcessBlock(input, output);
+    }
+    
+    void Reset_() override {
+      data_.Reset();
+    }
 
-  /** Resets the state of the filter */
-  virtual void Reset() = 0;
+    FilterType data_;
+  };
+
+  std::unique_ptr<FilterConcept> self_;  // Concept is drawable object
 };
+
 
 /** Filter bank abstract class */
 class FilterBank {

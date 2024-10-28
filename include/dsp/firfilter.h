@@ -20,7 +20,7 @@ namespace sal {
 
 namespace dsp {
 /** FIR Filter */
-class FirFilter : public Filter {
+class FirFilter {
  public:
   /** Constructs an FIR filter with impulse response B. */
   FirFilter(const std::vector<Real> B = std::vector<Real>(1, 1.0),
@@ -33,12 +33,10 @@ class FirFilter : public Filter {
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real ProcessSample(const Real input_sample) noexcept;
+  Real ProcessSample(const Real input_sample) noexcept;
 
-  virtual void ProcessBlock(std::span<const Real> input_data,
+  void ProcessBlock(std::span<const Real> input_data,
                             std::span<Real> output_data) noexcept;
-
-  using Filter::ProcessBlock;
 
   /**
    Updates the filter coefficients. You can set how long it takes to
@@ -60,6 +58,9 @@ class FirFilter : public Filter {
   /** Returns the impulse response of the filter */
   std::vector<Real> impulse_response() noexcept;
 
+  void ProcessBlockSerial(std::span<const Real> input_data,
+                          std::span<Real> output_data) noexcept;
+
   /** Constructs a filter for which output==gain*input always. */
   static FirFilter GainFilter(const Real gain) noexcept;
 
@@ -67,8 +68,6 @@ class FirFilter : public Filter {
   static bool Test();
 
   static void SpeedTests();
-
-  virtual ~FirFilter() {}
 
  private:
 #ifdef SAL_DSP_APPLE_ACCELERATE
@@ -124,39 +123,39 @@ class FirFilter : public Filter {
   size_t length_;
 };
 
-class GainFilter : public Filter {
+class GainFilter {
  public:
   GainFilter(const Real gain) : gain_(gain) {}
 
-  virtual Real ProcessSample(const Real input) noexcept {
+  Real ProcessSample(const Real input) noexcept {
     return input * gain_;
   }
 
-  virtual void ProcessBlock(std::span<const Real> input_data,
+  void ProcessBlock(std::span<const Real> input_data,
                             std::span<Real> output_data) noexcept {
     Multiply(input_data, gain_, output_data);
   }
 
-  virtual void Reset() {}
+  void Reset() {}
 
  private:
   Real gain_;
 };
 
-class IdenticalFilter : public Filter {
+class IdenticalFilter {
  public:
   IdenticalFilter() {}
 
-  virtual Real ProcessSample(const Real input) noexcept { return input; }
+  Real ProcessSample(const Real input) noexcept { return input; }
 
-  virtual void ProcessBlock(std::span<const Real> input_data,
+  void ProcessBlock(std::span<const Real> input_data,
                             std::span<Real> output_data) noexcept {
     for (size_t i = 0; i < input_data.size(); ++i) {
       output_data[i] = input_data[i];
     }
   }
 
-  virtual void Reset() {}
+  void Reset() {}
 };
 
 } // namespace dsp

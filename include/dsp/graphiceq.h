@@ -26,7 +26,7 @@ namespace dsp {
 /**
  * Class that implements a graphic equaliser
  */
-class GraphicEq : public Filter {
+class GraphicEq {
  public:
   /**
    * Constructor that initialises the GraphicEq with given frequency bands, Q
@@ -48,11 +48,6 @@ class GraphicEq : public Filter {
    */
   GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc,
             const Real Q, const Real sampling_frequency);
-
-  /**
-   * Default deconstructor
-   */
-  ~GraphicEq() {};
 
   /**
    * Initialises the filter parameters with the given gains
@@ -96,17 +91,17 @@ class GraphicEq : public Filter {
    * @param input The input to the GraphicEq
    * @return The output of the GraphicEq
    */
-  virtual Real ProcessSample(const Real input) noexcept;
+  Real ProcessSample(const Real input) noexcept;
 
   /**
-   * Processes an input buffer and updates the output buffer
+   * Processes an input buffer and updates the output buffer (the number of samples is given
+   * by the size of `input_data`. 
    *
    * @param input_data The input buffer
    * @param output_data The output buffer
-   * @param num_samples The number of frames in the buffer
    */
-  virtual void ProcessBlock(const Real* input_data, const Int num_samples,
-                            Real* output_data) noexcept;
+  void ProcessBlock(std::span<const Real> input_data,
+                    std::span<Real> output_data) noexcept;
 
   /**
    * Resets the filter buffers
@@ -119,7 +114,7 @@ class GraphicEq : public Filter {
 
   void PrintCoefficients();
 
-  virtual void Reset();
+  void Reset();
 
   static bool Test() noexcept;
 

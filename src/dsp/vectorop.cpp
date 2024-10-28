@@ -325,26 +325,27 @@ std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept {
   return output;
 }
 
-void ProcessAll(Filter& filter,
+void ProcessAll(const Filter& filter,
                 const std::vector<std::vector<Real> >& input_signals,
                 std::vector<std::vector<Real> >& output_signals) {
-  filter.Reset();
+  Filter filter_prototype(filter);
+  filter_prototype.Reset();
   for (size_t i = 0; i < input_signals.size(); ++i) {
-    filter.ProcessBlock(input_signals[i], output_signals[i]);
-    filter.Reset();
+    filter_prototype.ProcessBlock(input_signals[i], output_signals[i]);
+    filter_prototype.Reset();
   }
 }
 
-void FilterAll(
-    Filter& filter,
+void ProcessAll(
+    const Filter& filter,
     std::vector<std::vector<std::vector<Real> > >& matrix_of_input_signals,
     std::vector<std::vector<std::vector<Real> > >& matrix_of_output_signals) {
-  filter.Reset();
+  Filter filter_prototype(filter);
   for (size_t i = 0; i < matrix_of_input_signals.size(); ++i) {
     for (size_t j = 0; j < matrix_of_input_signals[i].size(); ++j) {
-      filter.ProcessBlock(matrix_of_input_signals[i][j],
+      filter_prototype.ProcessBlock(matrix_of_input_signals[i][j],
                           matrix_of_output_signals[i][j]);
-      filter.Reset();
+      filter_prototype.Reset();
     }
   }
 }

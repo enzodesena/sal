@@ -18,7 +18,7 @@ namespace sal {
 namespace dsp {
 
 /** IIR Filter */
-class IirFilter : public Filter {
+class IirFilter {
  public:
   /** Constructs a default filter, i.e. identical filter*/
   IirFilter();
@@ -36,12 +36,10 @@ class IirFilter : public Filter {
    (1) Filter(0.5)==0 and then
    (2) Filter(0.0)==0.5
    */
-  virtual Real ProcessSample(const Real input) noexcept;
+  Real ProcessSample(const Real input) noexcept;
 
-  virtual void ProcessBlock(std::span<const Real> input_data,
+  void ProcessBlock(std::span<const Real> input_data,
                             std::span<Real> output_data) noexcept;
-
-  using Filter::ProcessBlock;
 
   /** Returns the order of the filter. */
   size_t order() const noexcept;
@@ -91,6 +89,8 @@ class IirFilter : public Filter {
   static bool GraphicEqTest() noexcept;
 
  private:
+  void ProcessBlockSerial(std::span<const Real> input_data,
+                          std::span<Real> output_data) noexcept;
   std::vector<Real> B_;
   std::vector<Real> A_;
 

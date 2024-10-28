@@ -101,8 +101,8 @@ DatabaseBinauralMic::DatabaseBinauralMic(
 }
 
 void DatabaseBinauralMic::FilterAll(dsp::Filter& filter) {
-  dsp::FilterAll(filter, hrtf_database_right_, hrtf_database_right_);
-  dsp::FilterAll(filter, hrtf_database_left_, hrtf_database_left_);
+  dsp::ProcessAll(filter, hrtf_database_right_, hrtf_database_right_);
+  dsp::ProcessAll(filter, hrtf_database_left_, hrtf_database_left_);
 }
 
 }  // namespace sal

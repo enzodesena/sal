@@ -62,7 +62,7 @@ KemarMic::KemarMic(const Point& position, const Quaternion orientation,
     used_num_samples = 64;
     // Downsample the database by a factor 2
     dsp::IirFilter filter = dsp::Butter(10, 0.001, 0.45);
-    FilterAll(filter);
+//    FilterAll(filter);
     for (Int i = 0; i < NUM_ELEVATIONS_KEMAR; ++i) {
       for (Int j = 0; j < num_measurements[i]; ++j) {
         hrtf_database_right_[i][j] =
@@ -215,7 +215,7 @@ std::vector<std::vector<Signal> > KemarMic::LoadEmbedded(
 
   dsp::IirFilter normalising_filter =
       dsp::GainFilter(1.0 / NORMALISING_VALUE_KEMAR);
-  dsp::FilterAll(normalising_filter, hrtf_database, hrtf_database);
+  dsp::ProcessAll(normalising_filter, hrtf_database, hrtf_database);
   return hrtf_database;
 }
 

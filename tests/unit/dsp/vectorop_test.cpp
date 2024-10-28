@@ -703,7 +703,7 @@ bool VectorOpTest() {
       set_of_signals_a, set_of_signals_b};
   std::vector<std::vector<std::vector<Real> > > set_of_sets_of_output_signals =
       set_of_sets_of_input_signals;
-  FilterAll(filter_a, set_of_sets_of_input_signals,
+  ProcessAll(filter_a, set_of_sets_of_input_signals,
             set_of_sets_of_output_signals);
   std::vector<Real> filter_all_4_cmp = {0.2000, -1.0000, 1.7000, -0.9000,
                                         0.8000, -2.8000, 3.8000, -1.8000,

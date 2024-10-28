@@ -21,7 +21,7 @@
 
 namespace sal {
 
-class DelayFilter : public dsp::Filter {
+class DelayFilter {
  public:
   /**
    Constructs a delay filter object with intial latency given by latency. A
@@ -41,7 +41,7 @@ class DelayFilter : public dsp::Filter {
   void Write(std::span<const Sample> input_data) noexcept;
 
   /** Resets the state of the filter */
-  virtual void Reset() noexcept;
+  void Reset() noexcept;
 
   /**
    Returns the current sample from the filter. Between two Tick() operation it
@@ -117,7 +117,7 @@ class DelayFilter : public dsp::Filter {
   DelayFilter& operator=(const DelayFilter&);
   DelayFilter(const DelayFilter&);
 
-  virtual dsp::Real ProcessSample(const dsp::Real input) noexcept;
+  dsp::Real ProcessSample(const dsp::Real input) noexcept;
 
   static bool Test();
 

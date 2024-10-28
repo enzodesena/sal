@@ -190,8 +190,9 @@ Real GraphicEq::ProcessSample(const Real input) noexcept {
   }
 }
 
-void GraphicEq::ProcessBlock(const Real* input_data, const Int num_samples,
-                             Real* output_data) noexcept {
+void GraphicEq::ProcessBlock(std::span<const Real> input_data,
+                             std::span<Real> output_data) noexcept {
+  size_t num_samples = input_data.size();
   if (equal_) {
     for (size_t i = 0; i < (size_t)num_samples; i++) {
       output_data[i] = ProcessSample(input_data[i]);

@@ -246,7 +246,7 @@ class RampSmoother {
 };
 
 /** Implements a first-order IIR low-pass filter with a given decay constant. */
-class LowPassSmoothingFilter : public dsp::Filter {
+class LowPassSmoothingFilter {
  public:
   /**
    @param[in] ramp_samples number of samples after which the value is
@@ -261,13 +261,11 @@ class LowPassSmoothingFilter : public dsp::Filter {
                              dsp::BinaryVector<dsp::Real>(1.0, -a1));
   }
 
-  virtual dsp::Real ProcessSample(const dsp::Real input) noexcept {
+  dsp::Real ProcessSample(const dsp::Real input) noexcept {
     return filter_.ProcessSample(input);
   }
 
-  using sal::dsp::Filter::ProcessSample;
-
-  virtual void Reset() noexcept { filter_.Reset(); }
+  void Reset() noexcept { filter_.Reset(); }
 
  private:
   dsp::IirFilter filter_;

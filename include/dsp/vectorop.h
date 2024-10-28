@@ -460,15 +460,15 @@ std::vector<Complex> ConvertToComplex(std::vector<Real> input) noexcept;
 ///** Filters all signals in a vector of signals through a given filter. Prior
 ///to every signal, the filter state is reset, and it is also resetted at the
 ///end. */
-void ProcessAll(Filter& filter,
+void ProcessAll(const Filter& filter,
                 const std::vector<std::vector<Real> >& input_signals,
                 std::vector<std::vector<Real> >& output_signals);
 //
 ///** Filters all signals in a vector of vectors signals through a given filter.
 ///Prior to every signal, the filter state is reset, and it is also resetted at
 ///the end. */
-void FilterAll(
-    Filter& filter,
+void ProcessAll(
+    const Filter& filter,
     std::vector<std::vector<std::vector<Real> > >& matrix_of_input_signals,
     std::vector<std::vector<std::vector<Real> > >& matrix_of_output_signals);
 

@@ -240,7 +240,7 @@ bool IirFilter::GraphicEqTest() noexcept {
   input_data[0] = 1.0;
 
   GraphicEq eq(gains, fc, Q, fs);
-  eq.ProcessBlock(&input_data[0], num_samples, &output_data[0]);
+  eq.ProcessBlock(input_data, output_data);
 
   std::vector<Real> output_data_cmp(
       {0.789794889,  -0.003782045, 0.010303789,  0.015598704,  0.016070502,

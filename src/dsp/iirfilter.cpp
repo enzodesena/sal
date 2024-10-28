@@ -169,6 +169,13 @@ void IirFilter::Reset() {
   }
 }
 
+void IirFilter::ProcessBlockSerial(std::span<const Real> input_data,
+                                   std::span<Real> output_data) noexcept {
+  for (size_t i = 0; i < input_data.size(); ++i) {
+    output_data[i] = ProcessSample(input_data[i]);
+  }
+}
+
 IirFilter GainFilter(Real gain) {
   std::vector<Real> B(1);
   std::vector<Real> A(1);
