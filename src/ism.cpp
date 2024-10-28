@@ -55,14 +55,14 @@ void Ism::ProcessBlock(std::span<const Sample> input_data,
 /** Calculates the Rir. This is called by Run() before filtering. */
 void Ism::CalculateRir() {
   dsp::Matrix<Sample> beta(2, 3);
-  std::vector<dsp::IirFilter> filters = room_->wall_filters();
-  beta.SetElement(0, 0, filters[0].B()[0]);  // beta_{x1}
-  beta.SetElement(0, 1, filters[2].B()[0]);  // beta_{y1}
-  beta.SetElement(0, 2, filters[4].B()[0]);  // beta_{z1}
+  std::vector<dsp::Filter> filters = room_->wall_filters();
+  beta.SetElement(0, 0, CuboidRoom::GetFilterResponse(filters[0]));  // beta_{x1}
+  beta.SetElement(0, 1, CuboidRoom::GetFilterResponse(filters[2]));  // beta_{y1}
+  beta.SetElement(0, 2, CuboidRoom::GetFilterResponse(filters[4]));  // beta_{z1}
 
-  beta.SetElement(1, 0, filters[1].B()[0]);  // beta_{x2}
-  beta.SetElement(1, 1, filters[3].B()[0]);  // beta_{y2}
-  beta.SetElement(1, 2, filters[5].B()[0]);  // beta_{z2}
+  beta.SetElement(1, 0, CuboidRoom::GetFilterResponse(filters[1]));  // beta_{x2}
+  beta.SetElement(1, 1, CuboidRoom::GetFilterResponse(filters[3]));  // beta_{y2}
+  beta.SetElement(1, 2, CuboidRoom::GetFilterResponse(filters[5]));  // beta_{z2}
 
   Length room_x = ((CuboidRoom*)room_)->dimensions().x();
   Length room_y = ((CuboidRoom*)room_)->dimensions().y();

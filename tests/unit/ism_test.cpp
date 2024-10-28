@@ -100,7 +100,7 @@ bool Ism::Test() {
   Sample beta_y1 = 1.0 / sqrt(5.0);
   Sample beta_y2 = 1.0 / sqrt(6.0);
 
-  std::vector<dsp::IirFilter> iir_filters;
+  std::vector<dsp::Filter> iir_filters;
   iir_filters.push_back(GainFilter(beta_x1));
   iir_filters.push_back(GainFilter(beta_x2));
   iir_filters.push_back(GainFilter(beta_y1));

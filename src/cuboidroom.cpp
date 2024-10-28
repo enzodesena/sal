@@ -139,9 +139,9 @@ std::vector<Point> CuboidRoom::CalculateBoundaryPoints(
   return reflection_points;
 }
 
-std::vector<dsp::IirFilter> CuboidRoom::GetBoundaryFilters(
+std::vector<dsp::Filter> CuboidRoom::GetBoundaryFilters(
     const Point& source_point, const Point& mic_point) const noexcept {
-  std::vector<dsp::IirFilter> boundary_filters(wall_filters_);
+  std::vector<dsp::Filter> boundary_filters(wall_filters_);
 
   if (boundary_set_type_ == kFirstAndSecondOrder) {
     Point a_kX2 =
@@ -274,17 +274,26 @@ Point CuboidRoom::ReflectionPoint(const CuboidWallId wall_id,
                            image_position);
 }
 
+// This assumes that the filter is one-tap (freq independent)
+Sample CuboidRoom::GetFilterResponse(dsp::Filter filter) {
+  std::vector<Sample> output(1);
+  filter.ProcessBlock(std::vector<Sample>(1, 1.0), output);
+  return output[0];
+}
+
 Time CuboidRoom::SabineRt60() const {
   Length volume = dimensions_.x() * dimensions_.y() * dimensions_.z();
   Length weighted_area = 0.0;
 
+  std::vector<dsp::Filter> wall_filters(this->wall_filters());
   for (Int i = 0; i < 6; ++i) {
+    dsp::Filter filter = wall_filters[i];
+    
     // Assert that all of them are simple gain filters
     // TODO: Implement for frequency dependent ones
-    ASSERT(wall_filters()[i].B().size() == 1);
-    ASSERT(wall_filters()[i].A().size() == 1);
-    ASSERT(dsp::IsEqual(wall_filters()[i].A()[0], 1.0));
-    Sample beta = wall_filters()[i].B()[0];
+    std::vector<Sample> output(1);
+    filter.ProcessBlock(std::vector<Sample>(1, 1.0), output);
+    Sample beta = output[0];
     Sample alpha = 1.0 - pow(beta, 2.0);
 
     Length area = NAN;
@@ -310,6 +319,7 @@ Time CuboidRoom::SabineRt60() const {
   }
 
   return 0.161 * volume / weighted_area;
+  return NAN;
 }
 
 dsp::Point CuboidRoom::ImageSourcePosition(const Point& source_position,

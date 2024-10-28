@@ -26,7 +26,7 @@ class CuboidRoom : public Room {
   // The room filter is *not* an injected dependency. The software will do lots
   // of copies of the object.
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const std::vector<dsp::IirFilter>& filter_prototypes)
+             const std::vector<dsp::Filter>& filter_prototypes)
       : Room(filter_prototypes),
         dimensions_(Triplet(x, y, z)),
         origin_position_(Triplet(0, 0, 0)) {
@@ -36,8 +36,8 @@ class CuboidRoom : public Room {
   }
 
   CuboidRoom(sal::Length x, sal::Length y, sal::Length z,
-             const dsp::IirFilter& filter_prototype)
-      : Room(std::vector<dsp::IirFilter>(6, filter_prototype)),
+             const dsp::Filter& filter_prototype)
+      : Room(std::vector<dsp::Filter>(6, filter_prototype)),
         dimensions_(Triplet(x, y, z)),
         origin_position_(Triplet(0, 0, 0)) {}
 
@@ -49,15 +49,15 @@ class CuboidRoom : public Room {
    @param[in] filter_prototype Prototype of the wall filter.
    */
   CuboidRoom(const Triplet& room_dimensions, const Triplet& origin_position,
-             const dsp::IirFilter& filter_prototype)
-      : Room(std::vector<dsp::IirFilter>(6, filter_prototype)),
+             const dsp::Filter& filter_prototype)
+      : Room(std::vector<dsp::Filter>(6, filter_prototype)),
         dimensions_(room_dimensions),
         origin_position_(origin_position) {}
 
   virtual std::vector<dsp::Point> CalculateBoundaryPoints(
       const dsp::Point& source, const dsp::Point& destination) const noexcept;
 
-  virtual std::vector<dsp::IirFilter> GetBoundaryFilters(
+  virtual std::vector<dsp::Filter> GetBoundaryFilters(
       const dsp::Point& source_point,
       const dsp::Point& mic_point) const noexcept;
 
@@ -73,6 +73,8 @@ class CuboidRoom : public Room {
 
   Triplet dimensions() const noexcept { return dimensions_; }
 
+  static Sample GetFilterResponse(dsp::Filter filter);
+  
   void SetDimensions(const Triplet& dimensions) noexcept {
     dimensions_ = dimensions;
   }

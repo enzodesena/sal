@@ -10,7 +10,6 @@
 #define SAL_DSP_IIRFILTER_H
 
 #include "constants.h"
-#include "digitalfilter.h"
 #include "vectorop.h"
 
 namespace sal {

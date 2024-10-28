@@ -23,33 +23,27 @@ class Room {
   // This is the standard constructor where you feed the room `shape` and for
   // each face of the shape you also provide a filter. The order in the
   // `filters` vector follows that of the employed shape.
-  Room(const std::vector<dsp::IirFilter>& wall_filters) noexcept
+  Room(const std::vector<dsp::Filter>& wall_filters) noexcept
       : wall_filters_(wall_filters), boundary_set_type_(kFirstOrder) {}
 
-  const std::vector<dsp::IirFilter>& wall_filters() const noexcept {
+  const std::vector<dsp::Filter>& wall_filters() const noexcept {
     return wall_filters_;
   }
 
   // Resets the wall filters. Warning! It may cancel the state of the old ones,
   // with probable audible artifacts.
   void SetWallFilters(
-      const std::vector<dsp::IirFilter>& wall_filters) noexcept {
+      const std::vector<dsp::Filter>& wall_filters) noexcept {
     wall_filters_ = wall_filters;
   }
 
-  void SetWallFilter(const Int wall_id, const dsp::IirFilter& filter) noexcept {
+  void SetWallFilter(const Int wall_id, const dsp::Filter& filter) noexcept {
     ASSERT(wall_id >= 0 && wall_id < num_boundary_points());
     wall_filters_[wall_id] = filter;
   }
 
-  void SetWallFilters(const dsp::IirFilter& filter) noexcept {
+  void SetWallFilters(const dsp::Filter& filter) noexcept {
     wall_filters_.assign(num_faces(), filter);
-  }
-
-  void SetFiltersNumeratorCoefficient(const Int coeff_id, const Sample value) {
-    for (Int i = 0; i < (Int)wall_filters_.size(); ++i) {
-      wall_filters_[i].SetNumeratorCoefficient(coeff_id, value);
-    }
   }
 
   // Returns a vector of points located at geometrical reflections,
@@ -58,7 +52,7 @@ class Room {
       const dsp::Point& source,
       const dsp::Point& destination) const noexcept = 0;
 
-  virtual std::vector<dsp::IirFilter> GetBoundaryFilters(
+  virtual std::vector<dsp::Filter> GetBoundaryFilters(
       const dsp::Point& source_point,
       const dsp::Point& mic_point) const noexcept = 0;
 
@@ -84,7 +78,7 @@ class Room {
   virtual ~Room() noexcept {}
 
  protected:
-  std::vector<dsp::IirFilter> wall_filters_;
+  std::vector<dsp::Filter> wall_filters_;
   BoundarySetType boundary_set_type_;
 };
 
