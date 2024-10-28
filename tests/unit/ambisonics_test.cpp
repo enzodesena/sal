@@ -187,24 +187,24 @@ bool AmbisonicsHorizDec::Test() {
   num_lf_cmp[0] = 0.000589143208472;
   num_lf_cmp[1] = 0.001178286416944;
   num_lf_cmp[2] = 0.000589143208472;
-  ASSERT(IsEqual(filter_low.B(), num_lf_cmp));
+  ASSERT(IsEqual(filter_low.numerator_coeffs(), num_lf_cmp));
   std::vector<Sample> den_lf_cmp(3);
   den_lf_cmp[0] = 1.000000000000000;
   den_lf_cmp[1] = -1.902910910316590;
   den_lf_cmp[2] = 0.905267483150478;
-  ASSERT(IsEqual(filter_low.A(), den_lf_cmp));
+  ASSERT(IsEqual(filter_low.denominator_coeffs(), den_lf_cmp));
 
   IirFilter filter_high(CrossoverFilterHigh(380, 48000));
   std::vector<Sample> num_hf_cmp(3);
   num_hf_cmp[0] = -0.952044598366767;
   num_hf_cmp[1] = 1.904089196733534;
   num_hf_cmp[2] = -0.952044598366767;
-  ASSERT(IsEqual(filter_high.B(), num_hf_cmp));
+  ASSERT(IsEqual(filter_high.numerator_coeffs(), num_hf_cmp));
   std::vector<Sample> den_hf_cmp(3);
   den_hf_cmp[0] = 1.000000000000000;
   den_hf_cmp[1] = -1.902910910316590;
   den_hf_cmp[2] = 0.905267483150478;
-  ASSERT(IsEqual(filter_high.A(), den_hf_cmp));
+  ASSERT(IsEqual(filter_high.denominator_coeffs(), den_hf_cmp));
 
   // Testing near field correction filter by J. Daniel
 
@@ -231,20 +231,20 @@ bool AmbisonicsHorizDec::Test() {
 
   IirFilter filter_a = NFCFilter(2, R, Fs, c);
 
-  ASSERT(IsEqual(filter_a.B(), BB, 1.0E-3));
-  ASSERT(IsEqual(filter_a.A(), AA, 1.0E-3));
+  ASSERT(IsEqual(filter_a.numerator_coeffs(), BB, 1.0E-3));
+  ASSERT(IsEqual(filter_a.denominator_coeffs(), AA, 1.0E-3));
 
   IirFilter filter_b = NFCFilter(1, R, Fs, c);
   // TODO: I copied this values from my Matlab implementation,
   // but I am not sure whether that implementation was tested for first-order.
-  ASSERT(IsEqual(filter_b.B()[0], 1.0));
-  ASSERT(IsEqual(filter_b.B()[1], -1.0));
-  ASSERT(IsEqual(filter_b.A()[0], 1.003888888888889));
-  ASSERT(IsEqual(filter_b.A()[1], -0.996111111111111));
+  ASSERT(IsEqual(filter_b.numerator_coeffs()[0], 1.0));
+  ASSERT(IsEqual(filter_b.numerator_coeffs()[1], -1.0));
+  ASSERT(IsEqual(filter_b.denominator_coeffs()[0], 1.003888888888889));
+  ASSERT(IsEqual(filter_b.denominator_coeffs()[1], -0.996111111111111));
 
   IirFilter filter_c = NFCFilter(0, R, Fs, c);
-  ASSERT(IsEqual(filter_c.B(), dsp::UnaryVector<Sample>(1.0)));
-  ASSERT(IsEqual(filter_c.A(), dsp::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.numerator_coeffs(), dsp::UnaryVector<Sample>(1.0)));
+  ASSERT(IsEqual(filter_c.denominator_coeffs(), dsp::UnaryVector<Sample>(1.0)));
 
   // Testing loudspeaker placement
 

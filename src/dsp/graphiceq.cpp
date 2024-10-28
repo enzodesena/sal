@@ -138,17 +138,17 @@ void GraphicEq::SetGain(const std::vector<Real>& gain) {
 
 void GraphicEq::PrintCoefficients() {
   Matrix<Real> num_parameters(num_filters_ + 1, 3);
-  num_parameters.SetRow(0, low_shelf_.B());
-  num_parameters.SetRow(1, high_shelf_.B());
+  num_parameters.SetRow(0, low_shelf_.numerator_coeffs());
+  num_parameters.SetRow(1, high_shelf_.numerator_coeffs());
 
   Matrix<Real> den_parameters(num_filters_ + 1, 3);
-  den_parameters.SetRow(0, low_shelf_.A());
-  den_parameters.SetRow(1, high_shelf_.A());
+  den_parameters.SetRow(0, low_shelf_.denominator_coeffs());
+  den_parameters.SetRow(1, high_shelf_.denominator_coeffs());
 
   int i = 2;
   for (PeakingFilter& filter : peaking_filters_) {
-    num_parameters.SetRow(i, filter.B());
-    den_parameters.SetRow(i++, filter.A());
+    num_parameters.SetRow(i, filter.numerator_coeffs());
+    den_parameters.SetRow(i++, filter.denominator_coeffs());
   }
   num_parameters.SetRow(i, {current_gain_[0], 0.0, 0.0});
   den_parameters.SetRow(i, {1, 0.0, 0.0});

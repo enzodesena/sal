@@ -73,10 +73,10 @@ class IirFilter {
                                          const Real sampling_frequency) const;
 
   /** Returns the forward coefficients */
-  std::vector<Real> B() const;
+  std::vector<Real> numerator_coeffs() const;
 
   /** Returns the backward coefficients */
-  std::vector<Real> A() const;
+  std::vector<Real> denominator_coeffs() const;
 
   void Reset();
 
@@ -90,12 +90,12 @@ class IirFilter {
  private:
   void ProcessBlockSerial(std::span<const Real> input_data,
                           std::span<Real> output_data) noexcept;
-  std::vector<Real> B_;
-  std::vector<Real> A_;
+  std::vector<Real> numerator_coeffs_;
+  std::vector<Real> denominator_coeffs_;
 
   // By storing A[0] before normalisation we can output B() and A() before
   // normalisation while keeping the internal representation normalised
-  Real A0_;
+  Real denominator_coeff_0_;
 
   std::vector<Real> state_;
 };

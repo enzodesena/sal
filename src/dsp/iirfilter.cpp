@@ -20,49 +20,49 @@ namespace dsp {
 void IirFilter::SetNumeratorCoefficient(const size_t coeff_id,
                                         const Real value) noexcept {
   // Store a normalised version
-  B_.at(coeff_id) = value / A0_;
+  numerator_coeffs_.at(coeff_id) = value / denominator_coeff_0_;
 }
 
 void IirFilter::SetDenominatorCoefficient(const size_t coeff_id,
                                           const Real value) noexcept {
   if (coeff_id == 0) {
     // Store a normalised version
-    A0_ = value;
-    A_[0] = value;
-    B_ = Multiply(B_, 1.0 / A0_);
-    A_ = Multiply(A_, 1.0 / A0_);
+    denominator_coeff_0_ = value;
+    denominator_coeffs_[0] = value;
+    numerator_coeffs_ = Multiply(numerator_coeffs_, 1.0 / denominator_coeff_0_);
+    denominator_coeffs_ = Multiply(denominator_coeffs_, 1.0 / denominator_coeff_0_);
   } else {
     // Store a normalised version
-    A_.at(coeff_id) = value / A0_;
+    denominator_coeffs_.at(coeff_id) = value / denominator_coeff_0_;
   }
 }
 
 Real IirFilter::GetNumeratorCoefficient(const size_t coeff_id) const noexcept {
   // Return the non-normalised version
-  return B_.at(coeff_id) * A0_;
+  return numerator_coeffs_.at(coeff_id) * denominator_coeff_0_;
 }
 
 Real IirFilter::GetDenominatorCoefficient(
     const size_t coeff_id) const noexcept {
   // Return the non-normalised version
-  return A_.at(coeff_id) * A0_;
+  return denominator_coeffs_.at(coeff_id) * denominator_coeff_0_;
 }
 
-std::vector<Real> IirFilter::B() const {
+std::vector<Real> IirFilter::numerator_coeffs() const {
   // Return the non-normalised version
-  return Multiply(B_, A0_);
+  return Multiply(numerator_coeffs_, denominator_coeff_0_);
 }
 
-std::vector<Real> IirFilter::A() const {
+std::vector<Real> IirFilter::denominator_coeffs() const {
   // Return the non-normalised version
-  return Multiply(A_, A0_);
+  return Multiply(denominator_coeffs_, denominator_coeff_0_);
 }
 
 void IirFilter::SetCoefficients(const std::vector<Real>& B,
                                 const std::vector<Real>& A) noexcept {
   // TODO: implement case where length changes.
-  ASSERT(B_.size() == B.size());
-  ASSERT(A_.size() == A.size());
+  ASSERT(numerator_coeffs_.size() == B.size());
+  ASSERT(denominator_coeffs_.size() == A.size());
 
   for (size_t i = 0; i < B.size(); ++i) {
     SetDenominatorCoefficient(i, A[i]);
@@ -82,14 +82,14 @@ void IirFilter::SetCoefficients(const IirFilter& other_filter) noexcept {
 
 // Constructor
 IirFilter::IirFilter()
-    : B_(dsp::UnaryVector<Real>(1.0)),
-      A_(dsp::UnaryVector<Real>(1.0)),
-      A0_(1.0) {
-  state_ = std::vector<Real>(B_.size(), 0.0);
+    : numerator_coeffs_(dsp::UnaryVector<Real>(1.0)),
+      denominator_coeffs_(dsp::UnaryVector<Real>(1.0)),
+      denominator_coeff_0_(1.0) {
+  state_ = std::vector<Real>(numerator_coeffs_.size(), 0.0);
 }
 
 IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A)
-    : B_(B), A_(A), A0_(1.0) {
+    : numerator_coeffs_(B), denominator_coeffs_(A), denominator_coeff_0_(1.0) {
   // TODO: implement also for B.size != A.size
   ASSERT(B.size() == A.size());
   ASSERT(B.size() >= 1);
@@ -99,13 +99,13 @@ IirFilter::IirFilter(std::vector<Real> B, std::vector<Real> A)
 }
 
 size_t IirFilter::order() const noexcept {
-  return Max(B_.size(), A_.size()) - 1;
+  return Max(numerator_coeffs_.size(), denominator_coeffs_.size()) - 1;
 }
 
 void IirFilter::ProcessBlock(std::span<const Real> input_data,
                              std::span<Real> output_data) noexcept {
-  if (B_.size() == 1) {
-    Multiply(input_data, B_[0], output_data);
+  if (numerator_coeffs_.size() == 1) {
+    Multiply(input_data, numerator_coeffs_[0], output_data);
   } else {
     ProcessBlockSerial(input_data, output_data);
   }
@@ -115,19 +115,19 @@ Real IirFilter::ProcessSample(Real input) noexcept {
   Real v = input;  // The temporary value in the recursive branch.
   Real output(0.0);
 
-  size_t size = B_.size();
+  size_t size = numerator_coeffs_.size();
 
   // Speed up return for simple gain filters
   if (size == 1) {
-    return v * B_[0];
+    return v * numerator_coeffs_[0];
   }
 
   // The index i in both loops refers to the branch in the classic plot of a
   // direct form II, with the highest branch (the one multiplied by b(0) only)
   // being i=0.
   for (size_t i = 1; i < size; ++i) {
-    v += state_[i - 1] * (-A_[i]);
-    output += state_[i - 1] * B_[i];
+    v += state_[i - 1] * (-denominator_coeffs_[i]);
+    output += state_[i - 1] * numerator_coeffs_[i];
   }
 
   for (size_t i = (size - 1); i >= 1; --i) {
@@ -136,7 +136,7 @@ Real IirFilter::ProcessSample(Real input) noexcept {
 
   state_[0] = v;
 
-  output += v * B_[0];
+  output += v * numerator_coeffs_[0];
 
   return output;
 }
@@ -148,13 +148,13 @@ std::vector<Real> IirFilter::GetFrequencyResponse(
   std::vector<Real> magnitudes(frequencies.size(), 0.0);
   for (size_t i = 0; i < frequencies.size(); i++) {
     omega = 2.0 * PI * frequencies[i] / sampling_frequency;
-    Complex num = B_[0];
+    Complex num = numerator_coeffs_[0];
     Complex den = 1.0;
 
     for (size_t j = 1; j <= order(); j++) {
       e = std::exp(-((Real)j) * imaginary_unit * omega);
-      num += B_[j] * e;
-      den += A_[j] * e;
+      num += numerator_coeffs_[j] * e;
+      den += denominator_coeffs_[j] * e;
     }
 
     magnitudes[i] = 20 * std::log10(std::abs(num / den));
@@ -163,7 +163,7 @@ std::vector<Real> IirFilter::GetFrequencyResponse(
 }
 
 void IirFilter::Reset() {
-  const size_t size = B_.size();
+  const size_t size = numerator_coeffs_.size();
   for (size_t i = 0; i < size; ++i) {
     state_[i] = 0.0;
   }
@@ -289,8 +289,8 @@ IirFilter PinkifierFilter() {
 }
 
 IirFilter SeriesFilter(const IirFilter& filter_a, const IirFilter& filter_b) {
-  return IirFilter(Conv(filter_a.B(), filter_b.B()),
-                   Conv(filter_a.A(), filter_b.A()));
+  return IirFilter(Conv(filter_a.numerator_coeffs(), filter_b.numerator_coeffs()),
+                   Conv(filter_a.denominator_coeffs(), filter_b.denominator_coeffs()));
 }
 
 IirFilter SeriesFilter(const std::vector<IirFilter>& filters) {

@@ -89,8 +89,8 @@ bool IirFilter::Test() {
   A_d[1] = -1.999977314492666;
   A_d[2] = 0.994178009420333;
   IirFilter filter_l(B_d, A_d);
-  ASSERT(IsEqual(B_d, filter_l.B()));
-  ASSERT(IsEqual(A_d, filter_l.A()));
+  ASSERT(IsEqual(B_d, filter_l.numerator_coeffs()));
+  ASSERT(IsEqual(A_d, filter_l.denominator_coeffs()));
 
   std::vector<Real> signal_d = dsp::Zeros<Real>(4);
   signal_d[0] = 0.989949493661167;
@@ -134,8 +134,8 @@ bool IirFilter::Test() {
   butter_a_den_cmp[5] = -0.850496842492471;
   butter_a_den_cmp[6] = 0.197825187264320;
 
-  ASSERT(IsEqual(butter_a.B(), butter_a_num_cmp));
-  ASSERT(IsEqual(butter_a.A(), butter_a_den_cmp));
+  ASSERT(IsEqual(butter_a.numerator_coeffs(), butter_a_num_cmp));
+  ASSERT(IsEqual(butter_a.denominator_coeffs(), butter_a_den_cmp));
 
   IirFilter butter_b = Butter(2, 0.12, 0.79);
   std::vector<Real> butter_b_num_cmp = dsp::Zeros<Real>(5);
@@ -150,8 +150,8 @@ bool IirFilter::Test() {
   butter_b_den_cmp[3] = 0.041607774454425;
   butter_b_den_cmp[4] = 0.243288940651677;
 
-  ASSERT(IsEqual(butter_b.B(), butter_b_num_cmp));
-  ASSERT(IsEqual(butter_b.A(), butter_b_den_cmp));
+  ASSERT(IsEqual(butter_b.numerator_coeffs(), butter_b_num_cmp));
+  ASSERT(IsEqual(butter_b.denominator_coeffs(), butter_b_den_cmp));
 
   IirFilter filter_i;
   ASSERT(IsEqual(filter_i.ProcessSample(1.2), 1.2));
@@ -174,8 +174,8 @@ bool IirFilter::Test() {
   octave_a_den_cmp[5] = -2.619423015108258;
   octave_a_den_cmp[6] = 0.460896610043675;
 
-  ASSERT(IsEqual(octave_a.B(), octave_a_num_cmp));
-  ASSERT(IsEqual(octave_a.A(), octave_a_den_cmp));
+  ASSERT(IsEqual(octave_a.numerator_coeffs(), octave_a_num_cmp));
+  ASSERT(IsEqual(octave_a.denominator_coeffs(), octave_a_den_cmp));
 
   // Testing series of IIR filters
   octave_a.Reset();

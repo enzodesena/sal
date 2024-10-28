@@ -337,7 +337,7 @@ dsp::IirFilter AmbisonicsHorizDec::CrossoverFilterHigh(
   dsp::IirFilter filter_low(
       CrossoverFilterLow(cut_off_frequency, sampling_frequency));
 
-  return dsp::IirFilter(b_hf, filter_low.A());
+  return dsp::IirFilter(b_hf, filter_low.denominator_coeffs());
 }
 
 // Near-field correction filters as described in
