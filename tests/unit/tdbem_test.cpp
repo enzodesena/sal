@@ -31,7 +31,7 @@ bool TdBem::SimulationTime() {
 
   OmniMic mic(Point(1.23, 2.556, 0.456));
 
-  Source source(Point(1.23, 2.556, 0.856));
+  OmniSource source(Point(1.23, 2.556, 0.856));
 
   CuboidRoom room(5.23, 4.86, 2.1, dsp::GainFilter(1));
 

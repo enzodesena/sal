@@ -80,6 +80,10 @@ std::vector<Real> FindPeaks(
     const std::vector<Real>& vector,
     const Real min_peak_height = std::numeric_limits<Real>::min());
 
+
+
+Real EvaluateTrigPolynomial(const Real value, const std::vector<Real>& coefficients);
+
 bool BasicOpTest();
 
 }  // namespace dsp

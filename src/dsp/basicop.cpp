@@ -45,6 +45,14 @@ Int MaxIndex<UInt>(const std::vector<UInt>& input) noexcept {
   return MinIndex(Opposite(ConvertToInt(input)));
 }
 
+Real EvaluateTrigPolynomial(const Real value, const std::vector<Real>& coefficients) {
+  Real output = coefficients[0];
+  for (size_t i = 1; i < coefficients.size(); ++i) {
+    output += coefficients[i] * pow(cos(value), i);
+  }
+  return output;
+}
+
 } // namespace dsp
 
 } // namespace sal

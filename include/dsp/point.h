@@ -10,6 +10,7 @@
 #define SAL_DSP_POINT_H
 
 #include "dsptypes.h"
+#include "constants.h"
 
 namespace sal {
 
@@ -162,6 +163,15 @@ bool IntersectionPlaneLineExists(const Point& line_point,
                                  const Point& line_direction,
                                  const Point& plane_point,
                                  const Point& plane_normal) noexcept;
+
+
+class Quaternion;
+/**
+ Rotate point around a `center_point` and `center_orientation` for a given `handedness`.
+ For instance,
+ */
+Point RotatePoint(const Point& point, const Point& center_point, const Quaternion& center_orientation, const sal::dsp::Handedness handedness) noexcept;
+
 
 bool PointTest();
 

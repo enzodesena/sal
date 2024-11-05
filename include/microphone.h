@@ -48,7 +48,8 @@ class Microphone {
    is a single plane wave incoming) do this automatically.
    */
   Microphone(dsp::Point position,
-             dsp::Quaternion orientation = dsp::Quaternion::Identity());
+             dsp::Quaternion orientation = dsp::Quaternion::Identity(),
+             dsp::Handedness handedness = dsp::Handedness::kRightHanded);
 
   /** Returns current position of the microphone */
   dsp::Point position() const noexcept;

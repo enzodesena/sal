@@ -31,8 +31,8 @@ bool FreeFieldSim::Test() {
   input_buffers.emplace_back(std::make_unique<MonoBuffer>(input_buffer_a));
   input_buffers.emplace_back(std::make_unique<MonoBuffer>(input_buffer_b));
 
-  Source source_a(Point(-one_sample_space, 0.0, 0.0));
-  Source source_b(Point(3 * one_sample_space, 0.0, 0.0));
+  OmniSource source_a(Point(-one_sample_space, 0.0, 0.0));
+  OmniSource source_b(Point(3 * one_sample_space, 0.0, 0.0));
   std::vector<Source*> sources(2);
   sources[0] = &source_a;
   sources[1] = &source_b;

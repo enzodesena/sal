@@ -147,6 +147,7 @@
 				unit/riranalysis_test.cpp,
 				unit/salutilities_test.cpp,
 				unit/sofamic_test.cpp,
+				unit/source_test.cpp,
 				unit/sphericalheadmic_test.cpp,
 				unit/tdbem_test.cpp,
 			);

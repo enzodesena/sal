@@ -23,8 +23,8 @@ namespace sal {
 
 class MonoMic : virtual public Microphone {
  public:
-  MonoMic(dsp::Point position, dsp::Quaternion orientation)
-      : Microphone(position, orientation) {}
+  MonoMic(dsp::Point position, dsp::Quaternion orientation, const dsp::Handedness handedness = dsp::Handedness::kRightHanded)
+      : Microphone(position, orientation, handedness) {}
 
   /** This method is used mostly for testing, as it is very slow.
    You should use AddPlaneWave instead. */
@@ -72,8 +72,8 @@ class MonoMic : virtual public Microphone {
 
 class MemorylessMic : virtual public Microphone {
  public:
-  MemorylessMic(dsp::Point position, dsp::Quaternion orientation)
-      : Microphone(position, orientation) {}
+  MemorylessMic(dsp::Point position, dsp::Quaternion orientation, const dsp::Handedness handedness = dsp::Handedness::kRightHanded)
+      : Microphone(position, orientation, handedness) {}
 
  private:
   virtual Sample GetDirectivity(const dsp::Point& point) = 0;
@@ -81,10 +81,12 @@ class MemorylessMic : virtual public Microphone {
 
 class MemorylessMonoMic : public MemorylessMic, public MonoMic {
  public:
-  MemorylessMonoMic(dsp::Point position, dsp::Quaternion orientation)
-      : Microphone(position, orientation),
-        MemorylessMic(position, orientation),
-        MonoMic(position, orientation) {}
+  MemorylessMonoMic(const dsp::Point& position,
+                    const dsp::Quaternion& orientation,
+                    const dsp::Handedness handedness = dsp::Handedness::kRightHanded)
+      : Microphone(position, orientation, handedness),
+        MemorylessMic(position, orientation, handedness),
+        MonoMic(position, orientation, handedness) {}
 
   virtual ~MemorylessMonoMic() {}
 
@@ -104,7 +106,7 @@ class MemorylessMonoMic : public MemorylessMic, public MonoMic {
 
 class GainMic : public MemorylessMonoMic {
  public:
-  GainMic(dsp::Point position, Sample gain)
+  GainMic(Sample gain, const dsp::Point& position)
       : Microphone(position, dsp::Quaternion::Identity()),
         MemorylessMonoMic(position, dsp::Quaternion::Identity()),
         gain_(gain) {}
@@ -119,9 +121,9 @@ class GainMic : public MemorylessMonoMic {
 
 class OmniMic : public GainMic {
  public:
-  OmniMic(dsp::Point position)
+  OmniMic(const dsp::Point& position)
       : Microphone(position, dsp::Quaternion::Identity()),
-        GainMic(position, (Sample)1.0) {}
+        GainMic((Sample)1.0, position) {}
 };
 
 /**
@@ -131,24 +133,18 @@ class OmniMic : public GainMic {
  */
 class TrigMic : public MemorylessMonoMic {
  public:
-  TrigMic(dsp::Point position, dsp::Quaternion orientation,
-          std::vector<Sample> coefficients)
-      : Microphone(position, orientation),
-        MemorylessMonoMic(position, orientation),
+  TrigMic(const std::vector<Sample>& coefficients, const dsp::Point& position, const dsp::Quaternion& orientation,
+          dsp::Handedness handedness = dsp::Handedness::kRightHanded)
+      : Microphone(position, orientation, handedness),
+        MemorylessMonoMic(position, orientation, handedness),
         coefficients_(coefficients) {}
 
  private:
   virtual Sample GetDirectivity(const dsp::Point& point) {
     Angle phi = AngleBetweenPoints(point, dsp::Point(1.0, 0.0, 0.0));
-
-    const Int N = coefficients_.size();
-    Sample directivity(coefficients_[0]);
-    for (Int i = 1; i < N; ++i) {
-      directivity += coefficients_[i] * pow(cos(phi), i);
-    }
-    return directivity;
+    return dsp::EvaluateTrigPolynomial(phi, coefficients_);
   }
-
+  
   std::vector<Sample> coefficients_;
 };
 

@@ -36,7 +36,7 @@ bool Ism::Test() {
                     1.0 * SOUND_SPEED / sampling_frequency,
                     500.0 * SOUND_SPEED / sampling_frequency));
 
-  Source source(Point(1.0 * SOUND_SPEED / sampling_frequency,
+  OmniSource source(Point(1.0 * SOUND_SPEED / sampling_frequency,
                       3.0 * SOUND_SPEED / sampling_frequency,
                       500.0 * SOUND_SPEED / sampling_frequency));
 

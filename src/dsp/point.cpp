@@ -207,6 +207,18 @@ Point IntersectionPlaneLine(const Point& line_point,
   }
 }
 
+Point RotatePoint(const Point& point, const Point& center_point, const Quaternion& center_orientation, const dsp::Handedness handedness) noexcept {
+  // Centering the reference system around the microphone
+  Point centered(point.x() - center_point.x(), point.y() - center_point.y(),
+                 point.z() - center_point.z());
+
+  // Instead of rotating the head, we are rotating the point in an opposite
+  // direction (that's why the QuatInverse).
+  Point rotated =
+      dsp::QuatRotate(dsp::QuatInverse(center_orientation), centered, handedness);
+  return rotated;
+}
+
 } // namespace dsp
 
 } // namespace sal

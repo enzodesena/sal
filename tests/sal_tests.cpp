@@ -59,6 +59,7 @@ int main(int argc, char* const argv[]) {
   std::cout << "All DSP tests succeded!\n";
 
   sal::Buffer::Test();
+  sal::Source::Test();
   sal::Microphone::Test();
   sal::KemarMic::Test();
   sal::SphericalHeadMic::Test();

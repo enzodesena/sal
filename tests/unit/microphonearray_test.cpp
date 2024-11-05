@@ -21,8 +21,7 @@ bool MicrophoneArrayTest() {
   const Int num_microphones(5);
   const Length array_radius(0.5);
 
-  TrigMic mic_prototype(Point(0, 0, 0), dsp::Quaternion::Identity(),
-                        dsp::UnaryVector<Sample>(1.0));
+  TrigMic mic_prototype(dsp::UnaryVector<Sample>(1.0), Point(0, 0, 0), dsp::Quaternion::Identity());
 
   CircularArray<TrigMic> microphone_array_a(
       Point(0.0, 0.0, 1.5), dsp::Quaternion::Identity(), mic_prototype,
