@@ -90,32 +90,6 @@
 			);
 			target = 57A4C6E42CCE76FD0017248F /* sal */;
 		};
-		57B745DE2CCF040D000ECDC3 /* Exceptions for "libs" folder in "mysofa" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				libmysofa/src/hdf/btree.c,
-				libmysofa/src/hdf/dataobject.c,
-				libmysofa/src/hdf/fractalhead.c,
-				libmysofa/src/hdf/gcol.c,
-				libmysofa/src/hdf/gunzip.c,
-				libmysofa/src/hdf/superblock.c,
-				libmysofa/src/hrtf/cache.c,
-				libmysofa/src/hrtf/check.c,
-				libmysofa/src/hrtf/easy.c,
-				libmysofa/src/hrtf/interpolate.c,
-				libmysofa/src/hrtf/kdtree.c,
-				libmysofa/src/hrtf/lookup.c,
-				libmysofa/src/hrtf/loudness.c,
-				libmysofa/src/hrtf/minphase.c,
-				libmysofa/src/hrtf/neighbors.c,
-				libmysofa/src/hrtf/reader.c,
-				libmysofa/src/hrtf/resample.c,
-				libmysofa/src/hrtf/spherical.c,
-				libmysofa/src/hrtf/tools.c,
-				libmysofa/src/resampler/speex_resampler.c,
-			);
-			target = 57C87C502CCE5532002D3951 /* mysofa */;
-		};
 		57C87C162CCE5409002D3951 /* Exceptions for "tests" folder in "SAL Tests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -202,13 +176,39 @@
 			);
 			target = 57ECCF9E2CCE530800A4D733 /* SAL Tests */;
 		};
+		57CB88182D6A92050017B927 /* Exceptions for "libs" folder in "mysofa" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				libmysofa/src/hdf/btree.c,
+				libmysofa/src/hdf/dataobject.c,
+				libmysofa/src/hdf/fractalhead.c,
+				libmysofa/src/hdf/gcol.c,
+				libmysofa/src/hdf/gunzip.c,
+				libmysofa/src/hdf/superblock.c,
+				libmysofa/src/hrtf/cache.c,
+				libmysofa/src/hrtf/check.c,
+				libmysofa/src/hrtf/easy.c,
+				libmysofa/src/hrtf/interpolate.c,
+				libmysofa/src/hrtf/kdtree.c,
+				libmysofa/src/hrtf/lookup.c,
+				libmysofa/src/hrtf/loudness.c,
+				libmysofa/src/hrtf/minphase.c,
+				libmysofa/src/hrtf/neighbors.c,
+				libmysofa/src/hrtf/reader.c,
+				libmysofa/src/hrtf/resample.c,
+				libmysofa/src/hrtf/spherical.c,
+				libmysofa/src/hrtf/tools.c,
+				libmysofa/src/resampler/speex_resampler.c,
+			);
+			target = 57C87C502CCE5532002D3951 /* mysofa */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		57B745C92CCF03EF000ECDC3 /* libs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				57B745DE2CCF040D000ECDC3 /* Exceptions for "libs" folder in "mysofa" target */,
+				57CB88182D6A92050017B927 /* Exceptions for "libs" folder in "mysofa" target */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -389,7 +389,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					57A4C6E42CCE76FD0017248F = {
 						CreatedOnToolsVersion = 16.0;
@@ -460,6 +460,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BG5BN2K66W;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
@@ -477,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BG5BN2K66W;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
@@ -490,6 +492,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -506,6 +509,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -548,6 +552,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -611,6 +616,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -642,6 +648,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -653,6 +660,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
