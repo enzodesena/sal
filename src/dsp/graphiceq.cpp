@@ -18,7 +18,7 @@ namespace sal {
 
 namespace dsp {
 
-constexpr Real EPS = 0.0000001;
+constexpr Real EPS = std::numeric_limits<Real>::min();
 
 GraphicEq::GraphicEq(const std::vector<Real>& gain, const std::vector<Real>& fc,
                      const Real Q, const Real sampling_frequency)
@@ -46,6 +46,7 @@ void GraphicEq::InitFilters(const std::vector<Real>& fc, const Real Q,
   for (int i = 0; i < num_filters_ - 2; i++)
     peaking_filters_.push_back(PeakingFilter(fc[i], Q, sampling_frequency));
 }
+
 
 void GraphicEq::InitMatrix(const std::vector<Real>& fc,
                            const Real sampling_frequency) {
@@ -214,9 +215,10 @@ void GraphicEq::ProcessBlock(std::span<const Real> input_data,
   }
 }
 
-void GraphicEq::Reset() {
-  // Implement me!
-  ASSERT(false);
+void GraphicEq::ResetState() {
+  low_shelf_.Reset();
+  for (PeakingFilter& filter : peaking_filters_) { filter.Reset(); }
+  high_shelf_.Reset();
 }
 
 } // namespace dsp
