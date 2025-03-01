@@ -127,7 +127,7 @@ IirFilter GainFilter(const Real gain);
 /**
  Get wall filters of type wall_type and for FS given by sampling_frequency
  */
-IirFilter WallFilter(WallType wall_type, Real sampling_frequency);
+IirFilter WallFilter(WallType wall_type, Real sampling_frequency, Real gain = 1.0);
 
 /** Returns a pinkifier filter */
 IirFilter PinkifierFilter();

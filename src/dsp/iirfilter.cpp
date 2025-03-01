@@ -187,7 +187,7 @@ IirFilter GainFilter(Real gain) {
 
 IirFilter IdenticalFilter() { return GainFilter(1.0); }
 
-IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
+IirFilter WallFilter(WallType wall_type, Real sampling_frequency, Real gain) {
   // TODO: implement for frequencies other than 44100
   if (!IsEqual(sampling_frequency, 44100) && wall_type != kRigid) {
     dsp::Logger::GetInstance().LogError(
@@ -202,7 +202,7 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
 
   switch (wall_type) {
     case kRigid: {
-      B.push_back(1.0);
+      B.push_back(gain);
       A.push_back(1.0);
       break;
     }
@@ -210,9 +210,9 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       // B_carpet_pile=[0.562666833756030  -1.032627191365576
       // 0.469961155406544]; A_carpet_pile=[1.000000000000000 -1.896102349247713
       // 0.896352947528892];
-      B.push_back(0.562666833756030);
-      B.push_back(-1.032627191365576);
-      B.push_back(0.469961155406544);
+      B.push_back(0.562666833756030*gain);
+      B.push_back(-1.032627191365576*gain);
+      B.push_back(0.469961155406544*gain);
       A.push_back(1.000000000000000);
       A.push_back(-1.896102349247713);
       A.push_back(0.896352947528892);
@@ -223,10 +223,10 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
       // -1.920746652319969   1.789915765926473  -0.556749690855965];
       // A_carpet_cotton = [1.000000000000000
       // -2.761840732459190   2.536820778736938  -0.774942833868750];
-      B.push_back(0.687580695329600);
-      B.push_back(-1.920746652319969);
-      B.push_back(1.789915765926473);
-      B.push_back(-0.556749690855965);
+      B.push_back(0.687580695329600*gain);
+      B.push_back(-1.920746652319969*gain);
+      B.push_back(1.789915765926473*gain);
+      B.push_back(-0.556749690855965*gain);
       A.push_back(1.000000000000000);
       A.push_back(-2.761840732459190);
       A.push_back(2.536820778736938);
@@ -236,9 +236,9 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
     case kWallBricks: {
       // B_wall=[0.978495798553620  -1.817487798457697   0.839209660516074];
       // A_wall=[1.000000000000000  -1.858806492488240   0.859035906864860];
-      B.push_back(0.978495798553620);
-      B.push_back(-1.817487798457697);
-      B.push_back(0.839209660516074);
+      B.push_back(0.978495798553620*gain);
+      B.push_back(-1.817487798457697*gain);
+      B.push_back(0.839209660516074*gain);
       A.push_back(1.000000000000000);
       A.push_back(-1.858806492488240);
       A.push_back(0.859035906864860);
@@ -247,9 +247,9 @@ IirFilter WallFilter(WallType wall_type, Real sampling_frequency) {
     case kCeilingTile: {
       // B_ceiling=[0.168413736374283  -0.243270224986791   0.074863520490536];
       // A_ceiling=[1.000000000000000  -1.845049094190385   0.845565720138466];
-      B.push_back(0.168413736374283);
-      B.push_back(-0.243270224986791);
-      B.push_back(0.074863520490536);
+      B.push_back(0.168413736374283*gain);
+      B.push_back(-0.243270224986791*gain);
+      B.push_back(0.074863520490536*gain);
       A.push_back(1.000000000000000);
       A.push_back(-1.845049094190385);
       A.push_back(0.845565720138466);
