@@ -30,6 +30,7 @@
 #include "randomop.h"
 #include "riranalysis.h"
 #include "sofamic.h"
+#include "shsource.h"
 #include "sphericalheadmic.h"
 #include "statisticsop.h"
 #include "tdbem.h"
@@ -57,7 +58,8 @@ int main(int argc, char* const argv[]) {
   sal::dsp::IirFilter::GraphicEqTest();
   sal::dsp::RandomGenerator::Test();
   std::cout << "All DSP tests succeded!\n";
-
+  
+  sal::ShSource::Test();
   sal::Buffer::Test();
   sal::Source::Test();
   sal::Microphone::Test();

@@ -73,6 +73,7 @@
 				pawrapper.cpp,
 				propagationline.cpp,
 				riranalysis.cpp,
+				shsource.cpp,
 				sofamic.cpp,
 				source.cpp,
 				sphericalmic.cpp,
@@ -120,6 +121,7 @@
 				unit/propagationline_test.cpp,
 				unit/riranalysis_test.cpp,
 				unit/salutilities_test.cpp,
+				unit/shsource_test.cpp,
 				unit/sofamic_test.cpp,
 				unit/source_test.cpp,
 				unit/sphericalheadmic_test.cpp,
@@ -159,6 +161,7 @@
 				pawrapper.cpp,
 				propagationline.cpp,
 				riranalysis.cpp,
+				shsource.cpp,
 				sofamic.cpp,
 				source.cpp,
 				sphericalmic.cpp,
@@ -663,6 +666,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
