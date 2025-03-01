@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "salconstants.h"
+#include "audiobuffer.h"
 #include "saltypes.h"
 
 namespace sal {
@@ -26,10 +27,19 @@ class WavHandler {
   static Time ReadSamplingFrequency(const std::string file_name);
 
   static void Write(const std::vector<Signal>& signals,
-                    const Time sampling_frequency, const std::string file_name);
+                    const std::string& file_name,
+                    const Time sampling_frequency,
+                    const int num_bits_per_sample = 16);
 
   static void Write(const StereoSignal& stereo_signals,
-                    const Time sampling_frequency, std::string file_name);
+                    const std::string& file_name,
+                    const Time sampling_frequency,
+                    const int num_bits_per_sample = 16);
+  
+  static void Write(const Buffer& signals,
+                    const std::string& file_name,
+                    const Time sampling_frequency,
+                    const int num_bits_per_sample = 16);
 };
 
 }  // namespace sal
