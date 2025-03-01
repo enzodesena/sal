@@ -114,7 +114,7 @@ class GraphicEq {
 
   void PrintCoefficients();
 
-  void Reset();
+  void ResetState();
 
   static bool Test() noexcept;
 

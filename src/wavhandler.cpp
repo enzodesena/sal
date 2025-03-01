@@ -20,20 +20,6 @@ std::vector<Signal> WavHandler::Read(const std::string file_name) {
   AudioFile<double> audioFile;
   audioFile.load(file_name);
 
-  //  if (! (input_file = sf_open(file_name.c_str(), SFM_READ,
-  //  &input_file_info))) {
-  //    dsp::Logger::GetInstance().LogErrorToCerr("Error : could not open
-  //    file."); assert(false);
-  //  }
-  //
-  //  if (! sf_format_check (&input_file_info)) {
-  //    sf_close (input_file);
-  //    dsp::Logger::GetInstance().LogErrorToCerr("Error : could not open
-  //    file."); assert(false);
-  //  }
-
-  //  ASSERT(input_file_info.frames > 0);
-
   int num_channels = audioFile.getNumChannels();
   int num_samples = audioFile.getNumSamplesPerChannel();
 
@@ -55,21 +41,27 @@ Time WavHandler::ReadSamplingFrequency(const std::string file_name) {
 }
 
 void WavHandler::Write(const StereoSignal& stereo_signals,
-                       const Time sampling_frequency, std::string file_name) {
+                       const std::string& file_name,
+                       const Time sampling_frequency,
+                       const int num_bits_per_sample) {
   std::vector<Signal> signals(2);
   signals[0] = stereo_signals.left;
   signals[1] = stereo_signals.right;
-  Write(signals, sampling_frequency, file_name);
+  Write(signals, file_name, sampling_frequency, num_bits_per_sample);
 }
 
+
+
 void WavHandler::Write(const std::vector<Signal>& signals,
-                       const Time sampling_frequency, std::string file_name) {
+                       const std::string& file_name,
+                       const Time sampling_frequency,
+                       const int num_bits_per_sample) {
   AudioFile<double> audioFile;
   int num_channels = static_cast<int>(signals.size());
   ASSERT(num_channels >= 1);
   int num_samples = static_cast<int>(signals[0].size());
   audioFile.setAudioBufferSize(num_channels, (int)num_samples);
-  audioFile.setBitDepth(16);
+  audioFile.setBitDepth(num_bits_per_sample);
   audioFile.setSampleRate((uint32_t)sampling_frequency);
 
   for (int channel = 0; channel < num_channels; ++channel) {
@@ -79,6 +71,22 @@ void WavHandler::Write(const std::vector<Signal>& signals,
   }
 
   audioFile.save(file_name, AudioFileFormat::Wave);
+}
+
+
+void WavHandler::Write(const Buffer& buffer,
+                       const std::string& file_name,
+                       const Time sampling_frequency,
+                       const int num_bits_per_sample) {
+  std::vector<Signal> signals(buffer.num_channels());
+  for (int i=0; i<buffer.num_channels(); ++i) {
+    signals[i].resize(buffer.num_samples());
+    std::copy(buffer.GetReadView(i).begin(),
+              buffer.GetReadView(i).begin()+buffer.num_samples(),
+              signals[i].begin());
+  }
+  
+  Write(signals, file_name, sampling_frequency, num_bits_per_sample);
 }
 
 }  // namespace sal

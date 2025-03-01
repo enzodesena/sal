@@ -1,0 +1,9 @@
+To generate Kemar_HRTF_sofa_DTF.sofa
+download AKTools
+into SOFA_API_MO
+run:
+addpath('SOFA_API_MO/');
+filename = 'Kemar_HRTF_sofa.sofa';
+s1 = SOFAload(filename);
+[dtf,ctf]=SOFAhrtf2dtf(s1);
+SOFAsave('Kemar_HRTF_sofa_DTS_48000HzAKTools.sofa', dtf);
