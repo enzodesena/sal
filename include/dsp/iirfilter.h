@@ -78,7 +78,7 @@ class IirFilter {
   /** Returns the backward coefficients */
   std::vector<Real> denominator_coeffs() const;
 
-  void Reset();
+  void ResetState();
 
   /** Tests */
   static bool Test();
@@ -115,7 +115,7 @@ class IirFilterBank : public FilterBank {
   virtual void ProcessSample(const Real input, std::span<Real> output_data);
 
   /** Resets the state of the filter */
-  virtual void Reset();
+  virtual void ResetState();
 };
 
 /** Constructs a filter for which output==input always. */

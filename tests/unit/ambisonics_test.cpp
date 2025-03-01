@@ -56,7 +56,7 @@ bool AmbisonicsMic::Test() {
   ASSERT(IsEqual(buffer_a.GetSample(1, -1, 0), sample * 0.0));
   ASSERT(IsEqual(buffer_a.GetSample(2, 1, 0), sample * 1.414213562373095));
   ASSERT(IsEqual(buffer_a.GetSample(2, -1, 0), sample * 0.0));
-  mic_a.Reset();
+  mic_a.ResetState();
   buffer_a.Reset();
 
   mic_a.AddPlaneWave(sample, Point(0.0, 1.0, 0.0), buffer_a);
@@ -300,7 +300,7 @@ bool AmbisonicsHorizDec::Test() {
   for (Int theta_index = 0; theta_index < num_theta; ++theta_index) {
     output_buffer.Reset();
     bformat_buffer.Reset();
-    mic_a.Reset();
+    mic_a.ResetState();
 
     Angle theta(thetas[theta_index]);
 

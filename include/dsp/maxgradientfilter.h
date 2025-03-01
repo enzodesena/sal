@@ -42,7 +42,7 @@ class MaxGradientFilter {
     }
   }
 
-  void Reset() noexcept { previous_output_ = 0.0; }
+  void ResetState() noexcept { previous_output_ = 0.0; }
 
  private:
   Real max_gradient_;

@@ -47,8 +47,8 @@ class Filter {
     const_cast<FilterConcept&>(*self_).ProcessBlock_(input, output);
   }
   
-  void Reset() {
-    self_->Reset_();
+  void ResetState() {
+    self_->ResetState_();
   }
 
  private:
@@ -56,7 +56,7 @@ class Filter {
     virtual ~FilterConcept() = default;
     virtual void ProcessBlock_(std::span<const Real> input,
                                std::span<Real> output) = 0;
-    virtual void Reset_() = 0;
+    virtual void ResetState_() = 0;
     virtual std::unique_ptr<FilterConcept> copy_() const = 0;
   };
 
@@ -73,8 +73,8 @@ class Filter {
       data_.ProcessBlock(input, output);
     }
     
-    void Reset_() override {
-      data_.Reset();
+    void ResetState_() override {
+      data_.ResetState();
     }
 
     FilterType data_;
@@ -101,7 +101,7 @@ class FilterBank {
   }
 
   /** Resets the state of the filter */
-  virtual void Reset() = 0;
+  virtual void ResetState() = 0;
 
   virtual Int num_filters() = 0;
 };

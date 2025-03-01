@@ -329,10 +329,10 @@ void ProcessAll(const Filter& filter,
                 const std::vector<std::vector<Real> >& input_signals,
                 std::vector<std::vector<Real> >& output_signals) {
   Filter filter_prototype(filter);
-  filter_prototype.Reset();
+  filter_prototype.ResetState();
   for (size_t i = 0; i < input_signals.size(); ++i) {
     filter_prototype.ProcessBlock(input_signals[i], output_signals[i]);
-    filter_prototype.Reset();
+    filter_prototype.ResetState();
   }
 }
 
@@ -345,7 +345,7 @@ void ProcessAll(
     for (size_t j = 0; j < matrix_of_input_signals[i].size(); ++j) {
       filter_prototype.ProcessBlock(matrix_of_input_signals[i][j],
                           matrix_of_output_signals[i][j]);
-      filter_prototype.Reset();
+      filter_prototype.ResetState();
     }
   }
 }

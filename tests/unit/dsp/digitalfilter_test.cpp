@@ -104,7 +104,7 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(output_d, signal_d_out_cmp));
 
   // Testing Reset()
-  filter_l.Reset();
+  filter_l.ResetState();
   ASSERT(IsEqual(filter_l.ProcessSample(0.0), 0.0));
 
   std::vector<Real> impulse_resp_2(3);
@@ -114,7 +114,7 @@ bool IirFilter::Test() {
 
   FirFilter filter_m(impulse_resp_2);
   ASSERT(!IsEqual(filter_m.ProcessSample(1.0), 0.0));
-  filter_m.Reset();
+  filter_m.ResetState();
   ASSERT(IsEqual(filter_m.ProcessSample(0.0), 0.0));
 
   // Testing butterworth filter
@@ -178,8 +178,8 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(octave_a.denominator_coeffs(), octave_a_den_cmp));
 
   // Testing series of IIR filters
-  octave_a.Reset();
-  butter_b.Reset();
+  octave_a.ResetState();
+  butter_b.ResetState();
   IirFilter combined_a = SeriesFilter(octave_a, butter_b);
   std::vector<Real> output_combined(input_a.size());
   combined_a.ProcessBlock(input_a, output_combined);
@@ -188,9 +188,9 @@ bool IirFilter::Test() {
   butter_b.ProcessBlock(output_series, output_series);
   assert(IsEqual(output_series, output_combined));
 
-  octave_a.Reset();
-  butter_a.Reset();
-  butter_b.Reset();
+  octave_a.ResetState();
+  butter_a.ResetState();
+  butter_b.ResetState();
   std::vector<IirFilter> filters;
   filters.push_back(octave_a);
   filters.push_back(butter_b);
@@ -203,7 +203,7 @@ bool IirFilter::Test() {
   assert(IsEqual(output_series, output_combined));
 
   // Testing iir filter bank
-  octave_a.Reset();
+  octave_a.ResetState();
   IirFilterBank octave_bank_a = OctaveFilterBank(3, 1, 4000.0, 44100.0);
   std::vector<Real> output_octave_bank_a(octave_bank_a.num_filters());
   octave_bank_a.ProcessSample(1.25, output_octave_bank_a);
@@ -215,7 +215,7 @@ bool IirFilter::Test() {
   ASSERT(octave_bank_a.num_filters() == 1);
 
   IirFilterBank octave_bank_b = OctaveFilterBank(3, 2, 2000.0, 44100.0);
-  octave_a.Reset();
+  octave_a.ResetState();
   std::vector<Real> octave_bank_b_output(octave_bank_b.num_filters());
   octave_bank_b.ProcessSample(1.25, octave_bank_b_output);
   ASSERT(IsEqual(octave_bank_b_output[1], octave_a.ProcessSample(1.25)));
@@ -225,8 +225,8 @@ bool IirFilter::Test() {
   ASSERT(IsEqual(octave_bank_b_output[1], octave_a.ProcessSample(5.0)));
   ASSERT(octave_bank_b.num_filters() == 2);
 
-  octave_a.Reset();
-  octave_bank_b.Reset();
+  octave_a.ResetState();
+  octave_bank_b.ResetState();
   octave_bank_b.ProcessSample(1.25, octave_bank_b_output);
   ASSERT(IsEqual(octave_bank_b_output[1], octave_a.ProcessSample(1.25)));
   octave_bank_b.ProcessSample(0.25, octave_bank_b_output);
@@ -259,7 +259,7 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(cmp_lasplita_b, output_lasplita_b));
 #endif
 
-  filter_lasplita.Reset();
+  filter_lasplita.ResetState();
   filter_lasplita.ProcessBlock(std::span(input.begin(), 3), output_lasplita_a);
   ASSERT(IsEqual(cmp_lasplita_a, output_lasplita_a));
   filter_lasplita.ProcessBlock(std::span(input.begin() + 3, 4),
@@ -350,7 +350,7 @@ bool FirFilter::Test() {
   filter_l.ProcessBlock(input_b, output_b);
   ASSERT(IsEqual(output_b_cmp, output_b));
 
-  filter_l.Reset();
+  filter_l.ResetState();
   for (Int i = 0; i < (Int)input_b.size(); ++i) {
     ASSERT(dsp::IsEqual(filter_l.ProcessSample(input_b[i]), output_b_cmp[i]));
   }
@@ -400,7 +400,7 @@ bool FirFilter::Test() {
   ASSERT(IsEqual(output_c_cmp, output_c));
 
   // Various attempt to check that the batch processing does not mess up
-  filter_m.Reset();
+  filter_m.ResetState();
   std::vector<Real> input_c_sub_a(input_c.begin(), input_c.begin() + 16);
   std::vector<Real> output_c_cmp_sub_a(output_c_cmp.begin(),
                                        output_c_cmp.begin() + 16);
@@ -418,7 +418,7 @@ bool FirFilter::Test() {
   ASSERT(dsp::IsEqual(output_c_sub_b, output_c_cmp_sub_b));
 
   //
-  filter_m.Reset();
+  filter_m.ResetState();
   ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[0]), output_c_cmp[0]));
   ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[1]), output_c_cmp[1]));
   ASSERT(dsp::IsEqual(filter_m.ProcessSample(input_c[2]), output_c_cmp[2]));
@@ -449,13 +449,13 @@ bool FirFilter::Test() {
   ASSERT(dsp::IsEqual(output_k, output_k_cmp));
 
   //
-  filter_k.Reset();
+  filter_k.ResetState();
   for (Int i = 0; i < (Int)input_c.size() - 1; ++i) {
     ASSERT(IsEqual(filter_k.ProcessSample(input_k[i]), output_k_cmp[i]));
   }
 
   //
-  filter_k.Reset();
+  filter_k.ResetState();
   ASSERT(IsEqual(filter_k.ProcessSample(input_k[0]), output_k_cmp[0]));
   ASSERT(IsEqual(filter_k.ProcessSample(input_k[1]), output_k_cmp[1]));
   std::vector<Real> input_k_sub_a =
@@ -483,7 +483,7 @@ bool FirFilter::Test() {
       std::vector<Real>(output_k_cmp.begin() + 11, output_k_cmp.begin() + 20)));
 
   //
-  filter_k.Reset();
+  filter_k.ResetState();
   ASSERT(IsEqual(filter_k.ProcessSample(input_k[0]), output_k_cmp[0]));
   ASSERT(IsEqual(filter_k.ProcessSample(input_k[1]), output_k_cmp[1]));
   ASSERT(IsEqual(filter_k.ProcessSample(input_k[2]), output_k_cmp[2]));

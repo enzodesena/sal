@@ -41,7 +41,7 @@ class DelayFilter {
   void Write(std::span<const Sample> input_data) noexcept;
 
   /** Resets the state of the filter */
-  void Reset() noexcept;
+  void ResetState() noexcept;
 
   /**
    Returns the current sample from the filter. Between two Tick() operation it

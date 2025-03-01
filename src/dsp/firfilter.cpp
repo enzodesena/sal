@@ -259,7 +259,7 @@ FirFilter FirFilter::GainFilter(Real gain) noexcept {
   return FirFilter(B);
 }
 
-void FirFilter::Reset() noexcept {
+void FirFilter::ResetState() noexcept {
   delay_line_ = Zeros<Real>(delay_line_.size());
 }
 

@@ -216,9 +216,9 @@ void GraphicEq::ProcessBlock(std::span<const Real> input_data,
 }
 
 void GraphicEq::ResetState() {
-  low_shelf_.Reset();
-  for (PeakingFilter& filter : peaking_filters_) { filter.Reset(); }
-  high_shelf_.Reset();
+  low_shelf_.ResetState();
+  for (PeakingFilter& filter : peaking_filters_) { filter.ResetState(); }
+  high_shelf_.ResetState();
 }
 
 } // namespace dsp

@@ -37,7 +37,7 @@ void BinauralMic::AddPlaneWaveRelative(std::span<const Sample> input_data,
 
 void BinauralMic::SetBypass(bool bypass) noexcept {
   if (bypass_ && !bypass) {
-    this->Reset();
+    this->ResetState();
   }
   bypass_ = bypass;
 }
@@ -50,11 +50,11 @@ void BinauralMic::CreateInstanceIfNotExist(const size_t wave_id) noexcept {
   }
 }
 
-void BinauralMic::Reset() noexcept {
+void BinauralMic::ResetState() noexcept {
   for (auto iterator = instances_.begin(); iterator != instances_.end();
        ++iterator) {
-    iterator->second.filter_left_.Reset();
-    iterator->second.filter_right_.Reset();
+    iterator->second.filter_left_.ResetState();
+    iterator->second.filter_right_.ResetState();
   }
 }
 

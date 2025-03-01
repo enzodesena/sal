@@ -162,7 +162,7 @@ void DelayFilter::Read(std::span<Sample> output_data) const noexcept {
   }
 }
 
-void DelayFilter::Reset() noexcept {
+void DelayFilter::ResetState() noexcept {
   for (Int i = 0; i < (max_latency_ + 1); ++i) {
     start_[i] = 0.0;
   }

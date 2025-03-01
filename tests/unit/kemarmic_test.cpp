@@ -216,7 +216,7 @@ bool KemarMic::Test() {
   ASSERT(!IsEqual(buffer_t.GetRightReadView()[0], 0.0, 1.0E-10));
 
   buffer_t.Reset();
-  mic_t.Reset();
+  mic_t.ResetState();
   mic_t.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0, 0.0, -1.0), buffer_t);
   ASSERT(IsEqual(buffer_t.GetLeftReadView()[0], 0.0));
   ASSERT(IsEqual(buffer_t.GetRightReadView()[0], 0.0));
@@ -292,7 +292,7 @@ bool KemarMic::Test() {
 
   Angle elevation = 40.0 / 180.0 * PI;
   Angle azimuth = 77.0 / 180.0 * PI;
-  mic_diffuse.Reset();
+  mic_diffuse.ResetState();
   buffer_diffuse.Reset();
   // The minus for azimuth is because for our reference system, a positive
   // azimuth angle is to the left of the person, while for kemar is on the right
@@ -337,7 +337,7 @@ bool KemarMic::Test() {
                  dsp::Multiply(cmp_diffuse_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
 
-  mic_diffuse.Reset();
+  mic_diffuse.ResetState();
   buffer_diffuse.Reset();
   // Check for the other side (hence `azimuth` is positive here)
   mic_diffuse.AddPlaneWave(impulse,
@@ -380,7 +380,7 @@ bool KemarMic::Test() {
 
   elevation = 40.0 / 180.0 * PI;
   azimuth = 77.0 / 180.0 * PI;
-  mic_compact.Reset();
+  mic_compact.ResetState();
   buffer_compact.Reset();
   // The minus for azimuth is because for our reference system, a positive
   // azimuth angle is to the left of the person, while for kemar is on the right
@@ -426,7 +426,7 @@ bool KemarMic::Test() {
                  dsp::Multiply(cmp_compact_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
 
-  mic_compact.Reset();
+  mic_compact.ResetState();
   buffer_compact.Reset();
   // Check for the other side (hence `azimuth` is positive here)
   mic_compact.AddPlaneWave(impulse,
@@ -512,7 +512,7 @@ bool KemarMic::Test() {
 
   elevation = 40.0 / 180.0 * PI;
   azimuth = 77.0 / 180.0 * PI;
-  mic_full.Reset();
+  mic_full.ResetState();
   buffer_full.Reset();
   // The minus for azimuth is because for our reference system, a positive
   // azimuth angle is to the left of the person, while for kemar is on the right
@@ -631,7 +631,7 @@ bool KemarMic::Test() {
                  dsp::Multiply(cmp_full_elevation_40_azimuth_77_right_ear,
                                normalising_value)));
 
-  mic_full.Reset();
+  mic_full.ResetState();
   buffer_full.Reset();
   // Check for the other side (hence `azimuth` is positive here)
   mic_full.AddPlaneWave(long_impulse,

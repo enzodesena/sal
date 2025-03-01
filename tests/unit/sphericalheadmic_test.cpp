@@ -139,7 +139,7 @@ bool SphericalHeadMic::Test() {
   ASSERT(!IsEqual(stream_b.GetRightReadView()[0], 0.0));
 
   stream_b.Reset();
-  mic_b.Reset();
+  mic_b.ResetState();
   mic_b.AddPlaneWave(MonoBuffer::Unary(0.0), Point(0.0, 0.0, -1.0), stream_b);
   ASSERT(IsEqual(stream_b.GetLeftReadView()[0], 0.0));
   ASSERT(IsEqual(stream_b.GetRightReadView()[0], 0.0));

@@ -98,7 +98,7 @@ class PropagationLine {
                    const sal::Time ramp_time = 0.0) noexcept;
 
   /** Resets the state of the filter */
-  void Reset() noexcept;
+  void ResetState() noexcept;
 
   static const Length kOneSampleDistance;
 

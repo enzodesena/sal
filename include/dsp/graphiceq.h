@@ -107,9 +107,9 @@ class GraphicEq {
    * Resets the filter buffers
    */
   inline void ClearBuffers() {
-    low_shelf_.Reset();
-    for (PeakingFilter& filter : peaking_filters_) filter.Reset();
-    high_shelf_.Reset();
+    low_shelf_.ResetState();
+    for (PeakingFilter& filter : peaking_filters_) filter.ResetState();
+    high_shelf_.ResetState();
   }
 
   void PrintCoefficients();

@@ -265,7 +265,7 @@ class LowPassSmoothingFilter {
     return filter_.ProcessSample(input);
   }
 
-  void Reset() noexcept { filter_.Reset(); }
+  void ResetState() noexcept { filter_.ResetState(); }
 
  private:
   dsp::IirFilter filter_;

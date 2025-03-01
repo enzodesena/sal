@@ -162,7 +162,7 @@ std::vector<Real> IirFilter::GetFrequencyResponse(
   return magnitudes;
 }
 
-void IirFilter::Reset() {
+void IirFilter::ResetState() {
   const size_t size = numerator_coeffs_.size();
   for (size_t i = 0; i < size; ++i) {
     state_[i] = 0.0;
@@ -309,10 +309,10 @@ void IirFilterBank::ProcessSample(const Real input,
   }
 }
 
-void IirFilterBank::Reset() {
+void IirFilterBank::ResetState() {
   const size_t N = filters_.size();
   for (size_t i = 0; i < N; ++i) {
-    filters_[i].Reset();
+    filters_[i].ResetState();
   }
 }
 

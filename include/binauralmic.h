@@ -45,7 +45,7 @@ class BinauralMic : public StereoMicrophone {
   /** When bypass_ is true, the signals will not be filtered by the HRTF */
   void SetBypass(bool bypass) noexcept;
 
-  virtual void Reset() noexcept;
+  virtual void ResetState() noexcept;
 
   bool IsCoincident() const noexcept { return true; }
 

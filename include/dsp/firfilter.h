@@ -53,7 +53,7 @@ class FirFilter {
                           const Int update_length = 0) noexcept;
 
   /** Resets the state of the filter */
-  void Reset() noexcept;
+  void ResetState() noexcept;
 
   /** Returns the impulse response of the filter */
   std::vector<Real> impulse_response() noexcept;
@@ -136,7 +136,7 @@ class GainFilter {
     Multiply(input_data, gain_, output_data);
   }
 
-  void Reset() {}
+  void ResetState() {}
 
  private:
   Real gain_;
@@ -155,7 +155,7 @@ class IdenticalFilter {
     }
   }
 
-  void Reset() {}
+  void ResetState() {}
 };
 
 } // namespace dsp

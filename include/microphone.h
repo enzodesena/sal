@@ -110,7 +110,7 @@ class Microphone {
   dsp::Point GetRelativePoint(const dsp::Point& point) const noexcept;
 
   /** Resets the state of the microphone (if any). */
-  virtual void Reset() noexcept {}
+  virtual void ResetState() noexcept {}
 
   static bool Test();
 

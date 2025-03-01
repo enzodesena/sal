@@ -96,12 +96,12 @@ void PropagationLine::SetAirFiltersActive(
     const bool air_filters_active) noexcept {
   air_filters_active_ = air_filters_active;
   if (air_filters_active_ == false) {
-    air_filter_.Reset();
+    air_filter_.ResetState();
   }
 }
 
 /** Resets the state of the filter */
-void PropagationLine::Reset() noexcept { delay_filter_.Reset(); }
+void PropagationLine::ResetState() noexcept { delay_filter_.ResetState(); }
 
 void PropagationLine::Tick() noexcept { Tick(1); }
 
