@@ -57,7 +57,7 @@ int main(int argc, char* const argv[]) {
   sal::dsp::IirFilter::PeakLowShelfTest();
   sal::dsp::IirFilter::GraphicEqTest();
   sal::dsp::RandomGenerator::Test();
-  std::cout << "All DSP tests succeded!\n";
+  std::cout << "All DSP tests succeeded!\n";
   
   sal::ShSource::Test();
   sal::Buffer::Test();
