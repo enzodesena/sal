@@ -41,8 +41,6 @@ class ShSource : public Source {
     * @brief Calculate the directivity response for a given frequencies and direction
     *
     * @params frequencies The frequencies to calculate the directivity for
-    * @params theta 0 to PI (0 to 180 degrees) 0 points along the forward axis, PI/2 perpendicular to the forward axis and PI is opposing the forward axis
-    * @params phi 0 to 2PI (360 degrees) where 0 is the front, top or rear of the source and PI is the bottom of the source (rotates clockwise around the forward axis).
     *
     * @remark Uses front-pole orientation
     *
