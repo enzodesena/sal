@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1600"
+   LastUpgradeVersion = "1620"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "575B0C712CC3D6C3002D0917"
-               BuildableName = "liblibmysofa.a"
-               BlueprintName = "libmysofa"
+               BlueprintIdentifier = "57C87C502CCE5532002D3951"
+               BuildableName = "libmysofa.a"
+               BlueprintName = "mysofa"
                ReferencedContainer = "container:SAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "575B0C712CC3D6C3002D0917"
-            BuildableName = "liblibmysofa.a"
-            BlueprintName = "libmysofa"
+            BlueprintIdentifier = "57C87C502CCE5532002D3951"
+            BuildableName = "libmysofa.a"
+            BlueprintName = "mysofa"
             ReferencedContainer = "container:SAL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

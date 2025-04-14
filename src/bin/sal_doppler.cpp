@@ -43,9 +43,9 @@ int main(int argc, char * const argv[]) {
   
   
   Signal sine = GenerateSine(sine_length, sine_frequency, sampling_frequency, sine_amplitude, 0);
-  mcl::Matrix<sal::Sample> original_sine(sine.size(), 1);
-  mcl::Matrix<sal::Sample> doppler_sine(sine.size(), 1);
-  mcl::Matrix<sal::Time> current_latency(sine.size(), 1);
+  dsp::Matrix<sal::Sample> original_sine(sine.size(), 1);
+  dsp::Matrix<sal::Sample> doppler_sine(sine.size(), 1);
+  dsp::Matrix<sal::Time> current_latency(sine.size(), 1);
   
   Length current_distance = SOUND_SPEED/sampling_frequency;
   PropagationLine line_doppler(current_distance, sampling_frequency, 1000.0,
@@ -94,11 +94,11 @@ int main(int argc, char * const argv[]) {
 Signal GenerateSine(const Time length, const Time sine_frequency,
                     const Time sampling_frequency,
                     const Sample amplitude, const Time trailing_length) {
-  Signal t = mcl::ColonOperator(0, 1.0/sampling_frequency, length);
-  Signal sine_wave = mcl::Sin(mcl::Multiply(t, 2.0*PI*sine_frequency));
-  sine_wave = mcl::Multiply(sine_wave, amplitude);
-  sine_wave = mcl::Concatenate(sine_wave,
-                               mcl::Zeros<mcl::Real>(trailing_length*sampling_frequency));
+  Signal t = dsp::ColonOperator(0, 1.0/sampling_frequency, length);
+  Signal sine_wave = dsp::Sin(dsp::Multiply(t, 2.0*PI*sine_frequency));
+  sine_wave = dsp::Multiply(sine_wave, amplitude);
+  sine_wave = dsp::Concatenate(sine_wave,
+                               dsp::Zeros<dsp::Real>(trailing_length*sampling_frequency));
   return sine_wave;
 }
 

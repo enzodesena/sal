@@ -2,6 +2,9 @@
 *sine_*
 *.DS_Store
 *current_latency.txt
+resources/hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa
+*.sofa
+**/outputs/*
 
 # Xcode
 *.pbxuser
@@ -18,7 +21,7 @@ xcuserdata/
 
 #Python modules
 MANIFEST
-dist/
+ist/
 build/
 
 # Backup files
