@@ -18,7 +18,7 @@ using sal::dsp::Quaternion;
 namespace sal {
 
 bool SofaMic::Test(const dsp::Point& source_point, const Signal& cmp_left,
-                   const Signal& cmp_right) {
+                   const Signal& cmp_right, const std::string& filepath) {
   Time sampling_frequency(48000);
 
   MonoBuffer impulse(384);
@@ -28,7 +28,7 @@ bool SofaMic::Test(const dsp::Point& source_point, const Signal& cmp_left,
   // https://publications.rwth-aachen.de/record/807373
   // I decided not to include it in the repo since it is rather heavy (170 MB)
   SofaMic mic(Point(0.0, 0.0, 0.0), dsp::Quaternion::Identity(),
-              "resources/hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa",
+              filepath,
               sampling_frequency);
   StereoBuffer buffer(impulse.num_samples());
 
@@ -53,6 +53,12 @@ bool SofaMic::Test(const dsp::Point& source_point, const Signal& cmp_left,
 }
 
 bool SofaMic::Test() {
+  std::string filepath = "resources/hrtfs/aachen_kemar/Kemar_HRTF_sofa.sofa";
+  if (! std::filesystem::exists(filepath)) {
+    std::cout << "Skipping SofaMic tests since the file "+filepath+" can't be found. \n";
+    return false;
+  }
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Test front direction
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,7 +221,7 @@ bool SofaMic::Test() {
       -4.821416e-03, 2.417979e-03,  1.501875e-03,  -5.135272e-03, 9.805647e-03,
       -1.228468e-02, 1.591760e-02,  -1.630451e-02, 1.996251e-02};
 
-  Test(Point(1.0, 0.0, 0.0), cmp_front_left, cmp_front_right);
+  Test(Point(1.0, 0.0, 0.0), cmp_front_left, cmp_front_right, filepath);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Test left direction
@@ -378,7 +384,7 @@ bool SofaMic::Test() {
       -7.662711e-04, -6.064968e-04, -6.584168e-04, -8.105066e-04, -5.372945e-04,
       -9.673269e-04, -5.989051e-04, -1.094831e-03, -6.413565e-04};
 
-  Test(Point(0.0, 1.0, 0.0), cmp_left_left, cmp_left_right);
+  Test(Point(0.0, 1.0, 0.0), cmp_left_left, cmp_left_right, filepath);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Test up direction
@@ -547,7 +553,7 @@ bool SofaMic::Test() {
    (1 degree azimuth) and it is possible that the CPP implementation picks
    a different azimuth at 1m and 2m. I don't think this is problematic
    since it is an edge case, and the responses are very close anyways. */
-  Test(Point(0.0, 0.0, 2.0), cmp_up_left, cmp_up_right);
+  Test(Point(0.0, 0.0, 2.0), cmp_up_left, cmp_up_right, filepath);
 
   return true;
 }

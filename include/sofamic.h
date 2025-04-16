@@ -33,7 +33,7 @@ class SofaMic : public BinauralMic {
 
   static bool Test();
   static bool Test(const dsp::Point& source_point, const Signal& cmp_left,
-                   const Signal& cmp_right);
+                   const Signal& cmp_right, const std::string& filepath);
   virtual ~SofaMic();
 
  private:
